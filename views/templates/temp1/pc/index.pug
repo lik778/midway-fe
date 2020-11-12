@@ -1,4 +1,6 @@
 extends ../../../layout.pug
+block styles
+    link(rel="stylesheet", href="/assets/main.css")
 
 block content
-    p 这里是第一个模板的pc页面
+    p.main 这里是第一个模板的pc页面#{message}
