@@ -1,6 +1,10 @@
-extends ../../layout.pug
+extends ../../../layout.pug
+
 block styles
     link(rel="stylesheet", href="/assets/main.css")
+
+block header
+    include ../common/header.pug
 
 block content
     div
