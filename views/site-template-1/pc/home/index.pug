@@ -7,9 +7,11 @@ block header
     include ../common/header.pug
 
 block content
-    div
-        a(href="/site/about") 关于我们
-    div
-        a(href="/site/listing") 列表页
+    include ../common/nav.pug
+
+    //-div
+    //-    a(href="/site/about") 关于我们
+    //-div
+    //-    a(href="/site/listing") 列表页
     p.main 主页
 
