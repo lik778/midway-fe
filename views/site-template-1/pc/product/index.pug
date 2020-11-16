@@ -1,4 +1,10 @@
 extends ../../../layout.pug
 
+block styles
+    link(rel="stylesheet", href="/assets/site-template-1-product.css")
+
+block header
+    include ../components/header.pug
+
 block content
-    p.main 关于我们啊a
+    include ../components/nav.pug
