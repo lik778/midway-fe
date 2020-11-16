@@ -1,14 +1,13 @@
 const path = require('path');
-const glob = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-// todo: 这里的递归获取文件要修改
-const list = glob.sync(path.resolve(__dirname, '..', 'assets/styles/**/*.styl'));
 
 module.exports = {
   watch: true,
+  devtool: 'source-map',
   mode: 'development',
-  entry: list,
+  entry: {
+    'site-template-1-home': path.resolve(__dirname, '..', 'assets/pc/site-template-1-home/index.js')
+  },
   output: {
     path: path.resolve(__dirname, "../dist/public"),
   },
@@ -21,8 +20,21 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader'
+        }
+      },
+      {
         test: /\.styl(us)?$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader']
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              esModule: false
+            },
+          }, 'css-loader', 'stylus-loader']
       },
     ]
   },
