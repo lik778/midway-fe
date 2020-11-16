@@ -5,7 +5,7 @@ import { MidwayApiService } from '../services/midway-api.services';
 export class SiteController {
   constructor(private midwayApiService: MidwayApiService) {}
 
-  @Get('/')
+  @Get('/home')
   @Render('site-template-1/pc/home/index')
   async home() {
     // 获取java层数据数据
@@ -19,10 +19,10 @@ export class SiteController {
     return { title: '新闻资讯' }
   }
 
-  @Get('/about')
-  @Render('site-template-1/pc/about')
+  @Get('/product')
+  @Render('site-template-1/pc/product/index')
   about() {
-    return { title: '关于我们' }
+    return { title: '产品服务' }
   }
 
 }
