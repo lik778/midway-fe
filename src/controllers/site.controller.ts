@@ -1,22 +1,27 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import { MidwayApiService } from '../services/midway-api.services';
 
-@Controller()
+@Controller('/site')
 export class SiteController {
-  @Get('/site')
+  constructor(private midwayApiService: MidwayApiService) {}
+
+  @Get('/home')
   @Render('site-template-1/pc/home/index')
-  home() {
-    return { title: '首页官网' }
+  async home() {
+    // 获取java层数据数据
+    const tips = await this.midwayApiService.getHomeData('/api/midway/health/');
+    return { title: '首页', tips }
   }
 
-  @Get('/site/news')
+  @Get('/news')
   @Render('site-template-1/pc/news/index')
   listing() {
     return { title: '新闻资讯' }
   }
 
-  @Get('/site/product')
+  @Get('/product')
   @Render('site-template-1/pc/product/index')
-  about() {
+  product() {
     return { title: '产品服务' }
   }
 
