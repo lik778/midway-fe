@@ -1,7 +1,9 @@
 import './index.styl'
 
 const hello = function() {
-  console.log('name')
+  console.log('hello world')
 }
 
 hello()
+
+

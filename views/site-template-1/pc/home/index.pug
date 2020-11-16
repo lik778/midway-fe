@@ -1,0 +1,19 @@
+extends ../../../layout.pug
+
+block styles
+    link(rel="stylesheet", href="/assets/site-template-1-home.css")
+
+block header
+    include ../common/header.pug
+
+block content
+    include ../common/nav.pug
+
+    //-div
+    //-    a(href="/site/about") 关于我们
+    //-div
+    //-    a(href="/site/listing") 列表页
+    p.main 主页
+
+block scripts
+    script(src="/assets/site-template-1-home.js")

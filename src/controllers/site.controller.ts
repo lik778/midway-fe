@@ -3,7 +3,7 @@ import { Controller, Get, Render } from '@nestjs/common';
 @Controller()
 export class SiteController {
   @Get('/site')
-  @Render('site-template-1/pc/home')
+  @Render('site-template-1/pc/home/index')
   home() {
     return { message: '测试信息', title: '首页' }
   }
