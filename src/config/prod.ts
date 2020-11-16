@@ -1,8 +1,8 @@
 export default {
   services: {
     'midway-service': {
-      host: '172.30.2.14',
-      port: '31257'
+      host: 'http://172.30.2.14:31257'
     }
-  }
+  },
+  haojing: 'https://www.baixing.com'
 }

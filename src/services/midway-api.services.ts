@@ -12,8 +12,7 @@ export class MidwayApiService {
     this.host = configService.get('services.midway-service.host');
   }
 
-  public getHomeData(): void {
-    console.log(this.host)
-    console.log('获取文章数据')
+  public getHomeData(path: string, params?: any): Promise<any> {
+    return this.requestService.get(`${this.host}${path}`, params);
   }
 }

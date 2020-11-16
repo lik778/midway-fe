@@ -1,8 +1,8 @@
 export default {
   services: {
     'midway-service': {
-      host: 'localhost',
-      port: '8080'
+      host: 'http://localhost:8080'
     }
-  }
+  },
+  haojing: 'http://wulei.baixing.cn'
 }
