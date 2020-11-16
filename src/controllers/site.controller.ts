@@ -5,19 +5,19 @@ export class SiteController {
   @Get('/site')
   @Render('site-template-1/pc/home')
   home() {
-    return { message: '测试信息' }
+    return { message: '测试信息', title: '首页' }
   }
 
   @Get('/site/listing')
   @Render('site-template-1/pc/listing')
   listing() {
-    return null;
+    return { title: '列表页' }
   }
 
   @Get('/site/about')
   @Render('site-template-1/pc/about')
   about() {
-    return null;
+    return { title: '关于我们' }
   }
 
 }
