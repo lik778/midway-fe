@@ -5,7 +5,7 @@ export class SiteController {
   @Get('/site')
   @Render('site-template-1/pc/home/index')
   home() {
-    return { title: '首页' }
+    return { title: '首页官网' }
   }
 
   @Get('/site/news')
@@ -14,10 +14,10 @@ export class SiteController {
     return { title: '新闻资讯' }
   }
 
-  @Get('/site/about')
-  @Render('site-template-1/pc/about')
+  @Get('/site/product')
+  @Render('site-template-1/pc/product/index')
   about() {
-    return { title: '关于我们' }
+    return { title: '产品服务' }
   }
 
 }
