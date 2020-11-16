@@ -14,10 +14,10 @@ export class SiteController {
     return { title: '新闻资讯' }
   }
 
-  @Get('/site/about')
-  @Render('site-template-1/pc/about')
-  about() {
-    return { title: '关于我们' }
+  @Get('/site/product')
+  @Render('site-template-1/pc/product/index')
+  product() {
+    return { title: '产品服务' }
   }
 
 }
