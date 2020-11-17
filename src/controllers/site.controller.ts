@@ -16,14 +16,14 @@ export class SiteController {
   }
 
   @Get('/news')
-  @Render('site-template-1/pc/news')
+  @Render('site-template-1/pc/news/index')
   listing() {
     return { title: '新闻资讯' }
   }
 
   @Get('/product')
   @Render('site-template-1/pc/product/index')
-  about() {
+  product() {
     return { title: '产品服务' }
   }
 
