@@ -1,4 +1,5 @@
-import './index.styl'
+import './index.styl';
+import Swiper from 'swiper';
 
 var swiper = new Swiper('.swiper-container', {
   spaceBetween: 30,

@@ -1,10 +1,15 @@
-extends ../../../layout.pug
+extends ../layout
 
 block styles
-    link(rel="stylesheet", href="/assets/site-template-1-product.css")
+    link(rel="stylesheet", href="/assets/site-template-1-product-pc.css")
 
 block header
     include ../components/header.pug
 
 block content
     include ../components/nav.pug
+    p.main 产品服务
+    
+block scripts
+    script(src="/assets/site-template-1-product-pc.js")
+
