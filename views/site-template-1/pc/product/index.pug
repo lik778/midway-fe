@@ -8,8 +8,17 @@ block header
 
 block content
     include ../components/nav.pug
-    p.main 产品服务
-    
+    // 这里需要引入一个面包屑
+    .container.clearfix
+        .main
+            include ../components/product-list.pug
+        .aside
+            //-include ../components/contact.pug
+            //-.side-bar
+            //-    p 右侧栏
+
+    //-include ../components/footer.pug
+
 block scripts
     script(src="/assets/site-template-1-product-pc.js")
 
