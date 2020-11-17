@@ -8,7 +8,21 @@ block header
 
 block content
     include ../components/nav.pug
-    p.main 产品服务
+    // 这里需要引入一个面包屑
+    .container.clearfix
+        .main-content
+            h2.cate-title 服务内容-公司注册
+            .product-list.clearfix
+                - const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                each value in list
+                    .item
+                        .cover
+                        p 提供注册地址,核名设立直接办理,无地址费
+                        a.btn(href="#") 了解详情
+
+        .side-bar
+            p 右侧栏
+
     
 block scripts
     script(src="/assets/site-template-1-product-pc.js")
