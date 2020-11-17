@@ -7,6 +7,7 @@ var swiper = new Swiper('.swiper-container', {
   autoplay: {
     delay: 2500,
     disableOnInteraction: false,
+    waitForTransition: true
   },
   pagination: {
     el: '.swiper-pagination',
