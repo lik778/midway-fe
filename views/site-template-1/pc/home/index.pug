@@ -8,11 +8,14 @@ block header
 
 block content
     include ../components/nav.pug
-    .main
-        include ../components/company-profile.pug
-        include ../components/product-title.pug
+    include ../components/swiper.pug
+    .container
+        .main
+            include ../components/company-profile.pug
+            include ../components/product-title.pug
 
     p.main #{tips}
 
 block scripts
     script(src="/assets/site-template-1-home-pc.js")
+
