@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SiteController } from './controllers/site.controller';
 import config from './config';
+import { SiteController } from './controllers/site.controller';
+import { ManagementController } from './controllers/management.controller';
 import { MidwayApiService } from './services/midway-api.services';
 import { RequestService } from './services/request.services';
 
@@ -10,7 +11,10 @@ import { RequestService } from './services/request.services';
     isGlobal: true,
     load: [config]
   })],
-  controllers: [SiteController],
+  controllers: [
+    SiteController,
+    ManagementController
+  ],
   providers: [
     RequestService,
     MidwayApiService
