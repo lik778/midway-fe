@@ -11,7 +11,7 @@ export class SiteController {
   async home(@Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
       const templateUrl = `site-template-1/${isWap ? 'wap' : 'pc'}/home/index`
       const tips = await this.midwayApiService.getHomeData('/api/midway/health/');
-      return res.render(templateUrl, { title: '首页', tips });
+      return res.render(templateUrl, { title: '首页', tips, isHome: true });
   }
 
   @Get('/news')
