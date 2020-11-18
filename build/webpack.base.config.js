@@ -1,6 +1,5 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const isProd = process.env.ENV === 'production'
 
 module.exports = {
@@ -16,12 +15,6 @@ module.exports = {
     path: path.resolve(__dirname, "../dist/public"),
     filename: isProd? '[name].[contenthash].js' : '[name].js'
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: isProd ? '[name].[contenthash].css' : '[name].css',
-      chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
-    }),
-  ],
   module: {
     rules: [
       {
@@ -42,5 +35,11 @@ module.exports = {
           }, 'css-loader', 'stylus-loader']
       },
     ]
-  }
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: isProd ? '[name].[contenthash].css' : '[name].css',
+      chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
+    })
+  ]
 }
