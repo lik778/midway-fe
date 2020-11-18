@@ -9,10 +9,19 @@ block header
 block content
     include ../components/nav.pug
     include ../components/swiper.pug
-    .container
+    .container.clearfix
         .main
             include ../components/company-profile.pug
             include ../components/product-title.pug
+            include ../components/product-list.pug
+
+        .aside
+            include ../components/contact.pug
+            include ../components/news-list.pug
+
+    include ../components/footer.pug
+
+
 
     p.main #{tips}
 
