@@ -62,7 +62,9 @@
     "ts-node": "9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.7.4",
-    "webpack-cli": "^4.2.0"
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-merge": "^5.4.0"
   },
   "jest": {
     "moduleFileExtensions": [
