@@ -32,25 +32,3 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-
-# mvip-manager 需忽略的文件
-
-# dependencies
-/app/mvip-manager/node_modules
-/app/mvip-manager/npm-debug.log*
-/app/mvip-manager/yarn-error.log
-/app/mvip-manager/yarn.lock
-/app/mvip-manager/package-lock.json
-
-# production
-/app/mvip-manager/dist
-
-# misc
-/app/mvip-manager/.DS_Store
-
-# umi
-/app/mvip-manager/src/.umi
-/app/mvip-manager/src/.umi-production
-/app/mvip-manager/src/.umi-test
-/app/mvip-manager/.env.local
