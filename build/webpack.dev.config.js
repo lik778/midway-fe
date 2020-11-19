@@ -1,14 +1,16 @@
 const path = require('path');
-const glob = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-// todo: 这里的递归获取文件要修改
-const list = glob.sync(path.resolve(__dirname, '..', 'assets/styles/*.styl'));
 
 module.exports = {
   watch: true,
+  devtool: 'source-map',
   mode: 'development',
-  entry: list,
+  entry: {
+    'site-template-1-home-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/home/index.js'),
+    'site-template-1-home-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/home/index.js'),
+    'site-template-1-news-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/news/index.js'),
+    'site-template-1-product-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product/index.js')
+  },
   output: {
     path: path.resolve(__dirname, "../dist/public"),
   },
@@ -21,8 +23,21 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader'
+        }
+      },
+      {
         test: /\.styl(us)?$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader']
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              esModule: false
+            },
+          }, 'css-loader', 'stylus-loader']
       },
     ]
   },
