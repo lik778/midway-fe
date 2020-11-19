@@ -7,10 +7,16 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  "proxy": {
+    "/management/api": {
+      "target": "http://localhost:3000",
+      "changeOrigin": true
+    }
+  },
   routes: [
     //{ path: '/', component: '@/pages/index' },
     // 动态路由
-    { exact: true, path: '/articles/:id', component: '@/pages/articles/[id]' }, 
+    { exact: true, path: '/articles/:id', component: '@/pages/articles/[id]' },
     { component: '@/pages/404' },
   ],
   // chainWebpack(config) {
