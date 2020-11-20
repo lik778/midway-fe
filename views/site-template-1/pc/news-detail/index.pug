@@ -1,16 +1,13 @@
 extends ../layout
 
 block styles
-    link(rel="stylesheet", href="/assets/site-template-1-news-pc.css")
+    link(rel="stylesheet", href="/assets/site-template-1-news-detail-pc.css")
 
+//-使用了统一的header和nav
 block content
-    //- 这里后面记得要引入一个面包屑
     .container.clearfix
         .main
-            - const firstcrumb= '新闻资讯'
-            //-- const secondcrumb= '境外公司注册'
-            include ../components/main-title.pug
-            include ../components/news-list.pug
+            include ../components/news-detail.pug
 
         .side-bar
             include ../components/sidebar/sidebar-title.pug
@@ -21,8 +18,9 @@ block content
             - const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
             include ../components/sidebar/category-item.pug
 
-    include ../components/page.pug
     include ../components/footer.pug
 
+
 block scripts
-    script(src="/assets/site-template-1-news-pc.js")
+    script(src="/assets/site-template-1-news-detail-pc.js")
+
