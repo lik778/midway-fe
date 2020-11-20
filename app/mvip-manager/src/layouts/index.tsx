@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu } from 'antd';
 import { Link } from 'umi';
 import styles from './index.less'
 
@@ -33,9 +33,7 @@ export default (props: any) => {
         <Header className={styles.layoutHeader}>
           <div>百姓网用户2020</div>
         </Header>
-        <Content className={styles.content}>
-          { props.children }
-        </Content>
+        <Content>{ props.children }</Content>
       </Layout>
     </Layout>
   );
