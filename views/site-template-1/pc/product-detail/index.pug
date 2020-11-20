@@ -14,6 +14,8 @@ block content
             include ../components/sidebar/contact.pug
 
             +sidebar-title('服务推荐')
+            include ../components/sidebar/recommend.pug
+
             +sidebar-title('服务分类')
             - const categoryList = [{name:'公司注册', url:'/site/product/child'},{name:'代理记账', url:'/site/product/child'},{name:'公司注销', url:'/site/product/child'},{name:'公司转让', url:'/site/product/child'}]
             include ../components/sidebar/category-item.pug
