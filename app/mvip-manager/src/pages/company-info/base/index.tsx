@@ -16,7 +16,9 @@ export default (props: any) => {
           <Step key={name} title={name} />
         ))}
       </Steps>
-      <div className={styles.container}>基础资料</div>
+      <div className={styles.container}>
+
+      </div>
     </div>
   );
 }
