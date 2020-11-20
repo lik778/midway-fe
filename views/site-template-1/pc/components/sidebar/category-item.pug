@@ -1,5 +1,5 @@
 .category-list
-	- const categoryList = [{name:'公司注册', url:'#'},{name:'代理记账', url:'#'},{name:'公司注销', url:'#'},{name:'公司转让', url:'#'}]
+	//-- const categoryList = [{name:'公司注册', url:'#'},{name:'代理记账', url:'#'},{name:'公司注销', url:'#'},{name:'公司转让', url:'#'}]
 	each item in categoryList.length > 10 ? categoryList.slice(0,10) : categoryList
 		a.category-btn(href=item.url)
 			.btn-small
