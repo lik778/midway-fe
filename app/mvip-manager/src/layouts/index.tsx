@@ -10,7 +10,9 @@ export default (props: any) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light">
-        <Header className={styles.sideHeader}  />
+        <Header className={styles.sideHeader}>
+          <div className={styles.logo}></div>
+        </Header>
         <Menu mode="inline" >
           <SubMenu style={{ marginBottom: '10px' }} key="sub1" title="企业资料">
             <Menu.Item key="1">
@@ -28,7 +30,9 @@ export default (props: any) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className={styles.layoutHeader} />
+        <Header className={styles.layoutHeader}>
+          <div>百姓网用户2020</div>
+        </Header>
         <Content style={{ margin: '0 16px' }}>
           { props.children }
         </Content>
