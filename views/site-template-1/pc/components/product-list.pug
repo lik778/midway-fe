@@ -1,14 +1,14 @@
-.product.clearfix
-	.main-content
-		h2.cate-title 服务内容-公司注册
-		- const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13];
-		.product-list.clearfix
-			each value in list.length > 12 ? list.slice(0,12):list
-				.item
-					.cover
-					p 提供注册地址,核名设立直接办理,无地址费
-					a.btn(href="#") 了解详情
-					
-		if list.length > 12
-			a.product-more-btn 查看更多
+
+- const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13];
+-const productDetailUrl = "/site/product/detail"
+
+.product-list.clearfix
+	each value in list.length > 12 ? list.slice(0,12):list
+		.item
+			.cover
+			p 提供注册地址,核名设立直接办理,无地址费
+			a.btn(href=productDetailUrl) 了解详情
+
+if list.length > 12
+	a.product-more-btn 查看更多
 
