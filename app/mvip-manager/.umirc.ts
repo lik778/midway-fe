@@ -1,8 +1,10 @@
 import { defineConfig } from 'umi';
-//import { UmiRule } from 'chain-css-loader'
 
 export default defineConfig({
-  layout: {},
+  layout: {
+    name: '百姓网',
+    logo: '//file.baixing.net/202011/dc70acc77de03f734a229a542d70a5f4.png',
+  },
   locale: {},
   nodeModulesTransform: {
     type: 'none',
@@ -12,18 +14,5 @@ export default defineConfig({
       "target": "http://localhost:3000",
       "changeOrigin": true
     }
-  },
-  routes: [
-    //{ path: '/', component: '@/pages/index' },
-    // 动态路由
-    { exact: true, path: '/articles/:id', component: '@/pages/articles/[id]' },
-    { component: '@/pages/404' },
-  ],
-  // chainWebpack(config) {
-  //   const rule = new UmiRule(config, {
-  //     modules: true // start up CSS modules
-  //   });
-  //   rule.useStylus();
-  //   return config;
-  // }
+  }
 });
