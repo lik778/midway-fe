@@ -5,7 +5,10 @@ block styles
 
 
 block content
-    //- 这里后面记得要引入一个面包屑
+    //- 面包屑
+    - const crumbs = [{label:'首页',link:'#'},{label:'服务内容',link:'#'},{label:'公司注册',link:'#'}]
+    include ../components/breadcrumbs.pug
+
     .container.clearfix
         .main
             - const firstcrumb= '服务内容'
