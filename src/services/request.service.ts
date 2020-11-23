@@ -1,29 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
-import { RequestServiceInterface } from './interfaces/request-service.interface';
+import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 
-// todo:这个service还需要继续的实现
 @Injectable()
-export class RequestService implements RequestServiceInterface {
+export class RequestService {
+  constructor(private readonly httpService: HttpService) { }
 
   get(url: string, params?: any): Promise<any> {
       return new Promise((resolve, reject) =>{
-        axios.get(url, { params }).then(res => {
+        this.httpService.get(url, { params }).toPromise().then(res => {
           resolve(res.data);
         }).catch(err =>{
-          console.log(err)
           reject(err)
+        }).catch(err => {
+          throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
         })
     })
   }
 
-  post(url: string, body: any): Promise<any>  {
+  post(url: string, data: any): Promise<any>  {
     return new Promise((resolve, reject) =>{
-      axios.get(url, { ...body }).then(res => {
+      this.httpService.post(url, { data }).toPromise().then(res => {
         resolve(res.data);
       }).catch(err =>{
         reject(err)
       })
+    }).catch(err => {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     })
   }
 }
