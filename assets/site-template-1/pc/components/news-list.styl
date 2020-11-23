@@ -1,16 +1,35 @@
 .news-list
     width 983px
-    min-height 990px
+    min-height 300px
     padding-top 16px
     ul
         li
-            list-style disc
             font-size 16px
-            margin 15px 15px 15px 35px
             a
-                color #333333
-                width 876px
-                display block
-                overflow hidden
-                white-space nowrap
-                text-overflow ellipsis
+                display flex
+                align-items center
+                color #333
+                .sanjiao-icon
+                    float left
+                    margin-right 13px
+                    line-height 0
+                    width 0
+                    height 0
+                    border-style solid
+                    border-width 9px 0 9px 13px
+                    border-color transparent transparent transparent #999
+                    font-size 0
+                p
+                    float left
+                    width 876px
+                    font-size 16px
+                    letter-spacing 0
+                    line-height 18px
+                    overflow hidden
+                    white-space nowrap
+                    text-overflow ellipsis
+                .news-createtime
+                    float right
+
+
+
