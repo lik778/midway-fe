@@ -7,10 +7,12 @@ module.exports = {
     'site-template-1-home-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/home/index.js'),
     'site-template-1-home-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/home/index.js'),
     'site-template-1-news-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/news/index.js'),
+    'site-template-1-news-child-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/news-child/index.js'),
     'site-template-1-news-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/news-detail/index.js'),
     'site-template-1-news-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/news/index.js'),
     'site-template-1-product-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product/index.js'),
     'site-template-1-product-child-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product-child/index.js'),
+    'site-template-1-product-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product-detail/index.js'),
     'site-template-1-product-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/product/index.js'),
   },
   output: {

@@ -13,8 +13,11 @@ block content
             include ../components/sidebar/sidebar-title.pug
             +sidebar-title('联系我们')
             include ../components/sidebar/contact.pug
-            +sidebar-title('文章分类')
 
+            +sidebar-title('新闻资讯')
+            include ../components/sidebar/sidebar-newslist.pug
+
+            +sidebar-title('文章分类')
             - const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
             include ../components/sidebar/category-item.pug
 
