@@ -1,4 +1,4 @@
-import { IsString, IsJSON } from 'class-validator';
+import { IsJSON, IsString } from 'class-validator';
 
 export class ApiQeqDTO {
   @IsString()
@@ -7,6 +7,6 @@ export class ApiQeqDTO {
   @IsString()
   readonly method: string;
 
-  @IsJSON()
-  readonly params: any;
+  @IsString()
+  readonly params: string;
 }
