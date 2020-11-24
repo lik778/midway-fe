@@ -7,8 +7,6 @@ block styles
 block content
     include ../components/swiper.pug
     .container.clearfix
-        //-QQ
-        //-include ../components/customer-service.pug
         .main
             include ../components/company-profile.pug
             include ../components/product-title.pug
@@ -24,6 +22,8 @@ block content
             include ../components/sidebar/category-item.pug
 
     include ../components/footer.pug
+    //-QQ交谈
+    include ../components/customer-service.pug
     p.main 打印后端传的数据：#{tips}
 
 block scripts
