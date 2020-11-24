@@ -20,6 +20,17 @@ export interface HeaderAuthParams {
   'Content-Type': string;
 }
 
+// 店铺落地页请求返回
+export interface ServiceResponse<T> {
+  code: number;
+  data: T;
+  message: string;
+  requestId: string;
+  timestamp: string;
+  exception: string;
+  exceptionClass: string;
+}
+
 export interface ShopComponents {
   about?: any; // 公司介绍
   contact?: any; // 联系我们
