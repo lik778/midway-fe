@@ -1,17 +1,18 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, Req, Res } from '@nestjs/common';
 import { UserAgent } from '../decorator';
 import { MidwayApiService } from '../services/midway-api.service';
 import { Request, Response } from 'express';
 
-@Controller('/site')
+@Controller('/:name')
 export class SiteController {
   constructor(private midwayApiService: MidwayApiService) {}
 
-  @Get('/home')
-  async home(@Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
+  @Get('/')
+  async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
+      const { name } = params
       const templateUrl = `site-template-1/${isWap ? 'wap' : 'pc'}/home/index`
-      const tips = await this.midwayApiService.getHomeData('/api/midway/health/');
-      return res.render(templateUrl, { title: '首页', tips, isHome: true });
+      const { data } = await this.midwayApiService.getHomeData(name);
+      return res.render(templateUrl, { title: '首页', renderData: data, isHome: true });
   }
 
   @Get('/news')
