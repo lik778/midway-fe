@@ -1,6 +1,6 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { UserAgent } from '../decorator';
-import { MidwayApiService } from '../services/midway-api.services';
+import { MidwayApiService } from '../services/midway-api.service';
 import { Request, Response } from 'express';
 
 @Controller('/site')

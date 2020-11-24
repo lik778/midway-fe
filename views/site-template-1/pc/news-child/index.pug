@@ -4,7 +4,10 @@ block styles
     link(rel="stylesheet", href="/assets/site-template-1-news-child-pc.css")
 
 block content
-    //- 这里后面记得要引入一个面包屑
+    //- 面包屑
+    - const crumbs = [{label:'首页',link:'#'},{label:'新闻资讯',link:'#'},{label:'境外公司注册',link:'#'}]
+    include ../components/breadcrumbs.pug
+
     .container.clearfix
         .main
             - const firstcrumb= '新闻资讯'
