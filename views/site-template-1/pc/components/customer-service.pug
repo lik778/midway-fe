@@ -1,15 +1,20 @@
+- const data = [{id:'一号',qq:956225979},{id:'二号',qq:956225979},{id:'三号',qq:956225979}]
 .customer-box
 	.title QQ交谈
-	ul
-		li 一号客服：
-		li 二号客服：
-		li 三号客服：
+	ul.top
+		each item in data
+			li
+				.item
+				span #{item.id}客服：
+				a(href="")
+					img(src="//file.baixing.net/202011/be5237a19752ef6d8ec6a4c2d054eaec.png", alt="")
 	.tel 联系电话
-		img(src="", alt="")
+	.center
+		img(src="//file.baixing.net/202011/ec4ef1af5fef2b0259060cf8cb6d66cf.png", alt="")
 		span 18876587659
-	.contact
-		img(src="", alt="")
+	.weixin 联系微信
+	.footer
+		img(src="//file.baixing.net/202011/44808034b4acc19cb6c4de674b70e824.png", alt="")
 		span afhuh-w7ry
-
 
 
