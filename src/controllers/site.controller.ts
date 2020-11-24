@@ -3,16 +3,16 @@ import { UserAgent } from '../decorator';
 import { MidwayApiService } from '../services/midway-api.service';
 import { Request, Response } from 'express';
 
-@Controller('/:name')
+@Controller('/:shopName')
 export class SiteController {
   constructor(private midwayApiService: MidwayApiService) {}
 
   @Get('/')
   async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
-      const { name } = params
+      const { shopName } = params
       const templateUrl = `site-template-1/${isWap ? 'wap' : 'pc'}/home/index`
-      const { data } = await this.midwayApiService.getHomeData(name);
-      return res.render(templateUrl, { title: '首页', renderData: data, isHome: true });
+      const { data } = await this.midwayApiService.getHomeData(shopName);
+      return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName }, isHome: true });
   }
 
   @Get('/news')
