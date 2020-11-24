@@ -6,6 +6,9 @@ import { ManagementController } from './controllers/management.controller';
 import { MidwayApiService } from './services/midway-api.service';
 import { RequestService } from './services/request.service';
 
+/**
+ * 应用程序根模块
+ */
 @Module({
   imports: [
     ConfigModule.forRoot({
