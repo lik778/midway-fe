@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
-import { HeaderAuthParams, ManagementReqParams, ShopComponents } from '../interface';
+import { HeaderAuthParams, ManagementReqParams, ServiceResponse, ShopComponents } from '../interface';
 
 
 @Injectable()
@@ -40,7 +40,7 @@ export class MidwayApiService {
     }
   }
 
-  public getHomeData(shopName: string): Promise<any> {
+  public getHomeData(shopName: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
       { 'X-Api-Shop-Name': shopName });
   }
