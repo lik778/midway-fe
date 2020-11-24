@@ -12,6 +12,8 @@ export class SiteController {
       const { shopName } = params
       const templateUrl = `site-template-1/${isWap ? 'wap' : 'pc'}/home/index`
       const { data } = await this.midwayApiService.getHomeData(shopName);
+      console.log('data:',data)
+      console.log('shopName:',shopName)
       return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName }, isHome: true });
   }
 
