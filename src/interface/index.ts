@@ -20,6 +20,11 @@ export interface HeaderAuthParams {
   'Content-Type': string;
 }
 
+export interface PageHeaderParams {
+  'X-Api-Shop-Name': string;
+  'X-Api-Device': string;
+}
+
 // 店铺落地页请求返回
 export interface ServiceResponse<T> {
   code: number;
