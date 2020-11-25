@@ -1,10 +1,4 @@
-import { FormType, PageType } from '../enums'
-
-export interface WildCatConfig {
-  name: string;
-  type: PageType;
-  formConfig?: FormConfig;
-}
+import { FormType } from '../enums'
 
 export interface ButtonItem {
   text: string; // 提交页面文案
