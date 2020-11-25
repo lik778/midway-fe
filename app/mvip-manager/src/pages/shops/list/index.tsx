@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Input, message, Space, Button } from 'antd';
 import EmptyStatus from '@/components/empty-status'
+import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box'
 import './index.less';
 
@@ -77,9 +78,13 @@ export default (props: any) => {
 
   return (
     <div>
-      <div className="shop-list">
-        <ShopBox/>
+      <MainTitle title="我的店铺"/>
+      <div className="container">
+        <div className="shop-list">
+          <ShopBox/>
+        </div>
       </div>
+      
     </div>
     
     
