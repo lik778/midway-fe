@@ -6,12 +6,22 @@ import { HeaderAuthParams, ManagementReqParams, ServiceResponse, ShopComponents 
 
 
 @Injectable()
-export class MidwayApiService {
+export class MidwayService {
   host: string;
   constructor(
     private readonly requestService: RequestService,
     private readonly configService: ConfigService) {
     this.host = configService.get('services.midway-service.host');
+  }
+
+  public getShopName(url: string, shopName: any): string {
+    if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
+      return url.split('.')[0]
+    } else if (shopName) {
+      return shopName;
+    } else {
+      throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
+    }
   }
 
   public getManagementData(input: ManagementReqParams, cookies: any): Promise<AxiosResponse<any>> {

@@ -3,11 +3,6 @@ export enum FormType {
   Select,
   Textarea,
   AreaSelect,
-  Upload
-}
-
-export enum PageType {
-  form,
-  page
+  ImgUpload
 }
 
