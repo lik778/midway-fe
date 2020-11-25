@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
-import { HeaderAuthParams, ManagementReqParams, ServiceResponse, ShopComponents } from '../interface';
+import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceResponse, ShopComponents } from '../interface';
 
 
 @Injectable()
@@ -14,14 +14,19 @@ export class MidwayService {
     this.host = configService.get('services.midway-service.host');
   }
 
-  public getShopName(url: string, shopName: any): string {
-    if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
-      return url.split('.')[0]
-    } else if (shopName) {
+  public getShopName(shopName: string): string {
+    if (shopName) {
       return shopName;
     } else {
       throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
     }
+    // if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
+    //   return url.split('.')[0]
+    // } else if (shopName) {
+    //   return shopName;
+    // } else {
+    //   throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
+    // }
   }
 
   public getManagementData(input: ManagementReqParams, cookies: any): Promise<AxiosResponse<any>> {
@@ -50,8 +55,20 @@ export class MidwayService {
     }
   }
 
-  public getHomeData(shopName: string): Promise<ServiceResponse<ShopComponents>> {
+  private setPageHeaders(shopName: string, device: string): PageHeaderParams {
+    return {
+      'X-Api-Shop-Name': shopName,
+      'X-Api-Device': device
+    }
+  }
+
+  public getHomePageData(shopName: string, device: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
-      { 'X-Api-Shop-Name': shopName });
+      this.setPageHeaders(shopName, device));
+  }
+
+  public getProductPageData(shopName: string, device: string, params) {
+    return this.requestService.post(`${this.host}/api/midway/frontend/product`, params,
+      this.setPageHeaders(shopName, device));
   }
 }

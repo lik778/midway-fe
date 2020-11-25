@@ -10,7 +10,7 @@ const { Step } = Steps
 
 
 export default (props: any) => {
-  const [currentStep, setCurrentStep] = React.useState(1);
+  const [currentStep, setCurrentStep] = React.useState(0);
   const steps = [ '基础信息', '联系方式']
   const nextStep = (values: any) => {
     console.log(values)
