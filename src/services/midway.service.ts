@@ -55,8 +55,8 @@ export class MidwayService {
     }
   }
 
-  public getHomeData(shopName: string): Promise<ServiceResponse<ShopComponents>> {
+  public getHomeData(shopName: string, device: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
-      { 'X-Api-Shop-Name': shopName });
+      { 'X-Api-Shop-Name': shopName, 'X-Api-Device': device });
   }
 }
