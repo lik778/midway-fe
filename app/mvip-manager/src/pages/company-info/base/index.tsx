@@ -2,14 +2,15 @@ import React from 'react';
 import { Steps, Button } from 'antd';
 import MainTitle from '../../../components/main-title';
 import styles from './index.less';
-import { baseInfoPage } from '../../../config/page'
+import { baseInfoForm } from '../../../config/form'
 import WildcatForm from '@/components/wildcat-form';
+import ContactForm from './contact-form';
 
 const { Step } = Steps
 
 
 export default (props: any) => {
-  const [currentStep, setCurrentStep] = React.useState(0);
+  const [currentStep, setCurrentStep] = React.useState(1);
   const steps = [ '基础信息', '联系方式']
   const nextStep = (values: any) => {
     console.log(values)
@@ -33,10 +34,8 @@ export default (props: any) => {
         ))}
       </Steps>
       <div className={styles.container}>
-        { currentStep == 0 && <WildcatForm config={baseInfoPage} submit={nextStep}/> }
-        { currentStep == 1 && <p>
-          <Button onClick={prev} size='large'>上一步</Button>
-        </p>}
+        { currentStep == 0 && <WildcatForm config={baseInfoForm} submit={nextStep}/> }
+        { currentStep == 1 && <ContactForm back={prev}/>}
       </div>
     </div>
   );
