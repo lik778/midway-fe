@@ -2,6 +2,8 @@ import React from 'react';
 import { Steps } from 'antd';
 import MainTitle from '../../components/main-title';
 import styles from './index.less';
+import { baseInfoPage } from '../../../config/page'
+import Wildcat from '@/components/wildcat';
 
 const { Step } = Steps
 
@@ -17,7 +19,7 @@ export default (props: any) => {
         ))}
       </Steps>
       <div className={styles.container}>
-
+        <Wildcat config={baseInfoPage} />
       </div>
     </div>
   );
