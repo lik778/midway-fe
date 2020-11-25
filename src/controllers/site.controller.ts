@@ -10,16 +10,20 @@ export class SiteController {
   @Get('/')
   public async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
       const shopName = this.midwayApiService.getShopName(params.shopName)
+      // tips: 这里要重新写装饰器
       const device = isWap ? 'wap' : 'pc'
       const templateUrl = `site-template-1/${device}/home/index`
-      const { data } = await this.midwayApiService.getHomeData(shopName, device);
+      const { data } = await this.midwayApiService.getHomePageData(shopName, device);
       return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName }, isHome: true });
   }
 
   @Get('/n')
-  async listing(@Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
+  async listing(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('isWap') isWap) {
+    const shopName = this.midwayApiService.getShopName(params.shopName)
+    const device = isWap ? 'wap' : 'pc'
+    const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
     const templateUrl = `site-template-1/${isWap ? 'wap' : 'pc'}/news/index`
-    return res.render(templateUrl, { title: '新闻资讯' });
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName } });
   }
 
   @Get('/n-:id')
