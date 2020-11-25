@@ -3,9 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import config from './config';
 import { SiteController } from './controllers/site.controller';
 import { ManagementController } from './controllers/management.controller';
-import { MidwayApiService } from './services/midway-api.service';
+import { MidwayService } from './services/midway.service';
 import { RequestService } from './services/request.service';
 
+/**
+ * 应用程序根模块
+ */
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,7 +21,7 @@ import { RequestService } from './services/request.service';
   ],
   providers: [
     RequestService,
-    MidwayApiService
+    MidwayService
   ],
 })
 export class AppModule {}

@@ -2,16 +2,26 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
-import { HeaderAuthParams, ManagementReqParams } from '../interface';
+import { HeaderAuthParams, ManagementReqParams, ServiceResponse, ShopComponents } from '../interface';
 
 
 @Injectable()
-export class MidwayApiService {
+export class MidwayService {
   host: string;
   constructor(
     private readonly requestService: RequestService,
     private readonly configService: ConfigService) {
     this.host = configService.get('services.midway-service.host');
+  }
+
+  public getShopName(url: string, shopName: any): string {
+    if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
+      return url.split('.')[0]
+    } else if (shopName) {
+      return shopName;
+    } else {
+      throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
+    }
   }
 
   public getManagementData(input: ManagementReqParams, cookies: any): Promise<AxiosResponse<any>> {
@@ -40,7 +50,8 @@ export class MidwayApiService {
     }
   }
 
-  public getHomeData(path: string, params?: any): Promise<any> {
-    return this.requestService.get(`${this.host}${path}`, params);
+  public getHomeData(shopName: string): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
+      { 'X-Api-Shop-Name': shopName });
   }
 }
