@@ -3,7 +3,7 @@ export enum FormType {
   Select,
   Textarea,
   AreaSelect,
-  Upload
+  ImgUpload
 }
 
 export enum PageType {
