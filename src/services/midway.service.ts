@@ -14,14 +14,19 @@ export class MidwayService {
     this.host = configService.get('services.midway-service.host');
   }
 
-  public getShopName(url: string, shopName: any): string {
-    if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
-      return url.split('.')[0]
-    } else if (shopName) {
+  public getShopName(shopName: string): string {
+    if (shopName) {
       return shopName;
     } else {
       throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
     }
+    // if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
+    //   return url.split('.')[0]
+    // } else if (shopName) {
+    //   return shopName;
+    // } else {
+    //   throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
+    // }
   }
 
   public getManagementData(input: ManagementReqParams, cookies: any): Promise<AxiosResponse<any>> {
