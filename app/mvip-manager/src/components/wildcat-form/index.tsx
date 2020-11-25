@@ -1,16 +1,16 @@
-//主要的页面方式
 import React from 'react';
 import { Button, Cascader, Form, Input, Select } from 'antd';
-import { FormConfig } from '@/components/wildcat/interfaces';
-import { FormType } from '@/components/wildcat/enums';
-import { ImgUpload } from '@/components/wildcat/components/form/controls/img-upload';
+import { FormConfig } from '@/components/wildcat-form/interfaces';
+import { FormType } from '@/components/wildcat-form/enums';
+import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
 interface Props {
-  config?: FormConfig
+  config: FormConfig,
+  submit(values: any): void;
 }
 
 const options = [
@@ -37,19 +37,14 @@ const options = [
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  const onFinish = (values: any) => {
-    console.log(values);
-  };
-
   return (
     <div>
-      <Form form={form} name={props.config && props.config.name} onFinish={onFinish}>
+      <Form form={form} name={props.config && props.config.name} onFinish={props.submit}>
         { props.config && props.config.children.map(item => {
-          // 这里要把组件再次封装一下
           if (item.type === FormType.Input) {
             return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-                <Input placeholder={item.placeholder} size='large'/>
-              </FormItem>)
+              <Input placeholder={item.placeholder} size='large'/>
+            </FormItem>)
           } else if (item.type === FormType.Textarea) {
             return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
               <TextArea placeholder={item.placeholder} rows={6} size='large'/>

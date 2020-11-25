@@ -6,8 +6,3 @@ export enum FormType {
   ImgUpload
 }
 
-export enum PageType {
-  form,
-  page
-}
-

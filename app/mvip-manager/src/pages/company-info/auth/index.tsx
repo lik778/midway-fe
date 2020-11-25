@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Divider, Row, Col } from 'antd';
-import MainTitle from '../../components/main-title';
+import MainTitle from '../../../components/main-title';
 import styles from './index.less';
 
 
