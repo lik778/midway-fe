@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Input, message, Space, Button } from 'antd';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
@@ -30,15 +30,25 @@ export default (props: any) => {
   const [visible, setVisible] = useState(false)
   const [value, setValue] = useState('')
   const [err, setError] = useState('')
-  const [shopListDa, setShopList] = useState([])
+  const [shopListData, setShopList] = useState([])
 
   
   const createShop = async (params: any) => { 
-    await postApiData('shop/create',params)
+    const data = await postApiData('shop/create',params)
+    
   }
-  // const getShopListing = await postApiData('shop/listing',JSON.stringify({ page: 1, size: 2 }))
 
-  // console.log('11', getShopListing)
+  const getShopListing = async () => {
+    const data = await postApiData('shop/listing',{ page: 1, size: 2 })
+    console.log('data', data)
+    setShopList(data);
+  }
+  
+  useEffect(() => {
+    getShopListing()
+  }, []);
+
+
   const showModal = () => {
     setVisible(true)
   };
