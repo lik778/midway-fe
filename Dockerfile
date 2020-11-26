@@ -6,6 +6,7 @@ COPY . .
 
 RUN npm install && npm run prod
 
+COPY ./app/mvip-manager/dist ./dist/public
 
 EXPOSE 8001
 

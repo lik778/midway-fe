@@ -3,15 +3,15 @@ import { ApiQeqDTO } from '../dto/api-req.dto';
 import  { VipUserGuard } from '../guards/vip-user.guard'
 import { Request, Response } from 'express';
 import { MidwayService } from '../services/midway.service';
+import { join } from 'path'
 
 
 @Controller('/management')
 export class ManagementController {
   constructor(private midwayApiService: MidwayService) {}
   @Get('/')
-  @UseGuards(VipUserGuard)
   async managementView(@Req() req: Request, @Res() res: Response) {
-    res.send('view enter')
+    res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
   }
 
   @Post('/api')
