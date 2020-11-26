@@ -1,11 +1,11 @@
-- const data = [{id:'一号',qq:956225979},{id:'二号',qq:956225979},{id:'三号',qq:956225979}]
+- const data = [{id:'一号客服',qq:956225979},{id:'二号客服',qq:956225979},{id:'三号客服',qq:956225979}]
 .customer-box
 	.title QQ交谈
 	ul.top
 		each item in data
 			li
 				.item
-					span #{item.id}客服：
+					span #{item.id}：
 					a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.qq+"&site=qq&menu=yes" target="_blank")
 						img(src="//file.baixing.net/202011/be5237a19752ef6d8ec6a4c2d054eaec.png", alt="")
 	.tel 联系电话

@@ -35,9 +35,11 @@ export class SiteController {
   }
 
   @Get('/p')
-  async product(@Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+  async product(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const shopName = this.midwayApiService.getShopName(params.shopName)
+    const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
     const templateUrl = `site-template-1/${device}/product/index`
-    return res.render(templateUrl, { title: '产品服务' });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName } });
   }
 
   @Get('/p-:id')
