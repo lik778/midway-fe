@@ -5,6 +5,7 @@ import { SiteController } from './controllers/site.controller';
 import { ManagementController } from './controllers/management.controller';
 import { MidwayService } from './services/midway.service';
 import { RequestService } from './services/request.service';
+import { AppController } from './controllers/app.controller';
 
 /**
  * 应用程序根模块
@@ -16,6 +17,7 @@ import { RequestService } from './services/request.service';
     load: [config]
   }), HttpModule ],
   controllers: [
+    AppController,
     SiteController,
     ManagementController
   ],
