@@ -68,7 +68,7 @@ export class MidwayService {
   }
 
   public getProductPageData(shopName: string, device: string, params) {
-    return this.requestService.post(`${this.host}/api/midway/frontend/product`, params,
+    return this.requestService.post(`${this.host}/api/midway/frontend/product/list`, params,
       this.setPageHeaders(shopName, device));
   }
 }
