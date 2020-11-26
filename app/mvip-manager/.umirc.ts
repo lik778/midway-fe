@@ -7,7 +7,7 @@ export default defineConfig({
   },
   "proxy": {
     "/management/api": {
-      "target": "http://localhost:3000",
+      "target": "http://localhost:8001",
       "changeOrigin": true
     }
   }
