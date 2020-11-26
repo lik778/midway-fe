@@ -4,6 +4,7 @@ import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box'
 import './index.less';
+import { postApiData } from '@/api/base';
 
 // 空状态基本配置
 const emptyMsg = {
@@ -20,11 +21,24 @@ const shopList = [
   }
 ]
 
+
+// api request demo
+
+
 export default (props: any) => {
+ 
   const [visible, setVisible] = useState(false)
   const [value, setValue] = useState('')
   const [err, setError] = useState('')
+  const [shopListDa, setShopList] = useState([])
 
+  
+  const createShop = async (params: any) => { 
+    await postApiData('shop/create',params)
+  }
+  // const getShopListing = await postApiData('shop/listing',JSON.stringify({ page: 1, size: 2 }))
+
+  // console.log('11', getShopListing)
   const showModal = () => {
     setVisible(true)
   };
@@ -74,20 +88,21 @@ export default (props: any) => {
     )
   }
 
-  const shopList = () => {}
+  // const shopList = () => {}
 
   return (
     <div>
       <MainTitle title="我的店铺"/>
       <div className="container">
-        <div className="shop-list">
-          <ShopBox/>
-        </div>
+        <div className="my-shop-list">
+          <Button type="primary" className="primary-btn btn" onClick={props.onClick}>+新建店铺</Button>
+          <div className="shop-list">
+            <ShopBox/>
+            <ShopBox/>
+          </div>
+        </div>        
       </div>
-      
     </div>
-    
-    
   )
 }
 
