@@ -6,7 +6,7 @@ block styles
 
 block content
     //- 面包屑
-    - const crumbs = [{label:'首页',link:'#'},{label:'服务内容',link:'#'},{label:'公司注册',link:'#'}]
+    - const crumbs = [{label:'首页',link:"/" + renderData.shopName},{label:'服务内容',link:"/" + renderData.shopName + "/p"}, {label:'公司注册',link:'#'}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
