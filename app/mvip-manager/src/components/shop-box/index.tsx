@@ -2,14 +2,18 @@
 import React from 'react';
 import './index.less';
 export default (props: any) => {
+  console.log('props', props.shopChild)
+  const s = props.shopChild
+  const status = s.status === 1 ? 's-active' : 's-offline'
+  const statusTxt = s.status === 1 ? '生效中' : '已下线'
   return (
     <div className="shop-box">
       <div className="s-img">
-        <img src="//file.baixing.net/202011/7f14b8c736a614c75fda50d1d1615640.png"/>
-        <div className="s-status s-active">生效中</div>
+        <img src={s.thumb}/>
+        <div className={`s-status ${status}`}>{statusTxt}</div>
       </div>
       <div className="s-title">
-        <h4>店铺名店铺名店铺名店铺名店铺名店铺名店铺名店铺名店铺名</h4>
+        <h4>{s.name}</h4>
         <span className="s-edit iconfont">&#xe61b;</span>
       </div>
       
