@@ -5,9 +5,13 @@ export const UserAgent = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const userAgent = request.headers["user-agent"].toLowerCase();
+    const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(userAgent);
     switch (data) {
       case 'isWap':
-        return /android|iphone|ipod|ipad|micromessenger/i.test(userAgent);
+        return isWap;
+        break;
+      case 'device':
+        return isWap ? 'wap' : 'pc'
         break;
       case 'isAndroid':
         return /android/i.test(userAgent);
