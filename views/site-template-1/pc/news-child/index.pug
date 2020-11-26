@@ -18,7 +18,8 @@ block content
         .side-bar
             include ../components/sidebar/sidebar-title.pug
             +sidebar-title('文章分类')
-            - const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
+            //-- const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
+            - const cateList = renderData.articleCateList
             include ../components/sidebar/category-item.pug
 
             +sidebar-title('联系我们')

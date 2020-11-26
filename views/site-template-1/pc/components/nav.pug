@@ -1,9 +1,8 @@
+//-导航栏是后端动态返回的。navigation": [{"id": 1,"name": "首页s","desc": "首页介绍","content": "/","display": 1}...]
 .nav_bg.clearfix
 	.nav
 		ul
-			li
-				a(href="/" + renderData.shopName) 首页
-			li
-				a(href="/" + renderData.shopName + "/p") 服务内容
-			li
-				a(href="/" + renderData.shopName + "/n") 新闻资讯
+			- const navList= renderData.navigation
+			each item in navList
+				li
+					a(href="/" + renderData.shopName + item.content) #{item.name}

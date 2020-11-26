@@ -19,7 +19,8 @@ block content
             include ../components/sidebar/home-sidebar-newslist-title.pug
             include ../components/sidebar/sidebar-newslist.pug
             include ../components/sidebar/category-icon.pug
-            - const categoryList = [{name:'公司注册', url:'#'},{name:'代理记账', url:'#'},{name:'公司注销', url:'#'},{name:'公司转让', url:'#'}]
+            //-- const categoryList = [{name:'公司注册', url:'#'},{name:'代理记账', url:'#'},{name:'公司注销', url:'#'},{name:'公司转让', url:'#'}]
+            - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
     include ../components/footer.pug

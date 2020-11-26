@@ -18,7 +18,7 @@ export class SiteController {
   @Get('/n')
   async listing(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const shopName = this.midwayApiService.getShopName(params.shopName)
-    const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
+    const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: 1, size: 0 });
     const templateUrl = `site-template-1/${device}/news/index`
     return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName } });
   }
@@ -27,12 +27,12 @@ export class SiteController {
   async newschild(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     if (/.html$/.test(req.url)) {
         const shopName = this.midwayApiService.getShopName(params.shopName)
-        const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
+        const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: 1, page: 1, size: 0 });
         const templateUrl = `site-template-1/${device}/news-detail/index`
       return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName } });
     } else {
       const shopName = this.midwayApiService.getShopName(params.shopName)
-      const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
+      const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: 1, page: 1, size: 0 });
       const templateUrl = `site-template-1/${device}/news-child/index`
       return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName } });
     }
@@ -46,16 +46,17 @@ export class SiteController {
     return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName } });
   }
 
+  //这里还需要把cateId子分类，page参数化
   @Get('/p-:id')
   async productchild(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     if (/.html$/.test(req.url)) {
       const shopName = this.midwayApiService.getShopName(params.shopName)
-      const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
+      const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: 1, page: 1, size: 0 });
       const templateUrl = `site-template-1/${device}/product-detail/index`
       return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName } });
     } else {
       const shopName = this.midwayApiService.getShopName(params.shopName)
-      const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
+      const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: 1, page: 1, size: 0 });
       const templateUrl = `site-template-1/${device}/product-child/index`
       return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName } });
     }
