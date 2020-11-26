@@ -21,7 +21,7 @@ async function bootstrap() {
   app.setViewEngine('pug');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
-  await app.listen(3000);
+  await app.listen(8001);
 }
 
 bootstrap();
