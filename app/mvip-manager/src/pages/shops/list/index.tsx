@@ -39,7 +39,7 @@ export default (props: any) => {
   }
 
   const getShopListing = async () => {
-    const data = await postApiData('shop/listing',{ page: 1, size: 2 })
+    const data = await postApiData('shop/listing', JSON.stringify({ page: 1, size: 2 }))
     console.log('data', data)
     setShopList(data);
   }

@@ -19,7 +19,7 @@ const request = axios.create({
 })
 
 const apiPrefix = '/management/api'
-const bePrefix = '/midway/backend/'
+const bePrefix = '/api/midway/backend/'
 
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res.data)
@@ -27,12 +27,14 @@ request.interceptors.response.use((res: AxiosResponse) => {
   message.error(err.response && err.response.data && err.response.data.message || '出错了');
 })
 
-export const postApi = (url: string, params?: object): Promise<AxiosResponse<any>> => {
-  return request.post(url, { ...params});
+export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosResponse<any>> => {
+  const { method, path, params } = data;
+  return request.post(url, { method, params, path });
 }
 
-export const postApiData = (path: string, params?:object): Promise<any> => {
-  const url = `${apiPrefix}${bePrefix}${path}`
-  return postApi(url, params)
+export const postApiData = (path: string, params?:any): Promise<any> => {
+  return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
+    params,
+  })
 }
 
