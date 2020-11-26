@@ -1,4 +1,3 @@
-//-- const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13];
 - const list = renderData.productList.result
 -const productDetailUrl = "/site/product/detail"
 
@@ -11,7 +10,7 @@
 				else
 					img(src="//file.baixing.net/202011/810feadae5a9849e4a067e79fc55ef56.png")
 			p #{item.name}
-			a.btn(href=productDetailUrl) 了解详情
+			a.btn(href= "/" + renderData.shopName + "/p-:" + item.id) 了解详情
 
 a.product-more-btn(href="#") 查看更多
 

@@ -18,6 +18,9 @@ const request = axios.create({
   }
 })
 
+const apiPrefix = '/management/api'
+const bePrefix = '/api/midway/backend/'
+
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res.data)
   }, (err: AxiosError) => {
@@ -28,3 +31,10 @@ export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosRe
   const { method, path, params } = data;
   return request.post(url, { method, params, path });
 }
+
+export const postApiData = (path: string, params?:any) => {
+  return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
+    params,
+  })
+}
+
