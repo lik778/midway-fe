@@ -13,25 +13,14 @@ const emptyMsg = {
   img: "//file.baixing.net/202011/ead8b543db23259dc9838e753f865732.png",
 }
 
-const shopList = [
-  {
-    id: 1,
-    img: '//file.baixing.net/202011/7f14b8c736a614c75fda50d1d1615640.png',
-    status: 1,
-  }
-]
-
-
-// api request demo
-
-
 export default (props: any) => {
  
   const [visible, setVisible] = useState(false)
   const [value, setValue] = useState('')
   const [err, setError] = useState('')
   const [shopListData, setShopList] = useState([])
-
+  const [totalCount, setCount] = useState(0)
+  const [shopOperateStatus, setOperate] = useState(0)
   
   const createShop = async (params: any) => { 
     const data = await postApiData('shop/create',params)
@@ -39,9 +28,14 @@ export default (props: any) => {
   }
 
   const getShopListing = async () => {
-    const data = await postApiData('shop/listing', JSON.stringify({ page: 1, size: 2 }))
-    console.log('data', data)
-    setShopList(data);
+    const data = await postApiData('shop/listing', JSON.stringify({ page: 1, size: 10 }))
+    if(data.code === 200) {
+      const resData = data.data
+      const result = resData.result && resData.result.slice(0,2)  || []
+      console.log('result', result)
+      setShopList(result)
+      setCount(resData.totalRecord)
+    }
   }
   
   useEffect(() => {
@@ -49,7 +43,8 @@ export default (props: any) => {
   }, []);
 
 
-  const showModal = () => {
+  const showModal = (e:any, state: number) => {
+    setOperate(state)
     setVisible(true)
   };
 
@@ -70,8 +65,19 @@ export default (props: any) => {
     return (
       <div className="shop-create">
         <EmptyStatus emptyMsg={emptyMsg} onClick={showModal}/>
-        <Modal
-          title="新建店铺"
+        
+      </div>
+    )
+  }
+
+  const isNewShopDisabled = totalCount > 2 ? true : false
+  const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
+
+  return (
+    <div>
+      <MainTitle title="我的店铺"/>
+      <Modal
+          title={operateShopTxt}
           visible={visible}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -94,21 +100,16 @@ export default (props: any) => {
             </li>
           </ul>
         </Modal>
-      </div>
-    )
-  }
-
-  // const shopList = () => {}
-
-  return (
-    <div>
-      <MainTitle title="我的店铺"/>
       <div className="container">
         <div className="my-shop-list">
-          <Button type="primary" className="primary-btn btn" onClick={props.onClick}>+新建店铺</Button>
+          <Button type="primary" className="primary-btn btn" onClick={(ev) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
           <div className="shop-list">
-            <ShopBox/>
-            <ShopBox/>
+            {
+              shopListData.map((shopChild, index) => {
+               return (
+                <ShopBox shopChild={shopChild} key={index}/>
+               )
+            })}
           </div>
         </div>        
       </div>
