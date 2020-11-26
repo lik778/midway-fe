@@ -6,7 +6,7 @@ block styles
 //-使用了统一的header和nav
 block content
     //- 面包屑
-    - const crumbs = [{label:'首页',link:'#'},{label:'新闻资讯',link:'#'},{label:'境外公司注册',link:'#'},{label:'上海网上注册公司最新流程',link:'#'}]
+    - const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"},{label:'境外公司注册',link:'#'},{label:'上海网上注册公司最新流程',link:'#'}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
