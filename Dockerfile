@@ -1,10 +1,12 @@
 FROM node:12
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
 COPY . .
 
-RUN npm install && npm run prod
+RUN npm install && npm run prod && cd app/mvip-manager/ && npm install && npm run build \
+    && cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/ \
+    && cp -r /usr/src/app/mvip-manager/dist/**/* /usr/src/dist/public/
 
 EXPOSE 7001
 
