@@ -13,16 +13,16 @@ export interface ManagementReqParams {
 
 // tips: 请求midway-service的头部参数
 export interface HeaderAuthParams {
-  'X-Api-Hash': string;
-  'X-Api-User': string;
-  'X-Api-Token': string;
-  'X-Api-Src': string;
-  'Content-Type': string;
+  'x-api-hash': string;
+  'x-api-user': string;
+  'x-api-token': string;
+  'x-api-src': string;
+  'content-type': string;
 }
 
 export interface PageHeaderParams {
-  'X-Api-Shop-Name': string;
-  'X-Api-Device': string;
+  'x-api-shop-name': string;
+  'x-api-device': string;
 }
 
 // 店铺落地页请求返回

@@ -1,9 +1,14 @@
 footer
     .footer-link
-        a(href="/site/home") 首页
-        a(href="/site/product") 服务内容
-        a(href="/site/news") 新闻资讯
+        each item in renderData.navigation
+            a(href="/" + renderData.shopName + item.content) #{item.name}
+    .footer-center
+        p 百姓网技术支持：
+        a(href="#") 我要开店
     .footer-content
-        | 苏州威尔达企业管理有限公司地址：苏州苏州市姑苏区人民路3188号万达广场写字楼A座1009室
-        | 版权所有本站由百姓网™匠心搭建客服服务热线：400-036-3650（周一至周五，9：00-18：00），热线：021-61300238（周一至周日，9：00 -18：00）
+        | #{renderData.basic.company.name} &nbsp;&nbsp;地址：#{renderData.basic.company.address}
+        br
+        | #{renderData.basic.copyRight || "©版权所有本站由百姓网™匠心搭建"}
+        | 服务热线：400-036-3650（周一至周五，9：00-18：00），热线：021-61300238（周一至周日，9：00 -18：00）
+        br
         | 沪ICP备06019413号| 沪ICP证B2-20080088 | 沪公网安备31011202007947号

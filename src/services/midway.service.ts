@@ -46,19 +46,28 @@ export class MidwayService {
   }
 
   private setApiAHeaders(cookies: any): HeaderAuthParams {
+    // return {
+    //   'x-api-hash': (cookies && cookies._c) || '',
+    //   'x-api-user': (cookies && cookies._u) || '',
+    //   'x-api-token': (cookies && cookies._t) || '',
+    //   'content-type': 'application/json;charset=UTF-8',
+    //   'x-api-src': 'web'
+    // }
+    // tips: 这里等数据全了再放开
     return {
-      'X-Api-Hash': cookies && cookies._c,
-      'X-Api-User': cookies && cookies._u,
-      'X-Api-Token': cookies && cookies._t,
-      'Content-Type': 'application/json;charset=UTF-8',
-      'X-Api-Src': 'web'
+      'x-api-hash': '6a725de38491121d1137b7e6ce67c69b2afd0d79',
+      'x-api-user': '230276274',
+      'x-api-token': 'ut5fb1e327141203.44681872',
+      'content-type': 'application/json;charset=UTF-8',
+      'x-api-src': 'web'
     }
   }
 
   private setPageHeaders(shopName: string, device: string): PageHeaderParams {
+    // tips: 一定要保证shopName和device有值，不然会
     return {
-      'X-Api-Shop-Name': shopName,
-      'X-Api-Device': device
+      'x-api-shop-name': shopName,
+      'x-api-device': device
     }
   }
 
@@ -66,9 +75,27 @@ export class MidwayService {
     return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
       this.setPageHeaders(shopName, device));
   }
-
-  public getProductPageData(shopName: string, device: string, params) {
+//服务内容列表
+  public getProductPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/product/list`, params,
       this.setPageHeaders(shopName, device));
   }
+
+//服务内容子分类
+  public getProductCateData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.host}/api/midway/frontend/product/cateList`, params,
+      this.setPageHeaders(shopName, device));
+  }
+
+//新闻列表
+  public getNewsPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.host}/api/midway/frontend/article/list`, params,
+      this.setPageHeaders(shopName, device));
+  }
+
+//新闻列表子分类
+public getNewsCateData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  return this.requestService.post(`${this.host}/api/midway/frontend/article/cateList`, params,
+    this.setPageHeaders(shopName, device));
+}
 }

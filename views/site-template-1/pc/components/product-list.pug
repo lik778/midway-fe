@@ -1,17 +1,19 @@
-- const list = renderData.productList.result
--const productDetailUrl = "/site/product/detail"
-
-.product-list.clearfix
-	each item in list.length > 12 ? list.slice(0,12):list
-		.item
-			.cover
-				if item.headImg
-					img(src=item.headImg)
-				else
-					img(src="//file.baixing.net/202011/810feadae5a9849e4a067e79fc55ef56.png")
-			p #{item.name}
-			a.btn(href= "/" + renderData.shopName + "/p-:" + item.id) 了解详情
-
-a.product-more-btn(href="#") 查看更多
+mixin product-list(n,page)
+	- const productList = renderData.productList.result
+	.product-list.clearfix
+		if productList && productList.length >0
+			each item in productList.length > n ? productList.slice(0,n):productList
+				.item
+					.cover
+						if item.headImg
+							img(src=item.headImg)
+						else
+							img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+					p #{item.name}
+					a.btn(href= "/" + renderData.shopName + item.urlSuffix) 了解详情
+		else
+			p 暂时还没有数据哦
+	if page == 'home'
+		a.product-more-btn(href="/" + renderData.shopName + "/p") 查看更多
 
 

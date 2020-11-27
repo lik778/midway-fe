@@ -5,6 +5,6 @@ import { Request, Response } from 'express';
 export class AppController {
   @Get('/health')
   async managementView(@Req() req: Request, @Res() res: Response) {
-    res.send('everything is ok!!!')
+    res.send(process.env.NODE_ENV + ': everything is ok!!!')
   }
 }
