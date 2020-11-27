@@ -2,9 +2,9 @@
 import React from 'react';
 import './index.less';
 export default (props: any) => {
-  const s = props.shopChild
-  const status = s.status === 1 ? 's-active' : 's-offline'
-  const statusTxt = s.status === 1 ? '生效中' : '已下线'
+  const s = props?.shopChild
+  const status = s?.status === 1 ? 's-active' : 's-offline'
+  const statusTxt = s?.status === 1 ? '生效中' : '已下线'
   return (
     <div className="shop-box">
       <div className="s-img">
