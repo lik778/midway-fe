@@ -18,8 +18,8 @@ import { AppController } from './controllers/app.controller';
   }), HttpModule ],
   controllers: [
     AppController,
-    SiteController,
-    ManagementController
+    ManagementController,
+    SiteController
   ],
   providers: [
     RequestService,
