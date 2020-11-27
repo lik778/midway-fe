@@ -11,7 +11,7 @@ export class RequestService {
       appenders: {
         file: {
           type: 'DateFile',
-          filename: join(__dirname, '..', '../logs/error.log'),
+          filename: join('..', 'logs/error.log'),
           pattern: '-yyyy-MM-dd.log',
           alwaysIncludePattern: true,
           layout: {
