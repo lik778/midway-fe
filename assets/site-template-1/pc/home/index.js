@@ -20,10 +20,3 @@ var swiper = new Swiper('.swiper-container', {
 });
 
 
-const hello = function() {
-  console.log('hello world')
-}
-
-hello()
-
-

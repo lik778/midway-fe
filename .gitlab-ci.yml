@@ -6,11 +6,11 @@ image: docker
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
   MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
-  IMAGE_REF: $REGISTRY_BASE:$CI_PIPELINE_ID
 
 stages:
-  - release
+  - release-dev
   - dev-deploy
+  - release
   - prod-deploy
 
 release:
@@ -22,6 +22,17 @@ release:
     - docker build --pull -t $MIDWAY_FE .
     - docker push $MIDWAY_FE
     - docker rmi $MIDWAY_FE
+
+release-dev:
+  stage: release-dev
+  only:
+    - dev
+  tags:
+    - k8s-dev-build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
+    - docker push $MIDWAY_FE
 
 dev-deploy:
   stage: dev-deploy
