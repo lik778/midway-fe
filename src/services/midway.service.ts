@@ -46,18 +46,10 @@ export class MidwayService {
   }
 
   private setApiAHeaders(cookies: any): HeaderAuthParams {
-    // return {
-    //   'x-api-hash': (cookies && cookies.__c) || '',
-    //   'x-api-user': (cookies && cookies.__u) || '',
-    //   'x-api-token': (cookies && cookies.__t) || '',
-    //   'content-type': 'application/json;charset=UTF-8',
-    //   'x-api-src': 'web'
-    // }
-    // tips: 这里等数据全了再放开
     return {
-      'x-api-hash': '6a725de38491121d1137b7e6ce67c69b2afd0d79',
-      'x-api-user': '230276274',
-      'x-api-token': 'ut5fb1e327141203.44681872',
+      'x-api-hash': (cookies && cookies.__c) || '',
+      'x-api-user': (cookies && cookies.__u) || '',
+      'x-api-token': (cookies && cookies.__t) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }
