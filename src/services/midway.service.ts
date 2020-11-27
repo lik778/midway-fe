@@ -52,7 +52,6 @@ export class MidwayService {
       'X-Api-User': process.env.NODE_DEV === 'development' ? '230276274' : cookies && cookies._u,
       'X-Api-Token': process.env.NODE_DEV === 'development' ? 'ut5fb1e327141203.44681872' : cookies && cookies._t,
       'Content-Type': 'application/json;charset=UTF-8',
-      'X-Api-Src': 'web'
     }
   }
 
