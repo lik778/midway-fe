@@ -24,7 +24,11 @@ const bePrefix = '/api/midway/backend/'
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res.data)
   }, (err: AxiosError) => {
-  message.error(err.response && err.response.data && err.response.data.message || '出错了');
+  const errorInfo = err.response && err.response.data && err.response.data.message || '出错了'
+  // 该报错会触发系统报错，先注释
+  // message.error(errorInfo);
+  // 报错输出，前端监听处理
+  return Promise.resolve(err.response && err.response.data)
 })
 
 export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosResponse<any>> => {
@@ -33,8 +37,9 @@ export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosRe
 }
 
 export const postApiData = (path: string, params?:any): Promise<any> => {
+  const p = JSON.stringify(params)
   return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
-    params,
+  params: p,
   })
 }
 
