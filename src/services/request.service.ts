@@ -10,8 +10,8 @@ export class RequestService {
     configure({
       appenders: {
         file: {
-          type: 'DateFile',
-          filename: join('..', 'logs/error.log'),
+          type: 'dateFile',
+          filename: join(__dirname, '..', '../logs/error.log'),
           pattern: '-yyyy-MM-dd.log',
           alwaysIncludePattern: true,
           layout: {
