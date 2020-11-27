@@ -1,6 +1,7 @@
+//-- const companyInfo= renderData.basic.company
 .contact
-	p 公司名称： #{ name || "上海新世界搬家公司" }
-	p 公司地址： #{ address || "上海闵行区七莘路901号" }
+	p 公司名称： #{ companyInfo.name }
+	p 公司地址： #{ companyInfo.address }
 	p 营业电话：
 		span #{ telephone || 13485753099 }
 	p 在线客服： #{ qq }
