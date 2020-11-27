@@ -2,7 +2,6 @@
 import React from 'react';
 import './index.less';
 export default (props: any) => {
-  console.log('props', props.shopChild)
   const s = props.shopChild
   const status = s.status === 1 ? 's-active' : 's-offline'
   const statusTxt = s.status === 1 ? '生效中' : '已下线'
@@ -14,7 +13,7 @@ export default (props: any) => {
       </div>
       <div className="s-title">
         <h4>{s.name}</h4>
-        <span className="s-edit iconfont">&#xe61b;</span>
+        <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
       </div>
       
       <div className="s-btn">

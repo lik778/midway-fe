@@ -33,8 +33,9 @@ export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosRe
 }
 
 export const postApiData = (path: string, params?:any): Promise<any> => {
+  const p = JSON.stringify(params)
   return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
-    params,
+  params: p,
   })
 }
 
