@@ -47,9 +47,9 @@ export class MidwayService {
 
   private setApiAHeaders(cookies: any): HeaderAuthParams {
     // return {
-    //   'x-api-hash': (cookies && cookies._c) || '',
-    //   'x-api-user': (cookies && cookies._u) || '',
-    //   'x-api-token': (cookies && cookies._t) || '',
+    //   'x-api-hash': (cookies && cookies.__c) || '',
+    //   'x-api-user': (cookies && cookies.__u) || '',
+    //   'x-api-token': (cookies && cookies.__t) || '',
     //   'content-type': 'application/json;charset=UTF-8',
     //   'x-api-src': 'web'
     // }
@@ -66,8 +66,8 @@ export class MidwayService {
   private setPageHeaders(shopName: string, device: string): PageHeaderParams {
     // tips: 一定要保证shopName和device有值，不然会
     return {
-      'x-api-shop-name': shopName,
-      'x-api-device': device
+      'x-api-shop-name': shopName || '',
+      'x-api-device': device || ''
     }
   }
 
