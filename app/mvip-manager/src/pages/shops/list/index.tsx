@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, message, Space, Button } from 'antd';
+import { Modal, Input, Button } from 'antd';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box'
@@ -14,25 +14,63 @@ const emptyMsg = {
 }
 
 export default (props: any) => {
- 
+  // 弹窗显示隐藏
   const [visible, setVisible] = useState(false)
-  const [value, setValue] = useState('')
+  // 弹窗错误显示
   const [err, setError] = useState('')
-  const [shopListData, setShopList] = useState([])
+  // 弹窗列表显示
+  const [shopListData, setShopList] = useState<any[]>([])
+  // 弹窗总数
   const [totalCount, setCount] = useState(0)
+  // 显示弹窗的来源
   const [shopOperateStatus, setOperate] = useState(0)
-  
-  const createShop = async (params: any) => { 
+  // 弹窗报错
+  const [isInputErr, setInputErr] = useState({
+    key:'',
+    isRequired: false
+  })
+  // 输入框值初始状态
+  const [oSite, setOSite] = useState({
+    name: '',
+    domain: '',
+  })
+
+  // 弹窗接口返回
+  const [shopSiteRes, setShopSiteRes] = useState({
+    success: false,
+    message: '',
+    data: {},
+  })
+
+  // 相关文案和参数处理
+  // 限制只显示2个
+  const isNewShopDisabled = totalCount > 2 ? true : false
+  // 弹窗文案
+  const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
+  const isDomainDisabled = shopOperateStatus === 1 ? true : false
+  const nameL = oSite?.name?.length || 0
+  const domainL = oSite?.domain?.length || 0
+
+  // 接口列表
+  // 创建店铺
+  const createShop = async (params:any) => {
     const data = await postApiData('shop/create',params)
-    
+    setShopSiteRes(data)
   }
 
+  // 修改店铺
+  const updateShop = async (params:any) => {
+    const data = await postApiData('shop/update',params)
+    setShopSiteRes(data)
+  }
+
+
+  // 获取店铺列表
   const getShopListing = async () => {
-    const data = await postApiData('shop/listing', JSON.stringify({ page: 1, size: 10 }))
-    if(data.code === 200) {
+    const data = await postApiData('shop/listing', { page: 1, size: 10 })
+    if(data && data.code === 200) {
       const resData = data.data
       const result = resData.result && resData.result.slice(0,2)  || []
-      console.log('result', result)
       setShopList(result)
       setCount(resData.totalRecord)
     }
@@ -43,36 +81,118 @@ export default (props: any) => {
   }, []);
 
 
-  const showModal = (e:any, state: number) => {
+  // 显示弹窗
+  const showModal = (e:any, state: number, modalBody?: any) => {
+    setError('')
     setOperate(state)
     setVisible(true)
+    setOSite(modalBody)
   };
 
   const handleOk = (e: any) => {
-    setVisible(false)
+    if(!nameL) {
+      setInputErr({
+        key: 'name',
+        isRequired: true
+      })
+      return
+    }
+
+    if(!domainL) {
+      setInputErr({
+        key: 'domain',
+        isRequired: true
+      })
+      return
+    }
+
+    if(shopOperateStatus) {
+      updateShop(oSite)
+    }else {
+      createShop(oSite)
+    }
   };
+
+  useEffect(
+    () => {
+      if(shopSiteRes && shopSiteRes.success) {
+        setVisible(false)
+        // 由于es返回慢，改用前端新增数据
+        // getShopListing()
+        const newData = shopSiteRes?.data || null
+        setShopList([newData, ...shopListData])
+        setCount(totalCount+1)
+      }else {
+        setError(shopSiteRes && shopSiteRes.message || '')
+      }
+    },
+    [shopSiteRes]
+  )
 
   const handleCancel = (e: any) => {
     setVisible(false)
   };
 
   const handleChange = (e: any) => {
-    let value = e.target.value
-    setValue(value.replace(/[^a-zA-Z0-9]/g,''))
-  }
-
-  const shopCreate = () =>{
-    return (
-      <div className="shop-create">
-        <EmptyStatus emptyMsg={emptyMsg} onClick={showModal}/>
+    const target = e.target
+    const name = target.name
+    const value = target.value
+    switch(name) {
+      case 'name':
+        if(nameL){
+          setInputErr({
+            key: name,
+            isRequired: false
+          })
+        }
         
-      </div>
-    )
+        setOSite({...oSite, [name]:value})
+      break;
+      case 'domain':
+        if(domainL){
+          setInputErr({
+            key: name,
+            isRequired: false
+          })
+        }
+        setOSite({...oSite, [name]:value.replace(/[^a-zA-Z0-9]/g,'')})
+      break;
+    }
   }
 
-  const isNewShopDisabled = totalCount > 2 ? true : false
-  const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
+  const inputIsRequired = (str: string) => {
+    if(isInputErr.key === str) {
+      return isInputErr.isRequired? 'input-error' : ''
+    }
+    return ''
+  }
 
+  const shopSitePage = () => {
+    if(totalCount) {
+      return (
+        <div className="container">
+        <div className="my-shop-list">
+          <Button type="primary" className="primary-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
+          <div className="shop-list">
+            {
+              shopListData.map((shopChild, index) => {
+               return (
+                <ShopBox shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+               )
+            })}
+          </div>
+        </div>        
+      </div>
+      )
+    }else {
+      return (
+        <div className="shop-create">
+          <EmptyStatus emptyMsg={emptyMsg} onClick={(ev: any) => {showModal(ev, 0)}}/>
+        </div>
+      )
+    }
+  }
+  
   return (
     <div>
       <MainTitle title="我的店铺"/>
@@ -86,33 +206,23 @@ export default (props: any) => {
         >
           <p className="error">{err}</p>
           <ul className="shop-site">
-            <li>
-              <label>店铺名称</label>
-              <Input placeholder="请输入名称，1~20个字符" maxLength={20}/>
+            <li className="f-input">
+              <label htmlFor="name">店铺名称</label>
+              <Input placeholder="请输入名称，1~20个字符" id="name" name="name" className={inputIsRequired('name')} maxLength={20} onChange={handleChange} value={oSite && oSite.name}/>
+              <span className="f-len">{nameL}/20</span>
             </li>
             <li>
-              <label>店铺域名</label>
-              <div className="site-byte">
+              <label htmlFor="domain">店铺域名</label>
+              <div className="site-byte f-input">
                 <span>shop.baixing.com/</span>
-                <Input placeholder="请输入名称，1~20个字符" maxLength={20} onChange={handleChange} value={value}/>
+                <Input placeholder="请输入名称，1~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+                <span className="f-len">{domainL}/20</span>
                 <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
               </div>
             </li>
           </ul>
         </Modal>
-      <div className="container">
-        <div className="my-shop-list">
-          <Button type="primary" className="primary-btn btn" onClick={(ev) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
-          <div className="shop-list">
-            {
-              shopListData.map((shopChild, index) => {
-               return (
-                <ShopBox shopChild={shopChild} key={index}/>
-               )
-            })}
-          </div>
-        </div>        
-      </div>
+        {shopSitePage()}
     </div>
   )
 }
