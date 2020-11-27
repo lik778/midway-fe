@@ -2,12 +2,9 @@
 	.footer-left
 		dl.col-left
 			dt 网站导航
-				dd
-					a(href="#") 公司首页
-				dd
-					a(href="#") 服务内容
-				dd
-					a(href="#") 新闻资讯
+				each item in renderData.navigation
+					dd
+						a(href="/" + renderData.shopName + item.content) #{item.name}
 
 		dl.col-right
 			dt 百姓网技术支持
@@ -15,10 +12,13 @@
 				a(href="") 我要开店
 
 	.footer-right
-		p 一站式企业服务有限公司    地址：上海市闵行区七莘路901号
+		p #{renderData.basic.company.name} &nbsp;&nbsp;地址：#{renderData.basic.company.address}
 
 		.center
-			p �版权所有本站由百姓网™匠心搭建
+			p #{renderData.basic.copyRight || "©版权所有本站由百姓网™匠心搭建"}
 			p 客服服务热线：400-036-3650（周一至周五，9：00-18：00）
 			p 热线：021-61300238（周一至周日，9：00 -18：00）
-		p 沪ICP备06019413号| 沪ICP证B2-20080088 | 沪公网安备31011202007947号
+		p
+			a(href="https://beian.miit.gov.cn/#/Integrated/index") 沪ICP备06019413号&nbsp;|&nbsp;
+			a(href="https://beian.miit.gov.cn/#/Integrated/index") 沪ICP证B2-20080088 &nbsp;|&nbsp;
+			| &nbsp;沪公网安备31011202007947号

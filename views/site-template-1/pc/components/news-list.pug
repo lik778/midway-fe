@@ -6,7 +6,7 @@
             //-默认最多展示20条
             each item in newsList.length>20 ? newsList.slice(0,20) : newsList
                 li
-                    a(href=item.urlSuffix)
+                    a(href="/" + renderData.shopName + item.urlSuffix)
                         .sanjiao-icon
                         p #{item.name}
                         - const time = new Date (item.modifiedTime).toJSON().substr(0, 10).replace('T', ' ')
