@@ -1,9 +1,9 @@
-div(class='tab-header')
-    - arr = ['境外公司注册','食品公司注册','具体注册流程']
+.tab-header
+    //-- arr = ['境外公司注册','食品公司注册','具体注册流程']
     ul
-        each item,index in arr
+        each item,index in cateList.length > 4 ? cateList.slice(0,4) : cateList
             li(class='tab-li')
-                a(href="#") #{item}
+                a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
 
 
 
