@@ -9,7 +9,7 @@ import { join } from 'path'
 @Controller('/management')
 export class ManagementController {
   constructor(private midwayApiService: MidwayService) {}
-  @Get('/')
+  @Get('*')
   async managementView(@Req() req: Request, @Res() res: Response) {
     res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
   }
