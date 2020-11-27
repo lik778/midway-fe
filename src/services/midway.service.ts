@@ -67,7 +67,7 @@ export class MidwayService {
       this.setPageHeaders(shopName, device));
   }
 
-  public getProductPageData(shopName: string, device: string, params) {
+  public getProductPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/product/list`, params,
       this.setPageHeaders(shopName, device));
   }
