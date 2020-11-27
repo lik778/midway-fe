@@ -32,13 +32,13 @@ export class RequestService {
         reject(err)
       })
     }).catch((err: AxiosError) => {
-      if (err.isAxiosError)  {
+      // if (err.isAxiosError)  {
         const { message, code, success } = err.response.data
         const commonRes: CommonRes = { message, code, success }
         throw new HttpException(commonRes, HttpStatus.INTERNAL_SERVER_ERROR)
-      } else {
-        throw new HttpException( '请求失败', HttpStatus.BAD_REQUEST);
-      }
+      // } else {
+      //   throw new HttpException( '请求失败', HttpStatus.BAD_REQUEST);
+      // }
     })
   }
 }

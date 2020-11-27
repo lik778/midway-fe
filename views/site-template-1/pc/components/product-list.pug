@@ -10,7 +10,7 @@ mixin product-list(n,page)
 						else
 							img(src="//file.baixing.net/202011/810feadae5a9849e4a067e79fc55ef56.png")
 					p #{item.name}
-					a.btn(href= "/" + renderData.shopName + "/p-:" + item.id) 了解详情
+					a.btn(href= "/" + renderData.shopName + item.urlSuffix) 了解详情
 		else
 			p 暂时还没有数据哦
 	if page == 'home'
