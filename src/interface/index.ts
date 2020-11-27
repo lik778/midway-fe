@@ -16,6 +16,7 @@ export interface HeaderAuthParams {
   'x-api-hash': string;
   'x-api-user': string;
   'x-api-token': string;
+  'x-api-src': string;
   'content-type': string;
 }
 
