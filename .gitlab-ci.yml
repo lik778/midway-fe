@@ -13,15 +13,6 @@ stages:
   - release
   - prod-deploy
 
-release:
-  stage: release
-  tags:
-    - k8s-dev-build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-    - docker build --pull -t $MIDWAY_FE .
-    - docker push $MIDWAY_FE
-    - docker rmi $MIDWAY_FE
 
 release-dev:
   stage: release-dev
@@ -37,13 +28,24 @@ release-dev:
 dev-deploy:
   stage: dev-deploy
   when: manual
-  except:
-    - master
+  only:
+    - dev
   tags:
     - aliyun-k8s-dev
   script:
     - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
 
+release:
+  stage: release
+  only:
+    - master
+  tags:
+    - k8s-dev-build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - docker build --pull -t $MIDWAY_FE .
+    - docker push $MIDWAY_FE
+    - docker rmi $MIDWAY_FE
 
 deploy:
   stage: prod-deploy
