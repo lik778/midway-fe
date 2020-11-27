@@ -8,11 +8,11 @@ export default (props: any) => {
   return (
     <div className="shop-box">
       <div className="s-img">
-        <img src={s.thumb}/>
+        <img src={s?.thumb}/>
         <div className={`s-status ${status}`}>{statusTxt}</div>
       </div>
       <div className="s-title">
-        <h4>{s.name}</h4>
+        <h4>{s?.name}</h4>
         <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
       </div>
       

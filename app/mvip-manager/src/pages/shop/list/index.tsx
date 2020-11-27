@@ -44,7 +44,7 @@ export default (props: any) => {
 
   // 相关文案和参数处理
   // 限制只显示2个
-  const isNewShopDisabled = totalCount > 2 ? true : false
+  const isNewShopDisabled = totalCount >= 2 ? true : false
   // 弹窗文案
   const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
   const isDomainDisabled = shopOperateStatus === 1 ? true : false
@@ -76,9 +76,7 @@ export default (props: any) => {
     }
   }
   
-  useEffect(() => {
-    getShopListing()
-  }, []);
+  
 
 
   // 显示弹窗
@@ -89,6 +87,7 @@ export default (props: any) => {
     setOSite(modalBody)
   };
 
+  // 弹窗确定
   const handleOk = (e: any) => {
     if(!nameL) {
       setInputErr({
@@ -113,15 +112,23 @@ export default (props: any) => {
     }
   };
 
+  useEffect(() => {
+    getShopListing()
+  }, []);
+
   useEffect(
     () => {
       if(shopSiteRes && shopSiteRes.success) {
         setVisible(false)
-        // 由于es返回慢，改用前端新增数据
-        // getShopListing()
-        const newData = shopSiteRes?.data || null
-        setShopList([newData, ...shopListData])
-        setCount(totalCount+1)
+        if(shopOperateStatus != 1) {
+          // 由于es返回慢，改用前端新增数据
+          const newData = shopSiteRes?.data || null
+          setShopList([newData, ...shopListData])
+          setCount(totalCount+1)
+        }else { 
+          getShopListing()
+        }
+        
       }else {
         setError(shopSiteRes && shopSiteRes.message || '')
       }
@@ -129,10 +136,14 @@ export default (props: any) => {
     [shopSiteRes]
   )
 
+
+  // bindEvent
+  // 弹窗取消
   const handleCancel = (e: any) => {
     setVisible(false)
   };
 
+  // 输入框
   const handleChange = (e: any) => {
     const target = e.target
     const name = target.name
@@ -155,11 +166,13 @@ export default (props: any) => {
             isRequired: false
           })
         }
-        setOSite({...oSite, [name]:value.replace(/[^a-zA-Z0-9]/g,'')})
+        setOSite({...oSite, [name]:value.replace(/[^a-z0-9]/g,'')})
       break;
     }
   }
 
+
+  // 输入框必选
   const inputIsRequired = (str: string) => {
     if(isInputErr.key === str) {
       return isInputErr.isRequired? 'input-error' : ''
@@ -167,7 +180,9 @@ export default (props: any) => {
     return ''
   }
 
+  // 店铺站点页面主功能块
   const shopSitePage = () => {
+    // 店铺列表
     if(totalCount) {
       return (
         <div className="container">
@@ -185,6 +200,7 @@ export default (props: any) => {
       </div>
       )
     }else {
+      // 无列表状态
       return (
         <div className="shop-create">
           <EmptyStatus emptyMsg={emptyMsg} onClick={(ev: any) => {showModal(ev, 0)}}/>
@@ -193,6 +209,7 @@ export default (props: any) => {
     }
   }
   
+  // 我的店铺
   return (
     <div>
       <MainTitle title="我的店铺"/>
