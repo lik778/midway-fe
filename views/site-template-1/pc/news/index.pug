@@ -5,7 +5,7 @@ block styles
 
 block content
     //- 面包屑
-    - const crumbs = [{label:'首页',link:'#'},{label:'新闻资讯',link:'#'}]
+    - const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
@@ -20,8 +20,8 @@ block content
             +sidebar-title('联系我们')
             include ../components/sidebar/contact.pug
             +sidebar-title('文章分类')
-
-            - const categoryList = [{name:'境外公司注册', url:'/site/news/child'},{name:'代理记账服务', url:'/site/news/child'},{name:'公司注册流程', url:'/site/news/child'},{name:'食品公司注册', url:'/site/news/child'}]
+            - const cateList = renderData.articleCateList
+            //-- const cateList = [{name:'境外公司注册', urlSuffix:'/site/news/child'},{name:'代理记账服务', urlSuffix:'/site/news/child'},{name:'公司注册流程', urlSuffix:'/site/news/child'},{name:'食品公司注册', urlSuffix:'/site/news/child'}]
             include ../components/sidebar/category-item.pug
 
     include ../components/page.pug

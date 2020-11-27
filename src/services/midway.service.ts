@@ -67,9 +67,27 @@ export class MidwayService {
     return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
       this.setPageHeaders(shopName, device));
   }
-
+//服务内容列表
   public getProductPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/product/list`, params,
       this.setPageHeaders(shopName, device));
   }
+
+//服务内容子分类
+  public getProductCateData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.host}/api/midway/frontend/product/cateList`, params,
+      this.setPageHeaders(shopName, device));
+  }
+
+//新闻列表
+  public getNewsPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.host}/api/midway/frontend/article/list`, params,
+      this.setPageHeaders(shopName, device));
+  }
+
+//新闻列表子分类
+public getNewsCateData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  return this.requestService.post(`${this.host}/api/midway/frontend/article/cateList`, params,
+    this.setPageHeaders(shopName, device));
+}
 }

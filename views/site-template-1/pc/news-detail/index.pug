@@ -6,7 +6,7 @@ block styles
 //-使用了统一的header和nav
 block content
     //- 面包屑
-    - const crumbs = [{label:'首页',link:'#'},{label:'新闻资讯',link:'#'},{label:'境外公司注册',link:'#'},{label:'上海网上注册公司最新流程',link:'#'}]
+    - const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"},{label:'境外公司注册',link:'#'},{label:'上海网上注册公司最新流程',link:'#'}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
@@ -22,7 +22,8 @@ block content
             include ../components/sidebar/sidebar-newslist.pug
 
             +sidebar-title('文章分类')
-            - const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
+            //-- const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
+            - const cateList = renderData.articleCateList
             include ../components/sidebar/category-item.pug
 
     include ../components/footer.pug

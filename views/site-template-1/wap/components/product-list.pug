@@ -1,1 +1,10 @@
-.p 这是服务列表了
+
+.product-list
+	- const list = [{name:'新房搬家的讲究新房搬家的讲究新房搬家的讲究',url:'#',avatar:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'2020年6月适宜搬家的黄道吉日',url:'#',avatar:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'如何选择比较好的搬家公司',url:'#',avatar:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'搬家需要注意哪些',url:'#',avatar:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'搬新家带走扫帚好吗',url:'#',avatar:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'如何上百姓网站找好的搬家公司有人知道吗',url:'#',avatar:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'}]
+		//-默认每页最多展示10条
+		ul
+			each item in list.length>10 ? list.slice(0,10) : list
+				li
+					a(href=item.url)
+						img(src=item.avatar, alt="")
+						.rec-text #{item.name}
