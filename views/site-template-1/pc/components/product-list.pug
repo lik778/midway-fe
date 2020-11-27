@@ -11,7 +11,6 @@ mixin product-list(n,page)
 							img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
 					p #{item.name}
 					a.btn(href= "/" + renderData.shopName + item.urlSuffix) 了解详情
-					- console.log("/" + renderData.shopName + item.urlSuffix)
 		else
 			p 暂时还没有数据哦
 	if page == 'home'
