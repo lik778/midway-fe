@@ -5,7 +5,8 @@ import * as cookieParser from 'cookie-parser'
 import { AppModule } from './app.module';
 import { ValidationPipe } from './pipes/validate.pipe';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
-
+import pugFilters from './view-helpers'
+import * as pug from 'pug'
 /**
  * 创建应用实例
  * 用来启动http服务器，它允许应用程序等待入站http请求
@@ -18,6 +19,7 @@ async function bootstrap() {
     prefix: '/assets'
   });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  pug.filters = pugFilters
   app.setViewEngine('pug');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
