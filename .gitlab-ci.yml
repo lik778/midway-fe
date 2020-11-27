@@ -5,7 +5,7 @@ image: docker
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
-  MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_BUILD_REF_NAME}-${CI_PIPELINE_ID}
+  MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
   IMAGE_REF: $REGISTRY_BASE:$CI_PIPELINE_ID
 
 stages:
@@ -21,6 +21,7 @@ release:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE .
     - docker push $MIDWAY_FE
+    - docker rmi $MIDWAY_FE
 
 dev-deploy:
   stage: dev-deploy
@@ -30,7 +31,7 @@ dev-deploy:
   tags:
     - aliyun-k8s-dev
   script:
-    - kubectl set image -n adtech deployments --selector app=midway-fe *=$MIDWAY_FE
+    - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
 
 
 deploy:
@@ -41,4 +42,4 @@ deploy:
   tags:
     - aliyun-prod-deploy
   script:
-    - kubectl set image -n adtech deployments --selector app=midway-fe *=$MIDWAY_FE
+    - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
