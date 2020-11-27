@@ -48,17 +48,24 @@ export class MidwayService {
   private setApiAHeaders(cookies: any): HeaderAuthParams {
     // tips: 这里等数据全了再放开
     return {
-      'X-Api-Hash': process.env.NODE_DEV === 'development' ? '6a725de38491121d1137b7e6ce67c69b2afd0d79' : cookies && cookies._c,
-      'X-Api-User': process.env.NODE_DEV === 'development' ? '230276274' : cookies && cookies._u,
-      'X-Api-Token': process.env.NODE_DEV === 'development' ? 'ut5fb1e327141203.44681872' : cookies && cookies._t,
-      'Content-Type': 'application/json;charset=UTF-8',
+      'x-api-hash': '6a725de38491121d1137b7e6ce67c69b2afd0d79',
+      'x-api-user': '230276274',
+      'x-api-token': 'ut5fb1e327141203.44681872',
+      'content-type': 'application/json;charset=UTF-8'
     }
+    // return {
+    //   'x-api-hash': (cookies && cookies._c) || '',
+    //   'x-api-user': (cookies && cookies._u) || '',
+    //   'x-api-token': (cookies && cookies._t) || '',
+    //   'content-type': 'application/json;charset=UTF-8',
+    // }
   }
 
   private setPageHeaders(shopName: string, device: string): PageHeaderParams {
+    // tips: 一定要保证shopName和device有值，不然会报错误
     return {
-      'X-Api-Shop-Name': shopName,
-      'X-Api-Device': device
+      'x-api-shop-name': shopName,
+      'x-api-device': device
     }
   }
 
