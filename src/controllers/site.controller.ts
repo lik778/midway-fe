@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, Res } from '@nestjs/common';
 import { UserAgent } from '../decorator';
 import { MidwayService } from '../services/midway.service';
 import { Request, Response } from 'express';
@@ -16,11 +16,12 @@ export class SiteController {
   }
 
   @Get('/n')
-  async listing(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+  async listing(@Param() params, @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const shopName = this.midwayApiService.getShopName(params.shopName)
     const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: 1, size: 0 });
+    const currentPage = query.page || 1;
     const templateUrl = `site-template-1/${device}/news/index`
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName } });
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, currentPage } });
   }
 
   @Get('/n-:id')
@@ -39,11 +40,12 @@ export class SiteController {
   }
 
   @Get('/p')
-  async product(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+  async product(@Param() params, @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const shopName = this.midwayApiService.getShopName(params.shopName)
-    const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: 1, size: 0 });
+    const currentPage = query.page || 1
+    const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 });
     const templateUrl = `site-template-1/${device}/product/index`
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName } });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, currentPage } });
   }
 
   //这里还需要把cateId子分类，page参数化
