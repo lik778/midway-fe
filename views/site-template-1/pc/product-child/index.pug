@@ -26,7 +26,10 @@ block content
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
-    include ../components/page.pug
+    //-include ../components/page.pug
+    include ../components/pagination
+    - var totalPage = (renderData.productCateList && renderData.productList.totalPage) || 1
+    +pagination(totalPage, renderData.currentPage, `/${renderData.shopName}/p`)
     include ../components/footer.pug
     //-QQ交谈
     include ../components/customer-service.pug

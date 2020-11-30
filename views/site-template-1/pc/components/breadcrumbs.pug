@@ -1,8 +1,7 @@
 .search-crumbs.clearfix
 	p 当前位置：
 	ul
-		- const currentCrumbs= renderData.bread
-		each item, index in currentCrumbs
+		each item, index in renderData.bread
 			if item.name
 				li
 					if index > 0

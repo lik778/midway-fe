@@ -5,7 +5,6 @@ block styles
 
 //-使用了统一的header和nav
 block content
-    :dateFormat(date="2019-09-09")
     include ../components/swiper.pug
     .container.clearfix
         .main
@@ -28,7 +27,6 @@ block content
     include ../components/footer.pug
     //-QQ交谈
     include ../components/customer-service.pug
-    p.main 打印后端传的数据：#{tips}
 
 block scripts
     :combine(fileName="site-template-1-home-pc.js")
