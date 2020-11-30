@@ -5,14 +5,12 @@
 .customer-box
 	if qq && qq.length>0
 		.title QQ交谈
-		ul.top
+		dl.top.clearfix
 			each item in qq
-				li
-					.item
-						span #{item.name}
-						a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
-							span ：
-							img(src="//file.baixing.net/202011/be5237a19752ef6d8ec6a4c2d054eaec.png", alt="")
+				dt #{item.name}:
+				dd
+					a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
+						img(src="//file.baixing.net/202011/be5237a19752ef6d8ec6a4c2d054eaec.png", alt="")
 	if phone
 		.tel 联系电话
 		a.center(href="tel:" + phone.content )
