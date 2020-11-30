@@ -33,6 +33,7 @@
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "cookie-parser": "^1.4.5",
+    "dayjs": "^1.9.6",
     "jquery": "~2.2.0",
     "log4js": "^6.3.0",
     "pug": "~3.0.0",
