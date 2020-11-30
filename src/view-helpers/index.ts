@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs'
 export default {
   combineCss: function(text, options) {
     const { name } = options
