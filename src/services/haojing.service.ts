@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RequestService } from './request.service';
-import { ServiceResponse, ShopComponents } from '../interface';
 import { UpyunImgConfig } from '../interface/haojing';
 
 // tips: 这里面放着和haojing打交道的
@@ -13,7 +12,7 @@ export class HaojingService {
     this.haojingHost = configService.get('haojing');
   }
 
-  public getUpyunImgConfig(): Promise<ServiceResponse<UpyunImgConfig>> {
+  public getUpyunImgConfig(): Promise<UpyunImgConfig> {
     return this.requestService.get(`${this.haojingHost}/a/upyun_img_config`, {})
   }
 }

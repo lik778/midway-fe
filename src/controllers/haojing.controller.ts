@@ -1,5 +1,5 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { HaojingService } from '../services/haojing.service';
 
 // tips: 虽然想不再和haojing打交道，但是这边还是需要
