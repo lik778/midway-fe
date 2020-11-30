@@ -5,6 +5,8 @@ export default {
     return `<link rel="stylesheet" href="/assets/${name}.css"/>`
   },
   dateFormat: function(text, options) {
-    return '2020-09-01'
+     const { newsTime } = options
+    //if(options.newsTime) text=dayjs.unix(newsTime).toJSON().substr(0, 10);
+    return dayjs.unix(newsTime).toJSON().substr(0, 10)
   }
 }
