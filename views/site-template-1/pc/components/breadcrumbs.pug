@@ -1,0 +1,11 @@
+.search-crumbs.clearfix
+	p 当前位置：
+	ul
+		- const currentCrumbs= renderData.bread
+		each item, index in currentCrumbs
+			if item.name
+				li
+					if index > 0
+						i &gt;
+					a(href="/" + renderData.shopName + item.urlSuffix)  #{item.name}
+

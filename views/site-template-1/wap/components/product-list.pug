@@ -1,0 +1,17 @@
+.product-list
+	//-- const productList= [{name:'新房搬家的讲究新房搬家的讲究新房搬家的讲究',url:'#',headImg:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'2020年6月适宜搬家的黄道吉日',url:'#',headImg:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'如何选择比较好的搬家公司',url:'#',headImg:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'搬家需要注意哪些',url:'#',headImg:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'搬新家带走扫帚好吗',url:'#',headImg:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'},{name:'如何上百姓网站找好的搬家公司有人知道吗',url:'#',headImg:'//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'}]
+	- const productList= renderData.productList.result
+		//-默认每页最多展示10条
+		ul
+			if productList && productList.length >0
+				each item in productList.length>10 ? productList.slice(0,10) : productList
+					li
+						a(href= "/" + renderData.shopName + item.urlSuffix)
+							if item.headImg
+								img(src=item.headImg, alt="")
+							else
+								img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+							.rec-text #{item.name}
+
+			else
+				p 暂时还没有数据哦

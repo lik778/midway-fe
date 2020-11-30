@@ -1,0 +1,10 @@
+declare module '*.css';
+declare module '*.less';
+declare module '*.styl';
+declare module "*.png";
+declare module 'chain-css-loader';
+declare module '*.svg' {
+  export function ReactComponent(props: React.SVGProps<SVGSVGElement>): React.ReactElement
+  const url: string
+  export default url
+}

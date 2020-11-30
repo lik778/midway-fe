@@ -1,0 +1,12 @@
+.news-list
+    //-- const newsList = [{name:'新房搬家的讲究',urlSuffix:'/site/news/detail',time:1514282819},{name:'【搬家讲究】2020年6月适宜搬家的黄道吉日',urlSuffix:'/site/news/detail',time:1514282819},{name:'如何选择比较好的搬家公司',urlSuffix:'/site/news/detail',time:1514282819},{name:'搬家需要注意哪些',urlSuffix:'/site/news/detail',time:1514282819},{name:'搬新家带走扫帚好吗',urlSuffix:'/site/news/detail',time:1514282819},{name:'如何上百姓网站找好的搬家公司有人知道吗',urlSuffix:'/site/news/detail',time:1514282819},{name:'如果数据不知道咋写',urlSuffix:'/site/news/detail',time:1514282819},{name:'如何利用大货车小火车牵引车搬东西从中国喜马拉雅山上到泰山上的18弯上自己一个人整呢',urlSuffix:'/site/news/detail',time:1514282819},{name:'如何选择比较好的搬家公司',urlSuffix:'/site/news/detail',time:1514282819}]
+    - const newsList= renderData.articleList.result
+    if newsList && newsList.length >0
+        ul.item
+            //-默认最多展示20条
+            each item in newsList.length>20 ? newsList.slice(0,20) : newsList
+                li
+                    a(href="/" + renderData.shopName + item.urlSuffixSuffix)
+                        p #{item.name}
+    else
+        p(style="min-height:250px") 暂时还没有数据哦

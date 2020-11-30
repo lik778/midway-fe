@@ -1,0 +1,35 @@
+extends ../layout
+
+block styles
+    link(rel="stylesheet", href="/assets/site-template-1-news-detail-pc.css")
+
+//-使用了统一的header和nav
+block content
+    //- 面包屑
+    - const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"},{label:'境外公司注册',link:'#'},{label:'上海网上注册公司最新流程',link:'#'}]
+    include ../components/breadcrumbs.pug
+
+    .container.clearfix
+        .main
+            include ../components/news-detail.pug
+
+        .side-bar
+            include ../components/sidebar/sidebar-title.pug
+            +sidebar-title('联系我们')
+            include ../components/sidebar/contact.pug
+
+            +sidebar-title('新闻资讯')
+            include ../components/sidebar/sidebar-newslist.pug
+
+            +sidebar-title('文章分类')
+            //-- const categoryList = [{name:'境外公司注册', url:'/site/news/detail'},{name:'代理记账服务', url:'/site/news/detail'},{name:'公司注册流程', url:'/site/news/detail'},{name:'食品公司注册', url:'/site/news/detail'}]
+            - const cateList = renderData.articleCateList
+            include ../components/sidebar/category-item.pug
+
+    include ../components/footer.pug
+    //-QQ交谈
+    include ../components/customer-service.pug
+
+block scripts
+    script(src="/assets/site-template-1-news-detail-pc.js")
+

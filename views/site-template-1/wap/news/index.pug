@@ -1,0 +1,22 @@
+extends ../layout.pug
+block styles
+    link(rel="stylesheet", href="/assets/site-template-1-news-wap.css")
+
+block header
+    include ../components/header
+
+block content
+    - const cateList = renderData.articleCateList
+    include ../components/toptab
+
+    include ../components/news-list
+
+block footer
+    include ../components/footer
+
+block contact
+    include ../components/contact
+
+
+block scripts
+    script(src="/assets/site-template-1-news-wap.js")
