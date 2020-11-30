@@ -6,6 +6,8 @@ import { ManagementController } from './controllers/management.controller';
 import { MidwayService } from './services/midway.service';
 import { RequestService } from './services/request.service';
 import { AppController } from './controllers/app.controller';
+import { HaojingController } from './controllers/haojing.controller';
+import { HaojingService } from './services/haojing.service';
 
 /**
  * 应用程序根模块
@@ -19,11 +21,13 @@ import { AppController } from './controllers/app.controller';
   controllers: [
     AppController,
     ManagementController,
-    SiteController
+    SiteController,
+    HaojingController
   ],
   providers: [
     RequestService,
-    MidwayService
+    MidwayService,
+    HaojingService
   ],
 })
 export class AppModule {}

@@ -10,6 +10,8 @@ variables:
 stages:
   - release-dev
   - dev-deploy
+  - release-test
+  - test-deploy
   - release
   - prod-deploy
 
@@ -34,6 +36,27 @@ dev-deploy:
     - aliyun-k8s-dev
   script:
     - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
+
+release-test:
+  stage: release-test
+  only:
+    - test
+  tags:
+    - k8s-dev-build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
+    - docker push $MIDWAY_FE
+
+test-deploy:
+  stage: test-deploy
+  when: manual
+  only:
+    - test
+  tags:
+    - aliyun-k8s-dev
+  script:
+    - kubectl set image -n test-cat deployments --selector app=midway-fe *=$MIDWAY_FE
 
 release:
   stage: release

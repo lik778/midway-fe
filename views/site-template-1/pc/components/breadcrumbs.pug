@@ -1,11 +1,10 @@
-//-- const crumbs = [{label:'首页',link:'#'},{label:'服务内容',link:'#'},{label:'公司注册',link:'#'}]
 .search-crumbs.clearfix
 	p 当前位置：
 	ul
-		each crumb, index in crumbs
-			if crumb.label
+		each item, index in renderData.bread
+			if item.name
 				li
 					if index > 0
 						i &gt;
-					a(href=crumb.link, property="v:title", rel="v:url")  #{crumb.label}
+					a(href="/" + renderData.shopName + item.urlSuffix)  #{item.name}
 
