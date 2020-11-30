@@ -1,7 +1,7 @@
 extends ../layout
 
 block styles
-    :combineCss(name="site-template-1-home-pc")
+    :combine(fileName="site-template-1-home-pc.css")
 
 //-使用了统一的header和nav
 block content
@@ -29,5 +29,4 @@ block content
     include ../components/customer-service.pug
 
 block scripts
-    script(src="/assets/site-template-1-home-pc.js")
-
+    :combine(fileName="site-template-1-home-pc.js")
