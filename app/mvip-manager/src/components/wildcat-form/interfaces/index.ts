@@ -29,4 +29,6 @@ export interface FormItem {
   maxLength?: number,
   minLength?: number,
   inputWidth?: number,
+  tip?: string, // 文案说明,
+  className?: string, // 自定义样式
 }

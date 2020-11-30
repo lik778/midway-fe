@@ -43,29 +43,29 @@ const WildcatForm = (props: Props) => {
       <Form form={form} name={props.config && props.config.name} onFinish={props.submit} className={props.className}>
         { props.config && props.config.children.map(item => {
           if (item.type === FormType.Input) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large'/>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Textarea) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <TextArea style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large'/>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <TextArea showCount style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Select) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <ImgUpload />
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <ImgUpload tip={item.tip}/>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <Cascader size='large' options={options} />
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
