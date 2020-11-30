@@ -1,0 +1,26 @@
+mixin pagination(pages, current, link)
+    - var range = 5;
+    - var i = 0;
+    if pages > 1
+        .page-normal
+            if current == 1
+                a.page-current 首页
+            else
+                a(href=`${link}?page=1`) 首页
+            if pages <= range
+                while i < range
+                    - i++;
+                    +isActive(i, current, link)
+            else
+                // tips: 这里的逻辑还要进行修改
+
+            if (current == pages)
+                a.page-current 尾页
+            else
+                a(href=`${link}?page=${pages}`) 尾页
+
+mixin isActive(page, current, link)
+    if page == current
+        a.page-current(href=`${link}?page=${page}`) #{page}
+    else
+        a(href=`${link}?page=${page}`) #{page}

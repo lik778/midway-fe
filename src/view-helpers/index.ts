@@ -5,8 +5,6 @@ export default {
     return `<link rel="stylesheet" href="/assets/${name}.css"/>`
   },
   dateFormat: function(text, options) {
-    //console.log(options.date)
-    const { newsTime } =options
-    return
+    return '2020-09-01'
   }
 }
