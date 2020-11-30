@@ -1,19 +1,15 @@
-//主要的页面方式
 import React from 'react';
-import { message, Button, Upload } from 'antd';
+import { Button, Upload } from 'antd';
+import { uploadImgToUpyunHandle } from '@/utils';
 
 const uploadProps = {
   name: 'file',
   multiple: false,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange(info: any) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
+  onChange(e: any) {
+    if (e.file.status === 'done') {
+      uploadImgToUpyunHandle(e.file.originFileObj).then(res => {
+        console.log('上传又拍云成功', res)
+      })
     }
   },
 };

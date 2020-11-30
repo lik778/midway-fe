@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { message } from 'antd';
 
 // tips: 前端请求的需要的参数
 export interface ManagementReqParams {
@@ -34,6 +33,11 @@ request.interceptors.response.use((res: AxiosResponse) => {
 export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosResponse<any>> => {
   const { method, path, params } = data;
   return request.post(url, { method, params, path });
+}
+
+// tips: 这边传输数据返回格式还是太随意了，需要修改
+export const getApi = (url: string, params?: any): Promise<any> => {
+  return request.get(url, {  params });
 }
 
 export const postApiData = (path: string, params?:any): Promise<any> => {
