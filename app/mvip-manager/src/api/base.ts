@@ -36,6 +36,10 @@ export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosRe
   return request.post(url, { method, params, path });
 }
 
+export const getApi = (url: string, params?: any): Promise<AxiosResponse<any>> => {
+  return request.get(url, {  params });
+}
+
 export const postApiData = (path: string, params?:any): Promise<any> => {
   const p = JSON.stringify(params)
   return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
