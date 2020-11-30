@@ -1,4 +1,11 @@
-//-面包屑下内容上的标
+//-面包屑下面，主体内容的头
 .main-title.clearfix
-	h2 #{firstcrumb}
-	h2 #{secondcrumb ? ("-" + secondcrumb) : secondcrumb}
+	- const mainTitle=  renderData.bread
+		case mainTitle.length
+			when 2
+				h2 #{mainTitle[1].name}
+			when 3
+				h2 #{mainTitle[1].name}
+				h2 #{mainTitle[2].name ? ("-" + mainTitle[2].name) : mainTitle[2].name}
+			default
+				h2 ''

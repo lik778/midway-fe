@@ -25,7 +25,10 @@ block content
             +sidebar-title('联系我们')
             include ../components/sidebar/contact.pug
 
-    include ../components/page.pug
+    //-include ../components/page.pug
+    include ../components/pagination
+    - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
+    +pagination(totalPage, renderData.currentPage, `/${renderData.shopName}/n`)
     include ../components/footer.pug
     //-QQ交谈
     include ../components/customer-service.pug

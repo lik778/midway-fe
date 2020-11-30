@@ -185,7 +185,6 @@ export default (props: any) => {
     // 店铺列表
     if(totalCount) {
       return (
-        <div className="container">
         <div className="my-shop-list">
           <Button type="primary" className="primary-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
           <div className="shop-list">
@@ -197,7 +196,6 @@ export default (props: any) => {
             })}
           </div>
         </div>        
-      </div>
       )
     }else {
       // 无列表状态
@@ -239,7 +237,9 @@ export default (props: any) => {
             </li>
           </ul>
         </Modal>
-        {shopSitePage()}
+        <div className="container">
+          {shopSitePage()}
+        </div>
     </div>
   )
 }
