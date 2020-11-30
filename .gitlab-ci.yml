@@ -35,7 +35,7 @@ dev-deploy:
   tags:
     - aliyun-k8s-dev
   script:
-    - kubectl set image -n test-cat deployments --selector app=midway-fe *=$MIDWAY_FE
+    - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
 
 release-test:
   stage: release-test
