@@ -5,7 +5,7 @@ block styles
 
 block content
     //- 面包屑
-    - const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"}]
+    //-- const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
@@ -24,7 +24,9 @@ block content
             //-- const cateList = [{name:'境外公司注册', urlSuffix:'/site/news/child'},{name:'代理记账服务', urlSuffix:'/site/news/child'},{name:'公司注册流程', urlSuffix:'/site/news/child'},{name:'食品公司注册', urlSuffix:'/site/news/child'}]
             include ../components/sidebar/category-item.pug
 
-    include ../components/page.pug
+    include ../components/pagination
+    - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
+    +pagination(totalPage, renderData.currentPage, `/${renderData.shopName}/n`)
     include ../components/footer.pug
     //-QQ交谈
     include ../components/customer-service.pug
