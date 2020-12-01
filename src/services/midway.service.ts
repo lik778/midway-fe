@@ -96,4 +96,10 @@ public getNewsCateData(shopName: string, device: string, params): Promise<Servic
   return this.requestService.post(`${this.host}/api/midway/frontend/article/cateList`, params,
     this.setPageHeaders(shopName, device));
 }
+
+//新闻详情页
+public getNewsDetailData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  return this.requestService.post(`${this.host}/api/midway/frontend/article/detail`, params,
+    this.setPageHeaders(shopName, device));
+}
 }
