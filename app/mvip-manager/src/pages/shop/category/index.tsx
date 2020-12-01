@@ -1,9 +1,10 @@
-import React from 'react';
+import React,  { useState } from 'react';
 import { Table, Button, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import ModuleEmpty from '@/components/shop-module-empty';
+import ShopModuleGroup from '@/components/shop-module-group';
 import { ShopModuleType } from '@/enums';
 import './index.less'
 const Option = Select.Option;
@@ -40,17 +41,19 @@ const CategoryList = () => {
 
   return (
     <div>
-      {/*<Modal title="确认删除吗？" visible={true}>*/}
-      {/*  <p>这里是提示</p>*/}
+      {/*<Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>} visible={true}>*/}
+      {/*  <p>删除后无法恢复，确认删除？</p>*/}
       {/*</Modal>*/}
       <Table columns={columns}  dataSource={data} pagination={{
         hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
   </div>)
 }
 
-const NavBox = (props: any) => {
-  const group = () => { alert('服务分组') }
-  const create = () => { alert('创建') }
+interface NavBoxProps {
+  getGroup(): void;
+  createModuleItem(): void;
+}
+const NavBox = (props: NavBoxProps) => {
   return (
     <div className="nav-container">
         <div style={{ float: 'left' }}>
@@ -69,25 +72,34 @@ const NavBox = (props: any) => {
           </Select>
         </div>
         <div style={{ float: 'right' }}>
-          <Button onClick={() => group()} size="large" style={{ marginRight: 36 }}>服务分组</Button>
-          <Button onClick={() => create() } icon={<PlusOutlined />} size="large" type="primary">新建服务</Button>
+          <Button onClick={props.getGroup} size="large" style={{ marginRight: 36 }}>服务分组</Button>
+          <Button onClick={props.createModuleItem} icon={<PlusOutlined />} size="large" type="primary">新建服务</Button>
         </div>
     </div>
   )
 }
 
 export default (props: any) => {
+  const [visible, setVisible] = useState(false);
   const hasData = true;
   let containerComponent;
   if (hasData) {
     containerComponent = (
       <div>
-        <NavBox />
+        <NavBox getGroup={() => setVisible(true)}
+            createModuleItem={() => alert('创建')} />
         <CategoryList />
+        <ShopModuleGroup
+          title="服务分组"
+          createBtnText="新建服务"
+          onClose={() => setVisible(false)}
+          visible={visible}
+          save={() => { console.log('保存') }}
+        />
       </div>
     )
   } else {
-    containerComponent = <ModuleEmpty type={props.type}/>
+    containerComponent = <ModuleEmpty type={ShopModuleType.category}/>
   }
   return (<div>
       <MainTitle title="百姓网店铺"/>
