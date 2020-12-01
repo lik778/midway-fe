@@ -5,18 +5,20 @@ import ModuleEmpty from '@/components/shop-module-empty';
 import ArticleBox from '@/components/article-box';
 import { ShopModuleType } from '@/enums';
 import './index.less';
-import { Button, Select, Table } from 'antd';
+import { Button, Modal, Select, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ShopModuleGroup from '@/components/shop-module-group';
 const Option = Select.Option;
 
 const ArticleList = () => {
+  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
+
   const editItem = (record: any) => {
     console.log('编辑', record)
   }
 
-  const deleteItem = (recordr: any) => {
-    console.log('删除', recordr)
+  const deleteItem = (record: any) => {
+    setVisibleDeleteDialog(true)
   }
   const columns = [
     { title: '序号', dataIndex: 'id', key: 'id' },
@@ -44,9 +46,12 @@ const ArticleList = () => {
 
   return (
     <div>
-      {/*<Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>} visible={true}>*/}
-      {/*  <p>删除后无法恢复，确认删除？</p>*/}
-      {/*</Modal>*/}
+      <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
+             onCancel={() => setVisibleDeleteDialog(false)}
+             onOk={() => { console.log('已删除'); setVisibleDeleteDialog(true) }}
+             visible={visibleDeleteDialog}>
+        <p>删除后无法恢复，确认删除？</p>
+      </Modal>
       <Table columns={columns}  dataSource={data} pagination={{
         hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
     </div>)

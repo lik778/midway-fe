@@ -10,12 +10,14 @@ import './index.less'
 const Option = Select.Option;
 
 const CategoryList = () => {
+  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
+
   const editItem = (record: any) => {
-    console.log('编辑', record)
+    alert('去编辑')
   }
 
-  const deleteItem = (recordr: any) => {
-    console.log('删除', recordr)
+  const deleteItem = (record: any) => {
+    setVisibleDeleteDialog(true)
   }
   const columns = [
     { title: '序号', dataIndex: 'id', key: 'id' },
@@ -41,9 +43,12 @@ const CategoryList = () => {
 
   return (
     <div>
-      {/*<Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>} visible={true}>*/}
-      {/*  <p>删除后无法恢复，确认删除？</p>*/}
-      {/*</Modal>*/}
+      <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
+       onCancel={() => setVisibleDeleteDialog(false)}
+       onOk={() => { console.log('已删除'); setVisibleDeleteDialog(true) }}
+       visible={visibleDeleteDialog}>
+        <p>删除后无法恢复，确认删除？</p>
+      </Modal>
       <Table columns={columns}  dataSource={data} pagination={{
         hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
   </div>)
