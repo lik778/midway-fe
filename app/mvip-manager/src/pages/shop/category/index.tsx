@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Select } from 'antd';
+import { Table, Button, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
@@ -38,8 +38,14 @@ const CategoryList = () => {
     { id: 3, key: 3, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核通过' },
   ];
 
-  return ( <Table columns={columns}  dataSource={data} pagination={{
-    hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />)
+  return (
+    <div>
+      {/*<Modal title="确认删除吗？" visible={true}>*/}
+      {/*  <p>这里是提示</p>*/}
+      {/*</Modal>*/}
+      <Table columns={columns}  dataSource={data} pagination={{
+        hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
+  </div>)
 }
 
 const NavBox = (props: any) => {
