@@ -23,7 +23,7 @@ const CategoryList = () => {
         <img width="60" height="40" src="//file.baixing.net/202012/8d77706058cd168278be2d967d40e085.jpg"/> },
     { title: '服务名称', dataIndex: 'name', key: 'name' },
     { title: '价格', dataIndex: 'price', key: 'price' },
-    { title: '服务分组', dataIndex: 'category', key: 'category' },
+    { title: '服务分组', dataIndex: 'group', key: 'group' },
     { title: '审核结果', dataIndex: 'auditStatus', key: 'auditStatus' },
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
@@ -34,9 +34,9 @@ const CategoryList = () => {
     },
   ];
   const data = [
-    { id: 1, key: 1, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核不通过' },
-    { id: 2, key: 2, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核不通过' },
-    { id: 3, key: 3, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核通过' },
+    { id: 1, key: 1, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核不通过' },
+    { id: 2, key: 2, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核不通过' },
+    { id: 3, key: 3, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核通过' },
   ];
 
   return (
