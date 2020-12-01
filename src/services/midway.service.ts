@@ -79,6 +79,12 @@ export class MidwayService {
       this.setPageHeaders(shopName, device));
   }
 
+//服务内容详情页
+public getProductDetailData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  return this.requestService.post(`${this.host}/api/midway/frontend/product/detail`, params,
+    this.setPageHeaders(shopName, device));
+}
+
 //新闻列表
   public getNewsPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/article/list`, params,
