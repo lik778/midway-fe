@@ -17,8 +17,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "../dist/public"),
-    // filename: isProd? '[name].[contenthash].js' : '[name].js'
-    filename: '[name].js'
+    filename: isProd? '[name].[contenthash].js' : '[name].js'
   },
   module: {
     rules: [
@@ -43,10 +42,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      // filename: isProd ? '[name].[contenthash].css' : '[name].css',
-      // chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: isProd ? '[name].[contenthash].css' : '[name].css',
+      chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
     })
   ]
 }
