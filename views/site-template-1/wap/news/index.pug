@@ -1,6 +1,6 @@
 extends ../layout.pug
 block styles
-    link(rel="stylesheet", href="/assets/site-template-1-news-wap.css")
+    :combine(fileName="site-template-1-news-wap.css")
 
 block header
     include ../components/header
@@ -19,4 +19,4 @@ block contact
 
 
 block scripts
-    script(src="/assets/site-template-1-news-wap.js")
+    :combine(fileName="site-template-1-news-wap.js")

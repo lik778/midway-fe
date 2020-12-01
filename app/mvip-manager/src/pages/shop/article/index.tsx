@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import MainTitle from '@/components/main-title';
+import ArticleBox from '@/components/article-box';
 import { Menu } from 'antd';
 import './index.less';
+
 
 const menuList = [
   {
@@ -32,7 +34,7 @@ export default (props: any) => {
         })}
        </Menu>
        <div className="container">
-
+          <ArticleBox />
        </div>
       </div>
     );
