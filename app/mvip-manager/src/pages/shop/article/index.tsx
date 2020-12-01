@@ -1,43 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
+import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
+import ModuleList from '@/components/shop-module-list';
+import ModuleEmpty from '@/components/shop-module-empty';
 import ArticleBox from '@/components/article-box';
-import { Menu } from 'antd';
+import { ShopModuleType } from '@/enums';
 import './index.less';
 
-
-const menuList = [
-  {
-    link: "/service",
-    label: "服务模块",
-    key: 'nav',
-  },
-  {
-    link: "/article",
-    label: "文章模块",
-    key: 'article',
-  }
-]
 export default (props: any) => {
-  const [current, setCurrent] = useState('article')
-  const handleClick = (e: { key: any; }) => {
-    setCurrent(e.key)
-  };
-
-  return (
-    <div>
-      <MainTitle title="xx店铺"/>
-      <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
-        {menuList.map(item => {
-          return  <Menu.Item key={item.key}>
-                {item.label}
-            </Menu.Item>
-        })}
-       </Menu>
-       <div className="container">
-          <ArticleBox />
-       </div>
+  const hasData = true;
+  let containerComponent;
+  if (hasData) {
+    containerComponent = (
+      <div className="container">
+        <ArticleBox/>
+        <ModuleList/>
       </div>
-    );
+    )
+  } else {
+    containerComponent = <ModuleEmpty type={props.type}/>
+  }
+  return (<div>
+    <MainTitle title="百姓网店铺"/>
+    <ShopModuleTab type={ShopModuleType.article}/>
+    <div className="container">
+      { containerComponent }
+    </div>
+  </div>)
 }
-
-
