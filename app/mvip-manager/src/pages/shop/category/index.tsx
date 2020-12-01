@@ -1,20 +1,24 @@
-import React from 'react';
-import { Table, Button, Select } from 'antd';
+import React,  { useState } from 'react';
+import { Table, Button, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import ModuleEmpty from '@/components/shop-module-empty';
+import ShopModuleGroup from '@/components/shop-module-group';
 import { ShopModuleType } from '@/enums';
 import './index.less'
 const Option = Select.Option;
 
+// tips: 这边和文章模块还要继续抽组件出来，还有css的scope要分离好
 const CategoryList = () => {
+  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
+
   const editItem = (record: any) => {
-    console.log('编辑', record)
+    alert('去编辑')
   }
 
-  const deleteItem = (recordr: any) => {
-    console.log('删除', recordr)
+  const deleteItem = (record: any) => {
+    setVisibleDeleteDialog(true)
   }
   const columns = [
     { title: '序号', dataIndex: 'id', key: 'id' },
@@ -22,7 +26,7 @@ const CategoryList = () => {
         <img width="60" height="40" src="//file.baixing.net/202012/8d77706058cd168278be2d967d40e085.jpg"/> },
     { title: '服务名称', dataIndex: 'name', key: 'name' },
     { title: '价格', dataIndex: 'price', key: 'price' },
-    { title: '服务分组', dataIndex: 'category', key: 'category' },
+    { title: '服务分组', dataIndex: 'group', key: 'group' },
     { title: '审核结果', dataIndex: 'auditStatus', key: 'auditStatus' },
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
@@ -33,18 +37,29 @@ const CategoryList = () => {
     },
   ];
   const data = [
-    { id: 1, key: 1, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核不通过' },
-    { id: 2, key: 2, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核不通过' },
-    { id: 3, key: 3, name: '空调家电维修', price: '面议', category: '维修', auditStatus: '审核通过' },
+    { id: 1, key: 1, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核不通过' },
+    { id: 2, key: 2, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核不通过' },
+    { id: 3, key: 3, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核通过' },
   ];
 
-  return ( <Table columns={columns}  dataSource={data} pagination={{
-    hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />)
+  return (
+    <div>
+      <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
+       onCancel={() => setVisibleDeleteDialog(false)}
+       onOk={() => { console.log('已删除'); setVisibleDeleteDialog(true) }}
+       visible={visibleDeleteDialog}>
+        <p>删除后无法恢复，确认删除？</p>
+      </Modal>
+      <Table columns={columns}  dataSource={data} pagination={{
+        hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
+  </div>)
 }
 
-const NavBox = (props: any) => {
-  const group = () => { alert('服务分组') }
-  const create = () => { alert('创建') }
+interface NavBoxProps {
+  getGroup(): void;
+  createModuleItem(): void;
+}
+const NavBox = (props: NavBoxProps) => {
   return (
     <div className="nav-container">
         <div style={{ float: 'left' }}>
@@ -63,25 +78,34 @@ const NavBox = (props: any) => {
           </Select>
         </div>
         <div style={{ float: 'right' }}>
-          <Button onClick={() => group()} size="large" style={{ marginRight: 36 }}>服务分组</Button>
-          <Button onClick={() => create() } icon={<PlusOutlined />} size="large" type="primary">新建服务</Button>
+          <Button onClick={props.getGroup} size="large" style={{ marginRight: 36 }}>服务分组</Button>
+          <Button onClick={props.createModuleItem} icon={<PlusOutlined />} size="large" type="primary">新建服务</Button>
         </div>
     </div>
   )
 }
 
 export default (props: any) => {
+  const [visible, setVisible] = useState(false);
   const hasData = true;
   let containerComponent;
   if (hasData) {
     containerComponent = (
       <div>
-        <NavBox />
+        <NavBox getGroup={() => setVisible(true)}
+            createModuleItem={() => alert('创建')} />
         <CategoryList />
+        <ShopModuleGroup
+          title="服务分组"
+          createBtnText="新建服务"
+          onClose={() => setVisible(false)}
+          visible={visible}
+          save={() => { console.log('保存') }}
+        />
       </div>
     )
   } else {
-    containerComponent = <ModuleEmpty type={props.type}/>
+    containerComponent = <ModuleEmpty type={ShopModuleType.category}/>
   }
   return (<div>
       <MainTitle title="百姓网店铺"/>

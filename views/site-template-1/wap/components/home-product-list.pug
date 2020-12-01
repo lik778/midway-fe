@@ -1,0 +1,11 @@
+.product
+    .product-title 服务内容
+
+    .product-list
+        - const productList = ['1','2','3','4']
+        each item in productList.length > 4 ? productList.slice(0,4):productList
+            .item
+                .cover
+                    img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+                p 提供注册地址和名字，直接办理无需押金
+                a.btn(href="/") 了解详情
