@@ -9,6 +9,7 @@ import { ShopModuleType } from '@/enums';
 import './index.less'
 const Option = Select.Option;
 
+// tips: 这边和文章模块还要继续抽组件出来，还有css的scope要分离好
 const CategoryList = () => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
 
