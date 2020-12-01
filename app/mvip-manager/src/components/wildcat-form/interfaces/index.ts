@@ -17,7 +17,7 @@ export interface OptionItem {
 }
 
 export interface FormItem {
-  width: number; //长度
+  width?: number; //长度
   label: string; // 页面标签
   type: FormType; // 表单类型
   name: string; // 当前表单名字
@@ -26,4 +26,9 @@ export interface FormItem {
   defaultValue?: any; // 默认值
   validator?: any; // 校验
   options?: OptionItem[];
+  maxLength?: number,
+  minLength?: number,
+  inputWidth?: number,
+  tip?: string, // 文案说明,
+  className?: string, // 自定义样式
 }

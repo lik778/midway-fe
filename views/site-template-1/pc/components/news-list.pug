@@ -9,8 +9,9 @@
                     a(href="/" + renderData.shopName + item.urlSuffix)
                         .sanjiao-icon
                         p #{item.name}
-                        - const time = new Date (item.modifiedTime).toJSON().substr(0, 10).replace('T', ' ')
-                        .news-createtime #{time}
+                            //-- const time= dayjs.unix(item.modifiedTime).toJSON().substr(0, 10)
+                        .news-createtime
+                            :dateFormat(newsTime='1606118018')
     else
         p 暂时还没有数据哦
 

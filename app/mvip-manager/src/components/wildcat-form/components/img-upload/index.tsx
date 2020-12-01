@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Upload } from 'antd';
+import React, {useState} from 'react';
+import { Button, Upload, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
 
 const uploadProps = {
@@ -14,13 +15,59 @@ const uploadProps = {
   },
 };
 
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+
 export const ImgUpload = (props: any) => {
-  return (
+  const [previewVisible, setPreviewVisible] = useState(false)
+  const [previewTitle, setPreviewTitle] = useState('')
+  const [previewImage, setPreviewImage] = useState('')
+  const [fileList, setFileList] = useState([])
+  const uploadButton = (
     <div>
-      <Upload {...uploadProps}>
-        <Button>上传</Button>
+      <PlusOutlined />
+      <div className='upload-img'>上传</div>
+    </div>
+  );
+
+  const handleCancel = ()=> {
+    setPreviewVisible(false)
+  }
+
+  const handlePreview = async (file: any) => {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+      }
+
+      setPreviewImage(file.url || file.preview)
+      setPreviewVisible(true)
+      setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
+  }
+  
+  return (
+    <div className="img-upload">
+      <Upload {...uploadProps} listType="picture-card"
+          fileList={fileList}
+          onPreview={handlePreview}>
+        {fileList.length >= 8 ? null : uploadButton}
+        
       </Upload>
-      <p>图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100</p>
+      <Modal
+          visible={previewVisible}
+          title={previewTitle}
+          footer={null}
+          onCancel={handleCancel}
+        >
+          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
+      <p className="tip">{props.tip}</p>
     </div>
   )
 }

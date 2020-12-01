@@ -1,20 +1,25 @@
-- const data = [{id:'一号客服',qq:956225979},{id:'二号客服',qq:956225979},{id:'三号客服',qq:956225979}]
+//-- const data = [{name:'一号客服',content:956225979},{name:'二号客服',content:956225979},{name:'三号客服',content:956225979}]
+- const { qq, phone, weChat } = renderData.contact
+//-下面数据可测试
+//-- const  qq = [{"type": 1,"name": "客服1","content": "1234567"}]
 .customer-box
-	.title QQ交谈
-	ul.top
-		each item in data
-			li
-				.item
-					span #{item.id}：
-					a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.qq+"&site=qq&menu=yes" target="_blank")
+	if qq && qq.length>0
+		.title QQ交谈
+		dl.top.clearfix
+			each item in qq
+				dt #{item.name}:
+				dd
+					a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
 						img(src="//file.baixing.net/202011/be5237a19752ef6d8ec6a4c2d054eaec.png", alt="")
-	.tel 联系电话
-	.center
-		img(src="//file.baixing.net/202011/ec4ef1af5fef2b0259060cf8cb6d66cf.png", alt="")
-		span 18876587659
-	.weixin 联系微信
-	.footer
-		img(src="//file.baixing.net/202011/44808034b4acc19cb6c4de674b70e824.png", alt="")
-		span afhuh-w7ry
+	if phone
+		.tel 联系电话
+		a.center(href="tel:" + phone.content )
+			img(src="//file.baixing.net/202011/ec4ef1af5fef2b0259060cf8cb6d66cf.png", alt="")
+			span #{phone.content}
+	if weChat
+		.weixin 联系微信
+		.footer
+			img(src="//file.baixing.net/202011/44808034b4acc19cb6c4de674b70e824.png", alt="")
+			span #{weChat.content}
 
 
