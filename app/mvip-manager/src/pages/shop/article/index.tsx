@@ -1,7 +1,6 @@
 import React from 'react';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
-import ModuleList from '@/components/shop-module-list';
 import ModuleEmpty from '@/components/shop-module-empty';
 import ArticleBox from '@/components/article-box';
 import { ShopModuleType } from '@/enums';
@@ -14,7 +13,6 @@ export default (props: any) => {
     containerComponent = (
       <div className="container">
         <ArticleBox/>
-        <ModuleList/>
       </div>
     )
   } else {
