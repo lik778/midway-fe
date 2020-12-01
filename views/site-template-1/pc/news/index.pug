@@ -1,16 +1,17 @@
 extends ../layout
 
 block styles
-    link(rel="stylesheet", href="/assets/site-template-1-news-pc.css")
+    :combine(fileName="site-template-1-news-pc.css")
 
 block content
+    //-:dateFormat(date="2019-09-09")
     //- 面包屑
     //-- const crumbs= [{label:'首页',link:"/" + renderData.shopName},{label:'新闻资讯',link:"/" + renderData.shopName + "/n"}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
         .main
-            - const firstcrumb= '新闻资讯'
+            //-- const firstcrumb= '新闻资讯'
             //-- const secondcrumb= '境外公司注册'
             include ../components/main-title.pug
             include ../components/news-list.pug
@@ -32,4 +33,4 @@ block content
     include ../components/customer-service.pug
 
 block scripts
-    script(src="/assets/site-template-1-news-pc.js")
+    :combine(fileName="site-template-1-news-pc.js")

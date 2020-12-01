@@ -1,7 +1,7 @@
 extends ../layout
 
 block styles
-    link(rel="stylesheet", href="/assets/site-template-1-product-detail-pc.css")
+    :combine(fileName="site-template-1-product-detail-pc.css")
 
 block content
     //- 面包屑
@@ -30,5 +30,5 @@ block content
     include ../components/customer-service.pug
 
 block scripts
-    script(src="/assets/site-template-1-product-detail-pc.js")
+    :combine(fileName="site-template-1-product-detail-pc.js")
 
