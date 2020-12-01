@@ -17,3 +17,14 @@ a:hover
 
 .container
   padding-bottom 200px
+
+//解决浮动问题
+.clearfix:after
+	content ""
+	display block
+	height 0
+	clear both
+	visibility hidden
+//解决IE6,7不识别伪元素
+.clearfix
+	zoom  1
