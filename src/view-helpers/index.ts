@@ -1,11 +1,11 @@
 import * as dayjs from 'dayjs'
 import * as fs from 'fs';
 import { join } from 'path';
+import * as util  from './util';
+
+export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
+
 export default {
-  combineCss: function(text, options) {
-    const { name } = options
-    return `<link rel="stylesheet" href="/assets/${name}.css"/>`
-  },
   combine: function(text, options) {
     const { fileName } = options
     const name = fileName.split('.')[0]
@@ -18,9 +18,7 @@ export default {
       return `<script src="/assets/${assetsName}"></script>`
     }
   },
-  dateFormat: function(text, options) {
-     const { newsTime } = options
-    //if(options.newsTime) text=dayjs.unix(newsTime).toJSON().substr(0, 10);
-    return dayjs.unix(newsTime).toJSON().substr(0, 10)
+  dateFormat: function(date: number) {
+    return dayjs.unix(date).toJSON().substr(0, 10)
   }
 }
