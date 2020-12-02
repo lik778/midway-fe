@@ -6,7 +6,7 @@
             //-默认最多展示20条
             each item in newsList.length>20 ? newsList.slice(0,20) : newsList
                 li
-                    a(href="/" + renderData.shopName + item.urlSuffixSuffix)
+                    a(href="/" + renderData.shopName + item.urlSuffix)
                         p #{item.name}
     else
         p(style="min-height:250px") 暂时还没有数据哦
