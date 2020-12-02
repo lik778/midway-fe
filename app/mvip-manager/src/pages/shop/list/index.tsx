@@ -70,13 +70,13 @@ export default (props: any) => {
     const data = await postApiData('shop/listing', { page: 1, size: 10 })
     if(data && data.code === 200) {
       const resData = data.data
-      const result = resData.result && resData.result.slice(0,2)  || []
+      const result = resData.result || []
       setShopList(result)
       setCount(resData.totalRecord)
     }
   }
-  
-  
+
+
 
 
   // 显示弹窗
@@ -125,10 +125,10 @@ export default (props: any) => {
           const newData = shopSiteRes?.data || null
           setShopList([newData, ...shopListData])
           setCount(totalCount+1)
-        }else { 
+        }else {
           getShopListing()
         }
-        
+
       }else {
         setError(shopSiteRes && shopSiteRes.message || '')
       }
@@ -156,7 +156,7 @@ export default (props: any) => {
             isRequired: false
           })
         }
-        
+
         setOSite({...oSite, [name]:value})
       break;
       case 'domain':
@@ -195,7 +195,7 @@ export default (props: any) => {
                )
             })}
           </div>
-        </div>        
+        </div>
       )
     }else {
       // 无列表状态
@@ -206,7 +206,7 @@ export default (props: any) => {
       )
     }
   }
-  
+
   // 我的店铺
   return (
     <div>

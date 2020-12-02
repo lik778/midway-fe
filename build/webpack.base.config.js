@@ -14,6 +14,7 @@ module.exports = {
     'site-template-1-product-child-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product-child/index.js'),
     'site-template-1-product-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product-detail/index.js'),
     'site-template-1-product-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/product/index.js'),
+    'site-template-1-news-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/news-detail/index.js'),
   },
   output: {
     path: path.resolve(__dirname, "../dist/public"),
