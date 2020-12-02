@@ -5,9 +5,9 @@ import { ShopModuleType } from '@/enums';
 
 const menuList = [
   {
-    link: ShopModuleType.category,
+    link: ShopModuleType.product,
     label: "服务模块",
-    key: ShopModuleType.category
+    key: ShopModuleType.product
   },
   {
     link: ShopModuleType.article,

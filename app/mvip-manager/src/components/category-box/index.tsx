@@ -3,7 +3,7 @@ import React , { useState } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
-import { articleForm } from '@/config/form';
+import { categoryForm } from '@/config/form';
 import { Form, Drawer } from 'antd';
 export default (props: any) => {
 
@@ -39,7 +39,7 @@ export default (props: any) => {
 
   return (
     <Drawer
-          title="新建文章"
+          title="新建服务"
           placement={placement}
           closable={true}
           onClose={onClose}
@@ -48,7 +48,7 @@ export default (props: any) => {
           width="700"
         >
           <Form.Item>
-           <WildcatForm config={articleForm} submit={sumbit} onClick={onModalClick} className="default-form"/>
+           <WildcatForm config={categoryForm} submit={sumbit} onClick={onModalClick} className="default-form"/>
          </Form.Item>
          <GroupModal isModalVisible={modalVisible} onClose={onModalClose}></GroupModal>
     </Drawer>

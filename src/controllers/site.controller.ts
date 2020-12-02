@@ -30,7 +30,6 @@ export class SiteController {
         const shopName = this.midwayApiService.getShopName(params.shopName)
         const newsId = params.id.split(".")[0]
         const { data } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId });
-        console.log(params)
         const templateUrl = `site-template-1/${device}/news-detail/index`
       return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName } });
     } else {
