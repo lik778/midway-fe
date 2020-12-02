@@ -143,7 +143,7 @@ export default (props: any) => {
           visible={visible}
           save={() => { console.log('保存') }}
         />
-        {/*<CategoryBox catList/>*/}
+        <CategoryBox/>
       </div>
     )
   } else {
