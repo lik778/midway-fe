@@ -50,6 +50,9 @@ export default (props: any) => {
           <ProductList
             total={total}
             dataSource={productList}
+            update={(list) => {
+              setProductList(addKeyForListData(list) || [])
+            }}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
             title="服务分组"

@@ -95,6 +95,7 @@ export default (props: any) => {
         <ShopModuleGroup
           title="文章分组"
           createBtnText="新建文章"
+          cateList={[]}
           onClose={() => setVisible(false)}
           visible={visible}
           save={() => { console.log('保存') }}
