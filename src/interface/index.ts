@@ -9,6 +9,7 @@ export interface ManagementReqParams {
   method: string;
   path: string;
   params?: any;
+  shopId?: number;
 }
 
 // tips: 请求midway-service的头部参数
