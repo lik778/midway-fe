@@ -32,13 +32,13 @@ export class MidwayService {
   public getManagementData(req: Request, input: ManagementReqParams): Promise<AxiosResponse<any>> {
     const {  path, params } = input
     const method = input.method.toLocaleLowerCase()
-    const shopId = req.headers['shop-id']
+    const shopId: any = req.headers['shop-id']
     switch (method) {
       case 'get':
-        return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, Number(shopId)));
+        return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
         break;
       case 'post':
-        return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, Number(shopId)));
+        return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
         break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,7 +46,7 @@ export class MidwayService {
     }
   }
 
-  private setApiAHeaders(cookies: any, shopId?: number): HeaderAuthParams {
+  private setApiAHeaders(cookies: any, shopId?: string): HeaderAuthParams {
     const headers =  {
       'x-api-hash': (cookies && cookies.__c) || '',
       'x-api-user': (cookies && cookies.__u) || '',
@@ -55,7 +55,7 @@ export class MidwayService {
       'x-api-src': 'web'
     }
     if (shopId) {
-      headers['x-api-shop-id'] = shopId
+      headers['x-api-shop-id'] = Number(shopId)
     }
     return headers;
   }

@@ -13,7 +13,6 @@ export const getProductListApi = (shopId: number, params: getProductListApiParam
 // api: 删除产品
 interface deleteProductApiParams {
   id: number;
-  shopId: number;
 }
 
 export const deleteProductApi = (shopId: number, params: deleteProductApiParams) => {
