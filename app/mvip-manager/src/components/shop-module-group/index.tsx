@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Drawer } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import GroupModal from '@/components/group-modal'
 import './index.less';
 
 interface Props {
@@ -17,8 +18,8 @@ interface Props {
 
 
 export default (props: Props) => {
-  // 弹窗显示隐藏
   const { cateList } = props
+  const hasData = cateList && cateList.length
   return (
     <Drawer
       title={props.title}
@@ -31,7 +32,7 @@ export default (props: Props) => {
               <Button style={{ float: 'right' }} onClick={props.create} icon={<PlusOutlined />} size="large" type="primary">{props.createBtnText}</Button>
             </div>
             <div className='group-list'>
-              { Boolean(cateList.length) && cateList.map((x: any) => {
+              { Boolean(hasData) && cateList.map((x: any) => {
                 return (
                   <div className='group-item' key={x.name}>
                     <span className="name">{x.name}</span>
@@ -43,7 +44,8 @@ export default (props: Props) => {
                 )
               }) }
             </div>
-          { Boolean(cateList.length) && <Button className='save-btn' onClick={props.save} size="large" type="primary">保存</Button> }
+          { Boolean(hasData) && <Button className='save-btn' onClick={props.save} size="large" type="primary">保存</Button> }
+          <GroupModal />
         </div>
     </Drawer>)
 }

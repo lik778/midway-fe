@@ -1,5 +1,5 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './index.less';
 import { Modal, Input } from 'antd';
 import classNames from 'classnames';
@@ -76,7 +76,7 @@ export default (props: any) => {
     //   props.onClose(false)
     //   setConfirmLoading(false);
     // }, 2000);
-    
+
     config.forEach(c => {
       console.log(c.id)
     })
@@ -87,7 +87,7 @@ export default (props: any) => {
     props.onClose(false)
   };
 
-  
+
 
   // 输入框必选
   const inputIsRequired = (str: string) => {
