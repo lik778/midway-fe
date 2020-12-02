@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import ModuleEmpty from '@/components/shop-module-empty';
@@ -8,54 +8,12 @@ import './index.less';
 import { Button, Modal, Select, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ShopModuleGroup from '@/components/shop-module-group';
+import ArticleList from './components/list';
+import { getArticleListApi } from '@/api/shop';
+import { addKeyForListData } from '@/utils';
+import { RouteParams } from '@/interfaces/shop';
+import { useParams } from 'umi';
 const Option = Select.Option;
-
-const ArticleList = () => {
-  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
-
-  const editItem = (record: any) => {
-    console.log('编辑', record)
-  }
-
-  const deleteItem = (record: any) => {
-    setVisibleDeleteDialog(true)
-  }
-  const columns = [
-    { title: '序号', dataIndex: 'id', key: 'id' },
-    { title: '文章标题', dataIndex: 'title', key: 'name' },
-    { title: '文章分组', dataIndex: 'group', key: 'price' },
-    { title: '发文来源', dataIndex: 'from', key: 'from',
-      render: (text: string, record: any) => {
-        return <span style={{ color: text === 'AI发布' ? '#FF8D19' :'' }}>{text}</span>
-      }
-    },
-    { title: '审核结果', dataIndex: 'auditStatus', key: 'auditStatus' },
-    { title: '操作', dataIndex: '', key: 'x',
-      render: (text: string, record: any) => (
-        <div>
-          <span onClick={() => editItem(record)} className="action-btn">修改</span>
-          <span onClick={() => deleteItem(record)} className="action-btn">删除</span>
-        </div>)
-    },
-  ];
-  const data = [
-    { id: 1, key: 1, title: '空调家电维修空调家电维修', group: '空调家电维修', from: '手动发布', auditStatus: '审核不通过' },
-    { id: 2, key: 2, title: '空调家电维修空调家电维修', group: '维修', from: 'AI发布', auditStatus: '审核不通过' },
-    { id: 3, key: 3, title: '空调家电维修', group: '维修', from: '手动发布', auditStatus: '审核通过' },
-  ];
-
-  return (
-    <div>
-      <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
-             onCancel={() => setVisibleDeleteDialog(false)}
-             onOk={() => { console.log('已删除'); setVisibleDeleteDialog(true) }}
-             visible={visibleDeleteDialog}>
-        <p>删除后无法恢复，确认删除？</p>
-      </Modal>
-      <Table columns={columns}  dataSource={data} pagination={{
-        hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
-    </div>)
-}
 
 const NavBox = (props: any) => {
   return (
@@ -84,34 +42,51 @@ const NavBox = (props: any) => {
 }
 
 export default (props: any) => {
-  const [visible, setVisible] = useState(false);
-  const hasData = true;
-  let containerComponent;
-  if (hasData) {
-    containerComponent = (
-      <div>
-        <NavBox getGroup={() => setVisible(true)}
-                createModuleItem={() => alert('创建')} />
-        <ShopModuleGroup
-          title="文章分组"
-          createBtnText="新建文章"
-          cateList={[]}
-          onClose={() => setVisible(false)}
-          visible={visible}
-          save={() => { console.log('保存') }}
-        />
-        <ArticleList />
-        <ArticleBox/>
-      </div>
-    )
-  } else {
-    containerComponent = <ModuleEmpty type={props.type}/>
-  }
+  const [moduleGroupVisible, setModuleGroupVisible] = useState(false);
+  const [articleFormVisible, setArticleFormVisible] = useState(false);
+  const [articleList, setArticleList] = useState([]);
+  const [cateList, setCateList] = useState([]);
+  const [contentCateId, setContentCateId] = useState(0);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  // 获取店铺id
+  const params: RouteParams = useParams();
+
+  useEffect(() => {
+    (async () => {
+      const { success, data, message } = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
+      if (success) {
+        setArticleList(addKeyForListData(data.articleList.result) || [])
+        setCateList(addKeyForListData(data.cateList) || [])
+        setTotal(data.articleList.totalRecord)
+      } else {
+        message.error(message);
+      }
+    })()
+  }, [page, contentCateId])
+
   return (<div>
     <MainTitle title="百姓网店铺"/>
     <ShopModuleTab type={ShopModuleType.article}/>
     <div className="container">
-      { containerComponent }
+      <NavBox getGroup={() => setModuleGroupVisible(true)}
+              createModuleItem={() => alert('创建')} />
+      <ShopModuleGroup
+        title="文章分组"
+        createBtnText="新建文章"
+        cateList={[]}
+        onClose={() => setModuleGroupVisible(false)}
+        visible={moduleGroupVisible}
+        save={() => { console.log('保存') }}
+      />
+      <ArticleList
+        total={total}
+        dataSource={articleList}
+        update={(list) => {
+          setArticleList(addKeyForListData(list) || [])
+        }}
+        onChange={(page) => setPage(page)}/>
+      {/*<ArticleBox/>*/}
     </div>
   </div>)
 }
