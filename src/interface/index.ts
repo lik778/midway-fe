@@ -47,4 +47,10 @@ export interface ShopComponents {
   articleList?: any; // 文章列表
   productInfo?: any; // 服务详情
   articleInfo?: any; // 文章详情
+  navigation?: any; // 导航
+  footerLink?: any; // 友链
+  basic?: any; // 用户信息
+  shopInfo?: any; // 店铺信息
+  bread?: any; // 面包屑
+  meta?: any; // seo tkd
 }
