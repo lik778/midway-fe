@@ -105,11 +105,11 @@ export default (props: any) => {
       </div>
     )
   } else {
-    containerComponent = <ModuleEmpty type={ShopModuleType.category}/>
+    containerComponent = <ModuleEmpty type={ShopModuleType.product}/>
   }
   return (<div>
       <MainTitle title="百姓网店铺"/>
-      <ShopModuleTab type={ShopModuleType.category}/>
+      <ShopModuleTab type={ShopModuleType.product}/>
       <div className="container">
         { containerComponent }
       </div>

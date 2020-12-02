@@ -1,5 +1,5 @@
 export enum ShopModuleType {
-  category = 'category',
+  product = 'product',
   article = 'article'
 }
 
