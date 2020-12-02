@@ -16,6 +16,8 @@ block content
         .side-bar
             include ../components/sidebar/contact-title-home.pug
             include ../components/sidebar/contact.pug
+
+            - const sidebarNewsList = renderData.articleList.result
             include ../components/sidebar/home-sidebar-newslist-title.pug
 
             include ../components/sidebar/sidebar-newslist.pug

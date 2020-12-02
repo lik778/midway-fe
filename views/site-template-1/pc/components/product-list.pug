@@ -14,10 +14,13 @@ mixin product-list(n,page)
 		else
 			p 暂时还没有数据哦
 
+	//-这里是跳到/n/新闻列表页，本可以写死，但后端告知最好是获取传的值
+	//-moreLink使用的是产品列表底部查看更多定义的变量
 	- const moreLink = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
-	if page == 'home' && renderData.navigation && moreLink
-		a.product-more-btn(href="/" + renderData.shopName + moreLink) 查看更多
-	else
-		a.product-more-btn(href="#") 查看更多
+	if page == 'home'
+		if renderData.navigation && moreLink
+			a.product-more-btn(href="/" + renderData.shopName + moreLink) 查看更多
+		else
+			a.product-more-btn(href="#") 查看更多
 
 
