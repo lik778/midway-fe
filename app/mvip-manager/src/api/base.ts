@@ -30,20 +30,29 @@ request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(err.response && err.response.data)
 })
 
-export const postApi = (url: string, data: ManagementReqParams): Promise<AxiosResponse<any>> => {
+export const postApi = (url: string, data: ManagementReqParams, headers?: any): Promise<AxiosResponse<any>> => {
   const { method, path, params } = data;
-  return request.post(url, { method, params, path });
+  return request.post(url, { method, params, path }, { headers });
 }
 
 // tips: 这边传输数据返回格式还是太随意了，需要修改
-export const getApi = (url: string, params?: any): Promise<any> => {
+export const getApi = (url: string, params: any): Promise<any> => {
   return request.get(url, {  params });
 }
 
-export const postApiData = (path: string, params?:any): Promise<any> => {
+export const postApiData = (path: string, params:any, headers?: any): Promise<any> => {
   const p = JSON.stringify(params)
   return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
   params: p,
-  })
+  }, headers)
+}
+
+export const setShopHeader = (shopId: number) => {
+  // 通过header来传递shopId
+  const headers: any = {}
+  if (shopId) {
+    headers['shop-id'] = shopId
+  }
+  return headers;
 }
 

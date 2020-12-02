@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
 import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceResponse, ShopComponents } from '../interface';
-
+import { Request } from 'express';
 
 @Injectable()
 export class MidwayService {
@@ -29,15 +29,16 @@ export class MidwayService {
     // }
   }
 
-  public getManagementData(input: ManagementReqParams, cookies: any): Promise<AxiosResponse<any>> {
+  public getManagementData(req: Request, input: ManagementReqParams): Promise<AxiosResponse<any>> {
     const {  path, params } = input
     const method = input.method.toLocaleLowerCase()
+    const shopId: any = req.headers['shop-id']
     switch (method) {
       case 'get':
-        return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(cookies));
+        return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
         break;
       case 'post':
-        return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(cookies));
+        return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
         break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -45,14 +46,18 @@ export class MidwayService {
     }
   }
 
-  private setApiAHeaders(cookies: any): HeaderAuthParams {
-    return {
+  private setApiAHeaders(cookies: any, shopId?: string): HeaderAuthParams {
+    const headers =  {
       'x-api-hash': (cookies && cookies.__c) || '',
       'x-api-user': (cookies && cookies.__u) || '',
       'x-api-token': (cookies && cookies.__t) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }
+    if (shopId) {
+      headers['x-api-shop-id'] = Number(shopId)
+    }
+    return headers;
   }
 
   private setPageHeaders(shopName: string, device: string): PageHeaderParams {

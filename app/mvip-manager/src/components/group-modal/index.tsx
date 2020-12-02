@@ -12,20 +12,24 @@ const groupConfig = [
     placeholder: "请输入名称, 2~30个字",
     required: true,
     maxLength:20,
-    minLength:1,
+    minLength:2,
     id:'name',
     value: '',
     initLen: 0,
+    err: '请输入大于2个字的名称',
+    errClass:''
   },
   {
     label: 'title',
-    placeholder: "请输入名称, 9~15个字",
+    placeholder: "请输入标题, 9~15个字",
     required: false,
     maxLength:15,
     minLength:9,
     id:'title',
     value: '',
     initLen: 0,
+    err: '请输入大于9个字的标题',
+    errClass:''
   },
   {
     label: 'keyword',
@@ -34,7 +38,10 @@ const groupConfig = [
     id:'keyword',
     value: '',
     initLen: 0,
-    maxLength: undefined,
+    minLength: 0,
+    maxLength: 100,
+    err: '',
+    errClass:''
   },
   {
     label: 'description',
@@ -45,15 +52,15 @@ const groupConfig = [
     id: 'description',
     value: '',
     initLen: 0,
+    err:'请输入大于40个字的描述',
+    errClass:''
   },
 ]
 
 const gData = {
-  'name': '',
-  'title': '',
-  'keyword': '',
-  'description': ''
 }
+
+const errClass = 'input-error'
 
 export default (props: any) => {
   const [config, setConfig] = useState(groupConfig)
@@ -76,39 +83,54 @@ export default (props: any) => {
     //   props.onClose(false)
     //   setConfirmLoading(false);
     // }, 2000);
-    
-    config.forEach(c => {
-      console.log(c.id)
+    let r: {
+      [key: string]: string}= {
+
+    }
+
+    const newConfig = config.concat()
+    newConfig.forEach((c, i) => {
+      r[c.id] = c.value
+      if(c.required && !c.value){
+        newConfig[i]['errClass'] = errClass
+        setConfig(newConfig)
+        return
+      }
+
+      if(c.value && c.initLen < c.minLength) {
+        setError(c.err)
+        newConfig[i]['errClass'] = errClass
+        setConfig(newConfig)
+        return
+      }
     })
-    props.onClose(false)
+    setResModal(r)
+    // props.onClose(false)
   };
 
   const handleCancel = () => {
     props.onClose(false)
   };
 
-  
-
-  // 输入框必选
-  const inputIsRequired = (str: string) => {
-    if(isInputErr.key === str) {
-      return isInputErr.isRequired? 'input-error' : ''
-    }
-    return ''
-  }
-
-
-
   // 输入框
   const handleChange = (e: any) => {
     const target = e.target
     const name = target.name
     const value = target.value
-    let newConfig = groupConfig.concat()
+    let newConfig = config.concat()
     newConfig.map(g => {
         if(g.id == name) {
           g.value = value
           g.initLen = value.length
+        }
+
+        if(g.required && g.value) {
+          g['errClass'] = ''
+        }
+
+        if(g.value && g.initLen > g.minLength) {
+          g['errClass'] = ''
+          setError('')
         }
     })
 
@@ -131,7 +153,7 @@ export default (props: any) => {
               return(
                 <li className="f-input" key={g.id}>
                   <label htmlFor={g.id} className={classNames({'required': g.required})}>{g.label}</label>
-                  <Input placeholder={g.placeholder} id={g.id} name={g.id} className={inputIsRequired(g.id)} maxLength={g.maxLength} minLength={g.minLength} onChange={handleChange} value={g.value}/>
+                  <Input placeholder={g.placeholder} id={g.id} name={g.id} className={g.errClass} maxLength={g.maxLength} minLength={g.minLength} onChange={handleChange} value={g.value}/>
                   {g.maxLength&&<span className="f-len">{g.initLen}/{g.maxLength}</span>}
                 </li>
               )
