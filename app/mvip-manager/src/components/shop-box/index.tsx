@@ -1,6 +1,8 @@
 
 import React from 'react';
+import { Link } from 'umi';
 import './index.less';
+
 export default (props: any) => {
   const s = props?.shopChild
   const status = s?.status === 1 ? 's-active' : 's-offline'
@@ -15,10 +17,10 @@ export default (props: any) => {
         <h4>{s?.name}</h4>
         <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
       </div>
-      
+
       <div className="s-btn">
-        <a href="">基础设置</a>
-        <a href="">内容管理</a>
+        <a href="#">基础设置</a>
+        <Link to="product">内容管理</Link>
       </div>
     </div>
   );
