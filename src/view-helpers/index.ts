@@ -18,6 +18,7 @@ export default {
       return `<script src="/assets/${assetsName}"></script>`
     }
   },
+  //这里定义了时间戳转换方法
   dateFormat: function(date: number) {
     return dayjs.unix(date).toJSON().substr(0, 10)
   }

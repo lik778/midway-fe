@@ -19,11 +19,9 @@ block content
             include ../components/sidebar/recommend.pug
 
             +sidebar-title('服务分类')
-            //-- const categoryList = [{name:'公司注册', url:'/site/product/child'},{name:'代理记账', url:'/site/product/child'},{name:'公司注销', url:'/site/product/child'},{name:'公司转让', url:'/site/product/child'}]
             - const cateList = renderData.productCateList
-            //-include ../components/sidebar/category-item.pug
+            include ../components/sidebar/category-item.pug
 
-    //-include ../components/page.pug
     include ../components/footer.pug
     //-QQ交谈
     include ../components/customer-service.pug
