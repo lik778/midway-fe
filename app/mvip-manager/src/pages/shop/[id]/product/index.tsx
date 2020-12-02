@@ -4,8 +4,8 @@ import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import CategoryBox from '@/components/category-box';
-import ProductList from './components/product-list';
-import ProductNav from './components/product-nav';
+import ProductList from './components/list';
+import ProductNav from './components/nav';
 import { ShopModuleType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
 
