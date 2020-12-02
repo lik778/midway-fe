@@ -1,8 +1,9 @@
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './index.less';
-import { Button, Modal, Input } from 'antd';
+import { Modal, Input } from 'antd';
 import classNames from 'classnames';
+
 
 // 分组tkd配置
 const groupConfig = [
@@ -47,34 +48,46 @@ const groupConfig = [
   },
 ]
 
+const gData = {
+  'name': '',
+  'title': '',
+  'keyword': '',
+  'description': ''
+}
+
 export default (props: any) => {
-  const [visible, setVisible] = useState(props.isBtn);
   const [config, setConfig] = useState(groupConfig)
+  // 确定loading
   const [confirmLoading, setConfirmLoading] = useState(false);
-
-
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
-
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setVisible(false);
-  };
-
   // 弹窗报错
   const [isInputErr, setInputErr] = useState({
     key:'',
     isRequired: false
   })
+
+  const [resModal, setResModal] = useState(gData)
+
+  // 弹窗错误显示
+  const [err, setError] = useState('')
+
+  const handleOk = () => {
+    // setConfirmLoading(true);
+    // setTimeout(() => {
+    //   props.onClose(false)
+    //   setConfirmLoading(false);
+    // }, 2000);
+    
+    config.forEach(c => {
+      console.log(c.id)
+    })
+    props.onClose(false)
+  };
+
+  const handleCancel = () => {
+    props.onClose(false)
+  };
+
+  
 
   // 输入框必选
   const inputIsRequired = (str: string) => {
@@ -106,12 +119,13 @@ export default (props: any) => {
     <div className="group-modal">
       <Modal
         title="新建分组"
-        visible={visible}
+        visible={props.isModalVisible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         className="g-modal"
       >
+        <p className="error">{err}</p>
         <ul className="g-main">
             { config && config.map(g => {
               return(

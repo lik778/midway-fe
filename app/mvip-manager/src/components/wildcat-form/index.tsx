@@ -13,7 +13,7 @@ interface Props {
   config: FormConfig,
   submit(values: any): void;
   className?: string,
-  onClick: void,
+  onClick?: any,
 }
 
 const options = [
@@ -71,7 +71,7 @@ const WildcatForm = (props: Props) => {
               <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
-              <Btn btnConfig={item.btnConfig}></Btn>
+              <Btn btnConfig={item.btnConfig} onClick={props.onClick}></Btn>
             </FormItem>)
           }else if (item.type === FormType.Tag) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>

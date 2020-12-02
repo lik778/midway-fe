@@ -100,7 +100,7 @@ export default (props: any) => {
           save={() => { console.log('保存') }}
         />
         <ArticleList />
-        {/*<ArticleBox/>*/}
+        <ArticleBox/>
       </div>
     )
   } else {
