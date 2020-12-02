@@ -4,6 +4,7 @@ export enum FormType {
   Textarea,
   AreaSelect,
   ImgUpload,
-  GroupSelect
+  GroupSelect,
+  Tag
 }
 
