@@ -12,6 +12,6 @@
                         a(href="/" + renderData.shopName + item.urlSuffix)
                             p #{item.name}
                             .news-createtime 
-                                :dateFormat(newsTime='1606118018')
+                                | #{ dateFormat(item.modifiedTime) }
         else
             p(style="min-height:250px") 暂时还没有数据哦
