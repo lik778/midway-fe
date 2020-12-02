@@ -5,13 +5,10 @@ block styles
 
 block content
     //- 面包屑
-    - const crumbs = [{label:'首页',link:'#'},{label:'新闻资讯',link:'#'},{label:'境外公司注册',link:'#'}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
         .main
-            - const firstcrumb= '新闻资讯'
-            - const secondcrumb= '境外公司注册'
             include ../components/main-title.pug
             include ../components/news-list.pug
 

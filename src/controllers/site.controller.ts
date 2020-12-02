@@ -28,10 +28,11 @@ export class SiteController {
   async newschild(@Param() params, @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     if (/.html$/.test(req.url)) {
         const shopName = this.midwayApiService.getShopName(params.shopName)
-        const currentPage = query.page || 1;
-        const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 });
+        const newsId = params.id.split(".")[0]
+        const { data } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId });
+        console.log(params)
         const templateUrl = `site-template-1/${device}/news-detail/index`
-      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, currentPage } });
+      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName } });
     } else {
       const shopName = this.midwayApiService.getShopName(params.shopName)
       const currentPage = query.page || 1;
@@ -50,15 +51,14 @@ export class SiteController {
     return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, currentPage } });
   }
 
-  //这里还需要把cateId子分类，page参数化
   @Get('/p-:id')
   async productchild(@Param() params, @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     if (/.html$/.test(req.url)) {
       const shopName = this.midwayApiService.getShopName(params.shopName)
-      const currentPage = query.page || 1;
-      const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 });
+      const productId = params.id.split(".")[0]
+      const { data } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId });
       const templateUrl = `site-template-1/${device}/product-detail/index`
-      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, currentPage } });
+      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName } });
     } else {
       const shopName = this.midwayApiService.getShopName(params.shopName)
       const currentPage = query.page || 1;

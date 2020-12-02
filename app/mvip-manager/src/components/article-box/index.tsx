@@ -2,8 +2,9 @@
 import React , { useState } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
+import GroupModal from '@/components/group-modal';
 import { articleForm } from '@/config/form';
-import { Button, Form, Drawer } from 'antd';
+import { Form, Drawer } from 'antd';
 export default (props: any) => {
 
   // 弹窗显示隐藏
@@ -25,6 +26,9 @@ export default (props: any) => {
     setVisible(false)
   };
 
+  const onClick = (e: any) => {
+
+  }
 
 
   return (
@@ -38,8 +42,9 @@ export default (props: any) => {
           width="700"
         >
           <Form.Item>
-           <WildcatForm config={articleForm} submit={sumbit} className="default-form"/>
+           <WildcatForm config={articleForm} submit={sumbit} onClick={onClick} className="default-form"/>
          </Form.Item>
+         <GroupModal ></GroupModal>
     </Drawer>
   );
 }
