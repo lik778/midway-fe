@@ -1,119 +1,63 @@
-import React,  { useState } from 'react';
-import { Table, Button, Select, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React,  { useState, useEffect } from 'react';
+import { useParams } from "umi";
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
-import ModuleEmpty from '@/components/shop-module-empty';
 import ShopModuleGroup from '@/components/shop-module-group';
 import CategoryBox from '@/components/category-box';
+import ProductList from './components/list';
+import ProductNav from './components/nav';
 import { ShopModuleType } from '@/enums';
+import { getProductListApi }  from '@/api/shop';
+
 import './index.less'
-const Option = Select.Option;
+import { RouteParams } from '@/interfaces/shop';
 
-// tips: 这边和文章模块还要继续抽组件出来，还有css的scope要分离好
-const CategoryList = () => {
-  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
 
-  const editItem = (record: any) => {
-    alert('去编辑')
-  }
+export default (props: any) => {
+  const [moduleGroupVisible, setModuleGroupVisible] = useState(false);
+  const [productFormVisible, setProductFormVisible] = useState(false);
+  const [productList, setProductList] = useState([]);
+  const [cateList, setCateList] = useState([]);
+  const [contentCateId, setContentCateId] = useState(0);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  // 获取店铺id
+  const params: RouteParams = useParams();
 
-  const deleteItem = (record: any) => {
-    setVisibleDeleteDialog(true)
-  }
-  const columns = [
-    { title: '序号', dataIndex: 'id', key: 'id' },
-    { title: '封面', dataIndex: 'img', key: 'img', render: () =>
-        <img width="60" height="40" src="//file.baixing.net/202012/8d77706058cd168278be2d967d40e085.jpg"/> },
-    { title: '服务名称', dataIndex: 'name', key: 'name' },
-    { title: '价格', dataIndex: 'price', key: 'price' },
-    { title: '服务分组', dataIndex: 'group', key: 'group' },
-    { title: '审核结果', dataIndex: 'auditStatus', key: 'auditStatus' },
-    { title: '操作', dataIndex: '', key: 'x',
-      render: (text: string, record: any) => (
-        <div>
-          <span onClick={() => editItem(record)} className="action-btn">修改</span>
-          <span onClick={() => deleteItem(record)} className="action-btn">删除</span>
-        </div>)
-    },
-  ];
-  const data = [
-    { id: 1, key: 1, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核不通过' },
-    { id: 2, key: 2, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核不通过' },
-    { id: 3, key: 3, name: '空调家电维修', price: '面议', group: '维修', auditStatus: '审核通过' },
-  ];
+  useEffect(() => {
+    (async () => {
+      const { success, data, message } = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
+      if (success) {
+        setProductList(data.productList.result || [])
+        setCateList(data.cateList || [])
+        setTotal(data.productList.totalRecord)
+      } else {
+        message.error(message);
+      }
+    })()
+  }, [page, contentCateId])
 
   return (
     <div>
-      <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
-       onCancel={() => setVisibleDeleteDialog(false)}
-       onOk={() => { console.log('已删除'); setVisibleDeleteDialog(true) }}
-       visible={visibleDeleteDialog}>
-        <p>删除后无法恢复，确认删除？</p>
-      </Modal>
-      <Table columns={columns}  dataSource={data} pagination={{
-        hideOnSinglePage: data.length < 10, pageSize: 10, position: ['bottomCenter']}} />
-  </div>)
-}
-
-interface NavBoxProps {
-  getGroup(): void;
-  createModuleItem(): void;
-}
-const NavBox = (props: NavBoxProps) => {
-  return (
-    <div className="nav-container">
-        <div style={{ float: 'left' }}>
-          <Select
-            showSearch
-            size="large"
-            style={{ width: 200 }}
-            placeholder="选择服务"
-            optionFilterProp="children"
-            filterOption={(input: any, option: any) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }>
-            <Option value="服务1">服务1</Option>
-            <Option value="服务2">服务2</Option>
-            <Option value="服务3">服务3</Option>
-          </Select>
-        </div>
-        <div style={{ float: 'right' }}>
-          <Button onClick={props.getGroup} size="large" style={{ marginRight: 36 }}>服务分组</Button>
-          <Button onClick={props.createModuleItem} icon={<PlusOutlined />} size="large" type="primary">新建服务</Button>
-        </div>
-    </div>
-  )
-}
-
-export default (props: any) => {
-  const [visible, setVisible] = useState(false);
-  const hasData = true;
-  let containerComponent;
-  if (hasData) {
-    containerComponent = (
-      <div>
-        <NavBox getGroup={() => setVisible(true)}
-            createModuleItem={() => alert('创建')} />
-        <CategoryList />
-        <ShopModuleGroup
-          title="服务分组"
-          createBtnText="新建服务"
-          onClose={() => setVisible(false)}
-          visible={visible}
-          save={() => { console.log('保存') }}
-        />
-        <CategoryBox/>
-      </div>
-    )
-  } else {
-    containerComponent = <ModuleEmpty type={ShopModuleType.product}/>
-  }
-  return (<div>
       <MainTitle title="百姓网店铺"/>
       <ShopModuleTab type={ShopModuleType.product}/>
       <div className="container">
-        { containerComponent }
+          <ProductNav
+            onChange={(cateId) => { setPage(1); setContentCateId(cateId) }}
+            cateList={cateList}
+            showGroup={() => setModuleGroupVisible(true)}
+            showCreate={() => setProductFormVisible(true)} />
+          <ProductList
+            total={total}
+            dataSource={productList}
+            onChange={(page) => setPage(page)}/>
+          <ShopModuleGroup
+            title="服务分组"
+            createBtnText="新建服务"
+            onClose={() => setModuleGroupVisible(false)}
+            visible={moduleGroupVisible}
+            save={() => { console.log('保存') }} />
+          <CategoryBox visible={productFormVisible} onClose={() => setProductFormVisible(false)}/>
       </div>
   </div>)
 }

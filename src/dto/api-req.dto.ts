@@ -1,4 +1,4 @@
-import { IsJSON, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class ApiQeqDTO {
   @IsString()

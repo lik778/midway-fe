@@ -16,7 +16,7 @@ export class ManagementController {
 
   @Post('/api')
   async managementApi(@Req() req: Request, @Res() res: Response, @Body() body: ApiQeqDTO) {
-    const managementData = await this.midwayApiService.getManagementData(body, req.cookies);
+    const managementData = await this.midwayApiService.getManagementData(req, body);
     res.json(managementData)
   }
 }
