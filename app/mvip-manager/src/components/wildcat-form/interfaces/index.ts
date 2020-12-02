@@ -3,6 +3,7 @@ import { FormType } from '../enums'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
+  className?: any;
 }
 
 export interface FormConfig {
@@ -30,5 +31,6 @@ export interface FormItem {
   minLength?: number,
   inputWidth?: number,
   tip?: string, // 文案说明,
-  className?: string, // 自定义样式
+  className?: string, // 自定义样式,
+  btnConfig?: any, // 输入框需要增加额外标签
 }

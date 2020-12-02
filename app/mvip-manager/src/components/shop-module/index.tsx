@@ -30,7 +30,7 @@ export default (props: Props) => {
   const handleClick = (e: { key: any; }) => {
     setCurrent(e.key)
   };
-  const hasData = false;
+  const hasData = true;
   let containerComponent;
   if (hasData) {
     containerComponent = (

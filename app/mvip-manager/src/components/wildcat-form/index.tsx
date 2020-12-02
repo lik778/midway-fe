@@ -3,6 +3,7 @@ import { Button, Cascader, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
+import  Btn  from '@/components/btn';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -12,6 +13,7 @@ interface Props {
   config: FormConfig,
   submit(values: any): void;
   className?: string,
+  onClick: void,
 }
 
 const options = [
@@ -69,11 +71,18 @@ const WildcatForm = (props: Props) => {
               <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
+              <Btn btnConfig={item.btnConfig}></Btn>
+            </FormItem>)
+          }else if (item.type === FormType.Tag) {
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
+              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+                { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+              </Select>
             </FormItem>)
           }
         }) }
         {
-          props.config && props.config.buttonConfig && <Button type="primary" size={props.config.buttonConfig.size} htmlType="submit">
+          props.config && props.config.buttonConfig && <Button className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
             {props.config.buttonConfig.text}</Button>
         }
       </Form>
