@@ -8,7 +8,7 @@ import ProductList from './components/list';
 import ProductNav from './components/nav';
 import { ShopModuleType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
-
+import { addKeyForListData } from '@/utils';
 import './index.less'
 import { RouteParams } from '@/interfaces/shop';
 
@@ -28,8 +28,8 @@ export default (props: any) => {
     (async () => {
       const { success, data, message } = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
       if (success) {
-        setProductList(data.productList.result || [])
-        setCateList(data.cateList || [])
+        setProductList(addKeyForListData(data.productList.result) || [])
+        setCateList(addKeyForListData(data.cateList) || [])
         setTotal(data.productList.totalRecord)
       } else {
         message.error(message);
@@ -54,6 +54,7 @@ export default (props: any) => {
           <ShopModuleGroup
             title="服务分组"
             createBtnText="新建服务"
+            cateList={cateList}
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
             save={() => { console.log('保存') }} />
