@@ -18,6 +18,10 @@ export default (props: Props) => {
   const deleteItem = (record: any) => {
     setVisibleDeleteDialog(true)
   }
+  const confirmDelete = () => {
+      console.log('已删除');
+      setVisibleDeleteDialog(true)
+  }
   const columns = [
     { title: '序号', dataIndex: 'id', key: 'id' },
     { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) =>
@@ -39,7 +43,7 @@ export default (props: Props) => {
     <div>
       <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
              onCancel={() => setVisibleDeleteDialog(false)}
-             onOk={() => { console.log('已删除'); setVisibleDeleteDialog(true) }}
+             onOk={() => confirmDelete()}
              visible={visibleDeleteDialog}>
         <p>删除后无法恢复，确认删除？</p>
       </Modal>
