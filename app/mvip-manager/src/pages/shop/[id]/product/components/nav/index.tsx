@@ -25,10 +25,10 @@ export default (props: Props) => {
           filterOption={(input: any, option: any) =>
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }>
-          <Option value={0}>全部</Option>
+          <Option key={0} value={0}>全部</Option>
           {
-            cateList.length && cateList.map(item => {
-              return (<Option value={item.id}>{item.name}</Option>)
+            cateList.length && cateList.map((item, i) => {
+              return (<Option key={i} value={item.id}>{item.name}</Option>)
             })
           }
         </Select>
