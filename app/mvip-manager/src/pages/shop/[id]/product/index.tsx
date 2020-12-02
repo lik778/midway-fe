@@ -55,16 +55,19 @@ const CategoryList = (props: CategoryListProps) => {
        visible={visibleDeleteDialog}>
         <p>删除后无法恢复，确认删除？</p>
       </Modal>
-      <Table columns={columns}  dataSource={props.dataSource} pagination={{
+      <Table columns={columns}  dataSource={dataSource} pagination={{
         onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
   </div>)
 }
 
 interface NavBoxProps {
+  cateList: any[];
+  onChange(cate: number): void;
   getGroup(): void;
   createModuleItem(): void;
 }
 const NavBox = (props: NavBoxProps) => {
+  const { cateList, onChange } = props;
   return (
     <div className="nav-container">
         <div style={{ float: 'left' }}>
@@ -74,12 +77,16 @@ const NavBox = (props: NavBoxProps) => {
             style={{ width: 200 }}
             placeholder="选择服务"
             optionFilterProp="children"
+            onChange={onChange}
             filterOption={(input: any, option: any) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }>
-            <Option value="服务1">服务1</Option>
-            <Option value="服务2">服务2</Option>
-            <Option value="服务3">服务3</Option>
+            <Option value={0}>全部</Option>
+            {
+              cateList.length && cateList.map(item => {
+              return (<Option value={item.id}>{item.name}</Option>)
+              })
+            }
           </Select>
         </div>
         <div style={{ float: 'right' }}>
@@ -93,23 +100,25 @@ const NavBox = (props: NavBoxProps) => {
 export default (props: any) => {
   const [visible, setVisible] = useState(false);
   const [productList, setProductList] = useState([]);
-  const [groupList, setGroupList] = useState([]);
+  const [cateList, setCateList] = useState([]);
+  const [contentCateId, setContentCateId] = useState(0);
+  const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   // 获取店铺id
   const params: RouteParams = useParams();
 
   useEffect(() => {
     (async () => {
-      const { success, data, message } = await getProductListApi(Number(params.id), { page: 1, size: 10, contentCateId: 0 })
+      const { success, data, message } = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
       if (success) {
         setProductList(data.productList.result || [])
-        setGroupList(data.cateList.result || [])
+        setCateList(data.cateList || [])
         setTotal(data.productList.totalRecord)
       } else {
         message.error(message);
       }
     })()
-  },[])
+  }, [page, contentCateId])
 
 
   const hasData = true;
@@ -118,11 +127,15 @@ export default (props: any) => {
   if (hasData) {
     containerComponent = (
       <div>
-        <NavBox getGroup={() => setVisible(true)}
-            createModuleItem={() => alert('创建')} />
-        <CategoryList dataSource={productList} total={total} onChange={(page) => {
-          console.log(page)
-        }}/>
+        <NavBox
+          onChange={(cateId) => {
+            setPage(1)
+            setContentCateId(cateId)
+          }}
+          cateList={cateList}
+          getGroup={() => setVisible(true)}
+          createModuleItem={() => alert('创建')} />
+        <CategoryList dataSource={productList} total={total} onChange={(page) => setPage(page)}/>
         <ShopModuleGroup
           title="服务分组"
           createBtnText="新建服务"
@@ -130,7 +143,7 @@ export default (props: any) => {
           visible={visible}
           save={() => { console.log('保存') }}
         />
-        {/*<CategoryBox/>*/}
+        {/*<CategoryBox catList/>*/}
       </div>
     )
   } else {
