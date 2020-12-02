@@ -5,6 +5,7 @@ import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import ModuleEmpty from '@/components/shop-module-empty';
 import ShopModuleGroup from '@/components/shop-module-group';
+import CategoryBox from '@/components/category-box';
 import { ShopModuleType } from '@/enums';
 import './index.less'
 const Option = Select.Option;
@@ -102,6 +103,7 @@ export default (props: any) => {
           visible={visible}
           save={() => { console.log('保存') }}
         />
+        <CategoryBox/>
       </div>
     )
   } else {
