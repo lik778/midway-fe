@@ -22,14 +22,22 @@ interface Props {
 
 export default (props: Props) => {
   const [groupModalVisible, setGroupModalVisible] = useState(false);
+  const [editItem, setEditItem] = useState(null);
   const { cateList, updateCateList, type } = props
   const hasData = cateList && cateList.length
   const params: RouteParams = useParams();
 
-  const editGroupItem = (id: number) => {
-    console.log('编辑')
+  const createGroupItem = () => {
+    setGroupModalVisible(true);
+    setEditItem(null);
   }
-  const deleteGroupItem = async (id: number) => {
+
+  const editGroupItem = (item: any) => {
+    setGroupModalVisible(true);
+    setEditItem(item);
+  }
+
+  const deleteGroupItem = async (id: any) => {
     const res  = await deleteContentCateApi(Number(params.id), { id })
     if (res.success) {
       const deleteIndex = cateList.findIndex((x: CateItem) => x.id === id)
@@ -40,7 +48,6 @@ export default (props: Props) => {
       message.warning(res.message);
     }
   }
-
   return (
     <Drawer
       title={props.title}
@@ -50,7 +57,7 @@ export default (props: Props) => {
       width="700">
         <div>
             <div style={{ overflow: 'hidden' }}>
-              <Button style={{ float: 'right' }} onClick={() => setGroupModalVisible(true) }
+              <Button style={{ float: 'right' }} onClick={() => createGroupItem() }
                 icon={<PlusOutlined />} size="large" type="primary">{props.createBtnText}</Button>
             </div>
             <div className='group-list'>
@@ -59,7 +66,7 @@ export default (props: Props) => {
                   <div className='group-item' key={x.name}>
                     <span className="name">{x.name}</span>
                     <div className="action">
-                      <span onClick={() => editGroupItem(x.id)}>编辑</span>
+                      <span onClick={() => editGroupItem(x)}>编辑</span>
                       <span onClick={() => deleteGroupItem(x.id)}>删除</span>
                     </div>
                   </div>
@@ -69,9 +76,15 @@ export default (props: Props) => {
           { Boolean(hasData) && <Button className='save-btn' onClick={props.save} size="large" type="primary">保存</Button> }
           <GroupModal
             type={type}
+            editItem={editItem}
             visible={groupModalVisible}
-            addCateList={(item: CateItem) => updateCateList([...cateList, item])}
-            updateCateList={(item: CateItem) => console.log(item)}
+            groupCreate={(item: CateItem) => updateCateList([...cateList, item])}
+            groupUpdate={(item: CateItem) => {
+              updateCateList(cateList.map((x: CateItem) => {
+                if (x.id === item.id) { x = item }
+                return x;
+              }))
+            }}
             onClose={() => setGroupModalVisible(false)}/>
         </div>
     </Drawer>)

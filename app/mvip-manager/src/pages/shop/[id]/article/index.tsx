@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
-import { ContentCateType, ShopModuleType } from '@/enums';
-import './index.less';
 import ShopModuleGroup from '@/components/shop-module-group';
+import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
+import { ContentCateType, ShopModuleType } from '@/enums';
+import './index.less';
 
 
 export default (props: any) => {
@@ -62,7 +63,7 @@ export default (props: any) => {
           setArticleList(addKeyForListData(list) || [])
         }}
         onChange={(page) => setPage(page)}/>
-      {/*<ArticleBox/>*/}
+      <ArticleBox visible={articleFormVisible} onClose={() => setArticleFormVisible(false)}/>
     </div>
   </div>)
 }

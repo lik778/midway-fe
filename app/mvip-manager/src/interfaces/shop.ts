@@ -15,7 +15,7 @@ export interface deleteProductApiParams {
 }
 
 export interface CateItem {
-  id: number;
+  id?: number;
   name: string;
   seoD?: string;
   seoK?: string;
