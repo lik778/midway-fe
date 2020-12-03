@@ -5,10 +5,10 @@ import { menusModule } from '../components/header/index'
 menusModule()
 
 var swiper = new Swiper('.swiper-container', {
-  spaceBetween: 30,
+  speed:1000,
   centeredSlides: true,
   autoplay: {
-    delay: 2500,
+    delay: 3000,
     disableOnInteraction: false,
     waitForTransition: true
   },
