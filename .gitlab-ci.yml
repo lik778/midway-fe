@@ -50,7 +50,6 @@ release-test:
 
 test-deploy:
   stage: test-deploy
-  when: manual
   only:
     - test
   tags:

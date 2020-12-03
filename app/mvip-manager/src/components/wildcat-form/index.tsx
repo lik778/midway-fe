@@ -1,9 +1,12 @@
 import React from 'react';
-import { Button, Cascader, Form, Input, Select } from 'antd';
+import { Button, Cascader, Form, Input, Select,Tag } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
+import { TagModule } from '@/components/wildcat-form/components/tag';
 import  Btn  from '@/components/btn';
+import { PlusOutlined } from '@ant-design/icons';
+import { TweenOneGroup } from 'rc-tween-one';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -40,6 +43,7 @@ const options = [
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
+  
   return (
     <div>
       <Form form={form} name={props.config && props.config.name} onFinish={props.submit} className={props.className}>
@@ -75,9 +79,7 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           }else if (item.type === FormType.Tag) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
-                { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-              </Select>
+              <TagModule />
             </FormItem>)
           }
         }) }

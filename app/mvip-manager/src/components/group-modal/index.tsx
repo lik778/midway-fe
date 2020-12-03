@@ -108,10 +108,6 @@ export default (props: any) => {
     // props.onClose(false)
   };
 
-  const handleCancel = () => {
-    props.onClose(false)
-  };
-
   // 输入框
   const handleChange = (e: any) => {
     const target = e.target
@@ -144,7 +140,7 @@ export default (props: any) => {
         visible={props.isModalVisible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
-        onCancel={handleCancel}
+        onCancel={props.onCancel}
         className="g-modal"
       >
         <p className="error">{err}</p>

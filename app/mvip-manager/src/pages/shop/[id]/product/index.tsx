@@ -6,7 +6,7 @@ import ShopModuleGroup from '@/components/shop-module-group';
 import CategoryBox from '@/components/category-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';
-import { ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import './index.less'
@@ -40,10 +40,10 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="百姓网店铺"/>
-      <ShopModuleTab type={ShopModuleType.product}/>
+      <ShopModuleTab type={ShopModuleType.PRODUCT}/>
       <div className="container">
           <ProductNav
-            onChange={(cateId) => { setPage(1); setContentCateId(cateId) }}
+            onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
             cateList={cateList}
             showGroup={() => setModuleGroupVisible(true)}
             showCreate={() => setProductFormVisible(true)} />
@@ -55,12 +55,13 @@ export default (props: any) => {
             }}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
+            type={ContentCateType.PRODUCT}
             title="服务分组"
             createBtnText="新建服务"
             cateList={cateList}
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
-            save={() => { console.log('保存') }} />
+            save={() => { setModuleGroupVisible(false) }} />
           <CategoryBox visible={productFormVisible} onClose={() => setProductFormVisible(false)}/>
       </div>
   </div>)
