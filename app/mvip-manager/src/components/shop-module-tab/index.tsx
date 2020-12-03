@@ -5,14 +5,14 @@ import { ShopModuleType } from '@/enums';
 
 const menuList = [
   {
-    link: ShopModuleType.product,
+    link: ShopModuleType.PRODUCT,
     label: "服务模块",
-    key: ShopModuleType.product
+    key: ShopModuleType.PRODUCT
   },
   {
-    link: ShopModuleType.article,
+    link: ShopModuleType.ARTICLE,
     label: "文章模块",
-    key: ShopModuleType.article
+    key: ShopModuleType.ARTICLE
   }
 ]
 
