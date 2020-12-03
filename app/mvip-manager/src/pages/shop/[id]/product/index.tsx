@@ -43,7 +43,7 @@ export default (props: any) => {
       <ShopModuleTab type={ShopModuleType.product}/>
       <div className="container">
           <ProductNav
-            onChange={(cateId) => { setPage(1); setContentCateId(cateId) }}
+            onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
             cateList={cateList}
             showGroup={() => setModuleGroupVisible(true)}
             showCreate={() => setProductFormVisible(true)} />
