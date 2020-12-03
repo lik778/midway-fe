@@ -5,7 +5,7 @@ import { TweenOneGroup } from 'rc-tween-one'
 import './index.less';
 
 export const TagModule = (props: any) => {
-  const [tags, setTags] = useState(['Tag 1', 'Tag 2', 'Tag 3'])
+  const [tags, setTags] = useState<string[]>([])
   const [inputVisible, setInputVisible] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const handleClose = (removedTag: any) => {
@@ -14,29 +14,23 @@ export const TagModule = (props: any) => {
     setTags(newTags)
   };
 
+  const tagsLen = tags.length
+
 
   const showInput = () => {
     setInputVisible(true)
-    // this.setState({ inputVisible: true }, () => this.input.focus());
   }
 
   const handleInputChange = (e: any) => {
-    setInputValue(e.target.value)
+    const value = e.target.value
+    setInputValue(value.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g,''))
   }
 
   const handleInputConfirm = () => {
-    let newTags:string[] = []
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      newTags = [...tags, inputValue];
-    }
-    setTags(newTags)
+    setTags([...tags, inputValue])
     setInputVisible(false)
     setInputValue('')
   };
-
-  // const saveInputRef = input => {
-  //   this.input = input;
-  // };
 
   const forMap = (tag: any, index: number) => {
     const tagElem = (
@@ -84,9 +78,10 @@ export const TagModule = (props: any) => {
             onBlur={handleInputConfirm}
             onPressEnter={handleInputConfirm}
             className="input-tag"
+            maxLength={props.maxLength}
           />
         )}
-        {!inputVisible && (
+        {!inputVisible && tagsLen < props.maxNum &&(
           <Tag onClick={showInput} className="site-tag-plus">
             <PlusOutlined /> 新增
           </Tag>
