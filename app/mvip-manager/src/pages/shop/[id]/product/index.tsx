@@ -15,7 +15,7 @@ import { RouteParams } from '@/interfaces/shop';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState(false);
-  const [productFormVisible, setProductFormVisible] = useState(false);
+  const [productFormVisible, setProductFormVisible] = useState(true);
   const [productList, setProductList] = useState([]);
   const [cateList, setCateList] = useState([]);
   const [contentCateId, setContentCateId] = useState(0);
@@ -59,6 +59,7 @@ export default (props: any) => {
             title="服务分组"
             createBtnText="新建服务"
             cateList={cateList}
+            updateCateList={(list) => setCateList(list)}
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />

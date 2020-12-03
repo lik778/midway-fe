@@ -50,6 +50,7 @@ export default (props: any) => {
         title="文章分组"
         createBtnText="新建文章"
         cateList={cateList}
+        updateCateList={(list) => setCateList(list)}
         onClose={() => setModuleGroupVisible(false)}
         visible={moduleGroupVisible}
         save={() => { setModuleGroupVisible(false) }}

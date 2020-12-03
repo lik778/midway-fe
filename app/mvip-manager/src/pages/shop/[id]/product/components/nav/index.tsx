@@ -1,6 +1,7 @@
 import { Button, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
+import { CateItem } from '@/interfaces/shop';
 const Option = Select.Option;
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
   showCreate(): void;
 }
 
+// tips: 后续，nav组件可以直接抽出来一个公共的
 export default (props: Props) => {
   const { cateList, onChange } = props;
   return (
@@ -27,7 +29,7 @@ export default (props: Props) => {
           }>
           <Option key='全部' value={0}>全部</Option>
           {
-            cateList.length && cateList.map((item) => {
+            cateList.length && cateList.map((item: CateItem) => {
               return (<Option key={item.name} value={item.id}>{item.name}</Option>)
             })
           }
