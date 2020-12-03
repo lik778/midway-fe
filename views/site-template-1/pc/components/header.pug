@@ -1,9 +1,10 @@
 - const companyInfo= renderData.basic.company
+//-这个数据会用于“联系我们”
 .header.clearfix
 	//-.logo
-	img(src=companyInfo.info || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
+	img(src=companyInfo.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
 	h3 #{ companyInfo.name }
-	.tel
+	.header-tel
 		img(src="//file.baixing.net/202011/41bb9867c53b194f8d20aa00de837e18.png", alt="logo")
 		.tel-hoticon
 			img(src="//file.baixing.net/202011/181efac4a6b0d6d750860c97cbae412b.png", alt="")

@@ -9,6 +9,7 @@ export interface ManagementReqParams {
   method: string;
   path: string;
   params?: any;
+  shopId?: number;
 }
 
 // tips: 请求midway-service的头部参数
@@ -17,6 +18,7 @@ export interface HeaderAuthParams {
   'x-api-user': string;
   'x-api-token': string;
   'x-api-src': string;
+  'x-api-shop-id'?: number;
   'content-type': string;
 }
 
@@ -47,4 +49,10 @@ export interface ShopComponents {
   articleList?: any; // 文章列表
   productInfo?: any; // 服务详情
   articleInfo?: any; // 文章详情
+  navigation?: any; // 导航
+  footerLink?: any; // 友链
+  basic?: any; // 用户信息
+  shopInfo?: any; // 店铺信息
+  bread?: any; // 面包屑
+  meta?: any; // seo tkd
 }

@@ -1,31 +1,41 @@
 .customer-box
-	width 138px
-	height 269px
 	background-color #fff
 	border 1px solid #EF6A31
-	z-index 2
+	z-index 3
 	border-radius 4px
 	position fixed
 	bottom 60px
 	right 5px
-	.top
-		height 106px
-		margin-top 18px
-		margin-bottom -8px
+	.qq-title >img
+		cursor pointer
+		position absolute
+		right 30px
+		top 7px
+		width 6px
+		height 11px
+	dl
+		margin-top 8px
 		padding 0 4px
-		.item
-			height 18px
-			line-height 18px
+		width 142px
+		>dt
+			float left
+			width 70px
 			margin-bottom 15px
 			font-size 14px
-			color #666
-			span
-				display block
-				float left
+			overflow hidden
+			white-space nowrap
+			text-overflow ellipsis
+		>dd
+			float left
+			margin-bottom 15px
+			font-size 14px
+			width 70px
 			a
-				display block
-				float left
+				display inline-block
+				height 20px
+				line-height 20px
 				img
+					display inline-block
 					width 58px
 					height 18px
 	.center
@@ -61,11 +71,31 @@
 			font-size 14px
 			color #666
 
-	.title,.tel,.weixin
+	.qq-title,.customer-tel,.weixin
 		height 27px
 		line-height 27px
-		width 138px
 		background #EF6A31
 		font-size 14px
 		color #fff
 		text-align center
+
+.customer-hide
+	position fixed
+	bottom 60px
+	right 5px
+	z-index 2
+	background #EF6A31
+	border-radius 2px
+	width 36px
+	height 141px
+	text-align center
+	cursor pointer
+	>img
+		width 17px
+		height 17px
+		margin 10px 0 -7px
+	p
+		font-size 16px
+		color #fff
+		padding 5px
+

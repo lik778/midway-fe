@@ -1,41 +1,41 @@
 import React, { useState } from 'react';
-import MainTitle from '@/components/main-title';
 import { Menu } from 'antd';
-import './index.less';
+import { Link } from 'umi';
+import { ShopModuleType } from '@/enums';
 
 const menuList = [
   {
-    link: "/service",
+    link: ShopModuleType.product,
     label: "服务模块",
-    key: 'nav',
+    key: ShopModuleType.product
   },
   {
-    link: "/article",
+    link: ShopModuleType.article,
     label: "文章模块",
-    key: 'article',
+    key: ShopModuleType.article
   }
 ]
-export default (props: any) => {
-  const [current, setCurrent] = useState('article')
+
+interface Props {
+  type: ShopModuleType;
+}
+
+export default (props: Props) => {
+  const [current, setCurrent] = useState(props.type)
   const handleClick = (e: { key: any; }) => {
     setCurrent(e.key)
   };
 
   return (
     <div>
-      <MainTitle title="xx店铺"/>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
         {menuList.map(item => {
           return  <Menu.Item key={item.key}>
-                {item.label}
-            </Menu.Item>
+            <Link to={item.link}>{item.label}</Link>
+          </Menu.Item>
         })}
-       </Menu>
-       <div className="container">
-
-       </div>
-      </div>
-    );
+      </Menu>
+    </div>
+  );
 }
-
 

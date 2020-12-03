@@ -13,6 +13,10 @@ export default defineConfig({
     "/management/api": {
       "target": "http://localhost:7001",
       "changeOrigin": true
-    }
+    },
+    "/haojing/*": {
+      "target": "http://localhost:7001",
+      "changeOrigin": true
+    },
   }
 });

@@ -14,11 +14,12 @@ module.exports = {
     'site-template-1-product-child-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product-child/index.js'),
     'site-template-1-product-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/product-detail/index.js'),
     'site-template-1-product-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/product/index.js'),
+    'site-template-1-news-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/news-detail/index.js'),
+    'site-template-1-product-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/product-detail/index.js'),
   },
   output: {
     path: path.resolve(__dirname, "../dist/public"),
-    // filename: isProd? '[name].[contenthash].js' : '[name].js'
-    filename: '[name].js'
+    filename: isProd? '[name].[contenthash].js' : '[name].js'
   },
   module: {
     rules: [
@@ -43,10 +44,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      // filename: isProd ? '[name].[contenthash].css' : '[name].css',
-      // chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: isProd ? '[name].[contenthash].css' : '[name].css',
+      chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
     })
   ]
 }

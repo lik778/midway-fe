@@ -1,11 +1,10 @@
 extends ../layout
 
 block styles
-    link(rel="stylesheet", href="/assets/site-template-1-product-detail-pc.css")
+    :combine(fileName="site-template-1-product-detail-pc.css")
 
 block content
     //- 面包屑
-    - const crumbs = [{label:'首页',link:'#'},{label:'服务内容',link:'#'},{label:'公司注册',link:'#'},{label:'商标注册',link:'#'}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
@@ -20,15 +19,13 @@ block content
             include ../components/sidebar/recommend.pug
 
             +sidebar-title('服务分类')
-            //-- const categoryList = [{name:'公司注册', url:'/site/product/child'},{name:'代理记账', url:'/site/product/child'},{name:'公司注销', url:'/site/product/child'},{name:'公司转让', url:'/site/product/child'}]
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
-    include ../components/page.pug
     include ../components/footer.pug
     //-QQ交谈
     include ../components/customer-service.pug
 
 block scripts
-    script(src="/assets/site-template-1-product-detail-pc.js")
+    :combine(fileName="site-template-1-product-detail-pc.js")
 

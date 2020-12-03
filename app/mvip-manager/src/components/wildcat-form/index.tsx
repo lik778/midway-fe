@@ -3,6 +3,7 @@ import { Button, Cascader, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
+import  Btn  from '@/components/btn';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -11,6 +12,8 @@ const FormItem = Form.Item;
 interface Props {
   config: FormConfig,
   submit(values: any): void;
+  className?: string,
+  onClick?: any,
 }
 
 const options = [
@@ -39,34 +42,47 @@ const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
   return (
     <div>
-      <Form form={form} name={props.config && props.config.name} onFinish={props.submit}>
+      <Form form={form} name={props.config && props.config.name} onFinish={props.submit} className={props.className}>
         { props.config && props.config.children.map(item => {
           if (item.type === FormType.Input) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <Input placeholder={item.placeholder} size='large'/>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Textarea) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <TextArea placeholder={item.placeholder} rows={6} size='large'/>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <TextArea showCount style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Select) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <Select placeholder={item.placeholder} size='large'>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <ImgUpload />
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <ImgUpload tip={item.tip}/>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
-            return (<FormItem label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <Cascader size='large' options={options} />
+            </FormItem>)
+          } else if (item.type === FormType.GroupSelect) {
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+                { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+              </Select>
+              <Btn btnConfig={item.btnConfig} onClick={props.onClick}></Btn>
+            </FormItem>)
+          }else if (item.type === FormType.Tag) {
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
+              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+                { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+              </Select>
             </FormItem>)
           }
         }) }
         {
-          props.config && props.config.buttonConfig && <Button type="primary" size={props.config.buttonConfig.size} htmlType="submit">
+          props.config && props.config.buttonConfig && <Button className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
             {props.config.buttonConfig.text}</Button>
         }
       </Form>
