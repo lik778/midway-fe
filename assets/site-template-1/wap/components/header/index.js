@@ -4,6 +4,7 @@ export const menusModule = function() {
   const HIDE_STATUS = 'none'
   const $navMenusEl = $('.nav-menus')
 
+  //点击导航返回按钮
   $('.back-icon').on('click', function(e) {
     history.back()
   })

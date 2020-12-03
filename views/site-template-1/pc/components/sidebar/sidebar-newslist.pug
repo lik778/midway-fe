@@ -1,5 +1,5 @@
 .sidebar-newslist
-    - const sidebarNewsList = renderData.articleList.result
+    //-- const sidebarNewsList = renderData.articleList.result
     if sidebarNewsList && sidebarNewsList.length > 0
         ul
             //-默认最多展示10条
@@ -7,10 +7,11 @@
                 li
                     a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
 
-        //-这里跳到/n/新闻列表页，最好是获取后端传的值.查看更多，产品要求要一直存在所以加了取值判断
-        //-moreLink使用的是侧边栏查看更多定义的数据
-        if renderData.navigation && moreLink
-            a.news-more-btn(href="/" + renderData.shopName + moreLink) 查看更多
+        //-这里跳到/n/新闻列表页，本可以写死，但后端告知最好是获取传的值。另外"查看更多"，产品要求要一直存在所以加了取值判断
+        //-moreLink使用的是产品列表底部查看更多定义的变量
+        - const siderMoreLink = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
+        if renderData.navigation && siderMoreLink
+            a.news-more-btn(href="/" + renderData.shopName + siderMoreLink) 查看更多
         else
             a.news-more-btn(href="#") 查看更多
     else

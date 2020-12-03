@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button, Drawer } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import GroupModal from '@/components/group-modal'
 import './index.less';
 
 interface Props {
   title: string;
   createBtnText: string;
   visible: boolean;
+  cateList: any;
   create?(): void;
   save?(): void;
   editGroup?(): void;
@@ -16,9 +18,8 @@ interface Props {
 
 
 export default (props: Props) => {
-  // 弹窗显示隐藏
-  const hasData = true
-  const data = hasData ? [{ id: 1, groupName: '保姆'}, { id: 2, groupName: '月嫂'}] : [];
+  const { cateList } = props
+  const hasData = cateList && cateList.length
   return (
     <Drawer
       title={props.title}
@@ -31,10 +32,10 @@ export default (props: Props) => {
               <Button style={{ float: 'right' }} onClick={props.create} icon={<PlusOutlined />} size="large" type="primary">{props.createBtnText}</Button>
             </div>
             <div className='group-list'>
-              { Boolean(data.length) && data.map(x => {
+              { Boolean(hasData) && cateList.map((x: any) => {
                 return (
-                  <div className='group-item' key={x.groupName}>
-                    <span className="name">{x.groupName}</span>
+                  <div className='group-item' key={x.name}>
+                    <span className="name">{x.name}</span>
                     <div className="action">
                       <span onClick={props.editGroup}>编辑</span>
                       <span onClick={props.deleteGroup}>删除</span>
@@ -43,7 +44,8 @@ export default (props: Props) => {
                 )
               }) }
             </div>
-          { Boolean(data.length) && <Button className='save-btn' onClick={props.save} size="large" type="primary">保存</Button> }
+          { Boolean(hasData) && <Button className='save-btn' onClick={props.save} size="large" type="primary">保存</Button> }
+          <GroupModal />
         </div>
     </Drawer>)
 }

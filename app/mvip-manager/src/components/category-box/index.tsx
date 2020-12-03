@@ -6,12 +6,10 @@ import GroupModal from '@/components/group-modal';
 import { categoryForm } from '@/config/form';
 import { Form, Drawer } from 'antd';
 export default (props: any) => {
-
-  // 抽屉显示隐藏
-  const [visible, setVisible] = useState(true)
+  const { onClose, visible } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
-  
+
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
@@ -19,14 +17,6 @@ export default (props: any) => {
     console.log(values)
   }
 
-
-  const showDrawer = () => {
-    setVisible(true)
-  };
-
-  const onClose = () => {
-    setVisible(false)
-  };
 
   const onModalClick = (e: any) => {
     setModalVisible(true)

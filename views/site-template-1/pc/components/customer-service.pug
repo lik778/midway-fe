@@ -2,9 +2,11 @@
 - const { qq, phone, weChat } = renderData.contact
 //-下面数据可测试
 //-- const  qq = [{"type": 1,"name": "客服1","content": "1234567"}]
+//-(style="display:none")
 .customer-box
+	.qq-title QQ交谈
+		img.qqshow(src="//file.baixing.net/202012/d3f156b57227810022a850b88711f010.png", alt="")
 	if qq && qq.length>0
-		.qq-title QQ交谈
 		dl.clearfix
 			each item in qq
 				dt #{item.name}:
@@ -22,4 +24,7 @@
 			img(src="//file.baixing.net/202011/44808034b4acc19cb6c4de674b70e824.png", alt="")
 			span #{weChat.content}
 
+.customer-hide
+	img.qqhide(src="//file.baixing.net/202012/408111e490bddbfcc17509b406e871fe.png")
+	p 在线客服
 

@@ -85,7 +85,7 @@ export default (props: any) => {
     // }, 2000);
     let r: {
       [key: string]: string}= {
-      
+
     }
 
     const newConfig = config.concat()
