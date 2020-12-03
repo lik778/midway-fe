@@ -33,4 +33,5 @@ export interface FormItem {
   tip?: string, // 文案说明,
   className?: string, // 自定义样式,
   btnConfig?: any, // 输入框需要增加额外标签
+  maxNum?:number,
 }

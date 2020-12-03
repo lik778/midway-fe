@@ -7,6 +7,7 @@ import { TagModule } from '@/components/wildcat-form/components/tag';
 import  Btn  from '@/components/btn';
 import { PlusOutlined } from '@ant-design/icons';
 import { TweenOneGroup } from 'rc-tween-one';
+import { max } from 'class-validator';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -79,7 +80,7 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           }else if (item.type === FormType.Tag) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <TagModule />
+              <TagModule maxLength={item.maxLength} maxNum={item.maxNum}/>
             </FormItem>)
           }
         }) }

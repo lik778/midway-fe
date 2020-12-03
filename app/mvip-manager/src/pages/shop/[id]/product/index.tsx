@@ -15,7 +15,7 @@ import { RouteParams } from '@/interfaces/shop';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState(false);
-  const [productFormVisible, setProductFormVisible] = useState(false);
+  const [productFormVisible, setProductFormVisible] = useState(true);
   const [productList, setProductList] = useState([]);
   const [cateList, setCateList] = useState([]);
   const [contentCateId, setContentCateId] = useState(0);
