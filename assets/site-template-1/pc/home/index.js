@@ -1,5 +1,8 @@
 import './index.styl';
 import Swiper from 'swiper';
+import { qqModule } from '../components/customer-service/index';
+qqModule()
+
 
 var swiper = new Swiper('.swiper-container', {
   spaceBetween: 30,

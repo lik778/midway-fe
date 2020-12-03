@@ -18,11 +18,12 @@ block content
             include ../components/sidebar/contact.pug
 
             +sidebar-title('新闻资讯')
-            //-include ../components/sidebar/sidebar-newslist.pug
+            - const sidebarNewsList = renderData.articleRecommend
+            include ../components/sidebar/sidebar-newslist.pug
 
             +sidebar-title('文章分类')
-            //-- const cateList = renderData.articleCateList
-            //-include ../components/sidebar/category-item.pug
+            - const cateList = renderData.articleCateList
+            include ../components/sidebar/category-item.pug
 
     include ../components/footer.pug
     //-QQ交谈

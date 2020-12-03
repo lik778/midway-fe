@@ -1,10 +1,10 @@
 .news-detail
-    - const {name, modifyTime, contentImg, content} = renderData.articleInfo
+    - const {name, modifiedTime, contentImg, content} = renderData.articleInfo
         .news-detail-title
             h3 #{ name }
-        if modifyTime
+        if modifiedTime
             .news-detail-time
-                p #{ modifyTime || 2020-10-01 }
+                p #{ dateFormat(modifiedTime) }
         if contentImg
             .news-detail-pic
                 img(src=contentImg, alt="")
