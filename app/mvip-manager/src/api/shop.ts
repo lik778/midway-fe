@@ -1,5 +1,5 @@
 import { postApiData, setShopHeader } from './base'
-import {  CateItem, getContentApiParams, deleteProductApiParams } from '@/enums/shop'
+import { getContentApiParams, deleteProductApiParams, createContentCateApiParams } from '@/interfaces/shop';
 
 export const getProductListApi = (shopId: number, params: getContentApiParams) => {
   return postApiData('product/list', params, setShopHeader(shopId))
@@ -19,7 +19,17 @@ export const deleteArticleApi = (shopId: number, params: deleteProductApiParams)
   return postApiData('article/delete', params, setShopHeader(shopId))
 }
 
-// api: 获取店铺产品列表
-export const deleteContentApi = (shopId: number, params: deleteProductApiParams) => {
+// api: 新增分类
+export const createContentCateApi = (shopId: number, params: createContentCateApiParams) => {
+  return postApiData('contentCate/create', params, setShopHeader(shopId))
+}
+
+// api: 更新分类
+export const updateContentCateApi = (shopId: number, params: createContentCateApiParams) => {
+  return postApiData('contentCate/update', params, setShopHeader(shopId))
+}
+
+// api: 删除分类
+export const deleteContentCateApi = (shopId: number, params: deleteProductApiParams) => {
   return postApiData('contentCate/delete', params, setShopHeader(shopId))
 }

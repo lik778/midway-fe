@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { Button, Drawer, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import GroupModal from '@/components/group-modal'
-import { deleteContentApi } from '@/api/shop';
+import { deleteContentCateApi } from '@/api/shop';
 import './index.less';
 import { ContentCateType } from '@/enums';
-import { RouteParams } from '@/interfaces/shop';
+import { RouteParams, CateItem } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { CateItem } from '@/enums/shop';
 
 interface Props {
   type: ContentCateType,
@@ -31,7 +30,7 @@ export default (props: Props) => {
     console.log('编辑')
   }
   const deleteGroupItem = async (id: number) => {
-    const res  = await deleteContentApi(Number(params.id), { id })
+    const res  = await deleteContentCateApi(Number(params.id), { id })
     if (res.success) {
       const deleteIndex = cateList.findIndex((x: CateItem) => x.id === id)
       cateList.splice(deleteIndex, 1)
@@ -68,7 +67,12 @@ export default (props: Props) => {
               }) }
             </div>
           { Boolean(hasData) && <Button className='save-btn' onClick={props.save} size="large" type="primary">保存</Button> }
-          <GroupModal isModalVisible={groupModalVisible} onCancel={() => setGroupModalVisible(false)}/>
+          <GroupModal
+            type={type}
+            visible={groupModalVisible}
+            addCateList={(item: CateItem) => updateCateList([...cateList, item])}
+            updateCateList={(item: CateItem) => console.log(item)}
+            onClose={() => setGroupModalVisible(false)}/>
         </div>
     </Drawer>)
 }

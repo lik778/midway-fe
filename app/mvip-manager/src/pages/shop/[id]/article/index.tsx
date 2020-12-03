@@ -10,7 +10,6 @@ import { getArticleListApi } from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { CateItem } from '@/enums/shop';
 
 
 export default (props: any) => {

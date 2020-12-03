@@ -1,7 +1,7 @@
 import { Button, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
-import { CateItem } from '@/enums/shop';
+import { CateItem } from '@/interfaces/shop';
 const Option = Select.Option;
 
 interface Props {
