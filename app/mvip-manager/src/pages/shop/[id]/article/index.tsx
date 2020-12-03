@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
-import { ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType } from '@/enums';
 import './index.less';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleList from './components/list';
@@ -38,7 +38,7 @@ export default (props: any) => {
 
   return (<div>
     <MainTitle title="百姓网店铺"/>
-    <ShopModuleTab type={ShopModuleType.article}/>
+    <ShopModuleTab type={ShopModuleType.ARTICLE}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
@@ -46,12 +46,13 @@ export default (props: any) => {
         getGroup={() => setModuleGroupVisible(true)}
         createModuleItem={() => alert('创建')} />
       <ShopModuleGroup
+        type={ContentCateType.ARTICLE}
         title="文章分组"
         createBtnText="新建文章"
         cateList={cateList}
         onClose={() => setModuleGroupVisible(false)}
         visible={moduleGroupVisible}
-        save={() => { console.log('保存') }}
+        save={() => { setModuleGroupVisible(false) }}
       />
       <ArticleList
         total={total}

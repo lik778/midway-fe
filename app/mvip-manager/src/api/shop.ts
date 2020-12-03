@@ -25,6 +25,12 @@ export const getArticleListApi = (shopId: number, params: getContentApiParams) =
   return postApiData('/article/list', params, setShopHeader(shopId))
 }
 
+// api: 删除文章
 export const deleteArticleApi = (shopId: number, params: deleteProductApiParams) => {
   return postApiData('/article/delete', params, setShopHeader(shopId))
+}
+
+// api: 获取店铺产品列表
+export const deleteContentApi = (shopId: number, params: deleteProductApiParams) => {
+  return postApiData('/contentCate/delete', params, setShopHeader(shopId))
 }
