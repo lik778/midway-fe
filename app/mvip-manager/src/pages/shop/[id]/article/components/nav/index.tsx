@@ -1,6 +1,7 @@
 import { Button, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
+import { CateItem } from '@/interfaces/shop';
 const Option = Select.Option;
 
 interface Props {
@@ -27,7 +28,7 @@ export default (props: any) => {
           }>
           <Option key='全部' value={0}>全部</Option>
           {
-            cateList.length && cateList.map((item: any) => {
+            cateList.length && cateList.map((item: CateItem) => {
               return (<Option key={item.name} value={item.id}>{item.name}</Option>)
             })
           }

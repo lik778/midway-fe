@@ -1,8 +1,12 @@
 
 import React, {useState, useEffect} from 'react';
 import './index.less';
-import { Modal, Input } from 'antd';
+import { message, Modal, Input } from 'antd';
 import classNames from 'classnames';
+import { createContentCateApi, updateContentCateApi } from '@/api/shop'
+import { CateItem, RouteParams } from '@/interfaces/shop';
+import { useParams } from 'umi';
+import { ContentCateType } from '@/enums';
 
 
 // 分组tkd配置
@@ -25,7 +29,7 @@ const groupConfig = [
     required: false,
     maxLength:15,
     minLength:9,
-    id:'title',
+    id:'seoT',
     value: '',
     initLen: 0,
     err: '请输入大于9个字的标题',
@@ -35,7 +39,7 @@ const groupConfig = [
     label: 'keyword',
     placeholder: "请输入关键词",
     required: false,
-    id:'keyword',
+    id:'seoK',
     value: '',
     initLen: 0,
     minLength: 0,
@@ -49,7 +53,7 @@ const groupConfig = [
     required: false,
     maxLength:80,
     minLength:40,
-    id: 'description',
+    id: 'seoD',
     value: '',
     initLen: 0,
     err:'请输入大于40个字的描述',
@@ -57,12 +61,19 @@ const groupConfig = [
   },
 ]
 
-const gData = {
-}
+const gData = {}
 
 const errClass = 'input-error'
 
-export default (props: any) => {
+interface Props {
+  id?: number;
+  type: ContentCateType;
+  visible: boolean;
+  addCateList(item: CateItem): void;
+  updateCateList(item: CateItem): void;
+  onClose(): void;
+}
+export default (props: Props) => {
   const [config, setConfig] = useState(groupConfig)
   // 确定loading
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -77,16 +88,15 @@ export default (props: any) => {
   // 弹窗错误显示
   const [err, setError] = useState('')
 
-  const handleOk = () => {
-    // setConfirmLoading(true);
-    // setTimeout(() => {
-    //   props.onClose(false)
-    //   setConfirmLoading(false);
-    // }, 2000);
-    let r: {
-      [key: string]: string}= {
+  const params: RouteParams = useParams();
+  const { id, type, onClose, addCateList } = props;
 
-    }
+  const resetConfigValue = (config: any) => {
+    setConfig(config.map((x: any) => { x.value = ''; return x }))
+  }
+
+  const handleOk = async () => {
+    const r: any = {}
 
     const newConfig = config.concat()
     newConfig.forEach((c, i) => {
@@ -104,8 +114,20 @@ export default (props: any) => {
         return
       }
     })
-    setResModal(r)
-    // props.onClose(false)
+    // to api
+    if (id) {
+      console.log('咋们去更新')
+    } else {
+      const res = await createContentCateApi(Number(params.id), {...r, type})
+      if (res.success) {
+        message.success('新增分组成功');
+        addCateList(res.data);
+        resetConfigValue(config);
+        onClose();
+      } else {
+        message.error(res.message)
+      }
+    }
   };
 
   // 输入框
@@ -129,7 +151,6 @@ export default (props: any) => {
           setError('')
         }
     })
-
     setConfig(newConfig)
   }
 
@@ -137,10 +158,10 @@ export default (props: any) => {
     <div className="group-modal">
       <Modal
         title="新建分组"
-        visible={props.isModalVisible}
+        visible={props.visible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
-        onCancel={props.onCancel}
+        onCancel={props.onClose}
         className="g-modal"
       >
         <p className="error">{err}</p>

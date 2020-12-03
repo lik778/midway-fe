@@ -59,6 +59,7 @@ export default (props: any) => {
             title="服务分组"
             createBtnText="新建服务"
             cateList={cateList}
+            updateCateList={(list) => setCateList(list)}
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />
