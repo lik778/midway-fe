@@ -24,3 +24,7 @@ export const deleteProductApi = (shopId: number, params: deleteProductApiParams)
 export const getArticleListApi = (shopId: number, params: getContentApiParams) => {
   return postApiData('/article/list', params, setShopHeader(shopId))
 }
+
+export const deleteArticleApi = (shopId: number, params: deleteProductApiParams) => {
+  return postApiData('/article/delete', params, setShopHeader(shopId))
+}

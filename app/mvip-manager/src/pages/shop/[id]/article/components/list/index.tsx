@@ -1,9 +1,9 @@
-// tips: 这边和文章模块还要继续抽组件出来，还有css的scope要分离好
 import React, { useState } from 'react';
 import { Modal, Table, message } from 'antd';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ArticleSource } from '@/enums'
+import { deleteArticleApi } from '@/api/shop';
 import { auditStatusText, ArticleSourceText } from '@/constants';
 
 interface Props {
@@ -29,7 +29,17 @@ export default (props: Props) => {
     setVisibleDeleteDialog(true)
   }
   const confirmDelete = async () => {
-
+    const res  = await deleteArticleApi(Number(params.id), { id: choiceId })
+    if (res.success) {
+      message.success(res.message);
+      // 动态
+      const deleteIndex = dataSource.findIndex(x => x.id === choiceId)
+      dataSource.splice(deleteIndex, 1)
+      update(dataSource)
+      setVisibleDeleteDialog(false)
+    } else {
+      message.warning(res.message);
+    }
   }
 
   const columns = [
@@ -44,8 +54,8 @@ export default (props: Props) => {
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
-          <span onClick={() => editItem(record)} className="action-btn">修改</span>
-          <span onClick={() => deleteItem(record)} className="action-btn">删除</span>
+          <span onClick={() => editItem(record.id)} className="action-btn">修改</span>
+          <span onClick={() => deleteItem(record.id)} className="action-btn">删除</span>
         </div>)
     },
   ];
