@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, Upload, Modal } from 'antd';
+import {Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
 import './index.less';
@@ -45,17 +45,29 @@ export const ImgUpload = (props: any) => {
   }
 
   const handleChange = async ({file, fileList}) => {
-    setFileList(fileList)
+    if(beforeUpload(file)){
+      setFileList(fileList)
+    }
+    
     if (file.status === 'done') {
       const res = await uploadImgToUpyunHandle(file.originFileObj);
       if(res.code === 200) {
         setImgUrlList([...imgUrlList, res.url])
-        console.log('imgList', imgUrlList)
       }
     }
   }
 
-  // const beforeUpload={beforeUpload}
+  const beforeUpload= (file: any) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg';
+    if (!isJpgOrPng) {
+      message.error('请上传jpg、jpeg、png格式的图片');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 1;
+    if (!isLt2M) {
+      message.error('请上传不超过1M的图片');
+    }
+    return isJpgOrPng && isLt2M;
+  }
   
   return (
     <div className="img-upload">
@@ -63,6 +75,7 @@ export const ImgUpload = (props: any) => {
           listType="picture-card"
           fileList={fileList}
           onPreview={handlePreview}
+          beforeUpload={beforeUpload}
           onChange={handleChange}
         >
         {fileList.length >= 1 ? null : uploadButton()}

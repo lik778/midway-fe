@@ -28,7 +28,7 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res.success) {
+      if (res?.success) {
         setArticleList(addKeyForListData(res.data.articleList.result) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.articleList.totalRecord)
