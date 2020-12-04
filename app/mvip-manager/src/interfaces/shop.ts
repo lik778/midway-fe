@@ -13,10 +13,11 @@ export interface GetContentApiParams {
 export interface CreateProductApiParams {
   contentCateId: number;
   contentText: string;
-  headImg: string;
+  contentImg?: string;
+  headImg?: string;
   name: string;
-  price: number;
-  shopId: number;
+  price: number | string;
+  shopId?: number;
   tags: string;
 }
 

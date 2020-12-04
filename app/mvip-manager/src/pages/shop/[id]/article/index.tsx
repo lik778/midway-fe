@@ -8,20 +8,20 @@ import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
 import { addKeyForListData } from '@/utils';
-import { RouteParams } from '@/interfaces/shop';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType } from '@/enums';
 import './index.less';
 
 
 export default (props: any) => {
-  const [moduleGroupVisible, setModuleGroupVisible] = useState(false);
-  const [articleFormVisible, setArticleFormVisible] = useState(false);
-  const [articleList, setArticleList] = useState([]);
-  const [cateList, setCateList] = useState([]);
-  const [contentCateId, setContentCateId] = useState(0);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
+  const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
+  const [articleFormVisible, setArticleFormVisible] = useState<boolean>(false);
+  const [articleList, setArticleList] = useState<any>([]);
+  const [cateList, setCateList] = useState<CateItem[]>([]);
+  const [contentCateId, setContentCateId] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [total, setTotal] = useState<number>(0);
   // 获取店铺id
   const params: RouteParams = useParams();
 
@@ -45,8 +45,8 @@ export default (props: any) => {
       <ArticleNav
         cateList={cateList}
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
-        getGroup={() => setModuleGroupVisible(true)}
-        createModuleItem={() => alert('创建')} />
+        showGroup={() => setModuleGroupVisible(true)}
+        showCreate={() => setArticleFormVisible(true)} />
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
         title="文章分组"
@@ -64,7 +64,12 @@ export default (props: any) => {
           setArticleList(addKeyForListData(list) || [])
         }}
         onChange={(page) => setPage(page)}/>
-      <ArticleBox visible={articleFormVisible} onClose={() => setArticleFormVisible(false)}/>
+      <ArticleBox
+        addArticleList={(item: any) => { console.log(item) }}
+        cateList={cateList}
+        updateCateList={(x) => setCateList([x, ...cateList])}
+        visible={articleFormVisible}
+        onClose={() => setArticleFormVisible(false)}/>
     </div>
   </div>)
 }
