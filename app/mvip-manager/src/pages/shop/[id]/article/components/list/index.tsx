@@ -9,31 +9,32 @@ import { auditStatusText, ArticleSourceText } from '@/constants';
 interface Props {
   dataSource: any[];
   total: number;
+  openEditForm(item: any): void;
   update(list: any): void;
   onChange(page: number): void;
 }
 
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
-  const [choiceId, setChoiceId] = useState(0);
-  const { onChange, total, dataSource, update } = props
+  const [actionId, setActionId] = useState(0);
+  const { onChange, total, dataSource, update, openEditForm } = props
   // 获取店铺id
   const params: RouteParams = useParams();
-  const editItem = (id: number) => {
-    setChoiceId(id)
-    // todo: 这里要去传值
-    alert('去编辑')
+  const editAction = (item: any) => {
+    setActionId(item.id)
+    openEditForm(item)
   }
-  const deleteItem = (id: number) => {
-    setChoiceId(id)
+
+  const deleteAction = (id: number) => {
+    setActionId(id)
     setVisibleDeleteDialog(true)
   }
   const confirmDelete = async () => {
-    const res  = await deleteArticleApi(Number(params.id), { id: choiceId })
-    if (res?.success) {
+    const res  = await deleteArticleApi(Number(params.id), { id: actionId })
+    if (res.success) {
       message.success(res.message);
       // 动态
-      const deleteIndex = dataSource.findIndex(x => x.id === choiceId)
+      const deleteIndex = dataSource.findIndex(x => x.id === actionId)
       dataSource.splice(deleteIndex, 1)
       update(dataSource)
       setVisibleDeleteDialog(false)
@@ -54,8 +55,8 @@ export default (props: Props) => {
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
-          <span onClick={() => editItem(record.id)} className="action-btn">修改</span>
-          <span onClick={() => deleteItem(record.id)} className="action-btn">删除</span>
+          <span onClick={() => editAction(record)} className="action-btn">修改</span>
+          <span onClick={() => deleteAction(record.id)} className="action-btn">删除</span>
         </div>)
     },
   ];
