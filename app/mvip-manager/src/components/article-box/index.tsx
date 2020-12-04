@@ -6,12 +6,10 @@ import GroupModal from '@/components/group-modal';
 import { articleForm } from '@/config/form';
 import { Form, Drawer } from 'antd';
 export default (props: any) => {
-
-  // 抽屉显示隐藏
-  const [visible, setVisible] = useState(true)
+  const { visible, onClose } = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
-  
+
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
@@ -20,13 +18,6 @@ export default (props: any) => {
   }
 
 
-  const showDrawer = () => {
-    setVisible(true)
-  };
-
-  const onClose = () => {
-    setVisible(false)
-  };
 
   const onModalClick = (e: any) => {
     setModalVisible(true)
@@ -50,7 +41,7 @@ export default (props: any) => {
           <Form.Item>
            <WildcatForm config={articleForm} submit={sumbit} onClick={onModalClick} className="default-form"/>
          </Form.Item>
-         <GroupModal isModalVisible={modalVisible} onClose={onModalClose}></GroupModal>
+         {/*<GroupModal visible={modalVisible} onClose={() => setModalVisible(false)}></GroupModal>*/}
     </Drawer>
   );
 }

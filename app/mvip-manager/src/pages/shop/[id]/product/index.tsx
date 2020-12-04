@@ -1,4 +1,5 @@
 import React,  { useState, useEffect } from 'react';
+import { message } from 'antd';
 import { useParams } from "umi";
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
@@ -26,13 +27,13 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
-      const { success, data, message } = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (success) {
-        setProductList(addKeyForListData(data.productList.result) || [])
-        setCateList(addKeyForListData(data.cateList) || [])
-        setTotal(data.productList.totalRecord)
+      const res = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
+      if (res.success) {
+        setProductList(addKeyForListData(res.data.productList.result) || [])
+        setCateList(addKeyForListData(res.data.cateList) || [])
+        setTotal(res.data.productList.totalRecord)
       } else {
-        message.error(message);
+        message.error(res.message);
       }
     })()
   }, [page, contentCateId])
@@ -63,7 +64,7 @@ export default (props: any) => {
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />
-          <CategoryBox visible={productFormVisible} onClose={() => setProductFormVisible(false)}/>
+          <CategoryBox cateList={cateList} visible={productFormVisible} onClose={() => setProductFormVisible(false)}/>
       </div>
   </div>)
 }

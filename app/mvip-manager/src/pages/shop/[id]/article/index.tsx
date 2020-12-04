@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { message } from 'antd';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
@@ -26,11 +27,11 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
-      const { success, data, message } = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (success) {
-        setArticleList(addKeyForListData(data.articleList.result) || [])
-        setCateList(addKeyForListData(data.cateList) || [])
-        setTotal(data.articleList.totalRecord)
+      const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
+      if (res.success) {
+        setArticleList(addKeyForListData(res.data.articleList.result) || [])
+        setCateList(addKeyForListData(res.data.cateList) || [])
+        setTotal(res.data.articleList.totalRecord)
       } else {
         message.error(message);
       }

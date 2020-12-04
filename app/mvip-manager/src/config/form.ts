@@ -41,15 +41,15 @@ export const articleForm: FormConfig = {
 
 
 // 服务表单
-export const categoryForm: FormConfig = {
-  name: 'categoryForm',
+export const productForm: FormConfig = {
+  name: 'productForm',
   children: [
-    { inputWidth: 260, className:'f-middle', label: '服务分组', name: 'group', type: FormType.GroupSelect, required: true, placeholder: '暂无分组', btnConfig: { text: '新建分组'}},
-    { inputWidth: 395, className:'f-middle', label: '服务名称', name: 'title', type: FormType.Input, required: true, maxLength: 30, placeholder: '请输入标题，2~30个字' },
+    { inputWidth: 260, className:'f-middle', label: '服务分组', name: 'contentCateId', type: FormType.GroupSelect, options: [], required: true, placeholder: '暂无分组', btnConfig: { text: '新建分组'}},
+    { inputWidth: 395, className:'f-middle', label: '服务名称', name: 'name', type: FormType.Input, required: true, maxLength: 30, placeholder: '请输入标题，2~30个字' },
     { inputWidth: 260, className:'f-middle', label: '市场价格', name: 'price', type: FormType.Input, required: false, maxLength: 8, placeholder: '例如：面议' },
-    { inputWidth: 130, label: '标签', name: 'tag', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入标签',  maxNum: 20},
-    { inputWidth: 150, label: '图片信息', name: 'imgInfo', type: FormType.ImgUpload, required: false, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例3：2，建议最小尺寸300*200' },
-    { inputWidth: 542, label: '服务描述', name: 'description', type: FormType.Textarea, required: true, minLength: 100, maxLength: 1000,placeholder: '请输入简介，100～1000个字' },
+    { inputWidth: 130, label: '标签', name: 'tags', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入标签',  maxNum: 20 },
+    { inputWidth: 150, label: '图片信息', name: 'headImg', type: FormType.ImgUpload, required: false, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例3：2，建议最小尺寸300*200' },
+    { inputWidth: 542, label: '服务描述', name: 'contentText', type: FormType.Textarea, required: true, minLength: 100, maxLength: 1000,placeholder: '请输入简介，100～1000个字' },
   ],
   buttonConfig: { text: '提交', size: 'large', className: 'mvip-btn' }
 }
