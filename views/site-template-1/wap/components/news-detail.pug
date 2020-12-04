@@ -5,10 +5,11 @@
     if modifiedTime
         .news-detail-time
             p #{ dateFormat(modifiedTime) }
-    if contentImg
-        .news-detail-pic
-            img(src=contentImg, alt="")
-    .news-detail-content. 
+    //-wap无图片
+    //-if contentImg
+    //-    .news-detail-pic
+    //-        img(src=contentImg, alt="")
+    .news-detail-content.
         #{ content }
 
 
