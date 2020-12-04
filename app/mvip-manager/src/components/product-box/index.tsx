@@ -44,7 +44,7 @@ export default (props: Props) => {
     values.shopId = Number(params.id)
 
     const res = await createProductApi(values.shopId, values)
-    if (res.success) {
+    if (res?.success) {
       message.success(res.message)
       addProductList(res.data)
       onClose()

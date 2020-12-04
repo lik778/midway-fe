@@ -29,7 +29,7 @@ export default (props: Props) => {
   }
   const confirmDelete = async () => {
       const res  = await deleteProductApi(Number(params.id), { id: choiceId })
-      if (res.success) {
+      if (res?.success) {
         message.success(res.message);
         // 动态
         const deleteIndex = dataSource.findIndex(x => x.id === choiceId)
