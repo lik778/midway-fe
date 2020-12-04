@@ -126,7 +126,7 @@ export default (props: Props) => {
     if (editItem) {
       const mergeItem = Object.assign(editItem, r);
       const res = await updateContentCateApi(Number(params.id), {...mergeItem, type})
-      if (res.success) {
+      if (res?.success) {
         message.success('编辑成功');
         groupUpdate(res.data);
         resetConfigValue(config);
@@ -136,7 +136,7 @@ export default (props: Props) => {
       }
     } else {
       const res = await createContentCateApi(Number(params.id), {...r, type})
-      if (res.success) {
+      if (res?.success) {
         message.success('新增分组成功');
         groupCreate(res.data);
         resetConfigValue(config);

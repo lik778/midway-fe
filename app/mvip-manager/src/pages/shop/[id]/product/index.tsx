@@ -28,7 +28,7 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       const res = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res.success) {
+      if (res?.success) {
         setProductList(addKeyForListData(res.data.productList.result) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.productList.totalRecord)

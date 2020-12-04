@@ -48,7 +48,7 @@ export default (props: Props) => {
     } else {
       resData = await createProductApi(values.shopId, values)
     }
-    if (resData.success) {
+    if (resData?.success) {
       message.success(resData.message)
       if (!editData) {
         addProductList(resData.data)
