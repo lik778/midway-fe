@@ -9,6 +9,10 @@ export const createProductApi = (shopId: number, params: CreateProductApiParams)
   return postApiData('product/create', params, setShopHeader(shopId))
 }
 
+export const updateProductApi = (shopId: number, params: CreateProductApiParams) => {
+  return postApiData('product/update', params, setShopHeader(shopId))
+}
+
 export const deleteProductApi = (shopId: number, params: DeleteApiParams) => {
   return postApiData('product/delete', params, setShopHeader(shopId))
 }

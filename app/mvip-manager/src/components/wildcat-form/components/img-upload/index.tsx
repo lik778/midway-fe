@@ -41,16 +41,16 @@ export const ImgUpload = (props: any) => {
   }
 
   const handleChange = async ({file, fileList}) => {
-    console.log('fileList', fileList)
     setFileList(fileList)
-    const res = await uploadImgToUpyunHandle(file.originFileObj);
-    if(res.code === 200) {
-      setImgUrlList([...imgUrlList, res.url])
-      console.log('imgList', imgUrlList)
+    if (file.status === 'done') {
+      const res = await uploadImgToUpyunHandle(file.originFileObj);
+      if(res.code === 200) {
+        setImgUrlList([...imgUrlList, res.url])
+        console.log('imgList', imgUrlList)
+      }
     }
-    
   }
-  
+
   const  createMarkup = () => { return {__html: props.tip}; };
   return (
     <div className="img-upload">
