@@ -1,32 +1,43 @@
 .product
     width 100%
     background-color #ffffff
+    padding-bottom 16px
     .product-title
-        padding 16px 13px 8px 16px
+        padding 16px
+        padding-bottom 0
         margin-top 16px
-        display flex
-        align-items center
-        justify-content space-between
-        p 
+        p
+            float left
             padding-left 10px
             font-size 16px
-            color #333333
-            border-left 3px solid#1565C1  
-        .morebtn
-            font-size 16px
-            color #666666
+            font-weight 600
+            color #333
+            border-left 3px solid#1565C1
+        a
+            float right
+            color #666
+            .right-icon
+                display inline-block
+                margin 0 2px 2px 5px
+                width 8px
+                height 8px
+                border-top 1px solid #666
+                border-right 1px solid #666
+                transform rotate(45deg)
     .product-list
         display flex
         flex-wrap wrap
-        justify-content space-between
-        margin 8px 16px 16px 16px
+        margin 0 15px
         .item
+            position relative
+            text-align center
+            flex 1
             width 164px
             height 243px
             border 1px solid #E5E5E5
             padding 7px
             box-sizing border-box
-            margin-bottom 16px
+            margin 16px 16px 0 0
             &:nth-child(2n)
                 margin-right 0
             .cover
@@ -51,10 +62,14 @@
                 width 115px
                 height 27px
                 //button居中显示
+                position absolute
+                bottom 16px
+                left 50%
+                margin-left -65px
                 text-align center
                 font-size 12px
                 color #1565C1
                 border 1px solid #1565C1
                 border-radius 2px
-            
+
 

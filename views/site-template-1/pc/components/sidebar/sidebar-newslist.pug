@@ -8,7 +8,6 @@
                     a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
 
         //-这里跳到/n/新闻列表页，本可以写死，但后端告知最好是获取传的值。另外"查看更多"，产品要求要一直存在所以加了取值判断
-        //-moreLink使用的是产品列表底部查看更多定义的变量
         - const siderMoreLink = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
         if renderData.navigation && siderMoreLink
             a.news-more-btn(href="/" + renderData.shopName + siderMoreLink) 查看更多
