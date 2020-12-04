@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { Button, Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
+import './index.less';
 
 const getBase64 = function(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -19,12 +20,15 @@ export const ImgUpload = (props: any) => {
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div className='upload-img'>上传</div>
-    </div>
-  );
+  const uploadButton = () =>{
+    const txt = props.txt || '上传'
+    return (
+      <div>
+        <PlusOutlined />
+        <div className='upload-img'>{txt}</div>
+      </div>
+    );
+  }
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -51,7 +55,8 @@ export const ImgUpload = (props: any) => {
     }
   }
 
-  const  createMarkup = () => { return {__html: props.tip}; };
+  // const beforeUpload={beforeUpload}
+  
   return (
     <div className="img-upload">
       <Upload
@@ -60,7 +65,7 @@ export const ImgUpload = (props: any) => {
           onPreview={handlePreview}
           onChange={handleChange}
         >
-        {fileList.length >= props.maxNum ? null : uploadButton}
+        {fileList.length >= 1 ? null : uploadButton()}
       </Upload>
       <Modal
           visible={previewVisible}
@@ -70,7 +75,6 @@ export const ImgUpload = (props: any) => {
         >
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
-      <p className="tip" dangerouslySetInnerHTML={createMarkup()}></p>
     </div>
   )
 }
