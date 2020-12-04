@@ -30,7 +30,6 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = (values: any) => {
-    console.log(values)
   }
 
   const onModalClick = (e: any) => {
