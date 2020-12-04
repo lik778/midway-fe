@@ -19,7 +19,7 @@ export default (props: any) => {
       </div>
 
       <div className="s-btn">
-        <a href="#">基础设置</a>
+        <Link to={`143/basis`}>基础设置</Link>
         {/*<Link to={`${s.id}/product`}>内容管理</Link>*/}
         {/*为了测试数据先写死*/}
         <Link to={`143/product`}>内容管理</Link>

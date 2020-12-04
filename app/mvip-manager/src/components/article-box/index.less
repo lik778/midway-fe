@@ -28,7 +28,7 @@
     width: 80px;
     height: 40px;
   }
-  .img-upload .tip{
+  .f-img .tip{
     color: #999999;
     font-size:12px;
     margin-top:8px;
@@ -39,15 +39,12 @@
   .f-middle {
     display: flex;
     align-items: center;
+    .ant-form-item-label {
+      height: 40px;
+      line-height: 40px;
+    }
     input{
       height: 40px;
-    }
-  }
-
-  .f-img {
-    .tip{
-      color: #999999;
-      font-size:12px;
     }
   }
   .ant-input-textarea-show-count::after{
@@ -69,6 +66,12 @@
       color: #999999;
     }
   }
-}
 
+  .f-tag{
+    label::before{
+      content: '*';
+      color:#F1492C;
+    }
+  }
+}
 
