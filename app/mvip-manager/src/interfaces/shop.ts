@@ -4,13 +4,23 @@ export interface RouteParams {
   id: string;
 }
 
-export interface getContentApiParams {
+export interface GetContentApiParams {
   page: number;
   size: number;
   contentCateId: number;
 }
 
-export interface deleteProductApiParams {
+export interface CreateProductApiParams {
+  contentCateId: number;
+  contentText: string;
+  headImg: string;
+  name: string;
+  price: number;
+  shopId: number;
+  tags: string;
+}
+
+export interface DeleteApiParams {
   id: number;
 }
 
@@ -22,7 +32,7 @@ export interface CateItem {
   seoT?: string;
 }
 
-export interface createContentCateApiParams {
+export interface CreateContentCateApiParams {
   id?: number;
   name: string;
   seoD: string;
