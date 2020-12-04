@@ -67,6 +67,7 @@ export default (props: any) => {
       <ArticleBox
         addArticleList={(item: any) => { console.log(item) }}
         cateList={cateList}
+        updateCateList={(x) => setCateList([x, ...cateList])}
         visible={articleFormVisible}
         onClose={() => setArticleFormVisible(false)}/>
     </div>

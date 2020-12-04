@@ -62,12 +62,11 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              {item.maxNum ===1 && <ImgUpload/>}
-              { item.imgs && item.imgs.map(i => {
-              return(
-                <ImgUpload txt={i.text}/>
-              )})}
-              <p className="tip">{item.tip}</p>
+              {item.maxNum === 1 && <ImgUpload key={item.name}/>}
+              { item.imgs && item.imgs.map(i => <ImgUpload key={i.text} txt={i.text}/>) }
+              <FormItem>
+                <p className="tip">{item.tip}</p>
+              </FormItem>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
