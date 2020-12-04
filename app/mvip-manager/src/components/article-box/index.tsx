@@ -4,25 +4,29 @@ import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import { articleForm, productForm } from '@/config/form';
-import { Form, Drawer } from 'antd';
-import { CateItem } from '@/interfaces/shop';
+import { Form, Drawer, message } from 'antd';
+import { CateItem, CreateArticleApiParams, RouteParams } from '@/interfaces/shop';
 import { ContentCateType } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
+import { createArticleApi, updateArticleApi } from '@/api/shop';
+import { useParams } from 'umi';
 
 interface Props {
   cateList: CateItem[];
+  editData?: any;
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;
   addArticleList(item: any): void;
 }
 export default (props: Props) => {
-  const { visible, onClose, cateList, updateCateList } = props
+  const { visible, editData, onClose, cateList, updateCateList, addArticleList } = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
+  const params: RouteParams = useParams();
 
   useEffect(() => {
     // 初始化表单----> value
@@ -31,8 +35,26 @@ export default (props: Props) => {
     setformConfig(articleForm)
   }, [cateList])
 
-  const sumbit = (values: any) => {
-    console.log(values)
+  const sumbit = async (values: CreateArticleApiParams) => {
+    if (!values.price) { values.price = '面议' }
+    values.tags = '专业,牛逼'
+    values.contentImg = ''
+    values.shopId = Number(params.id) || 0
+    let resData: any;
+    if (editData) {
+      resData = await updateArticleApi(values.shopId, { id: editData.id, ...values })
+    } else {
+      resData = await createArticleApi(values.shopId, values)
+    }
+    if (resData.success) {
+      message.success(resData.message)
+      if (!editData) {
+        addArticleList(resData.data)
+      }
+      onClose()
+    } else {
+      message.error(resData.message)
+    }
   }
 
   const onModalClick = (e: any) => {
@@ -51,7 +73,12 @@ export default (props: Props) => {
           width="700"
         >
           <Form.Item>
-           <WildcatForm config={articleForm} submit={sumbit} onClick={onModalClick} className="default-form"/>
+            <WildcatForm
+              editDataSource={editData}
+              config={formConfig}
+              submit={sumbit}
+              onClick={onModalClick}
+              className="default-form"/>
          </Form.Item>
         <GroupModal
           type={ContentCateType.ARTICLE}

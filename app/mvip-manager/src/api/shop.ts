@@ -1,5 +1,11 @@
 import { postApiData, setShopHeader } from './base'
-import { GetContentApiParams, CreateProductApiParams, DeleteApiParams, CreateContentCateApiParams } from '@/interfaces/shop';
+import {
+  GetContentApiParams,
+  CreateProductApiParams,
+  DeleteApiParams,
+  CreateContentCateApiParams,
+  CreateArticleApiParams,
+} from '@/interfaces/shop';
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
   return postApiData('product/list', params, setShopHeader(shopId))
@@ -22,6 +28,13 @@ export const getArticleListApi = (shopId: number, params: GetContentApiParams) =
   return postApiData('article/list', params, setShopHeader(shopId))
 }
 
+export const createArticleApi = (shopId: number, params: CreateArticleApiParams) => {
+  return postApiData('article/create', params, setShopHeader(shopId))
+}
+
+export const updateArticleApi = (shopId: number, params: CreateArticleApiParams) => {
+  return postApiData('article/update', params, setShopHeader(shopId))
+}
 // api: 删除文章
 export const deleteArticleApi = (shopId: number, params: DeleteApiParams) => {
   return postApiData('article/delete', params, setShopHeader(shopId))
