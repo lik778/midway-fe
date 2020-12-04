@@ -66,6 +66,7 @@ export default (props: any) => {
           <ProductBox
             addProductList={(item) => setProductList([item, ...productList])}
             cateList={cateList}
+            updateCateList={(x) => setCateList([x, ...cateList])}
             visible={productFormVisible}
             onClose={() => setProductFormVisible(false)}/>
       </div>
