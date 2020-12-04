@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default (props: any) => {
-  const { cateList, onChange } = props;
+  const { cateList, onChange, showGroup, showCreate} = props;
   return (
     <div className="nav-container">
       <div style={{ float: 'left' }}>
@@ -29,14 +29,14 @@ export default (props: any) => {
           <Option key='全部' value={0}>全部</Option>
           {
             cateList.length && cateList.map((item: CateItem) => {
-              return (<Option key={item.name} value={item.id}>{item.name}</Option>)
+              return (<Option key={item.name} value={item.id || ''}>{item.name}</Option>)
             })
           }
         </Select>
       </div>
       <div style={{ float: 'right' }}>
-        <Button onClick={props.getGroup} size="large" style={{ marginRight: 36 }}>文章分组</Button>
-        <Button onClick={props.createModuleItem} icon={<PlusOutlined />} size="large" type="primary">新建文章</Button>
+        <Button onClick={showGroup} size="large" style={{ marginRight: 36 }}>文章分组</Button>
+        <Button onClick={showCreate} icon={<PlusOutlined />} size="large" type="primary">新建文章</Button>
       </div>
     </div>
   )
