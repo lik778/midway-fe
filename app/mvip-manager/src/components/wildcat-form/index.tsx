@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Cascader, Form, Input, Select,Tag } from 'antd';
+import React, { useEffect } from 'react';
+import { Button, Cascader, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
@@ -11,7 +11,8 @@ const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
 interface Props {
-  config: FormConfig,
+  config: FormConfig;
+  editDataSource?: any;
   submit(values: any): void;
   className?: string,
   onClick?: any,
@@ -41,6 +42,15 @@ const options = [
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
+  const { editDataSource, config } = props
+
+  useEffect(() => {
+    if (editDataSource) {
+      form.setFieldsValue(editDataSource)
+    } else {
+      form.resetFields()
+    }
+  },[editDataSource])
 
   return (
     <div>

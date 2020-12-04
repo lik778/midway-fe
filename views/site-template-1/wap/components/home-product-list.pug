@@ -1,7 +1,9 @@
 .product
     - const productList= renderData.productList.result
-    .product-title
+    .product-title.clearfix
         p 服务内容
+        a(href="/" + renderData.shopName + "/p/") 更多
+            .right-icon
     .product-list.clearfix
         if productList && productList.length >0
             each item in productList.length > 4 ? productList.slice(0,4):productList
