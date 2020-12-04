@@ -14,7 +14,6 @@ export default (props: any) => {
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
   const sumbit = (values: any) => {
-    console.log(values)
   }
 
 
