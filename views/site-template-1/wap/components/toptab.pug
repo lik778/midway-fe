@@ -1,9 +1,12 @@
 .tab-header
     //-- arr = ['境外公司注册','食品公司注册','具体注册流程']
-    ul
-        each item,index in cateList.length > 4 ? cateList.slice(0,4) : cateList
+    ul.tab-hidden
+        each item,index in cateList
             li(class='tab-li')
                 a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
-
+    //-这里其实应该是判断查过2行显示。
+    if  cateList.length > 8
+        .more-about 点击展开
+            img(src="//file.baixing.net/202011/f97dc03576b14b67b6b58a097b6c5f81.png", alt="")
 
 
