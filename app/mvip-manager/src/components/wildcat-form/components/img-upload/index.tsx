@@ -50,6 +50,8 @@ export const ImgUpload = (props: any) => {
     }
     
   }
+
+  // const beforeUpload={beforeUpload}
   
   const  createMarkup = () => { return {__html: props.tip}; };
   return (
@@ -70,7 +72,6 @@ export const ImgUpload = (props: any) => {
         >
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
-      <p className="tip" dangerouslySetInnerHTML={createMarkup()}></p>
     </div>
   )
 }
