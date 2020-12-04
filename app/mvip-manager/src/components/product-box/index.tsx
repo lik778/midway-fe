@@ -4,20 +4,25 @@ import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import { productForm } from '@/config/form';
-import { Form, Drawer } from 'antd';
-import { CateItem } from '@/interfaces/shop';
-import { FormItem } from '@/components/wildcat-form/interfaces';
+import { Form, Drawer, message } from 'antd';
+import { CateItem, CreateProductApiParams, RouteParams } from '@/interfaces/shop';
+import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
+import { createProductApi, updateContentCateApi } from '@/api/shop';
+import { useParams } from 'umi';
+
 interface Props {
   cateList: CateItem[];
   visible: boolean;
   onClose(): void;
+  addProductList(item: any): void;
 }
 
 export default (props: Props) => {
-  const { onClose, visible, cateList } = props;
+  const { onClose, visible, cateList, addProductList } = props;
   // 弹窗显示隐藏
-  const [modalVisible, setModalVisible] = useState(false)
-  const [formConfig, setformConfig] = useState(productForm)
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [formConfig, setformConfig] = useState<FormConfig>(productForm)
+  const params: RouteParams = useParams();
 
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
@@ -29,7 +34,18 @@ export default (props: Props) => {
     setformConfig(formConfig)
   }, [cateList])
 
-  const sumbit = (values: any) => {
+  const sumbit = async (values: CreateProductApiParams) => {
+    if (!values.price) { values.price = '面议' }
+    values.tags = '专业,牛逼'
+    values.shopId = Number(params.id)
+    const res = await createProductApi(values.shopId, values)
+    if (res.success) {
+      message.success(res.message)
+      addProductList(res.data)
+      onClose()
+    } else {
+      message.error(res.message)
+    }
   }
 
   const onModalClick = (e: any) => {
