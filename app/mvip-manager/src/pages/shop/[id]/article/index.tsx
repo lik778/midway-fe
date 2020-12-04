@@ -12,12 +12,14 @@ import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType } from '@/enums';
 import './index.less';
+import ProductNav from '@/pages/shop/[id]/product/components/nav';
 
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [articleFormVisible, setArticleFormVisible] = useState<boolean>(false);
   const [articleList, setArticleList] = useState<any>([]);
+  const [editArticleData, setEditArticleData] = useState<any>(null)
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
@@ -46,7 +48,10 @@ export default (props: any) => {
         cateList={cateList}
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
         showGroup={() => setModuleGroupVisible(true)}
-        showCreate={() => setArticleFormVisible(true)} />
+        showCreate={() => {
+          setArticleFormVisible(true)
+          setEditArticleData(null)
+        }}  />
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
         title="文章分组"
@@ -60,13 +65,18 @@ export default (props: any) => {
       <ArticleList
         total={total}
         dataSource={articleList}
+        openEditForm={(item) => {
+          setArticleFormVisible(true);
+          setEditArticleData(item);
+        }}
         update={(list) => {
           setArticleList(addKeyForListData(list) || [])
         }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
-        addArticleList={(item: any) => { console.log(item) }}
+        addArticleList={(item) => setArticleList([item, ...articleList]) }
         cateList={cateList}
+        editData={editArticleData}
         updateCateList={(x) => setCateList([x, ...cateList])}
         visible={articleFormVisible}
         onClose={() => setArticleFormVisible(false)}/>
