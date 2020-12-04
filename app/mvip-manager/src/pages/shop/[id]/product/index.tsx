@@ -17,6 +17,7 @@ export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [productFormVisible, setProductFormVisible] = useState<boolean>(false);
   const [productList, setProductList] = useState<any>([]);
+  const [editProductData, setEditProductData] = useState<any>(null);
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
@@ -46,10 +47,17 @@ export default (props: any) => {
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
             cateList={cateList}
             showGroup={() => setModuleGroupVisible(true)}
-            showCreate={() => setProductFormVisible(true)} />
+            showCreate={() => {
+              setProductFormVisible(true)
+              setEditProductData(null)
+            }} />
           <ProductList
             total={total}
             dataSource={productList}
+            openEditForm={(item) => {
+              setProductFormVisible(true);
+              setEditProductData(item);
+            }}
             update={(list) => {
               setProductList(addKeyForListData(list) || [])
             }}
@@ -66,6 +74,7 @@ export default (props: any) => {
           <ProductBox
             addProductList={(item) => setProductList([item, ...productList])}
             cateList={cateList}
+            editData={editProductData}
             updateCateList={(x) => setCateList([x, ...cateList])}
             visible={productFormVisible}
             onClose={() => setProductFormVisible(false)}/>
