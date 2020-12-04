@@ -5,8 +5,16 @@ import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import { articleForm } from '@/config/form';
 import { Form, Drawer } from 'antd';
-export default (props: any) => {
-  const { visible, onClose } = props
+import { CateItem } from '@/interfaces/shop';
+
+interface Props {
+  cateList: CateItem[];
+  visible: boolean;
+  onClose(): void;
+  addArticleList(item: any): void;
+}
+export default (props: Props) => {
+  const { visible, onClose, cateList } = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -16,8 +24,6 @@ export default (props: any) => {
   const sumbit = (values: any) => {
     console.log(values)
   }
-
-
 
   const onModalClick = (e: any) => {
     setModalVisible(true)
