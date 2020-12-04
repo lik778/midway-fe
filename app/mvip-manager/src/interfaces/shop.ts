@@ -11,6 +11,7 @@ export interface GetContentApiParams {
 }
 
 export interface CreateProductApiParams {
+  id?: number;
   contentCateId: number;
   contentText: string;
   contentImg?: string;

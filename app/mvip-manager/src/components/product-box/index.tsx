@@ -6,12 +6,13 @@ import { productForm } from '@/config/form';
 import { Drawer, Form, message } from 'antd';
 import { CateItem, CreateProductApiParams, RouteParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
-import { createProductApi } from '@/api/shop';
+import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
 
 interface Props {
   cateList: CateItem[];
+  editData?: any;
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const { onClose, visible, cateList, updateCateList, addProductList } = props;
+  const { onClose, visible, editData, cateList, updateCateList, addProductList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
@@ -37,26 +38,30 @@ export default (props: Props) => {
 
   const sumbit = async (values: CreateProductApiParams) => {
     if (!values.price) { values.price = '面议' }
-    // 这里先写死
     values.tags = '专业,牛逼'
     values.contentImg = ''
     values.headImg = ''
     values.shopId = Number(params.id)
-
-    const res = await createProductApi(values.shopId, values)
-    if (res?.success) {
-      message.success(res.message)
-      addProductList(res.data)
+    let resData: any;
+    if (editData) {
+      resData = await updateProductApi(values.shopId, { id: editData.id, ...values })
+    } else {
+      resData = await createProductApi(values.shopId, values)
+    }
+    if (resData?.success) {
+      message.success(resData.message)
+      if (!editData) {
+        addProductList(resData.data)
+      }
       onClose()
     } else {
-      message.error(res.message)
+      message.error(resData.message)
     }
   }
 
   const onModalClick = (e: any) => {
     setModalVisible(true)
   }
-
 
   return (
     <Drawer
@@ -69,7 +74,12 @@ export default (props: Props) => {
           width="700"
         >
           <Form.Item>
-           <WildcatForm config={formConfig} submit={sumbit} onClick={onModalClick} className="default-form"/>
+           <WildcatForm
+             editDataSource={editData}
+             config={formConfig}
+             submit={sumbit}
+             onClick={onModalClick}
+             className="default-form"/>
          </Form.Item>
          <GroupModal
            type={ContentCateType.PRODUCT}
