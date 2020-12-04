@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { message } from 'antd';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
-import { ShopModuleType } from '@/enums';
-import './index.less';
 import ShopModuleGroup from '@/components/shop-module-group';
+import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
+import { ContentCateType, ShopModuleType } from '@/enums';
+import './index.less';
 
 
 export default (props: any) => {
@@ -25,11 +27,11 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
-      const { success, data, message } = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (success) {
-        setArticleList(addKeyForListData(data.articleList.result) || [])
-        setCateList(addKeyForListData(data.cateList) || [])
-        setTotal(data.articleList.totalRecord)
+      const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
+      if (res.success) {
+        setArticleList(addKeyForListData(res.data.articleList.result) || [])
+        setCateList(addKeyForListData(res.data.cateList) || [])
+        setTotal(res.data.articleList.totalRecord)
       } else {
         message.error(message);
       }
@@ -38,7 +40,7 @@ export default (props: any) => {
 
   return (<div>
     <MainTitle title="百姓网店铺"/>
-    <ShopModuleTab type={ShopModuleType.article}/>
+    <ShopModuleTab type={ShopModuleType.ARTICLE}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
@@ -46,12 +48,14 @@ export default (props: any) => {
         getGroup={() => setModuleGroupVisible(true)}
         createModuleItem={() => alert('创建')} />
       <ShopModuleGroup
+        type={ContentCateType.ARTICLE}
         title="文章分组"
         createBtnText="新建文章"
         cateList={cateList}
+        updateCateList={(list) => setCateList(list)}
         onClose={() => setModuleGroupVisible(false)}
         visible={moduleGroupVisible}
-        save={() => { console.log('保存') }}
+        save={() => { setModuleGroupVisible(false) }}
       />
       <ArticleList
         total={total}
@@ -60,7 +64,7 @@ export default (props: any) => {
           setArticleList(addKeyForListData(list) || [])
         }}
         onChange={(page) => setPage(page)}/>
-      {/*<ArticleBox/>*/}
+      <ArticleBox visible={articleFormVisible} onClose={() => setArticleFormVisible(false)}/>
     </div>
   </div>)
 }

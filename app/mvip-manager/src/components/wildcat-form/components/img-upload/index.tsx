@@ -3,19 +3,7 @@ import { Button, Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
 
-const uploadProps = {
-  name: 'file',
-  multiple: false,
-  onChange(e: any) {
-    if (e.file.status === 'done') {
-      uploadImgToUpyunHandle(e.file.originFileObj).then(res => {
-        console.log('上传又拍云成功', res)
-      })
-    }
-  },
-};
-
-function getBase64(file) {
+const getBase64 = function(file: Blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -30,6 +18,7 @@ export const ImgUpload = (props: any) => {
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState([])
+  const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -50,14 +39,28 @@ export const ImgUpload = (props: any) => {
       setPreviewVisible(true)
       setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
+
+  const handleChange = async ({file, fileList}) => {
+    console.log('fileList', fileList)
+    setFileList(fileList)
+    const res = await uploadImgToUpyunHandle(file.originFileObj);
+    if(res.code === 200) {
+      setImgUrlList([...imgUrlList, res.url])
+      console.log('imgList', imgUrlList)
+    }
+    
+  }
   
+  const  createMarkup = () => { return {__html: props.tip}; };
   return (
     <div className="img-upload">
-      <Upload {...uploadProps} listType="picture-card"
+      <Upload
+          listType="picture-card"
           fileList={fileList}
-          onPreview={handlePreview}>
-        {fileList.length >= 8 ? null : uploadButton}
-        
+          onPreview={handlePreview}
+          onChange={handleChange}
+        >
+        {fileList.length >= props.maxNum ? null : uploadButton}
       </Upload>
       <Modal
           visible={previewVisible}
@@ -67,7 +70,7 @@ export const ImgUpload = (props: any) => {
         >
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
-      <p className="tip">{props.tip}</p>
+      <p className="tip" dangerouslySetInnerHTML={createMarkup()}></p>
     </div>
   )
 }

@@ -11,4 +11,4 @@
 		.tel-desc
 			.tel-title 全国服务热线
 			.tel-num
-				| #{renderData.contact.phone.content }
+				a(href="tel:" + renderData.contact.phone.content) #{renderData.contact.phone.content }

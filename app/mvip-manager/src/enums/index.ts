@@ -1,6 +1,6 @@
 export enum ShopModuleType {
-  product = 'product',
-  article = 'article'
+  PRODUCT = 'product',
+  ARTICLE = 'article'
 }
 
 export enum AuditStatus {
@@ -15,4 +15,9 @@ export enum ArticleSource {
   MAN_MADE, // 人工
   BATCH, // 批量
   AI, // AI
+}
+
+export enum ContentCateType {
+  PRODUCT = 1, // 产品分类
+  ARTICLE = 2 // 文章分类
 }

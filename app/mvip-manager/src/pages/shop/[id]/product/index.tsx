@@ -1,4 +1,5 @@
 import React,  { useState, useEffect } from 'react';
+import { message } from 'antd';
 import { useParams } from "umi";
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
@@ -6,7 +7,7 @@ import ShopModuleGroup from '@/components/shop-module-group';
 import CategoryBox from '@/components/category-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';
-import { ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import './index.less'
@@ -26,13 +27,13 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
-      const { success, data, message } = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (success) {
-        setProductList(addKeyForListData(data.productList.result) || [])
-        setCateList(addKeyForListData(data.cateList) || [])
-        setTotal(data.productList.totalRecord)
+      const res = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
+      if (res.success) {
+        setProductList(addKeyForListData(res.data.productList.result) || [])
+        setCateList(addKeyForListData(res.data.cateList) || [])
+        setTotal(res.data.productList.totalRecord)
       } else {
-        message.error(message);
+        message.error(res.message);
       }
     })()
   }, [page, contentCateId])
@@ -40,7 +41,7 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="百姓网店铺"/>
-      <ShopModuleTab type={ShopModuleType.product}/>
+      <ShopModuleTab type={ShopModuleType.PRODUCT}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
@@ -55,13 +56,15 @@ export default (props: any) => {
             }}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
+            type={ContentCateType.PRODUCT}
             title="服务分组"
             createBtnText="新建服务"
             cateList={cateList}
+            updateCateList={(list) => setCateList(list)}
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
-            save={() => { console.log('保存') }} />
-          <CategoryBox visible={productFormVisible} onClose={() => setProductFormVisible(false)}/>
+            save={() => { setModuleGroupVisible(false) }} />
+          <CategoryBox cateList={cateList} visible={productFormVisible} onClose={() => setProductFormVisible(false)}/>
       </div>
   </div>)
 }

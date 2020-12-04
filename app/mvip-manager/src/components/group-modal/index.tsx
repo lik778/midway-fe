@@ -1,8 +1,12 @@
 
-import React, {useState, useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.less';
-import { Modal, Input } from 'antd';
+import { message, Modal, Input } from 'antd';
 import classNames from 'classnames';
+import { createContentCateApi, updateContentCateApi } from '@/api/shop'
+import { CateItem, RouteParams } from '@/interfaces/shop';
+import { useParams } from 'umi';
+import { ContentCateType } from '@/enums';
 
 
 // 分组tkd配置
@@ -25,7 +29,7 @@ const groupConfig = [
     required: false,
     maxLength:15,
     minLength:9,
-    id:'title',
+    id:'seoT',
     value: '',
     initLen: 0,
     err: '请输入大于9个字的标题',
@@ -35,7 +39,7 @@ const groupConfig = [
     label: 'keyword',
     placeholder: "请输入关键词",
     required: false,
-    id:'keyword',
+    id:'seoK',
     value: '',
     initLen: 0,
     minLength: 0,
@@ -49,7 +53,7 @@ const groupConfig = [
     required: false,
     maxLength:80,
     minLength:40,
-    id: 'description',
+    id: 'seoD',
     value: '',
     initLen: 0,
     err:'请输入大于40个字的描述',
@@ -57,12 +61,25 @@ const groupConfig = [
   },
 ]
 
-const gData = {
-}
 
 const errClass = 'input-error'
 
-export default (props: any) => {
+interface Props {
+  editItem?: any;
+  type: ContentCateType;
+  visible: boolean;
+  groupCreate(item: CateItem): void;
+  groupUpdate(item: CateItem): void;
+  onClose(): void;
+}
+export default (props: Props) => {
+  const params: RouteParams = useParams();
+  const { editItem, type, onClose, groupCreate, groupUpdate } = props;
+  // const haha = groupConfig.map(x => {
+  //   x.value = (editItem && editItem[x.id]) || '';
+  //   console.log(x)
+  //   return x;
+  // })
   const [config, setConfig] = useState(groupConfig)
   // 确定loading
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -72,21 +89,22 @@ export default (props: any) => {
     isRequired: false
   })
 
-  const [resModal, setResModal] = useState(gData)
+  useEffect(() => {
+    setConfig(groupConfig.map(x => {
+      x.value = (editItem && editItem[x.id]) || '';
+      return x;
+    }))
+  }, [editItem]);
 
   // 弹窗错误显示
   const [err, setError] = useState('')
 
-  const handleOk = () => {
-    // setConfirmLoading(true);
-    // setTimeout(() => {
-    //   props.onClose(false)
-    //   setConfirmLoading(false);
-    // }, 2000);
-    let r: {
-      [key: string]: string}= {
+  const resetConfigValue = (config: any) => {
+    setConfig(config.map((x: any) => { x.value = ''; return x }))
+  }
 
-    }
+    const handleOk = async () => {
+    const r: any = {}
 
     const newConfig = config.concat()
     newConfig.forEach((c, i) => {
@@ -104,12 +122,29 @@ export default (props: any) => {
         return
       }
     })
-    setResModal(r)
-    // props.onClose(false)
-  };
-
-  const handleCancel = () => {
-    props.onClose(false)
+    // to api
+    if (editItem) {
+      const mergeItem = Object.assign(editItem, r);
+      const res = await updateContentCateApi(Number(params.id), {...mergeItem, type})
+      if (res.success) {
+        message.success('编辑成功');
+        groupUpdate(res.data);
+        resetConfigValue(config);
+        onClose();
+      } else {
+        message.error(res.message)
+      }
+    } else {
+      const res = await createContentCateApi(Number(params.id), {...r, type})
+      if (res.success) {
+        message.success('新增分组成功');
+        groupCreate(res.data);
+        resetConfigValue(config);
+        onClose();
+      } else {
+        message.error(res.message)
+      }
+    }
   };
 
   // 输入框
@@ -117,13 +152,12 @@ export default (props: any) => {
     const target = e.target
     const name = target.name
     const value = target.value
-    let newConfig = config.concat()
-    newConfig.map(g => {
-        if(g.id == name) {
+
+    setConfig(config.map(g => {
+        if (g.id === name) {
           g.value = value
           g.initLen = value.length
         }
-
         if(g.required && g.value) {
           g['errClass'] = ''
         }
@@ -132,19 +166,18 @@ export default (props: any) => {
           g['errClass'] = ''
           setError('')
         }
-    })
-
-    setConfig(newConfig)
+        return g
+    }))
   }
 
   return (
     <div className="group-modal">
       <Modal
         title="新建分组"
-        visible={props.isModalVisible}
+        visible={props.visible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
-        onCancel={handleCancel}
+        onCancel={props.onClose}
         className="g-modal"
       >
         <p className="error">{err}</p>
@@ -153,7 +186,8 @@ export default (props: any) => {
               return(
                 <li className="f-input" key={g.id}>
                   <label htmlFor={g.id} className={classNames({'required': g.required})}>{g.label}</label>
-                  <Input placeholder={g.placeholder} id={g.id} name={g.id} className={g.errClass} maxLength={g.maxLength} minLength={g.minLength} onChange={handleChange} value={g.value}/>
+                  <Input placeholder={g.placeholder} id={g.id} name={g.id} className={g.errClass} maxLength={g.maxLength} minLength={g.minLength} onChange={handleChange}
+                         value={g.value}/>
                   {g.maxLength&&<span className="f-len">{g.initLen}/{g.maxLength}</span>}
                 </li>
               )
