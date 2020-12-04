@@ -15,24 +15,31 @@
     .aboutus-content
         border-bottom 1px solid #DDDDDD
         p
-            color #333333
+            color #333
             font-size 14px
             margin 0 21px 17px 18px
+            //此处把隐藏属性独立出来成一个类，供jquery点击增删
+        .about-hidden
             overflow hidden
-            //text-overflow ellipsis
             display -webkit-box
             -webkit-line-clamp 5
             -webkit-box-orient vertical
 
-    .morebtn
+    .more-about
         height 34px
         line-height 34px
-        //background-color #ffffff
         display block
         font-size 12px
         color #999
         text-align center
-        flex auto
         img
             width 12px
             height 12px
+            margin-left 10px
+            vertical-align middle
+            margin-bottom 2px
+
+        .img-rotate
+            transform rotate(180deg)
+    .change-more-about
+        color #1565C1 !important
