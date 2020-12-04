@@ -5,9 +5,6 @@ import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import  Btn  from '@/components/btn';
-import { PlusOutlined } from '@ant-design/icons';
-import { TweenOneGroup } from 'rc-tween-one';
-import { max } from 'class-validator';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -44,7 +41,7 @@ const options = [
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  
+
   return (
     <div>
       <Form form={form} name={props.config && props.config.name} onFinish={props.submit} className={props.className}>
@@ -65,18 +62,22 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <ImgUpload tip={item.tip}/>
+              <ImgUpload tip={item.tip} maxNum={item.maxNum}/>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <Cascader size='large' options={options} />
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
-            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
-                { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-              </Select>
-              <Btn btnConfig={item.btnConfig} onClick={props.onClick}></Btn>
+            return (<FormItem key={item.label}>
+              <FormItem className={item.className} label={item.label} name={item.name}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+                <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+                  { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+                </Select>
+              </FormItem>
+              <FormItem>
+                <Btn btnConfig={item.btnConfig} onClick={props.onClick}></Btn>
+              </FormItem>
             </FormItem>)
           }else if (item.type === FormType.Tag) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
