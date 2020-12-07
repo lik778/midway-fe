@@ -38,14 +38,13 @@ export default (props: Props) => {
 
   const sumbit = async (values: CreateArticleApiParams) => {
     if (!values.price) { values.price = '面议' }
-    values.tags = '专业,牛逼'
     values.contentImg = ''
-    values.shopId = Number(params.id) || 0
+    if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
     let resData: any;
     if (editData) {
-      resData = await updateArticleApi(values.shopId, { id: editData.id, ...values })
+      resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
     } else {
-      resData = await createArticleApi(values.shopId, values)
+      resData = await createArticleApi(Number(params.id), values)
     }
     if (resData.success) {
       message.success(resData.message)
@@ -53,7 +52,6 @@ export default (props: Props) => {
         updateArticleList(resData.data)
       } else {
         addArticleList(resData.data)
-
       }
       onClose()
     } else {
