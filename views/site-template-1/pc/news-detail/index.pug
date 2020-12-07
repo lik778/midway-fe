@@ -1,14 +1,8 @@
 extends ../layout
-block head
-    title #{ renderData.meta.title || "" }
-    meta(name='keywords' content=renderData.meta.keywords || "")
-    meta(name='description' content=renderData.meta.description || "")
 block styles
     :combine(fileName="site-template-1-news-detail-pc.css")
 
-//-使用了统一的header和nav
 block content
-    //- 面包屑
     include ../components/breadcrumbs.pug
 
     .container.clearfix
@@ -29,7 +23,6 @@ block content
             include ../components/sidebar/category-item.pug
 
     include ../components/footer.pug
-    //-QQ交谈
     include ../components/customer-service.pug
 
 block scripts
