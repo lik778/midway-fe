@@ -42,7 +42,7 @@ const options = [
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  const { editDataSource, config } = props
+  const { editDataSource } = props
 
   useEffect(() => {
     if (editDataSource) {
@@ -94,8 +94,17 @@ const WildcatForm = (props: Props) => {
               </FormItem>
             </FormItem>)
           }else if (item.type === FormType.Tag) {
+            const value = form.getFieldsValue()[item.name];
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
-              <TagModule maxLength={item.maxLength} maxNum={item.maxNum}/>
+              <TagModule
+                value={value || []}
+                 maxLength={item.maxLength || 0}
+                 maxNum={item.maxNum || 0}
+                 onChange={(tags: string) => {
+                    const values = form.getFieldsValue()
+                    values[item.name] = tags
+                    form.setFieldsValue(values)
+                }}/>
             </FormItem>)
           }
         }) }
