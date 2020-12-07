@@ -34,4 +34,5 @@ export interface FormItem {
   className?: string, // 自定义样式,
   btnConfig?: any, // 输入框需要增加额外标签
   maxNum?: number,
+  imgs?:any[],// 图片多种情况
 }

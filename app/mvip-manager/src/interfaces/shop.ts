@@ -10,13 +10,18 @@ export interface GetContentApiParams {
   contentCateId: number;
 }
 
-export interface CreateProductApiParams {
+export interface CreateProductApiParams extends  CreateArticleApiParams {
+  headImg?: string;
+}
+
+export interface CreateArticleApiParams {
+  id?: number;
   contentCateId: number;
-  contentText: string;
-  headImg: string;
+  content: string;
+  contentImg?: string;
   name: string;
-  price: number;
-  shopId: number;
+  price: number | string;
+  shopId?: number;
   tags: string;
 }
 

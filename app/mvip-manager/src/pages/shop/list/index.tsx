@@ -118,7 +118,7 @@ export default (props: any) => {
 
   useEffect(
     () => {
-      if(shopSiteRes && shopSiteRes.success) {
+      if(shopSiteRes?.success) {
         setVisible(false)
         if(shopOperateStatus != 1) {
           // 由于es返回慢，改用前端新增数据

@@ -1,7 +1,9 @@
 import './index.styl'
 import Swiper from 'swiper'
 import { menusModule } from '../components/header/index'
+import { aboutModule } from '../components/aboutus/index'
 
+aboutModule()
 menusModule()
 
 var swiper = new Swiper('.swiper-container', {

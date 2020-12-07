@@ -39,7 +39,7 @@ export default (props: Props) => {
 
   const deleteGroupItem = async (id: any) => {
     const res  = await deleteContentCateApi(Number(params.id), { id })
-    if (res.success) {
+    if (res?.success) {
       const deleteIndex = cateList.findIndex((x: CateItem) => x.id === id)
       cateList.splice(deleteIndex, 1)
       updateCateList([...cateList]);
