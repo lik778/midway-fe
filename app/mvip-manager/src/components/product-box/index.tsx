@@ -39,7 +39,7 @@ export default (props: Props) => {
 
   const sumbit = async (values: CreateProductApiParams) => {
     if (!values.price) { values.price = '面议' }
-    values.tags = '专业,牛逼'
+    if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
     values.contentImg = ''
     values.headImg = ''
     values.shopId = Number(params.id)
