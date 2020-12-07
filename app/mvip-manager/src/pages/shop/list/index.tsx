@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, Space, Spin } from 'antd';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box'
@@ -14,6 +14,8 @@ const emptyMsg = {
 }
 
 export default (props: any) => {
+  // isLoaded
+  const [isLoading, setIsLoading] = useState(true)
   // 弹窗显示隐藏
   const [visible, setVisible] = useState(false)
   // 弹窗错误显示
@@ -68,6 +70,7 @@ export default (props: any) => {
   // 获取店铺列表
   const getShopListing = async () => {
     const data = await postApiData('shop/listing', { page: 1, size: 10 })
+    setIsLoading(false)
     if(data && data.code === 200) {
       const resData = data.data
       const result = resData.result || []
@@ -182,6 +185,13 @@ export default (props: any) => {
 
   // 店铺站点页面主功能块
   const shopSitePage = () => {
+    if(isLoading) {
+      return (
+        <Space size="middle">
+          <Spin size="large" />
+        </Space>
+      )
+    }
     // 店铺列表
     if(totalCount) {
       return (

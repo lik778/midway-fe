@@ -1,46 +1,31 @@
 extends ../layout
 
-block head
-    - const cateList = renderData.productCateList
-    //-- const cityName = renderData.basic.city.name
-    //-if cateList && cateList.length>0
-    //-    - SEOtitle = cityName +
-    //-else
-    meta(name='keywords' content=renderData.meta.keywords || "")
-    meta(name='description' content=renderData.meta.description || "")
-    title #{ renderData.meta.title || renderData.basic.company.name + "-首页" }
 block styles
     :combine(fileName="site-template-1-product-pc.css")
 
-
 block content
-    //- 面包屑
-    //-- const navList= renderData.navigation
-    //-- const crumbs = [{label:'首页',link:"/" + renderData.shopName},{label:'服务内容',link:"/" + renderData.shopName + "/p"}]
     include ../components/breadcrumbs.pug
 
     .container.clearfix
         .main
-            //-- const firstcrumb= '服务内容'
-            //-- const secondcrumb= '公司注册'
             include ../components/main-title.pug
             include ../components/product-list.pug
             +product-list(16,'product')
+
         .side-bar
             include ../components/sidebar/sidebar-title.pug
             +sidebar-title('联系我们')
             include ../components/sidebar/contact.pug
-            +sidebar-title('服务分类')
 
-            //-- const categoryList = [{name:'公司注册', url:'/site/product/child'},{name:'代理记账', url:'/site/product/child'},{name:'公司注销', url:'/site/product/child'},{name:'公司转让', url:'/site/product/child'}]
-            //-- const cateList = renderData.productCateList
+            +sidebar-title('服务分类')
+            - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
     include ../components/pagination
     - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
     +pagination(totalPage, renderData.currentPage, `/${renderData.shopName}/p`)
+
     include ../components/footer.pug
-    //-QQ交谈
     include ../components/customer-service.pug
 
 block scripts

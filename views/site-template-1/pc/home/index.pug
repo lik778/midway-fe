@@ -1,9 +1,5 @@
 extends ../layout
 
-block head
-    meta(name='keywords' content=renderData.meta.keywords || "")
-    meta(name='description' content=renderData.meta.description || "")
-    title #{ renderData.meta.title || renderData.basic.company.name + "-首页" }
 block styles
     :combine(fileName="site-template-1-home-pc.css")
 
@@ -26,12 +22,12 @@ block content
 
             include ../components/sidebar/sidebar-newslist.pug
             include ../components/sidebar/category-icon.pug
-            //-- const categoryList = [{name:'公司注册', url:'#'},{name:'代理记账', url:'#'},{name:'公司注销', url:'#'},{name:'公司转让', url:'#'}]
+
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
     include ../components/footer.pug
-    //-QQ交谈
+    //-在线客服
     include ../components/customer-service.pug
 
 block scripts
