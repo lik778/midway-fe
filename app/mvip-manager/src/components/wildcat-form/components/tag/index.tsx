@@ -44,8 +44,10 @@ export const TagModule = (props: Props) => {
     //   setTags([...tags, inputValue])
     // }
     // tips: 这里还要进行一下数据输入处理
-    onChange([...tags, inputValue].join(','))
-    setTags([...tags, inputValue])
+    if (!tags.includes(inputValue)) {
+      onChange([...tags, inputValue].join(','))
+      setTags([...tags, inputValue])
+    }
     setInputVisible(false)
     setInputValue('')
   };
@@ -64,7 +66,7 @@ export const TagModule = (props: Props) => {
             leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
             appear={false}>
             {
-              tags.length && tags.map((tag: string, index: number) => {
+              tags.length > 0 && tags.map((tag: string, index: number) => {
                  return (
                      <span key={tag}>
                         <Tag className="mini-tag" key={index} closable
