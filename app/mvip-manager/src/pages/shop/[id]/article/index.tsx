@@ -75,6 +75,11 @@ export default (props: any) => {
         onChange={(page) => setPage(page)}/>
       <ArticleBox
         addArticleList={(item) => setArticleList([item, ...articleList]) }
+        updateArticleList={(item) => {
+          const editIndex = articleList.findIndex((a: any) => a.id === item.id)
+          articleList.splice(editIndex, 1, item)
+          setArticleList([...articleList])
+        }}
         cateList={cateList}
         editData={editArticleData}
         updateCateList={(x) => setCateList([x, ...cateList])}

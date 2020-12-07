@@ -13,6 +13,7 @@ import { addKeyForListData } from '@/utils';
 import './index.less'
 import { CateItem, RouteParams } from '@/interfaces/shop';
 
+// tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [productFormVisible, setProductFormVisible] = useState<boolean>(false);
@@ -73,6 +74,11 @@ export default (props: any) => {
             save={() => { setModuleGroupVisible(false) }} />
           <ProductBox
             addProductList={(item) => setProductList([item, ...productList])}
+            updateProductList={(item) => {
+              const editIndex = productList.findIndex((a: any) => a.id === item.id)
+              productList.splice(editIndex, 1, item)
+              setProductList([...productList])
+            }}
             cateList={cateList}
             editData={editProductData}
             updateCateList={(x) => setCateList([x, ...cateList])}

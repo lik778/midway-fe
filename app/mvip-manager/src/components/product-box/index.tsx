@@ -17,10 +17,11 @@ interface Props {
   onClose(): void;
   updateCateList(item: CateItem): void;
   addProductList(item: any): void;
+  updateProductList(item: any): void;
 }
 
 export default (props: Props) => {
-  const { onClose, visible, editData, cateList, updateCateList, addProductList } = props;
+  const { onClose, visible, editData, cateList, updateCateList, addProductList, updateProductList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
@@ -48,9 +49,11 @@ export default (props: Props) => {
     } else {
       resData = await createProductApi(values.shopId, values)
     }
-    if (resData?.success) {
+    if (resData.success) {
       message.success(resData.message)
-      if (!editData) {
+      if (editData) {
+        updateProductList(resData.data)
+      } else {
         addProductList(resData.data)
       }
       onClose()
