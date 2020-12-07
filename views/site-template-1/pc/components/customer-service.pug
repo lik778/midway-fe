@@ -1,9 +1,7 @@
-//-- const data = [{name:'一号客服',content:956225979},{name:'二号客服',content:956225979},{name:'三号客服',content:956225979}]
-- const { qq, phone, weChat } = renderData.contact
-//-下面数据可测试
+//-在线客服
 //-- const  qq = [{"type": 1,"name": "客服1","content": "1234567"}]
-//-(style="display:none")
 .customer-box
+	- const { qq, phone, weChat } = renderData.contact
 	.qq-title QQ交谈
 		img.qqshow(src="//file.baixing.net/202012/d3f156b57227810022a850b88711f010.png", alt="")
 	if qq && qq.length>0
