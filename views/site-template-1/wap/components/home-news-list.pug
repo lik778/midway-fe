@@ -10,7 +10,7 @@
         if newsList && newsList.length >0
             ul.item
                 //-默认最多展示20条
-                each item in newsList.length>10 ? newsList.slice(0,10) : newsList
+                each item in newsList.length>=10 ? newsList.slice(0,11) : newsList
                     li
                         a(href="/" + renderData.shopName + item.urlSuffix)
                             p #{item.name}
