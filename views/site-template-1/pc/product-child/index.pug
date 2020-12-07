@@ -1,5 +1,8 @@
 extends ../layout
-
+block head
+    title #{ renderData.meta.title || "" }
+    meta(name='keywords' content=renderData.meta.keywords || "")
+    meta(name='description' content=renderData.meta.description || "")
 block styles
     :combine(fileName="site-template-1-product-child-pc.css")
 

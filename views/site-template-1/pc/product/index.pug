@@ -1,17 +1,10 @@
 extends ../layout
-
 block head
-    - const cateList = renderData.productCateList
-    //-- const cityName = renderData.basic.city.name
-    //-if cateList && cateList.length>0
-    //-    - SEOtitle = cityName +
-    //-else
+    title #{ renderData.meta.title || "" }
     meta(name='keywords' content=renderData.meta.keywords || "")
     meta(name='description' content=renderData.meta.description || "")
-    title #{ renderData.meta.title || renderData.basic.company.name + "-首页" }
 block styles
     :combine(fileName="site-template-1-product-pc.css")
-
 
 block content
     //- 面包屑
@@ -32,8 +25,7 @@ block content
             include ../components/sidebar/contact.pug
             +sidebar-title('服务分类')
 
-            //-- const categoryList = [{name:'公司注册', url:'/site/product/child'},{name:'代理记账', url:'/site/product/child'},{name:'公司注销', url:'/site/product/child'},{name:'公司转让', url:'/site/product/child'}]
-            //-- const cateList = renderData.productCateList
+            - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
     include ../components/pagination
