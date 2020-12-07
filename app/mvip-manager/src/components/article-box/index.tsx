@@ -18,9 +18,10 @@ interface Props {
   onClose(): void;
   updateCateList(item: CateItem): void;
   addArticleList(item: any): void;
+  updateArticleList(item: any): void;
 }
 export default (props: Props) => {
-  const { visible, editData, onClose, cateList, updateCateList, addArticleList } = props
+  const { visible, editData, onClose, cateList, updateCateList, addArticleList, updateArticleList } = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
@@ -48,8 +49,11 @@ export default (props: Props) => {
     }
     if (resData.success) {
       message.success(resData.message)
-      if (!editData) {
+      if (editData) {
+        updateArticleList(resData.data)
+      } else {
         addArticleList(resData.data)
+
       }
       onClose()
     } else {
