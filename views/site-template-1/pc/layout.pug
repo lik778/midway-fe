@@ -1,16 +1,11 @@
 html
     head
-        meta(charset='UTF-8')
+        meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
         meta(http-equiv='X-UA-Compatible', content='ie=edge')
-        block head
-        //-- const { keywords, description, title } = renderData.meta
-        //-if keywords
-        //-    meta(name='keywords' content=keywords)
-        //-if description
-        //-    meta(name='description' content=description)
-        //-if title
-        //-    title #{title}
+        title #{ renderData.meta.title || "" }
+        meta(name='keywords' content=renderData.meta.keywords || "")
+        meta(name='description' content=renderData.meta.description || "")
         block styles
     body
         block header
@@ -18,11 +13,6 @@ html
         block nav
             include ./components/nav.pug
         block content
-            //-.container.clearfix
-            //-block main
-            //-    .main
-            //-block side-bar
-            //-    .side-bar
 
     block scripts
 
