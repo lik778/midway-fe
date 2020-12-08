@@ -1,0 +1,10 @@
+.recommend
+    if renderData.productRecommend && renderData.productRecommend.length>0
+        ul
+            each item in renderData.productRecommend.length>5 ? renderData.productRecommend.slice(0,5) : renderData.productRecommend
+                li
+                    a(href="/" + renderData.shopName + item.urlSuffix)
+                        img(src=item.headImg, alt="")
+                        .rec-text #{item.name}
+    else
+        a 暂时没有数据哦

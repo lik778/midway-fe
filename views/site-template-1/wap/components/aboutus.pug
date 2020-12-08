@@ -1,0 +1,9 @@
+.aboutus
+    .aboutus-top
+        .aboutus-title
+            p 关于我们
+        .aboutus-content
+            p.about-hidden #{ renderData.basic.company.about }
+    if renderData.basic.company.about.length >144
+        .more-about 点击展开
+            img(src="//file.baixing.net/202011/f97dc03576b14b67b6b58a097b6c5f81.png", alt="")

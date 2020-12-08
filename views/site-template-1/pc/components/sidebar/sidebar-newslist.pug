@@ -1,0 +1,17 @@
+.sidebar-newslist
+    //-- const sidebarNewsList = renderData.articleList.result
+    if sidebarNewsList && sidebarNewsList.length > 0
+        ul
+            //-默认最多展示10条
+            each item in sidebarNewsList.length>=10 ? sidebarNewsList.slice(0,11) : sidebarNewsList
+                li
+                    a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
+
+        //-这里跳到/n/新闻列表页，本可以写死，但后端告知最好是获取传的值。另外"查看更多"，产品要求要一直存在所以加了取值判断
+        - const siderMoreLink = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
+        if renderData.navigation && siderMoreLink
+            a.news-more-btn(href="/" + renderData.shopName + siderMoreLink) 查看更多
+        else
+            a.news-more-btn(href="#") 查看更多
+    else
+        a 暂时没有数据哦

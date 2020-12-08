@@ -1,0 +1,16 @@
+.product-list
+	- const productList= renderData.productList.result
+		//-默认每页最多展示10条
+		ul
+			if productList && productList.length >0
+				each item in productList.length>10 ? productList.slice(0,10) : productList
+					li
+						a(href= "/" + renderData.shopName + item.urlSuffix)
+							if item.headImg
+								img(src=item.headImg, alt="")
+							else
+								img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+							.rec-text #{item.name}
+
+			else
+				p 暂时还没有数据哦
