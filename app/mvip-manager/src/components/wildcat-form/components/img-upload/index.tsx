@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
@@ -14,17 +14,24 @@ const getBase64 = function(file: Blob) {
 }
 
 interface Props {
+  url: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
   onChange(url: string): void;
 }
 export const ImgUpload = (props: Props) => {
-  const { text, onChange } = props
+  const { text, url, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
-  const [fileList, setFileList] = useState([])
+  const [fileList, setFileList] = useState<any>([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
+
+  useEffect(() => {
+    if (url) {
+      setFileList([{ uid: '-1', status: 'done', url, thumbUrl: url }])
+    }
+  }, [url])
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -55,6 +62,9 @@ export const ImgUpload = (props: Props) => {
   }
 
   const beforeUpload= (file: any) => {
+    if (file.url) {
+      return true;
+    }
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg';
     if (!isJpgOrPng) {
       message.error('请上传jpg、jpeg、png格式的图片');
@@ -66,12 +76,11 @@ export const ImgUpload = (props: Props) => {
     return isJpgOrPng && isLt2M;
   }
 
-  const type = props.imgType || 'picture-card'
 
   return (
     <div className="img-upload">
       <Upload
-          listType={type}
+          listType='picture-card'
           fileList={fileList}
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
@@ -88,8 +97,7 @@ export const ImgUpload = (props: Props) => {
           visible={previewVisible}
           title={previewTitle}
           footer={null}
-          onCancel={handleCancel}
-        >
+          onCancel={handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </div>
