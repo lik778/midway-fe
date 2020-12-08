@@ -38,7 +38,6 @@ export default (props: Props) => {
 
   const sumbit = async (values: CreateArticleApiParams) => {
     if (!values.price) { values.price = '面议' }
-    values.contentImg = ''
     if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
     let resData: any;
     if (editData) {
