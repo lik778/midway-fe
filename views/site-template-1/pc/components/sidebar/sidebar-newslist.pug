@@ -3,7 +3,7 @@
     if sidebarNewsList && sidebarNewsList.length > 0
         ul
             //-默认最多展示10条
-            each item in sidebarNewsList.length>10 ? sidebarNewsList.slice(0,10) : sidebarNewsList
+            each item in sidebarNewsList.length>=10 ? sidebarNewsList.slice(0,11) : sidebarNewsList
                 li
                     a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
 

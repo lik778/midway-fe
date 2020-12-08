@@ -1,57 +1,57 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tag, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TweenOneGroup } from 'rc-tween-one'
 import './index.less';
 
-export const TagModule = (props: any) => {
+interface Props {
+  value: string[];
+  maxLength: number;
+  maxNum: number;
+  onChange(tags: string): void;
+}
+
+export const TagModule = (props: Props) => {
+  const { onChange, value } = props
+
   const [tags, setTags] = useState<string[]>([])
   const [inputVisible, setInputVisible] = useState(false)
   const [inputValue, setInputValue] = useState('')
+
+  useEffect(() => {
+    if (Array.isArray(value)) {
+      setTags(value)
+    }
+  }, [value])
+
   const handleClose = (removedTag: any) => {
     const oldTags = tags.concat()
     const newTags = oldTags.filter(tag => tag !== removedTag);
     setTags(newTags)
   };
 
-  const tagsLen = tags.length
-
 
   const showInput = () => {
     setInputVisible(true)
   }
 
-  const handleInputChange = (e: any) => {
-    const value = e.target.value
-    setInputValue(value.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g,''))
+  const handleInputChange = (tag: string) => {
+    setInputValue(tag);
   }
 
   const handleInputConfirm = () => {
-    setTags([...tags, inputValue])
+    // if (/[^a-zA-Z0-9\u4e00-\u9fa5]/g.test(inputValue)) {
+    //   setTags([...tags, inputValue])
+    // }
+    // tips: 这里还要进行一下数据输入处理
+    if (!tags.includes(inputValue)) {
+      onChange([...tags, inputValue].join(','))
+      setTags([...tags, inputValue])
+    }
     setInputVisible(false)
     setInputValue('')
   };
 
-  const forMap = (tag: any, index: number) => {
-    const tagElem = (
-      <Tag className="mini-tag" key={index}
-        closable
-        onClose={e => {
-          e.preventDefault();
-          handleClose(tag);
-        }}
-      >
-        {tag}
-      </Tag>
-    );
-    return (
-      <span key={tag}>
-        {tagElem}
-      </span>
-    );
-  };
-
-  const tagChild = tags.map(forMap);
 
   return (
     <div className="tag-module">
@@ -64,24 +64,34 @@ export const TagModule = (props: any) => {
               duration: 100
             }}
             leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
-            appear={false}
-          >
-            {tagChild}
+            appear={false}>
+            {
+              tags.length > 0 && tags.map((tag: string, index: number) => {
+                 return (
+                     <span key={tag}>
+                        <Tag className="mini-tag" key={index} closable
+                             onClose={e => {
+                               e.preventDefault();
+                               handleClose(tag) }
+                             }>{tag}</Tag>
+                      </span>
+                  );
+               })
+            }
           </TweenOneGroup>
         </div>
         {inputVisible && (
           <Input
             type="text"
             size="small"
-            value={inputValue}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e.target.value)}
             onBlur={handleInputConfirm}
             onPressEnter={handleInputConfirm}
             className="input-tag"
             maxLength={props.maxLength}
           />
         )}
-        {!inputVisible && tagsLen < props.maxNum &&(
+        {!inputVisible && tags.length < props.maxNum &&(
           <Tag onClick={showInput} className="site-tag-plus">
             <PlusOutlined /> 新增
           </Tag>
