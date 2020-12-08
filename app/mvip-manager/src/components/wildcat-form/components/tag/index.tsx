@@ -8,7 +8,7 @@ interface Props {
   value: string[];
   maxLength: number;
   maxNum: number;
-  onChange(tags: string): void;
+  onChange(tags: any): void;
 }
 
 export const TagModule = (props: Props) => {

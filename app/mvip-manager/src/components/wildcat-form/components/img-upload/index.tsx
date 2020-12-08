@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
-import classNames from 'classnames';
 import './index.less';
 
 const getBase64 = function(file: Blob) {
@@ -14,19 +13,23 @@ const getBase64 = function(file: Blob) {
   });
 }
 
-
-export const ImgUpload = (props: any) => {
+interface Props {
+  text: string;
+  imgType?: string;
+  onChange(url: string): void;
+}
+export const ImgUpload = (props: Props) => {
+  const { text, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = () =>{
-    const txt = props.txt || '上传'
     return (
       <div>
         <PlusOutlined />
-        <div className='upload-img'>{txt}</div>
+        <div className='upload-img'>{ text || '上传'}</div>
       </div>
     );
   }
@@ -49,11 +52,12 @@ export const ImgUpload = (props: any) => {
     if(beforeUpload(file)){
       setFileList(fileList)
     }
-    
+
     if (file.status === 'done') {
       const res = await uploadImgToUpyunHandle(file.originFileObj);
       if(res.code === 200) {
         setImgUrlList([...imgUrlList, res.url])
+        onChange(`${res.url}${window.__upyunImgConfig.imageSuffix}`);
       }
     }
   }
@@ -71,7 +75,7 @@ export const ImgUpload = (props: any) => {
   }
 
   const type = props.imgType || 'picture-card'
-  
+
   return (
     <div className="img-upload">
       <Upload
