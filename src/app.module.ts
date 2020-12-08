@@ -8,6 +8,9 @@ import { RequestService } from './services/request.service';
 import { AppController } from './controllers/app.controller';
 import { HaojingController } from './controllers/haojing.controller';
 import { HaojingService } from './services/haojing.service';
+import { SitemapController } from './controllers/sitemap.controller';
+import { SitemapService } from './services/sitemap.service';
+import { LogService } from './services/log.service';
 
 /**
  * 应用程序根模块
@@ -21,13 +24,16 @@ import { HaojingService } from './services/haojing.service';
   controllers: [
     AppController,
     ManagementController,
+    SitemapController,
     SiteController,
     HaojingController
   ],
   providers: [
+    LogService,
     RequestService,
     MidwayService,
-    HaojingService
+    HaojingService,
+    SitemapService
   ],
 })
 export class AppModule {}
