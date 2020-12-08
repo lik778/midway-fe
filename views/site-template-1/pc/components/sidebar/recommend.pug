@@ -4,7 +4,7 @@
             each item in renderData.productRecommend.length>5 ? renderData.productRecommend.slice(0,5) : renderData.productRecommend
                 li
                     a(href="/" + renderData.shopName + item.urlSuffix)
-                        img(src=item.headImg, alt="")
+                        img(src=item.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="")
                         .rec-text #{item.name}
     else
         a 暂时没有数据哦

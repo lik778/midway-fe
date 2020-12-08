@@ -1,6 +1,6 @@
 .product-detail
     .pro-top.clearfix
-        img(src=renderData.productInfo.headImg, alt="")
+        img(src=renderData.productInfo.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="")
         .pro-meta
             h3 #{ renderData.productInfo.name }
             p 价格：#{ renderData.productInfo.price || '面议'}
