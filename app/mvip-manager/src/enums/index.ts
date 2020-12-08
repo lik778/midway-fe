@@ -3,6 +3,12 @@ export enum ShopModuleType {
   ARTICLE = 'article'
 }
 
+export enum ShopBasisType {
+  NAV = 'nav',
+  CAROUSEL = 'carousel',
+  SEO = 'seo'
+}
+
 export enum AuditStatus {
   DEFAULT, // 初始化
   APPROVE, // 审核通过
