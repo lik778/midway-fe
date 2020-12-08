@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'umi';
 import styles from './index.less'
+import { getUserBaseInfoApi } from '@/api/user'
+import { UserInfo } from '@/interfaces/user';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 export default (props: any) => {
+  const [userInfo, setUserInfo] = useState<UserInfo | any>({})
+  useEffect(() => {
+    (async () => {
+      const res = await getUserBaseInfoApi();
+      if (res.success) {
+        setUserInfo({...res.data})
+      }
+    })()
+  }, [])
+
   const routeList = props.location.pathname.split('/')
   const isShopRoute = (routeList[1] === 'shop')
   return (
@@ -41,7 +53,7 @@ export default (props: any) => {
       </Sider>
       <Layout className="site-layout">
         <Header className={styles.layoutHeader}>
-          <div>百姓网用户2020</div>
+          <div>{userInfo.userName}</div>
         </Header>
         <Content>{ props.children }</Content>
       </Layout>

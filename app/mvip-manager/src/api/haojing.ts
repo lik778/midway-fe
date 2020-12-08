@@ -4,7 +4,7 @@ import { UpyunImgConfig } from '@/interfaces/haojing';
 
 // 获取又拍云数据
 export const getUpyunImgConfig = (): Promise<UpyunImgConfig> => {
-  return getApi('/haojing/upyunImgConfig')
+  return getApi('/haojing/upyunImgConfig', {})
 }
 
 // 上传至又拍云

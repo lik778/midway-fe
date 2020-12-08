@@ -3,6 +3,12 @@ export enum ShopModuleType {
   ARTICLE = 'article'
 }
 
+export enum ShopBasisType {
+  NAV = 'nav',
+  CAROUSEL = 'carousel',
+  SEO = 'seo'
+}
+
 export enum AuditStatus {
   DEFAULT, // 初始化
   APPROVE, // 审核通过
@@ -20,4 +26,17 @@ export enum ArticleSource {
 export enum ContentCateType {
   PRODUCT = 1, // 产品分类
   ARTICLE = 2 // 文章分类
+}
+
+export enum VerifyType {
+  LICENCE = 'LICENCE', // 营业执照
+  IDCARD = 'IDCARD' // 身份证
+}
+
+export enum VerifyStatus {
+  DEFAULT = '',
+  PENDING = 'PENDING',
+  ACCEPT = 'ACCEPT',
+  REFUSE = 'REFUSE',
+  REVOKE = 'REVOKE'
 }

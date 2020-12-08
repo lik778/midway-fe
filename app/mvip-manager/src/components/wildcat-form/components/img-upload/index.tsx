@@ -13,22 +13,18 @@ const getBase64 = function(file: Blob) {
   });
 }
 
-
-export const ImgUpload = (props: any) => {
+interface Props {
+  text: string;
+  imgType?: "text" | "picture-card" | "picture" | undefined;
+  onChange(url: string): void;
+}
+export const ImgUpload = (props: Props) => {
+  const { text, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
-  const uploadButton = () =>{
-    const txt = props.txt || '上传'
-    return (
-      <div>
-        <PlusOutlined />
-        <div className='upload-img'>{txt}</div>
-      </div>
-    );
-  }
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -48,11 +44,12 @@ export const ImgUpload = (props: any) => {
     if(beforeUpload(file)){
       setFileList(fileList)
     }
-    
+
     if (file.status === 'done') {
       const res = await uploadImgToUpyunHandle(file.originFileObj);
       if(res.code === 200) {
         setImgUrlList([...imgUrlList, res.url])
+        onChange(`${res.url}${window.__upyunImgConfig.imageSuffix}`);
       }
     }
   }
@@ -68,18 +65,25 @@ export const ImgUpload = (props: any) => {
     }
     return isJpgOrPng && isLt2M;
   }
-  
+
+  const type = props.imgType || 'picture-card'
+
   return (
     <div className="img-upload">
       <Upload
-          listType="picture-card"
+          listType={type}
           fileList={fileList}
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
         >
-        {fileList.length >= 1 ? null : uploadButton()}
+        {fileList.length < 1 && (
+          <div>
+            <PlusOutlined />
+          </div>
+        )}
       </Upload>
+      <p style={{ textAlign: 'center' }}>{text || '上传'}</p>
       <Modal
           visible={previewVisible}
           title={previewTitle}
