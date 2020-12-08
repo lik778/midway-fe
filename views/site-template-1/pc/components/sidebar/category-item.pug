@@ -1,7 +1,6 @@
 //-侧边栏分类列表
 .category-list
-	//-productCateList: [{"id": 3,"name": "代理记账","urlSuffix": "/p-3/"}..]
-	each item in cateList.length > 10 ? cateList.slice(0,10) : cateList
+	each item in cateList.length >= 10 ? cateList.slice(0,11) : cateList
 		a.category-btn(href="/" + renderData.shopName + item.urlSuffix)
 			img(src="//file.baixing.net/202011/662cdaca84672d121a95e259a2a323c5.png", alt="")
 			span #{item.name}

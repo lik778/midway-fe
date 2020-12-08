@@ -3,16 +3,12 @@ mixin product-list(n,page)
 	.product-list.clearfix
 		if productList && productList.length >0
 			each item in productList.length > n ? productList.slice(0,n):productList
-				.item
-					.cover
-						if item.headImg
-							img(src=item.headImg)
-						else
-							img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+				a.item(href= "/" + renderData.shopName + item.urlSuffix)
+					img(src=item.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png' )
 					p #{item.name}
-					a.btn(href= "/" + renderData.shopName + item.urlSuffix) 了解详情
+					.btn 了解详情
 		else
-			p 暂时还没有数据哦
+			p 当前页面暂无内容，敬请期待
 
 	- const moreLink = (renderData.navigation.filter(x => x.position == "productListPage"))[0].content
 	if page == 'home'
