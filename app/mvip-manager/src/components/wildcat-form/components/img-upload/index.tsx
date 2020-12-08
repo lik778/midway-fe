@@ -15,7 +15,7 @@ const getBase64 = function(file: Blob) {
 
 interface Props {
   text: string;
-  imgType?: string;
+  imgType?: "text" | "picture-card" | "picture" | undefined;
   onChange(url: string): void;
 }
 export const ImgUpload = (props: Props) => {
@@ -25,14 +25,6 @@ export const ImgUpload = (props: Props) => {
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
-  const uploadButton = () =>{
-    return (
-      <div>
-        <PlusOutlined />
-        <div className='upload-img'>{ text || '上传'}</div>
-      </div>
-    );
-  }
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -85,8 +77,13 @@ export const ImgUpload = (props: Props) => {
           beforeUpload={beforeUpload}
           onChange={handleChange}
         >
-        {fileList.length >= 1 ? null : uploadButton()}
+        {fileList.length < 1 && (
+          <div>
+            <PlusOutlined />
+          </div>
+        )}
       </Upload>
+      <p style={{ textAlign: 'center' }}>{text || '上传'}</p>
       <Modal
           visible={previewVisible}
           title={previewTitle}
