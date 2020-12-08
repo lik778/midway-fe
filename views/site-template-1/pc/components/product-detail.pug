@@ -4,11 +4,11 @@
 	.pro-top.clearfix
 		img(src=renderData.productInfo.headImg, alt="")
 		.pro-meta
-			h3 #{ renderData.productInfo.name || '商标自助注册，高效办理，自动生成图样'}
-			p 价格：#{ price || '面议'}
+			h3 #{ renderData.productInfo.name }
+			p 价格：#{ renderData.productInfo.price }
 			p 联系电话：
-				span #{ renderData.contact.phone.content || 13511119172}
-			p 商家地址：#{ renderData.basic.company.address ||'上海市闵行区七莘路901号'}
+				span #{ renderData.contact.phone.content }
+			p 商家地址：#{ renderData.basic.company.address }
 	.pro-title
 		h3 产品详情
 	.pro-content.
