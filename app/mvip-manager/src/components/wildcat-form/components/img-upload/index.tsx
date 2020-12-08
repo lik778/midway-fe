@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
+import classNames from 'classnames';
 import './index.less';
 
 const getBase64 = function(file: Blob) {
@@ -68,11 +69,13 @@ export const ImgUpload = (props: any) => {
     }
     return isJpgOrPng && isLt2M;
   }
+
+  const type = props.imgType || 'picture-card'
   
   return (
     <div className="img-upload">
       <Upload
-          listType="picture-card"
+          listType={type}
           fileList={fileList}
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
