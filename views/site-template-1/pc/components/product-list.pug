@@ -8,7 +8,7 @@ mixin product-list(n,page)
 					p #{item.name}
 					.btn 了解详情
 		else
-			p 当前页面暂无内容，敬请期待
+			p 当前页面暂无内容，敬请期待...
 
 	- const moreLink = (renderData.navigation.filter(x => x.position == "productListPage"))[0].content
 	if page == 'home'
