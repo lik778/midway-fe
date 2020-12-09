@@ -1,4 +1,4 @@
-import { AuditStatus, ArticleSource } from '@/enums'
+import { AuditStatus, ArticleSource, AiTaskStatus } from '@/enums';
 
 export const auditStatusText: any = {
   [AuditStatus.DEFAULT]: '初始化',
@@ -12,4 +12,10 @@ export const ArticleSourceText: any = {
   [ArticleSource.MAN_MADE]: '人工',
   [ArticleSource.BATCH]: '批量',
   [ArticleSource.AI]: 'AI',
+}
+
+export const AiTaskStatusText: any = {
+  [AiTaskStatus.ON_TASK]: '发文中',
+  [AiTaskStatus.ON_PAUSE]: '已暂停',
+  [AiTaskStatus.DONE]: '已发完',
 }

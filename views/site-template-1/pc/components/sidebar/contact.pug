@@ -1,15 +1,17 @@
-//-- const companyInfo= renderData.basic.company
 .contact
 	dl.clearfix
-		dt 公司名称：
-		dd #{ companyInfo.name }
-		dt 公司地址：
-		dd #{ companyInfo.address }
-		dt 营业电话：
-		dd
-			span #{ renderData.contact.phone.content }
-		if renderData.contact.qq && renderData.contact.qq.length>0
-			each item in renderData.contact.qq
+		if company.name
+			dt 公司名称：
+			dd #{ company.name }
+		if company.address
+			dt 公司地址：
+			dd #{ company.address }
+		if phone.content
+			dt 营业电话：
+			dd
+				span #{ phone.content }
+		if qq && qq.length>0
+			each item in qq
 				dt
 					div #{item.name}：
 				dd

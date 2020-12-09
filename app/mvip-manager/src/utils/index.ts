@@ -1,4 +1,5 @@
 import { uploadImgToUpyunReq } from '@/api/haojing';
+import dayjs from 'dayjs'
 
 export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
   const params = new FormData()
@@ -19,4 +20,8 @@ export const addKeyForListData = (list: any) => {
   return list.map((x: any, i: number) => {
     return { ...x, key: i }
   })
+}
+
+export const formatTime = (time: string): string  => {
+  return dayjs(Number(time) * 1000).format('YYYY-MM-DD')
 }

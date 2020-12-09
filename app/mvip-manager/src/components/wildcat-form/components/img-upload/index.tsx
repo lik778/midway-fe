@@ -68,7 +68,7 @@ export const ImgUpload = (props: Props) => {
       const res = await uploadImgToUpyunHandle(file.originFileObj);
       if(res.code === 200) {
         setImgUrlList([...imgUrlList, res.url])
-        onChange(`${res.url}${window.__upyunImgConfig.imageSuffix}`);
+        onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
       }
     }
   }
@@ -87,7 +87,7 @@ export const ImgUpload = (props: Props) => {
     }
     return isJpgOrPng && isLt2M;
   }
-  
+
   return (
     <div className="img-upload">
       <Upload

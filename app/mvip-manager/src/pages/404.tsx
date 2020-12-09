@@ -1,8 +1,6 @@
 import React from 'react';
+import { Redirect } from 'umi';
+
 export default () => {
-  return (
-    <div>
-      <h1>页面不存在</h1>
-    </div>
-  );
+  return <Redirect to="/shop" />;
 }
