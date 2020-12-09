@@ -1,25 +1,25 @@
 export const wordsItemConfig: any = {
-  area: {
+  wordA: {
     label: '地区',
-    name: 'area',
+    name: 'wordA',
     min: 6,
     max: 20
   },
-  prefix: {
+  wordB: {
     label: '前缀',
-    name: 'prefix',
+    name: 'wordB',
     min: 10,
     max: 15
   },
-  coreWord: {
+  wordC: {
     label: '核心词',
-    name: 'coreWord',
+    name: 'wordC',
     min: 3,
     max: 5
   },
-  suffix: {
+  wordD: {
     label: '后缀',
-    name: 'suffix',
+    name: 'wordD',
     min: 10,
     max: 15
   }
