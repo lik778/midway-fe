@@ -19,10 +19,8 @@ export default (props: any) => {
       </div>
 
       <div className="s-btn">
-        <Link to={`${s.id}/nav`}>基础设置</Link>
-        <Link to={`${s.id}/product`}>内容管理</Link>
-        {/*为了测试数据先写死*/}
-        {/*<Link to={`143/product`}>内容管理</Link>*/}
+        <Link to={`/shop/${s.id}/nav`}>基础设置</Link>
+        <Link to={`/shop/${s.id}/product`}>内容管理</Link>
       </div>
     </div>
   );
