@@ -1,4 +1,4 @@
-- const companyInfo= renderData.basic.company
+//-- const companyInfo= renderData.basic.company
 //-这个数据会用于“联系我们”
 .header.clearfix
 	img(src=companyInfo.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
@@ -10,4 +10,4 @@
 		.tel-desc
 			.tel-title 全国服务热线
 			.tel-num
-				a(href="tel:" + renderData.basic.contact.phone.content) #{renderData.basic.contact.phone.content }
+				a(href="tel:" + phone.content) #{ phone.content || '暂无热线...' }

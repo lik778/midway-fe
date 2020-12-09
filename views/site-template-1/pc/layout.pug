@@ -8,6 +8,9 @@ html
         meta(name='description' content=renderData.meta.description || "")
         block styles
     body
+        - const { qq, phone, weChat } = renderData.basic.contact
+        - const companyInfo= renderData.basic.company
+
         block header
             include ./components/header.pug
         block nav
