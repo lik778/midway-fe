@@ -31,6 +31,7 @@ export const CreateAiContentNav = (props: Props): any => {
           message.error(res.message)
         }
       })()
+      return () => {}
     }, [])
 
     const emptyComponent = () => {
