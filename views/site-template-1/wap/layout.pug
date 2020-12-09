@@ -8,10 +8,17 @@ html
         meta(name='description' content=renderData.meta.description || "")
         block styles
     body
+        //-初始化公共数据
+        - const { qq, phone, weChat } = renderData.basic.contact
+        - const { company } = renderData.basic
+        - const { shopName } = renderData
         block header
         block content
         block footer
+            include ./components/footer
         block contact
+            include ./components/contact
+
 
     block scripts
 

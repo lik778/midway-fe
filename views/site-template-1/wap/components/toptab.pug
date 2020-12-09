@@ -2,7 +2,7 @@
     ul.tab-hidden
         each item,index in cateList
             li(class='tab-li')
-                a(href="/" + renderData.shopName + item.urlSuffix) #{item.name}
+                a(href="/" + shopName + item.urlSuffix) #{item.name}
     //-这里其实应该是判断超过2行显示。
     if  cateList.length > 8
         .more-about 点击展开

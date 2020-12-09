@@ -4,9 +4,9 @@
     if newsList && newsList.length >0
         ul.item
             //-默认最多展示20条
-            each item in newsList.length>20 ? newsList.slice(0,20) : newsList
+            each item in newsList.length>=20 ? newsList.slice(0,20) : newsList
                 li
-                    a(href="/" + renderData.shopName + item.urlSuffix)
+                    a(href="/" + shopName + item.urlSuffix)
                         .sanjiao-icon
                         p #{item.name}
                         .news-createtime

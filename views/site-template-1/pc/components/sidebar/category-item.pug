@@ -2,6 +2,6 @@
 .category-list
 	if cateList && cateList.length>0
 		each item in cateList
-			a.category-btn(href="/" + renderData.shopName + item.urlSuffix)
+			a.category-btn(href="/" + shopName + item.urlSuffix)
 				img(src="//file.baixing.net/202011/662cdaca84672d121a95e259a2a323c5.png", alt="")
 				span #{ item.name }
