@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'umi';
-import { ShopBasisType, ShopTDKType } from '@/enums';
+import { ShopTDKType } from '@/enums';
 
 const menuList = [
   {
-    link: ShopBasisType.NAV,
-    label: "导航设置",
-    key: ShopBasisType.NAV,
+    link: ShopTDKType.INDEX,
+    label: "首页",
+    key: ShopTDKType.INDEX,
   },
   {
-    link: ShopBasisType.CAROUSEL,
-    label: "轮播图设置",
-    key: ShopBasisType.CAROUSEL,
+    link: ShopTDKType.PRODUCT,
+    label: "服务页面",
+    key: ShopTDKType.PRODUCT,
   },
   {
-    link: `${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
-    label: "SEO设置",
-    key: ShopBasisType.SEO,
+    link: ShopTDKType.ARTICLE,
+    label: "文章页面",
+    key: ShopTDKType.ARTICLE,
   }
 ]
 
 interface Props {
-  type: ShopBasisType;
+  type: ShopTDKType;
 }
 
 export default (props: Props) => {
@@ -33,7 +33,7 @@ export default (props: Props) => {
 
   return (
     <div>
-      <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
+      <Menu onClick={handleClick} selectedKeys={[current]}  className="a-menu">
         {menuList.map(item => {
           return  <Menu.Item key={item.key}>
             <Link to={item.link}>{item.label}</Link>
