@@ -2,11 +2,11 @@
     - const productList= renderData.productList.result
     .product-title.clearfix
         p 服务内容
-        a(href="/" + renderData.shopName + "/p/") 更多
+        a(href="/" + shopName + "/p/") 更多
             .right-icon
     .product-list.clearfix
         if productList && productList.length >0
-            each item in productList.length > 4 ? productList.slice(0,4):productList
+            each item in productList.length >= 4 ? productList.slice(0,4):productList
                 .item
                     .cover
                         if item.headImg
@@ -14,6 +14,6 @@
                         else
                             img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
                     p #{item.name}
-                    a.btn(href= "/" + renderData.shopName + item.urlSuffix) 了解详情
+                    a.btn(href= "/" + shopName + item.urlSuffix) 了解详情
         else
             p 暂时还没有数据哦

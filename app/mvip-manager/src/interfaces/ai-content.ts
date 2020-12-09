@@ -1,4 +1,5 @@
 import { CateItem } from '@/interfaces/shop';
+import { AiTaskStatus } from '@/enums';
 
 export interface CreateApiParams {
   contentCateId: number;
@@ -12,5 +13,14 @@ export interface CreateApiParams {
 export interface AiShopList {
   id: number;
   name: string;
-  articleCates: CateItem[]
+  articleCates: CateItem[];
+}
+
+export interface AiContentItem {
+  shopId: number;
+  id: number;
+  articleNum: number;
+  contentCateName: string;
+  createdTime: number;
+  status: AiTaskStatus;
 }

@@ -1,10 +1,11 @@
 footer
     .footer-link
-        each item in renderData.navigation
-            a(href="/" + renderData.shopName + item.content) #{item.name}
+        if renderData.navigation && renderData.navigation.length> 0
+            each item in renderData.navigation
+                a(href="/" + shopName + item.content) #{item.name}
     .footer-center
         p 百姓网技术支持：
-        a(href="#") 我要开店
+        a(href="https://www.sobot.com/chat/h5/index.html?sysNum=1d32988e6414480199ac951ecd6df136") 我要开店
     .footer-content
         | #{renderData.basic.company.name} &nbsp;&nbsp;地址：#{renderData.basic.company.address}
         br

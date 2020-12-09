@@ -2,10 +2,10 @@
 	- const productList= renderData.productList.result
 		//-默认每页最多展示10条
 		ul
-			if productList && productList.length >0
-				each item in productList.length>10 ? productList.slice(0,10) : productList
+			if productList && productList.length>0
+				each item in productList
 					li
-						a(href= "/" + renderData.shopName + item.urlSuffix)
+						a(href= "/" + shopName + item.urlSuffix)
 							if item.headImg
 								img(src=item.headImg, alt="")
 							else
