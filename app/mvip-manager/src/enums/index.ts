@@ -36,7 +36,7 @@ export enum ContentCateType {
 
 export enum VerifyType {
   LICENCE = 'LICENCE', // 营业执照
-  IDCARD = 'IDCARD' // 身份证
+  IDCARD = 'IDCARD', // 身份证
 }
 
 export enum VerifyStatus {
@@ -45,4 +45,10 @@ export enum VerifyStatus {
   ACCEPT = 'ACCEPT',
   REFUSE = 'REFUSE',
   REVOKE = 'REVOKE'
+}
+
+export enum AiTaskStatus {
+  ON_TASK, // 发文中
+  ON_PAUSE, // 已暂停
+  DONE // 已发完
 }

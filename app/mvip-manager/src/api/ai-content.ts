@@ -1,10 +1,10 @@
-import { postApiData, setShopHeader } from './base';
+import { postApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
-import { PageParams } from '@/interfaces/base';
-import { AiShopList, CreateApiParams } from '@/interfaces/ai-content';
+import { ListRes, PageParams } from '@/interfaces/base';
+import { AiContentItem, AiShopList, CreateApiParams } from '@/interfaces/ai-content';
 
 // 获取ai列表页
-export const getAiListApi = (params: PageParams): Promise<ServiceResponse<any>> => {
+export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
   return postApiData('ai/list', params)
 }
 

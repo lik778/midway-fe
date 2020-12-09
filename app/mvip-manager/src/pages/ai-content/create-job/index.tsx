@@ -1,9 +1,13 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
-import { Select, Form, Button, Input, Row, Col } from 'antd';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { message, Select, Form, Button, Modal, Input, Row, Col } from 'antd';
+import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
 import { debounce } from 'lodash';
 import './index.less';
+import { getAiShopListApi, createAiJobApi } from '@/api/ai-content';
+import { CateItem } from '@/interfaces/shop';
+import { AiShopList } from '@/interfaces/ai-content';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -12,7 +16,21 @@ export default (props: any) => {
   const [form] = Form.useForm();
   const defaultCounters: any = {};
   Object.keys(wordsItemConfig).forEach((k: string) => defaultCounters[k] = 0)
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [counters, setCounters] = useState<any>(defaultCounters)
+  const [shopList, setShopList] = useState<AiShopList[]>([])
+  const [articleList, setArticleList] = useState<CateItem[]>([])
+
+  useEffect(() => {
+    (async () => {
+      const res = await getAiShopListApi()
+      if (res.success) {
+        setShopList(res.data)
+      } else {
+        message.error(res.message)
+      }
+    })()
+  }, [])
 
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
@@ -36,22 +54,45 @@ export default (props: any) => {
     form.setFieldsValue(values);
   }
 
-  const submitData = () => {
-    alert(JSON.stringify(form.getFieldsValue()))
+  const submitData = async () => {
+    const values = form.getFieldsValue()
+    const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
+    Object.keys(values).forEach((k: string) => {
+      if (groupNames.includes(k)) {
+        values[k] = values[k].split('\n')
+      }
+    })
+    const res = await createAiJobApi(values)
+    if (res.success) {
+      message.success('添加成功')
+      history.push(`/shop/${values.shopId}/article`);
+    } else {
+      message.error(res.message)
+    }
   }
+
+  const onShopChange = (shopId: number) => {
+    const item = shopList.find((x: AiShopList) => x.id === shopId)
+    setArticleList((item && item.articleCates) || [])
+  }
+
   return (<div>
     <MainTitle title="新建任务"/>
     <div className="ai-create-job-box">
       <div className="ai-filters-box">
-        <Form layout="inline" name="">
+        <Form layout="inline" form={form}>
           <FormItem label="所属店铺" name="shopId" key="shopId">
-            <Select  style={{ width: 200, marginRight: 40 }}>
-              <Option value="lucy">Lucy</Option>
+            <Select  style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺" onChange={onShopChange}>
+              { shopList.length > 0 && shopList.map((shop: any) => {
+                return (<Option key={shop.id} value={shop.id}>{shop.name}</Option>)
+              }) }
             </Select>
           </FormItem>
           <FormItem label="所属文章分组" name="contentCateId" key="contentCateId">
-            <Select  style={{ width: 200 }}>
-              <Option value="lucy">Lucy</Option>
+            <Select  style={{ width: 200 }} placeholder="请选择所属文章分组" >
+              { articleList.length > 0 && articleList.map((article: any) => {
+                return (<Option key={article.id} value={article.id}>{article.name}</Option>)
+              }) }
             </Select>
           </FormItem>
         </Form>
@@ -86,8 +127,15 @@ export default (props: any) => {
             <span>核心词+后缀</span>
             <span>前缀+核心词</span>
           </p>
-          <Button type="primary" onClick={submitData} htmlType="submit">提交</Button>
+          <Button type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
       </div>
+      <Modal
+        title="确认提交"
+        visible={modalVisible}
+        onOk={submitData}
+        onCancel={() => setModalVisible(false)}>
+        <p>提交后不可修改，确认提交吗？</p>
+      </Modal>
     </div>
   </div>)
 }
