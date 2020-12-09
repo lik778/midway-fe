@@ -1,9 +1,19 @@
-import React from 'react';
-import { Table } from 'antd';
+import React, { useEffect } from 'react';
+import { message, Table } from 'antd';
 import MainTitle from '@/components/main-title';
+import { getAiListApi } from '@/api/ai-content'
 import './index.less';
 
 export default (props: any) => {
+  useEffect(() => {
+    (async () => {
+     const res =  await getAiListApi()
+     if (res.success) {
+     } else {
+       message.error(res.message)
+     }
+    })()
+  }, [])
   const columns = [
     { title: '编号', dataIndex: 'id', key: 'id' },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' },
