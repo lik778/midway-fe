@@ -44,8 +44,11 @@ export default (props: Props) => {
   }
   const columns = [
     { title: '序号', dataIndex: 'id', key: 'id' },
-    { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) =>
-        <img width="60" height="40" src={text}/> },
+    { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
+        return (
+          <div style={{ height: 40, background: `url(${text})`, backgroundSize: 'cover' }}></div>
+        )
+      }},
     { title: '服务名称', dataIndex: 'name', key: 'name' },
     { title: '价格', dataIndex: 'price', key: 'price' },
     { title: '服务分组', dataIndex: 'cateName', key: 'cateName' },
