@@ -1,10 +1,14 @@
-
 import React from 'react';
-import { Space, Spin } from 'antd';
-export default (props: any) => {
+import { Spin } from 'antd';
+import './index.less';
+
+export default () => {
   return (
-    <Space size="middle">
-        <Spin size="large" />
-    </Space>
-  );
+    <div className="management-loading">
+      <div className="inner">
+        <Spin />
+        <p>加载中...</p>
+      </div>
+    </div>
+    )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Row } from 'antd';
 import MainTitle from '../../../components/main-title';
-import styles from './index.less';
+import './index.less';
 import { getUserVerifyListApi } from '@/api/user';
 import { VerifyStatus, VerifyType } from '@/enums';
 
@@ -39,7 +39,7 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="认证资料"/>
-      <div className={styles.container}>
+      <div className="container">
         <Row>
           <Col span={10}>
             <img style={{ height: 162, float: 'left' }} src="//file.baixing.net/202011/a86b2b4d6907336443bacfff1e924e99.png"/>
@@ -50,7 +50,7 @@ export default (props: any) => {
                 <li>需要认证营业执照</li>
                 <li>特殊行业的经营许可证</li>
               </ul>
-              <p className={styles.example}>例如：开锁行业需提供：公安备案； 搬家需提供：道路运输资质</p>
+              <p className="example">例如：开锁行业需提供：公安备案； 搬家需提供：道路运输资质</p>
             </div>
           </Col>
           <Col offset={4} span={9} style={{ marginTop: 60 }}>

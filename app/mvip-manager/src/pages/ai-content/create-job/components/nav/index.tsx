@@ -1,10 +1,12 @@
-import { AiShopList } from '@/interfaces/ai-content';
 import React, { useEffect, useState } from 'react';
+import { AiShopList } from '@/interfaces/ai-content';
 import { Link } from 'umi';
 import { CateItem } from '@/interfaces/shop';
 import { getAiShopListApi } from '@/api/ai-content';
+import { checkHasShow } from '@/utils';
 import { Form, message, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import Loading from '@/components/loading';
 import './index.less';
 
 const Option = Select.Option;
@@ -31,23 +33,13 @@ export const CreateAiContentNav = (props: Props): any => {
           message.error(res.message)
         }
       })()
-      return () => {}
     }, [])
 
-    const emptyComponent = () => {
-      return <p style={{ height: 32 }}></p>
-    }
 
     const showGroupWordPanel = (list: AiShopList[]) => {
       if (list && list.length > 0 && list.some(x => (x.articleCates.length > 0))) {
         showPanel();
       }
-    }
-
-    const checkHasShow = (list: AiShopList[] | CateItem[] | null): string => {
-        if (list === null) return ''
-        if (list.length === 0) return 'hide';
-        return 'show';
     }
 
     const onShopChange = (shopId: number) => {
@@ -62,8 +54,8 @@ export const CreateAiContentNav = (props: Props): any => {
 
     return (
       <div className="ai-filters-box">
-        { checkHasShow(shopList) === '' && emptyComponent() }
-        { checkHasShow(shopList) === 'show' &&
+        { checkHasShow<AiShopList>(shopList) === 'loading' && <Loading/> }
+        { checkHasShow<AiShopList>(shopList) === 'show' &&
             <Form layout="inline" form={form}>
               <FormItem label="所属店铺" name="shopId" key="shopId">
                 <Select  style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺" onChange={onShopChange}>
@@ -72,8 +64,7 @@ export const CreateAiContentNav = (props: Props): any => {
                   }) }
                 </Select>
               </FormItem>
-              { checkHasShow(articleList) === '' && emptyComponent() }
-              { checkHasShow(articleList) === 'show' &&
+              { checkHasShow<CateItem>(articleList) === 'show' &&
                 <FormItem label="所属文章分组" name="contentCateId" key="contentCateId">
                   <Select  style={{ width: 200 }} placeholder="请选择所属文章分组" >
                     { articleList && articleList.length > 0 && articleList.map((article: any) => {
@@ -82,12 +73,12 @@ export const CreateAiContentNav = (props: Props): any => {
                   </Select>
                 </FormItem>
               }
-              { checkHasShow(articleList) === 'hide' &&
+              { checkHasShow<CateItem>(articleList) === 'hide' &&
                 <div className="ai-no-article-tips">所属文章分组: 您当前店铺下还没有创建分组，<Link to={`/shop/${shopId}/article`}>去创建分组</Link></div>
               }
             </Form>
         }
-        { checkHasShow(shopList) === 'hide' &&
+        { checkHasShow<AiShopList>(shopList) === 'hide' &&
             <p className="ai-no-shop-tips" >先去创建店铺和文章分组才能新建任务，<Link to="/shop">去创建店铺</Link></p>}
       </div>
     )

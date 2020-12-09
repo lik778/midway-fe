@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Steps, message, Button } from 'antd';
 import MainTitle from '../../../components/main-title';
-import styles from './index.less';
+import './index.less';
 import { baseInfoForm } from '../../../config/form'
 import WildcatForm from '@/components/wildcat-form';
 import ContactForm from './contact-form';
@@ -28,7 +28,6 @@ export default (props: any) => {
   },[])
 
   const nextStep = async(values: any) => {
-    console.log(values)
     // 这里先写死
     values.area = values.areaMap && Object.keys(values.areaMap).map(k => k)
     const res = await saveEnterpriseForShopApi(values)
@@ -51,12 +50,12 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="基础资料"/>
-      <Steps current={currentStep} className={styles.stepContainer}>
+      <Steps current={currentStep} className="step-container">
         {steps.map(name => (
           <Step key={name} title={name} />
         ))}
       </Steps>
-      <div className={styles.container}>
+      <div className="container">
         { currentStep == 0 && <WildcatForm editDataSource={enterpriseInfo} config={config} submit={nextStep}/> }
         { currentStep == 1 && <ContactForm back={prev} editDataSource={enterpriseInfo}/>}
       </div>

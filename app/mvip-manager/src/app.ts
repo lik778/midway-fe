@@ -1,5 +1,6 @@
 import { getUpyunImgConfig } from './api/haojing'
 import { UpyunImgConfig } from '@/interfaces/haojing';
+import '@/styles/common.less';
 
 declare global {
   interface Window {

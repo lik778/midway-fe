@@ -39,7 +39,6 @@ export default (props: Props) => {
 
   const sumbit = async (values: CreateProductApiParams) => {
     if (!values.price) { values.price = '面议' }
-    if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
     let resData: any;
     if (editData) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
