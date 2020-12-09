@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Table, Checkbox, Button, message, Input } from 'antd';
+import { Table, Checkbox, Button, message } from 'antd';
 import InputLen from "@/components/input-len"
 import Loading from "@/components/loading"
 import './index.less';
@@ -96,9 +96,9 @@ export default (props: any) => {
     (async () => {
       const res = await updateNavApi(Number(params.id), modifyList)
       if (res?.success) {
-        message.success(res.message);
+        message.success(res?.message);
       } else {
-        message.error(res.message);
+        message.error(res?.message);
       }
     })()
   }
@@ -126,7 +126,7 @@ export default (props: any) => {
         setModifyList(modifyRes)
         setIsLoading(false)
       } else {
-        message.error(res.message);
+        message.error(res?.message);
       }
     })()
   }, [])

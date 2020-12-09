@@ -52,3 +52,8 @@ export enum AiTaskStatus {
   ON_PAUSE, // 已暂停
   DONE // 已发完
 }
+
+export enum  DeviceType{
+  PC = 1,
+  WAP = 2,
+}

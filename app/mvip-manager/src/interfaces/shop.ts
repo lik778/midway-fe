@@ -57,6 +57,12 @@ export interface ModifyNavItem{
   id: number;
 }
 
+
+export interface imgItemParam{
+  type: string;
+  url: string;
+}
+
 export interface CreateContentCateApiParams {
   id?: number;
   name: string;
@@ -65,3 +71,4 @@ export interface CreateContentCateApiParams {
   seoT: string;
   type: ContentCateType;
 }
+

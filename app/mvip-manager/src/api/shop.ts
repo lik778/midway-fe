@@ -6,15 +6,33 @@ import {
   CreateContentCateApiParams,
   CreateArticleApiParams,
   ModifyNavItem,
+  imgItemParam,
 } from '@/interfaces/shop';
-// 基础配置
 
+// 基础配置
+// 获取导航列表
 export const getNavListingApi = (shopId: number) => {
   return postApiData('navigation/listing', {}, setShopHeader(shopId))
 }
 
+// 更新导航列表
 export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
   return postApiData('navigation/update', params, setShopHeader(shopId))
+}
+
+// 创建banner
+export const createBannerApi = (shopId: number, params:imgItemParam) => {
+  return postApiData('banner/create', params, setShopHeader(shopId))
+}
+
+// 删除banner 
+export const deleteBannerApi = (shopId: number, params: any) => {
+  return postApiData(`banner/delete/${params.id}`, {}, setShopHeader(shopId))
+}
+
+// banner 列表 
+export const getBannerList = (shopId: number, params: any) => {
+  return postApiData(`banner/listing`, params, setShopHeader(shopId))
 }
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
