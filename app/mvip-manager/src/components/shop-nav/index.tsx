@@ -47,7 +47,7 @@ export default (props: any) => {
     },
   ];
   return (
-    <div>
+    <div className='shop-nav'>
       <Table columns={columns} dataSource={data} />
       <Button type="primary" className="save-nav" size="large">保存</Button>
     </div>

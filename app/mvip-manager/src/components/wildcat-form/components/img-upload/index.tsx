@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
-import classNames from 'classnames';
 import './index.less';
 
 const getBase64 = function(file: Blob) {
@@ -21,10 +20,12 @@ export const ImgUpload = (props: any) => {
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
-  const uploadButton = () =>{
+  const uploadButton = (isDisable?:boolean) =>{
     const txt = props.txt || '上传'
+    const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
+    console.log('cls', cls)
     return (
-      <div>
+      <div className={cls}>
         <PlusOutlined />
         <div className='upload-img'>{txt}</div>
       </div>
@@ -69,19 +70,19 @@ export const ImgUpload = (props: any) => {
     }
     return isJpgOrPng && isLt2M;
   }
-
-  const type = props.imgType || 'picture-card'
   
   return (
     <div className="img-upload">
       <Upload
-          listType={type}
+          listType="picture-card"
           fileList={fileList}
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
+          disabled={fileList.length >= props.maxLength}
         >
-        {fileList.length >= 1 ? null : uploadButton()}
+        {fileList.length >= props.maxLength ? (props.disableBtn? uploadButton(props.disableBtn): null )
+        : uploadButton()}
       </Upload>
       <Modal
           visible={previewVisible}
