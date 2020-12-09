@@ -2,7 +2,7 @@
 .nav_bg.clearfix
 	.nav
 		ul
-			- const navList= renderData.navigation
-			each item in navList
-				li
-					a(href="/" + renderData.shopName + item.content) #{item.name}
+			if renderData.navigation && renderData.navigation.length>0
+				each item in renderData.navigation
+					li
+						a(href="/" + shopName + item.content) #{item.name}

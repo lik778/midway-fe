@@ -1,8 +1,10 @@
 //-在线客服
-//-- const  qq = [{"type": 1,"name": "客服1","content": "1234567"}]
 .customer-box
-	- const { qq, phone, weChat } = renderData.basic.contact
-	.qq-title QQ交谈
+	.qq-title
+		if qq && qq.length>0
+			| QQ交谈
+		else
+			| 在线客服
 		img.qqshow(src="//file.baixing.net/202012/d3f156b57227810022a850b88711f010.png", alt="")
 	if qq && qq.length>0
 		dl.clearfix
