@@ -30,9 +30,9 @@ export default (props: any) => {
       return <Button type='primary' disabled>已完成{name}</Button>
     } else if (status === VerifyStatus.PENDING) {
       return <Button type='primary' disabled>审核中</Button>
-    } else if (status === VerifyStatus.REFUSE || status === VerifyStatus.REVOKE) {
+    } else if (status === VerifyStatus.REFUSE || status === VerifyStatus.REVOKE || status === null) {
       return <Button href="wulei.baixing.cn/bind/#bindList" type='primary'>去完成{name}</Button>
-    } else if (status === VerifyStatus.DEFAULT || status === null) {
+    } else if (status === VerifyStatus.DEFAULT) {
       return null
     }
   }
