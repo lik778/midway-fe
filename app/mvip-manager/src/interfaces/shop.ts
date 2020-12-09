@@ -35,6 +35,7 @@ export interface CateItem {
   seoD?: string;
   seoK?: string;
   seoT?: string;
+  num: number;
 }
 
 export interface CreateContentCateApiParams {
