@@ -2,17 +2,17 @@
 	.footer-left
 		dl.col-left
 			dt 网站导航
-				each item in renderData.navigation
-					dd
-						a(href="/" + renderData.shopName + item.content) #{item.name}
-
+				if renderData.navigation && renderData.navigation.length> 0
+					each item in renderData.navigation
+						dd
+							a(href="/" + shopName + item.content) #{ item.name }
 		dl.col-right
 			dt 百姓网技术支持
 			dd
-				a(href="") 我要开店
+				a(href="https://www.baixing.com/a/pro?src=haina_topbar") 我要开店
 
 	.footer-right
-		p #{renderData.basic.company.name} &nbsp;&nbsp;地址：#{renderData.basic.company.address}
+		p #{ company.name } &nbsp;&nbsp;地址：#{ company.address }
 
 		.center
 			p #{renderData.basic.copyRight || "©版权所有本站由百姓网™匠心搭建"}

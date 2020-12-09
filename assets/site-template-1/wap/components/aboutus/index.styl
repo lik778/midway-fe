@@ -13,11 +13,11 @@
             font-weight 600
 
     .aboutus-content
-        border-bottom 1px solid #DDDDDD
         p
             color #333
             font-size 14px
             margin 0 21px 17px 18px
+            padding-bottom 16px
             //此处把隐藏属性独立出来成一个类，供jquery点击增删
         .about-hidden
             overflow hidden
@@ -25,21 +25,21 @@
             -webkit-line-clamp 5
             -webkit-box-orient vertical
 
-    .more-about
+    .s-open,
+    .s-off
         height 44px
         line-height 44px
         display block
         font-size 12px
         color #999
         text-align center
+        border-top 1px solid #DDD
         img
             width 12px
             height 12px
             margin-left 10px
             vertical-align middle
             margin-bottom 2px
-
-        .img-rotate
-            transform rotate(180deg)
-    .change-more-about
-        color #1565C1 !important
+    .s-off
+        display none
+        color #1565C1
