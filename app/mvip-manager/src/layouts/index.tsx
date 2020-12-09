@@ -38,7 +38,7 @@ export default (props: any) => {
           </SubMenu>
           <SubMenu style={{ marginBottom: '10px' }} key="shop" title="店铺管理">
             <Menu.Item key="list">
-              <Link to="/shop/list">我的店铺</Link>
+              <Link to="/shop">我的店铺</Link>
             </Menu.Item>
           </SubMenu>
           <SubMenu style={{ marginBottom: '10px' }} key="ai-content" title="AI内容生成">
