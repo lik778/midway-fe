@@ -5,7 +5,17 @@ import {
   DeleteApiParams,
   CreateContentCateApiParams,
   CreateArticleApiParams,
+  ModifyNavItem,
 } from '@/interfaces/shop';
+// 基础配置
+
+export const getNavListingApi = (shopId: number) => {
+  return postApiData('navigation/listing', {}, setShopHeader(shopId))
+}
+
+export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
+  return postApiData('navigation/update', params, setShopHeader(shopId))
+}
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
   return postApiData('product/list', params, setShopHeader(shopId))

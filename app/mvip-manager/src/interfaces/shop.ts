@@ -37,6 +37,25 @@ export interface CateItem {
   seoT?: string;
 }
 
+
+export interface NavItem{
+  content: string;
+  desc: string;
+  display: number | undefined;
+  id: number;
+  isDisabled?: boolean
+  key: string;
+  name: string;
+  position: string;
+  maxLength?: number;
+}
+
+export interface ModifyNavItem{
+  name: string;
+  display: number | undefined;
+  id: number;
+}
+
 export interface CreateContentCateApiParams {
   id?: number;
   name: string;
