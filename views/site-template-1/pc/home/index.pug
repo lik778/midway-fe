@@ -9,9 +9,11 @@ block content
     .container.clearfix
         .main
             include ../components/company-profile.pug
+
             include ../components/product-title.pug
+            - const productList = renderData.productList.result.slice(0,13)
             include ../components/product-list.pug
-            +product-list(12,'home')
+            +product-list('home')
 
         .side-bar
             include ../components/sidebar/contact-title-home.pug
