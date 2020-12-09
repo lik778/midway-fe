@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { message, Select, Form, Button, Modal, Input, Row, Col } from 'antd';
+import { message, Select, Tooltip, Form, Button, Modal, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
@@ -8,6 +8,8 @@ import './index.less';
 import { getAiShopListApi, createAiJobApi } from '@/api/ai-content';
 import { CateItem } from '@/interfaces/shop';
 import { AiShopList } from '@/interfaces/ai-content';
+import { prefixDefaultData, suffixServiceDefaultData, suffixB2BDefaultData  } from './data'
+import qsIcon from '../../../styles/qs-icon.svg'
 const Option = Select.Option;
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -104,7 +106,13 @@ export default (props: any) => {
                   Object.keys(wordsItemConfig).map((k) => {
                     const x = wordsItemConfig[k];
                     return (<Col key={k} className="gutter-row group-words-item" span={6}>
-                      <h4>{x.label}</h4>
+                      <h4>{x.label}：
+                        <Tooltip placement="topLeft" title={x.rules}>
+                          <span className="ai-group-word-tips">
+                            {x.label}规则<img src={qsIcon} />
+                          </span>
+                        </Tooltip>
+                      </h4>
                       <FormItem name={x.name}>
                         <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => delayedQuery(e.target.value, x.name)} />
                       </FormItem>
