@@ -57,7 +57,6 @@ const WildcatForm = (props: Props) => {
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
-
             return (<FormItem className={item.className} label={item.label} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               { item.images && item.images.length > 0 &&
                 item.images.map((img) => {

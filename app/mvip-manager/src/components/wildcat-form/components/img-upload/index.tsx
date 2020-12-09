@@ -17,6 +17,8 @@ interface Props {
   url: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
+  maxLength: number;
+  disableBtn?: boolean | undefined;
   onChange(url: string): void;
 }
 export const ImgUpload = (props: Props) => {
@@ -26,6 +28,16 @@ export const ImgUpload = (props: Props) => {
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any>([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
+  const uploadButton = (isDisable?:boolean | undefined) =>{
+    const txt = props.text || '上传'
+    const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
+    return (
+      <div className={cls}>
+        <PlusOutlined />
+        <div className='upload-img'>{txt}</div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (url) {
@@ -75,24 +87,21 @@ export const ImgUpload = (props: Props) => {
     }
     return isJpgOrPng && isLt2M;
   }
-
-
+  
   return (
     <div className="img-upload">
       <Upload
-          listType='picture-card'
+          listType="picture-card"
           fileList={fileList}
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
+          disabled={fileList.length >= props.maxLength}
         >
-        {fileList.length < 1 && (
-          <div>
-            <PlusOutlined />
-          </div>
-        )}
+        {fileList.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
+        : uploadButton()}
       </Upload>
-      <p style={{ textAlign: 'center' }}>{text || '上传'}</p>
+      {/* <p style={{ textAlign: 'center' }}>{text || '上传'}</p> 上传文案显示在上传框里*/}
       <Modal
           visible={previewVisible}
           title={previewTitle}
