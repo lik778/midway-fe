@@ -61,7 +61,6 @@ export class MidwayService {
   }
 
   private setPageHeaders(shopName: string, device: string): PageHeaderParams {
-    // tips: 一定要保证shopName和device有值，不然会
     return {
       'x-api-shop-name': shopName || '',
       'x-api-device': device || ''

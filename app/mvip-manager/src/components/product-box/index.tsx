@@ -40,14 +40,11 @@ export default (props: Props) => {
   const sumbit = async (values: CreateProductApiParams) => {
     if (!values.price) { values.price = '面议' }
     if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
-    values.contentImg = ''
-    values.headImg = ''
-    values.shopId = Number(params.id)
     let resData: any;
     if (editData) {
-      resData = await updateProductApi(values.shopId, { id: editData.id, ...values })
+      resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
     } else {
-      resData = await createProductApi(values.shopId, values)
+      resData = await createProductApi(Number(params.id), values)
     }
     if (resData.success) {
       message.success(resData.message)

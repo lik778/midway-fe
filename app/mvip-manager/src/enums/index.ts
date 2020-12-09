@@ -33,3 +33,16 @@ export enum ContentCateType {
   PRODUCT = 1, // 产品分类
   ARTICLE = 2 // 文章分类
 }
+
+export enum VerifyType {
+  LICENCE = 'LICENCE', // 营业执照
+  IDCARD = 'IDCARD' // 身份证
+}
+
+export enum VerifyStatus {
+  DEFAULT = '',
+  PENDING = 'PENDING',
+  ACCEPT = 'ACCEPT',
+  REFUSE = 'REFUSE',
+  REVOKE = 'REVOKE'
+}

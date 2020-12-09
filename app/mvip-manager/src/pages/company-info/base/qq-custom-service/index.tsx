@@ -1,37 +1,63 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
+import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 
 const styles = {
   p: {  color: '#999', fontSize: 12, lineHeight: 1 },
   s: { fontWeight: 1, color: '#096DD9' },
   add: { width: 414, fontSize: 14, color: '#096DD9', marginBottom: 16 },
   formItem: { width: 200, display: 'inline-block' },
-  delete: { color: '#096DD9', fontSize: 14, marginLeft: 15 }
+  delete: { color: '#096DD9', fontSize: 14, marginLeft: 15, cursor: 'pointer' }
 }
 
-export const QQCustomService = (props: any) => {
-  const [list, setList] = React.useState([1]);
+interface Props {
+  editDataSource: UserEnterpriseInfo | null;
+  onChange(list: QQItem[]): void;
+}
+export const QQCustomService = (props: Props) => {
+  const { editDataSource, onChange } = props
+  const [list, setList] = React.useState<QQItem[]>([]);
 
-  const add = function() {
-    list.push(1);
-    console.log(list)
-    setList([...list]);
+  const addAction = function() {
+    setList([...list, { name: '', qq: '' }]);
   }
+
+  const deleteAction = function(i: number) {
+    list.splice(i, 1)
+    setList([...list]);
+    onChange(list);
+  }
+
+  const onInputChange = (e: any, i: number, type: 'name' | 'qq') => {
+    list[i][type] = e.target.value
+    setList([...list]);
+    onChange(list);
+  }
+
+  useEffect(() => {
+    if (editDataSource) {
+      const { qqMap } = editDataSource
+      const list = (qqMap && Object.keys(qqMap).map(k => {
+        return { qq: k, name: qqMap[k] }
+      })) || []
+      setList(list)
+    }
+  }, [editDataSource])
 
   return (
     <div>
       <div>
-        { list.map((item, i) => {
+        { list && list.length > 0 && list.map((item, i) => {
           return (
             <div key={i} style={{ width: 465, marginBottom: 16 }}>
-              <Input style={{...styles.formItem, marginRight: 16}} placeholder="例客服张三"/>
-              <Input style={styles.formItem} placeholder="请输入qq号"/>
-              <span style={styles.delete}>删除</span>
+              <Input onChange={(e) => onInputChange(e, i, 'name')} value={item.name} style={{...styles.formItem, marginRight: 16}} placeholder="例客服张三"/>
+              <Input onChange={(e) => onInputChange(e, i, 'qq')} value={item.qq} style={styles.formItem} placeholder="请输入qq号"/>
+              <span style={styles.delete} onClick={() => deleteAction(i)}>删除</span>
             </div>
           )
         }) }
-        <Button disabled={list.length === 3}  onClick={add} style={styles.add} type="dashed" size="large" icon={<PlusOutlined />} block>添加客服</Button>
+        <Button disabled={list && list.length >= 3}  onClick={() => addAction()} style={styles.add} type="dashed" size="large" icon={<PlusOutlined />} block>添加客服</Button>
         <p style={styles.p}>（最多添加3个）</p>
       </div>
       <div>
