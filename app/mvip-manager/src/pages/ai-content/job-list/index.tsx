@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { message, Table } from 'antd';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
+import Loading from '@/components/loading';
 import { getAiListApi } from '@/api/ai-content'
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
-import { addKeyForListData, formatTime } from '@/utils';
+import { addKeyForListData, formatTime, checkHasShow } from '@/utils';
 import { AiTaskStatusText } from '@/constants';
 
 export default (props: any) => {
   const [page, setPage] = useState<number>(1);
-  const [aiList, setAiList] = useState<AiContentItem[]>([]);
+  const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
   const [total, setTotal] = useState<number>(0);
   useEffect(() => {
     (async () => {
      const res =  await getAiListApi({ page, size: 10 })
      if (res.success) {
-       setAiList(addKeyForListData(res.data.result))
+       setAiList(addKeyForListData(res.data.result || []))
        setTotal(res.data.totalRecord)
      } else {
        message.error(res.message)
@@ -45,12 +46,20 @@ export default (props: any) => {
     },
   ];
 
-  return (<div>
+  return (
+    <div>
       <MainTitle title="任务列表"/>
       <div className="ai-list-container">
-        <Table columns={columns}  dataSource={aiList} pagination={{
+        {checkHasShow<AiContentItem>(aiList) === 'loading' && <Loading />}
+        {checkHasShow<AiContentItem>(aiList) === 'hide' && <div className="empty-info">
+          <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
+          <p>暂无进行的任务，你可以去新建任务</p>
+        </div>}
+        {checkHasShow<AiContentItem>(aiList) === 'show' &&
+        <Table columns={columns}  dataSource={aiList || []} pagination={{
           onChange:(page: number) => setPage(page), total,
-          hideOnSinglePage: aiList.length < 10, pageSize: 10, position: ['bottomCenter']}} />
+          hideOnSinglePage: (aiList && aiList.length < 10) || undefined, pageSize: 10, position: ['bottomCenter']}} />}
       </div>
-    </div>)
+    </div>
+  )
 }

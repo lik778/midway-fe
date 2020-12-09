@@ -25,3 +25,9 @@ export const addKeyForListData = (list: any) => {
 export const formatTime = (time: string): string  => {
   return dayjs(Number(time) * 1000).format('YYYY-MM-DD')
 }
+
+export const checkHasShow = function<T>(list: T[] | null): string {
+  if (list === null) return 'loading'
+  if (list.length === 0) return 'hide';
+  return 'show';
+}
