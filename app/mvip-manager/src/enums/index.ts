@@ -9,6 +9,12 @@ export enum ShopBasisType {
   SEO = 'seo'
 }
 
+export enum ShopTDKType {
+  INDEX = 'index',
+  PRODUCT = 'product',
+  ARTICLE = 'article'
+}
+
 export enum AuditStatus {
   DEFAULT, // 初始化
   APPROVE, // 审核通过
