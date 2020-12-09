@@ -1,6 +1,6 @@
 .contact-box
     .sms-box
-        a(href="sms:" + renderData.contact.phone.content)
+        a(href="sms:" + renderData.basic.contact.phone.content)
             img.icon(src="http://file.baixing.net/202011/c51a85711ff66afd018933dc40f327d0.png")
             span 短信
         .line
@@ -10,11 +10,11 @@
             span 微信
         .line
     .phone-box
-        a(href="tel:" + renderData.contact.phone.content )
+        a(href="tel:" + renderData.basic.contact.phone.content )
             img.tel-icon(src="http://file.baixing.net/202011/fe2ad24adc586625082cf7bd202a922e.png")
             .info
                 p 拨打电话
-                p #{renderData.contact.phone.content }
+                p #{renderData.basic.contact.phone.content }
 
 block append scripts
     script.
