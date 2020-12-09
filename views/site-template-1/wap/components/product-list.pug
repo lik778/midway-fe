@@ -3,7 +3,7 @@
 		//-默认每页最多展示10条
 		ul
 			if productList && productList.length>0
-				each item in productList.length
+				each item in productList
 					li
 						a(href= "/" + shopName + item.urlSuffix)
 							if item.headImg

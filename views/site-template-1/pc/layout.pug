@@ -10,7 +10,7 @@ html
     body
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
-        - const companyInfo= renderData.basic.company
+        - const { company } = renderData.basic
         - const { shopName } = renderData
         block header
             include ./components/header.pug
