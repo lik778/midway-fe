@@ -86,7 +86,7 @@ export interface CreateContentCateApiParams {
 
 export interface TdkSaveMeta {
   description: string;
-  keywords: string;
+  keywords: string[];
   position: number;
   title: string;
 }
