@@ -11,7 +11,7 @@
             ul.item
                 each item in newsList
                     li
-                        a(href="/" + shopName + item.urlSuffix)
+                        a(href=item.urlSuffix)
                             p #{item.name}
                             .news-createtime
                                 | #{ dateFormat(item.modifiedTime) }

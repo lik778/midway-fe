@@ -56,7 +56,7 @@ export default (props: any) => {
         ))}
       </Steps>
       <div className="container">
-        { currentStep == 0 && <WildcatForm editDataSource={enterpriseInfo} config={config} submit={nextStep}/> }
+        { currentStep == 0 && <WildcatForm useLabelCol={true} editDataSource={enterpriseInfo} config={config} submit={nextStep}/> }
         { currentStep == 1 && <ContactForm back={prev} editDataSource={enterpriseInfo}/>}
       </div>
     </div>

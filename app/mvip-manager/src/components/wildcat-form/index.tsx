@@ -16,14 +16,15 @@ interface Props {
   editDataSource?: any;
   submit?(values: any): void;
   formChange?(changeValue: any, allValues: any): void;
-  className?: string,
-  onClick?: any,
+  className?: string;
+  onClick?: any;
+  useLabelCol?: boolean;
 }
 
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  const { editDataSource } = props
+  const { editDataSource, useLabelCol } = props
 
   useEffect(() => {
     if (editDataSource) {
@@ -40,14 +41,17 @@ const WildcatForm = (props: Props) => {
   }
   return (
     <div>
-      <Form form={form} name={props.config && props.config.name} onFinish={props.submit} onValuesChange={props.formChange} className={props.className}>
+      <Form form={form} name={props.config && props.config.name} labelCol={useLabelCol ? { span: 6 } : {}}
+        onFinish={props.submit} onValuesChange={props.formChange} className={props.className}>
         { props.config && props.config.children.map(item => {
           if (item.type === FormType.Input) {
-            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
-            </FormItem>)
+            return (
+                <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+                  <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
+                </FormItem>
+              )
           } else if (item.type === FormType.Textarea) {
-            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <TextArea showCount style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Select) {
@@ -57,12 +61,12 @@ const WildcatForm = (props: Props) => {
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
-            return (<FormItem className={item.className} label={item.label} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               { item.images && item.images.length > 0 &&
                 item.images.map((img) => {
                   const url = editDataSource && editDataSource[img.name || ''];
                   return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                    <ImgUpload key={img.text} text={img.text} url={url || ''}
+                    <ImgUpload key={img.text} text={img.text} url={url || ''} maxLength={item.maxLength || 0}
                      onChange={(newValue) => onChange(newValue, item.name || '')}/>
                   </FormItem>
                   )
@@ -73,8 +77,9 @@ const WildcatForm = (props: Props) => {
               </FormItem>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
+            const value = form.getFieldsValue()[item.name || ''];
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <AreaSelect />
+              <AreaSelect value={value} onChange={(values: string[]) => onChange(values, item.name || '')}/>
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
             return (<FormItem key={item.label}>
@@ -99,8 +104,9 @@ const WildcatForm = (props: Props) => {
           }
         }) }
         {
-          props.config && props.config.buttonConfig && <Button className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
-            {props.config.buttonConfig.text}</Button>
+          props.config && props.config.buttonConfig &&
+            <Button className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
+              {props.config.buttonConfig.text}</Button>
         }
       </Form>
     </div>

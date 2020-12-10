@@ -37,8 +37,11 @@ export default (props: Props) => {
     setformConfig(formConfig)
   }, [cateList])
 
-  const sumbit = async (values: CreateProductApiParams) => {
+  const sumbit = async (values: any) => {
     if (!values.price) { values.price = '面议' }
+    if (typeof values.tags === 'string') {
+      values.tags = values.tags.split(',')
+    }
     let resData: any;
     if (editData) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })

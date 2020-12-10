@@ -18,7 +18,7 @@ export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
 export const addKeyForListData = (list: any) => {
   if (!list || list.length === 0) return [];
   return list.map((x: any, i: number) => {
-    return { ...x, key: i }
+    return { ...x, key: (i + 1) }
   })
 }
 
