@@ -25,9 +25,9 @@ const groupConfig = [
   },
   {
     label: 'title',
-    placeholder: "请输入标题, 9~15个字",
+    placeholder: "请输入标题, 9~50个字",
     required: false,
-    maxLength:15,
+    maxLength:50,
     minLength:9,
     id:'seoT',
     value: '',
