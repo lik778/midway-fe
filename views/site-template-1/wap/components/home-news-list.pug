@@ -1,8 +1,8 @@
 .news
     .news-title.clearfix
-        - const moreLink = (renderData.navigation.filter(x => x.position == "productListPage"))[0].content
+        - const moreNews = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
         p 新闻资讯
-        a(href="/" + shopName + "/n/") 更多
+        a(href=moreNews) 更多
             .right-icon
     .news-list
         //-首页默认最多展示10条
@@ -11,7 +11,7 @@
             ul.item
                 each item in newsList
                     li
-                        a(href="/" + shopName + item.urlSuffix)
+                        a(href=item.urlSuffix)
                             p #{item.name}
                             .news-createtime
                                 | #{ dateFormat(item.modifiedTime) }

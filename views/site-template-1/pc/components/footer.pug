@@ -5,7 +5,7 @@
 				if renderData.navigation && renderData.navigation.length> 0
 					each item in renderData.navigation
 						dd
-							a(href="/" + shopName + item.content) #{ item.name }
+							a(href=item.content) #{ item.name }
 		dl.col-right
 			dt 百姓网技术支持
 			dd
