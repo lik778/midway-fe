@@ -19,7 +19,7 @@ stages:
 release-dev:
   stage: release-dev
   only:
-    - dev
+    - dev@fenlei/midway-fe
   tags:
     - k8s-dev-build
   script:
@@ -31,7 +31,7 @@ dev-deploy:
   stage: dev-deploy
   when: manual
   only:
-    - dev
+    - dev@fenlei/midway-fe
   tags:
     - aliyun-k8s-dev
   script:
@@ -40,7 +40,7 @@ dev-deploy:
 release-test:
   stage: release-test
   only:
-    - test
+    - test@fenlei/midway-fe
   tags:
     - k8s-dev-build
   script:
@@ -51,7 +51,7 @@ release-test:
 test-deploy:
   stage: test-deploy
   only:
-    - test
+    - test@fenlei/midway-fe
   tags:
     - aliyun-k8s-dev
   script:
@@ -60,7 +60,7 @@ test-deploy:
 release:
   stage: release
   only:
-    - master
+    - master@fenlei/midway-fe
   tags:
     - k8s-dev-build
   script:
@@ -73,7 +73,7 @@ deploy:
   stage: prod-deploy
   when: manual
   only:
-    - master
+    - master@fenlei/midway-fe
   tags:
     - aliyun-prod-deploy
   script:

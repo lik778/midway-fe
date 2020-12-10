@@ -17,14 +17,13 @@ interface Props {
   url?: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
-  maxLength: number;
+  maxLength: number | undefined;
   disableBtn?: boolean | undefined;
   onChange(url: string): void;
   fileList?:any[];
 }
 export const ImgUpload = (props: Props) => {
-  const list = props.fileList || []
-  console.log('list', list)
+  const list = props?.fileList || []
   const { text, url, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
@@ -107,7 +106,6 @@ export const ImgUpload = (props: Props) => {
         {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
         : uploadButton()}
       </Upload>
-      {/* <p style={{ textAlign: 'center' }}>{text || '上传'}</p> 上传文案显示在上传框里*/}
       <Modal
           visible={previewVisible}
           title={previewTitle}
