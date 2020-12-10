@@ -37,7 +37,6 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: CreateArticleApiParams) => {
-    if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
     let resData: any;
     if (editData) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })

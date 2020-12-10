@@ -13,7 +13,7 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       const res = await getUserBaseInfoApi();
-      if (res.success) {
+      if (res?.success) {
         setUserInfo({...res.data})
       }
     })()
