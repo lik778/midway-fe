@@ -1,8 +1,9 @@
 .product
     - const productList= renderData.productList.result
+    - const moreProduct = (renderData.navigation.filter(x => x.position == "productListPage"))[0].content
     .product-title.clearfix
         p 服务内容
-        a(href="/" + shopName + "/p/") 更多
+        a(href=moreProduct) 更多
             .right-icon
     .product-list.clearfix
         if productList && productList.length >0
