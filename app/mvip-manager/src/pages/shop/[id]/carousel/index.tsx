@@ -6,7 +6,7 @@ import './index.less'
 import { getBannerListApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
-import Loading from '@/components/loading';
+import Loading from '@/components/loading-status';
 
 export default (props: any) => {
   const [wapBannerList, setWapBannerList] = useState<any[]>([])
@@ -64,7 +64,7 @@ export default (props: any) => {
               <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸1920*360'} txt={'PC端轮播图'} type={1} fileList={pcBannerList}/>
             </div>
             <div className="c-wap">
-              <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸*360'} txt={'WAP端轮播图'} type={2} fileList={wapBannerList}/>
+              <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸375*152'} txt={'WAP端轮播图'} type={2} fileList={wapBannerList}/>
             </div>
           </div>
       )
