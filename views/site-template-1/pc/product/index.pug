@@ -9,6 +9,7 @@ block content
     .container.clearfix
         .main
             include ../components/main-title.pug
+            - const productList = renderData.productList.result
             include ../components/product-list.pug
             +product-list('product')
 
