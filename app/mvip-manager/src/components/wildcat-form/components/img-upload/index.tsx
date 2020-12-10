@@ -17,44 +17,18 @@ interface Props {
   url?: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
-  maxLength: number;
+  maxLength: number | undefined;
   disableBtn?: boolean | undefined;
   onChange(url: string): void;
   fileList?:any[];
 }
 export const ImgUpload = (props: Props) => {
-  const list = props.fileList || []
-  console.log('list', list)
+  const list = props?.fileList || []
   const { text, url, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
-  const [fileList, setFileList] = useState<any[]>([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'http://img4.baixing.net/3bcecddddc2080c5352b527ebdbac73b.png_bi',
-    },
-    {
-      uid: '-2',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-3',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-4',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ],)
+  const [fileList, setFileList] = useState<any[]>([])
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
@@ -66,6 +40,10 @@ export const ImgUpload = (props: Props) => {
       </div>
     );
   }
+
+  useEffect(() => {
+    setFileList(list)
+  }, [list])
 
   useEffect(() => {
     if (url) {
@@ -132,7 +110,6 @@ export const ImgUpload = (props: Props) => {
         {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
         : uploadButton()}
       </Upload>
-      {/* <p style={{ textAlign: 'center' }}>{text || '上传'}</p> 上传文案显示在上传框里*/}
       <Modal
           visible={previewVisible}
           title={previewTitle}

@@ -11,7 +11,7 @@ export const baseInfoForm: FormConfig = {
     { width: 346, label: '企业地址', name: 'areaMap', type: FormType.AreaSelect, required: false },
     { width: 346, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { width: 655, label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字' },
-    { width: 646, label: '企业logo', name: 'imgInfo', type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
+    { width: 646, label: '企业logo', name: 'imgInfo', type: FormType.ImgUpload, maxNum: 1,maxLength: 1,images: [{text:'企业logo', name: 'promoteImg'}],
       required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' }
   ],
   buttonConfig: { text: '保存并下一步', size: 'large'  }
