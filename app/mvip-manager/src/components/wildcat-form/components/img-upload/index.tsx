@@ -17,60 +17,44 @@ interface Props {
   url?: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
-  maxLength?: number;
+  maxLength: number;
   disableBtn?: boolean | undefined;
   onChange(url: string): void;
   fileList?:any[];
 }
 export const ImgUpload = (props: Props) => {
-  const list = props.fileList
+  const list = props.fileList || []
   console.log('list', list)
   const { text, url, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([
-    // 图片功能不支持正常格式
-    // {
-    //   displayImgUrl: "http://img4.baixing.net/3bcecddddc2080c5352b527ebdbac73b.png_bi",
-    //   hrefUrl: "",
-    //   id: 23,
-    //   position: 1,
-    //   status: "done",
-    //   uid: "23",
-    //   url: "http://img4.baixing.net/c42c675c6150fedd5956820440d7c9a2.jpg_815x108"
-    // },
-    // {
-    //   uid: '-2',
-    //   name: 'image.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-3',
-    //   name: 'image.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-4',
-    //   name: 'image.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-xxx',
-    //   percent: 50,
-    //   name: 'image.png',
-    //   status: 'uploading',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-5',
-    //   name: 'image.png',
-    //   status: 'error',
-    // },
-  ])
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'http://img4.baixing.net/3bcecddddc2080c5352b527ebdbac73b.png_bi',
+    },
+    {
+      uid: '-2',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-3',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-4',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ],)
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
@@ -142,9 +126,10 @@ export const ImgUpload = (props: Props) => {
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
-          disabled={fileList?.length >= props?.maxLength}
+          isImageUrl={()=>{return true}}
+          disabled={fileList.length >= props.maxLength}
         >
-        {fileList?.length >= props?.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
+        {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
         : uploadButton()}
       </Upload>
       {/* <p style={{ textAlign: 'center' }}>{text || '上传'}</p> 上传文案显示在上传框里*/}

@@ -2,13 +2,14 @@
     box-sizing border-box
     display flex
     text-align center
-    color $cm-color-fg-light
-    margin-bottom 7px
-    background $cm-color-bg
+    color #666
+    background #fff
+    padding-bottom 310px
+
     > a,
     > span
         flex-grow 1
-        display block // QQ浏览器display不是block的flex会挂
+        display block
         margin 5px
         line-height 16px
         padding 12px 0
@@ -35,30 +36,30 @@
                 right 10px
                 margin-top -2px
                 border 5px solid transparent
-                border-top-color $cm-color-splitter
+                border-top-color 1px solid #666
 
     .prev-page
-        color $cm-color-primary
+        //color
         &::after
             position absolute
             right 0
             content ""
             height 14px
             line-height 14px
-            border-right 1px solid $cm-color-splitter
+            border-right 1px solid #666
 
     .next-page
-        color $cm-color-primary
+        color #666
         &::before
             position absolute
             left  0
             content ""
             height 14px
             line-height 14px
-            border-right 1px solid $cm-color-splitter
+            border-right 1px solid #666
 
     .disabled
-        color $cm-color-fg-light
+        //color $cm-color-fg-light
 
     .next
         display block
