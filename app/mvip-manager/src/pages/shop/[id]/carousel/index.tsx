@@ -6,7 +6,7 @@ import './index.less'
 import { getBannerListApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
-import Loading from '@/components/loading';
+import Loading from '@/components/loading-status';
 
 export default (props: any) => {
   const [wapBannerList, setWapBannerList] = useState<any[]>([])
