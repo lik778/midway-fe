@@ -38,6 +38,42 @@ export interface CateItem {
   num: number;
 }
 
+
+export interface NavItem{
+  content: string;
+  desc: string;
+  display: number | undefined;
+  id: number;
+  isDisabled?: boolean
+  key: string;
+  name: string;
+  position: string;
+  maxLength?: number;
+}
+
+export interface ModifyNavItem{
+  name: string;
+  display: number | undefined;
+  id: number;
+}
+
+
+export interface ImgItemParam{
+  type: string;
+  url: string;
+}
+
+export interface ImgDeleteParam{
+  id: number;
+}
+
+export interface ImgListParam{
+  page: number;
+  size: number;
+  status: number;
+  type: number;
+}
+
 export interface CreateContentCateApiParams {
   id?: number;
   name: string;
@@ -46,3 +82,16 @@ export interface CreateContentCateApiParams {
   seoT: string;
   type: ContentCateType;
 }
+
+
+export interface TdkSaveMeta {
+  description: string;
+  keywords: string;
+  position: number;
+  title: string;
+}
+
+export interface TdkDetailMeta {
+  position: number;
+}
+

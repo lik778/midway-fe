@@ -12,8 +12,6 @@ import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType } from '@/enums';
 import './index.less';
-import ProductNav from '@/pages/shop/[id]/product/components/nav';
-
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
@@ -30,12 +28,12 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res?.success) {
+      if (res.success) {
         setArticleList(addKeyForListData(res.data.articleList.result) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.articleList.totalRecord)
       } else {
-        message.error(message);
+        message.error(res.message);
       }
     })()
   }, [page, contentCateId])
