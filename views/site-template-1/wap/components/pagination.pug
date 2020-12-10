@@ -5,16 +5,18 @@ mixin pagination(baseUrl, pageKey, currentPage, limit)
 		if !hasPrevious
 			a.prev-page.disabled 上一页
 		else
-			a.prev-page(href=helper.buildPageUrl(baseUrl, currentPage - 1)) 上一页
+			a.prev-page(href="#") 上一页
+			//-(baseUrl, currentPage - 1)
 		span.select-change-container
 			span.select-page-num #{`第 ${currentPage} 页`}
 			select
 				- for (var i = 1; i <= limit; i++)
 					if i === currentPage
 						option(selected) #{i}
-					else
-						option(data-href=helper.buildPageUrl(baseUrl, i)) #{i}
+					//-else
+					//-	option(data-href=helper.buildPageUrl(baseUrl, i)) #{i}
 		if !hasNext
 			a.next-page.disabled 下一页
 		else
-			a.next-page(href=helper.buildPageUrl(baseUrl, currentPage + 1)) 下一页
+			a.next-page(href="#") 下一页
+			//-helper.buildPageUrl(baseUrl, currentPage + 1)

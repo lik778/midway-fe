@@ -33,6 +33,7 @@ export default (props: any) => {
 
 
   const sumbit = async (values: TdkSaveMeta) => {
+    values.position = ShopTDKPosition.INDEX
     const res = await getMetaSaveApi(Number(params.id), values)
     if(res?.success) {
       message.success(res.message)
@@ -58,8 +59,7 @@ export default (props: any) => {
                 <WildcatForm
                   editDataSource={editData}
                   config={formConfig}
-                  submit={sumbit}
-                  className="default-form"/>
+                  submit={sumbit}/>
               </Form.Item>
             </div>
            </div>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Checkbox, Button, message } from 'antd';
 import InputLen from "@/components/input-len"
-import Loading from "@/components/loading"
+import Loading from "@/components/loading-status"
 import './index.less';
 import { getNavListingApi, updateNavApi }  from '@/api/shop';
 import { RouteParams } from '@/interfaces/shop';
@@ -51,7 +51,7 @@ export default (props: any) => {
 
   const handleCheckboxChange = (e: any) => {
     const target = e.target
-    const name = parseInt(target.name) // 这个id以数字来回切换也是够。
+    const name = target.name // 这个id以数字来回切换也是够。
     const checked = target.checked
     const navCloneList = navList.concat()
     const modifyCloneList = modifyList.concat()
@@ -73,7 +73,7 @@ export default (props: any) => {
 
   const handleInputChange = (e: any) =>{
     const target = e.target
-    const name = parseInt(target.name) // 这个id以数字来回切换也是够。
+    const name = target.name // 这个id以数字来回切换也是够。
     const value = target.value    
     const navCloneList = navList.concat()
     const modifyCloneList = modifyList.concat()

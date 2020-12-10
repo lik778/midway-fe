@@ -16,7 +16,7 @@ export default (props: any) => {
 
   const getMetaDetail = async () => {
     const res = await getMetaDetailApi(Number(params.id), {
-      position: ShopTDKPosition.ARTICLE
+      position: ShopTDKPosition.PRODUCT
     })
     if(res?.success) {
       const tkd = res.data.tkd
@@ -32,6 +32,7 @@ export default (props: any) => {
 
 
   const sumbit = async (values: TdkSaveMeta) => {
+    values.position = ShopTDKPosition.PRODUCT
     const res = await getMetaSaveApi(Number(params.id), values)
     if(res?.success) {
       message.success(res.message)
@@ -50,7 +51,7 @@ export default (props: any) => {
            </h4>
            <div className="t-content">
               <div className="t-menu">
-                <SeoTab type={ShopTDKType.ARTICLE}/>
+                <SeoTab type={ShopTDKType.PRODUCT}/>
               </div>
             <div className="t-form">
               <Form.Item>

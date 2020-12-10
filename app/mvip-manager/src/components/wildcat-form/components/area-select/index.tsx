@@ -15,12 +15,12 @@ const options = [
   }];
 
 export default (props: any) => {
-  // useEffect(() => {
-  //   (async() => {
-  //     const res = await getAreasApi('m0');
-  //     if (res.success) { console.log(res.data) }
-  //   })()
-  // }, [])
+  useEffect(() => {
+    (async() => {
+      const res = await getAreasApi('m0');
+      if (res.success) { console.log(res.data) }
+    })()
+  })
 
   const formatArea = () => {
     console.log('更新数据')
