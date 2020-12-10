@@ -240,7 +240,7 @@ export default (props: any) => {
               <label htmlFor="domain">店铺域名</label>
               <div className="site-byte f-input">
                 <span>shop.baixing.com/</span>
-                <Input placeholder="请输入名称，1~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+                <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
                 <span className="f-len">{domainL}/20</span>
                 <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
               </div>
