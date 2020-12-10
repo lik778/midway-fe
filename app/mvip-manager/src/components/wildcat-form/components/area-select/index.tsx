@@ -5,12 +5,13 @@ import { CascaderOption } from '@/interfaces/base';
 import { CascaderValueType } from 'antd/lib/cascader';
 
 interface Props {
-  selectValue: string[];
+  initialValues: string[];
   onChange(values: string[]): void;
 }
 export default (props: any) => {
   const [areas, setAreas] = useState<CascaderOption[]>([]);
-  const { selectValue, onChange } = props
+  const [selectValue, setSelectValue] = useState<string[]>([]);
+  const { initialValues, onChange } = props
 
   const formatAreas = (data: any): any => {
     if (!data) return;
@@ -19,14 +20,16 @@ export default (props: any) => {
     })
   }
 
+  const formatValue = (data: string[] | any): string[] => {
+    if (!data) return [];
+    if (Array.isArray(data)) return data;
+    return Object.keys(data).map((k: string) => k)
+  }
+
   const getAreasInfo = async (areaId: string) => {
       const res = await getAreasApi(areaId);
       if (res.success) {
-        if (areas.length === 0) {
           setAreas(formatAreas(res.data))
-        } else {
-          console.log('重新赋值')
-        }
       }
   }
 
@@ -34,8 +37,15 @@ export default (props: any) => {
       getAreasInfo('m0')
   }, [])
 
-  const onSelectChange = (list: CascaderValueType) => {
+  useEffect(() => {
+    if (initialValues) {
+      setSelectValue(formatValue(initialValues))
+    }
+  }, [initialValues])
+
+  const onSelectChange = (list: any) => {
     onChange(list)
+    setSelectValue(list)
   }
 
   const loadData = (selectedOptions: any) => {
@@ -49,6 +59,6 @@ export default (props: any) => {
   };
 
   return (<Cascader size='large'
-          options={areas} defaultValue={selectValue}
+          options={areas} value={selectValue}
           loadData={loadData} onChange={onSelectChange} changeOnSelect />)
 }
