@@ -8,7 +8,7 @@ export const baseInfoForm: FormConfig = {
   children: [
     { width: 346, label: '企业名称', name: 'companyName', type: FormType.Input, required: true, placeholder: '请输入企业名称，2～20个字' },
     { width: 346, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false,placeholder: '请输入企业别称，2～20个字' },
-    { width: 346, label: '企业地址', name: 'areaMap', type: FormType.AreaSelect, required: true },
+    { width: 346, label: '企业地址', name: 'areaMap', type: FormType.AreaSelect, required: false },
     { width: 346, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { width: 655, label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字' },
     { width: 646, label: '企业logo', name: 'imgInfo', type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
