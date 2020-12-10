@@ -77,8 +77,9 @@ const WildcatForm = (props: Props) => {
               </FormItem>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
+            const value = form.getFieldsValue()[item.name || ''];
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <AreaSelect />
+              <AreaSelect value={value} onChange={(values: string[]) => onChange(values, item.name || '')}/>
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
             return (<FormItem key={item.label}>

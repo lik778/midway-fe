@@ -100,16 +100,12 @@ export const ImgUpload = (props: Props) => {
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
-          isImageUrl={()=>{return true}}
-          disabled={fileList.length >= props.maxLength}
+          disabled={ fileList.length > props.maxLength}
         >
-        {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
-        : uploadButton()}
+        { fileList.length === 0 && uploadButton() }
       </Upload>
       <Modal
           visible={previewVisible}
-          title={previewTitle}
-          footer={null}
           onCancel={handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
