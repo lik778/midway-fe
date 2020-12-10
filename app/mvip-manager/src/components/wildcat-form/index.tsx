@@ -66,7 +66,7 @@ const WildcatForm = (props: Props) => {
                 item.images.map((img) => {
                   const url = editDataSource && editDataSource[img.name || ''];
                   return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                    <ImgUpload key={img.text} text={img.text} url={url || ''}
+                    <ImgUpload key={img.text} text={img.text} url={url || ''} maxLength={item.maxLength || 0}
                      onChange={(newValue) => onChange(newValue, item.name || '')}/>
                   </FormItem>
                   )

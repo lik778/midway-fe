@@ -22,7 +22,7 @@ interface Props {
   onChange(url: string): void;
   fileList?:any[];
 }
-export const ImgUpload = (props: Props) => {
+export const BannerImgUpload = (props: Props) => {
   const list = props.fileList || []
   console.log('list', list)
   const { text, url, onChange } = props
@@ -53,13 +53,13 @@ export const ImgUpload = (props: Props) => {
   }
 
   const handlePreview = async (file: any) => {
-      if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj);
-      }
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
 
-      setPreviewImage(file.url || file.preview)
-      setPreviewVisible(true)
-      setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
+    setPreviewImage(file.url || file.preview)
+    setPreviewVisible(true)
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
 
   const handleChange = async ({file, fileList}) => {
@@ -96,24 +96,24 @@ export const ImgUpload = (props: Props) => {
   return (
     <div className="img-upload">
       <Upload
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={handlePreview}
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-          isImageUrl={()=>{return true}}
-          disabled={fileList.length >= props.maxLength}
-        >
+        listType="picture-card"
+        fileList={fileList}
+        onPreview={handlePreview}
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+        isImageUrl={()=>{return true}}
+        disabled={fileList.length >= props.maxLength}
+      >
         {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
-        : uploadButton()}
+          : uploadButton()}
       </Upload>
       {/* <p style={{ textAlign: 'center' }}>{text || '上传'}</p> 上传文案显示在上传框里*/}
       <Modal
-          visible={previewVisible}
-          title={previewTitle}
-          footer={null}
-          onCancel={handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        visible={previewVisible}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}>
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </div>
   )
