@@ -61,9 +61,9 @@ export const productForm: FormConfig = {
 export const tdkForm: FormConfig = {
   name: 'tdkForm',
   children: [
-    { inputWidth: 260, className:'f-middle', label: 'SEO标题', name: 'contentCateId', type: FormType.Input, required: true, placeholder: '请输入标题，9~15个字'},
-    { inputWidth: 524, className:'f-textarea', label: 'SEO描述', name: 'content', type: FormType.Textarea, required: true, minLength: 40, maxLength: 80,placeholder: '请输入描述，40～80个字' },
-    { inputWidth: 130, className:'f-tag', label: 'SEO关键词', name: 'tags', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入标签',  maxNum: 20},
+    { inputWidth: 260, className:'f-middle', label: 'SEO标题', name: 'title', type: FormType.Input, required: true, placeholder: '请输入标题，9~15个字'},
+    { inputWidth: 524, className:'f-textarea', label: 'SEO描述', name: 'description', type: FormType.Textarea, required: true, minLength: 40, maxLength: 80,placeholder: '请输入描述，40～80个字' },
+    { inputWidth: 130, className:'f-tag', label: 'SEO关键词', name: 'keywords', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入标签',  maxNum: 20},
   ],
   buttonConfig: { text: '保存', size: 'large', className: 'mvip-btn' }
 }
