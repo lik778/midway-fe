@@ -9,7 +9,7 @@ import { Form, message } from 'antd';
 import { useParams } from 'umi';
 import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
 import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
-import Loading from '@/components/loading-status';
+import LoadingStatus from '@/components/loading-status';
 import './index.less'
 export default (props: any) => {
   const [formConfig, setformConfig] = useState<FormConfig>(tdkForm)
@@ -24,7 +24,7 @@ export default (props: any) => {
     if(res?.success) {
       const tkd = res.data.tkd
       setEditData(tkd)
-      setLoading(true)
+      setLoading(false)
     }
   }
 
@@ -49,20 +49,20 @@ export default (props: any) => {
     }
   }
 
-  // const formPage = ()=>{
-  //   if(Loading) {
-  //     return <Loading />
-  //   }else{
-  //     return (
-  //       <Form.Item>
-  //         <WildcatForm
-  //           editDataSource={editData}
-  //           config={formConfig}
-  //           submit={sumbit}/>
-  //       </Form.Item>
-  //     )
-  //   }
-  // }
+  const formPage = ()=>{
+    if(Loading) {
+      return <LoadingStatus />
+    }else{
+      return (
+        <Form.Item>
+          <WildcatForm
+            editDataSource={editData}
+            config={formConfig}
+            submit={sumbit}/>
+        </Form.Item>
+      )
+    }
+  }
 
   return (
       <div>
@@ -77,12 +77,7 @@ export default (props: any) => {
                 <SeoTab type={ShopTDKType.INDEX}/>
               </div>
             <div className="t-form">
-              <Form.Item>
-                <WildcatForm
-                  editDataSource={editData}
-                  config={formConfig}
-                  submit={sumbit}/>
-              </Form.Item>
+              {formPage()}
             </div>
            </div>
          </div>
