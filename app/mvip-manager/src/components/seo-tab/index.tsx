@@ -36,7 +36,6 @@ export default (props: Props) => {
   ]
 
   return (
-    <div>
       <Menu onClick={handleClick} selectedKeys={[current]}  className="a-menu">
         {menuList.map(item => {
           return  <Menu.Item key={item.key}>
@@ -44,6 +43,5 @@ export default (props: Props) => {
           </Menu.Item>
         })}
       </Menu>
-    </div>
   );
 }
