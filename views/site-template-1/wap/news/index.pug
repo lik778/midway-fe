@@ -11,7 +11,7 @@ block content
 
     include ../components/news-list
 
-    - const { pageSize, totalPage } = renderData.articleList
+    - const { totalPage } = renderData.articleList
     include ../components/pagination
     +pagination(totalPage, renderData.currentPage, `/${shopName}/n`)
 
