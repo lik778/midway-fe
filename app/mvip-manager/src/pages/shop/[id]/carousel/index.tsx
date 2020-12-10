@@ -3,7 +3,7 @@ import  CarouselImg from '@/components/carousel-img';
 import ShopBasisTab from '@/components/shop-basis-tab';
 import { ShopBasisType, DeviceType } from '@/enums';
 import './index.less'
-import { getBannerList } from '@/api/shop';
+import { getBannerListApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
 
@@ -14,7 +14,7 @@ export default (props: any) => {
   const params: RouteParams = useParams();
 
   const getWapBannerList = async () => {
-    const res = await getBannerList(Number(params.id), {
+    const res = await getBannerListApi(Number(params.id), {
       page: 1,
       size: 5,
       status: 1,
@@ -32,7 +32,7 @@ export default (props: any) => {
   }
 
   const getPcBannerList = async () => {
-    const res = await getBannerList(Number(params.id), {
+    const res = await getBannerListApi(Number(params.id), {
       page: 1,
       size: 5,
       status: 1,
