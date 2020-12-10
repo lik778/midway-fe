@@ -58,9 +58,20 @@ export interface ModifyNavItem{
 }
 
 
-export interface imgItemParam{
+export interface ImgItemParam{
   type: string;
   url: string;
+}
+
+export interface ImgDeleteParam{
+  id: number;
+}
+
+export interface ImgListParam{
+  page: number;
+  size: number;
+  status: number;
+  type: number;
 }
 
 export interface CreateContentCateApiParams {
@@ -70,5 +81,17 @@ export interface CreateContentCateApiParams {
   seoK: string;
   seoT: string;
   type: ContentCateType;
+}
+
+
+export interface TdkSaveMeta {
+  description: string;
+  keywords: string;
+  position: number;
+  title: string;
+}
+
+export interface TdkDetailMeta {
+  position: number;
 }
 

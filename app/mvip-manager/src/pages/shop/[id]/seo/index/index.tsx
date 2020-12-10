@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ShopBasisTab from '@/components/shop-basis-tab';
 import SeoTab from '@/components/seo-tab';
 import WildcatForm from '@/components/wildcat-form';
-import { ShopBasisType, ShopTDKType } from '@/enums';
+import { ShopBasisType, ShopTDKType, ShopTDKPosition } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { tdkForm } from '@/config/form';
-import { Form, Menu } from 'antd';
+import { Form, message } from 'antd';
+import { useParams } from 'umi';
+import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
+import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
 import './index.less'
 export default (props: any) => {
   const [formConfig, setformConfig] = useState<FormConfig>(tdkForm)
-  const sumbit = async () => {
-    // if (!values.price) { values.price = '面议' }
-    // values.contentImg = ''
-    // if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
-    // let resData: any;
-    // if (editData) {
-    //   resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
-    // } else {
-    //   resData = await createArticleApi(Number(params.id), values)
-    // }
-    // if (resData.success) {
-    //   message.success(resData.message)
-    //   if (editData) {
-    //     updateArticleList(resData.data)
-    //   } else {
-    //     addArticleList(resData.data)
-    //   }
-    //   onClose()
-    // } else {
-    //   message.error(resData.message)
-    // }
+  const [editData, setEditData] = useState<any>(null)
+  const params: RouteParams = useParams();
+
+  const getMetaDetail = async () => {
+    const res = await getMetaDetailApi(Number(params.id), {
+      position: ShopTDKPosition.INDEX
+    })
+    if(res?.success) {
+      const tkd = res.data.tkd
+      setEditData(tkd)
+    }
+  }
+
+
+
+  useEffect(() => {
+    getMetaDetail()
+  }, [])
+
+
+  const sumbit = async (values: TdkSaveMeta) => {
+    const res = await getMetaSaveApi(Number(params.id), values)
+    if(res?.success) {
+      message.success(res.message)
+    }else{
+      message.error(res.message)
+    }
   }
 
   return (
@@ -47,6 +56,7 @@ export default (props: any) => {
             <div className="t-form">
               <Form.Item>
                 <WildcatForm
+                  editDataSource={editData}
                   config={formConfig}
                   submit={sumbit}
                   className="default-form"/>

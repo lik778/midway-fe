@@ -15,6 +15,12 @@ export enum ShopTDKType {
   ARTICLE = 'article'
 }
 
+export enum ShopTDKPosition {
+  INDEX = 1,
+  PRODUCT = 2,
+  ARTICLE = 3
+}
+
 export enum AuditStatus {
   DEFAULT, // 初始化
   APPROVE, // 审核通过
