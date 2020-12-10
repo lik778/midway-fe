@@ -22,7 +22,7 @@ export interface CreateArticleApiParams {
   name: string;
   price: number | string;
   shopId?: number;
-  tags: string;
+  tags: string[];
 }
 
 export interface DeleteApiParams {

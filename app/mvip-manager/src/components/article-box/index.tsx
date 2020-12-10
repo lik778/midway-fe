@@ -36,8 +36,11 @@ export default (props: Props) => {
     setformConfig(articleForm)
   }, [cateList])
 
-  const sumbit = async (values: CreateArticleApiParams) => {
+  const sumbit = async (values: any) => {
     let resData: any;
+    if (typeof values.tags === 'string') {
+      values.tags = values.tags.split(',')
+    }
     if (editData) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
     } else {
