@@ -4,7 +4,7 @@
         ul.item
             each item in newsList
                 li
-                    a(href="/" + shopName + item.urlSuffix)
+                    a(href=item.urlSuffix)
                         p #{item.name}
     else
         p 当前页面暂无内容，敬请期待...

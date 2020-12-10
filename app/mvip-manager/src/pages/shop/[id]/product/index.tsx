@@ -73,15 +73,15 @@ export default (props: any) => {
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />
           <ProductBox
-            addProductList={(item) => setProductList([item, ...productList])}
+            addProductList={(item) => setProductList(addKeyForListData([item, ...productList]))}
             updateProductList={(item) => {
               const editIndex = productList.findIndex((a: any) => a.id === item.id)
               productList.splice(editIndex, 1, item)
-              setProductList([...productList])
+              setProductList(addKeyForListData([...productList]))
             }}
             cateList={cateList}
             editData={editProductData}
-            updateCateList={(x) => setCateList([x, ...cateList])}
+            updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
             visible={productFormVisible}
             onClose={() => setProductFormVisible(false)}/>
       </div>
