@@ -42,7 +42,7 @@ const ContactForm = (props: Props) => {
   return (
     <div>
       <Form.Item label="电话/微信">
-        <WildcatForm editDataSource={editDataSource} config={config} formChange={formChange}/>
+        <WildcatForm useLabelCol={true} editDataSource={editDataSource} config={config} formChange={formChange}/>
       </Form.Item>
       {/*<Form.Item className={styles.item} style={{ margin: '33px 0' }}>*/}
       {/*  <label className={styles.label}>第三方客服</label>*/}

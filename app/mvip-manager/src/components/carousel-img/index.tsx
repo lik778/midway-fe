@@ -1,7 +1,7 @@
 
 import React from 'react';
 import './index.less';
-import {ImgUpload} from '../wildcat-form/components/img-upload';
+import { BannerImgUpload } from '@/components/banner-img-upload';
 import { createBannerApi, deleteBannerApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
@@ -32,9 +32,9 @@ export default (props: any) => {
       <span className="title">{props.txt}: </span>
       <div className="img-list">
         <p className="tip">{props.tip}</p>
-        <ImgUpload imgType={'text'} text={'上传图片'} maxLength={5} disableBtn={true} onChange={onChange} fileList={props.fileList}/>
+        <BannerImgUpload imgType={'text'} text={'上传图片'} maxLength={5} disableBtn={true} onChange={onChange} fileList={props.fileList}/>
       </div>
     </div>
-   
+
   );
 }
