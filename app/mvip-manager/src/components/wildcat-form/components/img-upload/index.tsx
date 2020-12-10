@@ -29,7 +29,32 @@ export const ImgUpload = (props: Props) => {
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
-  const [fileList, setFileList] = useState<any[]>(list)
+  const [fileList, setFileList] = useState<any[]>([
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'http://img4.baixing.net/3bcecddddc2080c5352b527ebdbac73b.png_bi',
+    },
+    {
+      uid: '-2',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-3',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-4',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ],)
   const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
