@@ -72,15 +72,15 @@ export default (props: any) => {
         }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
-        addArticleList={(item) => setArticleList([item, ...articleList]) }
+        addArticleList={(item) => setArticleList(addKeyForListData([item, ...articleList])) }
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)
           articleList.splice(editIndex, 1, item)
-          setArticleList([...articleList])
+          setArticleList(addKeyForListData([...articleList]))
         }}
         cateList={cateList}
         editData={editArticleData}
-        updateCateList={(x) => setCateList([x, ...cateList])}
+        updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
         onClose={() => setArticleFormVisible(false)}/>
     </div>
