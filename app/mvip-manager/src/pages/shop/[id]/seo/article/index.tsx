@@ -50,7 +50,7 @@ export default (props: any) => {
            </h4>
            <div className="t-content">
               <div className="t-menu">
-                <SeoTab type={ShopTDKType.INDEX}/>
+                <SeoTab type={ShopTDKType.ARTICLE}/>
             </div>
             <div className="t-form">
               <Form.Item>

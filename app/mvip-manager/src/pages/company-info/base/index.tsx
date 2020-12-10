@@ -29,7 +29,7 @@ export default (props: any) => {
 
   const nextStep = async(values: any) => {
     // 这里先写死
-    values.area = values.areaMap && Object.keys(values.areaMap).map(k => k)
+    values.area = (values.areaMap && Object.keys(values.areaMap).map(k => k)) || ['m30']
     const res = await saveEnterpriseForShopApi(values)
     if (res.success) {
       message.success('修改基础资料成功')
