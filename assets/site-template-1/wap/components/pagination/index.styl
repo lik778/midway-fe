@@ -2,7 +2,7 @@
     box-sizing border-box
     display flex
     text-align center
-    color #666
+    color #999
     background #fff
     padding-bottom 310px
 
@@ -29,6 +29,7 @@
             cursor pointer
         .select-page-num
             display block
+            //三角符号
             &::after
                 content ''
                 position absolute
@@ -36,30 +37,30 @@
                 right 10px
                 margin-top -2px
                 border 5px solid transparent
-                border-top-color 1px solid #666
+                border-top-color #999
 
     .prev-page
-        //color
+        //color #999
         &::after
             position absolute
             right 0
             content ""
             height 14px
             line-height 14px
-            border-right 1px solid #666
+            border-right 1px solid #e6e6e6
 
     .next-page
-        color #666
+        //color #999
         &::before
             position absolute
             left  0
             content ""
             height 14px
             line-height 14px
-            border-right 1px solid #666
+            border-right 1px solid #e6e6e6
 
     .disabled
-        //color $cm-color-fg-light
+        color #999
 
     .next
         display block

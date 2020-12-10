@@ -10,5 +10,10 @@ block content
     include ../components/toptab
     include ../components/product-list
 
+    - const { pageSize, totalPage } = renderData.productList
+    include ../components/pagination
+    +pagination(totalPage, renderData.currentPage, `/${shopName}/p`)
+
+
 block scripts
     :combine(fileName="site-template-1-product-wap.js")

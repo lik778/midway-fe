@@ -10,10 +10,10 @@ block content
     include ../components/toptab
 
     include ../components/news-list
-    - const { pageSize, totalPage, totalRecord } = renderData.articleList
-    include ../components/pagination
-    +pagination('/p/',2,4,5)
 
+    - const { pageSize, totalPage } = renderData.articleList
+    include ../components/pagination
+    +pagination(totalPage, renderData.currentPage, `/${shopName}/n`)
 
 block scripts
     :combine(fileName="site-template-1-news-wap.js")
