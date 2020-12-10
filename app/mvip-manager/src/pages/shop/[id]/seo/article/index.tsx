@@ -9,10 +9,13 @@ import { Form, message } from 'antd';
 import { useParams } from 'umi';
 import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
 import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
+import LoadingStatus from '@/components/loading-status';
+import './index.less'
 export default (props: any) => {
   const [formConfig, setFormConfig] = useState<FormConfig>(tdkForm)
   const params: RouteParams = useParams();
   const [editData, setEditData] = useState<any>(null)
+  const [Loading, setLoading] = useState<any>(true)
 
   const getMetaDetail = async () => {
     const res = await getMetaDetailApi(Number(params.id), {
@@ -20,8 +23,8 @@ export default (props: any) => {
     })
     if(res?.success) {
       const tkd = res.data.tkd
-      console.log('tkd',tkd)
       setEditData(tkd)
+      setLoading(false)
     }
   }
 
@@ -34,11 +37,30 @@ export default (props: any) => {
 
   const sumbit = async (values: TdkSaveMeta) => {
     values.position = ShopTDKPosition.ARTICLE
+    if(!(values.keywords instanceof Array)) {
+      let kw: string = values.keywords
+      values.keywords = kw.split(',')
+    }
     const res = await getMetaSaveApi(Number(params.id), values)
     if(res?.success) {
       message.success(res.message)
     }else{
       message.error(res.message)
+    }
+  }
+
+  const formPage = ()=>{
+    if(Loading) {
+      return <LoadingStatus />
+    }else{
+      return (
+        <Form.Item>
+          <WildcatForm
+            editDataSource={editData}
+            config={formConfig}
+            submit={sumbit}/>
+        </Form.Item>
+      )
     }
   }
 
@@ -55,13 +77,7 @@ export default (props: any) => {
                 <SeoTab type={ShopTDKType.ARTICLE}/>
             </div>
             <div className="t-form">
-              <Form.Item>
-                <WildcatForm
-                  editDataSource={editData}
-                  config={formConfig}
-                  submit={sumbit}
-                  className="default-form"/>
-              </Form.Item>
+            {formPage()}
             </div>
            </div>
          </div>
