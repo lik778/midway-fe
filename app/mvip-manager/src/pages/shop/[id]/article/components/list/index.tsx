@@ -44,7 +44,7 @@ export default (props: Props) => {
   }
 
   const columns = [
-    { title: '序号', dataIndex: 'id', key: 'id' },
+    { title: '序号', dataIndex: 'key', key: 'key' },
     { title: '文章标题', dataIndex: 'name', key: 'name' },
     { title: '文章分组', dataIndex: 'cateName', key: 'cateName' },
     { title: '发文来源', dataIndex: 'source', key: 'source',
