@@ -13,9 +13,9 @@ import { ContentCateType } from '@/enums';
 const groupConfig = [
   {
     label: '分组名称',
-    placeholder: "请输入名称, 2~30个字",
+    placeholder: "请输入名称, 2~8个字",
     required: true,
-    maxLength:20,
+    maxLength:8,
     minLength:2,
     id:'name',
     value: '',
