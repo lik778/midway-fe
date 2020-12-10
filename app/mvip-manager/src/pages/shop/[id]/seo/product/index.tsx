@@ -32,6 +32,7 @@ export default (props: any) => {
 
 
   const sumbit = async (values: TdkSaveMeta) => {
+    values.position = ShopTDKPosition.PRODUCT
     const res = await getMetaSaveApi(Number(params.id), values)
     if(res?.success) {
       message.success(res.message)
