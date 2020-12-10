@@ -1,5 +1,6 @@
 mixin pagination(totalPage, currentPage, baseUrl)
 	div.pagination#pagination
+	if totalPage > 1
 		if currentPage == 1
 			a.prev-page.disabled 上一页
 		else
