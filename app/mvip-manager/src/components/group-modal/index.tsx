@@ -24,7 +24,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: '标题',
+    label: 'SEO标题',
     placeholder: "请输入标题, 9~50个字",
     required: false,
     maxLength:50,
@@ -36,7 +36,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: '关键词',
+    label: 'SEO关键词',
     placeholder: "请输入关键词",
     required: false,
     id:'seoK',
@@ -48,7 +48,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: '描述',
+    label: 'SEO描述',
     placeholder: "请输入描述, 40~80个字",
     required: false,
     maxLength:80,
