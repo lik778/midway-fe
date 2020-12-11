@@ -16,6 +16,9 @@
     display: block;
     
   }
+  .ant-form-item:nth-child(1){
+    margin-bottom: -8px;
+  }
   .ant-form-item:nth-child(2){
     margin-bottom: 0;
   }
@@ -34,8 +37,8 @@
   }
   .mvip-primary-btn{
     position: absolute;
-    right: -134px;
-    top: -41px;
+    left: 350px;
+    top: -33px;
   }
   .f-img .tip{
     color: #999999;
@@ -77,9 +80,33 @@
   }
 
   .f-tag{
+    margin-top:18px;
+    label{
+      margin-top:10px;
+      padding-left: 31px;
+    }
     label::before{
       content: '*';
       color:#F1492C;
+    }
+  }
+  .f-img{
+    label{
+      margin-left: 8px;
+    }
+    .img-upload{
+      margin-left: 10px;
+    }
+    .tip{
+      margin-left: 10px;
+    }
+  }
+  .ant-input-textarea{
+    margin-left: 10px;
+  }
+  .f-textarea{
+    .ant-form-horizontal .ant-form-item-control{
+      flex:none
     }
   }
 }

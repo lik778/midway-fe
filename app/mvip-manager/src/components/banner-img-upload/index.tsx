@@ -24,7 +24,6 @@ interface Props {
 }
 export const BannerImgUpload = (props: Props) => {
   const list = props.fileList || []
-  console.log('list', list)
   const { text, url, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
@@ -41,6 +40,10 @@ export const BannerImgUpload = (props: Props) => {
       </div>
     );
   }
+
+  useEffect(() => {
+    setFileList(list)
+  }, [list])
 
   useEffect(() => {
     if (url) {
@@ -107,7 +110,6 @@ export const BannerImgUpload = (props: Props) => {
         {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
           : uploadButton()}
       </Upload>
-      {/* <p style={{ textAlign: 'center' }}>{text || '上传'}</p> 上传文案显示在上传框里*/}
       <Modal
         visible={previewVisible}
         title={previewTitle}
