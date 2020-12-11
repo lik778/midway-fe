@@ -92,6 +92,9 @@ export default (props: Props) => {
   }
 
   const handleOk = async() => {
+    if(confirmLoading) {
+      return
+    }
     const r: any = {}
     let errInfo: string = ''
     const newConfig = config.concat()
@@ -117,10 +120,12 @@ export default (props: Props) => {
       return;
     }
 
+    setConfirmLoading(true)
     // to api
     if (editItem) {
       const mergeItem = Object.assign(editItem, r);
       const res = await updateContentCateApi(Number(params.id), {...mergeItem, type})
+      setConfirmLoading(false)
       if (res?.success) {
         message.success('编辑成功');
         groupUpdate(res.data);
@@ -131,6 +136,7 @@ export default (props: Props) => {
       }
     } else {
       const res = await createContentCateApi(Number(params.id), {...r, type})
+      setConfirmLoading(false)
       if (res?.success) {
         message.success('新增分组成功');
         groupCreate(res.data);
