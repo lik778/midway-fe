@@ -39,6 +39,11 @@ const WildcatForm = (props: Props) => {
     values[name] = newValue
     form.setFieldsValue(values)
   }
+
+  const getEditData = (name: string) => {
+    return editDataSource && editDataSource[name];
+  }
+
   return (
     <div>
       <Form form={form} name={props.config && props.config.name} labelCol={useLabelCol ? { span: 6 } : {}}
@@ -64,21 +69,23 @@ const WildcatForm = (props: Props) => {
             return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               { item.images && item.images.length > 0 &&
                 item.images.map((img) => {
-                  const url = editDataSource && editDataSource[img.name || ''];
+                  const url = getEditData(img.name || '');
                   return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                    <ImgUpload key={img.text} text={img.text} url={url || ''} maxLength={item.maxLength || 0}
+                    <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
                      onChange={(newValue) => onChange(newValue, item.name || '')}/>
                   </FormItem>
                   )
                 })
               }
               <FormItem>
-                <p className="tip">{item.tip}</p>
+                <
+                  p className="tip">{item.tip}</p>
               </FormItem>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
+            const value = getEditData(item.name || '');
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <AreaSelect />
+              <AreaSelect initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')}/>
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
             return (<FormItem key={item.label}>

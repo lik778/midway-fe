@@ -43,7 +43,7 @@ export default (props: Props) => {
       }
   }
   const columns = [
-    { title: '序号', dataIndex: 'id', key: 'id' },
+    { title: '序号', dataIndex: 'key', key: 'key' },
     { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
         return (
           <div style={{ height: 40, background: `url(${text})`, backgroundSize: 'cover' }}></div>

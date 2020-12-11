@@ -1,4 +1,4 @@
-import { ContentCateType } from '@/enums';
+import { ContentCateType, DomainStatus } from '@/enums';
 
 export interface RouteParams {
   id: string;
@@ -86,7 +86,7 @@ export interface CreateContentCateApiParams {
 
 export interface TdkSaveMeta {
   description: string;
-  keywords: string;
+  keywords: string[];
   position: number;
   title: string;
 }
@@ -95,3 +95,7 @@ export interface TdkDetailMeta {
   position: number;
 }
 
+export interface ShopStatus {
+  isUserPerfect: boolean;
+  domainType: DomainStatus;
+}
