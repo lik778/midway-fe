@@ -10,11 +10,10 @@ mixin product-list(page)
 		else
 			p 当前页面暂无内容，敬请期待...
 
-	- const moreLink = (renderData.navigation.filter(x => x.position == "productListPage"))[0].content
+	- const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
 	if page == 'home'
-		if renderData.navigation && moreLink
-			a.product-more-btn(href=moreLink) 查看更多
-		else
-			a.product-more-btn(href="#") 查看更多
+		if renderData.navigation && moreProductArr && moreProductArr.length>0
+			a.product-more-btn(href=moreProductArr[0].content) 查看更多
+
 
 
