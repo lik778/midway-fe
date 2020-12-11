@@ -10,7 +10,6 @@ import { useParams } from 'umi';
 import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
 import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
 import LoadingStatus from '@/components/loading-status';
-import './index.less'
 export default (props: any) => {
   const [formConfig, setFormConfig] = useState<FormConfig>(tdkForm)
   const params: RouteParams = useParams();

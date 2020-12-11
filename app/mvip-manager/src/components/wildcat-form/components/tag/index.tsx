@@ -7,6 +7,7 @@ import './index.less';
 interface Props {
   value: string[];
   maxLength: number;
+  minLength: number;
   maxNum: number;
   onChange(tags: any): void;
 }
@@ -40,9 +41,9 @@ export const TagModule = (props: Props) => {
   }
 
   const handleInputConfirm = () => {
-    // if (/[^a-zA-Z0-9\u4e00-\u9fa5]/g.test(inputValue)) {
-    //   setTags([...tags, inputValue])
-    // }
+    if (/[^a-zA-Z0-9\u4e00-\u9fa5]/g.test(inputValue)) {
+      setTags([...tags, inputValue])
+    }
     // tips: 这里还要进行一下数据输入处理
     if (!tags.includes(inputValue)) {
       onChange([...tags, inputValue].join(','))
@@ -88,6 +89,7 @@ export const TagModule = (props: Props) => {
             onBlur={handleInputConfirm}
             onPressEnter={handleInputConfirm}
             className="input-tag"
+            minLength={props.minLength}
             maxLength={props.maxLength}
           />
         )}
