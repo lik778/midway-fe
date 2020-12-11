@@ -24,7 +24,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: 'title',
+    label: '标题',
     placeholder: "请输入标题, 9~50个字",
     required: false,
     maxLength:50,
@@ -36,7 +36,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: 'keyword',
+    label: '关键词',
     placeholder: "请输入关键词",
     required: false,
     id:'seoK',
@@ -48,7 +48,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: 'description',
+    label: '描述',
     placeholder: "请输入描述, 40~80个字",
     required: false,
     maxLength:80,
@@ -75,20 +75,9 @@ interface Props {
 export default (props: Props) => {
   const params: RouteParams = useParams();
   const { editItem, type, onClose, groupCreate, groupUpdate } = props;
-  // const haha = groupConfig.map(x => {
-  //   x.value = (editItem && editItem[x.id]) || '';
-  //   console.log(x)
-  //   return x;
-  // })
   const [config, setConfig] = useState(groupConfig)
-  // 确定loading
+  const [err, setError] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false);
-  // 弹窗报错
-  const [isInputErr, setInputErr] = useState({
-    key:'',
-    isRequired: false
-  })
-
   useEffect(() => {
     setConfig(groupConfig.map(x => {
       x.value = (editItem && editItem[x.id]) || '';
@@ -96,32 +85,38 @@ export default (props: Props) => {
     }))
   }, [editItem]);
 
-  // 弹窗错误显示
-  const [err, setError] = useState('')
+  
 
   const resetConfigValue = (config: any) => {
     setConfig(config.map((x: any) => { x.value = ''; return x }))
   }
 
-    const handleOk = async () => {
+  const handleOk = async() => {
     const r: any = {}
-
+    let errInfo: string = ''
     const newConfig = config.concat()
     newConfig.forEach((c, i) => {
       r[c.id] = c.value
       if(c.required && !c.value){
         newConfig[i]['errClass'] = errClass
+        errInfo= `您输入${c.label}不能为空`
         setConfig(newConfig)
-        return
       }
 
       if(c.value && c.initLen < c.minLength) {
-        setError(c.err)
+        errInfo = c.err
         newConfig[i]['errClass'] = errClass
-        setConfig(newConfig)
-        return
+        
       }
     })
+
+    setError(errInfo)
+    setConfig(newConfig)
+    
+    if(errInfo.length) {
+      return;
+    }
+
     // to api
     if (editItem) {
       const mergeItem = Object.assign(editItem, r);
@@ -160,6 +155,7 @@ export default (props: Props) => {
         }
         if(g.required && g.value) {
           g['errClass'] = ''
+          setError('')
         }
 
         if(g.value && g.initLen > g.minLength) {
