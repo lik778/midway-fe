@@ -7,7 +7,7 @@
         height 52px
         line-height 52px
         margin auto
-        width 49%
+        min-width 49%
         font-size 16px
         color #333
         img
@@ -24,4 +24,13 @@
             text-overflow ellipsis
             white-space nowrap
     .service-btn
-        border-right 1px solid #DDDDDD
+        position relative
+        .topLine
+            //border-right 1px solid #DDDDDD
+            position absolute
+            top 0
+            right 0
+            width 1px
+            height 52px
+            background #ddd
+

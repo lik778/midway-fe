@@ -1,7 +1,7 @@
 .news
     .news-title.clearfix
         p 新闻资讯
-        - const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
+        //-- const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
         if moreNewsArr && moreNewsArr.length>0
             a(href=moreNewsArr[0].content) 更多
                 .right-icon
