@@ -1,10 +1,12 @@
 .product
     - const productList= renderData.productList.result
-    - const moreProduct = (renderData.navigation.filter(x => x.position == "productListPage"))[0].content
     .product-title.clearfix
         p 服务内容
-        a(href=moreProduct) 更多
-            .right-icon
+        - const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
+        if moreProductArr && moreProductArr.length>0
+            a(href=moreProductArr[0].content) 更多
+                .right-icon
+
     .product-list.clearfix
         if productList && productList.length >0
             each item in productList.length >= 4 ? productList.slice(0,4):productList

@@ -9,7 +9,6 @@ import { Form, message } from 'antd';
 import { useParams } from 'umi';
 import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
 import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
-import './index.less'
 import LoadingStatus from '@/components/loading-status';
 export default (props: any) => {
   const [formConfig, setformConfig] = useState<FormConfig>(tdkForm)

@@ -6,7 +6,7 @@
             //-默认最多展示20条
             each item in newsList.length>=20 ? newsList.slice(0,20) : newsList
                 li
-                    a(href=item.urlSuffix)
+                    a(href=item.urlSuffix target="_blank")
                         .sanjiao-icon
                         p #{item.name}
                         .news-createtime
