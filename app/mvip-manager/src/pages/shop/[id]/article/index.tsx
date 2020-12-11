@@ -15,7 +15,7 @@ import './index.less';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
-  const [articleFormVisible, setArticleFormVisible] = useState<boolean>(true);
+  const [articleFormVisible, setArticleFormVisible] = useState<boolean>(false);
   const [articleList, setArticleList] = useState<any>([]);
   const [editArticleData, setEditArticleData] = useState<any>(null)
   const [cateList, setCateList] = useState<CateItem[]>([]);
