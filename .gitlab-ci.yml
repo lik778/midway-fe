@@ -22,7 +22,13 @@ release-dev:
     - dev@fenlei/midway-fe
   tags:
     - k8s-dev-build
+  cache:
+    key: qa
+    paths:
+      - node_modules/
+      - app/public/ # 缓存静态资源，将历史版本装进镜像包    
   script:
+    - npm config set registry https://registry.npm.taobao.org/
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
     - docker push $MIDWAY_FE
