@@ -1,9 +1,11 @@
 .news
     .news-title.clearfix
-        - const moreNews = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
         p 新闻资讯
-        a(href=moreNews) 更多
-            .right-icon
+        - const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
+        if moreNewsArr && moreNewsArr.length>0
+            a(href=moreNewsArr[0].content) 更多
+                .right-icon
+
     .news-list
         //-首页默认最多展示10条
         - const newsList= renderData.articleList.result.slice(0,10)
