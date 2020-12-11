@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Button, Space, Spin } from 'antd';
+import { history } from 'umi';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
-import ShopBox from '@/components/shop-box'
+import ShopBox from '@/components/shop-box';
 import './index.less';
 import { postApiData } from '@/api/base';
+import { getCreateShopStatusApi } from '@/api/shop';
+import { ShopStatus } from '@/interfaces/shop';
 
 // 空状态基本配置
 const emptyMsg = {
@@ -37,6 +40,8 @@ export default (props: any) => {
     domain: '',
   })
 
+  const [shopStatus, setShopStatus] = useState<ShopStatus | null>(null)
+  const [editVisible, setEditVisible] = useState<boolean>(false)
   // 弹窗接口返回
   const [shopSiteRes, setShopSiteRes] = useState({
     success: false,
@@ -80,14 +85,19 @@ export default (props: any) => {
   }
 
 
-
+  const notInterceptCreateShop = (): boolean => {
+    setEditVisible(!shopStatus?.isUserPerfect)
+    return shopStatus?.isUserPerfect || false
+  }
 
   // 显示弹窗
   const showModal = (e:any, state: number, modalBody?: any) => {
-    setError('')
-    setOperate(state)
-    setVisible(true)
-    setOSite(modalBody)
+      if (notInterceptCreateShop()) {
+        setError('')
+        setOperate(state)
+        setVisible(true)
+        setOSite(modalBody)
+      }
   };
 
   // 弹窗确定
@@ -139,6 +149,15 @@ export default (props: any) => {
     [shopSiteRes]
   )
 
+  useEffect(() => {
+    (async () => {
+      const res =  await getCreateShopStatusApi()
+      if (res.success) {
+        setShopStatus(res.data)
+        setEditVisible(!res.data.isUserPerfect)
+      }
+    })()
+  }, [])
 
   // bindEvent
   // 弹窗取消
@@ -201,7 +220,7 @@ export default (props: any) => {
             {
               shopListData.map((shopChild, index) => {
                return (
-                <ShopBox shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
                )
             })}
           </div>
@@ -246,6 +265,14 @@ export default (props: any) => {
               </div>
             </li>
           </ul>
+        </Modal>
+        <Modal title="去完善信息"
+               closable={false}
+               maskClosable={false}
+               onCancel={() => setEditVisible(false)}
+               onOk={() => history.push('/company-info/base')}
+               visible={editVisible}>
+          <p>您的企业资料还未填写，请完善您的企业资料</p>
         </Modal>
         <div className="container">
           {shopSitePage()}
