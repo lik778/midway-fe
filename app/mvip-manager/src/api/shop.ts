@@ -10,8 +10,14 @@ import {
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
-  TdkDetailMeta
+  TdkDetailMeta, ShopStatus,
 } from '@/interfaces/shop';
+import { ServiceResponse } from '@/interfaces/api';
+
+// 店铺
+export const getCreateShopStatusApi = ():Promise<ServiceResponse<ShopStatus>>  => {
+  return postApiData('shop/init', {})
+}
 
 // 基础配置
 // 获取导航列表
@@ -29,12 +35,12 @@ export const createBannerApi = (shopId: number, params:ImgItemParam) => {
   return postApiData('banner/create', params, setShopHeader(shopId))
 }
 
-// 删除banner 
+// 删除banner
 export const deleteBannerApi = (shopId: number, params: ImgDeleteParam) => {
   return postApiData(`banner/delete/${params.id}`, {}, setShopHeader(shopId))
 }
 
-// banner 列表 
+// banner 列表
 export const getBannerListApi = (shopId: number, params: ImgListParam) => {
   return postApiData(`banner/listing`, params, setShopHeader(shopId))
 }
