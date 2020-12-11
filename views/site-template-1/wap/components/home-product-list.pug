@@ -11,11 +11,7 @@
         if productList && productList.length >0
             each item in productList.length >= 4 ? productList.slice(0,4):productList
                 .item
-                    .cover
-                        if item.headImg
-                            img(src=item.headImg)
-                        else
-                            img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+                    img(src=item.headImg || "//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
                     p #{item.name}
                     a.btn(href=item.urlSuffix) 了解详情
         else
