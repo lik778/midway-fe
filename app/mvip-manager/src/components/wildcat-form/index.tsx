@@ -6,6 +6,7 @@ import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import  Btn  from '@/components/btn';
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -13,6 +14,7 @@ const FormItem = Form.Item;
 
 interface Props {
   config: FormConfig;
+  onInit?(form: any): void;
   editDataSource?: any;
   submit?(values: any): void;
   formChange?(changeValue: any, allValues: any): void;
@@ -24,7 +26,7 @@ interface Props {
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  const { editDataSource, useLabelCol } = props
+  const { editDataSource, useLabelCol, onInit } = props
 
   useEffect(() => {
     if (editDataSource) {
@@ -33,6 +35,13 @@ const WildcatForm = (props: Props) => {
       form.resetFields()
     }
   },[editDataSource])
+
+  useEffect(() => {
+    if (onInit) {
+      // 将form实例放出来
+      onInit(form)
+    }
+  }, [])
 
   const onChange = (newValue: any, name: string) => {
     const values = form.getFieldsValue()

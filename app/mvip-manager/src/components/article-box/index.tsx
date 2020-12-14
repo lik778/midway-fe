@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
+import QuitFormModal from '@/components/quit-form-modal';
 import { articleForm, productForm } from '@/config/form';
 import { Form, Drawer, message } from 'antd';
 import { CateItem, CreateArticleApiParams, RouteParams } from '@/interfaces/shop';
@@ -24,6 +25,7 @@ export default (props: Props) => {
   const { visible, editData, onClose, cateList, updateCateList, addArticleList, updateArticleList } = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
+  const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
@@ -69,7 +71,7 @@ export default (props: Props) => {
           title="新建文章"
           placement={placement}
           closable={true}
-          onClose={onClose}
+          onClose={() => setQuitModalVisible(true)}
           visible={visible}
           key={placement}
           width="700"
@@ -89,6 +91,11 @@ export default (props: Props) => {
           groupUpdate={(item: CateItem) => { console.log(null) }}
           groupCreate={(item: CateItem) => updateCateList(item)}
           onClose={() => setModalVisible(false)} />
+        <QuitFormModal
+          visible={quitModalVisible} onOk={() => {
+          setQuitModalVisible(false)
+          onClose() }}
+          onCancel={() => setQuitModalVisible(false)}/>
     </Drawer>
   );
 }
