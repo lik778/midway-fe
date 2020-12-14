@@ -75,11 +75,6 @@ interface Props {
 export default (props: Props) => {
   const params: RouteParams = useParams();
   const { editItem, type, onClose, groupCreate, groupUpdate } = props;
-  // const haha = groupConfig.map(x => {
-  //   x.value = (editItem && editItem[x.id]) || '';
-  //   console.log(x)
-  //   return x;
-  // })
   const [config, setConfig] = useState(groupConfig)
   // 确定loading
   const [confirmLoading, setConfirmLoading] = useState(false);
