@@ -53,7 +53,7 @@ export default (props: any) => {
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
         title="文章分组"
-        createBtnText="新建文章"
+        createBtnText="新建分组"
         cateList={cateList}
         updateCateList={(list) => setCateList(list)}
         onClose={() => setModuleGroupVisible(false)}
