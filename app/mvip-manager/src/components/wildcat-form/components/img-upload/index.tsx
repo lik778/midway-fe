@@ -29,7 +29,6 @@ export const ImgUpload = (props: Props) => {
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([])
-  const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
     const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
@@ -55,7 +54,6 @@ export const ImgUpload = (props: Props) => {
       if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj);
       }
-
       setPreviewImage(file.url || file.preview)
       setPreviewVisible(true)
       setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
@@ -63,12 +61,13 @@ export const ImgUpload = (props: Props) => {
 
   const handleChange = async (e: any) => {
     if (e.file.status === 'done') {
-      setFileList(e.fileList)
       const res = await uploadImgToUpyunHandle(e.file.originFileObj);
       if(res.code === 200) {
-        setImgUrlList([...imgUrlList, res.url])
+        setFileList([e.file])
         onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
       }
+    } else if (e.file.status === 'removed') {
+      setFileList([])
     }
   }
 
@@ -81,7 +80,7 @@ export const ImgUpload = (props: Props) => {
       message.error('请上传jpg、jpeg、png格式的图片');
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
-    if (!isLt2M) {
+    if (!isLt2M && isJpgOrPng) {
       message.error('请上传不超过1M的图片');
     }
     return isJpgOrPng && isLt2M;

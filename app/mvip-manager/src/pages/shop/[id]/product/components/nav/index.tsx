@@ -31,7 +31,7 @@ export default (props: Props) => {
           <Option key='全部' value={0}>全部</Option>
           {
             cateList.length && cateList.map((item: CateItem) => {
-              return (<Option key={item.name} value={item.id}>{item.name}</Option>)
+              return (<Option key={item.name} value={item.id || ''}>{item.name}</Option>)
             })
           }
         </Select>

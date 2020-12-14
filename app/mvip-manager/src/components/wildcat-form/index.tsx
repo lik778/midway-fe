@@ -78,10 +78,7 @@ const WildcatForm = (props: Props) => {
                   )
                 })
               }
-              <FormItem>
-                <
-                  p className="tip">{item.tip}</p>
-              </FormItem>
+              <FormItem><p className="tip">{item.tip}</p></FormItem>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
             const value = getEditData(item.name || '');

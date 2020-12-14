@@ -59,7 +59,7 @@ export interface ModifyNavItem{
 
 
 export interface ImgItemParam{
-  type: string;
+  type: number;
   url: string;
 }
 
