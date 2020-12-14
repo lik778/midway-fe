@@ -29,7 +29,7 @@ const WildcatForm = (props: Props) => {
   useEffect(() => {
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
-    } else {
+    } if (editDataSource == 'reset') {
       form.resetFields()
     }
   },[editDataSource])
