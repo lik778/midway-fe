@@ -56,8 +56,8 @@ export default (props: any) => {
             total={total}
             dataSource={productList}
             openEditForm={(item) => {
+              setEditProductData({...item});
               setProductFormVisible(true);
-              setEditProductData(item);
             }}
             update={(list) => {
               setProductList(addKeyForListData(list) || [])

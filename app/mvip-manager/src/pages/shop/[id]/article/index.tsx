@@ -64,8 +64,8 @@ export default (props: any) => {
         total={total}
         dataSource={articleList}
         openEditForm={(item) => {
+          setEditArticleData({ ...item });
           setArticleFormVisible(true);
-          setEditArticleData(item);
         }}
         update={(list) => {
           setArticleList(addKeyForListData(list) || [])
