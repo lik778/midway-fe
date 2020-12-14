@@ -17,12 +17,12 @@ export default (props: any) => {
   // isLoaded
   const [isWapLoading, setIsWapLoading] = useState(true)
   const [isPcLoading, setIsPcLoading] = useState(true)
-  const getWapBannerList = async () => {
+  const getBannerList = async (type: DeviceType)=> {
     const res = await getBannerListApi(Number(params.id), {
       page: 1,
       size: 5,
       status: 1,
-      type: DeviceType.WAP
+      type,
     })
     if(res?.success) {
       const list = res.data.result
@@ -31,28 +31,19 @@ export default (props: any) => {
         l['url'] = l.displayImgUrl
         l['status'] = 'done'
       })
-      setWapBannerList(list)
-      setIsWapLoading(false)
+      if(type === DeviceType.PC) {
+        setPCBannerList(list)
+        setIsPcLoading(false)
+      } else if(type === DeviceType.WAP) {
+        setWapBannerList(list)
+        setIsWapLoading(false)
+      }
+      
     }
   }
 
-  const getPcBannerList = async () => {
-    const res = await getBannerListApi(Number(params.id), {
-      page: 1,
-      size: 5,
-      status: 1,
-      type: DeviceType.PC
-    })
-    if(res?.success) {
-      const list = res.data.result
-      list.map((l:any) => {
-        l['uid'] = l.id.toString()
-        l['url'] = l.displayImgUrl
-        l['status'] = 'done'
-      })
-      setPCBannerList(list)
-      setIsPcLoading(false)
-    }
+  const onChange = (type: DeviceType) => {
+    getBannerList(type)
   }
 
   const imgContainer = () =>{
@@ -62,20 +53,20 @@ export default (props: any) => {
       return (
           <div className="c-main">
             <div className="c-pc">
-              <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸1920*360'} txt={'PC端轮播图'} type={1} fileList={pcBannerList}/>
+              <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸1920*360'} txt={'PC端轮播图'} type={DeviceType.PC} fileList={pcBannerList} onChange={onChange}/>
             </div>
             <div className="c-wap">
-              <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸375*152'} txt={'WAP端轮播图'} type={2} fileList={wapBannerList}/>
+              <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸375*152'} txt={'WAP端轮播图'} type={DeviceType.WAP} fileList={wapBannerList} onChange={onChange}/>
             </div>
-            <EmptyStatus img={'&#xe618;'}/>
+            {/* <EmptyStatus emptyMsg={img:'&#xe618;'}/> */}
           </div>
       )
     }
   }
 
   useEffect(() => {
-    getWapBannerList()
-    getPcBannerList()
+    getBannerList(DeviceType.PC)
+    getBannerList(DeviceType.WAP)
   }, [])
 
   return (
