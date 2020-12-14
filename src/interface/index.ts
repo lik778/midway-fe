@@ -1,3 +1,5 @@
+import { DomainStatus } from './site';
+
 export interface CommonRes {
   code: number;
   success: boolean;
@@ -25,6 +27,7 @@ export interface HeaderAuthParams {
 export interface PageHeaderParams {
   'x-api-shop-name': string;
   'x-api-device': string;
+  'x-api-domain-type': DomainStatus;
 }
 
 // 店铺落地页请求返回
