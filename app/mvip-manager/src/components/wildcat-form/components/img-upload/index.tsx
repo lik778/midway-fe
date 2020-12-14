@@ -61,15 +61,10 @@ export const ImgUpload = (props: Props) => {
       setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
 
-  const handleChange = async ({file, fileList}) => {
-    if(beforeUpload(file)){
-      setFileList(fileList)
-    }
-
-    if (file.status === 'done') {
-      console.log('file', file)
-      console.log('fileList', fileList)
-      const res = await uploadImgToUpyunHandle(file.originFileObj);
+  const handleChange = async (e: any) => {
+    if (e.file.status === 'done') {
+      setFileList(e.fileList)
+      const res = await uploadImgToUpyunHandle(e.file.originFileObj);
       if(res.code === 200) {
         setImgUrlList([...imgUrlList, res.url])
         onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
@@ -100,12 +95,13 @@ export const ImgUpload = (props: Props) => {
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
-          disabled={ fileList.length > props.maxLength}
+          disabled={ fileList.length > (props.maxLength || 0)}
         >
         { fileList.length === 0 && uploadButton() }
       </Upload>
       <Modal
           visible={previewVisible}
+          onOk={handleCancel}
           onCancel={handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
