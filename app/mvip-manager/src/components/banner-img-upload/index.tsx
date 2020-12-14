@@ -22,7 +22,6 @@ interface Props {
 }
 export const BannerImgUpload = (props: Props) => {
   const list = props.fileList || []
-  console.log('list', list)
   const { onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
