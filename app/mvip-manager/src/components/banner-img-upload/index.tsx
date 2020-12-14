@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Upload, Modal, message } from 'antd';
+import {Upload, Modal, message, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
 
@@ -32,10 +32,10 @@ export const BannerImgUpload = (props: Props) => {
     const txt = props.text || '上传'
     const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
     return (
-      <div className={cls}>
+      <Button className={cls} disabled={isDisable}>
         <PlusOutlined />
         <div className='upload-img'>{txt}</div>
-      </div>
+      </Button>
     );
   }
 

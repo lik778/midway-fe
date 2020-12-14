@@ -2,7 +2,7 @@ export interface CascaderOption {
   value: string | number;
   label: React.ReactNode;
   disabled: boolean;
-  children: CascaderOption[];
+  children?: CascaderOption[];
 }
 
 export interface PageParams {
