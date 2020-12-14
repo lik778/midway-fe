@@ -6,11 +6,8 @@
                 li
                     a(href=item.urlSuffix) #{item.name}
 
-        //-这里跳到/n/新闻列表页，本可以写死，但后端告知最好是获取传的值。另外"查看更多"，产品要求要一直存在所以加了取值判断
-        - const siderMoreLink = (renderData.navigation.filter(x => x.position == "articleListPage"))[0].content
-        if renderData.navigation && siderMoreLink
-            a.news-more-btn(href=siderMoreLink) 查看更多
-        else
-            a.news-more-btn(href="#") 查看更多
+        - const siderMoreArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
+        if renderData.navigation && siderMoreArr && siderMoreArr.length>0
+            a.news-more-btn(href=siderMoreArr[0].content) 查看更多
     else
         a 暂时没有数据哦

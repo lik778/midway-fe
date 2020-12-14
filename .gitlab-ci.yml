@@ -22,6 +22,11 @@ release-dev:
     - dev@fenlei/midway-fe
   tags:
     - k8s-dev-build
+  cache:
+    key: qa
+    paths:
+      - node_modules/
+      - app/public/ # 缓存静态资源，将历史版本装进镜像包    
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
@@ -45,7 +50,7 @@ release-test:
     - k8s-dev-build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-    - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
+    - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
     - docker push $MIDWAY_FE
 
 test-deploy:

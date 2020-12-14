@@ -6,11 +6,13 @@ html
         title #{ renderData.meta.title || "" }
         meta(name='keywords' content=renderData.meta.keywords || "")
         meta(name='description' content=renderData.meta.description || "")
+        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
         block styles
     body
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
+        //-预警：由于后端链接可能会更改，shopName不一定会前置，分页链接必须要拼接，可能会导致分页那里出错到时候改。
         - const { shopName } = renderData
         block header
             include ./components/header.pug

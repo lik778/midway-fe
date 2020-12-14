@@ -1,4 +1,4 @@
-import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as dayjs from 'dayjs';
 
@@ -16,16 +16,21 @@ export class SitemapService {
       'x-api-secret': '674018ec0efcc4dce79759cdf03777df'
     }
   }
-  getSitemapByDate(date: string): string {
+
+  getSitemapByDate(date: string): Promise<any> {
     if (dayjs(date).format('YYYYMMDD') === date) {
-      // 这边还要继续写
-      this.httpService.get(`${this.host}/api/midway/internal/sitemap/shop_${date}.xml`, {
+      return this.httpService.get(`${this.host}/api/midway/internal/sitemap/increment_${date}.xml`, {
         headers: this.setSitemampHeaders()
-      }).toPromise().then(res => { console.log(res) }).catch(err =>  console.log(err))
-      return date;
+      }).toPromise().catch(err => { throw new BadRequestException('请求sitemap错误'); })
     } else {
       throw new HttpException('sitemap时间戳错误', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  getSitemapByShopName(shopId: number): Promise<any> {
+      return this.httpService.get(`${this.host}/api/midway/internal/sitemap/shop_${shopId}.xml`, {
+        headers: this.setSitemampHeaders()
+      }).toPromise().catch(err => { throw new BadRequestException('请求单店铺sitemap错误'); })
   }
 
 }
