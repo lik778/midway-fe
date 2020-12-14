@@ -118,6 +118,11 @@ export default (props: any) => {
       return
     }
 
+    if(domainL< 4){
+      setError('请输入大于4个字符的域名')
+      return
+    }
+
     if(shopOperateStatus) {
       updateShop(oSite)
     }else {
@@ -187,6 +192,10 @@ export default (props: any) => {
             key: name,
             isRequired: false
           })
+        }
+
+        if(domainL>=4) {
+          setError('')
         }
         setOSite({...oSite, [name]:value.replace(/[^a-z0-9]/g,'')})
       break;

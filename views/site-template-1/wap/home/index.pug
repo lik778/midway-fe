@@ -8,6 +8,8 @@ block header
 
 
 block content
+    - const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
+    - const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
     include ../components/shortcuts
     include ../components/introduction
     include ../components/aboutus

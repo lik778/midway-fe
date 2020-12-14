@@ -2,7 +2,7 @@
     - const productList= renderData.productList.result
     .product-title.clearfix
         p 服务内容
-        - const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
+        //-- const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
         if moreProductArr && moreProductArr.length>0
             a(href=moreProductArr[0].content) 更多
                 .right-icon

@@ -32,7 +32,7 @@ const groupConfig = [
     id:'seoT',
     value: '',
     initLen: 0,
-    err: '请输入大于9个字的标题',
+    err: '请输入大于9个字的SEO标题',
     errClass:''
   },
   {
@@ -56,7 +56,7 @@ const groupConfig = [
     id: 'seoD',
     value: '',
     initLen: 0,
-    err:'请输入大于40个字的描述',
+    err:'请输入大于40个字的SEO描述',
     errClass:''
   },
 ]
