@@ -10,6 +10,7 @@ import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
 import QuitFormModal from '@/components/quit-form-modal';
+import { isEmptyObject } from '@/utils';
 
 interface Props {
   cateList: CateItem[];
@@ -40,19 +41,20 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    const isEdit = !isEmptyObject(editData);
     if (!values.price) { values.price = '面议' }
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
     let resData: any;
-    if (editData) {
+    if (isEdit) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createProductApi(Number(params.id), values)
     }
     if (resData.success) {
       message.success(resData.message)
-      if (editData) {
+      if (isEdit) {
         updateProductList(resData.data)
       } else {
         addProductList(resData.data)

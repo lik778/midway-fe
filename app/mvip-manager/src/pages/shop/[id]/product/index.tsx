@@ -49,8 +49,8 @@ export default (props: any) => {
             cateList={cateList}
             showGroup={() => setModuleGroupVisible(true)}
             showCreate={() => {
+              setEditProductData({})
               setProductFormVisible(true)
-              setEditProductData('reset')
             }} />
           <ProductList
             total={total}

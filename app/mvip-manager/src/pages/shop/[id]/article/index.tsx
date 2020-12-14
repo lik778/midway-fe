@@ -7,7 +7,7 @@ import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
-import { addKeyForListData } from '@/utils';
+import { addKeyForListData, isEmptyObject } from '@/utils';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType } from '@/enums';
@@ -47,8 +47,8 @@ export default (props: any) => {
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
         showGroup={() => setModuleGroupVisible(true)}
         showCreate={() => {
+          setEditArticleData({})
           setArticleFormVisible(true)
-          setEditArticleData('reset')
         }}  />
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}

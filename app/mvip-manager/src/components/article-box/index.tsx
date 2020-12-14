@@ -11,6 +11,7 @@ import { ContentCateType } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createArticleApi, updateArticleApi } from '@/api/shop';
 import { useParams } from 'umi';
+import { isEmptyObject } from '@/utils';
 
 interface Props {
   cateList: CateItem[];
@@ -40,17 +41,18 @@ export default (props: Props) => {
 
   const sumbit = async (values: any) => {
     let resData: any;
+    const isEdit = !isEmptyObject(editData);
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
-    if (editData) {
+    if (isEdit) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createArticleApi(Number(params.id), values)
     }
     if (resData.success) {
       message.success(resData.message)
-      if (editData) {
+      if (isEdit) {
         updateArticleList(resData.data)
       } else {
         addArticleList(resData.data)
