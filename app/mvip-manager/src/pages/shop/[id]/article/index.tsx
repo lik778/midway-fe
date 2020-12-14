@@ -48,7 +48,7 @@ export default (props: any) => {
         showGroup={() => setModuleGroupVisible(true)}
         showCreate={() => {
           setArticleFormVisible(true)
-          setEditArticleData(null)
+          setEditArticleData('reset')
         }}  />
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
