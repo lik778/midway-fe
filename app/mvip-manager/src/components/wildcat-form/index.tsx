@@ -6,7 +6,7 @@ import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import  Btn  from '@/components/btn';
-import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import { isEmptyObject } from '@/utils';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -31,7 +31,7 @@ const WildcatForm = (props: Props) => {
   useEffect(() => {
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
-    } if (editDataSource == 'reset') {
+    } if (isEmptyObject(editDataSource)) {
       form.resetFields()
     }
   },[editDataSource])
