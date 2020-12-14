@@ -13,7 +13,7 @@ import { ShopStatus } from '@/interfaces/shop';
 const emptyMsg = {
   btn: '新建店铺',
   msg: '暂无店铺',
-  img: "//file.baixing.net/202011/ead8b543db23259dc9838e753f865732.png",
+  img: "&#xe617;",
 }
 
 export default (props: any) => {
