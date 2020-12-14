@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Upload, Modal, message } from 'antd';
+import {Upload, Modal, message, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
 import './index.less';
@@ -80,7 +80,7 @@ export const ImgUpload = (props: Props) => {
       message.error('请上传jpg、jpeg、png格式的图片');
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
-    if (!isLt2M) {
+    if (!isLt2M && isJpgOrPng) {
       message.error('请上传不超过1M的图片');
     }
     return isJpgOrPng && isLt2M;

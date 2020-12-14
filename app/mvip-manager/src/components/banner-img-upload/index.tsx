@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {Upload, Modal, message } from 'antd';
+import {Upload, Modal, message, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
-import './index.less';
 
 const getBase64 = function(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -14,42 +13,34 @@ const getBase64 = function(file: Blob) {
 }
 
 interface Props {
-  url?: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
   maxLength: number;
   disableBtn?: boolean | undefined;
-  onChange(url: string): void;
+  onChange(url: string, status: number): void;
   fileList?:any[];
 }
 export const BannerImgUpload = (props: Props) => {
   const list = props.fileList || []
-  const { text, url, onChange } = props
+  const { onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([])
-  const [imgUrlList, setImgUrlList] = useState<string[]>([])
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
     const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
     return (
-      <div className={cls}>
+      <Button className={cls} disabled={isDisable}>
         <PlusOutlined />
         <div className='upload-img'>{txt}</div>
-      </div>
+      </Button>
     );
   }
 
   useEffect(() => {
     setFileList(list)
   }, [list])
-
-  useEffect(() => {
-    if (url) {
-      setFileList([{ uid: '-1', status: 'done', url, thumbUrl: url }])
-    }
-  }, [url])
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -59,53 +50,50 @@ export const BannerImgUpload = (props: Props) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-
     setPreviewImage(file.url || file.preview)
     setPreviewVisible(true)
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
 
-  const handleChange = async ({file, fileList}) => {
-    if(beforeUpload(file)){
-      setFileList(fileList)
-    }
-
+  const handleChange = async ({file}) => {
     if (file.status === 'done') {
-      console.log('file', file)
-      console.log('fileList', fileList)
       const res = await uploadImgToUpyunHandle(file.originFileObj);
       if(res.code === 200) {
-        setImgUrlList([...imgUrlList, res.url])
-        onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
+        onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
+      }else {
+        message.error(res.message);
       }
     }
   }
 
   const beforeUpload= (file: any) => {
-    if (file.url) {
-      return true;
-    }
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg';
     if (!isJpgOrPng) {
       message.error('请上传jpg、jpeg、png格式的图片');
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
-    if (!isLt2M) {
+    if (!isLt2M && isJpgOrPng) {
       message.error('请上传不超过1M的图片');
     }
     return isJpgOrPng && isLt2M;
   }
 
+  const handleRemove = (file: any) => {
+    onChange(`${file.id}`, 2);
+  }
+
+
   return (
     <div className="img-upload">
       <Upload
+        showUploadList={{showRemoveIcon:true}}
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
         beforeUpload={beforeUpload}
         onChange={handleChange}
         isImageUrl={()=>{return true}}
-        disabled={fileList.length >= props.maxLength}
+        onRemove={handleRemove}
       >
         {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
           : uploadButton()}

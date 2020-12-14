@@ -50,7 +50,7 @@ export default (props: any) => {
             showGroup={() => setModuleGroupVisible(true)}
             showCreate={() => {
               setProductFormVisible(true)
-              setEditProductData(null)
+              setEditProductData('reset')
             }} />
           <ProductList
             total={total}

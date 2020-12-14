@@ -31,3 +31,7 @@ export const checkHasShow = function<T>(list: T[] | null): string {
   if (list.length === 0) return 'hide';
   return 'show';
 }
+
+export const formUnvalid = function(formInstance: any) {
+  return formInstance.getFieldsError().some((x: any) => x.errors.length > 0)
+}
