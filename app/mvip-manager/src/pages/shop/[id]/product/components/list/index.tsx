@@ -46,7 +46,7 @@ export default (props: Props) => {
     { title: '序号', dataIndex: 'key', key: 'key' },
     { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
         return (
-          <div style={{ height: 40, background: `url(${text})`, backgroundSize: 'cover' }}></div>
+          <div style={{ height: 40, background: `url(${text ? text : '\'//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png\''})`, backgroundSize: 'cover' }}></div>
         )
       }},
     { title: '服务名称', dataIndex: 'name', key: 'name' },

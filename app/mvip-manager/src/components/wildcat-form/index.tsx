@@ -50,8 +50,9 @@ const WildcatForm = (props: Props) => {
         onFinish={props.submit} onValuesChange={props.formChange} className={props.className}>
         { props.config && props.config.children.map(item => {
           if (item.type === FormType.Input) {
+            const patternList = item.patternList ? item.patternList : [];
             return (
-                <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+                <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
                   <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
                 </FormItem>
               )
@@ -66,7 +67,7 @@ const WildcatForm = (props: Props) => {
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
-            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} key={item.label} style={{ width: item.width }} rules={[{required: item.required }]}>
               { item.images && item.images.length > 0 &&
                 item.images.map((img) => {
                   const url = getEditData(img.name || '');
@@ -100,7 +101,7 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           }else if (item.type === FormType.Tag) {
             const value = form.getFieldsValue()[item.name || ''];
-            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <TagModule
                 value={value || []}
                  maxLength={item.maxLength || 0}
