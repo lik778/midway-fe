@@ -4,7 +4,7 @@ import './index.less';
 
 export default () => {
   return (
-    <div className="management-loading">
+    <div className="management-common-loading">
       <div className="inner">
         <Spin size="large"/>
         <p>加载中...</p>
