@@ -9,6 +9,7 @@ import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
+import QuitFormModal from '@/components/quit-form-modal';
 
 interface Props {
   cateList: CateItem[];
@@ -24,6 +25,7 @@ export default (props: Props) => {
   const { onClose, visible, editData, cateList, updateCateList, addProductList, updateProductList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
 
@@ -70,7 +72,7 @@ export default (props: Props) => {
           title="新建服务"
           placement={placement}
           closable={true}
-          onClose={onClose}
+          onClose={() => setQuitModalVisible(true)}
           visible={visible}
           key={placement}
           width="700"
@@ -90,6 +92,11 @@ export default (props: Props) => {
            groupUpdate={(item: CateItem) => { console.log(null) }}
            groupCreate={(item: CateItem) => updateCateList(item)}
            onClose={() => setModalVisible(false)} />
+          <QuitFormModal
+            visible={quitModalVisible} onOk={() => {
+            setQuitModalVisible(false)
+            onClose() }}
+            onCancel={() => setQuitModalVisible(false)}/>
     </Drawer>
   );
 }
