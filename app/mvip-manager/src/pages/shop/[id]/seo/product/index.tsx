@@ -36,6 +36,10 @@ export default (props: any) => {
 
   const sumbit = async (values: TdkSaveMeta) => {
     values.position = ShopTDKPosition.PRODUCT
+    if(values?.keywords?.length<3) {
+      message.error('请输入大于三个的关键词')
+      return
+    }
     if(!(values.keywords instanceof Array)) {
       let kw: string = values.keywords
       values.keywords = kw.split(',')
