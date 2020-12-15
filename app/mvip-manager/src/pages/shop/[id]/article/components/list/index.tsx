@@ -10,7 +10,7 @@ interface Props {
   dataSource: any[];
   total: number;
   openEditForm(item: any): void;
-  update(list: any): void;
+  update(list: any, item: any): void;
   onChange(page: number): void;
 }
 
@@ -35,8 +35,9 @@ export default (props: Props) => {
       message.success(res.message);
       // 动态
       const deleteIndex = dataSource.findIndex(x => x.id === actionId)
+      const deleteItem = dataSource[deleteIndex]
       dataSource.splice(deleteIndex, 1)
-      update(dataSource)
+      update(dataSource, deleteItem)
       setVisibleDeleteDialog(false)
     } else {
       message.warning(res.message);
