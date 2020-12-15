@@ -41,6 +41,7 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    values.name = values.name.trim()
     const isEdit = !isEmptyObject(editData);
     if (!values.price) { values.price = '面议' }
     if (typeof values.tags === 'string') {
