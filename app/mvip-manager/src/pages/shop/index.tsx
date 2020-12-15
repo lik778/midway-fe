@@ -229,7 +229,7 @@ export default (props: any) => {
             {
               shopListData.map((shopChild, index) => {
                return (
-                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} index={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
                )
             })}
           </div>
