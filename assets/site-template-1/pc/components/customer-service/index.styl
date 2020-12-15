@@ -4,7 +4,7 @@
 	z-index 3
 	border-radius 4px
 	position fixed
-	bottom 60px
+	bottom 220px
 	right 5px
 	.qq-title >img
 		cursor pointer
@@ -58,6 +58,7 @@
 			color #333
 	.footer
 		height 39px
+		max-width 178px
 		line-height 39px
 		display flex
 		align-items center
@@ -72,6 +73,10 @@
 			float left
 			font-size 14px
 			color #666
+			overflow hidden
+			white-space nowrap
+			text-overflow ellipsis
+
 
 	.qq-title,.customer-tel,.weixin
 		height 27px
@@ -85,7 +90,7 @@
 .customer-hide
 	display none
 	position fixed
-	bottom 60px
+	bottom 220px
 	right 5px
 	z-index 2
 	background #EF6A31

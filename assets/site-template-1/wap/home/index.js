@@ -2,9 +2,11 @@ import './index.styl'
 import Swiper from 'swiper'
 import { menusModule } from '../components/header/index'
 import { aboutModule } from '../components/aboutus/index'
+import { weixinModule } from '../components/contact/index'
 
 aboutModule()
 menusModule()
+weixinModule()
 
 var swiper = new Swiper('.swiper-container', {
   speed:1000,
