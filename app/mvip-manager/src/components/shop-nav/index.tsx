@@ -14,6 +14,7 @@ export default (props: any) => {
   const [modifyList, setModifyList] = useState<ModifyNavItem[]>([]);
   // isLoaded
   const [isLoading, setIsLoading] = useState(true)
+
   // 获取店铺id
   const params: RouteParams = useParams();
   // 店铺列表
@@ -24,7 +25,7 @@ export default (props: any) => {
       render: (node: NavItem) => {
         const name = node.id.toString()
         return(
-          <InputLen value={node.name} onChange={handleInputChange} name={name} maxLength={node.maxLength}/>
+          <InputLen value={node.name} onChange={handleInputChange} name={name} maxLength={node.maxLength} minLength={node.minLength} required={true} isError={node.isError}/>
         )
       }
     },
@@ -73,13 +74,18 @@ export default (props: any) => {
 
   const handleInputChange = (e: any) =>{
     const target = e.target
-    const name = target.name // 这个id以数字来回切换也是够。
+    const name = target.name 
     const value = target.value    
     const navCloneList = navList.concat()
     const modifyCloneList = modifyList.concat()
     navCloneList.map(n=>{
       if(n.id === name) {
         n.name = value
+        if(!value) {
+          n['isError'] = true
+        }else{
+          n['isError'] = false
+        }
       }
     })
 
@@ -92,15 +98,29 @@ export default (props: any) => {
     setModifyList(modifyCloneList)
   }
 
+  const updateNav = async() => {
+    const res = await updateNavApi(Number(params.id), modifyList)
+    if (res?.success) {
+      message.success(res?.message);
+    } else {
+      message.error(res?.message);
+    }
+  }
+
   const onClick = (e: any) => {
-    (async () => {
-      const res = await updateNavApi(Number(params.id), modifyList)
-      if (res?.success) {
-        message.success(res?.message);
-      } else {
-        message.error(res?.message);
+    let isError = false
+    const modifyCloneList = modifyList.concat()
+    modifyCloneList.forEach(m => {
+      if(!m.name){
+        isError = true
       }
-    })()
+    })
+
+    if(isError) {
+      message.error('输入框不能为空')
+      return
+    }
+    updateNav()
   }
   
   useEffect(() => {
@@ -111,6 +131,7 @@ export default (props: any) => {
         res.data.map((r: any, i: number) => {
           res.data[i]['key'] = r.id
           res.data[i]['maxLength'] = 6
+          res.data[i]['minLength'] = 1
           if(r?.position === 'homePage'){
             res.data[i]['isDisabled'] = true
           } else {

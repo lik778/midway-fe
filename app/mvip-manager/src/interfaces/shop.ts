@@ -49,6 +49,8 @@ export interface NavItem{
   name: string;
   position: string;
   maxLength?: number;
+  minLength?: number;
+  isError?: boolean;
 }
 
 export interface ModifyNavItem{
