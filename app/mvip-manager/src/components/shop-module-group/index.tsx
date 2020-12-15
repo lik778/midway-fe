@@ -100,7 +100,7 @@ export default (props: Props) => {
                onCancel={() => setVisibleDeleteDialog(false)}
                onOk={() => deleteGroupItem()}
                visible={visibleDeleteDialog}>
-          <p>删除后，“{deleteItem?.name}”分类下的服务会全部删除，确认删除吗？</p>
+          <p>删除后，“{deleteItem?.name}”分类下的{deleteItem?.num}个{ type === ContentCateType.PRODUCT ?  '服务' : '文章' }会全部删除，确认删除吗？</p>
         </Modal>
     </Drawer>)
 }
