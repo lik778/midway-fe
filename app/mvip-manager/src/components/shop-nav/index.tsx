@@ -143,7 +143,7 @@ export default (props: any) => {
             display: r.display
           })
         })
-        setNavList(res.data)
+        setNavList(res?.data)
         setModifyList(modifyRes)
         setIsLoading(false)
       } else {

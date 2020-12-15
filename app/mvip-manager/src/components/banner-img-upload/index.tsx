@@ -58,10 +58,10 @@ export const BannerImgUpload = (props: Props) => {
   const handleChange = async ({file}) => {
     if (file.status === 'done') {
       const res = await uploadImgToUpyunHandle(file.originFileObj);
-      if(res.code === 200) {
-        onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
+      if(res?.code === 200) {
+        onChange(`${res?.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
       }else {
-        message.error(res.message);
+        message.error(res?.message);
       }
     }
   }

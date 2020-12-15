@@ -12,7 +12,7 @@ block content
 
     - const { totalPage } = renderData.productList
     include ../components/pagination
-    +pagination(totalPage, renderData.currentPage, `/${shopName}/p`)
+    +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
 
 block scripts

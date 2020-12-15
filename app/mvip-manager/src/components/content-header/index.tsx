@@ -1,17 +1,16 @@
-
 import React, {useEffect, useState} from 'react';
-import ShopBasisTab from '@/components/shop-basis-tab';
+import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import { getShopInfoApi } from '@/api/shop';
-import { ShopBasisType } from '@/enums';
+import { ShopModuleType } from '@/enums';
 import { useParams } from 'umi';
 import {message} from "antd"
 import { RouteParams } from '@/interfaces/shop';
-interface basisHeader{
-  type: ShopBasisType;
+interface contentHeader{
+  type: ShopModuleType;
 }
 
-export default (props: basisHeader) => {
+export default (props: contentHeader) => {
   const {type} = props
   const [title, setTitle] = useState('')
   // 获取店铺id
@@ -27,9 +26,9 @@ export default (props: basisHeader) => {
      })()
   }, []);
   return (
-    <div className="basis-header">
+    <div className="content-header">
       <MainTitle title={title}/>
-      <ShopBasisTab type={type}/>
+      <ShopModuleTab type={type}/>
     </div>
   );
 }

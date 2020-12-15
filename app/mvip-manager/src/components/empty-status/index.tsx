@@ -14,8 +14,9 @@ export default (props: {
   const {btn ,msg, img} = props.emptyMsg
   return (
     <div className="empty-msg-box">
-      <span className="empty-font iconfont">{img}</span>
-      <Button type="primary" className="primary-btn" onClick={props.onClick}>+{btn}</Button>
+      <img className="img" src={img}/>
+      <p className="msg">{msg}</p>
+      {btn && <Button type="primary" className="primary-btn" onClick={props.onClick}>+{btn}</Button>}
     </div>
   );
 }

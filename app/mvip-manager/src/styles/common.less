@@ -95,6 +95,12 @@
     width: 120px;
     height: 40px;
   }
+  .ant-form-item-has-error + .ant-form-item{
+    .mvip-primary-btn{
+      top:-55px;
+    }
+  }
+
   .f-img .tip{
     color: #999999;
     font-size:12px;
@@ -113,6 +119,10 @@
     input{
       height: 40px;
     }
+  }
+  .f-middle.ant-form-item-has-error{
+    display: flex;
+    align-items: flex-start;
   }
   .ant-input-textarea-show-count::after{
     position: absolute;
@@ -162,6 +172,9 @@
   .f-textarea{
     .ant-form-horizontal .ant-form-item-control{
       flex:none
+    }
+    .ant-form-item-explain-error{
+      margin-left: 10px;
     }
   }
 }

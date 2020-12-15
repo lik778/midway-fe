@@ -21,7 +21,7 @@ const apiPrefix = '/management/api'
 const bePrefix = '/api/midway/backend/'
 
 request.interceptors.response.use((res: AxiosResponse) => {
-  return Promise.resolve(res.data)
+  return Promise.resolve(res?.data)
   }, (err: AxiosError) => {
   const errorInfo = err.response && err.response.data && err.response.data.message || '出错了'
   // 该报错会触发系统报错，先注释
