@@ -61,7 +61,8 @@ export const QQCustomService = (props: Props) => {
         <p style={styles.p}>（最多添加3个）</p>
       </div>
       <div>
-        <p style={styles.p}>1.QQ客服需到<strong style={styles.s}>“QQ推广”</strong>登录开通后即可使用，并到悬浮框组件中将“QQ交谈开关启用”；</p>
+        <p style={styles.p}>1.QQ客服需到<a href="https://shang.qq.com/v3/index.html" target="_blank" style={styles.s}>
+          “QQ推广”</a>登录开通后即可a使用，并到悬浮框组件中将“QQ交谈开关启用”；</p>
         <p style={styles.p}>2.显示名称只能是中英文字母、汉字、数字和下划线，不得超过10个字符；</p>
         <p style={styles.p}>3.部分手机浏览器可能不支持该功能。</p>
       </div>

@@ -58,15 +58,15 @@ const WildcatForm = (props: Props) => {
       <Form form={form} name={props.config && props.config.name} labelCol={useLabelCol ? { span: 6 } : {}}
         onFinish={props.submit} onValuesChange={props.formChange} className={props.className}>
         { props.config && props.config.children.map(item => {
+          const patternList = item.patternList ? item.patternList : [];
           if (item.type === FormType.Input) {
-            const patternList = item.patternList ? item.patternList : [];
             return (
                 <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
-                  <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
+                  <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled}/>
                 </FormItem>
               )
           } else if (item.type === FormType.Textarea) {
-            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
               <TextArea showCount style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Select) {
