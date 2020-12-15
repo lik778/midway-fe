@@ -20,11 +20,15 @@ export default (props: any) => {
 
   return (
     <div className="shop-box">
+      <div className="shop-icon">
+        <i className="iconfont">&#xe61e;</i>
+        店铺{props.index + 1}
+      </div>
       <div className="s-img" onClick={handleClick}>
         <img src={s?.thumb}/>
         <div className={`s-status ${status}`}>{statusTxt}</div>
       </div>
-      <div className="s-title">
+      <div className="s-title" >
         <h4 onClick={handleClick}>{s?.name}</h4>
         <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
       </div>
