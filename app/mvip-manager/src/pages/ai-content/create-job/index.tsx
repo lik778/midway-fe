@@ -18,6 +18,7 @@ export default (props: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [visiblePanel, setVisiblePanel] = useState<boolean>(false)
   const [counters, setCounters] = useState<any>(defaultCounters)
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false)
 
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
@@ -33,7 +34,20 @@ export default (props: any) => {
     setCounters({ ...counters })
   }
 
-  const delayedQuery = useCallback(debounce((words, name) => { wordsChange(words, name) }, 300), []);
+  // const onPressEnter = (name: string) => {
+  //   const values = form.getFieldsValue()
+  //   const words = form.getFieldValue(name)
+  //   const wordsList = words.split('\n').map((x: string) => x.replace(/\s+/g, ''))
+  //   const dedupWordsList =  Array.from(new Set(wordsList));
+  //   const maxLength = wordsItemConfig[name].max;
+  //   const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
+  //   values[name] = data.join('\n')
+  //   counters[name] = data.length;
+  //   form.setFieldsValue(values)
+  //   setCounters({ ...counters })
+  // }
+
+  const delayedQuery = useCallback(debounce((words, name) => { wordsChange(words, name) }, 500), []);
 
   const clearAll = (name: string) => {
     const values = form.getFieldsValue()
@@ -51,7 +65,9 @@ export default (props: any) => {
         values[k] = (values[k] && values[k].split('\n')) || []
       }
     })
+    setSubmitLoading(true)
     const res = await createAiJobApi(values)
+    setSubmitLoading(false)
     if (res.success) {
       message.success('添加成功')
       history.push(`/ai-content/job-list`);
@@ -108,8 +124,11 @@ export default (props: any) => {
           <Modal
           title="确认提交"
           visible={modalVisible}
-          onOk={submitData}
-          onCancel={() => setModalVisible(false)}>
+          onCancel={() => setModalVisible(false)}
+          footer={<div>
+            <Button onClick={() => setModalVisible(false)}>取消</Button>
+            <Button type="primary" loading={submitLoading} onClick={() =>submitData()}>确认</Button>
+          </div>}>
           <p>提交后不可修改，确认提交吗？</p>
           </Modal>
         </div>
