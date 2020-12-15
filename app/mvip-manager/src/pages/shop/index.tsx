@@ -13,7 +13,7 @@ import { ShopStatus } from '@/interfaces/shop';
 const emptyMsg = {
   btn: '新建店铺',
   msg: '暂无店铺',
-  img: "&#xe617;",
+  img: "//file.baixing.net/202012/c201a04d7d3ac516b3598eb3eb6bd4c1.png",
 }
 
 export default (props: any) => {
@@ -229,7 +229,7 @@ export default (props: any) => {
             {
               shopListData.map((shopChild, index) => {
                return (
-                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} index={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
                )
             })}
           </div>

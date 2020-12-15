@@ -75,7 +75,7 @@ export default (props: any) => {
   const handleInputChange = (e: any) =>{
     const target = e.target
     const name = target.name 
-    const value = target.value    
+    const value = target.value.trim()   
     const navCloneList = navList.concat()
     const modifyCloneList = modifyList.concat()
     navCloneList.map(n=>{
