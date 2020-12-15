@@ -46,10 +46,22 @@ export default (props: any) => {
     getBannerList(type)
   }
 
+  const emptyImgs = () => {
+    if(wapBannerList.length === 0 && pcBannerList.length === 0) {
+      const emptyMsg = {
+        img:'//file.baixing.net/202012/c201a04d7d3ac516b3598eb3eb6bd4c1.png',
+        msg: '暂无图片，建议上传自己的品牌图片'
+      }
+      return <EmptyStatus emptyMsg={emptyMsg}/>
+    }
+  }
+  
   const imgContainer = () =>{
     if(isWapLoading || isPcLoading) {
       return <Loading />
     }else {
+      
+      
       return (
           <div className="c-main">
             <div className="c-pc">
@@ -58,7 +70,7 @@ export default (props: any) => {
             <div className="c-wap">
               <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过1M, 建议上传尺寸375*152'} txt={'WAP端轮播图'} type={DeviceType.WAP} fileList={wapBannerList} onChange={onChange}/>
             </div>
-            {/* <EmptyStatus emptyMsg={img:'&#xe618;'}/> */}
+            {emptyImgs()}
           </div>
       )
     }
