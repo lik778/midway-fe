@@ -41,7 +41,11 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
-    values.name = values.name.trim()
+    values.name = values.name.trim();
+    if(values?.tags?.length < 3) {
+      message.error('请输入大于三个标签')
+      return
+    }
     const isEdit = !isEmptyObject(editData);
     if (!values.price) { values.price = '面议' }
     if (typeof values.tags === 'string') {
