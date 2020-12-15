@@ -21,7 +21,7 @@ block content
 
     include ../components/pagination
     - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
-    +pagination(totalPage, renderData.currentPage, `/${shopName}/n`)
+    +pagination(totalPage, renderData.currentPage, `${renderData.currentPathname}`)
 
     include ../components/footer.pug
     include ../components/customer-service.pug
