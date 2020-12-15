@@ -27,7 +27,7 @@ export default (props: Props) => {
       message.success('上传成功');
       onChange(type)
     }else{
-      message.error(`上传失败:${res.message}`);
+      message.error(`上传失败:${res?.message}`);
     }
   }
 
@@ -39,7 +39,7 @@ export default (props: Props) => {
       message.success('删除成功');
       onChange(type)
     }else{
-      message.error(res.message);
+      message.error(res?.message);
     }
   }
 

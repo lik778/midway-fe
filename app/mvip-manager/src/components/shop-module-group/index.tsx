@@ -52,9 +52,9 @@ export default (props: Props) => {
       cateList.splice(deleteIndex, 1)
       updateCateList([...cateList]);
       setVisibleDeleteDialog(false);
-      message.success(res.message);
+      message.success(res?.message);
     } else {
-      message.warning(res.message);
+      message.warning(res?.message);
     }
   }
   return (
