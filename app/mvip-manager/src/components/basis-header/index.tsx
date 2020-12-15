@@ -1,6 +1,5 @@
 
 import React, {useEffect, useState} from 'react';
-import './index.less';
 import ShopBasisTab from '@/components/shop-basis-tab';
 import MainTitle from '@/components/main-title';
 import { getShopInfoApi } from '@/api/shop';

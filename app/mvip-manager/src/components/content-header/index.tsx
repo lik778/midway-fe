@@ -1,6 +1,4 @@
-
 import React, {useEffect, useState} from 'react';
-import './index.less';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
 import { getShopInfoApi } from '@/api/shop';
@@ -28,9 +26,9 @@ export default (props: contentHeader) => {
      })()
   }, []);
   return (
-    <div className="basis-header">
+    <div className="content-header">
       <MainTitle title={title}/>
-      <ShopBasisTab type={type}/>
+      <ShopModuleTab type={type}/>
     </div>
   );
 }
