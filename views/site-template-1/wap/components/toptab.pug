@@ -1,8 +1,11 @@
 .tab-header
     ul.tab-hidden
-        each item,index in cateList
-            li(class='tab-li')
-                a(href=item.urlSuffix) #{item.name}
+        li
+            a.active(href=cateList[0].urlSuffix) #{cateList[0].name}
+        if cateList && cateList.length>0
+            each item,index in cateList.slice(1)
+                li
+                    a(href=item.urlSuffix) #{item.name}
     //-这里其实应该是判断超过2行显示。
     if  cateList.length >= 7
         .s-open 点击展开
