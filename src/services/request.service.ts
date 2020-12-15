@@ -32,7 +32,7 @@ export class RequestService {
   public get(url: string, params: any, headers?: any): Promise<any> {
       return new Promise((resolve, reject) =>{
         this.httpService.get(url, { params, headers }).toPromise().then((res: AxiosResponse) => {
-          resolve(res.data);
+          resolve(res?.data);
         }).catch((err: AxiosError) =>{
           reject(err)
         }).catch((err: AxiosError) => {

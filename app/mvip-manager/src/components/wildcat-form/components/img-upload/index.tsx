@@ -62,7 +62,7 @@ export const ImgUpload = (props: Props) => {
   const handleChange = async (e: any) => {
     if (e.file.status === 'done') {
       const res = await uploadImgToUpyunHandle(e.file.originFileObj);
-      if(res.code === 200) {
+      if(res?.code === 200) {
         setFileList([e.file])
         onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
       }
