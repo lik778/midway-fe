@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import  CarouselImg from '@/components/carousel-img';
-import ShopBasisTab from '@/components/shop-basis-tab';
+import BasisHeader from '@/components/basis-header';
 import { ShopBasisType, DeviceType } from '@/enums';
 import './index.less'
 import { getBannerListApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
 import Loading from '@/components/loading-status';
-import EmptyStatus from '@/components/empty-status'
+import EmptyStatus from '@/components/empty-status';
 
 export default (props: any) => {
   const [wapBannerList, setWapBannerList] = useState<any[]>([])
@@ -71,7 +71,7 @@ export default (props: any) => {
 
   return (
       <div>
-        <ShopBasisTab type={ShopBasisType.CAROUSEL}/>
+        <BasisHeader type={ShopBasisType.CAROUSEL}/>
         <div className="container">
           {imgContainer()}
         </div>    

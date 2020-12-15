@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ShopBasisTab from '@/components/shop-basis-tab';
+import BasisHeader from '@/components/basis-header';
 import SeoTab from '@/components/seo-tab';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopBasisType, ShopTDKType,ShopTDKPosition } from '@/enums';
@@ -65,22 +65,22 @@ export default (props: any) => {
 
   return (
       <div>
-        <ShopBasisTab type={ShopBasisType.SEO}/>
-       <div className="container">
-         <div className="tdk-box">
-           <h4>
-             分页设置TDK
-           </h4>
-           <div className="t-content">
-              <div className="t-menu">
-                <SeoTab type={ShopTDKType.ARTICLE}/>
+        <BasisHeader type={ShopBasisType.SEO}/>
+        <div className="container">
+          <div className="tdk-box">
+            <h4>
+              分页设置TDK
+            </h4>
+            <div className="t-content">
+                <div className="t-menu">
+                  <SeoTab type={ShopTDKType.ARTICLE}/>
+              </div>
+              <div className="t-form">
+              {formPage()}
+              </div>
             </div>
-            <div className="t-form">
-            {formPage()}
-            </div>
-           </div>
-         </div>
-       </div>
+          </div>
+        </div>
       </div>
     );
 }
