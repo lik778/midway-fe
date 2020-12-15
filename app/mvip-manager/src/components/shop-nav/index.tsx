@@ -25,7 +25,7 @@ export default (props: any) => {
       render: (node: NavItem) => {
         const name = node.id.toString()
         return(
-          <InputLen value={node.name} onChange={handleInputChange} name={name} maxLength={node.maxLength} minLength={node.minLength} required={true} isError={node.isError}/>
+          <InputLen value={node.name} onChange={handleInputChange} name={name} maxLength={node.maxLength} minLength={node.minLength} required={true} isError={node.isError} showCount={true}/>
         )
       }
     },

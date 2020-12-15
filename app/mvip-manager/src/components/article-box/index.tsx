@@ -41,10 +41,6 @@ export default (props: Props) => {
 
   const sumbit = async (values: any) => {
     values.name = values.name.trim()
-    if(values?.tags?.length < 3) {
-      message.error('请输入大于三个标签')
-      return
-    }
     let resData: any;
     const isEdit = !isEmptyObject(editData);
     if (typeof values.tags === 'string') {
