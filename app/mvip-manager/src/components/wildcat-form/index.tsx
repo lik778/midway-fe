@@ -76,19 +76,38 @@ const WildcatForm = (props: Props) => {
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
-            return (<FormItem className={item.className} label={item.label} labelCol={{ span: 3 }} key={item.label} style={{ width: item.width }} rules={[{required: item.required }]}>
-              { item.images && item.images.length > 0 &&
-                item.images.map((img) => {
+            if (item.images && item.images.length === 1) {
+              return (<FormItem className={item.className} key={item.label} >
+                {
+                  item.images.map((img) => {
                   const url = getEditData(img.name || '');
-                  return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                    <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
-                     onChange={(newValue) => onChange(newValue, item.name || '')}/>
-                  </FormItem>
+                  return (<FormItem name={img.name} key={img.name}
+                                    style={{ width: item.width }} labelCol={{ span: 3 }}
+                                    label={item.label} rules={[{required: item.required, message: `请上传${item.label}` }]}>
+                      <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
+                                 onChange={(newValue) => onChange(newValue, item.name || '')}/>
+                    </FormItem>
                   )
-                })
-              }
-              <FormItem><p className="tip">{item.tip}</p></FormItem>
-            </FormItem>)
+                  })
+                }
+                <FormItem style={{ width: item.width, marginLeft: 83 }}><p className="tip">{item.tip}</p></FormItem>
+              </FormItem>)
+            } else if (item.images && item.images.length > 1) {
+              return (<FormItem className={item.className} key={item.label}
+                  style={{ width: item.width }} labelCol={{ span: 3 }} label={item.label}>
+                {
+                  item.images.map((img) => {
+                    const url = getEditData(img.name || '');
+                    return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
+                        <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
+                           onChange={(newValue) => onChange(newValue, item.name || '')}/>
+                      </FormItem>
+                    )
+                  })
+                }
+                <FormItem><p className="tip">{item.tip}</p></FormItem>
+              </FormItem>)
+            }
           } else if (item.type === FormType.AreaSelect) {
             const value = getEditData(item.name || '');
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
