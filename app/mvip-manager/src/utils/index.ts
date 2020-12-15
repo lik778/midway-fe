@@ -35,3 +35,7 @@ export const checkHasShow = function<T>(list: T[] | null): string {
 export const formUnvalid = function(formInstance: any) {
   return formInstance.getFieldsError().some((x: any) => x.errors.length > 0)
 }
+
+export const isEmptyObject = (obj: any): boolean =>  {
+  return JSON.stringify(obj) === '{}';
+}

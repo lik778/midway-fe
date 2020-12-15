@@ -19,11 +19,11 @@ export default (props: any) => {
     })
   }
 
-  const formatValue = (data: string[] | any): string[] => {
-    if (!data) return [];
-    if (Array.isArray(data)) return data;
-    return Object.keys(data).map((k: string) => k)
-  }
+  // const formatValue = (data: string[] | any): string[] => {
+  //   if (!data) return [];
+  //   if (Array.isArray(data)) return data;
+  //   return Object.keys(data).map((k: string) => k)
+  // }
 
   const getAreasInfo = async (areaId: string) => {
       const res = await getAreasApi(areaId);
@@ -38,12 +38,14 @@ export default (props: any) => {
 
   useEffect(() => {
     if (initialValues) {
-      setSelectValue(formatValue(initialValues))
+      setSelectValue(Object.keys(initialValues).map((k: string) => initialValues[k]))
     }
   }, [initialValues])
 
-  const onSelectChange = (list: any) => {
-    onChange(list)
+  const onSelectChange = (list: any, selectedOptions: any) => {
+    const map: any = {}
+    selectedOptions.forEach((s: any) => map[s.value] = s.label)
+    onChange(map)
     setSelectValue(list)
   }
 

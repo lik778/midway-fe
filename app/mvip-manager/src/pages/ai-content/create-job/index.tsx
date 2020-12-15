@@ -38,7 +38,9 @@ export default (props: any) => {
   const clearAll = (name: string) => {
     const values = form.getFieldsValue()
     values[name] = ''
+    counters[name] = 0
     form.setFieldsValue(values);
+    setCounters({ ...counters })
   }
 
   const submitData = async () => {
