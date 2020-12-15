@@ -36,8 +36,9 @@ export interface UserEnterpriseInfo {
   contactMobile: string;
   contactName: string;
   promoteImg: string;
-  qqMap: any
-  wechat: string
+  qqMap: any;
+  wechat: string;
+  companyNameLock: boolean;
 }
 
 export interface QQItem {
