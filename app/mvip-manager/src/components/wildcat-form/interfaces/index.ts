@@ -43,6 +43,7 @@ export interface FormItem {
   minNum?: number,
   images?: ImagesItem[],// 图片多种情况
   disabled?: boolean;
+  showCount?:boolean;
 }
 
 export interface ImagesItem {
