@@ -280,7 +280,7 @@ export default (props: any) => {
                maskClosable={false}
                onCancel={() => setEditVisible(false)}
                onOk={() => history.push('/company-info/base')}
-               visible={editVisible}>
+               visible={true}>
           <p>您的企业资料还未填写，请完善您的企业资料</p>
         </Modal>
         <div className="container">

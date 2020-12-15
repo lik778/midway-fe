@@ -51,7 +51,7 @@ export const QQCustomService = (props: Props) => {
         { list && list.length > 0 && list.map((item, i) => {
           return (
             <div key={i} style={{ width: 465, marginBottom: 16 }}>
-              <Input maxLength={10} onChange={(e) => onInputChange(e, i, 'name')} value={item.name} style={{...styles.formItem, marginRight: 16}} placeholder="例客服张三"/>
+              <Input maxLength={4} onChange={(e) => onInputChange(e, i, 'name')} value={item.name} style={{...styles.formItem, marginRight: 16}} placeholder="例客服张三"/>
               <Input maxLength={10} onChange={(e) => onInputChange(e, i, 'qq')} value={item.qq} style={styles.formItem} placeholder="请输入qq号" />
               <span style={styles.delete} onClick={() => deleteAction(i)}>删除</span>
             </div>
