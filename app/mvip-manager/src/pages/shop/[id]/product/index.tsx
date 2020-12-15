@@ -49,15 +49,15 @@ export default (props: any) => {
             cateList={cateList}
             showGroup={() => setModuleGroupVisible(true)}
             showCreate={() => {
+              setEditProductData({})
               setProductFormVisible(true)
-              setEditProductData('reset')
             }} />
           <ProductList
             total={total}
             dataSource={productList}
             openEditForm={(item) => {
+              setEditProductData({...item});
               setProductFormVisible(true);
-              setEditProductData(item);
             }}
             update={(list) => {
               setProductList(addKeyForListData(list) || [])
