@@ -33,7 +33,7 @@ export interface FormItem {
   defaultValue?: any; // 默认值
   validator?: any; // 校验
   options?: OptionItem[];
-  maxLength?: number,
+  maxLength?: number
   minLength?: number,
   inputWidth?: number,
   tip?: string, // 文案说明,

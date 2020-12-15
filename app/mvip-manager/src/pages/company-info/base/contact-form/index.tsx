@@ -19,6 +19,7 @@ const ContactForm = (props: Props) => {
   const [config, setConfig] = useState<FormConfig>(contactForm);
   const [formData, setFormData] = useState<any>(null);
   const [formInstance, setFormInstance] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const formChange = (changeValue: any, allValues: any) => {
     setFormData(allValues);
   }
@@ -33,7 +34,9 @@ const ContactForm = (props: Props) => {
     }
     const info = Object.assign(editDataSource, formData)
     info.qqMap = qqMap
+    setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
+    setLoading(false)
     if (res.success) {
        message.success('更新联系方式成功')
     } else {
@@ -55,7 +58,7 @@ const ContactForm = (props: Props) => {
       <Form.Item label="QQ客服">
         <QQCustomService editDataSource={editDataSource} onChange={(qqList) => setQQList(qqList)}/>
         <div style={{ marginTop: 32 }}>
-          <Button type="primary" size="large" onClick={saveInfo}>保存</Button>
+          <Button loading={loading} type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
         </div>
       </Form.Item>
