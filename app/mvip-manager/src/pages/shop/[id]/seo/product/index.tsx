@@ -21,7 +21,7 @@ export default (props: any) => {
       position: ShopTDKPosition.PRODUCT
     })
     if(res?.success) {
-      const tkd = res.data.tkd
+      const tkd = res?.data?.tkd
       setEditData(tkd)
       setLoading(false)
     }

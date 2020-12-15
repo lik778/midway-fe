@@ -27,7 +27,7 @@ export default (props: any) => {
 
   const getAreasInfo = async (areaId: string) => {
       const res = await getAreasApi(areaId);
-      if (res.success) {
+      if (res?.success) {
           setAreas(formatAreas(res.data, false, 1))
       }
   }
