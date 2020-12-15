@@ -54,7 +54,7 @@ export default (props: any) => {
     const res = await createAiJobApi(values)
     if (res.success) {
       message.success('添加成功')
-      history.push(`/shop/ai-content/job-list`);
+      history.push(`/ai-content/job-list`);
     } else {
       message.error(res.message)
     }

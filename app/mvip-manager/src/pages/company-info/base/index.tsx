@@ -16,6 +16,7 @@ const { Step } = Steps
 export default (props: any) => {
   const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
   const [formInstance, setFormInstance] = useState<any>(null);
   const [config, setConfig] = useState<FormConfig>(baseInfoForm);
   const steps = [ '基础信息', '联系方式']
@@ -25,6 +26,13 @@ export default (props: any) => {
       const res = await getEnterpriseForShopApi()
       if (res.success) {
         setEnterpriseInfo(res.data)
+        const { companyNameLock } = res.data
+        if (companyNameLock) {
+          // 不可修改公司名
+          const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
+          companyFiled.disabled = true
+          setConfig({...config})
+        }
       }
     })()
   },[])
@@ -36,10 +44,12 @@ export default (props: any) => {
     if (!Array.isArray(values.area)) {
       values.area = Object.keys(values.area).map(k => k)
     }
+    setLoading(true)
     const res = await saveEnterpriseForShopApi(values)
+    setLoading(false)
     if (res.success) {
       message.success('修改基础资料成功')
-      setEnterpriseInfo(Object.assign(enterpriseInfo, formInstance.getFieldsValue()))
+      setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
       next()
     } else {
       message.error(res.message)
@@ -70,7 +80,8 @@ export default (props: any) => {
                editDataSource={enterpriseInfo} config={config}/>
           <Row className="save-base-info-box">
             <Col span={3}></Col>
-            <Col><Button type="primary" size="large" onClick={() => nextStep()}>保存并下一步</Button></Col>
+            <Col><Button loading={loading}
+                type="primary" size="large" onClick={() => nextStep()}>保存并下一步</Button></Col>
           </Row>
         </div> }
         { currentStep == 1 && <ContactForm back={prev} editDataSource={enterpriseInfo}/>}

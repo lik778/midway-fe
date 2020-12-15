@@ -94,6 +94,7 @@ export const ImgUpload = (props: Props) => {
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
+          isImageUrl={(file) => { return true }}
           disabled={ fileList.length > (props.maxLength || 0)}
         >
         { fileList.length === 0 && uploadButton() }
