@@ -26,6 +26,13 @@ export default (props: any) => {
       const res = await getEnterpriseForShopApi()
       if (res.success) {
         setEnterpriseInfo(res.data)
+        const { companyNameLock } = res.data
+        if (companyNameLock) {
+          // 不可修改公司名
+          const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
+          companyFiled.disabled = true
+          setConfig({...config})
+        }
       }
     })()
   },[])

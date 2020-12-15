@@ -62,7 +62,7 @@ const WildcatForm = (props: Props) => {
           if (item.type === FormType.Input) {
             return (
                 <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
-                  <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
+                  <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled}/>
                 </FormItem>
               )
           } else if (item.type === FormType.Textarea) {
