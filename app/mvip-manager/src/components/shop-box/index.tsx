@@ -24,8 +24,8 @@ export default (props: any) => {
         <img src={s?.thumb}/>
         <div className={`s-status ${status}`}>{statusTxt}</div>
       </div>
-      <div className="s-title" onClick={handleClick}>
-        <h4>{s?.name}</h4>
+      <div className="s-title">
+        <h4 onClick={handleClick}>{s?.name}</h4>
         <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
       </div>
       <div className="s-btn">
