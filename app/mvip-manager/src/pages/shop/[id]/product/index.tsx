@@ -1,7 +1,7 @@
 import React,  { useState, useEffect } from 'react';
 import { message } from 'antd';
 import { useParams } from "umi";
-import ShopModuleTab from '@/components/shop-module-tab';
+import ContentHeader from '@/components/content-header';
 import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ProductBox from '@/components/product-box';
@@ -41,8 +41,7 @@ export default (props: any) => {
 
   return (
     <div>
-      <MainTitle title="百姓网店铺"/>
-      <ShopModuleTab type={ShopModuleType.PRODUCT}/>
+      <ContentHeader type={ShopModuleType.PRODUCT}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}

@@ -40,6 +40,7 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    values.name = values.name.trim()
     let resData: any;
     const isEdit = !isEmptyObject(editData);
     if (typeof values.tags === 'string') {
