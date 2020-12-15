@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ShopBasisTab from '@/components/shop-basis-tab';
+import BasisHeader from '@/components/basis-header';
 import SeoTab from '@/components/seo-tab';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopBasisType, ShopTDKType, ShopTDKPosition } from '@/enums';
@@ -65,7 +65,7 @@ export default (props: any) => {
 
   return (
       <div>
-        <ShopBasisTab type={ShopBasisType.SEO}/>
+        <BasisHeader type={ShopBasisType.SEO}/>
        <div className="container">
          <div className="tdk-box">
            <h4>
