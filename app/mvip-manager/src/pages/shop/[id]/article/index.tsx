@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
-import ShopModuleTab from '@/components/shop-module-tab';
+import ContentHeader from '@/components/content-header';
 import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
@@ -39,8 +39,7 @@ export default (props: any) => {
   }, [page, contentCateId])
 
   return (<div>
-    <MainTitle title="百姓网店铺"/>
-    <ShopModuleTab type={ShopModuleType.ARTICLE}/>
+    <ContentHeader type={ShopModuleType.ARTICLE}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
