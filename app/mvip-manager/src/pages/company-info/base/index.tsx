@@ -39,7 +39,7 @@ export default (props: any) => {
     const res = await saveEnterpriseForShopApi(values)
     if (res.success) {
       message.success('修改基础资料成功')
-      setEnterpriseInfo(Object.assign(enterpriseInfo, values))
+      setEnterpriseInfo(Object.assign(enterpriseInfo, formInstance.getFieldsValue()))
       next()
     } else {
       message.error(res.message)
@@ -65,7 +65,7 @@ export default (props: any) => {
       <div className="container">
         { currentStep == 0 &&
         <div>
-          <WildcatForm onInit={(form) => setFormInstance(form)}
+          <WildcatForm  onInit={(form) => setFormInstance(form)}
                useLabelCol={true}
                editDataSource={enterpriseInfo} config={config}/>
           <Row className="save-base-info-box">
