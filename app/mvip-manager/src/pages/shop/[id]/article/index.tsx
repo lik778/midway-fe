@@ -7,7 +7,7 @@ import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
-import { addKeyForListData, isEmptyObject } from '@/utils';
+import { addKeyForListData } from '@/utils';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType } from '@/enums';
@@ -72,7 +72,11 @@ export default (props: any) => {
         }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
-        addArticleList={(item) => setArticleList(addKeyForListData([item, ...articleList])) }
+        addArticleList={(item) => {
+          const addList = [item, ...articleList]
+          setArticleList(addKeyForListData(addList))
+          setTotal(addList.length)
+        }}
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)
           articleList.splice(editIndex, 1, item)

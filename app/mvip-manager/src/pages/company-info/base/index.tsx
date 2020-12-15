@@ -49,7 +49,7 @@ export default (props: any) => {
     setLoading(false)
     if (res.success) {
       message.success('修改基础资料成功')
-      setEnterpriseInfo(Object.assign(enterpriseInfo, formInstance.getFieldsValue()))
+      setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
       next()
     } else {
       message.error(res.message)
