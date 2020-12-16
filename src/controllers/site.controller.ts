@@ -10,6 +10,10 @@ export class SiteController {
   @Get('/')
   public async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
       const shopName = this.midwayApiService.getShopName(params.shopName)
+      if (!/\/$/.test(req.path)) {
+        res.redirect(`/${shopName}/`)
+        return
+      }
       const templateUrl = `site-template-1/${device}/home/index`
       const { data } = await this.midwayApiService.getHomePageData(shopName, device);
       return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName }, isHome: true });
