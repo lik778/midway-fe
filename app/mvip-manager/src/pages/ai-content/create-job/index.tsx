@@ -30,22 +30,9 @@ export default (props: any) => {
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
     values[name] = data.join('\n')
     form.setFieldsValue(values)
-    counters[name] = data.length;
+    counters[name] = data.filter(x => x !== '').length;
     setCounters({ ...counters })
   }
-
-  // const onPressEnter = (name: string) => {
-  //   const values = form.getFieldsValue()
-  //   const words = form.getFieldValue(name)
-  //   const wordsList = words.split('\n').map((x: string) => x.replace(/\s+/g, ''))
-  //   const dedupWordsList =  Array.from(new Set(wordsList));
-  //   const maxLength = wordsItemConfig[name].max;
-  //   const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
-  //   values[name] = data.join('\n')
-  //   counters[name] = data.length;
-  //   form.setFieldsValue(values)
-  //   setCounters({ ...counters })
-  // }
 
   const delayedQuery = useCallback(debounce((words, name) => { wordsChange(words, name) }, 500), []);
 
