@@ -14,12 +14,12 @@ export const tabModule = function(){
 			$(".s-open").show()
 			$(".s-off").hide()
 		})
-
-		var currentHref=window.location.pathname;
+		//wapd端顶部的tab导航，与当前链接匹配时高亮
+		const windowPath=window.location.pathname;
 		$(".tab-header a").each((index,tab) => {
 			const h = $(tab).attr('href')
-			if(h.indexOf(currentHref)> -1){
-				$(tab).addClass('active').parent().siblings().find('a').removeClass('active')
+			if(h.indexOf(windowPath)> -1){
+				$(tab).addClass('tab-active').parent().siblings().find('a').removeClass('active')
 			}
 		})
 	})
