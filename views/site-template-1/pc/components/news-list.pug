@@ -1,0 +1,23 @@
+.news-list
+    - const newsList= renderData.articleList.result
+    //-这里要判断result：null的问题
+    if newsList && newsList.length >0
+        ul.item
+            //-默认最多展示20条
+            each item in newsList.length>=20 ? newsList.slice(0,20) : newsList
+                li
+                    a(href=item.urlSuffix target="_blank")
+                        .sanjiao-icon
+                        p #{item.name}
+                        .news-createtime
+                            | #{ dateFormat(item.modifiedTime) }
+    else
+        p 当前页面暂无内容，敬请期待...
+
+
+//-block append scripts
+//-    script.
+//-        function time(time = +new Date()) {
+//-            var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
+//-            return date.toJSON().substr(0, 19).replace('T', ' ');
+//-        }

@@ -1,0 +1,21 @@
+.news
+    .news-title.clearfix
+        p 新闻资讯
+        //-- const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
+        if moreNewsArr && moreNewsArr.length>0
+            a(href=moreNewsArr[0].content) 更多
+                .right-icon
+
+    .news-list
+        //-首页默认最多展示10条
+        - const newsList= renderData.articleList.result.slice(0,10)
+        if newsList && newsList.length >0
+            ul.item
+                each item in newsList
+                    li
+                        a(href=item.urlSuffix)
+                            p #{item.name}
+                            .news-createtime
+                                | #{ dateFormat(item.modifiedTime) }
+        else
+            p(style="min-height:150px") 暂时还没有数据哦

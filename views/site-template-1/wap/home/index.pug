@@ -1,0 +1,20 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-1-home-wap.css")
+
+block header
+    include ../components/header
+    include ../components/swiper
+
+
+block content
+    - const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
+    - const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
+    include ../components/shortcuts
+    include ../components/introduction
+    include ../components/aboutus
+    include ../components/home-product-list
+    include ../components/home-news-list
+
+block scripts
+    :combine(fileName="site-template-1-home-wap.js")

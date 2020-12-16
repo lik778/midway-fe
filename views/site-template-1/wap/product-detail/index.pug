@@ -1,0 +1,13 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-1-product-detail-wap.css")
+
+block header
+    include ../components/header
+
+block content
+    - const cateList = renderData.productCateList
+    include ../components/product-detail
+
+block scripts
+    :combine(fileName="site-template-1-product-detail-wap.js")

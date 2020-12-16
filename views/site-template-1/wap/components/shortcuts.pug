@@ -1,0 +1,11 @@
+.shortcuts
+    if moreProductArr && moreProductArr.length>0
+        a.service-btn(href=moreProductArr[0].content)
+            img(src="//file.baixing.net/202011/bf1af8bd99271d67bcb7d6186daede6e.png", alt="")
+            span #{ moreProductArr[0].name }
+            if moreNewsArr && moreNewsArr.length>0
+                .topLine
+    if moreNewsArr && moreNewsArr.length>0
+        a.news-btn(href=moreNewsArr[0].content)
+            img(src="//file.baixing.net/202011/a15dba7c80bed37b8c00939aad742576.png", alt="")
+            span #{ moreNewsArr[0].name }

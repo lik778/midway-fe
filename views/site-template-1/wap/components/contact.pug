@@ -1,0 +1,17 @@
+.contact-box
+    .sms-box
+        a(href="sms:" + phone.content)
+            img.icon(src="http://file.baixing.net/202011/c51a85711ff66afd018933dc40f327d0.png")
+            span 短信
+        .line
+    .wechat-box
+        //-这里有Bug,没有微信号，及除QQ浏览器外，其余唤不起微信#{weChat.content}
+        img.icon(src="//file.baixing.net/202011/1169b4da5402928ab52fa35fc0cfa925.png")
+        span 微信
+        .line
+    .phone-box
+        a(href="tel:" + phone.content )
+            img.tel-icon(src="http://file.baixing.net/202011/fe2ad24adc586625082cf7bd202a922e.png")
+            .info
+                p 拨打电话
+                p #{ phone.content }

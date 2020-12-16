@@ -1,0 +1,30 @@
+extends ../layout
+block styles
+    :combine(fileName="site-template-1-news-child-pc.css")
+
+block content
+    include ../components/breadcrumbs.pug
+
+    .container.clearfix
+        .main
+            include ../components/main-title.pug
+            include ../components/news-list.pug
+
+        .side-bar
+            include ../components/sidebar/sidebar-title.pug
+            +sidebar-title('文章分类')
+            - const cateList = renderData.articleCateList
+            include ../components/sidebar/category-item.pug
+
+            +sidebar-title('联系我们')
+            include ../components/sidebar/contact.pug
+
+    include ../components/pagination
+    - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
+    +pagination(totalPage, currentPage, `${currentPathname}`)
+
+    include ../components/footer.pug
+    include ../components/customer-service.pug
+
+block scripts
+    :combine(fileName="site-template-1-news-child-pc.js")

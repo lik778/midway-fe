@@ -1,0 +1,14 @@
+extends ../layout.pug
+
+block styles
+    :combine(fileName="site-template-1-news-detail-wap.css")
+
+block header
+    include ../components/header
+
+block content
+    - const cateList = renderData.articleCateList
+    include ../components/news-detail.pug
+
+block scripts
+    :combine(fileName="site-template-1-news-detail-wap.js")

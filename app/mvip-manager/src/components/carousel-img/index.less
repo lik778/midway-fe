@@ -1,0 +1,68 @@
+.all-img{
+  display: flex;
+  .title{
+    font-size: 14px;
+  }
+  .title::before{
+    content: '*';
+    color:#F1492C;
+  }
+  .img-list{
+    position: relative;
+    .tip{
+      font-size: 12px;
+      color:#999999;
+      position: absolute;
+      width: 533px;
+      top:40px;
+      left:10px;
+    }
+    .img-upload {
+      margin-left:7px;
+      margin-top: 55px;
+      .ant-upload-list{
+        position: relative;
+        margin-top:16px;
+      }
+      .ant-upload-list-picture-card-container{
+        display: block;
+        margin-bottom: 16px;
+      }
+      .ant-upload.ant-upload-select-picture-card{
+          position: absolute;
+          top:-80px;
+          width: auto;
+          height: auto;
+          background: #ffffff;
+          border:none;
+          .ant-upload{
+            .upload-btn{
+              border: 1px solid #096DD9;
+              width: 120px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              color:#096dd9;
+              font-size:14px;
+              &.disabled{
+                border: 1px solid #D8D8D8;
+                color:#D8D8D8;
+              }
+              .anticon{
+                margin: -1px 0px 0px 10px;
+              }
+              .upload-img{
+                line-height: 40px;
+              }
+            }
+          }
+      }
+      .ant-upload-list-picture-card-container{
+        width: 533px;
+        height: 100px;
+      }
+    }
+    
+  }
+}
+

@@ -1,0 +1,85 @@
+image: docker
+
+# before_script:
+#   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+
+variables:
+  REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
+  MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
+
+stages:
+  - release-dev
+  - dev-deploy
+  - release-test
+  - test-deploy
+  - release
+  - prod-deploy
+
+
+release-dev:
+  stage: release-dev
+  only:
+    - dev@fenlei/midway-fe
+  tags:
+    - k8s-dev-build
+  cache:
+    key: qa
+    paths:
+      - node_modules/
+      - app/public/ # 缓存静态资源，将历史版本装进镜像包    
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
+    - docker push $MIDWAY_FE
+
+dev-deploy:
+  stage: dev-deploy
+  when: manual
+  only:
+    - dev@fenlei/midway-fe
+  tags:
+    - aliyun-k8s-dev
+  script:
+    - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
+
+release-test:
+  stage: release-test
+  only:
+    - test@fenlei/midway-fe
+  tags:
+    - k8s-dev-build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
+    - docker push $MIDWAY_FE
+
+test-deploy:
+  stage: test-deploy
+  only:
+    - test@fenlei/midway-fe
+  tags:
+    - aliyun-k8s-dev
+  script:
+    - kubectl set image -n test-cat deployments --selector app=midway-fe *=$MIDWAY_FE
+
+release:
+  stage: release
+  only:
+    - master@fenlei/midway-fe
+  tags:
+    - k8s-dev-build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - docker build --pull -t $MIDWAY_FE .
+    - docker push $MIDWAY_FE
+    - docker rmi $MIDWAY_FE
+
+deploy:
+  stage: prod-deploy
+  when: manual
+  only:
+    - master@fenlei/midway-fe
+  tags:
+    - aliyun-prod-deploy
+  script:
+    - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE

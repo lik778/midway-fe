@@ -1,0 +1,24 @@
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title #{ renderData.meta.title || "" }
+        meta(name='keywords' content=renderData.meta.keywords || "")
+        meta(name='description' content=renderData.meta.description || "")
+        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+        block styles
+    body
+        //-初始化公共数据
+        - const { qq, phone, weChat } = renderData.basic.contact
+        - const { company } = renderData.basic
+        //-预警：由于后端链接可能会更改，shopName不一定会前置，分页链接必须要拼接，可能会导致分页那里出错到时候改。
+        - const { shopName, currentPage, currentPathname } = renderData
+        block header
+            include ./components/header.pug
+        block nav
+            include ./components/nav.pug
+        block content
+
+    block scripts
+

@@ -1,0 +1,25 @@
+.group-list {
+  margin-top: 24px;
+  height: 60vh;
+  margin-bottom: 16px;
+  overflow: auto;
+  & > .group-item {
+    margin-bottom: 16px;
+    border: 1px solid #D8D8D8;
+    overflow: hidden;
+    padding: 13px 16px;
+    & > .name {
+      float: left;
+    }
+    & > .action {
+      float: right;
+      span {
+        cursor: pointer;
+        color: #096DD9;
+        &:first-child {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+}

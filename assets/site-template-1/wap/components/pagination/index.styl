@@ -1,0 +1,85 @@
+.pagination
+    box-sizing border-box
+    display flex
+    text-align center
+    color #999
+    background #fff
+    padding-bottom 310px
+
+    > a,
+    > span
+        flex-grow 1
+        display block
+        margin 5px
+        line-height 16px
+        padding 12px 0
+        text-decoration none
+        position relative
+    .select-change-container
+        position relative
+        select
+            position absolute
+            width 100%
+            opacity 0
+            top 0
+            left 0
+            height 40px
+            appearance none
+            text-indent 45px
+            cursor pointer
+        .select-page-num
+            display block
+            //三角符号
+            &::after
+                content ''
+                position absolute
+                top 50%
+                right 10px
+                margin-top -2px
+                border 5px solid transparent
+                border-top-color #999
+
+    .prev-page
+        color #999
+        &::after
+            position absolute
+            right 0
+            content ""
+            height 14px
+            line-height 14px
+            border-right 1px solid #e6e6e6
+
+    .next-page
+        color #999
+        &::before
+            position absolute
+            left  0
+            content ""
+            height 14px
+            line-height 14px
+            border-right 1px solid #e6e6e6
+
+    .disabled
+        color #999
+
+    .next
+        display block
+        text-align center
+
+    .loading
+        display block
+        text-align center
+        background none
+        border none
+
+    .loading-icon
+        position relative
+        top 2px
+        right 5px
+        display inline-block
+        padding 0
+        margin 0
+        width 16px
+        height 16px
+        background url(//s.baixing.net/img/style/loading.gif) center center no-repeat
+        background-size 16px 16px

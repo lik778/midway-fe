@@ -1,0 +1,7 @@
+//-侧边栏分类列表,后端已限制10个，列表页全不限制
+.category-list
+	if cateList && cateList.length>0
+		each item in cateList
+			a.category-btn(href=item.urlSuffix)
+				img(src="//file.baixing.net/202011/662cdaca84672d121a95e259a2a323c5.png", alt="")
+				span #{ item.name }
