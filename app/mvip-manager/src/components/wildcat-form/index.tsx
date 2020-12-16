@@ -5,6 +5,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
+import InputLen from '@/components/input-len';
 import  Btn  from '@/components/btn';
 import { isEmptyObject } from '@/utils';
 
@@ -62,7 +63,8 @@ const WildcatForm = (props: Props) => {
           if (item.type === FormType.Input) {
             return (
                 <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
-                  <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled}/>
+                  <InputLen width={item.inputWidth} placeholder={item.placeholder}  maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount}/>
+                  {/* <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled}/> */}
                 </FormItem>
               )
           } else if (item.type === FormType.Textarea) {
@@ -129,7 +131,8 @@ const WildcatForm = (props: Props) => {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <TagModule
                 value={value || []}
-                 maxLength={item.maxLength || 0}
+                 maxLength={item.maxLength || 1}
+                 minLength={item.minLength || 1}
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
             </FormItem>)
