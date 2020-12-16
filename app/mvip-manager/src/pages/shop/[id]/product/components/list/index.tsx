@@ -47,7 +47,9 @@ export default (props: Props) => {
     { title: '序号', dataIndex: 'key', key: 'key' },
     { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
         return (
-          <div style={{ height: 40, backgroundImage: `url(${text ? text : '\'//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png\''})`, backgroundSize: 'cover' }}></div>
+          <div style={{ width: 60, height: 40, backgroundColor: '#f0f2f5'}}>
+            <img style={{ width: '100%' }}  height={40} src={`${text ? text : '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}`} alt="" />
+          </div>
         )
       }},
     { title: '服务名称', dataIndex: 'name', key: 'name' },

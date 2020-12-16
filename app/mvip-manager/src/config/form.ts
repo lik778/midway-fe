@@ -15,6 +15,7 @@ export const baseInfoForm: FormConfig = {
     { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
       required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' }
   ],
+  buttonConfig: { text: '保存并下一步', size: 'large', className: 'mvip-btn' }
 }
 
 // 联系面表单
