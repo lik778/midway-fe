@@ -19,7 +19,9 @@ export const tabModule = function(){
 		$(".tab-header a").each((index,tab) => {
 			const h = $(tab).attr('href')
 			if(h.indexOf(windowPath)> -1){
-				$(tab).addClass('tab-active').parent().siblings().find('a').removeClass('active')
+				$(tab).addClass('tab-active')
+				//如果是同一页面其他元素也有该类，则加这个。现在每点击一次会跳转新页面，所以下面用不上了
+				//$(tab).parent().siblings().find('a').removeClass('tab-active')
 			}
 		})
 	})
