@@ -18,7 +18,7 @@ export default (props: contentHeader) => {
   const [paramId, setParamId] = useState(Number(params.id))
   useEffect(() => {
     (async () => {
-      const res =  await getShopInfoApi(Number(params.id))
+      const res =  await getShopInfoApi(paramId)
       if (res?.success) {
         setTitle(res?.data?.name)
       } else {

@@ -7,6 +7,7 @@ import { checkHasShow } from '@/utils';
 import { Form, message, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import Loading from '@/components/loading';
+import Recharge from '@/components/recharge';
 import './index.less';
 
 const Option = Select.Option;
@@ -26,7 +27,7 @@ export const CreateAiContentNav = (props: Props): any => {
     useEffect(() => {
       (async () => {
         const res = await getAiShopListApi()
-        if (res.success) {
+        if (res?.success) {
           showGroupWordPanel(res.data)
           setShopList(res.data || [])
         } else {
@@ -80,6 +81,7 @@ export const CreateAiContentNav = (props: Props): any => {
         }
         { checkHasShow<AiShopList>(shopList) === 'hide' &&
             <p className="ai-no-shop-tips" >先去创建店铺和文章分组才能新建任务，<Link to="/shop">去创建店铺</Link></p>}
+        <Recharge />
       </div>
     )
 }

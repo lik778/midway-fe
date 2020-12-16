@@ -16,9 +16,9 @@ export enum ShopTDKType {
 }
 
 export enum ShopTDKPosition {
-  INDEX = 1,
-  PRODUCT = 2,
-  ARTICLE = 3
+  INDEX = "homePage",
+  PRODUCT = "productListPage",
+  ARTICLE = "articleListPage"
 }
 
 export enum AuditStatus {
