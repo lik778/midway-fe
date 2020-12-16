@@ -47,11 +47,13 @@ export default (props: Props) => {
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
+    setFormLoading(true)
     if (isEdit) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createArticleApi(Number(params.id), values)
     }
+    setFormLoading(false)
     if (resData?.success) {
       message.success(resData.message)
       if (isEdit) {
