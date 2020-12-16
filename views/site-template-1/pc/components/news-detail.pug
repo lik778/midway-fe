@@ -9,5 +9,5 @@
             .news-detail-pic
                 img(src=contentImg, alt="")
         .news-detail-content.
-            #{ content }
+            !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
 
