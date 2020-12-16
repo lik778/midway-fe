@@ -29,12 +29,6 @@ request.interceptors.response.use((res: AxiosResponse) => {
   // message.error(errorInfo);
   // 报错输出，前端监听处理
   // 没有登录(域名先写死)
-  if (errorCode === 1001) {
-    location.href = "https://www.baixing.com/oz/login"
-  }
-  if (errorCode === 1029) {
-    location.href = "https://www.baixing.com"
-  }
   return Promise.resolve(err.response && err.response.data)
 })
 

@@ -1,18 +1,22 @@
 import $ from 'jquery'
+
+const all = $(".tab-header .all")
+const sample = $(".tab-header .sample")
+const open = $(".s-open")
+const off = $(".s-off")
 export const tabModule = function(){
 	$(document).ready(function(){
-
-		$(".s-open").click(function(){
-			$(".tab-header>ul").removeClass("tab-hidden");
-			//$(".s-open>img").toggleClass("img-rotate");
-			//$(".more-about").toggleClass("change-more-about")
-			$(".s-open").hide()
-			$(".s-off").show()
+		open.click(function(){
+			all.show();
+			sample.hide();
+			open.hide()
+			off.show()
 		})
-		$(".s-off").click(function(){
-			$(".tab-header>ul").addClass("tab-hidden");
-			$(".s-open").show()
-			$(".s-off").hide()
+		off.click(function(){
+			sample.show();
+			all.hide();
+			open.show()
+			off.hide()
 		})
 		//wapd端顶部的tab导航，与当前链接匹配时高亮
 		const windowPath=window.location.pathname;

@@ -11,7 +11,11 @@ export class ManagementController {
   constructor(private midwayApiService: MidwayService) {}
   @Get('*')
   async managementView(@Req() req: Request, @Res() res: Response) {
-    res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
+    const canEnter = await this.midwayApiService.canEnterManagement(req, res)
+    if (Boolean(canEnter)) {
+      res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
+    }
+
   }
 
   @Post('/api')
