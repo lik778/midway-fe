@@ -58,16 +58,6 @@ export default (props: any) => {
               setEditProductData({...item});
               setProductFormVisible(true);
             }}
-            update={(list, deleteItem) => {
-              setProductList(addKeyForListData(list) || [])
-              setTotal(list.length || 0)
-              // 处理一下cateList的num
-              const cateItem: any = cateList.find((x: any) => x.id == deleteItem.contentCateId)
-              if (cateItem.num > 0) {
-                cateItem.num -= 1
-              }
-              setCateList([...cateList ])
-            }}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
             type={ContentCateType.PRODUCT}
