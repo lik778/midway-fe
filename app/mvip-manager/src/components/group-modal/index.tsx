@@ -79,7 +79,8 @@ export default (props: Props) => {
   const [err, setError] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false);
   useEffect(() => {
-    setConfig(groupConfig.map(x => {
+    const groupCloneConfig = groupConfig.concat()
+    setConfig(groupCloneConfig.map(x => {
       x.value = (editItem && editItem[x.id]) || '';
       return x;
     }))
@@ -88,8 +89,9 @@ export default (props: Props) => {
   
 
   const resetConfigValue = (config: any) => {
-    setConfig(config.map((x: any) => { x.value = ''; return x }))
+    setConfig(config.map((x: any) => { x.value = ''; x.initLen = 0;return x }))
   }
+
 
   const handleOk = async() => {
     if(confirmLoading) {
@@ -128,22 +130,22 @@ export default (props: Props) => {
       setConfirmLoading(false)
       if (res?.success) {
         message.success('编辑成功');
-        groupUpdate(res.data);
+        groupUpdate(res?.data);
         resetConfigValue(config);
         onClose();
       } else {
-        message.error(res.message)
+        message.error(res?.message)
       }
     } else {
       const res = await createContentCateApi(Number(params.id), {...r, type})
       setConfirmLoading(false)
       if (res?.success) {
         message.success('新增分组成功');
-        groupCreate(res.data);
+        groupCreate(res?.data);
         resetConfigValue(config);
         onClose();
       } else {
-        message.error(res.message)
+        message.error(res?.message)
       }
     }
   };

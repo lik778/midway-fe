@@ -41,6 +41,7 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    values.name = values.name.trim()
     let resData: any;
     const isEdit = !isEmptyObject(editData);
     if (typeof values.tags === 'string') {
@@ -51,7 +52,7 @@ export default (props: Props) => {
     } else {
       resData = await createArticleApi(Number(params.id), values)
     }
-    if (resData.success) {
+    if (resData?.success) {
       message.success(resData.message)
       if (isEdit) {
         updateArticleList(resData.data)
