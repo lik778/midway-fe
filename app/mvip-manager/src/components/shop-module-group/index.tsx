@@ -53,6 +53,7 @@ export default (props: Props) => {
       updateCateList([...cateList]);
       setVisibleDeleteDialog(false);
       message.success(res?.message);
+      location.reload()
     } else {
       message.warning(res?.message);
     }

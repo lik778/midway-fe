@@ -43,6 +43,8 @@ export const ImgUpload = (props: Props) => {
   useEffect(() => {
     if (url) {
       setFileList([{ uid: '-1', status: 'done', url, thumbUrl: url }])
+    } else {
+      setFileList([])
     }
   }, [url])
 
