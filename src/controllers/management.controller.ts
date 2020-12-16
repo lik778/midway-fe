@@ -1,6 +1,5 @@
 import { Controller, UseGuards, Post, Get, Body, Req, Res } from '@nestjs/common';
 import { ApiQeqDTO } from '../dto/api-req.dto';
-import  { VipUserGuard } from '../guards/vip-user.guard'
 import { Request, Response } from 'express';
 import { MidwayService } from '../services/midway.service';
 import { join } from 'path'
