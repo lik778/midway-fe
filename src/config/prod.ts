@@ -1,7 +1,7 @@
 export default {
   services: {
     'midway-service': {
-      host: 'midway-service.cat'
+      host: 'midway-service'
     }
   },
   haojing: 'https://www.baixing.com'
