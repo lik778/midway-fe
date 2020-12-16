@@ -1,23 +1,16 @@
 .contact-box
-    .sms-box
+    - const changewidth = weChat.content? "width:25%" : "width:50%"
+    .sms-box(style=changewidth)
         a(href="sms:" + phone.content)
             img.icon(src="http://file.baixing.net/202011/c51a85711ff66afd018933dc40f327d0.png")
             span 短信
-        .line
-    .wechat-box
-        a(href="javascript:testApp('weixin://')" class="dl-btn" id="download")
+    if weChat.content
+        .wechat-box
             img.icon(src="//file.baixing.net/202011/1169b4da5402928ab52fa35fc0cfa925.png")
             span 微信
-        .line
     .phone-box
         a(href="tel:" + phone.content )
             img.tel-icon(src="http://file.baixing.net/202011/fe2ad24adc586625082cf7bd202a922e.png")
             .info
                 p 拨打电话
-                p #{ phone.content }
-
-block append scripts
-    script.
-        function testApp(url) {
-            
-        }
+                p #{ phone.content || "" }

@@ -23,6 +23,7 @@ export default (props: any) => {
           placeholder="选择文章"
           optionFilterProp="children"
           onChange={onChange}
+          defaultValue={0}
           filterOption={(input: any, option: any) =>
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }>

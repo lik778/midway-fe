@@ -15,6 +15,12 @@ export enum ShopTDKType {
   ARTICLE = 'article'
 }
 
+export enum ShopTDKPosition {
+  INDEX = 1,
+  PRODUCT = 2,
+  ARTICLE = 3
+}
+
 export enum AuditStatus {
   DEFAULT, // 初始化
   APPROVE, // 审核通过
@@ -51,4 +57,15 @@ export enum AiTaskStatus {
   ON_TASK, // 发文中
   ON_PAUSE, // 已暂停
   DONE // 已发完
+}
+
+export enum  DeviceType{
+  PC = 1,
+  WAP = 2,
+}
+
+export enum DomainStatus {
+  PREFIX = "PREFIX", // 前缀
+  SUFFIX = "SUFFIX", // 后缀
+  CUSTOM = "CUSTOM" // 自定义
 }

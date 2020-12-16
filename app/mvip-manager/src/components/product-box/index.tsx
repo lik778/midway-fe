@@ -9,6 +9,8 @@ import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
+import QuitFormModal from '@/components/quit-form-modal';
+import { isEmptyObject } from '@/utils';
 
 interface Props {
   cateList: CateItem[];
@@ -24,6 +26,8 @@ export default (props: Props) => {
   const { onClose, visible, editData, cateList, updateCateList, addProductList, updateProductList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [quitModalVisible, setQuitModalVisible] = useState(false)
+  const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
 
@@ -37,18 +41,24 @@ export default (props: Props) => {
     setformConfig(formConfig)
   }, [cateList])
 
-  const sumbit = async (values: CreateProductApiParams) => {
+  const sumbit = async (values: any) => {
+    values.name = values.name.trim();
+    const isEdit = !isEmptyObject(editData);
     if (!values.price) { values.price = '面议' }
-    if (Array.isArray(values.tags)) { values.tags = values.tags.join(',') }
+    if (typeof values.tags === 'string') {
+      values.tags = values.tags.split(',')
+    }
     let resData: any;
-    if (editData) {
+    setFormLoading(true)
+    if (isEdit) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createProductApi(Number(params.id), values)
     }
+    setFormLoading(false)
     if (resData.success) {
       message.success(resData.message)
-      if (editData) {
+      if (isEdit) {
         updateProductList(resData.data)
       } else {
         addProductList(resData.data)
@@ -68,7 +78,7 @@ export default (props: Props) => {
           title="新建服务"
           placement={placement}
           closable={true}
-          onClose={onClose}
+          onClose={() => setQuitModalVisible(true)}
           visible={visible}
           key={placement}
           width="700"
@@ -79,6 +89,7 @@ export default (props: Props) => {
              config={formConfig}
              submit={sumbit}
              onClick={onModalClick}
+             loading={formLoading}
              className="default-form"/>
          </Form.Item>
          <GroupModal
@@ -88,6 +99,11 @@ export default (props: Props) => {
            groupUpdate={(item: CateItem) => { console.log(null) }}
            groupCreate={(item: CateItem) => updateCateList(item)}
            onClose={() => setModalVisible(false)} />
+          <QuitFormModal
+            visible={quitModalVisible} onOk={() => {
+            setQuitModalVisible(false)
+            onClose() }}
+            onCancel={() => setQuitModalVisible(false)}/>
     </Drawer>
   );
 }

@@ -11,5 +11,9 @@ block content
 
     include ../components/news-list
 
+    - const { totalPage } = renderData.articleList
+    include ../components/pagination
+    +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+
 block scripts
     :combine(fileName="site-template-1-news-wap.js")

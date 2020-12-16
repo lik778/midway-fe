@@ -9,10 +9,8 @@
             li(class='tab-li')
                 a(href="/" + shopName + item.urlSuffix) #{item.name}
     //-这里其实应该是判断超过2行显示。
-    if  cateList.length > 8
+    if  cateList.length >= 7
         .s-open 点击展开
             img(src="//file.baixing.net/202012/41b0db79b7b9316481aa69058d3ed37b.png", alt="")
         .s-off 点击收起
             img(src="//file.baixing.net/202012/13a5e125202a182d2f48da2392404cd8.png", alt="")
-
-

@@ -9,14 +9,13 @@ interface Props {
   dataSource: any[];
   total: number;
   openEditForm(item: any): void;
-  update(list: any): void;
   onChange(page: number): void;
 }
 
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
-  const { onChange, total, dataSource, update, openEditForm } = props
+  const { onChange, total, dataSource, openEditForm } = props
   // 获取店铺id
   const params: RouteParams = useParams();
   const editAction = (item: any) => {
@@ -33,20 +32,18 @@ export default (props: Props) => {
       const res  = await deleteProductApi(Number(params.id), { id: actionId })
       if (res?.success) {
         message.success(res.message);
-        // 动态
-        const deleteIndex = dataSource.findIndex(x => x.id === actionId)
-        dataSource.splice(deleteIndex, 1)
-        update(dataSource)
-        setVisibleDeleteDialog(false)
+        location.reload()
       } else {
         message.warning(res.message);
       }
   }
   const columns = [
-    { title: '序号', dataIndex: 'id', key: 'id' },
+    { title: '序号', dataIndex: 'key', key: 'key' },
     { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
         return (
-          <div style={{ height: 40, background: `url(${text})`, backgroundSize: 'cover' }}></div>
+          <div style={{ width: 60, height: 40, textAlign: 'center', backgroundColor: '#f0f2f5'}}>
+            <img   height={40} src={`${text ? text : '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}`} alt="" />
+          </div>
         )
       }},
     { title: '服务名称', dataIndex: 'name', key: 'name' },

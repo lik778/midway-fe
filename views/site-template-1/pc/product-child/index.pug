@@ -7,6 +7,7 @@ block content
     .container.clearfix
         .main
             include ../components/main-title.pug
+            - const productList = renderData.productList.result
             include ../components/product-list.pug
             +product-list('product-child')
 
@@ -21,7 +22,7 @@ block content
 
     include ../components/pagination
     - var totalPage = (renderData.productCateList && renderData.productList.totalPage) || 1
-    +pagination(totalPage, renderData.currentPage, `/${shopName}/p`)
+    +pagination(totalPage, currentPage, `${currentPathname}`)
 
     include ../components/footer.pug
     include ../components/customer-service.pug

@@ -1,17 +1,11 @@
-//-首页快捷键要求,名字名字不固定，链接固定的，且后端数据是动态的,故函数式调用
 .shortcuts
-    - const shortcuts= renderData.navigation
-    mixin listLink(whichPage,defaultName)
-        - const listLinkName= (renderData.navigation.filter(x => x.position == whichPage))[0].name
-        if shortcuts && listLinkName
-            span #{ listLinkName }
-        else
-            span #{ defaultName }
-
-    a.service-btn(href="/" + shopName + '/p/')
-        img(src="//file.baixing.net/202011/bf1af8bd99271d67bcb7d6186daede6e.png", alt="")
-        +listLink("productListPage","服务内容")
-
-    a.news-btn(href='/'+ shopName + '/n/')
-        img(src="//file.baixing.net/202011/a15dba7c80bed37b8c00939aad742576.png", alt="")
-        +listLink("articleListPage","新闻资讯")
+    if moreProductArr && moreProductArr.length>0
+        a.service-btn(href=moreProductArr[0].content)
+            img(src="//file.baixing.net/202011/bf1af8bd99271d67bcb7d6186daede6e.png", alt="")
+            span #{ moreProductArr[0].name }
+            if moreNewsArr && moreNewsArr.length>0
+                .topLine
+    if moreNewsArr && moreNewsArr.length>0
+        a.news-btn(href=moreNewsArr[0].content)
+            img(src="//file.baixing.net/202011/a15dba7c80bed37b8c00939aad742576.png", alt="")
+            span #{ moreNewsArr[0].name }

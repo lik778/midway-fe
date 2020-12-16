@@ -5,7 +5,7 @@
 			if productList && productList.length>0
 				each item in productList
 					li
-						a(href= "/" + shopName + item.urlSuffix)
+						a(href=item.urlSuffix)
 							if item.headImg
 								img(src=item.headImg, alt="")
 							else

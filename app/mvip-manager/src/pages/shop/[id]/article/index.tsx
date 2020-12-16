@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
-import ShopModuleTab from '@/components/shop-module-tab';
+import ContentHeader from '@/components/content-header';
 import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
@@ -12,8 +12,6 @@ import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType } from '@/enums';
 import './index.less';
-import ProductNav from '@/pages/shop/[id]/product/components/nav';
-
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
@@ -30,32 +28,31 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res?.success) {
+      if (res.success) {
         setArticleList(addKeyForListData(res.data.articleList.result) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.articleList.totalRecord)
       } else {
-        message.error(message);
+        message.error(res.message);
       }
     })()
   }, [page, contentCateId])
 
   return (<div>
-    <MainTitle title="百姓网店铺"/>
-    <ShopModuleTab type={ShopModuleType.ARTICLE}/>
+    <ContentHeader type={ShopModuleType.ARTICLE}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
         showGroup={() => setModuleGroupVisible(true)}
         showCreate={() => {
+          setEditArticleData({})
           setArticleFormVisible(true)
-          setEditArticleData(null)
         }}  />
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
         title="文章分组"
-        createBtnText="新建文章"
+        createBtnText="新建分组"
         cateList={cateList}
         updateCateList={(list) => setCateList(list)}
         onClose={() => setModuleGroupVisible(false)}
@@ -66,23 +63,28 @@ export default (props: any) => {
         total={total}
         dataSource={articleList}
         openEditForm={(item) => {
+          setEditArticleData({ ...item });
           setArticleFormVisible(true);
-          setEditArticleData(item);
-        }}
-        update={(list) => {
-          setArticleList(addKeyForListData(list) || [])
         }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
-        addArticleList={(item) => setArticleList([item, ...articleList]) }
+        addArticleList={(item) => {
+          const addList = [item, ...articleList]
+          setArticleList(addKeyForListData(addList))
+          setTotal(addList.length)
+          // 处理一下cateList的num
+          const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
+          cateItem.num += 1
+          setCateList([...cateList ])
+        }}
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)
           articleList.splice(editIndex, 1, item)
-          setArticleList([...articleList])
+          setArticleList(addKeyForListData([...articleList]))
         }}
         cateList={cateList}
         editData={editArticleData}
-        updateCateList={(x) => setCateList([x, ...cateList])}
+        updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
         onClose={() => setArticleFormVisible(false)}/>
     </div>

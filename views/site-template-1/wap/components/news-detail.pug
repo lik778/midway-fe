@@ -5,10 +5,9 @@
     if modifiedTime
         .news-detail-time
             p #{ dateFormat(modifiedTime) }
-    //-wap无图片
-    //-if contentImg
-    //-    .news-detail-pic
-    //-        img(src=contentImg, alt="")
+    if contentImg
+        .news-detail-pic
+            img(src=contentImg, alt="")
     .news-detail-content.
-        #{ content || '当前页面暂无内容，敬请期待...' }
+        !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
 

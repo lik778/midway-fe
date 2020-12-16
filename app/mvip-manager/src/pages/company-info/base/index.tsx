@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Steps, message, Button } from 'antd';
+import { Steps, message, Button, Row, Col } from 'antd';
 import MainTitle from '../../../components/main-title';
-import styles from './index.less';
+import './index.less';
 import { baseInfoForm } from '../../../config/form'
 import WildcatForm from '@/components/wildcat-form';
 import ContactForm from './contact-form';
@@ -15,6 +15,8 @@ const { Step } = Steps
 export default (props: any) => {
   const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [formInstance, setFormInstance] = useState<any>(null);
   const [config, setConfig] = useState<FormConfig>(baseInfoForm);
   const steps = [ '基础信息', '联系方式']
 
@@ -23,17 +25,28 @@ export default (props: any) => {
       const res = await getEnterpriseForShopApi()
       if (res.success) {
         setEnterpriseInfo(res.data)
+        const { companyNameLock } = res.data
+        if (companyNameLock) {
+          // 不可修改公司名
+          const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
+          companyFiled.disabled = true
+          setConfig({...config})
+        }
       }
     })()
   },[])
 
-  const nextStep = async(values: any) => {
-    console.log(values)
-    // 这里先写死
-    values.area = values.areaMap && Object.keys(values.areaMap).map(k => k)
+  const nextStep = async (values: any) => {
+    // 这里处理一下
+    if (!Array.isArray(values.area)) {
+      values.area = Object.keys(values.area).map(k => k)
+    }
+    setLoading(true)
     const res = await saveEnterpriseForShopApi(values)
+    setLoading(false)
     if (res.success) {
       message.success('修改基础资料成功')
+      setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
       next()
     } else {
       message.error(res.message)
@@ -51,13 +64,23 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="基础资料"/>
-      <Steps current={currentStep} className={styles.stepContainer}>
+      <Steps current={currentStep} className="step-container">
         {steps.map(name => (
           <Step key={name} title={name} />
         ))}
       </Steps>
-      <div className={styles.container}>
-        { currentStep == 0 && <WildcatForm editDataSource={enterpriseInfo} config={config} submit={nextStep}/> }
+      <div className="container">
+        { currentStep == 0 &&
+          <WildcatForm  onInit={(form) => setFormInstance(form)}
+           useLabelCol={true} submit={nextStep}
+           editDataSource={enterpriseInfo} config={config} loading={loading}
+            submitBtn={
+              <Row className="save-base-info-box">
+                <Col span={3}></Col>
+                <Col><Button loading={loading}  type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
+              </Row>
+            }/>
+        }
         { currentStep == 1 && <ContactForm back={prev} editDataSource={enterpriseInfo}/>}
       </div>
     </div>

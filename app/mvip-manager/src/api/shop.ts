@@ -5,7 +5,60 @@ import {
   DeleteApiParams,
   CreateContentCateApiParams,
   CreateArticleApiParams,
+  ModifyNavItem,
+  ImgItemParam,
+  ImgDeleteParam,
+  ImgListParam,
+  TdkSaveMeta,
+  TdkDetailMeta, ShopStatus,
 } from '@/interfaces/shop';
+import { ServiceResponse } from '@/interfaces/api';
+
+// 店铺
+export const getCreateShopStatusApi = ():Promise<ServiceResponse<ShopStatus>>  => {
+  return postApiData('shop/init', {})
+}
+
+// 基础配置
+// 获取导航列表
+export const getNavListingApi = (shopId: number) => {
+  return postApiData('navigation/listing', {}, setShopHeader(shopId))
+}
+
+// 更新导航列表
+export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
+  return postApiData('navigation/update', params, setShopHeader(shopId))
+}
+
+// 创建banner
+export const createBannerApi = (shopId: number, params:ImgItemParam) => {
+  return postApiData('banner/create', params, setShopHeader(shopId))
+}
+
+// 删除banner
+export const deleteBannerApi = (shopId: number, params: ImgDeleteParam) => {
+  return postApiData(`banner/delete/${params.id}`, {}, setShopHeader(shopId))
+}
+
+// 获取店铺信息
+export const getShopInfoApi = (shopId: number) => {
+  return postApiData(`shop/info/${shopId}`, {}, setShopHeader(shopId))
+}
+
+// banner 列表
+export const getBannerListApi = (shopId: number, params: ImgListParam) => {
+  return postApiData(`banner/listing`, params, setShopHeader(shopId))
+}
+
+// 获取tdk List
+export const getMetaDetailApi = (shopId: number, params: TdkDetailMeta) => {
+  return postApiData(`meta/detail`, params, setShopHeader(shopId))
+}
+
+// 保存tdk信息
+export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
+  return postApiData(`meta/save`, params, setShopHeader(shopId))
+}
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
   return postApiData('product/list', params, setShopHeader(shopId))

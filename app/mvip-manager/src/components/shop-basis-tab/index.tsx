@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'umi';
-import { ShopBasisType } from '@/enums';
-
-const menuList = [
-  {
-    link: ShopBasisType.NAV,
-    label: "导航设置",
-    key: ShopBasisType.NAV,
-  },
-  {
-    link: ShopBasisType.CAROUSEL,
-    label: "轮播图设置",
-    key: ShopBasisType.CAROUSEL,
-  },
-  {
-    link: ShopBasisType.SEO,
-    label: "SEO设置",
-    key: ShopBasisType.SEO,
-  }
-]
-
+import { ShopBasisType, ShopTDKType } from '@/enums';
+import { useParams } from 'umi';
+import { RouteParams } from '@/interfaces/shop';
 interface Props {
   type: ShopBasisType;
 }
 
 export default (props: Props) => {
+  const params: RouteParams = useParams();
+  const menuList = [
+    {
+      link: `/shop/${params.id}/${ShopBasisType.NAV}`,
+      label: "导航设置",
+      key: ShopBasisType.NAV,
+    },
+    {
+      link: `/shop/${params.id}/${ShopBasisType.CAROUSEL}`,
+      label: "轮播图设置",
+      key: ShopBasisType.CAROUSEL,
+    },
+    {
+      link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
+      label: "SEO设置",
+      key: ShopBasisType.SEO,
+    }
+  ]
   const [current, setCurrent] = useState(props.type)
   const handleClick = (e: { key: any; }) => {
     setCurrent(e.key)

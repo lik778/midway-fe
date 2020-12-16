@@ -1,5 +1,6 @@
-mixin pagination(pages, current, link)
-    - var range = 5;
+mixin pagination(pages, current, pathname)
+    - const link = pathname.indexOf("?")== -1 ? pathname : pathname.substring(0, pathname.indexOf("?"))
+    - var range = pages;
     - var i = 0;
     if pages > 1
         .page-normal

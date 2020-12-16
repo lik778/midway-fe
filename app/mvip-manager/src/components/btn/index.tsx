@@ -5,6 +5,6 @@ import { Button } from 'antd';
 export default (props: any) => {
   const config = props.btnConfig
   return (
-    props.btnConfig && <Button type="primary" className="primary-btn" onClick={props.onClick}>+{config && config.text}</Button>
+    props.btnConfig && <Button type="primary" className="primary-btn mvip-primary-btn" onClick={props.onClick}>+{config && config.text}</Button>
   );
 }

@@ -1,0 +1,99 @@
+.contact-box
+  position fixed
+  bottom 0
+  width 100%
+  height 52px
+  background #fff
+  display flex
+  .wechat-box
+    border-left 1px solid #ccc
+  .sms-box, .wechat-box
+    width 25%
+    height 52px
+    line-height 52px
+    text-align center
+    position relative
+    span
+      font-size 12px
+      color #EF6A31
+    .icon
+      height 12px
+      margin-right 5px
+  .phone-box
+    float right
+    display flex
+    justify-content center
+    width 50%
+    padding 10px 0
+    background #EF6A31
+    color #fff
+    box-sizing border-box
+    a
+      color #fff
+    .tel-icon
+      float left
+      height 25px
+    .info
+      float left
+      font-size 12px
+      margin-left 10px
+      position relative
+      top -5px
+      p:last-child
+        font-size 16px
+
+.dialog
+  display none
+  position fixed
+  bottom 170px
+  width 282px
+  left 50%
+  margin-left -141px
+  z-index 100
+  min-height 80px
+  text-align center
+  border-radius 8px
+  font-size 14px
+  color #333
+  background-color #fff
+  .cancel
+    position absolute
+    right 0
+    top 0
+    width 35px
+    height 35px
+    color rgba(0,0,0,.4)
+    border-radius 8px
+    -webkit-tap-highlight-color transparent
+    z-index 110
+    &::after
+      content '×'
+      line-height 42px
+      font-size 32px
+  .dialog-img
+    img
+      width 100%
+      height 120px
+  h2
+    padding 15px
+    font-size 18px
+    font-weight inherit
+  p
+    font-size 20px
+    font-weight 600
+    color #333
+    margin-bottom 20px
+//蒙层
+.mask
+  display none
+  position absolute
+  left 0
+  top 0
+  z-index 99
+  width 100%
+  height 100%
+  background #000
+  opacity .6
+  -webkit-tap-highlight-color transparent
+
+

@@ -5,11 +5,11 @@
 				if renderData.navigation && renderData.navigation.length> 0
 					each item in renderData.navigation
 						dd
-							a(href="/" + shopName + item.content) #{ item.name }
+							a(href=item.content) #{ item.name }
 		dl.col-right
 			dt 百姓网技术支持
 			dd
-				a(href="https://www.baixing.com/a/pro?src=haina_topbar") 我要开店
+				a(href="https://vip.baixing.com/service_buy?src=dianpu" target="_blank") 我要开店
 
 	.footer-right
 		p #{ company.name } &nbsp;&nbsp;地址：#{ company.address }

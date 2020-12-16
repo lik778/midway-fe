@@ -1,7 +1,7 @@
 import React,  { useState, useEffect } from 'react';
 import { message } from 'antd';
 import { useParams } from "umi";
-import ShopModuleTab from '@/components/shop-module-tab';
+import ContentHeader from '@/components/content-header';
 import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ProductBox from '@/components/product-box';
@@ -41,47 +41,51 @@ export default (props: any) => {
 
   return (
     <div>
-      <MainTitle title="百姓网店铺"/>
-      <ShopModuleTab type={ShopModuleType.PRODUCT}/>
+      <ContentHeader type={ShopModuleType.PRODUCT}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
             cateList={cateList}
             showGroup={() => setModuleGroupVisible(true)}
             showCreate={() => {
+              setEditProductData({})
               setProductFormVisible(true)
-              setEditProductData(null)
             }} />
           <ProductList
             total={total}
             dataSource={productList}
             openEditForm={(item) => {
+              setEditProductData({...item});
               setProductFormVisible(true);
-              setEditProductData(item);
-            }}
-            update={(list) => {
-              setProductList(addKeyForListData(list) || [])
             }}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
             type={ContentCateType.PRODUCT}
             title="服务分组"
-            createBtnText="新建服务"
+            createBtnText="新建分组"
             cateList={cateList}
             updateCateList={(list) => setCateList(list)}
             onClose={() => setModuleGroupVisible(false)}
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />
           <ProductBox
-            addProductList={(item) => setProductList([item, ...productList])}
+            addProductList={(item) => {
+              const addList = [item, ...productList]
+              setProductList(addKeyForListData([item, ...productList]))
+              setTotal(addList.length)
+              // 处理一下cateList的num
+              const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
+              cateItem.num += 1
+              setCateList([...cateList ])
+            }}
             updateProductList={(item) => {
               const editIndex = productList.findIndex((a: any) => a.id === item.id)
               productList.splice(editIndex, 1, item)
-              setProductList([...productList])
+              setProductList(addKeyForListData([...productList]))
             }}
             cateList={cateList}
             editData={editProductData}
-            updateCateList={(x) => setCateList([x, ...cateList])}
+            updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
             visible={productFormVisible}
             onClose={() => setProductFormVisible(false)}/>
       </div>

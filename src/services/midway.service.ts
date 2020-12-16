@@ -4,6 +4,7 @@ import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
 import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceResponse, ShopComponents } from '../interface';
 import { Request } from 'express';
+import { DomainStatus } from '../interface/site';
 
 @Injectable()
 export class MidwayService {
@@ -63,7 +64,8 @@ export class MidwayService {
   private setPageHeaders(shopName: string, device: string): PageHeaderParams {
     return {
       'x-api-shop-name': shopName || '',
-      'x-api-device': device || ''
+      'x-api-device': device || '',
+      'x-api-domain-type': DomainStatus.SUFFIX, // 先默认为后缀
     }
   }
 

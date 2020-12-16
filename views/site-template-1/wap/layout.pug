@@ -6,18 +6,29 @@ html
         title #{ renderData.meta.title || "" }
         meta(name='keywords' content=renderData.meta.keywords || "")
         meta(name='description' content=renderData.meta.description || "")
+        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+
         block styles
     body
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
-        - const { shopName } = renderData
+        - const { currentPage, currentPathname } = renderData
         block header
         block content
         block footer
             include ./components/footer
         block contact
             include ./components/contact
+
+        .dialog
+            .cancel
+            .dialog-img
+                img(src="//file.baixing.net/201701/574b019ad4b8b9199666c2d8364433f6.png", alt="")
+            h2 请复制以下微信号添加好友
+            p #{weChat.content || "没有填写微信号"}
+        .mask
+
 
 
     block scripts

@@ -1,9 +1,12 @@
 header
     if !isHome
         .back-icon
-    .company-name #{ renderData.shopInfo.name }
+        .company-name #{ renderData.bread.slice(-1)[0].name }
+    else
+        .company-name #{ renderData.shopInfo.name }
+
     div.header-nav
         img.select-icon(src="//file.baixing.net/202011/861f45fa088fb4d394d8c7389550a28a.png")
         .nav-menus
             each item in renderData.navigation
-                a(href="/" + shopName + item.content) #{item.name}
+                a(href=item.content) #{item.name}

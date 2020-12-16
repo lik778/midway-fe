@@ -10,24 +10,32 @@ const { Header, Content, Sider } = Layout;
 
 export default (props: any) => {
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
+  const [openKeys, setOpenKeys] = useState<string[]>([])
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   useEffect(() => {
     (async () => {
       const res = await getUserBaseInfoApi();
-      if (res.success) {
+      if (res?.success) {
         setUserInfo({...res.data})
       }
     })()
   }, [])
 
-  const routeList = props.location.pathname.split('/')
-  const isShopRoute = (routeList[1] === 'shop')
+  useEffect(() => {
+    const routeList = props.location.pathname.split('/')
+    const isShopRoute = (routeList[1] === 'shop')
+    setOpenKeys([routeList[1]])
+    setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
+  }, [props.location.pathname])
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light">
         <Header className={styles.sideHeader}>
           <div className={styles.logo}></div>
         </Header>
-        <Menu mode="inline" defaultOpenKeys={[routeList[1]]} defaultSelectedKeys={[ isShopRoute ? 'list' : routeList[2]]}>
+        <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
+              onOpenChange={(openKeys: any) => {setOpenKeys(openKeys) }}>
           <SubMenu style={{ marginBottom: '10px' }} key="company-info" title="企业资料">
             <Menu.Item key="base">
               <Link to="/company-info/base">基础资料</Link>

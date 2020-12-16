@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Button, Space, Spin } from 'antd';
+import { history } from 'umi';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
-import ShopBox from '@/components/shop-box'
+import ShopBox from '@/components/shop-box';
 import './index.less';
 import { postApiData } from '@/api/base';
+import { getCreateShopStatusApi } from '@/api/shop';
+import { ShopStatus } from '@/interfaces/shop';
 
 // 空状态基本配置
 const emptyMsg = {
   btn: '新建店铺',
   msg: '暂无店铺',
-  img: "//file.baixing.net/202011/ead8b543db23259dc9838e753f865732.png",
+  img: "//file.baixing.net/202012/c201a04d7d3ac516b3598eb3eb6bd4c1.png",
 }
 
 export default (props: any) => {
@@ -37,6 +40,8 @@ export default (props: any) => {
     domain: '',
   })
 
+  const [shopStatus, setShopStatus] = useState<ShopStatus | null>(null)
+  const [editVisible, setEditVisible] = useState<boolean>(false)
   // 弹窗接口返回
   const [shopSiteRes, setShopSiteRes] = useState({
     success: false,
@@ -80,14 +85,19 @@ export default (props: any) => {
   }
 
 
-
+  const notInterceptCreateShop = (): boolean => {
+    setEditVisible(!shopStatus?.isUserPerfect)
+    return shopStatus?.isUserPerfect || false
+  }
 
   // 显示弹窗
   const showModal = (e:any, state: number, modalBody?: any) => {
-    setError('')
-    setOperate(state)
-    setVisible(true)
-    setOSite(modalBody)
+      if (notInterceptCreateShop()) {
+        setError('')
+        setOperate(state)
+        setVisible(true)
+        setOSite(modalBody)
+      }
   };
 
   // 弹窗确定
@@ -105,6 +115,11 @@ export default (props: any) => {
         key: 'domain',
         isRequired: true
       })
+      return
+    }
+
+    if(domainL< 4){
+      setError('请输入大于4个字符的域名')
       return
     }
 
@@ -139,6 +154,15 @@ export default (props: any) => {
     [shopSiteRes]
   )
 
+  useEffect(() => {
+    (async () => {
+      const res =  await getCreateShopStatusApi()
+      if (res.success) {
+        setShopStatus(res.data)
+        setEditVisible(!res.data.isUserPerfect)
+      }
+    })()
+  }, [])
 
   // bindEvent
   // 弹窗取消
@@ -168,6 +192,10 @@ export default (props: any) => {
             key: name,
             isRequired: false
           })
+        }
+
+        if(domainL>=4) {
+          setError('')
         }
         setOSite({...oSite, [name]:value.replace(/[^a-z0-9]/g,'')})
       break;
@@ -201,7 +229,7 @@ export default (props: any) => {
             {
               shopListData.map((shopChild, index) => {
                return (
-                <ShopBox shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} index={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
                )
             })}
           </div>
@@ -240,12 +268,20 @@ export default (props: any) => {
               <label htmlFor="domain">店铺域名</label>
               <div className="site-byte f-input">
                 <span>shop.baixing.com/</span>
-                <Input placeholder="请输入名称，1~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+                <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
                 <span className="f-len">{domainL}/20</span>
                 <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
               </div>
             </li>
           </ul>
+        </Modal>
+        <Modal title="去完善信息"
+               closable={false}
+               maskClosable={false}
+               onCancel={() => setEditVisible(false)}
+               onOk={() => history.push('/company-info/base')}
+               visible={editVisible}>
+          <p>您的企业资料还未填写，请完善您的企业资料</p>
         </Modal>
         <div className="container">
           {shopSitePage()}

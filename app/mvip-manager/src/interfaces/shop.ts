@@ -1,4 +1,4 @@
-import { ContentCateType } from '@/enums';
+import { ContentCateType, DomainStatus } from '@/enums';
 
 export interface RouteParams {
   id: string;
@@ -22,7 +22,7 @@ export interface CreateArticleApiParams {
   name: string;
   price: number | string;
   shopId?: number;
-  tags: string;
+  tags: string[];
 }
 
 export interface DeleteApiParams {
@@ -38,6 +38,44 @@ export interface CateItem {
   num: number;
 }
 
+
+export interface NavItem{
+  content: string;
+  desc: string;
+  display: number | undefined;
+  id: number;
+  isDisabled?: boolean
+  key: string;
+  name: string;
+  position: string;
+  maxLength?: number;
+  minLength?: number;
+  isError?: boolean;
+}
+
+export interface ModifyNavItem{
+  name: string;
+  display: number | undefined;
+  id: number;
+}
+
+
+export interface ImgItemParam{
+  type: number;
+  url: string;
+}
+
+export interface ImgDeleteParam{
+  id: number;
+}
+
+export interface ImgListParam{
+  page: number;
+  size: number;
+  status: number;
+  type: number;
+}
+
 export interface CreateContentCateApiParams {
   id?: number;
   name: string;
@@ -45,4 +83,21 @@ export interface CreateContentCateApiParams {
   seoK: string;
   seoT: string;
   type: ContentCateType;
+}
+
+
+export interface TdkSaveMeta {
+  description: string;
+  keywords: string[];
+  position: number;
+  title: string;
+}
+
+export interface TdkDetailMeta {
+  position: number;
+}
+
+export interface ShopStatus {
+  isUserPerfect: boolean;
+  domainType: DomainStatus;
 }

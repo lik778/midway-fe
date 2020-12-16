@@ -18,10 +18,24 @@ export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
 export const addKeyForListData = (list: any) => {
   if (!list || list.length === 0) return [];
   return list.map((x: any, i: number) => {
-    return { ...x, key: i }
+    return { ...x, key: (i + 1) }
   })
 }
 
 export const formatTime = (time: string): string  => {
   return dayjs(Number(time) * 1000).format('YYYY-MM-DD')
+}
+
+export const checkHasShow = function<T>(list: T[] | null): string {
+  if (list === null) return 'loading'
+  if (list.length === 0) return 'hide';
+  return 'show';
+}
+
+export const formUnvalid = function(formInstance: any) {
+  return formInstance.getFieldsError().some((x: any) => x.errors.length > 0)
+}
+
+export const isEmptyObject = (obj: any): boolean =>  {
+  return JSON.stringify(obj) === '{}';
 }

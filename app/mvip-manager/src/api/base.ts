@@ -21,12 +21,20 @@ const apiPrefix = '/management/api'
 const bePrefix = '/api/midway/backend/'
 
 request.interceptors.response.use((res: AxiosResponse) => {
-  return Promise.resolve(res.data)
+  return Promise.resolve(res?.data)
   }, (err: AxiosError) => {
   const errorInfo = err.response && err.response.data && err.response.data.message || '出错了'
+  const errorCode = err.response && err.response.data && err.response.data.code
   // 该报错会触发系统报错，先注释
   // message.error(errorInfo);
   // 报错输出，前端监听处理
+  // 没有登录(域名先写死)
+  if (errorCode === 1001) {
+    location.href = "https://www.baixing.com/oz/login"
+  }
+  if (errorCode === 1029) {
+    location.href = "https://www.baixing.com"
+  }
   return Promise.resolve(err.response && err.response.data)
 })
 
