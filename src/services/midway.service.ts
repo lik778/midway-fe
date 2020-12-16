@@ -20,8 +20,7 @@ export class MidwayService {
   }
 
   public async canEnterManagement(req: Request, res: Response): Promise<any> {
-    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,
-      { headers: this.setApiAHeaders(req.cookies)}).toPromise().catch(e => {
+    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{}, { headers: this.setApiAHeaders(req.cookies)}).toPromise().catch(e => {
         const code = Number(e.response && e.response.data && e.response.data.code);
         if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
             res.redirect(`${this.haojingHost}/oz/login`)
