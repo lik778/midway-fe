@@ -8,7 +8,6 @@ import ContactForm from './contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { getEnterpriseForShopApi, saveEnterpriseForShopApi } from '@/api/user'
 import { UserEnterpriseInfo } from '@/interfaces/user';
-import { formUnvalid } from '@/utils';
 
 const { Step } = Steps
 
@@ -37,9 +36,7 @@ export default (props: any) => {
     })()
   },[])
 
-  const nextStep = async() => {
-    if (formUnvalid(formInstance)) return
-    const values = formInstance.getFieldsValue()
+  const nextStep = async (values: any) => {
     // 这里处理一下
     if (!Array.isArray(values.area)) {
       values.area = Object.keys(values.area).map(k => k)
@@ -74,16 +71,16 @@ export default (props: any) => {
       </Steps>
       <div className="container">
         { currentStep == 0 &&
-        <div>
           <WildcatForm  onInit={(form) => setFormInstance(form)}
-               useLabelCol={true}
-               editDataSource={enterpriseInfo} config={config}/>
-          <Row className="save-base-info-box">
-            <Col span={3}></Col>
-            <Col><Button loading={loading}
-                type="primary" size="large" onClick={() => nextStep()}>保存并下一步</Button></Col>
-          </Row>
-        </div> }
+           useLabelCol={true} submit={nextStep}
+           editDataSource={enterpriseInfo} config={config} loading={loading}
+            submitBtn={
+              <Row className="save-base-info-box">
+                <Col span={3}></Col>
+                <Col><Button loading={loading}  type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
+              </Row>
+            }/>
+        }
         { currentStep == 1 && <ContactForm back={prev} editDataSource={enterpriseInfo}/>}
       </div>
     </div>

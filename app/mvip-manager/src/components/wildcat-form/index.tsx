@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
@@ -22,12 +22,14 @@ interface Props {
   className?: string;
   onClick?: any;
   useLabelCol?: boolean;
+  loading?: boolean;
+  submitBtn?: ReactNode;
 }
 
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  const { editDataSource, useLabelCol, onInit } = props
+  const { editDataSource, useLabelCol, onInit, loading } = props
 
   useEffect(() => {
     if (editDataSource) {
@@ -139,9 +141,9 @@ const WildcatForm = (props: Props) => {
           }
         }) }
         {
-          props.config && props.config.buttonConfig &&
-            <Button className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
-              {props.config.buttonConfig.text}</Button>
+          props.submitBtn || props.config && props.config.buttonConfig &&
+          (<Button loading={loading} className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
+            {props.config.buttonConfig.text}</Button>)
         }
       </Form>
     </div>

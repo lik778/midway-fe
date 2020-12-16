@@ -27,6 +27,7 @@ export default (props: Props) => {
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
+  const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
 
@@ -48,11 +49,13 @@ export default (props: Props) => {
       values.tags = values.tags.split(',')
     }
     let resData: any;
+    setFormLoading(true)
     if (isEdit) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createProductApi(Number(params.id), values)
     }
+    setFormLoading(false)
     if (resData.success) {
       message.success(resData.message)
       if (isEdit) {
@@ -86,6 +89,7 @@ export default (props: Props) => {
              config={formConfig}
              submit={sumbit}
              onClick={onModalClick}
+             loading={formLoading}
              className="default-form"/>
          </Form.Item>
          <GroupModal

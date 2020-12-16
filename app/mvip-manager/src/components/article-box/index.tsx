@@ -27,6 +27,7 @@ export default (props: Props) => {
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
+  const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
@@ -85,6 +86,7 @@ export default (props: Props) => {
               config={formConfig}
               submit={sumbit}
               onClick={onModalClick}
+              loading={formLoading}
               className="default-form"/>
          </Form.Item>
         <GroupModal
