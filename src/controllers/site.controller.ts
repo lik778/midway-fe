@@ -17,11 +17,13 @@ export class SiteController {
 
   @Get('/n')
   async listing(@Param() params, @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    //console.log(req.originalUrl)
     const shopName = this.midwayApiService.getShopName(params.shopName)
     const currentPage = query.page || 1;
     const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage, size: 0 });
-    const templateUrl = `site-template-1/${device}/news/index`
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, currentPage } });
+    const templateUrl = `site-template-1/${device}/news/index`;
+    const currentPathname = req.path;
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, currentPage, currentPathname } });
   }
 
   @Get('/n-:id')
@@ -33,11 +35,13 @@ export class SiteController {
         const templateUrl = `site-template-1/${device}/news-detail/index`
       return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName } });
     } else {
+      //console.log(req.path)
       const shopName = this.midwayApiService.getShopName(params.shopName)
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 });
-      const templateUrl = `site-template-1/${device}/news-child/index`
-      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, currentPage } });
+      const templateUrl = `site-template-1/${device}/news-child/index`;
+      const currentPathname = req.path;
+      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, currentPage, currentPathname } });
     }
   }
 
@@ -46,8 +50,9 @@ export class SiteController {
     const shopName = this.midwayApiService.getShopName(params.shopName)
     const currentPage = query.page || 1
     const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 });
-    const templateUrl = `site-template-1/${device}/product/index`
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, currentPage } });
+    const templateUrl = `site-template-1/${device}/product/index`;
+    const currentPathname = req.path;
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, currentPage, currentPathname } });
   }
 
   @Get('/p-:id')
@@ -62,8 +67,9 @@ export class SiteController {
       const shopName = this.midwayApiService.getShopName(params.shopName)
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 });
-      const templateUrl = `site-template-1/${device}/product-child/index`
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, currentPage } });
+      const templateUrl = `site-template-1/${device}/product-child/index`;
+      const currentPathname = req.path;
+      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, currentPage, currentPathname } });
     }
   }
 }

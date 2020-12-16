@@ -66,8 +66,15 @@ export default (props: any) => {
           setEditArticleData({ ...item });
           setArticleFormVisible(true);
         }}
-        update={(list) => {
+        update={(list, deleteItem) => {
           setArticleList(addKeyForListData(list) || [])
+          setTotal(list.length || 0)
+          // 处理一下cateList的num
+          const cateItem: any = cateList.find((x: any) => x.id == deleteItem.contentCateId)
+          if (cateItem.num > 0) {
+            cateItem.num -= 1
+          }
+          setCateList([...cateList ])
         }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
@@ -75,6 +82,10 @@ export default (props: any) => {
           const addList = [item, ...articleList]
           setArticleList(addKeyForListData(addList))
           setTotal(addList.length)
+          // 处理一下cateList的num
+          const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
+          cateItem.num += 1
+          setCateList([...cateList ])
         }}
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)

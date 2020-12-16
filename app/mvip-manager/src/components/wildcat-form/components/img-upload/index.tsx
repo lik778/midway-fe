@@ -68,6 +68,7 @@ export const ImgUpload = (props: Props) => {
       }
     } else if (e.file.status === 'removed') {
       setFileList([])
+      onChange('')
     }
   }
 
