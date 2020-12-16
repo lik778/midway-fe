@@ -1,5 +1,4 @@
 import $ from 'jquery'
-
 export const tabModule = function(){
 	$(document).ready(function(){
 
@@ -15,9 +14,13 @@ export const tabModule = function(){
 			$(".s-open").show()
 			$(".s-off").hide()
 		})
-		$(".tab-header > ul > li >a").click(function(){
-			$(this).siblings().removeClass('active');
-			$(this).addClass('active');
+
+		var currentHref=window.location.pathname;
+		$(".tab-header a").each((index,tab) => {
+			const h = $(tab).attr('href')
+			if(h.indexOf(currentHref)> -1){
+				$(tab).addClass('active').parent().siblings().find('a').removeClass('active')
+			}
 		})
 	})
 }
