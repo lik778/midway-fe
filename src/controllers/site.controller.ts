@@ -48,7 +48,6 @@ export class SiteController {
   @Get('/p')
   async product(@Param() params, @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     //console.log(req.path)
-    console.log(params)
     const shopName = this.midwayApiService.getShopName(params.shopName)
     const currentPage = query.page || 1
     const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 });
@@ -72,8 +71,7 @@ export class SiteController {
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 });
       const templateUrl = `site-template-1/${device}/product-child/index`;
       const currentPathname = req.originalUrl;
-      const categoryId = params.id;
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, currentPage, currentPathname, categoryId } });
+      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, currentPage, currentPathname } });
     }
   }
 }
