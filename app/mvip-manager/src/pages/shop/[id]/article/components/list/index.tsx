@@ -10,14 +10,13 @@ interface Props {
   dataSource: any[];
   total: number;
   openEditForm(item: any): void;
-  update(list: any, item: any): void;
   onChange(page: number): void;
 }
 
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
-  const { onChange, total, dataSource, update, openEditForm } = props
+  const { onChange, total, dataSource, openEditForm } = props
   // 获取店铺id
   const params: RouteParams = useParams();
   const editAction = (item: any) => {
@@ -33,12 +32,7 @@ export default (props: Props) => {
     const res  = await deleteArticleApi(Number(params.id), { id: actionId })
     if (res.success) {
       message.success(res.message);
-      // 动态
-      const deleteIndex = dataSource.findIndex(x => x.id === actionId)
-      const deleteItem = dataSource[deleteIndex]
-      dataSource.splice(deleteIndex, 1)
-      update(dataSource, deleteItem)
-      setVisibleDeleteDialog(false)
+      location.reload()
     } else {
       message.warning(res.message);
     }
