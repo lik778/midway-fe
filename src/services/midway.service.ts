@@ -6,6 +6,7 @@ import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceRespons
 import { Request, Response } from 'express';
 import { DomainStatus } from '../interface/site';
 import { ErrorCode } from '../enums/error';
+import { join } from "path";
 
 @Injectable()
 export class MidwayService {
@@ -19,17 +20,21 @@ export class MidwayService {
     this.haojingHost = configService.get('haojing');
   }
 
+  public managementRedirectTo (code: number, res: Response, callback: any) {
+    if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
+      res.redirect(`${this.haojingHost}/oz/login`)
+      return
+    } else if (code === ErrorCode.ERR_MANAGEMENT) {
+      res.redirect(`${this.haojingHost}`)
+      return
+    } else {
+      callback()
+    }
+  }
+
   public async canEnterManagement(req: Request, res: Response): Promise<any> {
-    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{}, { headers: this.setApiAHeaders(req.cookies)}).toPromise().catch(e => {
-        const code = Number(e.response && e.response.data && e.response.data.code);
-        if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
-            res.redirect(`${this.haojingHost}/oz/login`)
-            return
-        } else if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
-            res.redirect(`${this.haojingHost}`)
-            return
-        }
-    })
+    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{},
+      { headers: this.setApiAHeaders(req.cookies)}).toPromise()
   }
 
   public getShopName(shopName: string): string {
