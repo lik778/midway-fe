@@ -5,7 +5,7 @@ import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import QuitFormModal from '@/components/quit-form-modal';
 import { articleForm, productForm } from '@/config/form';
-import { Form, Drawer, message } from 'antd';
+import { Form, Drawer, message, Modal } from 'antd';
 import { CateItem, CreateArticleApiParams, RouteParams } from '@/interfaces/shop';
 import { ContentCateType } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
@@ -32,6 +32,23 @@ export default (props: Props) => {
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
   const params: RouteParams = useParams();
+  const [modal, contextHolder] = Modal.useModal();
+  const rechargeTxt = `您的免费发文额度已用完，信息发布点不足。<i style='color:rgb(255, 134, 0)'>去充值&gt;</i>`
+  const consumeTxt = `您的免费发文额度已用完，继续发文会消耗套餐内的信息发布点`
+  const config = {
+    title: '温馨提示',
+    closable:true,
+    onOk:()=>{
+      console.log(111)
+    },
+    onCancel: ()=>{
+      console.log(222)
+    },
+    content: (
+     <div className="quota-text" dangerouslySetInnerHTML={{__html: rechargeTxt}} >
+     </div>
+    ),
+  };
 
   useEffect(() => {
     // 初始化表单----> value
@@ -41,6 +58,7 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    // modal.confirm(config);
     values.name = values.name.trim()
     let resData: any;
     const isEdit = !isEmptyObject(editData);
@@ -55,7 +73,7 @@ export default (props: Props) => {
     }
     setFormLoading(false)
     if (resData?.success) {
-      message.success(resData.message)
+      message.success('发布成功')
       if (isEdit) {
         updateArticleList(resData.data)
       } else {
@@ -103,6 +121,7 @@ export default (props: Props) => {
           setQuitModalVisible(false)
           onClose() }}
           onCancel={() => setQuitModalVisible(false)}/>
+        {contextHolder}
     </Drawer>
   );
 }

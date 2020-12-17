@@ -30,12 +30,12 @@ export default (props: any) => {
     (async () => {
       setListLoading(true)
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res.success) {
-        setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
+      if (res?.success) {
+        setArticleList(addKeyForListData(res.data.articleList.result) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
-        setTotal(res.data.articleList.totalRecord)
+        setTotal(res?.data?.articleList?.totalRecord)
       } else {
-        message.error(res.message);
+        message.error(res?.message);
       }
       setListLoading(false)
     })()
