@@ -15,10 +15,11 @@ export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
   })
 }
 
-export const addKeyForListData = (list: any) => {
+export const addKeyForListData = (list: any, page?: number) => {
+  const pageSize = 10
   if (!list || list.length === 0) return [];
   return list.map((x: any, i: number) => {
-    return { ...x, key: (i + 1) }
+    return { ...x, key: page ? (page - 1) * pageSize + i + 1 : i + 1 }
   })
 }
 
@@ -38,4 +39,8 @@ export const formUnvalid = function(formInstance: any) {
 
 export const isEmptyObject = (obj: any): boolean =>  {
   return JSON.stringify(obj) === '{}';
+}
+
+export const randomStr = () => {
+  return Math.random().toString(15).substr(2)
 }
