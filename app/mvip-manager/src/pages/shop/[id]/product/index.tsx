@@ -2,7 +2,6 @@ import React,  { useState, useEffect } from 'react';
 import { message } from 'antd';
 import { useParams } from "umi";
 import ContentHeader from '@/components/content-header';
-import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ProductBox from '@/components/product-box';
 import ProductList from './components/list';
@@ -21,6 +20,7 @@ export default (props: any) => {
   const [editProductData, setEditProductData] = useState<any>(null);
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   // 获取店铺id
@@ -28,6 +28,7 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
+      setListLoading(true)
       const res = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
       if (res?.success) {
         setProductList(addKeyForListData(res.data.productList.result) || [])
@@ -36,6 +37,7 @@ export default (props: any) => {
       } else {
         message.error(res.message);
       }
+      setListLoading(false)
     })()
   }, [page, contentCateId])
 
@@ -53,6 +55,8 @@ export default (props: any) => {
             }} />
           <ProductList
             total={total}
+            page={page}
+            loading={listLoading}
             dataSource={productList}
             openEditForm={(item) => {
               setEditProductData({...item});

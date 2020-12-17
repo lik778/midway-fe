@@ -9,12 +9,12 @@ import { join } from 'path'
 export class ManagementController {
   constructor(private midwayApiService: MidwayService) {}
   @Get('*')
-  async managementView(@Req() req: Request, @Res() res: Response) {
-    const canEnter = await this.midwayApiService.canEnterManagement(req, res)
-    if (Boolean(canEnter)) {
-      res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
-    }
-
+  managementView(@Req() req: Request, @Res() res: Response) {
+    const goto = () => { res.sendFile(join(__dirname, '../../', '/dist/public/index.html')) }
+    this.midwayApiService.canEnterManagement(req, res).then(res => goto()).catch(e => {
+      const code = Number(e.response && e.response.data && e.response.data.code)
+      this.midwayApiService.managementRedirectTo(code, res, goto)
+    })
   }
 
   @Post('/api')
