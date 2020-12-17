@@ -89,12 +89,12 @@ export interface CreateContentCateApiParams {
 export interface TdkSaveMeta {
   description: string;
   keywords: string[];
-  position: number;
+  position: string;
   title: string;
 }
 
 export interface TdkDetailMeta {
-  position: number;
+  position: string;
 }
 
 export interface ShopStatus {

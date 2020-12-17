@@ -6,10 +6,10 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 export const baseInfoForm: FormConfig = {
   name: 'baseInfoForm',
   children: [
-    { inputWidth: 260, label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 20, minLength: 2,placeholder: '请输入企业名称，2~20个字', disabled: false, showCount: true },
-    { inputWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2,placeholder: '请输入企业别称，2~20个字',showCount: true },
-    { width: 376, label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true },
-    { inputWidth: 260, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
+    { inputWidth: 260, className:'f-middle',label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 20, minLength: 2,placeholder: '请输入企业名称，2~20个字', disabled: false, showCount: true },
+    { inputWidth: 260, className:'f-middle',label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2,placeholder: '请输入企业别称，2~20个字',showCount: true },
+    { width: 353, className:'f-area-select',label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true },
+    { inputWidth: 260, className:'f-middle',label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { width: 690, label: '企业简介', className:'f-textarea', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [ { pattern: /^[\s\S]{50,300}$/, message: '50～300个字'}  ] },
     { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
