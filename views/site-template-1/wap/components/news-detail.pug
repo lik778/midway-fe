@@ -1,13 +1,13 @@
 .news-detail
     - const {name, modifiedTime, contentImg, content} = renderData.articleInfo
-    .news-detail-title
-        h3 #{ name }
-    if modifiedTime
-        .news-detail-time
-            p #{ dateFormat(modifiedTime) }
-    if contentImg
-        .news-detail-pic
-            img(src=contentImg, alt="")
-    .news-detail-content.
-        !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+        .news-detail-title
+            h3 #{ name }
+        if modifiedTime
+            .news-detail-time
+                p #{ dateFormat(modifiedTime) }
+        if contentImg
+            .news-detail-pic
+                img(src=contentImg, alt="")
+        .news-detail-content.
+            !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
 
