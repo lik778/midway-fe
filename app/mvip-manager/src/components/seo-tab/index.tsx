@@ -44,7 +44,6 @@ export default (props: Props) => {
     }
   ]
 
-  console.log('nav', nav)
   nav.forEach((n, i) => {
     menuList.map(m => {
       if(m.position === n.position) {
