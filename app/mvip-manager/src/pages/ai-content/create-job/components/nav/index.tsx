@@ -49,6 +49,7 @@ export const CreateAiContentNav = (props: Props): any => {
       if (articleCates.length > 0) {
         showPanel();
       }
+      form.resetFields(['contentCateId'])
       setArticleList((item && item.articleCates) || [])
     }
 
@@ -74,7 +75,7 @@ export const CreateAiContentNav = (props: Props): any => {
                 </FormItem>
               }
               { checkHasShow<CateItem>(articleList) === 'hide' &&
-                <div className="ai-no-article-tips">所属文章分组: 您当前店铺下还没有创建分组，<Link to={`/shop/${shopId}/article`}>去创建分组</Link></div>
+                <div className="ai-no-article-tips">所属文章分组: 您当前店铺下还没有可用店铺，去创建分组，<Link to={`/shop/${shopId}/article`}>去创建分组</Link></div>
               }
             </Form>
         }

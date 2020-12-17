@@ -1,18 +1,35 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
 import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceResponse, ShopComponents } from '../interface';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { DomainStatus } from '../interface/site';
+import { ErrorCode } from '../enums/error';
 
 @Injectable()
 export class MidwayService {
   host: string;
+  haojingHost: string;
   constructor(
+    private readonly httpService: HttpService,
     private readonly requestService: RequestService,
     private readonly configService: ConfigService) {
     this.host = configService.get('services.midway-service.host');
+    this.haojingHost = configService.get('haojing');
+  }
+
+  public async canEnterManagement(req: Request, res: Response): Promise<any> {
+    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{}, { headers: this.setApiAHeaders(req.cookies)}).toPromise().catch(e => {
+        const code = Number(e.response && e.response.data && e.response.data.code);
+        if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
+            res.redirect(`${this.haojingHost}/oz/login`)
+            return
+        } else if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
+            res.redirect(`${this.haojingHost}`)
+            return
+        }
+    })
   }
 
   public getShopName(shopName: string): string {
