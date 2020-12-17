@@ -7,6 +7,6 @@ export default {
   haojing: 'http://wulei.baixing.cn',
   hostType: {
     b2b: ':shopName.shop.baixing.cn',
-    fuwu: '',
+    fuwu: 'shop.baixing.cn',
   }
 }
