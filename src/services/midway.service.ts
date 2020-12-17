@@ -4,7 +4,6 @@ import { AxiosResponse } from 'axios';
 import { RequestService } from './request.service';
 import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceResponse, ShopComponents } from '../interface';
 import { Request, Response } from 'express';
-import { DomainStatus } from '../interface/site';
 import { ErrorCode } from '../enums/error';
 
 @Injectable()
@@ -19,17 +18,21 @@ export class MidwayService {
     this.haojingHost = configService.get('haojing');
   }
 
+  public managementRedirectTo (code: number, res: Response, callback: any) {
+    if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
+      res.redirect(`${this.haojingHost}/oz/login`)
+      return
+    } else if (code === ErrorCode.ERR_MANAGEMENT) {
+      res.redirect(`${this.haojingHost}`)
+      return
+    } else {
+      callback()
+    }
+  }
+
   public async canEnterManagement(req: Request, res: Response): Promise<any> {
-    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{}, { headers: this.setApiAHeaders(req.cookies)}).toPromise().catch(e => {
-        const code = Number(e.response && e.response.data && e.response.data.code);
-        if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
-            res.redirect(`${this.haojingHost}/oz/login`)
-            return
-        } else if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
-            res.redirect(`${this.haojingHost}`)
-            return
-        }
-    })
+    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{},
+      { headers: this.setApiAHeaders(req.cookies)}).toPromise()
   }
 
   public getShopName(shopName: string): string {
@@ -38,13 +41,6 @@ export class MidwayService {
     } else {
       throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
     }
-    // if (/(\w+)\.shop\.baixing\.(cn|com)/.test(url)) {
-    //   return url.split('.')[0]
-    // } else if (shopName) {
-    //   return shopName;
-    // } else {
-    //   throw new HttpException('店铺不存在', HttpStatus.NOT_FOUND)
-    // }
   }
 
   public getManagementData(req: Request, input: ManagementReqParams): Promise<AxiosResponse<any>> {
@@ -78,51 +74,51 @@ export class MidwayService {
     return headers;
   }
 
-  private setPageHeaders(shopName: string, device: string): PageHeaderParams {
+  private setPageHeaders(shopName: string, device: string, domain: string): PageHeaderParams {
     return {
       'x-api-shop-name': shopName || '',
       'x-api-device': device || '',
-      'x-api-domain-type': DomainStatus.SUFFIX, // 先默认为后缀
+      'x-api-domain': domain || '', // 先默认为后缀
     }
   }
 
-  public getHomePageData(shopName: string, device: string): Promise<ServiceResponse<ShopComponents>> {
+  public getHomePageData(shopName: string, device: string, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/home/`, {},
-      this.setPageHeaders(shopName, device));
+      this.setPageHeaders(shopName, device, domain));
   }
 //服务内容列表
-  public getProductPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  public getProductPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/product/list`, params,
-      this.setPageHeaders(shopName, device));
+      this.setPageHeaders(shopName, device, domain));
   }
 
 //服务内容子分类
-  public getProductCateData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  public getProductCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/product/cateList`, params,
-      this.setPageHeaders(shopName, device));
+      this.setPageHeaders(shopName, device, domain));
   }
 
 //服务内容详情页
-public getProductDetailData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+public getProductDetailData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
   return this.requestService.post(`${this.host}/api/midway/frontend/product/detail`, params,
-    this.setPageHeaders(shopName, device));
+    this.setPageHeaders(shopName, device, domain));
 }
 
 //新闻列表
-  public getNewsPageData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+  public getNewsPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.host}/api/midway/frontend/article/list`, params,
-      this.setPageHeaders(shopName, device));
+      this.setPageHeaders(shopName, device, domain));
   }
 
 //新闻列表子分类
-public getNewsCateData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+public getNewsCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
   return this.requestService.post(`${this.host}/api/midway/frontend/article/cateList`, params,
-    this.setPageHeaders(shopName, device));
+    this.setPageHeaders(shopName, device, domain));
 }
 
 //新闻详情页
-public getNewsDetailData(shopName: string, device: string, params): Promise<ServiceResponse<ShopComponents>> {
+public getNewsDetailData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
   return this.requestService.post(`${this.host}/api/midway/frontend/article/detail`, params,
-    this.setPageHeaders(shopName, device));
+    this.setPageHeaders(shopName, device, domain));
 }
 }

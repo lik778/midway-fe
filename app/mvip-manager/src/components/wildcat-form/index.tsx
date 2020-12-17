@@ -7,7 +7,7 @@ import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import  Btn  from '@/components/btn';
-import { isEmptyObject } from '@/utils';
+import { isEmptyObject, randomStr } from '@/utils';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -88,7 +88,7 @@ const WildcatForm = (props: Props) => {
                   return (<FormItem name={img.name} key={img.name}
                                     style={{ width: item.width }} labelCol={{ span: 3 }}
                                     label={item.label} rules={[{required: item.required, message: `请上传${item.label}` }]}>
-                      <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
+                      <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
                                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
                     </FormItem>
                   )
@@ -103,7 +103,7 @@ const WildcatForm = (props: Props) => {
                   item.images.map((img) => {
                     const url = getEditData(img.name || '');
                     return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                        <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
+                        <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
                            onChange={(newValue) => onChange(newValue, item.name || '')}/>
                       </FormItem>
                     )

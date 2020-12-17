@@ -4,6 +4,7 @@ import { history } from 'umi';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box';
+import Loading from '@/components/loading';
 import './index.less';
 import { postApiData } from '@/api/base';
 import { getCreateShopStatusApi } from '@/api/shop';
@@ -30,10 +31,13 @@ export default (props: any) => {
   // 显示弹窗的来源
   const [shopOperateStatus, setOperate] = useState(0)
   // 弹窗报错
+  const [isSuffix, setIsSuffix] = useState(true)
+  // 弹窗报错
   const [isInputErr, setInputErr] = useState({
     key:'',
     isRequired: false
   })
+
   // 输入框值初始状态
   const [oSite, setOSite] = useState({
     name: '',
@@ -160,6 +164,8 @@ export default (props: any) => {
       if (res.success) {
         setShopStatus(res.data)
         setEditVisible(!res.data.isUserPerfect)
+        let isS = res?.data?.domainType === 'SUFFIX'? true : false
+        setIsSuffix(isS)
       }
     })()
   }, [])
@@ -214,11 +220,7 @@ export default (props: any) => {
   // 店铺站点页面主功能块
   const shopSitePage = () => {
     if(isLoading) {
-      return (
-        <Space size="middle">
-          <Spin size="large" />
-        </Space>
-      )
+      return <Loading />
     }
     // 店铺列表
     if(totalCount) {
@@ -245,6 +247,28 @@ export default (props: any) => {
     }
   }
 
+  const domainPage = () => {
+    if(isSuffix) {
+      return (
+        <div className="site-byte f-input">
+          <span>shop.baixing.com/</span>
+          <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+          <span className="f-len">{domainL}/20</span>
+          <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
+      </div>
+      )
+    }else {
+      return (
+        <div className="site-byte f-input prefix">
+          <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+          <span className="f-len">{domainL}/20</span>
+          <span>.shop.baixing.com</span>
+          <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
+      </div>
+      )
+    }
+  }
+
   // 我的店铺
   return (
     <div>
@@ -266,12 +290,7 @@ export default (props: any) => {
             </li>
             <li>
               <label htmlFor="domain">店铺域名</label>
-              <div className="site-byte f-input">
-                <span>shop.baixing.com/</span>
-                <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
-                <span className="f-len">{domainL}/20</span>
-                <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
-              </div>
+              {domainPage()}
             </li>
           </ul>
         </Modal>

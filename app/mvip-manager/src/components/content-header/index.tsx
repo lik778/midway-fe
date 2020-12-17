@@ -15,16 +15,17 @@ export default (props: contentHeader) => {
   const [title, setTitle] = useState('')
   // 获取店铺id
   const params: RouteParams = useParams();
+  const [paramId, setParamId] = useState(Number(params.id))
   useEffect(() => {
     (async () => {
-      const res =  await getShopInfoApi(Number(params.id))
+      const res =  await getShopInfoApi(paramId)
       if (res?.success) {
         setTitle(res?.data?.name)
       } else {
         message.error(res?.message)
       }
      })()
-  }, []);
+  }, [paramId]);
   return (
     <div className="content-header">
       <MainTitle title={title}/>

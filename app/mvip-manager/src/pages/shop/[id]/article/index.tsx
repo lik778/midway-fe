@@ -20,6 +20,7 @@ export default (props: any) => {
   const [editArticleData, setEditArticleData] = useState<any>(null)
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   // 获取店铺id
@@ -27,14 +28,16 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
+      setListLoading(true)
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res.success) {
+      if (res?.success) {
         setArticleList(addKeyForListData(res.data.articleList.result) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
-        setTotal(res.data.articleList.totalRecord)
+        setTotal(res?.data?.articleList?.totalRecord)
       } else {
-        message.error(res.message);
+        message.error(res?.message);
       }
+      setListLoading(false)
     })()
   }, [page, contentCateId])
 
@@ -61,6 +64,8 @@ export default (props: any) => {
       />
       <ArticleList
         total={total}
+        page={page}
+        loading={listLoading}
         dataSource={articleList}
         openEditForm={(item) => {
           setEditArticleData({ ...item });
@@ -70,7 +75,7 @@ export default (props: any) => {
       <ArticleBox
         addArticleList={(item) => {
           const addList = [item, ...articleList]
-          setArticleList(addKeyForListData(addList))
+          setArticleList(addKeyForListData(addList, page))
           setTotal(addList.length)
           // 处理一下cateList的num
           const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
@@ -80,7 +85,7 @@ export default (props: any) => {
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)
           articleList.splice(editIndex, 1, item)
-          setArticleList(addKeyForListData([...articleList]))
+          setArticleList(addKeyForListData([...articleList], page))
         }}
         cateList={cateList}
         editData={editArticleData}
