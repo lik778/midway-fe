@@ -25,7 +25,6 @@ export default (props: any) => {
     if(res?.success) {
       const tkd = res.data.tkd
       const navigation = res?.data?.navigation
-      console.log('nav', navigation)
       setNav(navigation)
       setEditData(tkd)
       setLoading(false)
