@@ -31,7 +31,7 @@ export default (props: any) => {
       setListLoading(true)
       const res = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
       if (res?.success) {
-        setProductList(addKeyForListData(res.data.productList.result) || [])
+        setProductList(addKeyForListData(res.data.productList.result, page) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.productList.totalRecord)
       } else {
@@ -75,7 +75,7 @@ export default (props: any) => {
           <ProductBox
             addProductList={(item) => {
               const addList = [item, ...productList]
-              setProductList(addKeyForListData([item, ...productList]))
+              setProductList(addKeyForListData([item, ...productList], page))
               setTotal(addList.length)
               // 处理一下cateList的num
               const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
@@ -85,7 +85,7 @@ export default (props: any) => {
             updateProductList={(item) => {
               const editIndex = productList.findIndex((a: any) => a.id === item.id)
               productList.splice(editIndex, 1, item)
-              setProductList(addKeyForListData([...productList]))
+              setProductList(addKeyForListData([...productList], page))
             }}
             cateList={cateList}
             editData={editProductData}
