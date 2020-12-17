@@ -4,6 +4,7 @@ import { history } from 'umi';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box';
+import Loading from '@/components/loading';
 import './index.less';
 import { postApiData } from '@/api/base';
 import { getCreateShopStatusApi } from '@/api/shop';
@@ -214,11 +215,7 @@ export default (props: any) => {
   // 店铺站点页面主功能块
   const shopSitePage = () => {
     if(isLoading) {
-      return (
-        <Space size="middle">
-          <Spin size="large" />
-        </Space>
-      )
+      return <Loading />
     }
     // 店铺列表
     if(totalCount) {

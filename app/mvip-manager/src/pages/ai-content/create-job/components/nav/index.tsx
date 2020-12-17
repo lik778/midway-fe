@@ -49,6 +49,7 @@ export const CreateAiContentNav = (props: Props): any => {
       if (articleCates.length > 0) {
         showPanel();
       }
+      form.resetFields(['contentCateId'])
       setArticleList((item && item.articleCates) || [])
     }
 
