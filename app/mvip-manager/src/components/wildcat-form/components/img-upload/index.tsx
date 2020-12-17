@@ -14,7 +14,7 @@ const getBase64 = function(file: Blob) {
 }
 
 interface Props {
-  url?: string;
+  url: string;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
   maxLength: number | undefined;
@@ -41,10 +41,10 @@ export const ImgUpload = (props: Props) => {
   }
 
   useEffect(() => {
-    if (url) {
-      setFileList([{ uid: '-1', status: 'done', url, thumbUrl: url }])
-    } else {
+    if (/^empty/.test(url)) {
       setFileList([])
+    } else {
+      setFileList([{ uid: '-1', status: 'done', url, thumbUrl: url }])
     }
   }, [url])
 
