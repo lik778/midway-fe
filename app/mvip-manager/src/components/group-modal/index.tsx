@@ -82,8 +82,8 @@ export default (props: Props) => {
     const groupCloneConfig = groupConfig.concat()
     if (editItem) {
       setConfig(config.map(g => {
-        g.value = editItem.name
-        g.initLen = editItem.name.length
+        g.value = editItem[g.id]
+        g.initLen = editItem[g.id].length
         if(g.required && g.value) {
           g['errClass'] = ''
           setError('')

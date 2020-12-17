@@ -75,7 +75,7 @@ export default (props: any) => {
       <ArticleBox
         addArticleList={(item) => {
           const addList = [item, ...articleList]
-          setArticleList(addKeyForListData(addList))
+          setArticleList(addKeyForListData(addList, page))
           setTotal(addList.length)
           // 处理一下cateList的num
           const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
@@ -85,7 +85,7 @@ export default (props: any) => {
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)
           articleList.splice(editIndex, 1, item)
-          setArticleList(addKeyForListData([...articleList]))
+          setArticleList(addKeyForListData([...articleList], page))
         }}
         cateList={cateList}
         editData={editArticleData}

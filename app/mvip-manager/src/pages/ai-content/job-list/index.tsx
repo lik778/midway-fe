@@ -19,7 +19,7 @@ export default (props: any) => {
        setListLoading(true)
        const res =  await getAiListApi({ page, size: 10 })
        if (res.success) {
-         setAiList(addKeyForListData(res.data.result || []))
+         setAiList(addKeyForListData(res.data.result || [], page))
          setTotal(res.data.totalRecord)
        } else {
          message.error(res.message)
@@ -61,7 +61,7 @@ export default (props: any) => {
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>}
         { total > 0 && <Table columns={columns} loading={listLoading} dataSource={aiList || []} pagination={{
-          onChange:(page: number) => setPage(page), total,
+          onChange:(page: number) => setPage(page), total, showSizeChanger: false,
           hideOnSinglePage: (aiList && aiList.length < 10) || undefined, pageSize: 10, position: ['bottomCenter']}} />}
       </div>
     </div>
