@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Table, message } from 'antd';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
@@ -8,7 +8,9 @@ import { auditStatusText, ArticleSourceText } from '@/constants';
 
 interface Props {
   dataSource: any[];
+  page: number;
   total: number;
+  loading: boolean;
   openEditForm(item: any): void;
   onChange(page: number): void;
 }
@@ -16,7 +18,7 @@ interface Props {
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
-  const { onChange, total, dataSource, openEditForm } = props
+  const { onChange, total, page, loading, dataSource, openEditForm } = props
   // 获取店铺id
   const params: RouteParams = useParams();
   const editAction = (item: any) => {
@@ -64,7 +66,7 @@ export default (props: Props) => {
              visible={visibleDeleteDialog}>
         <p>删除后无法恢复，确认删除？</p>
       </Modal>
-      <Table columns={columns}  dataSource={dataSource} pagination={{
-        onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+      <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
+        current: page, onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
     </div>)
 }

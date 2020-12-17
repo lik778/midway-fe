@@ -37,7 +37,6 @@ export default (props: any) => {
     } else if (status === VerifyStatus.PENDING) {
       return <Button type='primary' disabled>审核中</Button>
     } else if (status === VerifyStatus.REFUSE || status === VerifyStatus.REVOKE || status === null) {
-      // 这里先默认写死一下
       return <Button href={`${haojingHost}/bind/?type=${type === 1 ? 'licence' : 'idcard'}`} type='primary'>
         去完成{name}</Button>
     } else if (status === VerifyStatus.DEFAULT) {
