@@ -39,10 +39,8 @@ export default (props: Props) => {
     title: '温馨提示',
     closable:true,
     onOk:()=>{
-      console.log(111)
     },
     onCancel: ()=>{
-      console.log(222)
     },
     content: (
      <div className="quota-text" dangerouslySetInnerHTML={{__html: rechargeTxt}} >
