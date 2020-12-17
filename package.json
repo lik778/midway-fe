@@ -9,7 +9,7 @@
         "prebuild": "rimraf dist",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-        "dev": "cross-env NODE_ENV=development concurrently  \"webpack -c ./build/webpack.dev.config.js\" \"nest start --watch\"",
+        "dev": "cross-env NODE_ENV=local concurrently  \"webpack -c ./build/webpack.dev.config.js\" \"nest start --watch\"",
         "test:dev": "cross-env NODE_ENV=test concurrently  \"webpack -c ./build/webpack.dev.config.js\" \"nest start --watch\"",
         "release:dev": "cross-env NODE_ENV=development nest build && cross-env NODE_ENV=production webpack -c ./build/webpack.prod.config.js",
         "release:test": "cross-env NODE_ENV=test nest build && cross-env NODE_ENV=production webpack -c ./build/webpack.prod.config.js",

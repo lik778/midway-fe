@@ -1,5 +1,4 @@
 export enum DomainTypeEnum {
-  PREFIX = 1,
-  SUFFIX = 2,
-  CUSTOM= 3
+  FUWU= 'fuwu',  // 服务
+  B2B = 'b2b' // b2b
 }

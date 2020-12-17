@@ -1,7 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import config from './config';
-import { SiteController } from './controllers/site.controller';
 import { ManagementController } from './controllers/management.controller';
 import { MidwayService } from './services/midway.service';
 import { RequestService } from './services/request.service';
@@ -11,6 +10,8 @@ import { HaojingService } from './services/haojing.service';
 import { SitemapController } from './controllers/sitemap.controller';
 import { SitemapService } from './services/sitemap.service';
 import { LogService } from './services/log.service';
+import { B2bSiteController } from './controllers/site/b2b-site.controller';
+import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 
 /**
  * 应用程序根模块
@@ -25,7 +26,8 @@ import { LogService } from './services/log.service';
     AppController,
     ManagementController,
     SitemapController,
-    SiteController,
+    B2bSiteController,
+    FuwuSiteController,
     HaojingController
   ],
   providers: [
