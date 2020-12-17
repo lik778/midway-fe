@@ -39,3 +39,7 @@ export const formUnvalid = function(formInstance: any) {
 export const isEmptyObject = (obj: any): boolean =>  {
   return JSON.stringify(obj) === '{}';
 }
+
+export const randomStr = () => {
+  return Math.random().toString(15).substr(2)
+}
