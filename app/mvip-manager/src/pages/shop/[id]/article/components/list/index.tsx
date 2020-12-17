@@ -67,6 +67,6 @@ export default (props: Props) => {
         <p>删除后无法恢复，确认删除？</p>
       </Modal>
       <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
-        current: page, onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+        showSizeChanger: false, current: page, onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
     </div>)
 }
