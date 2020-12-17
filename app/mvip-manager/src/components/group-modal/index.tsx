@@ -80,13 +80,30 @@ export default (props: Props) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   useEffect(() => {
     const groupCloneConfig = groupConfig.concat()
-    setConfig(groupCloneConfig.map(x => {
-      x.value = (editItem && editItem[x.id]) || '';
-      return x;
-    }))
+    if (editItem) {
+      setConfig(config.map(g => {
+        g.value = editItem.name
+        g.initLen = editItem.name.length
+        if(g.required && g.value) {
+          g['errClass'] = ''
+          setError('')
+        }
+
+        if(g.value && g.initLen > g.minLength) {
+          g['errClass'] = ''
+          setError('')
+        }
+        return g
+      }))
+    } else {
+      setConfig(groupCloneConfig.map(x => {
+        x.value = (editItem && editItem[x.id]) || '';
+        return x;
+      }))
+    }
   }, [editItem]);
 
-  
+
 
   const resetConfigValue = (config: any) => {
     setConfig(config.map((x: any) => { x.value = ''; x.initLen = 0;return x }))
@@ -111,13 +128,13 @@ export default (props: Props) => {
       if(c.value && c.initLen < c.minLength) {
         errInfo = c.err
         newConfig[i]['errClass'] = errClass
-        
+
       }
     })
 
     setError(errInfo)
     setConfig(newConfig)
-    
+
     if(errInfo.length) {
       return;
     }
