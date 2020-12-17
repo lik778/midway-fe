@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Row } from 'antd';
 import MainTitle from '../../../components/main-title';
+import config from '@/config/env';
 import './index.less';
 import Loading from '@/components/loading';
 import { getUserVerifyListApi } from '@/api/user';
@@ -11,6 +12,7 @@ export default (props: any) => {
   const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const haojingHost = config().haojing;
   useEffect(() => {
     (async () => {
       setIsLoading(true)
@@ -28,15 +30,16 @@ export default (props: any) => {
     })()
   }, [])
 
-  const actionButton = (status: VerifyStatus, name: string) => {
+  const actionButton = (status: VerifyStatus, type: number) => {
+    const name = type === 1 ? '企业认证' : '个人认证';
     if (status === VerifyStatus.ACCEPT) {
       return <Button type='primary' disabled>已完成{name}</Button>
     } else if (status === VerifyStatus.PENDING) {
       return <Button type='primary' disabled>审核中</Button>
     } else if (status === VerifyStatus.REFUSE || status === VerifyStatus.REVOKE || status === null) {
       // 这里先默认写死一下
-      // http://wulei.baixing.cn/bind/#bindList
-      return <Button href="https://www.baixing.com/bind/#bindList" type='primary'>去完成{name}</Button>
+      return <Button href={`${haojingHost}/bind/?type=${type === 1 ? 'licence' : 'idcard'}`} type='primary'>
+        去完成{name}</Button>
     } else if (status === VerifyStatus.DEFAULT) {
       return null
     }
@@ -61,7 +64,7 @@ export default (props: any) => {
                   </div>
                 </Col>
                 <Col offset={4} span={9} style={{ marginTop: 60 }}>
-                  {actionButton(companyVerifyStatus, '企业认证')}
+                  {actionButton(companyVerifyStatus, 1)}
                 </Col>
               </Row>
               <Divider />
@@ -77,7 +80,7 @@ export default (props: any) => {
                   </div>
                 </Col>
                 <Col offset={4} span={9} style={{ marginTop: 60 }}>
-                  {actionButton(userVerifyStatus, '个人认证')}
+                  {actionButton(userVerifyStatus, 2)}
                 </Col>
               </Row>
           </div>

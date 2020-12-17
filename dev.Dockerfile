@@ -4,7 +4,7 @@ WORKDIR /usr/src
 
 COPY . .
 
-RUN npm set registry https://registry.npm.taobao.org && npm install && npm run release:dev && cd app/mvip-manager/ && npm install && npm run build \
+RUN npm set registry https://registry.npm.taobao.org && npm install && npm run release:dev && cd app/mvip-manager/ && npm install && npm run build:dev \
     && cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/ \
     && cp -r /usr/src/app/mvip-manager/dist/**/* /usr/src/dist/public/
 
