@@ -14,7 +14,8 @@ export default (props: any) => {
   const [formConfig, setFormConfig] = useState<FormConfig>(tdkForm)
   const params: RouteParams = useParams();
   const [editData, setEditData] = useState<any>(null)
-  const [Loading, setLoading] = useState<any>(true)
+  const [loading, setLoading] = useState<any>(true)
+  const [formLoading, setFormLoading] = useState<boolean>(false)
 
   const getMetaDetail = async () => {
     const res = await getMetaDetailApi(Number(params.id), {
@@ -44,8 +45,10 @@ export default (props: any) => {
       let kw: string = values.keywords
       values.keywords = kw.split(',')
     }
+    setFormLoading(true)
     const res = await getMetaSaveApi(Number(params.id), values)
     if(res?.success) {
+      setFormLoading(false)
       message.success(res.message)
     }else{
       message.error(res.message)
@@ -53,7 +56,7 @@ export default (props: any) => {
   }
 
   const formPage = ()=>{
-    if(Loading) {
+    if(loading) {
       return <LoadingStatus />
     }else{
       return (
@@ -61,7 +64,9 @@ export default (props: any) => {
           <WildcatForm
             editDataSource={editData}
             config={formConfig}
-            submit={sumbit}/>
+            submit={sumbit}
+            loading={formLoading}/>
+            
         </Form.Item>
       )
     }

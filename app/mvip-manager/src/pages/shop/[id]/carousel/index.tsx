@@ -60,8 +60,6 @@ export default (props: any) => {
     if(isWapLoading || isPcLoading) {
       return <Loading />
     }else {
-      
-      
       return (
           <div className="c-main">
             <div className="c-pc">
