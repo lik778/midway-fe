@@ -1,5 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import config from '../config'
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -10,15 +11,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     let exceptionRes = exception.getResponse();
 
-    // 如果是页面找不到，404页面
-    if (!req.url.includes('api') && status === HttpStatus.NOT_FOUND) {
-       res.render('common/404')
-       return
-    }
-
     if (typeof exceptionRes === 'string') { // 遵循CommonRes
       exceptionRes = { message: exceptionRes, code: status, success: false }
     }
-    res.status(status).json(exceptionRes);
+
+    // 如果是页面找不到，404页面
+    if (!req.url.includes('api') && status === HttpStatus.NOT_FOUND) {
+       res.render('common/404', { title: '页面找不到', haojingHost: config().haojing })
+       return
+    }
+
+    // 接口报错
+    if (req.url.includes('management/api')) {
+      // 后台接口返回json
+      res.status(status).json(exceptionRes);
+    } else {
+      // 落地页直接展示报错
+      res.render('common/404', { title: '出错啦', exceptionRes, haojingHost: config().haojing  })
+    }
+
   }
 }
