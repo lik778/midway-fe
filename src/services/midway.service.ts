@@ -77,10 +77,14 @@ export class MidwayService {
   }
 
   private setPageHeaders(shopName: string, device: string, domain: string): PageHeaderParams {
+    // 测试环境会出现localhost的情况，给一个默认值
+    if (domain === 'localhost') {
+      domain = 'shop.baixing.cn'
+    }
     return {
       'x-api-shop-name': shopName || '',
       'x-api-device': device || '',
-      'x-api-domain': domain || '', // 先默认为后缀
+      'x-api-domain': domain || ''
     }
   }
 

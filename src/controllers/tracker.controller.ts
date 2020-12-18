@@ -1,7 +1,6 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { TrackerService } from '../services/tracker.service';
-import { TrackerType } from '../enums/tracker';
 import { TrackerDTO } from '../dto/tracker.dto';
 
 @Controller('/tracker')
@@ -11,7 +10,7 @@ export class TrackerController {
 
   @Post('/')
   async tracker(@Req() req: Request, @Res() res: Response, @Body() body: TrackerDTO) {
-    const resData = await this.trackerService.point(body.type, body.data)
+    const resData = await this.trackerService.point(req, body)
     res.send(resData.data)
   }
 }

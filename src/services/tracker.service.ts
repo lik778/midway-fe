@@ -1,9 +1,9 @@
 import { BadRequestException, HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
-import { TrackerType } from '../enums/tracker';
 import { LogService } from './log.service';
 import { apiSecret } from '../constant';
+import { TrackerDTO } from '../dto/tracker.dto';
 
 @Injectable()
 export class TrackerService {
@@ -21,15 +21,21 @@ export class TrackerService {
     }
   }
 
-  public point(type: TrackerType, data: any): Promise<any> {
+  public point(req: Request, body: TrackerDTO): Promise<any> {
+    const { type, data } = body
     return this.httpService.post(`${this.host}/api/midway/internal/event/tracking/report`,
-      JSON.stringify({ type, data }), { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
+      JSON.stringify({ type, data: Object.assign(data, this.trackerBasicData(req)) }), { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err)
         throw new BadRequestException('打点错误');
       })
   }
 
-  public trackerBasicData(req: Request) {
-      return {};
+  public trackerBasicData(req: Request): any {
+      return {
+        _trackId: (req.cookies && req.cookies._trackId) || '',
+        url: req.protocol + '://' + req.get('host') + req.originalUrl,
+        ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        ua: req.headers['user-agent']
+      };
   }
 }
