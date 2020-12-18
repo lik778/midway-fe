@@ -23,7 +23,7 @@ export const CreateAiContentNav = (props: Props): any => {
     const [shopList, setShopList] = useState<AiShopList[] | null>(null)
     const [shopId, setShopId] = useState<number>(0)
     const [articleList, setArticleList] = useState<CateItem[] | null>(null)
-
+    const [quota, setQuota] = useState<any>(null)
     useEffect(() => {
       (async () => {
         const res = await getAiShopListApi()
@@ -52,6 +52,7 @@ export const CreateAiContentNav = (props: Props): any => {
       }
       form.resetFields(['contentCateId'])
       setArticleList((item && item.articleCates) || [])
+      setQuota(item?.quotaInfo)
     }
 
     return (
@@ -82,7 +83,7 @@ export const CreateAiContentNav = (props: Props): any => {
         }
         { checkHasShow<AiShopList>(shopList) === 'hide' &&
             <p className="ai-no-shop-tips" >先去创建店铺和文章分组才能新建任务，<Link to="/shop">去创建店铺</Link></p>}
-        <Recharge />
+        <Recharge quota={quota}/>
       </div>
     )
 }
