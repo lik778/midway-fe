@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default (props: any) => {
-  const { cateList, onChange, showGroup, showCreate} = props;
+  const { cateList, onChange, showGroup, showCreate, quota} = props;
   return (
     <div>
       <div className="nav-container">
@@ -42,7 +42,7 @@ export default (props: any) => {
           <Button onClick={showCreate} icon={<PlusOutlined />} size="large" type="primary">新建文章</Button>
         </div>
       </div>
-      <Recharge />
+      <Recharge quota={quota}/>
     </div>
   )
 }
