@@ -12,6 +12,8 @@ import { SitemapService } from './services/sitemap.service';
 import { LogService } from './services/log.service';
 import { B2bSiteController } from './controllers/site/b2b-site.controller';
 import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
+import { TrackerService } from './services/tracker.service';
+import { TrackerController } from './controllers/tracker.controller';
 
 /**
  * 应用程序根模块
@@ -28,14 +30,16 @@ import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
     SitemapController,
     B2bSiteController,
     FuwuSiteController,
-    HaojingController
+    HaojingController,
+    TrackerController
   ],
   providers: [
     LogService,
     RequestService,
     MidwayService,
     HaojingService,
-    SitemapService
+    SitemapService,
+    TrackerService
   ],
 })
 export class AppModule {}
