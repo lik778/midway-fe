@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
 import ContentHeader from '@/components/content-header';
-import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
@@ -26,13 +25,12 @@ export default (props: any) => {
   const [quota, setQuota] = useState<any>(null)
   // 获取店铺id
   const params: RouteParams = useParams();
-
   useEffect(() => {
     (async () => {
       setListLoading(true)
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
       if (res?.success) {
-        setArticleList(addKeyForListData(res.data.articleList.result) || [])
+        setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res?.data?.articleList?.totalRecord)
         setQuota(res?.data?.quotaInfo)
