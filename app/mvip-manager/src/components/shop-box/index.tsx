@@ -14,22 +14,20 @@ export default (props: any) => {
     }
   }
 
-  const handleClick = () =>{
-    location.href = s.shopDomain
-  }
-
   return (
     <div className="shop-box">
       <div className="shop-icon">
         <i className="iconfont">&#xe61e;</i>
         店铺{props.index + 1}
       </div>
-      <div className="s-img" onClick={handleClick}>
-        <img src={s?.thumb}/>
-        <div className={`s-status ${status}`}>{statusTxt}</div>
+      <div className="s-img">
+        <a href={s.shopDomain} target="_blank">
+          <img src={s?.thumb}/>
+          <div className={`s-status ${status}`}>{statusTxt}</div>
+        </a>
       </div>
       <div className="s-title" >
-        <h4 onClick={handleClick}>{s?.name}</h4>
+        <a href={s.shopDomain} target="_blank"><h4>{s?.name}</h4></a>
         <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
       </div>
       <div className="s-btn">
