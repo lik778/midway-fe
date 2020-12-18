@@ -58,6 +58,14 @@ export default (props: Props) => {
       message.warning(res?.message);
     }
   }
+
+  const deleteModalPage = () => {
+    if(deleteItem?.num){
+      return (<p>删除后，“{deleteItem?.name}”分类下的{deleteItem?.num}个{ type === ContentCateType.PRODUCT ?  '服务' : '文章' }会全部删除，确认删除吗</p>)
+    }else{
+      return (<p>删除后，“{deleteItem?.name}”分类下的{ type === ContentCateType.PRODUCT ?  '服务' : '文章' }会全部删除，确认删除吗</p>)
+    }
+  }
   return (
     <Drawer
       title={props.title}
@@ -101,7 +109,7 @@ export default (props: Props) => {
                onCancel={() => setVisibleDeleteDialog(false)}
                onOk={() => deleteGroupItem()}
                visible={visibleDeleteDialog}>
-          <p>删除后，“{deleteItem?.name}”分类下的{deleteItem?.num}个{ type === ContentCateType.PRODUCT ?  '服务' : '文章' }会全部删除，确认删除吗？</p>
+          {deleteModalPage()}
         </Modal>
     </Drawer>)
 }
