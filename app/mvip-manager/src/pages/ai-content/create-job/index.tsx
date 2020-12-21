@@ -62,22 +62,41 @@ export default (props: any) => {
     form.setFieldsValue(formValues)
   }
 
-  const submitData = async () => {
-    const values = form.getFieldsValue()
-    const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
-    Object.keys(values).forEach((k: string) => {
-      if (groupNames.includes(k)) {
-        values[k] = (values[k] && values[k].split('\n')) || []
+  const isValidForm =(): boolean => {
+    const errorList: string[] = []
+    Object.keys(counters).forEach(x => {
+      const min = wordsItemConfig[x].min
+      const max = wordsItemConfig[x].max
+      if (counters[x] < min || counters[x] > max) {
+        errorList.push(`${wordsItemConfig[x].label}最少${min}个词，最多${max}个词。`)
       }
     })
-    setSubmitLoading(true)
-    const res = await createAiJobApi(values)
-    setSubmitLoading(false)
-    if (res.success) {
-      message.success('添加成功')
-      history.push(`/ai-content/job-list`);
+    if (errorList.length > 0) {
+      message.error(`提交失败：${errorList.join('\n')}`)
+      return false
     } else {
-      message.error(res.message)
+      return true
+    }
+  }
+
+  const submitData = async () => {
+    if (isValidForm()) {
+      const values = form.getFieldsValue()
+      const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
+      Object.keys(values).forEach((k: string) => {
+        if (groupNames.includes(k)) {
+          values[k] = (values[k] && values[k].split('\n')) || []
+        }
+      })
+      setSubmitLoading(true)
+      const res = await createAiJobApi(values)
+      setSubmitLoading(false)
+      if (res.success) {
+        message.success('添加成功')
+        history.push(`/ai-content/job-list`);
+      } else {
+        message.error(res.message)
+      }
     }
   }
 
