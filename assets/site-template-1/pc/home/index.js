@@ -2,13 +2,11 @@ import './index.styl';
 import Swiper from 'swiper';
 import { qqModule } from '../components/customer-service/index';
 import { navModule } from '../components/nav/index';
-import { eventTracker } from '../../../common/tracker';
-
-eventTracker('qq-pc', 'sidebar-pc')
+import { contactUsModule } from '../components/sidebar/contact-us/index';
 
 navModule()
 qqModule()
-
+contactUsModule()
 
 var swiper = new Swiper('.swiper-container', {
   //spaceBetween: 30,
