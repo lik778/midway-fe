@@ -2,9 +2,12 @@ import $ from 'jquery'
 
 export const navModule = function() {
 	$(document).ready(function(){
-		$(".nav > ul > li >a").click(function(){
-			$(this).siblings().removeClass('nav-active');
-			$(this).addClass('nav-active');
+		const windowPath=window.location.href;
+		$(".nav a").each((index, tab) => {
+			const h = $(tab).attr('href')
+			if(h==windowPath){
+				$(tab).addClass('nav-active')
+			}
 		})
 	});
 }

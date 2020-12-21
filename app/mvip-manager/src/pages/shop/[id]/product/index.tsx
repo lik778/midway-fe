@@ -2,7 +2,6 @@ import React,  { useState, useEffect } from 'react';
 import { message } from 'antd';
 import { useParams } from "umi";
 import ContentHeader from '@/components/content-header';
-import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ProductBox from '@/components/product-box';
 import ProductList from './components/list';
@@ -21,6 +20,7 @@ export default (props: any) => {
   const [editProductData, setEditProductData] = useState<any>(null);
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   // 获取店铺id
@@ -28,14 +28,16 @@ export default (props: any) => {
 
   useEffect(() => {
     (async () => {
+      setListLoading(true)
       const res = await getProductListApi(Number(params.id), { page, contentCateId, size: 10 })
       if (res?.success) {
-        setProductList(addKeyForListData(res.data.productList.result) || [])
+        setProductList(addKeyForListData(res.data.productList.result, page) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.productList.totalRecord)
       } else {
         message.error(res.message);
       }
+      setListLoading(false)
     })()
   }, [page, contentCateId])
 
@@ -53,20 +55,12 @@ export default (props: any) => {
             }} />
           <ProductList
             total={total}
+            page={page}
+            loading={listLoading}
             dataSource={productList}
             openEditForm={(item) => {
               setEditProductData({...item});
               setProductFormVisible(true);
-            }}
-            update={(list, deleteItem) => {
-              setProductList(addKeyForListData(list) || [])
-              setTotal(list.length || 0)
-              // 处理一下cateList的num
-              const cateItem: any = cateList.find((x: any) => x.id == deleteItem.contentCateId)
-              if (cateItem.num > 0) {
-                cateItem.num -= 1
-              }
-              setCateList([...cateList ])
             }}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
@@ -81,7 +75,7 @@ export default (props: any) => {
           <ProductBox
             addProductList={(item) => {
               const addList = [item, ...productList]
-              setProductList(addKeyForListData([item, ...productList]))
+              setProductList(addKeyForListData([item, ...productList], page))
               setTotal(addList.length)
               // 处理一下cateList的num
               const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
@@ -91,7 +85,7 @@ export default (props: any) => {
             updateProductList={(item) => {
               const editIndex = productList.findIndex((a: any) => a.id === item.id)
               productList.splice(editIndex, 1, item)
-              setProductList(addKeyForListData([...productList]))
+              setProductList(addKeyForListData([...productList], page))
             }}
             cateList={cateList}
             editData={editProductData}

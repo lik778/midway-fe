@@ -4,6 +4,7 @@ export default defineConfig({
   title: '站内千词后台管理',
   locale: {},
   hash: true,
+  favicon: '//s.baixing.net/favicon.ico',
   base: '/management',
   nodeModulesTransform: {
     type: 'none',

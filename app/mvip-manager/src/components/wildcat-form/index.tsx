@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
@@ -7,7 +7,7 @@ import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import  Btn  from '@/components/btn';
-import { isEmptyObject } from '@/utils';
+import { isEmptyObject, randomStr } from '@/utils';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -22,12 +22,14 @@ interface Props {
   className?: string;
   onClick?: any;
   useLabelCol?: boolean;
+  loading?: boolean;
+  submitBtn?: ReactNode;
 }
 
 
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
-  const { editDataSource, useLabelCol, onInit } = props
+  const { editDataSource, useLabelCol, onInit, loading } = props
 
   useEffect(() => {
     if (editDataSource) {
@@ -86,7 +88,7 @@ const WildcatForm = (props: Props) => {
                   return (<FormItem name={img.name} key={img.name}
                                     style={{ width: item.width }} labelCol={{ span: 3 }}
                                     label={item.label} rules={[{required: item.required, message: `请上传${item.label}` }]}>
-                      <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
+                      <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
                                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
                     </FormItem>
                   )
@@ -101,7 +103,7 @@ const WildcatForm = (props: Props) => {
                   item.images.map((img) => {
                     const url = getEditData(img.name || '');
                     return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                        <ImgUpload key={img.text} text={img.text} url={ url || ''} maxLength={item.maxLength || 0}
+                        <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
                            onChange={(newValue) => onChange(newValue, item.name || '')}/>
                       </FormItem>
                     )
@@ -139,9 +141,9 @@ const WildcatForm = (props: Props) => {
           }
         }) }
         {
-          props.config && props.config.buttonConfig &&
-            <Button className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
-              {props.config.buttonConfig.text}</Button>
+          props.submitBtn || props.config && props.config.buttonConfig &&
+          (<Button loading={loading} className={props.config.buttonConfig.className} type="primary" size={props.config.buttonConfig.size} htmlType="submit">
+            {props.config.buttonConfig.text}</Button>)
         }
       </Form>
     </div>

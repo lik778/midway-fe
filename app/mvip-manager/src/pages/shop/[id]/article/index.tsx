@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
 import ContentHeader from '@/components/content-header';
-import MainTitle from '@/components/main-title';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
@@ -20,23 +19,31 @@ export default (props: any) => {
   const [editArticleData, setEditArticleData] = useState<any>(null)
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+  const [quota, setQuota] = useState<any>(null)
   // 获取店铺id
   const params: RouteParams = useParams();
-
   useEffect(() => {
     (async () => {
+      setListLoading(true)
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res.success) {
-        setArticleList(addKeyForListData(res.data.articleList.result) || [])
+      if (res?.success) {
+        setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
-        setTotal(res.data.articleList.totalRecord)
+        setTotal(res?.data?.articleList?.totalRecord)
+        setQuota(res?.data?.quotaInfo)
       } else {
-        message.error(res.message);
+        message.error(res?.message || '出错了');
       }
+      setListLoading(false)
     })()
   }, [page, contentCateId])
+
+  const updateQuota = (q: any) =>{
+    setQuota(q)
+  }
 
   return (<div>
     <ContentHeader type={ShopModuleType.ARTICLE}/>
@@ -45,6 +52,7 @@ export default (props: any) => {
         cateList={cateList}
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
         showGroup={() => setModuleGroupVisible(true)}
+        quota={quota}
         showCreate={() => {
           setEditArticleData({})
           setArticleFormVisible(true)
@@ -61,42 +69,38 @@ export default (props: any) => {
       />
       <ArticleList
         total={total}
+        page={page}
+        loading={listLoading}
         dataSource={articleList}
         openEditForm={(item) => {
           setEditArticleData({ ...item });
           setArticleFormVisible(true);
         }}
-        update={(list, deleteItem) => {
-          setArticleList(addKeyForListData(list) || [])
-          setTotal(list.length || 0)
-          // 处理一下cateList的num
-          const cateItem: any = cateList.find((x: any) => x.id == deleteItem.contentCateId)
-          if (cateItem.num > 0) {
-            cateItem.num -= 1
-          }
-          setCateList([...cateList ])
-        }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
         addArticleList={(item) => {
           const addList = [item, ...articleList]
-          setArticleList(addKeyForListData(addList))
+          setArticleList(addKeyForListData(addList, page))
           setTotal(addList.length)
           // 处理一下cateList的num
           const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
           cateItem.num += 1
           setCateList([...cateList ])
-        }}
+        }
+      }
         updateArticleList={(item) => {
           const editIndex = articleList.findIndex((a: any) => a.id === item.id)
           articleList.splice(editIndex, 1, item)
-          setArticleList(addKeyForListData([...articleList]))
+          setArticleList(addKeyForListData([...articleList], page))
         }}
         cateList={cateList}
         editData={editArticleData}
         updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
-        onClose={() => setArticleFormVisible(false)}/>
+        onClose={() => setArticleFormVisible(false)}
+        quota={quota}
+        updateQuota={updateQuota}
+        />
     </div>
   </div>)
 }

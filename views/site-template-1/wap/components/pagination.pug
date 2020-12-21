@@ -1,5 +1,6 @@
-mixin pagination(totalPage, currentPage, baseUrl)
-	div.pagination#pagination
+mixin pagination(totalPage, currentPage, pathname)
+	- const baseUrl = pathname.indexOf("?")== -1 ? pathname : pathname.substring(0, pathname.indexOf("?"))
+	div.pagination
 		if totalPage > 1
 			if currentPage == 1
 				a.prev-page.disabled 上一页

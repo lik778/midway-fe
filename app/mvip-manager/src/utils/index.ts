@@ -1,5 +1,7 @@
 import { uploadImgToUpyunReq } from '@/api/haojing';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
+import { DomainStatus } from '@/enums';
+import { productText } from '@/constants';
 
 export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
   const params = new FormData()
@@ -15,10 +17,11 @@ export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
   })
 }
 
-export const addKeyForListData = (list: any) => {
+export const addKeyForListData = (list: any, page?: number) => {
+  const pageSize = 10
   if (!list || list.length === 0) return [];
   return list.map((x: any, i: number) => {
-    return { ...x, key: (i + 1) }
+    return { ...x, key: page ? (page - 1) * pageSize + i + 1 : i + 1 }
   })
 }
 
@@ -38,4 +41,28 @@ export const formUnvalid = function(formInstance: any) {
 
 export const isEmptyObject = (obj: any): boolean =>  {
   return JSON.stringify(obj) === '{}';
+}
+
+export const notEmptyObject = (obj: any): boolean =>  {
+  return JSON.stringify(obj) !== '{}';
+}
+
+export const randomStr = () => {
+  return Math.random().toString(15).substr(2)
+}
+
+// 产品名字翻译机
+export const translateProductText  = (name: string, type: DomainStatus): string => {
+  const aliasItem = productText()[type];
+  return aliasItem ? aliasItem[name] : '';
+}
+
+export const randomList = (list: string[], limitNum: number): string[] => {
+  if (!list || list.length === 0) return [];
+  const res = [];
+  for(let i = 0; i < limitNum; i++) {
+    const randomIndex: number = Math.floor(Math.random() * list.length);
+    res.push(list[randomIndex]);
+  }
+  return Array.from(new Set(res))
 }

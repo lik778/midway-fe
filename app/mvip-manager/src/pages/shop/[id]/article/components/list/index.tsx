@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Table, message } from 'antd';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
@@ -8,16 +8,17 @@ import { auditStatusText, ArticleSourceText } from '@/constants';
 
 interface Props {
   dataSource: any[];
+  page: number;
   total: number;
+  loading: boolean;
   openEditForm(item: any): void;
-  update(list: any, item: any): void;
   onChange(page: number): void;
 }
 
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
-  const { onChange, total, dataSource, update, openEditForm } = props
+  const { onChange, total, page, loading, dataSource, openEditForm } = props
   // 获取店铺id
   const params: RouteParams = useParams();
   const editAction = (item: any) => {
@@ -33,12 +34,7 @@ export default (props: Props) => {
     const res  = await deleteArticleApi(Number(params.id), { id: actionId })
     if (res.success) {
       message.success(res.message);
-      // 动态
-      const deleteIndex = dataSource.findIndex(x => x.id === actionId)
-      const deleteItem = dataSource[deleteIndex]
-      dataSource.splice(deleteIndex, 1)
-      update(dataSource, deleteItem)
-      setVisibleDeleteDialog(false)
+      location.reload()
     } else {
       message.warning(res.message);
     }
@@ -70,7 +66,7 @@ export default (props: Props) => {
              visible={visibleDeleteDialog}>
         <p>删除后无法恢复，确认删除？</p>
       </Modal>
-      <Table columns={columns}  dataSource={dataSource} pagination={{
-        onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+      <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
+        showSizeChanger: false, current: page, onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
     </div>)
 }

@@ -12,16 +12,19 @@ import { AiTaskStatusText } from '@/constants';
 export default (props: any) => {
   const [page, setPage] = useState<number>(1);
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
   useEffect(() => {
     (async () => {
-     const res =  await getAiListApi({ page, size: 10 })
-     if (res.success) {
-       setAiList(addKeyForListData(res.data.result || []))
-       setTotal(res.data.totalRecord)
-     } else {
-       message.error(res.message)
-     }
+       setListLoading(true)
+       const res =  await getAiListApi({ page, size: 10 })
+       if (res.success) {
+         setAiList(addKeyForListData(res.data.result || [], page))
+         setTotal(res.data.totalRecord)
+       } else {
+         message.error(res.message)
+       }
+       setListLoading(false)
     })()
   }, [page])
 
@@ -51,14 +54,14 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="任务列表"/>
-      <div className="ai-list-container" style={{ height: isLoding ? '' : 'auto' }}>
+      <div className="ai-list-container">
         { isLoding && <Loading />}
         { total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>}
-        { total > 0 && <Table columns={columns}  dataSource={aiList || []} pagination={{
-          onChange:(page: number) => setPage(page), total,
+        { total > 0 && <Table columns={columns} loading={listLoading} dataSource={aiList || []} pagination={{
+          onChange:(page: number) => setPage(page), total, showSizeChanger: false,
           hideOnSinglePage: (aiList && aiList.length < 10) || undefined, pageSize: 10, position: ['bottomCenter']}} />}
       </div>
     </div>

@@ -14,7 +14,9 @@ export default (props: any) => {
   const [formConfig, setFormConfig] = useState<FormConfig>(tdkForm)
   const params: RouteParams = useParams();
   const [editData, setEditData] = useState<any>(null)
-  const [Loading, setLoading] = useState<any>(true)
+  const [loading, setLoading] = useState<any>(true)
+  const [nav, setNav] = useState<any[]>([])
+  const [formLoading, setFormLoading] = useState<boolean>(false)
 
   const getMetaDetail = async () => {
     const res = await getMetaDetailApi(Number(params.id), {
@@ -22,6 +24,8 @@ export default (props: any) => {
     })
     if(res?.success) {
       const tkd = res.data.tkd
+      const navigation = res?.data?.navigation
+      setNav(navigation)
       setEditData(tkd)
       setLoading(false)
     }
@@ -44,25 +48,36 @@ export default (props: any) => {
       let kw: string = values.keywords
       values.keywords = kw.split(',')
     }
+    setFormLoading(true)
     const res = await getMetaSaveApi(Number(params.id), values)
     if(res?.success) {
-      message.success(res.message)
+      setFormLoading(false)
+      message.success('保存成功')
     }else{
       message.error(res.message)
     }
   }
 
   const formPage = ()=>{
-    if(Loading) {
+    if(loading) {
       return <LoadingStatus />
     }else{
       return (
-        <Form.Item>
-          <WildcatForm
-            editDataSource={editData}
-            config={formConfig}
-            submit={sumbit}/>
-        </Form.Item>
+        <div className="t-content">
+          <div className="t-menu">
+            <SeoTab type={ShopTDKType.ARTICLE} nav={nav}/>
+          </div>
+          <div className="t-form">
+            <Form.Item>
+              <WildcatForm
+                editDataSource={editData}
+                config={formConfig}
+                submit={sumbit}
+                loading={formLoading}/>
+                
+            </Form.Item>
+          </div>
+      </div>
       )
     }
   }
@@ -75,21 +90,9 @@ export default (props: any) => {
             <h4>
               分页设置TDK
             </h4>
-            <div className="t-content">
-                <div className="t-menu">
-                  <SeoTab type={ShopTDKType.ARTICLE}/>
-              </div>
-              <div className="t-form">
-              {formPage()}
-              </div>
-            </div>
+            {formPage()}
           </div>
         </div>
       </div>
     );
 }
-
-
-
-
-
