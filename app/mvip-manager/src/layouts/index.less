@@ -30,3 +30,59 @@ html,body {
   color: #fff;
   background: #096DD9;
 }
+#base-menu{
+  .ant-menu-submenu{
+    .ant-menu-submenu-title{
+      position: relative;
+      padding-left: 50px!important;
+    }
+    .ant-menu-item{
+      padding-left: 63px!important;
+    }
+    .ant-menu-submenu-title:before{
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 20px;
+      top:50%;
+      margin-top: -8px;
+    }
+  }
+  .company-info{
+    .ant-menu-submenu-title:before{
+      background: url('//file.baixing.net/202012/202f7f4f20f4d3e74e2e938d6008b573.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+  .ant-menu-submenu-selected.company-info,.ant-menu-submenu-active.company-info{
+    .ant-menu-submenu-title:before{
+      background: url('//file.baixing.net/202012/d1ce5499b6883e2bbd5970c26d5e4f9c.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+  .shop-manage{
+    .ant-menu-submenu-title:before{
+      background: url('//file.baixing.net/202012/159a6911ce9310bf313d22f251272c57.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+  .ant-menu-submenu-selected.shop-manage,.ant-menu-submenu-active.shop-manage{
+    .ant-menu-submenu-title:before{
+      background: url('//file.baixing.net/202012/faccd82e925c23e0a2767b010dcecf04.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+  .ai-content{
+    .ant-menu-submenu-title:before{
+      background: url('//file.baixing.net/202012/598ab75e153ae5d9fc61479ecc7a6ee4.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+  .ant-menu-submenu-selected.ai-content,.ant-menu-submenu-active.ai-content{
+    .ant-menu-submenu-title:before{
+      background: url('//file.baixing.net/202012/21e74b6c5e98c89839528c5a54bf4c69.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+}

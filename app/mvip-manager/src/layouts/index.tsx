@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'umi';
-import styles from './index.less'
+import './index.less'
 import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
@@ -41,15 +41,16 @@ export default (props: any) => {
     setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
   }, [props.location.pathname])
 
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light">
-        <Header className={styles.sideHeader}>
-          <div className={styles.logo}></div>
+        <Header className="sideHeader">
+          <div className="logo"></div>
         </Header>
         <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
-              onOpenChange={(openKeys: any) => {setOpenKeys(openKeys) }}>
-          <SubMenu style={{ marginBottom: '10px' }} key="company-info" title="企业资料">
+              onOpenChange={(openKeys: any) => {setOpenKeys(openKeys) }} id="base-menu">
+          <SubMenu style={{ marginBottom: '10px' }} key="company-info" title="企业资料" className="company-info">
             <Menu.Item key="base">
               <Link to="/company-info/base">基础资料</Link>
             </Menu.Item>
@@ -57,12 +58,12 @@ export default (props: any) => {
               <Link to="/company-info/auth">认证资料</Link>
             </Menu.Item>
           </SubMenu>
-          <SubMenu style={{ marginBottom: '10px' }} key="shop" title="店铺管理">
+          <SubMenu style={{ marginBottom: '10px' }} key="shop" title="店铺管理" className="shop-manage">
             <Menu.Item key="list">
               <Link to="/shop">我的店铺</Link>
             </Menu.Item>
           </SubMenu>
-          <SubMenu style={{ marginBottom: '10px' }} key="ai-content" title="AI内容生成">
+          <SubMenu style={{ marginBottom: '10px' }} key="ai-content" title="AI内容生成" className="ai-content">
             <Menu.Item key="create-job">
               <Link to="/ai-content/create-job">新建任务</Link>
             </Menu.Item>
@@ -73,7 +74,7 @@ export default (props: any) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className={styles.layoutHeader}>
+        <Header className="layoutHeader">
           <div>{userInfo.userName}</div>
         </Header>
         <Content>
