@@ -14,6 +14,8 @@ import { B2bSiteController } from './controllers/site/b2b-site.controller';
 import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 import { TrackerService } from './services/tracker.service';
 import { TrackerController } from './controllers/tracker.controller';
+import { Kf53Service } from './services/kf53.service';
+import { Kf53Controller } from './controllers/kf53.controller';
 
 /**
  * 应用程序根模块
@@ -31,7 +33,8 @@ import { TrackerController } from './controllers/tracker.controller';
     B2bSiteController,
     FuwuSiteController,
     HaojingController,
-    TrackerController
+    TrackerController,
+    Kf53Controller
   ],
   providers: [
     LogService,
@@ -39,7 +42,8 @@ import { TrackerController } from './controllers/tracker.controller';
     MidwayService,
     HaojingService,
     SitemapService,
-    TrackerService
+    TrackerService,
+    Kf53Service
   ],
 })
 export class AppModule {}

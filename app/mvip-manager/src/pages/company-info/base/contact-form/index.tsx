@@ -3,6 +3,7 @@ import { Button, Form, message } from 'antd';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '@/config/form';
 import { QQCustomService } from '@/pages/company-info/base/qq-custom-service';
+import { KF53 } from '@/pages/company-info/base/kf53';
 import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
@@ -51,10 +52,9 @@ const ContactForm = (props: Props) => {
            onInit={(form) => setFormInstance(form)}
            config={config} formChange={formChange}/>
       </Form.Item>
-      {/*<Form.Item className={styles.item} style={{ margin: '33px 0' }}>*/}
-      {/*  <label className={styles.label}>第三方客服</label>*/}
-      {/*  <Button className={styles.addVendor} type="dashed" size="large" icon={<PlusOutlined />} block>添加代码</Button>*/}
-      {/*</Form.Item>*/}
+      <Form.Item label="第三方客服">
+        <KF53 />
+      </Form.Item>
       <Form.Item label="QQ客服">
         <QQCustomService editDataSource={editDataSource} onChange={(qqList) => setQQList(qqList)}/>
         <div style={{ marginTop: 32 }}>
