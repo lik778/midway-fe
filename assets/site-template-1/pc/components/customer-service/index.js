@@ -14,7 +14,7 @@ export const qqModule = function() {
 
 		//点击QQ客服event打点
 		$(".customer-box a").click(()=>{
-			eventTracker('qq-pc', 'float-pc')
+			eventTracker("qq-pc", "float-pc")
 		});
 	})
 }
