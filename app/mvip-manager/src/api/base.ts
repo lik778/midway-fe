@@ -38,7 +38,7 @@ export const postApi = (url: string, data: ManagementReqParams, headers?: any): 
 }
 
 // tips: 这边传输数据返回格式还是太随意了，需要修改
-export const getApi = (url: string, params?: any): Promise<any> => {
+export const getApi = (url: string, params: any): Promise<any> => {
   return request.get(url, {  params });
 }
 

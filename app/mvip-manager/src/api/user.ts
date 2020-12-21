@@ -1,4 +1,4 @@
-import { postApiData, getApi } from './base';
+import { postApiData } from './base';
 import {
   VerifyItem,
   UserInfo,
@@ -7,7 +7,6 @@ import {
   SaveEnterpriseForShopParams,
 } from '@/interfaces/user';
 import { ServiceResponse } from '@/interfaces/api';
-import { AxiosResponse } from 'axios';
 
 // 获取用户基础信息
 export const getUserBaseInfoApi = (): Promise<ServiceResponse<UserInfo>> => {
@@ -37,13 +36,4 @@ export const getAreasApi = (areaId: string): Promise<ServiceResponse<any>> => {
 // 获取用户认证信息
 export const getUserVerifyListApi = (): Promise<ServiceResponse<VerifyItem[]>> => {
   return postApiData('user/getVerifyList', {})
-}
-
-//
-export const getKf53Info = (): Promise<AxiosResponse<any>> => {
-  return getApi('/kf53/api/script')
-}
-
-export const editKf53Info = (params: any): Promise<AxiosResponse<any>> => {
-  return getApi('/kf53/api/edit', params)
 }

@@ -19,9 +19,5 @@ export default defineConfig({
       "target": "http://localhost:7001",
       "changeOrigin": true
     },
-    "/kf53/*": {
-      "target": "http://localhost:7001",
-      "changeOrigin": true
-    },
   }
 });

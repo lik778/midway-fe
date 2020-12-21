@@ -21,9 +21,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
        return
     }
 
-    // 接口报错(报错系统还要继续优化),因为包含了落地页接口请求，这里需要剥离一下
+    // 接口报错(报错系统还要继续优化)
     if (req.url.includes('management/api') || req.url.includes('tracker') ||
-      req.url.includes('kf53/api') || req.url.includes('sitemap')) {
+      req.url.includes('sitemap')) {
       // 后台接口返回json
       res.status(status).json(exceptionRes);
     } else {
