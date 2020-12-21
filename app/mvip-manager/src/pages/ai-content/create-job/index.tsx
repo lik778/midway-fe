@@ -8,6 +8,9 @@ import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
 import qsIcon from '../../../styles/qs-icon.svg'
+import { randomList, translateProductText } from '@/utils';
+import { aiDefaultWord } from './data'
+
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
@@ -19,7 +22,8 @@ export default (props: any) => {
   const [visiblePanel, setVisiblePanel] = useState<boolean>(false)
   const [counters, setCounters] = useState<any>(defaultCounters)
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
-
+  // 店铺信息
+  const { shopStatus } = props
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     // 这里来去重(包含空格)
@@ -42,6 +46,20 @@ export default (props: any) => {
     counters[name] = 0
     form.setFieldsValue(values);
     setCounters({ ...counters })
+  }
+  // 获取通用数据
+  const obtainData = (name: string, type?: string) => {
+    const maxLength = wordsItemConfig[name].max;
+    const formValues = form.getFieldsValue()
+    const dataName = type ? `${name}-${type}` : name
+    // 这里要做一下随机值
+    const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
+      .concat(formValues[dataName] === undefined ? [] : formValues[name].split('\n'))
+    const sliceWords: string[] = concatWords.length <= maxLength ? concatWords : concatWords.slice(0, maxLength)
+    formValues[name] = sliceWords.join('\n')
+    counters[name] = sliceWords.length
+    setCounters({ ...counters} )
+    form.setFieldsValue(formValues)
   }
 
   const submitData = async () => {
@@ -89,7 +107,9 @@ export default (props: any) => {
                         </FormItem>
                         <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
                         <div className="ai-content-actions">
-                          { x.name === 'prefix' && <Button onClick={() => clearAll(x.name)}>通用前缀</Button> }
+                          { x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button> }
+                          { x.name === 'wordD' && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
+                            { translateProductText('aiRecommond', shopStatus.domainType) }</Button> }
                           <Button onClick={() => clearAll(x.name)}>清空</Button>
                         </div>
                       </Col>

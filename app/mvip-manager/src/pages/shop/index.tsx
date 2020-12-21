@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Button, Space, Spin } from 'antd';
+import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
@@ -7,8 +7,7 @@ import ShopBox from '@/components/shop-box';
 import Loading from '@/components/loading';
 import './index.less';
 import { postApiData } from '@/api/base';
-import { getCreateShopStatusApi } from '@/api/shop';
-import { ShopStatus } from '@/interfaces/shop';
+import { notEmptyObject } from '@/utils';
 
 // 空状态基本配置
 const emptyMsg = {
@@ -18,6 +17,7 @@ const emptyMsg = {
 }
 
 export default (props: any) => {
+  const { shopStatus } = props
   // isLoaded
   const [isLoading, setIsLoading] = useState(true)
   // 弹窗显示隐藏
@@ -30,7 +30,7 @@ export default (props: any) => {
   const [totalCount, setCount] = useState(0)
   // 显示弹窗的来源
   const [shopOperateStatus, setOperate] = useState(0)
-  // 弹窗报错
+  // 是否是后缀域名(前缀B2B，后缀服务)
   const [isSuffix, setIsSuffix] = useState(true)
   // 弹窗报错
   const [isInputErr, setInputErr] = useState({
@@ -44,7 +44,6 @@ export default (props: any) => {
     domain: '',
   })
 
-  const [shopStatus, setShopStatus] = useState<ShopStatus | null>(null)
   const [editVisible, setEditVisible] = useState<boolean>(false)
   // 弹窗接口返回
   const [shopSiteRes, setShopSiteRes] = useState({
@@ -90,8 +89,8 @@ export default (props: any) => {
 
 
   const notInterceptCreateShop = (): boolean => {
-    setEditVisible(!shopStatus?.isUserPerfect)
-    return shopStatus?.isUserPerfect || false
+    setEditVisible(!shopStatus.isUserPerfect)
+    return shopStatus.isUserPerfect || false
   }
 
   // 显示弹窗
@@ -159,16 +158,11 @@ export default (props: any) => {
   )
 
   useEffect(() => {
-    (async () => {
-      const res =  await getCreateShopStatusApi()
-      if (res.success) {
-        setShopStatus(res.data)
-        setEditVisible(!res.data.isUserPerfect)
-        let isS = res?.data?.domainType === 'SUFFIX'? true : false
-        setIsSuffix(isS)
-      }
-    })()
-  }, [])
+    if (notEmptyObject(shopStatus)) {
+      setEditVisible(!shopStatus.isUserPerfect)
+      setIsSuffix(shopStatus.domainType === 'SUFFIX')
+    }
+  }, [shopStatus])
 
   // bindEvent
   // 弹窗取消
@@ -251,7 +245,7 @@ export default (props: any) => {
     if(isSuffix) {
       return (
         <div className="site-byte f-input">
-          <span>shop.baixing.com/</span>
+          <span className="domain">shop.baixing.com/</span>
           <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
           <span className="f-len">{domainL}/20</span>
           <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
@@ -262,7 +256,7 @@ export default (props: any) => {
         <div className="site-byte f-input prefix">
           <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
           <span className="f-len">{domainL}/20</span>
-          <span>.shop.baixing.com</span>
+          <span className="domain">.shop.baixing.com</span>
           <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
       </div>
       )

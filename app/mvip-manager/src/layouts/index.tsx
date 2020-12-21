@@ -4,12 +4,15 @@ import { Link } from 'umi';
 import styles from './index.less'
 import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
+import { getCreateShopStatusApi } from '@/api/shop';
+import { ShopStatus } from '@/interfaces/shop';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 export default (props: any) => {
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
+  const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   useEffect(() => {
@@ -20,6 +23,16 @@ export default (props: any) => {
       }
     })()
   }, [])
+
+  // 获取新增店铺的具体信息
+  useEffect(() => {
+    (async () => {
+      const res = await getCreateShopStatusApi()
+      if (res.success) {
+        setShopStatus(res.data)
+      }
+    })()
+  },[])
 
   useEffect(() => {
     const routeList = props.location.pathname.split('/')
@@ -63,7 +76,9 @@ export default (props: any) => {
         <Header className={styles.layoutHeader}>
           <div>{userInfo.userName}</div>
         </Header>
-        <Content>{ props.children }</Content>
+        <Content>
+          { React.cloneElement(props.children, { userInfo, shopStatus }) }
+        </Content>
       </Layout>
     </Layout>
   );

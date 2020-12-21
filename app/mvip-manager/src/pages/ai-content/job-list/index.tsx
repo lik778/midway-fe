@@ -54,7 +54,7 @@ export default (props: any) => {
   return (
     <div>
       <MainTitle title="任务列表"/>
-      <div className="ai-list-container" style={{ height: isLoding ? '' : 'auto' }}>
+      <div className="ai-list-container">
         { isLoding && <Loading />}
         { total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
