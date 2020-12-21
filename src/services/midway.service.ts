@@ -5,6 +5,7 @@ import { RequestService } from './request.service';
 import { HeaderAuthParams, ManagementReqParams, PageHeaderParams, ServiceResponse, ShopComponents } from '../interface';
 import { Request, Response } from 'express';
 import { ErrorCode } from '../enums/error';
+import { LogService } from './log.service';
 
 @Injectable()
 export class MidwayService {
@@ -13,6 +14,7 @@ export class MidwayService {
   constructor(
     private readonly httpService: HttpService,
     private readonly requestService: RequestService,
+    private readonly logService: LogService,
     private readonly configService: ConfigService) {
     this.host = configService.get('services.midway-service.host');
     this.haojingHost = configService.get('haojing');
@@ -75,10 +77,14 @@ export class MidwayService {
   }
 
   private setPageHeaders(shopName: string, device: string, domain: string): PageHeaderParams {
+    // 测试环境会出现localhost的情况，给一个默认值
+    if (domain === 'localhost') {
+      domain = 'shop.baixing.cn'
+    }
     return {
       'x-api-shop-name': shopName || '',
       'x-api-device': device || '',
-      'x-api-domain': domain || '', // 先默认为后缀
+      'x-api-domain': domain || ''
     }
   }
 
