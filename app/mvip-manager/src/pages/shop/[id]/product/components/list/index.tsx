@@ -14,6 +14,10 @@ interface Props {
   onChange(page: number): void;
 }
 
+const styles = {
+  cover: {}
+}
+
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
@@ -43,7 +47,7 @@ export default (props: Props) => {
     { title: '序号', dataIndex: 'key', key: 'key' },
     { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
         return (
-          <div style={{ width: 60, height: 40, textAlign: 'center', backgroundColor: '#f0f2f5'}}>
+          <div style={{ width: 60, height: 40, textAlign: 'center', overflow: 'hidden', backgroundColor: '#f0f2f5'}}>
             <img   height={40} src={`${text ? text : '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}`} alt="" />
           </div>
         )
