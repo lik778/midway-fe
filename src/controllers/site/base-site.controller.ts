@@ -24,7 +24,6 @@ export class BaseSiteController {
     } else if (this.domainType === DomainTypeEnum.B2B) {
       shopName = HostShopName
     }
-
     // 打点
     this.trackerService.point(req, { type: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
@@ -36,10 +35,10 @@ export class BaseSiteController {
         refer: ''
       }
     })
-
     const templateUrl = `site-template-1/${device}/home/index`
     const { data } = await this.midwayApiService.getHomePageData(shopName, device, domain);
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType }, isHome: true });
+    const { kf53 } = data.basic.contact;
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, kf53 }, isHome: true });
   }
 
   @Get('/n')
@@ -64,7 +63,8 @@ export class BaseSiteController {
     })
     const templateUrl = `site-template-1/${device}/news/index`;
     const currentPathname = req.originalUrl;
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname } });
+    const { kf53 } = data.basic.contact;
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53 } });
   }
 
   @Get('/n-:id')
@@ -88,7 +88,8 @@ export class BaseSiteController {
         }
       })
       const templateUrl = `site-template-1/${device}/news-detail/index`
-      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType } });
+      const { kf53 } = data.basic.contact;
+      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, kf53 } });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -106,7 +107,8 @@ export class BaseSiteController {
       })
       const templateUrl = `site-template-1/${device}/news-child/index`;
       const currentPathname = req.originalUrl;
-      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname } });
+      const { kf53 } = data.basic.contact;
+      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53 } });
     }
   }
 
@@ -132,7 +134,8 @@ export class BaseSiteController {
     })
     const templateUrl = `site-template-1/${device}/product/index`;
     const currentPathname = req.originalUrl;
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname } });
+    const { kf53 } = data.basic.contact;
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53 } });
   }
 
   @Get('/p-:id')
@@ -156,7 +159,8 @@ export class BaseSiteController {
         }
       })
       const templateUrl = `site-template-1/${device}/product-detail/index`
-      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType } });
+      const { kf53 } = data.basic.contact;
+      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, kf53 } });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -174,7 +178,8 @@ export class BaseSiteController {
       })
       const templateUrl = `site-template-1/${device}/product-child/index`;
       const currentPathname = req.originalUrl;
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname } });
+      const { kf53 } = data.basic.contact;
+      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53 } });
     }
   }
 }
