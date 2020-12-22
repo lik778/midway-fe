@@ -112,7 +112,7 @@ export default (props: Props) => {
         if(quota?.freeNum >1){
           newQuota['freeNum'] = newQuota['freeNum'] - 1
         }else if(quota?.postRemain > 6) {
-          newQuota['postRemain'] = newQuota['freeNum'] - 6
+          newQuota['postRemain'] = newQuota['postRemain'] - 6
         }
         updateQuota(newQuota)
       }

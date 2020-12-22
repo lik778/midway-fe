@@ -14,6 +14,21 @@ export default (props: any) => {
     }
   }
 
+  const editPage = () => {
+    if(s?.status === 1) {
+      return (<span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>)
+    }
+  }
+
+  const editBtn = () => {
+    if(s?.status === 1) {
+      return (<div className="s-btn">
+      <span onClick={() => linkTo(`/shop/${s.id}/nav`) } >基础设置</span>
+      <span onClick={() => linkTo(`/shop/${s.id}/product`) }>内容管理</span>
+    </div>)
+    }
+  }
+
   return (
     <div className="shop-box">
       <div className="shop-icon">
@@ -28,12 +43,9 @@ export default (props: any) => {
       </div>
       <div className="s-title" >
         <a href={s.shopDomain} target="_blank"><h4>{s?.name}</h4></a>
-        <span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>
+        {editPage()}
       </div>
-      <div className="s-btn">
-        <span onClick={() => linkTo(`/shop/${s.id}/nav`) } >基础设置</span>
-        <span onClick={() => linkTo(`/shop/${s.id}/product`) }>内容管理</span>
-      </div>
+      {editBtn()}
     </div>
   );
 }
