@@ -54,7 +54,7 @@ export default (props: any) => {
 
   // 相关文案和参数处理
   // 限制只显示2个
-  const isNewShopDisabled = totalCount >= 2 ? true : false
+  const isNewShopDisabled = totalCount >= 2  ? true : false
   // 弹窗文案
   const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
   const isDomainDisabled = shopOperateStatus === 1 ? true : false
