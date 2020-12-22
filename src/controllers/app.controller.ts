@@ -8,6 +8,11 @@ const files = fs.readdirSync(staticFiles);
 
 @Controller('/')
 export class AppController {
+  @Get('/')
+  home (@Req() req: Request, @Res() res: Response) {
+    res.render('common/home')
+  }
+
   @Get(files) // 处理静态资源
   haha (@Req() req: Request, @Res() res: Response) {
     const staticPath = join(staticFiles, req.path)
