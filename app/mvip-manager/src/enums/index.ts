@@ -69,3 +69,8 @@ export enum DomainStatus {
   SUFFIX = "SUFFIX", // 后缀
   CUSTOM = "CUSTOM" // 自定义
 }
+
+export enum KFStatus {
+  CLOSE = 'CLOSE',
+  OPEN= 'OPEN'
+}

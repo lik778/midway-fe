@@ -15,7 +15,7 @@ const { Step } = Steps
 
 export default (props: any) => {
   const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
-  const [currentStep, setCurrentStep] = React.useState(0);
+  const [currentStep, setCurrentStep] = React.useState(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(baseInfoForm);
