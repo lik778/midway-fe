@@ -13,11 +13,3 @@
                             | #{ dateFormat(item.modifiedTime) }
     else
         p 当前页面暂无内容，敬请期待...
-
-
-//-block append scripts
-//-    script.
-//-        function time(time = +new Date()) {
-//-            var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
-//-            return date.toJSON().substr(0, 19).replace('T', ' ');
-//-        }
