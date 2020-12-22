@@ -12,7 +12,8 @@ export const eventTracker = (clickType, clickPosition) => {
       data: {
         event_type: BXMAINSITE,
         site_id: 'dianpu',
-        shop_id: 'event',
+        shop_id: '',
+        tracktype: 'event',
         action: 'click',
         clickType,
         clickPosition,

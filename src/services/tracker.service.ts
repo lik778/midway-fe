@@ -30,6 +30,7 @@ export class TrackerService {
       })
   }
 
+  //pv,event公共的打点
   public trackerBasicData(req: Request): any {
       return {
         _trackId: (req.cookies && req.cookies._trackId) || '',
