@@ -27,15 +27,16 @@
         "@umijs/preset-react": "1.x",
         "@umijs/test": "^3.2.27",
         "classname": "0.0.0",
+        "dayjs": "^1.9.6",
         "lint-staged": "^10.0.7",
         "lodash": "^4.17.20",
+        "moment": "^2.29.1",
         "prettier": "^1.19.1",
         "rc-tween-one": "^2.7.3",
         "react": "^16.14.0",
         "react-dom": "^16.12.0",
         "umi": "^3.2.27",
-        "yorkie": "^2.0.0",
-        "dayjs": "^1.9.6"
+        "yorkie": "^2.0.0"
     },
     "devDependencies": {
         "@types/classnames": "^2.2.11",
