@@ -15,10 +15,18 @@ export default (props: any) => {
       )
     }
   }
+
+  const quotaPage = ()=> {
+    if(quota) {
+      return (<div className="recharge">
+        <span>当前免费剩余发文量:  <i className="highlight">{quota?.freeNum || 0}篇</i></span>
+        {consumePage()}
+      </div>)
+    }
+  }
   return (
-    <div className="recharge">
-      <span>当前免费剩余发文量:  <i className="highlight">{quota?.freeNum || 0}篇</i></span>
-      {consumePage()}
-    </div>
+    <>
+      {quotaPage()}
+    </>
   );
 }
