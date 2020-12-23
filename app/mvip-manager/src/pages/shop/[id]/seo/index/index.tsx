@@ -40,7 +40,6 @@ export default (props: any) => {
 
   const sumbit = async (values: TdkSaveMeta) => {
     values.position = ShopTDKPosition.INDEX
-    console.log('values?.keywords', values?.keywords)
     if(values?.keywords?.length<3) {
       message.error('请输入大于三个的关键词')
       return

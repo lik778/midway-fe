@@ -28,6 +28,7 @@ export const TagModule = (props: Props) => {
   const handleClose = (removedTag: any) => {
     const oldTags = tags.concat()
     const newTags = oldTags.filter(tag => tag !== removedTag);
+    onChange([...newTags].join(','))
     setTags(newTags)
   };
 
