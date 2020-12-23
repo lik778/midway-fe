@@ -73,20 +73,6 @@ export default (props: any) => {
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />
           <ProductBox
-            addProductList={(item) => {
-              const addList = [item, ...productList]
-              setProductList(addKeyForListData([item, ...productList], page))
-              setTotal(addList.length)
-              // 处理一下cateList的num
-              const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
-              cateItem.num += 1
-              setCateList([...cateList ])
-            }}
-            updateProductList={(item) => {
-              const editIndex = productList.findIndex((a: any) => a.id === item.id)
-              productList.splice(editIndex, 1, item)
-              setProductList(addKeyForListData([...productList], page))
-            }}
             cateList={cateList}
             editData={editProductData}
             updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}

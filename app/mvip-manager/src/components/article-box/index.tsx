@@ -20,12 +20,10 @@ interface Props {
   quota?: any;
   onClose(): void;
   updateCateList(item: CateItem): void;
-  addArticleList(item: any): void;
-  updateArticleList(item: any): void;
   updateQuota(quota:any):void;
 }
 export default (props: Props) => {
-  const { quota, visible, editData, onClose, cateList, updateCateList, addArticleList, updateArticleList, updateQuota} = props
+  const { quota, visible, editData, cateList, updateCateList, onClose} = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -41,7 +39,7 @@ export default (props: Props) => {
 
   const consumeText = () => {
     if(quota?.freeNum === 0 && quota?.postRemain<6) {
-        return rechargeTxt(quota?.buyUrl) 
+        return rechargeTxt(quota?.buyUrl)
     }else if(quota?.freeNum === 1){
        return consumeTxt
     }
@@ -55,12 +53,7 @@ export default (props: Props) => {
       if(quota?.freeNum === 1) {
         const resData = await createArticleApi(Number(params.id), formValues)
         if (resData?.success) {
-          message.success('发布成功')
-          addArticleList(resData.data)
-          let newQuota = quota
-          newQuota['freeNum'] = newQuota['freeNum'] - 1
-          updateQuota(newQuota)
-          onClose()
+          setTimeout(() =>  location.reload(), 500)
         } else {
           message.error(resData.message)
         }
@@ -104,19 +97,7 @@ export default (props: Props) => {
     setFormLoading(false)
     if (resData?.success) {
       message.success('发布成功')
-      if (isEdit) {
-        updateArticleList(resData.data)
-      } else {
-        addArticleList(resData.data)
-        let newQuota = quota
-        if(quota?.freeNum >1){
-          newQuota['freeNum'] = newQuota['freeNum'] - 1
-        }else if(quota?.postRemain > 6) {
-          newQuota['postRemain'] = newQuota['postRemain'] - 6
-        }
-        updateQuota(newQuota)
-      }
-      onClose()
+      setTimeout(() =>  location.reload(), 500)
     } else {
       message.error(resData.message)
     }

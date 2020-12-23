@@ -6,7 +6,7 @@ import { QQCustomService } from '@/pages/company-info/base/qq-custom-service';
 import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
-import { formUnvalid } from '@/utils';
+import { formUnvalid, isEmptyObject } from '@/utils';
 import { KF53 } from '@/pages/company-info/base/kf53';
 import { KFStatus } from '@/enums';
 
@@ -38,12 +38,17 @@ const ContactForm = (props: Props) => {
     const info:UserEnterpriseInfo = Object.assign(editDataSource, formData)
     info.qqMap = qqMap
     // 处理53客服数据
-    if (kf53Data.kefuStatus) {
-      info.kefuStatus = KFStatus.OPEN;
-      info.kf53Info.companyName = kf53Data.companyName
-      info.kf53Info.bname = kf53Data.bname
+    if (!isEmptyObject(kf53Data)) {
+      if (kf53Data.kefuStatus) {
+        if (kf53Data.companyName.length < 2) return
+        info.kefuStatus = KFStatus.OPEN;
+        info.kf53Info.companyName = kf53Data.companyName
+        info.kf53Info.bname = kf53Data.bname
+      } else {
+        info.kefuStatus = KFStatus.CLOSE
+      }
     } else {
-      info.kefuStatus = KFStatus.CLOSE
+      if(info.kf53Info.companyName.length < 2) return
     }
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
