@@ -40,6 +40,7 @@ export default (props: any) => {
 
   const sumbit = async (values: TdkSaveMeta) => {
     values.position = ShopTDKPosition.INDEX
+    console.log('values?.keywords', values?.keywords)
     if(values?.keywords?.length<3) {
       message.error('请输入大于三个的关键词')
       return
@@ -50,8 +51,8 @@ export default (props: any) => {
     }
     setFormLoading(true)
     const res = await getMetaSaveApi(Number(params.id), values)
+    setFormLoading(false)
     if(res?.success) {
-      setFormLoading(false)
       message.success('保存成功')
     }else{
       message.error(res.message)

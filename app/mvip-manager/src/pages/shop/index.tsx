@@ -54,7 +54,7 @@ export default (props: any) => {
 
   // 相关文案和参数处理
   // 限制只显示2个
-  let isNewShopDisabled = totalCount >= 2 ? true: false
+  let isNewShopDisabled = false
   // 弹窗文案
   const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
   const isDomainDisabled = shopOperateStatus === 1 ? true : false
@@ -161,7 +161,7 @@ export default (props: any) => {
     if (notEmptyObject(shopStatus)) {
       setEditVisible(!shopStatus.isUserPerfect)
       setIsSuffix(shopStatus.domainType === 'SUFFIX')
-      isNewShopDisabled = shopStatus?.isTicketAvailable || false
+      isNewShopDisabled = !(shopStatus?.isTicketAvailable) || false
     }
   }, [shopStatus])
 
