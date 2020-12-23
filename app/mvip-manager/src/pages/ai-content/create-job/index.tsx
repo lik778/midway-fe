@@ -80,6 +80,10 @@ export default (props: any) => {
   }
 
   const submitData = async () => {
+    if (!form.getFieldValue('contentCateId')) {
+      message.error('请选择文章分组')
+      return
+    }
     if (isValidForm()) {
       const values = form.getFieldsValue()
       const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
