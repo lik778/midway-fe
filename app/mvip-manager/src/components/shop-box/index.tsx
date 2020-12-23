@@ -7,7 +7,8 @@ import moment from 'moment';
 export default (props: any) => {
   const s = props?.shopChild
   const status = s?.status === 1 ? 's-active' : 's-offline'
-  const statusTxt = s?.status === 1 ? '生效中' : '已下线'
+  const statusTxt = s?.status === 1 ? '生效中' : s?.status === 2?'审核驳回':'已下线'
+
 
   const linkTo = (link: string) => {
     if (props.notInterceptCreateShop()) {
@@ -16,13 +17,13 @@ export default (props: any) => {
   }
 
   const editPage = () => {
-    if(s?.status === 1) {
+    if(s?.status === 1 || s?.status === 2) {
       return (<span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>)
     }
   }
 
   const editBtn = () => {
-    if(s?.status === 1) {
+    if(s?.status === 1 || s?.status === 2) {
       return (<div className="s-btn">
       <span onClick={() => linkTo(`/shop/${s.id}/nav`) } >基础设置</span>
       <span onClick={() => linkTo(`/shop/${s.id}/product`) }>内容管理</span>
