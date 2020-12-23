@@ -1,15 +1,15 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
-import { message, Tooltip, Form, Button, Modal, Input, Row, Col } from 'antd';
+import React, { ChangeEvent, useState } from 'react';
+import { Tooltip, Form, Button, Modal, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
-import { debounce } from 'lodash';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
 import qsIcon from '../../../styles/qs-icon.svg'
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
+import { errorMessage, successMessage } from '@/components/message';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -30,15 +30,12 @@ export default (props: any) => {
     const wordsList = words.split('\n').map(x => x.replace(/\s+/g, ''))
     const dedupWordsList =  Array.from(new Set(wordsList));
     const maxLength = wordsItemConfig[name].max;
-    const minLength = wordsItemConfig[name].min;
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
     values[name] = data.join('\n')
     form.setFieldsValue(values)
     counters[name] = data.filter(x => x !== '').length;
     setCounters({ ...counters })
   }
-
-  const delayedQuery = useCallback(debounce((words, name) => { wordsChange(words, name) }, 500), []);
 
   const clearAll = (name: string) => {
     const values = form.getFieldsValue()
@@ -54,11 +51,9 @@ export default (props: any) => {
     const dataName = type ? `${name}-${type}` : name
     // 这里要做一下随机值
     const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
-      .concat(formValues[dataName] === undefined ? [] : formValues[name].split('\n'))
-    const sliceWords: string[] = concatWords.length <= maxLength ? concatWords : concatWords.slice(0, maxLength)
-    formValues[name] = sliceWords.join('\n')
-    counters[name] = sliceWords.length
-    setCounters({ ...counters} )
+    formValues[name] = concatWords.join('\n')
+    counters[name] = concatWords.length
+    setCounters({ ...counters})
     form.setFieldsValue(formValues)
   }
 
@@ -72,7 +67,7 @@ export default (props: any) => {
       }
     })
     if (errorList.length > 0) {
-      message.error(`提交失败：${errorList.join('\n')}`)
+      errorMessage(`提交失败：${errorList.join('\n')}`)
       return false
     } else {
       return true
@@ -81,7 +76,7 @@ export default (props: any) => {
 
   const submitData = async () => {
     if (!form.getFieldValue('contentCateId')) {
-      message.error('请选择文章分组')
+      errorMessage('请选择文章分组')
       return
     }
     if (isValidForm()) {
@@ -96,10 +91,10 @@ export default (props: any) => {
       const res = await createAiJobApi(values)
       setSubmitLoading(false)
       if (res.success) {
-        message.success('添加成功')
+        successMessage('添加成功')
         history.push(`/ai-content/job-list`);
       } else {
-        message.error(res.message)
+        errorMessage(res.message)
       }
     }
   }
@@ -126,7 +121,7 @@ export default (props: any) => {
                           </Tooltip>
                         </h4>
                         <FormItem name={x.name}>
-                          <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => delayedQuery(e.target.value, x.name)} />
+                          <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
                         </FormItem>
                         <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
                         <div className="ai-content-actions">

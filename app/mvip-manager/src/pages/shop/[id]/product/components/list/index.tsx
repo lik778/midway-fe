@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Modal, Table, message } from 'antd';
+import { Modal, Table } from 'antd';
 import { deleteProductApi } from '@/api/shop';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { auditStatusText } from '@/constants';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   dataSource: any[];
@@ -37,10 +38,10 @@ export default (props: Props) => {
   const confirmDelete = async () => {
       const res  = await deleteProductApi(Number(params.id), { id: actionId })
       if (res?.success) {
-        message.success(res.message);
+        successMessage(res.message);
         location.reload()
       } else {
-        message.warning(res.message);
+        errorMessage(res.message);
       }
   }
   const columns = [

@@ -1,12 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
 import './index.less';
-import { message, Modal, Input } from 'antd';
+import { Modal, Input } from 'antd';
 import classNames from 'classnames';
 import { createContentCateApi, updateContentCateApi } from '@/api/shop'
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
+import { errorMessage, successMessage } from '@/components/message';
 
 
 // 分组tkd配置
@@ -146,23 +147,23 @@ export default (props: Props) => {
       const res = await updateContentCateApi(Number(params.id), {...mergeItem, type})
       setConfirmLoading(false)
       if (res?.success) {
-        message.success('编辑成功');
+        successMessage('编辑成功');
         groupUpdate(res?.data);
         resetConfigValue(config);
         onClose();
       } else {
-        message.error(res?.message)
+        errorMessage(res?.message)
       }
     } else {
       const res = await createContentCateApi(Number(params.id), {...r, type})
       setConfirmLoading(false)
       if (res?.success) {
-        message.success('新增分组成功');
+        successMessage('新增分组成功');
         groupCreate(res?.data);
         resetConfigValue(config);
         onClose();
       } else {
-        message.error(res?.message)
+        errorMessage(res?.message)
       }
     }
   };

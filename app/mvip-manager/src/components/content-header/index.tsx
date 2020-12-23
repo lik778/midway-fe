@@ -4,8 +4,8 @@ import MainTitle from '@/components/main-title';
 import { getShopInfoApi } from '@/api/shop';
 import { ShopModuleType } from '@/enums';
 import { useParams } from 'umi';
-import {message} from "antd"
 import { RouteParams } from '@/interfaces/shop';
+import { errorMessage } from '@/components/message';
 interface contentHeader{
   type: ShopModuleType;
 }
@@ -22,7 +22,7 @@ export default (props: contentHeader) => {
       if (res?.success) {
         setTitle(res?.data?.name)
       } else {
-        message.error(res?.message)
+        errorMessage(res?.message)
       }
      })()
   }, [paramId]);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Drawer, message, Modal } from 'antd';
+import { Button, Drawer, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import GroupModal from '@/components/group-modal'
 import { deleteContentCateApi } from '@/api/shop';
@@ -7,6 +7,7 @@ import './index.less';
 import { ContentCateType } from '@/enums';
 import { RouteParams, CateItem } from '@/interfaces/shop';
 import { useParams } from 'umi';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   type: ContentCateType,
@@ -52,10 +53,10 @@ export default (props: Props) => {
       cateList.splice(deleteIndex, 1)
       updateCateList([...cateList]);
       setVisibleDeleteDialog(false);
-      message.success(res?.message);
+      successMessage(res?.message);
       location.reload()
     } else {
-      message.warning(res?.message);
+      errorMessage(res?.message);
     }
   }
 
