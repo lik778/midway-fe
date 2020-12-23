@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
-import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
+import { QQItem } from '@/interfaces/user';
 
 const styles = {
   p: {  color: '#999', fontSize: 12, lineHeight: 1 },
@@ -12,11 +12,11 @@ const styles = {
 }
 
 interface Props {
-  editDataSource: UserEnterpriseInfo | null;
   onChange(list: QQItem[]): void;
+  values: QQItem[];
 }
 export const QQCustomService = (props: Props) => {
-  const { editDataSource, onChange } = props
+  const { onChange, values } = props
   const [list, setList] = React.useState<QQItem[]>([]);
 
   const addAction = function() {
@@ -35,15 +35,7 @@ export const QQCustomService = (props: Props) => {
     onChange(list);
   }
 
-  useEffect(() => {
-    if (editDataSource) {
-      const { qqMap } = editDataSource
-      const list = (qqMap && Object.keys(qqMap).map(k => {
-        return { qq: k, name: qqMap[k] }
-      })) || []
-      setList(list)
-    }
-  }, [editDataSource])
+  useEffect(() => setList(values), [values])
 
   return (
     <div>
