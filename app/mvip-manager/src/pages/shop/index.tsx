@@ -221,7 +221,7 @@ export default (props: any) => {
     if(totalCount) {
       return (
         <div className="my-shop-list">
-          <Button type="primary" className="primary-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
+          <Button type="primary" className="primary-btn p-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
           <div className="shop-list">
             {
               shopListData.map((shopChild, index) => {
