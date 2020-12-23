@@ -47,7 +47,7 @@ export class BaseSiteController {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const currentPage = query.page || 1;
-    const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage, size: 0 }, domain);
+    const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage }, domain);
     // 打点
     this.trackerService.point(req, { type: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
