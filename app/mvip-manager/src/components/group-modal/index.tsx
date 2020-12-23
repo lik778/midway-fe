@@ -175,7 +175,8 @@ export default (props: Props) => {
 
     setConfig(config.map(g => {
         if (g.id === name) {
-          g.value = value
+          // 去掉空格
+          g.value = value.replace(/\s/g, '')
           g.initLen = value.length
         }
         if(g.required && g.value) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, message } from 'antd';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '@/config/form';
@@ -26,6 +26,16 @@ const ContactForm = (props: Props) => {
   const formChange = (changeValue: any, allValues: any) => {
     setFormData(allValues);
   }
+
+  useEffect(() => {
+    if (editDataSource) {
+      const { qqMap } = editDataSource
+      const list = (qqMap && Object.keys(qqMap).map(k => {
+        return { qq: k, name: qqMap[k] }
+      })) || []
+      setQQList(list)
+    }
+  }, [editDataSource])
 
   // 这里前置要校验一下
   const saveInfo = async() => {
@@ -71,7 +81,7 @@ const ContactForm = (props: Props) => {
         <KF53 editDataSource={editDataSource} onChange={(values) => setKf53Data(values)}/>
       </Form.Item>
       <Form.Item label="QQ客服">
-        <QQCustomService editDataSource={editDataSource} onChange={(qqList) => setQQList(qqList)}/>
+        <QQCustomService values={qqList}  onChange={(list) => setQQList(list)}/>
         <div style={{ marginTop: 32 }}>
           <Button loading={loading} type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
