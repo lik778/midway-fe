@@ -50,8 +50,8 @@ export default (props: any) => {
     }
     setFormLoading(true)
     const res = await getMetaSaveApi(Number(params.id), values)
+    setFormLoading(false)
     if(res?.success) {
-      setFormLoading(false)
       message.success('保存成功')
     }else{
       message.error(res.message)
