@@ -13,7 +13,6 @@ block content
             - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
             +pagination(totalPage, renderData.currentPage, `${renderData.currentPathname}`)
 
-
         .side-bar
             include ../components/sidebar/sidebar-title.pug
             +sidebar-title('联系我们')

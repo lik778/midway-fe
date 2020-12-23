@@ -11,6 +11,10 @@ block content
             include ../components/product-list.pug
             +product-list('product-child')
 
+            include ../components/pagination
+            - var totalPage = (renderData.productCateList && renderData.productList.totalPage) || 1
+            +pagination(totalPage, currentPage, `${currentPathname}`)
+
         .side-bar
             include ../components/sidebar/sidebar-title.pug
             +sidebar-title('联系我们')
@@ -19,10 +23,6 @@ block content
 
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
-
-    include ../components/pagination
-    - var totalPage = (renderData.productCateList && renderData.productList.totalPage) || 1
-    +pagination(totalPage, currentPage, `${currentPathname}`)
 
     include ../components/footer.pug
     include ../components/customer-service.pug
