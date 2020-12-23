@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Steps, message, Button, Row, Col } from 'antd';
+import { Steps, Button, Row, Col } from 'antd';
 import './index.less';
 import { baseInfoForm } from '../../../config/form'
 import WildcatForm from '@/components/wildcat-form';
@@ -9,6 +9,7 @@ import ContactForm from './contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { getEnterpriseForShopApi, saveEnterpriseForShopApi } from '@/api/user'
 import { UserEnterpriseInfo } from '@/interfaces/user';
+import { errorMessage, successMessage } from '@/components/message';
 
 const { Step } = Steps
 
@@ -48,11 +49,11 @@ export default (props: any) => {
     const res = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (res.success) {
-      message.success('修改基础资料成功')
+      successMessage('修改基础资料成功')
       setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
       next()
     } else {
-      message.error(res.message)
+      errorMessage(res.message)
     }
   }
 

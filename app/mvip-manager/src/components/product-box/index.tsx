@@ -3,14 +3,15 @@ import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import { productForm } from '@/config/form';
-import { Drawer, Form, message } from 'antd';
-import { CateItem, CreateProductApiParams, RouteParams } from '@/interfaces/shop';
+import { Drawer, Form } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
 import QuitFormModal from '@/components/quit-form-modal';
 import { isEmptyObject } from '@/utils';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   cateList: CateItem[];
@@ -55,10 +56,10 @@ export default (props: Props) => {
     }
     setFormLoading(false)
     if (resData.success) {
-      message.success(resData.message)
+      successMessage(resData.message)
       setTimeout(() =>  location.reload(), 500)
     } else {
-      message.error(resData.message)
+      errorMessage(resData.message)
     }
   }
 

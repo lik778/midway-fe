@@ -1,5 +1,4 @@
 import React,  { useState, useEffect } from 'react';
-import { message } from 'antd';
 import { useParams } from "umi";
 import ContentHeader from '@/components/content-header';
 import ShopModuleGroup from '@/components/shop-module-group';
@@ -11,6 +10,7 @@ import { getProductListApi }  from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import './index.less'
 import { CateItem, RouteParams } from '@/interfaces/shop';
+import { errorMessage } from '@/components/message';
 
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 export default (props: any) => {
@@ -35,7 +35,7 @@ export default (props: any) => {
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.productList.totalRecord)
       } else {
-        message.error(res.message);
+        errorMessage(res.message);
       }
       setListLoading(false)
     })()

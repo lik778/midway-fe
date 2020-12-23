@@ -5,13 +5,14 @@ import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import QuitFormModal from '@/components/quit-form-modal';
 import { articleForm, productForm } from '@/config/form';
-import { Form, Drawer, message, Modal } from 'antd';
-import { CateItem, CreateArticleApiParams, RouteParams } from '@/interfaces/shop';
+import { Form, Drawer, Modal } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { ContentCateType } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createArticleApi, updateArticleApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { isEmptyObject } from '@/utils';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   cateList: CateItem[];
@@ -55,7 +56,7 @@ export default (props: Props) => {
         if (resData?.success) {
           setTimeout(() =>  location.reload(), 500)
         } else {
-          message.error(resData.message)
+          errorMessage(resData.message)
         }
       }
     },
@@ -96,10 +97,10 @@ export default (props: Props) => {
     }
     setFormLoading(false)
     if (resData?.success) {
-      message.success('发布成功')
+      successMessage('发布成功')
       setTimeout(() =>  location.reload(), 500)
     } else {
-      message.error(resData.message)
+      errorMessage(resData.message)
     }
   }
 
