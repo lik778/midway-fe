@@ -1,27 +1,46 @@
-mixin pagination(pages, current, pathname)
-    - const link = pathname.indexOf("?")== -1 ? pathname : pathname.substring(0, pathname.indexOf("?"))
-    - var range = pages;
-    - var i = 0;
-    if pages > 1
-        .page-normal
-            if current == 1
-                a.page-current 首页
+mixin pagination(total, current, pathname)
+    - link = pathname.indexOf("?")== -1 ? pathname : pathname.substring(0, pathname.indexOf("?"))
+    - n = parseInt(total)
+    - p = parseInt(current)
+    - prevPage = p - 1
+    .page-normal
+        if prevPage >0
+            - preHref = `${link}?page=${prevPage}`
+            a(href=preHref) 上一页
+            //-最大展示15页，超过的话，到第9页后面...
+        if (n < 16)
+            - start = 1
+            - end = n
+        else
+            //-当前处于第9页后，会展示1，2，3页，然后...，然后展示9页
+            if (p >= 9)
+                - for (i = 1; i <=3; i++)
+                    - pageNum = i
+                    - href = `${link}?page=${pageNum}`
+                    a(href=href)=i
+                a ...
+                - start = p - 3
             else
-                a(href=`${link}?page=1`) 首页
-            if pages <= range
-                while i < range
-                    - i++;
-                    +isActive(i, current, link)
-            else
-                // tips: 这里的逻辑还要进行修改
+                - start = 1
 
-            if (current == pages)
-                a.page-current 尾页
+            - end = p + 5
+            if end < 9
+                - end = 9
+            if end > n - 4
+                - end = n
+        - for (i = start; i <= end; i++)
+            - pageNum = i
+            if i == p
+                a.page-current= i
             else
-                a(href=`${link}?page=${pages}`) 尾页
-
-mixin isActive(page, current, link)
-    if page == current
-        a.page-current(href=`${link}?page=${page}`) #{page}
-    else
-        a(href=`${link}?page=${page}`) #{page}
+                - href = `${link}?page=${pageNum}`
+                a(href=href)=i
+        if end < n - 2
+            a ...
+            - for (i = n - 1; i <= n; i++)
+                - url = `${link}?page=${i}`
+                a(href=url)=i
+        if p < n
+            - prevPage = p + 1
+            - nextHref = `${link}?page=${prevPage}`
+            a(href=nextHref) 下一页
