@@ -28,7 +28,7 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       const res = await getCreateShopStatusApi()
-      if (res.success) {
+      if (res?.success) {
         setShopStatus(res.data)
       }
     })()

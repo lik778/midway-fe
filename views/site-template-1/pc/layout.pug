@@ -7,10 +7,9 @@ html
         meta(name='keywords' content=renderData.meta.keywords || "")
         meta(name='description' content=renderData.meta.description || "")
         link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
-        //-增加53kf
+            //-增加53kf
         if renderData.kf53 && renderData.kf53.length> 0
-            script.
-                #{renderData.kf53.slice(8).slice(0,-9)}
+            | !{renderData.kf53}
         block styles
     body
         //-初始化公共数据

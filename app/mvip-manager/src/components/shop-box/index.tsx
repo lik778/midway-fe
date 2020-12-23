@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, history } from 'umi';
 import './index.less';
+import moment from 'moment';
 
 export default (props: any) => {
   const s = props?.shopChild
@@ -44,6 +45,9 @@ export default (props: any) => {
       <div className="s-title" >
         <a href={s.shopDomain} target="_blank"><h4>{s?.name}</h4></a>
         {editPage()}
+      </div>
+      <div className="dead-time">
+        到期时间：{moment(s?.expiredTime * 1000).format('YYYY/MM/DD')}
       </div>
       {editBtn()}
     </div>
