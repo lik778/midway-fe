@@ -18,12 +18,10 @@ interface Props {
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;
-  addProductList(item: any): void;
-  updateProductList(item: any): void;
 }
 
 export default (props: Props) => {
-  const { onClose, visible, editData, cateList, updateCateList, addProductList, updateProductList } = props;
+  const { onClose, visible, editData, cateList, updateCateList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -58,12 +56,7 @@ export default (props: Props) => {
     setFormLoading(false)
     if (resData.success) {
       message.success(resData.message)
-      if (isEdit) {
-        updateProductList(resData.data)
-      } else {
-        addProductList(resData.data)
-      }
-      onClose()
+      setTimeout(() =>  location.reload(), 500)
     } else {
       message.error(resData.message)
     }
