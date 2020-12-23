@@ -20,6 +20,15 @@ export default (props: any) => {
     }
   }
 
+  const editBtn = () => {
+    if(s?.status === 1) {
+      return (<div className="s-btn">
+      <span onClick={() => linkTo(`/shop/${s.id}/nav`) } >基础设置</span>
+      <span onClick={() => linkTo(`/shop/${s.id}/product`) }>内容管理</span>
+    </div>)
+    }
+  }
+
   return (
     <div className="shop-box">
       <div className="shop-icon">
@@ -36,10 +45,7 @@ export default (props: any) => {
         <a href={s.shopDomain} target="_blank"><h4>{s?.name}</h4></a>
         {editPage()}
       </div>
-      <div className="s-btn">
-        <span onClick={() => linkTo(`/shop/${s.id}/nav`) } >基础设置</span>
-        <span onClick={() => linkTo(`/shop/${s.id}/product`) }>内容管理</span>
-      </div>
+      {editBtn()}
     </div>
   );
 }
