@@ -4,10 +4,12 @@ import { Link } from 'umi';
 import { CateItem } from '@/interfaces/shop';
 import { getAiShopListApi } from '@/api/ai-content';
 import { checkHasShow } from '@/utils';
-import { Form, message, Select } from 'antd';
+import { Form, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import Loading from '@/components/loading';
+import Recharge from '@/components/recharge';
 import './index.less';
+import { errorMessage } from '@/components/message';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -22,15 +24,15 @@ export const CreateAiContentNav = (props: Props): any => {
     const [shopList, setShopList] = useState<AiShopList[] | null>(null)
     const [shopId, setShopId] = useState<number>(0)
     const [articleList, setArticleList] = useState<CateItem[] | null>(null)
-
+    const [quota, setQuota] = useState<any>(null)
     useEffect(() => {
       (async () => {
         const res = await getAiShopListApi()
-        if (res.success) {
+        if (res?.success) {
           showGroupWordPanel(res.data)
           setShopList(res.data || [])
         } else {
-          message.error(res.message)
+          errorMessage(res.message)
         }
       })()
     }, [])
@@ -49,7 +51,9 @@ export const CreateAiContentNav = (props: Props): any => {
       if (articleCates.length > 0) {
         showPanel();
       }
+      form.resetFields(['contentCateId'])
       setArticleList((item && item.articleCates) || [])
+      setQuota(item?.quotaInfo)
     }
 
     return (
@@ -74,12 +78,13 @@ export const CreateAiContentNav = (props: Props): any => {
                 </FormItem>
               }
               { checkHasShow<CateItem>(articleList) === 'hide' &&
-                <div className="ai-no-article-tips">所属文章分组: 您当前店铺下还没有创建分组，<Link to={`/shop/${shopId}/article`}>去创建分组</Link></div>
+                <div className="ai-no-article-tips">所属文章分组: 您当前店铺下还没有可用店铺，去创建分组，<Link to={`/shop/${shopId}/article`}>去创建分组</Link></div>
               }
             </Form>
         }
         { checkHasShow<AiShopList>(shopList) === 'hide' &&
             <p className="ai-no-shop-tips" >先去创建店铺和文章分组才能新建任务，<Link to="/shop">去创建店铺</Link></p>}
+        <Recharge quota={quota}/>
       </div>
     )
 }

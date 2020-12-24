@@ -40,6 +40,11 @@ export const deleteBannerApi = (shopId: number, params: ImgDeleteParam) => {
   return postApiData(`banner/delete/${params.id}`, {}, setShopHeader(shopId))
 }
 
+// 获取店铺信息
+export const getShopInfoApi = (shopId: number) => {
+  return postApiData(`shop/info/${shopId}`, {}, setShopHeader(shopId))
+}
+
 // banner 列表
 export const getBannerListApi = (shopId: number, params: ImgListParam) => {
   return postApiData(`banner/listing`, params, setShopHeader(shopId))

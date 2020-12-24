@@ -1,6 +1,5 @@
 import { Controller, UseGuards, Post, Get, Body, Req, Res } from '@nestjs/common';
 import { ApiQeqDTO } from '../dto/api-req.dto';
-import  { VipUserGuard } from '../guards/vip-user.guard'
 import { Request, Response } from 'express';
 import { MidwayService } from '../services/midway.service';
 import { join } from 'path'
@@ -10,8 +9,12 @@ import { join } from 'path'
 export class ManagementController {
   constructor(private midwayApiService: MidwayService) {}
   @Get('*')
-  async managementView(@Req() req: Request, @Res() res: Response) {
-    res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
+  managementView(@Req() req: Request, @Res() res: Response) {
+    const goto = () => { res.sendFile(join(__dirname, '../../', '/dist/public/index.html')) }
+    this.midwayApiService.canEnterManagement(req, res).then(res => goto()).catch(e => {
+      const code = Number(e.response && e.response.data && e.response.data.code)
+      this.midwayApiService.managementRedirectTo(code, res, goto)
+    })
   }
 
   @Post('/api')

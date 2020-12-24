@@ -1,12 +1,10 @@
 .introduction
-    //-- const companyInfo= renderData.basic.company
-    //-- const phone= renderData.basic.contact.phone.content
     .introduction-bg
         .left-info
             .name #{ company.name }
             .address 公司地址：#{ company.address }
             .telephone 营业电话：
-                span #{ phone.content }
+                a(href="tel:" + phone.content) #{ phone.content }
         a.right-btn(href="tel:" + phone.content)
             img(src="//file.baixing.net/202011/106d8d96ca5a47a04ac3f68993a4b6f7.png", alt="")
 

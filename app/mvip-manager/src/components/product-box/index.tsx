@@ -3,12 +3,15 @@ import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import { productForm } from '@/config/form';
-import { Drawer, Form, message } from 'antd';
-import { CateItem, CreateProductApiParams, RouteParams } from '@/interfaces/shop';
+import { Drawer, Form } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
+import MyModal from '@/components/modal';
+import { isEmptyObject } from '@/utils';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   cateList: CateItem[];
@@ -16,14 +19,14 @@ interface Props {
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;
-  addProductList(item: any): void;
-  updateProductList(item: any): void;
 }
 
 export default (props: Props) => {
-  const { onClose, visible, editData, cateList, updateCateList, addProductList, updateProductList } = props;
+  const { onClose, visible, editData, cateList, updateCateList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [quitModalVisible, setQuitModalVisible] = useState(false)
+  const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
 
@@ -38,26 +41,25 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    values.name = values.name.trim();
+    const isEdit = !isEmptyObject(editData);
     if (!values.price) { values.price = '面议' }
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
     let resData: any;
-    if (editData) {
+    setFormLoading(true)
+    if (isEdit) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createProductApi(Number(params.id), values)
     }
+    setFormLoading(false)
     if (resData.success) {
-      message.success(resData.message)
-      if (editData) {
-        updateProductList(resData.data)
-      } else {
-        addProductList(resData.data)
-      }
-      onClose()
+      successMessage(resData.message)
+      setTimeout(() =>  location.reload(), 500)
     } else {
-      message.error(resData.message)
+      errorMessage(resData.message)
     }
   }
 
@@ -70,7 +72,7 @@ export default (props: Props) => {
           title="新建服务"
           placement={placement}
           closable={true}
-          onClose={onClose}
+          onClose={() => setQuitModalVisible(true)}
           visible={visible}
           key={placement}
           width="700"
@@ -81,6 +83,7 @@ export default (props: Props) => {
              config={formConfig}
              submit={sumbit}
              onClick={onModalClick}
+             loading={formLoading}
              className="default-form"/>
          </Form.Item>
          <GroupModal
@@ -90,6 +93,13 @@ export default (props: Props) => {
            groupUpdate={(item: CateItem) => { console.log(null) }}
            groupCreate={(item: CateItem) => updateCateList(item)}
            onClose={() => setModalVisible(false)} />
+        <MyModal
+          title="确认关闭"
+          content="您还没有提交，退出后当前页面的内容不会保存，确认退出？"
+          visible={quitModalVisible} onOk={() => {
+          setQuitModalVisible(false)
+          onClose() }}
+          onCancel={() => setQuitModalVisible(false)}/>
     </Drawer>
   );
 }

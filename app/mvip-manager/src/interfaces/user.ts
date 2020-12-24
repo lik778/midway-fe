@@ -1,4 +1,4 @@
-import { VerifyStatus, VerifyType } from '@/enums';
+import { KFStatus, VerifyStatus, VerifyType } from '@/enums';
 
 export interface VerifyItem {
   status: VerifyStatus;
@@ -36,8 +36,20 @@ export interface UserEnterpriseInfo {
   contactMobile: string;
   contactName: string;
   promoteImg: string;
-  qqMap: any
-  wechat: string
+  qqMap: any;
+  wechat: string;
+  companyNameLock: boolean;
+  kf53Info: KF53Info;
+  kefuStatus: KFStatus;
+}
+
+export interface KF53Info {
+  userId: string;
+  companyName: string;
+  phone: string;
+  bname: string;
+  style: string;
+  password: string;
 }
 
 export interface QQItem {

@@ -23,18 +23,22 @@ export interface FormItem {
   type: FormType; // 表单类型
   name?: string; // 当前表单名字
   required: boolean; // 是否必填
+  patternList?: any[]; // 正则
   placeholder?: string; // 提示
   defaultValue?: any; // 默认值
   validator?: any; // 校验
   options?: OptionItem[];
-  maxLength?: number,
+  maxLength?: number
   minLength?: number,
   inputWidth?: number,
   tip?: string, // 文案说明,
   className?: string, // 自定义样式,
   btnConfig?: any, // 输入框需要增加额外标签
   maxNum?: number,
+  minNum?: number,
   images?: ImagesItem[],// 图片多种情况
+  disabled?: boolean;
+  showCount?:boolean;
 }
 
 export interface ImagesItem {

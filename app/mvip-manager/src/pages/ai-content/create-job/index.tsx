@@ -1,13 +1,17 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
-import { message, Tooltip, Form, Button, Modal, Input, Row, Col } from 'antd';
+import React, { ChangeEvent, useState } from 'react';
+import { Tooltip, Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
-import { debounce } from 'lodash';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
 import qsIcon from '../../../styles/qs-icon.svg'
+import { randomList, translateProductText } from '@/utils';
+import { aiDefaultWord } from './data'
+import { errorMessage, successMessage } from '@/components/message';
+import MyModal, { ModalType } from '@/components/modal';
+
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
@@ -18,43 +22,81 @@ export default (props: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [visiblePanel, setVisiblePanel] = useState<boolean>(false)
   const [counters, setCounters] = useState<any>(defaultCounters)
-
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false)
+  // 店铺信息
+  const { shopStatus } = props
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     // 这里来去重(包含空格)
     const wordsList = words.split('\n').map(x => x.replace(/\s+/g, ''))
     const dedupWordsList =  Array.from(new Set(wordsList));
     const maxLength = wordsItemConfig[name].max;
-    const minLength = wordsItemConfig[name].min;
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
     values[name] = data.join('\n')
     form.setFieldsValue(values)
-    counters[name] = data.length;
+    counters[name] = data.filter(x => x !== '').length;
     setCounters({ ...counters })
   }
-
-  const delayedQuery = useCallback(debounce((words, name) => { wordsChange(words, name) }, 300), []);
 
   const clearAll = (name: string) => {
     const values = form.getFieldsValue()
     values[name] = ''
+    counters[name] = 0
     form.setFieldsValue(values);
+    setCounters({ ...counters })
+  }
+  // 获取通用数据
+  const obtainData = (name: string, type?: string) => {
+    const maxLength = wordsItemConfig[name].max;
+    const formValues = form.getFieldsValue()
+    const dataName = type ? `${name}-${type}` : name
+    // 这里要做一下随机值
+    const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
+    formValues[name] = concatWords.join('\n')
+    counters[name] = concatWords.length
+    setCounters({ ...counters})
+    form.setFieldsValue(formValues)
+  }
+
+  const isValidForm =(): boolean => {
+    const errorList: string[] = []
+    Object.keys(counters).forEach(x => {
+      const min = wordsItemConfig[x].min
+      const max = wordsItemConfig[x].max
+      if (counters[x] < min || counters[x] > max) {
+        errorList.push(`${wordsItemConfig[x].label}最少${min}个词，最多${max}个词。`)
+      }
+    })
+    if (errorList.length > 0) {
+      errorMessage(`提交失败：${errorList.join('\n')}`)
+      return false
+    } else {
+      return true
+    }
   }
 
   const submitData = async () => {
-    const values = form.getFieldsValue()
-    const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
-    Object.keys(values).forEach((k: string) => {
-      if (groupNames.includes(k)) {
-        values[k] = (values[k] && values[k].split('\n')) || []
+    if (!form.getFieldValue('contentCateId')) {
+      errorMessage('请选择文章分组')
+      return
+    }
+    if (isValidForm()) {
+      const values = form.getFieldsValue()
+      const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
+      Object.keys(values).forEach((k: string) => {
+        if (groupNames.includes(k)) {
+          values[k] = (values[k] && values[k].split('\n')) || []
+        }
+      })
+      setSubmitLoading(true)
+      const res = await createAiJobApi(values)
+      setSubmitLoading(false)
+      if (res.success) {
+        successMessage('添加成功')
+        history.push(`/ai-content/job-list`);
+      } else {
+        errorMessage(res.message)
       }
-    })
-    const res = await createAiJobApi(values)
-    if (res.success) {
-      message.success('添加成功')
-      history.push(`/shop/ai-content/job-list`);
-    } else {
-      message.error(res.message)
     }
   }
 
@@ -80,11 +122,13 @@ export default (props: any) => {
                           </Tooltip>
                         </h4>
                         <FormItem name={x.name}>
-                          <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => delayedQuery(e.target.value, x.name)} />
+                          <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
                         </FormItem>
                         <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
                         <div className="ai-content-actions">
-                          { x.name === 'prefix' && <Button onClick={() => clearAll(x.name)}>通用前缀</Button> }
+                          { x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button> }
+                          { x.name === 'wordD' && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
+                            { translateProductText('aiRecommond', shopStatus.domainType) }</Button> }
                           <Button onClick={() => clearAll(x.name)}>清空</Button>
                         </div>
                       </Col>
@@ -101,15 +145,19 @@ export default (props: any) => {
               <span>核心词+后缀</span>
               <span>前缀+核心词</span>
             </p>
-            <Button type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
+            <Button style={{ width: 120, height: 40, background: '#096DD9', borderColor: '#096DD9' }} type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
           </div>
-          <Modal
-          title="确认提交"
-          visible={modalVisible}
-          onOk={submitData}
-          onCancel={() => setModalVisible(false)}>
-          <p>提交后不可修改，确认提交吗？</p>
-          </Modal>
+          <MyModal
+            title="确认提交"
+            content="提交后不可修改，确认提交吗？"
+            type={ModalType.info}
+            onCancel={() => setModalVisible(false)}
+            onOk={() => history.push('/company-info/base')}
+            footer={<div>
+              <Button onClick={() => setModalVisible(false)}>取消</Button>
+              <Button type="primary" loading={submitLoading} onClick={() =>submitData()}>确认</Button>
+            </div>}
+            visible={modalVisible} />
         </div>
       )}
 

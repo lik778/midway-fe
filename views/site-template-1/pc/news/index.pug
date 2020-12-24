@@ -9,6 +9,9 @@ block content
         .main
             include ../components/main-title.pug
             include ../components/news-list.pug
+            include ../components/pagination
+            - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
+            +pagination(totalPage, renderData.currentPage, `${renderData.currentPathname}`)
 
         .side-bar
             include ../components/sidebar/sidebar-title.pug
@@ -19,9 +22,6 @@ block content
             - const cateList = renderData.articleCateList
             include ../components/sidebar/category-item.pug
 
-    include ../components/pagination
-    - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
-    +pagination(totalPage, renderData.currentPage, `/${shopName}/n`)
 
     include ../components/footer.pug
     include ../components/customer-service.pug

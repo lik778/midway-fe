@@ -12,18 +12,16 @@
         li
             display inline-block
             list-style-type none
-            margin-bottom 32px
-            margin-right 24px
+            margin-bottom 12px
+            margin-right 20px
             a
                 font-size 16px
-                color #333333
                 text-decoration none
-    .tab-hidden
-        overflow hidden
-        display -webkit-box
-        -webkit-line-clamp 2
-        -webkit-box-orient vertical
-
+                color #333
+                &:focus
+                    color #1565C1
+    .all
+        display none
     .s-open,
     .s-off
         margin-top 10px
@@ -42,6 +40,9 @@
     .s-off
         display none
         color #1565C1
+
+    .tab-active
+        color #1565C1 !important
 
 
 

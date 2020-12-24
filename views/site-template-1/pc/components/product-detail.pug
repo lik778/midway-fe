@@ -1,15 +1,20 @@
-//-- const companyAvatar = '//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'
-
 .product-detail
 	.pro-top.clearfix
-		img(src=renderData.productInfo.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="")
+		- const { headImg, name, price, content, contentImg} = renderData.productInfo
+		img(src=headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="")
 		.pro-meta
-			h3 #{ renderData.productInfo.name }
-			p 价格：#{ renderData.productInfo.price }
+			h3 #{ name || '' }
+			p 价格：#{ price || '面议' }
 			p 联系电话：
 				span #{ phone.content }
-			p 商家地址：#{ company.address }
+			p 商家地址：#{ company.address  }
 	.pro-title
-		h3 产品详情
+		if domainType == 'fuwu'
+			h3 服务详情
+		else
+			h3 产品详情
 	.pro-content.
-		#{renderData.productInfo.content}
+		!{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+	if contentImg !== ""
+		.pro-pic
+			img(src=contentImg, alt="")

@@ -1,9 +1,39 @@
-.title {
-  font-size: 18px;
-  color: #333;
+.auth-box {
+  .auth-item {
+    img {
+      height: 162px;
+      float: left;
+    }
+    .point {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 8px;
+      margin-bottom: 2px;
+      background: #999;
+      border-radius: 100%;
+    }
+  }
+  .auth-example {
+    font-size: 12px;
+    color: #666;
+    margin-left: 15px;
+  }
+  .ant-btn-primary {
+    font-size: 14px;
+    border-color: #096DD9;
+    background: #096DD9;
+    height: auto;
+    line-height: 14px;
+    width: 138px;
+    padding: 13px 0;
+  }
+
+  .ant-btn-primary[disabled] {
+    border-color: #F2F2F2;
+    color: #999999 !important;
+    background-color: #F2F2F2 !important;
+  }
 }
 
-.example {
-  font-size: 12px;
-  color: #666;
-}
+

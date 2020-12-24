@@ -49,6 +49,8 @@ export interface NavItem{
   name: string;
   position: string;
   maxLength?: number;
+  minLength?: number;
+  isError?: boolean;
 }
 
 export interface ModifyNavItem{
@@ -59,7 +61,7 @@ export interface ModifyNavItem{
 
 
 export interface ImgItemParam{
-  type: string;
+  type: number;
   url: string;
 }
 
@@ -87,12 +89,12 @@ export interface CreateContentCateApiParams {
 export interface TdkSaveMeta {
   description: string;
   keywords: string[];
-  position: number;
+  position: string;
   title: string;
 }
 
 export interface TdkDetailMeta {
-  position: number;
+  position: string;
 }
 
 export interface ShopStatus {

@@ -1,12 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
 import './index.less';
-import { message, Modal, Input } from 'antd';
+import { Modal, Input } from 'antd';
 import classNames from 'classnames';
 import { createContentCateApi, updateContentCateApi } from '@/api/shop'
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
+import { errorMessage, successMessage } from '@/components/message';
 
 
 // 分组tkd配置
@@ -24,7 +25,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: 'title',
+    label: 'SEO标题',
     placeholder: "请输入标题, 9~50个字",
     required: false,
     maxLength:50,
@@ -32,11 +33,11 @@ const groupConfig = [
     id:'seoT',
     value: '',
     initLen: 0,
-    err: '请输入大于9个字的标题',
+    err: '请输入大于9个字的SEO标题',
     errClass:''
   },
   {
-    label: 'keyword',
+    label: 'SEO关键词',
     placeholder: "请输入关键词",
     required: false,
     id:'seoK',
@@ -48,7 +49,7 @@ const groupConfig = [
     errClass:''
   },
   {
-    label: 'description',
+    label: 'SEO描述',
     placeholder: "请输入描述, 40~80个字",
     required: false,
     maxLength:80,
@@ -56,7 +57,7 @@ const groupConfig = [
     id: 'seoD',
     value: '',
     initLen: 0,
-    err:'请输入大于40个字的描述',
+    err:'请输入大于40个字的SEO描述',
     errClass:''
   },
 ]
@@ -75,74 +76,94 @@ interface Props {
 export default (props: Props) => {
   const params: RouteParams = useParams();
   const { editItem, type, onClose, groupCreate, groupUpdate } = props;
-  // const haha = groupConfig.map(x => {
-  //   x.value = (editItem && editItem[x.id]) || '';
-  //   console.log(x)
-  //   return x;
-  // })
   const [config, setConfig] = useState(groupConfig)
-  // 确定loading
+  const [err, setError] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false);
-  // 弹窗报错
-  const [isInputErr, setInputErr] = useState({
-    key:'',
-    isRequired: false
-  })
-
   useEffect(() => {
-    setConfig(groupConfig.map(x => {
-      x.value = (editItem && editItem[x.id]) || '';
-      return x;
-    }))
+    const groupCloneConfig = groupConfig.concat()
+    if (editItem) {
+      setConfig(config.map(g => {
+        g.value = editItem[g.id]
+        g.initLen = editItem[g.id].length
+        if(g.required && g.value) {
+          g['errClass'] = ''
+          setError('')
+        }
+
+        if(g.value && g.initLen > g.minLength) {
+          g['errClass'] = ''
+          setError('')
+        }
+        return g
+      }))
+    } else {
+      setConfig(groupCloneConfig.map(x => {
+        x.value = (editItem && editItem[x.id]) || '';
+        return x;
+      }))
+    }
   }, [editItem]);
 
-  // 弹窗错误显示
-  const [err, setError] = useState('')
+
 
   const resetConfigValue = (config: any) => {
-    setConfig(config.map((x: any) => { x.value = ''; return x }))
+    setConfig(config.map((x: any) => { x.value = ''; x.initLen = 0;return x }))
   }
 
-    const handleOk = async () => {
-    const r: any = {}
 
+  const handleOk = async() => {
+    if(confirmLoading) {
+      return
+    }
+    const r: any = {}
+    let errInfo: string = ''
     const newConfig = config.concat()
     newConfig.forEach((c, i) => {
       r[c.id] = c.value
       if(c.required && !c.value){
         newConfig[i]['errClass'] = errClass
+        errInfo= `您输入${c.label}不能为空`
         setConfig(newConfig)
-        return
       }
 
       if(c.value && c.initLen < c.minLength) {
-        setError(c.err)
+        errInfo = c.err
         newConfig[i]['errClass'] = errClass
-        setConfig(newConfig)
-        return
+
       }
     })
+
+    setError(errInfo)
+    setConfig(newConfig)
+
+    if(errInfo.length) {
+      return;
+    }
+
+    setConfirmLoading(true)
     // to api
     if (editItem) {
       const mergeItem = Object.assign(editItem, r);
       const res = await updateContentCateApi(Number(params.id), {...mergeItem, type})
+      setConfirmLoading(false)
       if (res?.success) {
-        message.success('编辑成功');
-        groupUpdate(res.data);
+        successMessage('编辑成功');
+        groupUpdate(res?.data);
         resetConfigValue(config);
         onClose();
       } else {
-        message.error(res.message)
+        errorMessage(res?.message)
       }
     } else {
       const res = await createContentCateApi(Number(params.id), {...r, type})
+      setConfirmLoading(false)
       if (res?.success) {
-        message.success('新增分组成功');
-        groupCreate(res.data);
+        successMessage('新增分组成功');
+        groupCreate(res?.data);
         resetConfigValue(config);
         onClose();
       } else {
-        message.error(res.message)
+        errorMessage(res?.message)
       }
     }
   };
@@ -155,11 +176,13 @@ export default (props: Props) => {
 
     setConfig(config.map(g => {
         if (g.id === name) {
-          g.value = value
+          // 去掉空格
+          g.value = value.replace(/\s/g, '')
           g.initLen = value.length
         }
         if(g.required && g.value) {
           g['errClass'] = ''
+          setError('')
         }
 
         if(g.value && g.initLen > g.minLength) {

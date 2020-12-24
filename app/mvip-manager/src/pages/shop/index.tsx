@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Button, Space, Spin } from 'antd';
+import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
+import MyModal, { ModalType } from '@/components/modal';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box';
+import Loading from '@/components/loading';
 import './index.less';
 import { postApiData } from '@/api/base';
-import { getCreateShopStatusApi } from '@/api/shop';
-import { ShopStatus } from '@/interfaces/shop';
+import { notEmptyObject } from '@/utils';
 
 // 空状态基本配置
 const emptyMsg = {
   btn: '新建店铺',
   msg: '暂无店铺',
-  img: "//file.baixing.net/202011/ead8b543db23259dc9838e753f865732.png",
+  img: "//file.baixing.net/202012/ead8b543db23259dc9838e753f865732.png",
 }
 
 export default (props: any) => {
+  const { shopStatus } = props
   // isLoaded
   const [isLoading, setIsLoading] = useState(true)
   // 弹窗显示隐藏
@@ -29,18 +31,22 @@ export default (props: any) => {
   const [totalCount, setCount] = useState(0)
   // 显示弹窗的来源
   const [shopOperateStatus, setOperate] = useState(0)
+  // 是否是后缀域名(前缀B2B，后缀服务)
+  const [isSuffix, setIsSuffix] = useState(true)
+  // 是否是后缀域名(前缀B2B，后缀服务)
+  const [isNewShopDisabled, setIsNewShopDisabled] = useState(false)
   // 弹窗报错
   const [isInputErr, setInputErr] = useState({
     key:'',
     isRequired: false
   })
+
   // 输入框值初始状态
   const [oSite, setOSite] = useState({
     name: '',
     domain: '',
   })
 
-  const [shopStatus, setShopStatus] = useState<ShopStatus | null>(null)
   const [editVisible, setEditVisible] = useState<boolean>(false)
   // 弹窗接口返回
   const [shopSiteRes, setShopSiteRes] = useState({
@@ -50,8 +56,6 @@ export default (props: any) => {
   })
 
   // 相关文案和参数处理
-  // 限制只显示2个
-  const isNewShopDisabled = totalCount >= 2 ? true : false
   // 弹窗文案
   const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
   const isDomainDisabled = shopOperateStatus === 1 ? true : false
@@ -86,8 +90,8 @@ export default (props: any) => {
 
 
   const notInterceptCreateShop = (): boolean => {
-    setEditVisible(!shopStatus?.isUserPerfect)
-    return shopStatus?.isUserPerfect || false
+    setEditVisible(!shopStatus.isUserPerfect)
+    return shopStatus.isUserPerfect || false
   }
 
   // 显示弹窗
@@ -115,6 +119,11 @@ export default (props: any) => {
         key: 'domain',
         isRequired: true
       })
+      return
+    }
+
+    if(domainL< 4){
+      setError('请输入大于4个字符的域名')
       return
     }
 
@@ -150,14 +159,12 @@ export default (props: any) => {
   )
 
   useEffect(() => {
-    (async () => {
-      const res =  await getCreateShopStatusApi()
-      if (res.success) {
-        setShopStatus(res.data)
-        setEditVisible(!res.data.isUserPerfect)
-      }
-    })()
-  }, [])
+    if (notEmptyObject(shopStatus)) {
+      setEditVisible(!shopStatus.isUserPerfect)
+      setIsSuffix(shopStatus.domainType === 'SUFFIX')
+      setIsNewShopDisabled(!(shopStatus?.isTicketAvailable))
+    }
+  }, [shopStatus])
 
   // bindEvent
   // 弹窗取消
@@ -188,6 +195,10 @@ export default (props: any) => {
             isRequired: false
           })
         }
+
+        if(domainL>=4) {
+          setError('')
+        }
         setOSite({...oSite, [name]:value.replace(/[^a-z0-9]/g,'')})
       break;
     }
@@ -205,22 +216,18 @@ export default (props: any) => {
   // 店铺站点页面主功能块
   const shopSitePage = () => {
     if(isLoading) {
-      return (
-        <Space size="middle">
-          <Spin size="large" />
-        </Space>
-      )
+      return <Loading />
     }
     // 店铺列表
     if(totalCount) {
       return (
         <div className="my-shop-list">
-          <Button type="primary" className="primary-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
+          <Button type="primary" className="primary-btn p-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
           <div className="shop-list">
             {
               shopListData.map((shopChild, index) => {
                return (
-                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} index={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
                )
             })}
           </div>
@@ -232,6 +239,28 @@ export default (props: any) => {
         <div className="shop-create">
           <EmptyStatus emptyMsg={emptyMsg} onClick={(ev: any) => {showModal(ev, 0)}}/>
         </div>
+      )
+    }
+  }
+
+  const domainPage = () => {
+    if(isSuffix) {
+      return (
+        <div className="site-byte f-input">
+          <span className="domain">shop.baixing.com/</span>
+          <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+          <span className="f-len">{domainL}/20</span>
+          <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
+      </div>
+      )
+    }else {
+      return (
+        <div className="site-byte f-input prefix">
+          <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
+          <span className="f-len">{domainL}/20</span>
+          <span className="domain">.shop.baixing.com</span>
+          <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
+      </div>
       )
     }
   }
@@ -257,23 +286,19 @@ export default (props: any) => {
             </li>
             <li>
               <label htmlFor="domain">店铺域名</label>
-              <div className="site-byte f-input">
-                <span>shop.baixing.com/</span>
-                <Input placeholder="请输入名称，4~20个字符" id="domain" name="domain" className={inputIsRequired('domain')} minLength={4} maxLength={20} onChange={handleChange} value={oSite && oSite.domain} disabled={isDomainDisabled}/>
-                <span className="f-len">{domainL}/20</span>
-                <p className="shop-warning">注：20个字符以内，填写英文/数字，不支持中文，<i className="error">提交后不支持更改</i></p>
-              </div>
+              {domainPage()}
             </li>
           </ul>
         </Modal>
-        <Modal title="去完善信息"
-               closable={false}
-               maskClosable={false}
-               onCancel={() => setEditVisible(false)}
-               onOk={() => history.push('/company-info/base')}
-               visible={editVisible}>
-          <p>您的企业资料还未填写，请完善您的企业资料</p>
-        </Modal>
+        <MyModal
+           title="去完善信息"
+           content="您的企业资料还未填写，请完善您的企业资料"
+           type={ModalType.info}
+           closable={false}
+           maskClosable={false}
+           onCancel={() => setEditVisible(false)}
+           onOk={() => history.push('/company-info/base')}
+           visible={editVisible} />
         <div className="container">
           {shopSitePage()}
         </div>

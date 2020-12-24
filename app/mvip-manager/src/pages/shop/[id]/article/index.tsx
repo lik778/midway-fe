@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { message } from 'antd';
-import ShopModuleTab from '@/components/shop-module-tab';
-import MainTitle from '@/components/main-title';
+import ContentHeader from '@/components/content-header';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
-import { addKeyForListData } from '@/utils';
+import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { ContentCateType, ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import './index.less';
+import { errorMessage } from '@/components/message';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
@@ -20,69 +19,82 @@ export default (props: any) => {
   const [editArticleData, setEditArticleData] = useState<any>(null)
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number | null>(null);
+  const [quota, setQuota] = useState<any>(null)
+  const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
-
   useEffect(() => {
     (async () => {
+      setListLoading(true)
       const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
-      if (res.success) {
-        setArticleList(addKeyForListData(res.data.articleList.result) || [])
+      if (res?.success) {
+        setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
-        setTotal(res.data.articleList.totalRecord)
+        setTotal(res?.data?.articleList?.totalRecord)
+        setQuota(res?.data?.quotaInfo)
       } else {
-        message.error(res.message);
+        errorMessage(res?.message || '出错了');
       }
+      setListLoading(false)
     })()
   }, [page, contentCateId])
 
+  const updateQuota = (q: any) =>{
+    setQuota(q)
+  }
+
+  const onChangeType = (type: ProductType) => {{
+    if(type == ProductType.B2B) {
+      setTypeTxt('产品')
+    }else{
+      setTypeTxt('服务')
+    }
+  }}
+
   return (<div>
-    <MainTitle title="百姓网店铺"/>
-    <ShopModuleTab type={ShopModuleType.ARTICLE}/>
+    <ContentHeader type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
         showGroup={() => setModuleGroupVisible(true)}
+        quota={quota}
         showCreate={() => {
+          setEditArticleData({})
           setArticleFormVisible(true)
-          setEditArticleData(null)
         }}  />
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
         title="文章分组"
-        createBtnText="新建文章"
+        createBtnText="新建分组"
         cateList={cateList}
         updateCateList={(list) => setCateList(list)}
-        onClose={() => setModuleGroupVisible(false)}
+        onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
         visible={moduleGroupVisible}
-        save={() => { setModuleGroupVisible(false) }}
+        save={() => removeOverflow(() => setModuleGroupVisible(false))}
       />
       <ArticleList
         total={total}
+        page={page}
+        loading={listLoading}
         dataSource={articleList}
         openEditForm={(item) => {
+          setEditArticleData({ ...item });
           setArticleFormVisible(true);
-          setEditArticleData(item);
-        }}
-        update={(list) => {
-          setArticleList(addKeyForListData(list) || [])
         }}
         onChange={(page) => setPage(page)}/>
       <ArticleBox
-        addArticleList={(item) => setArticleList(addKeyForListData([item, ...articleList])) }
-        updateArticleList={(item) => {
-          const editIndex = articleList.findIndex((a: any) => a.id === item.id)
-          articleList.splice(editIndex, 1, item)
-          setArticleList(addKeyForListData([...articleList]))
-        }}
         cateList={cateList}
         editData={editArticleData}
         updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
-        onClose={() => setArticleFormVisible(false)}/>
+        onClose={() => removeOverflow(() => setArticleFormVisible(false)) }
+        quota={quota}
+        updateQuota={updateQuota}
+        />
     </div>
   </div>)
 }

@@ -3,20 +3,20 @@ import React from 'react';
 import { Button } from 'antd';
 import './index.less';
 interface EmptyMsg {
-  btn: string,
+  btn?: string,
   msg: string,
   img: string,
 }
 export default (props: {
   emptyMsg: EmptyMsg,
-  onClick: any,
+  onClick?: any,
 }) => {
   const {btn ,msg, img} = props.emptyMsg
   return (
     <div className="empty-msg-box">
-      <img className="img" src={img} />
+      <img className="img" src={img}/>
       <p className="msg">{msg}</p>
-      <Button type="primary" className="primary-btn" onClick={props.onClick}>+{btn}</Button>
+      {btn && <Button type="primary" className="primary-btn p-btn" onClick={props.onClick}>+{btn}</Button>}
     </div>
   );
 }

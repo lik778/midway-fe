@@ -1,5 +1,8 @@
 .product-pic
     img(src="//file.baixing.net/202011/1efbfe1f89ad4218680bb2b1d5870cae.png", alt="")
-    .product-title  
-        p 服务内容
+    .product-title
+        if domainType == 'fuwu'
+            p 服务内容
+        else
+            p 产品中心
         p SERVICE CONTENT
