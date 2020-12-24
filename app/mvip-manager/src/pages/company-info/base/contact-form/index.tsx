@@ -60,7 +60,7 @@ const ContactForm = (props: Props) => {
         info.kefuStatus = KFStatus.CLOSE
       }
     } else {
-      if(info.kf53Info && info.kf53Info.companyName.length < 2) return
+      if(info.kf53Info.companyName && info.kf53Info.companyName.length < 2) return
     }
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
