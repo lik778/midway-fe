@@ -22,7 +22,7 @@ export default (props: any) => {
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number | null>(null);
   const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
@@ -88,7 +88,7 @@ export default (props: any) => {
             editData={editProductData}
             updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
             visible={productFormVisible}
-            onClose={() => setTimeout(() =>setProductFormVisible(false), 300)}/>
+            onClose={() => setTimeout(() =>setProductFormVisible(false), 500)}/>
       </div>
   </div>)
 }

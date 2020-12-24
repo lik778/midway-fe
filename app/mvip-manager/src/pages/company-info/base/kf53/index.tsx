@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Form, Input } from 'antd';
 import { KF53Info, UserEnterpriseInfo } from '@/interfaces/user';
 import { KFStatus } from '@/enums';
+import './index.less'
 const FormItem = Form.Item;
 
 const styles = {

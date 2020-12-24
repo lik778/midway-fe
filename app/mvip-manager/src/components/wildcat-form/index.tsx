@@ -93,7 +93,7 @@ const WildcatForm = (props: Props) => {
                   )
                   })
                 }
-                <FormItem style={{ width: item.width, marginLeft: 83 }}><p className="tip">{item.tip}</p></FormItem>
+                <FormItem style={{ width: item.width, marginLeft: 83, color: '#999' }}><p className="tip">{item.tip}</p></FormItem>
               </FormItem>)
             } else if (item.images && item.images.length > 1) {
               return (<FormItem className={item.className} key={item.label}
