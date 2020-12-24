@@ -4,7 +4,7 @@ mixin pagination(total, current, pathname)
     - p = parseInt(current)
     - prevPage = p - 1
     .page-normal
-        if prevPage >=0
+        if prevPage >0
             - preHref = `${link}?page=${prevPage}`
             a(href=preHref) 上一页
             //-最大展示15页，超过的话，到第9页后面...
@@ -40,7 +40,7 @@ mixin pagination(total, current, pathname)
             - for (i = n - 1; i <= n; i++)
                 - url = `${link}?page=${i}`
                 a(href=url)=i
-        if p <= n
+        if p < n
             - prevPage = p + 1
             - nextHref = `${link}?page=${prevPage}`
             a(href=nextHref) 下一页
