@@ -72,6 +72,7 @@ export default (props: any) => {
               setEditProductData({...item});
               setProductFormVisible(true);
             }}
+            type={typeTxt}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
             type={ContentCateType.PRODUCT}

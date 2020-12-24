@@ -13,6 +13,7 @@ interface Props {
   loading: boolean;
   openEditForm(item: any): void;
   onChange(page: number): void;
+  type: string;
 }
 
 const styles = {
@@ -22,7 +23,7 @@ const styles = {
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
-  const { onChange, total, page, loading, dataSource, openEditForm } = props
+  const { onChange, total, page, loading, dataSource, openEditForm, type } = props
   // 获取店铺id
   const params: RouteParams = useParams();
   const editAction = (item: any) => {
@@ -53,9 +54,9 @@ export default (props: Props) => {
           </div>
         )
       }},
-    { title: '服务名称', dataIndex: 'name', key: 'name' },
+    { title: `${type}名称`, dataIndex: 'name', key: 'name' },
     { title: '价格', dataIndex: 'price', key: 'price' },
-    { title: '服务分组', dataIndex: 'cateName', key: 'cateName' },
+    { title: `${type}分组`, dataIndex: 'cateName', key: 'cateName' },
     { title: '审核结果', dataIndex: 'status', key: 'status',
     render: (text: string) => <span>{ auditStatusText[text] }</span>},
     { title: '操作', dataIndex: '', key: 'x',
