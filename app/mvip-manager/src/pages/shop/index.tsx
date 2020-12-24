@@ -13,7 +13,7 @@ import { notEmptyObject } from '@/utils';
 const emptyMsg = {
   btn: '新建店铺',
   msg: '暂无店铺',
-  img: "//file.baixing.net/202012/c201a04d7d3ac516b3598eb3eb6bd4c1.png",
+  img: "//file.baixing.net/202012/ead8b543db23259dc9838e753f865732.png",
 }
 
 export default (props: any) => {
