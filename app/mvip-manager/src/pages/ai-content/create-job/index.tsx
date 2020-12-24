@@ -145,7 +145,7 @@ export default (props: any) => {
               <span>核心词+后缀</span>
               <span>前缀+核心词</span>
             </p>
-            <Button style={{ background: '#096DD9', borderColor: '#096DD9' }} type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
+            <Button style={{ width: 120, height: 40, background: '#096DD9', borderColor: '#096DD9' }} type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
           </div>
           <MyModal
             title="确认提交"
