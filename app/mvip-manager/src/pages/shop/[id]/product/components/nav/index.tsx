@@ -39,7 +39,7 @@ export default (props: Props) => {
       </div>
       <div style={{ float: 'right' }}>
         <Button onClick={props.showGroup} size="large" style={{ marginRight: 36 }}>{type}分组</Button>
-        <Button onClick={props.showCreate} icon={<PlusOutlined />} size="large" type="primary">新建{type}</Button>
+        <Button style={{ background: '#096DD9', borderColor: '#096DD9' }} onClick={props.showCreate} icon={<PlusOutlined />} size="large" type="primary">新建{type}</Button>
       </div>
     </div>
   )

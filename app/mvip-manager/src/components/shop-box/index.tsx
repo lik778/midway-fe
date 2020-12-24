@@ -7,7 +7,7 @@ import moment from 'moment';
 export default (props: any) => {
   const s = props?.shopChild
   const status = s?.status === 1 ? 's-active' : 's-offline'
-  const statusTxt = s?.status === 1 ? '生效中' : s?.status === 2?'审核驳回':'已下线'
+  const statusTxt = s?.status === 1 ? '生效中' : (s?.status === 2?'审核驳回':'已下线')
 
 
   const linkTo = (link: string) => {

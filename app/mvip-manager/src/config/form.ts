@@ -1,14 +1,21 @@
 // tips: 页面配置
 import { FormType } from '@/components/wildcat-form/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
+import { isEmptyObject } from '@/utils';
 
 // 基础资料页面表单
+const validatorArea =  (rule: any, val: any) => {
+  if (!val || isEmptyObject(val)) {
+    return Promise.reject('请输入企业地址')
+  }
+  return Promise.resolve()
+}
 export const baseInfoForm: FormConfig = {
   name: 'baseInfoForm',
   children: [
     { inputWidth: 260, className:'f-middle',label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 20, minLength: 2,placeholder: '请输入企业名称，2~20个字', disabled: false, showCount: true },
     { inputWidth: 260, className:'f-middle',label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2,placeholder: '请输入企业别称，2~20个字',showCount: true },
-    { width: 353, className:'f-area-select',label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true },
+    { width: 353, className:'f-area-select',label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { inputWidth: 260, className:'f-middle',label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { width: 690, label: '企业简介', className:'f-textarea', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [ { pattern: /^[\s\S]{50,300}$/, message: '50～300个字'}  ] },

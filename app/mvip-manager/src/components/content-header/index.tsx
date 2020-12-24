@@ -14,6 +14,7 @@ interface contentHeader{
 export default (props: contentHeader) => {
   const {type, onChangeType} = props
   const [title, setTitle] = useState('')
+  const [tabType, setTabType] = useState('')
   // 获取店铺id
   const params: RouteParams = useParams();
   const [paramId, setParamId] = useState(Number(params.id))
@@ -23,6 +24,11 @@ export default (props: contentHeader) => {
       if (res?.success) {
         setTitle(res?.data?.name)
         onChangeType(res?.data?.type)
+        if(res?.data?.type === ProductType.B2B){
+          setTabType('产品')
+        }else{
+          setTabType('服务')
+        }    
       } else {
         errorMessage(res?.message)
       }
@@ -31,7 +37,7 @@ export default (props: contentHeader) => {
   return (
     <div className="content-header">
       <MainTitle title={title}/>
-      <ShopModuleTab type={type}/>
+      <ShopModuleTab type={type} tabType={tabType}/>
     </div>
   );
 }

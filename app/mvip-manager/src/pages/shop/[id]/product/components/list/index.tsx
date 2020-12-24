@@ -6,10 +6,12 @@ import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { auditStatusText } from '@/constants';
 import { errorMessage, successMessage } from '@/components/message';
+import { AuditStatus } from '@/enums';
+import Loading from '@/components/loading';
 
 interface Props {
   dataSource: any[];
-  total: number;
+  total: number | null;
   page: number;
   loading: boolean;
   openEditForm(item: any): void;
@@ -59,7 +61,10 @@ export default (props: Props) => {
     { title: '价格', dataIndex: 'price', key: 'price' },
     { title: `${type}分组`, dataIndex: 'cateName', key: 'cateName' },
     { title: '审核结果', dataIndex: 'status', key: 'status',
-    render: (text: string) => <span>{ auditStatusText[text] }</span>},
+    render: (text: AuditStatus) => {
+      return <span style={{  color: text === AuditStatus.APPROVE ? '#999' :
+          (AuditStatus.REJECT ? '#F1492C' : '')}}>{ auditStatusText[text] }</span>
+    }},
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
@@ -71,13 +76,24 @@ export default (props: Props) => {
 
   return (
     <div>
-      <MyModal
-        title="确认删除"
-        content="删除后无法恢复，确认删除？"
-        onCancel={() => setVisibleDeleteDialog(false)}
-        onOk={() => confirmDelete()}
-        visible={visibleDeleteDialog}/>
-      <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
-        showSizeChanger: false,  current: page, onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+      { total === null && <Loading /> }
+      {
+        total === 0 && <div className="no-list-data">
+          <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png"  />
+          <p>暂无服务内容，你可以新建服务</p>
+        </div>
+      }
+      {
+        total !== null && total > 0 && <div>
+          <MyModal
+            title="确认删除"
+            content="删除后无法恢复，确认删除？"
+            onCancel={() => setVisibleDeleteDialog(false)}
+            onOk={() => confirmDelete()}
+            visible={visibleDeleteDialog}/>
+          <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
+            showSizeChanger: false,  current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+        </div>
+      }
     </div>)
 }

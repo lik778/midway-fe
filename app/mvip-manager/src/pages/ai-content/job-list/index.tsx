@@ -58,7 +58,7 @@ export default (props: any) => {
       <div className="ai-list-container">
         { isLoding && <Loading />}
         { total === 0 && <div className="empty-info">
-          <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
+          <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>}
         { total > 0 && <Table columns={columns} loading={listLoading} dataSource={aiList || []} pagination={{
