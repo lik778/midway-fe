@@ -119,7 +119,7 @@ const WildcatForm = (props: Props) => {
           } else if (item.type === FormType.GroupSelect) {
             return (<FormItem key={item.label}>
               <FormItem className={item.className} label={item.label} name={item.name}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+                <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }} getPopupContainer={triggerNode => triggerNode.parentNode}>
                   { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
                 </Select>
               </FormItem>
