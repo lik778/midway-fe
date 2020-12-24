@@ -48,12 +48,12 @@ export default (props: any) => {
     setLoading(true)
     const res = await saveEnterpriseForShopApi(values)
     setLoading(false)
-    if (res.success) {
+    if (res && res.success) {
       successMessage('修改基础资料成功')
       setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
       next()
     } else {
-      errorMessage(res.message)
+      errorMessage(res.message || '出错啦')
     }
   }
 
@@ -82,7 +82,8 @@ export default (props: any) => {
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
-                <Col><Button loading={loading}  type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
+                <Col><Button loading={loading} className="btn"
+                      type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
               </Row>
             }/>
         }
