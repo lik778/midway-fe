@@ -22,7 +22,10 @@ block content
             +sidebar-title('联系我们')
             include ../components/sidebar/contact.pug
 
-            +sidebar-title('服务分类')
+            if domainType == 'fuwu'
+                +sidebar-title('服务分类')
+            else
+                +sidebar-title('产品分类')
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 

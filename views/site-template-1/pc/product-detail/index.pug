@@ -13,11 +13,17 @@ block content
             include ../components/sidebar/sidebar-title.pug
             +sidebar-title('联系我们')
             include ../components/sidebar/contact.pug
+            if domainType == 'fuwu'
+                +sidebar-title('服务推荐')
+            else
+                +sidebar-title('产品推荐')
 
-            +sidebar-title('服务推荐')
             include ../components/sidebar/recommend.pug
+            if domainType == 'fuwu'
+                +sidebar-title('服务分类')
+            else
+                +sidebar-title('产品分类')
 
-            +sidebar-title('服务分类')
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
