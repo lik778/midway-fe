@@ -52,7 +52,7 @@ const ContactForm = (props: Props) => {
     // 处理53客服数据
     if (!isEmptyObject(kf53Data)) {
       if (kf53Data.kefuStatus) {
-        if (kf53Data.companyName.length < 2) return
+        if (kf53Data.companyName && kf53Data.companyName.length < 2) return
         info.kefuStatus = KFStatus.OPEN;
         info.kf53Info.companyName = kf53Data.companyName
         info.kf53Info.bname = kf53Data.bname
@@ -60,7 +60,7 @@ const ContactForm = (props: Props) => {
         info.kefuStatus = KFStatus.CLOSE
       }
     } else {
-      if(info.kf53Info.companyName.length < 2) return
+      if(info.kf53Info.companyName && info.kf53Info.companyName.length < 2) return
     }
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
