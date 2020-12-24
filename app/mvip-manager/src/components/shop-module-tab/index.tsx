@@ -3,21 +3,11 @@ import { Menu } from 'antd';
 import { Link } from 'umi';
 import { ShopModuleType } from '@/enums';
 
-const menuList = [
-  {
-    link: ShopModuleType.PRODUCT,
-    label: "服务模块",
-    key: ShopModuleType.PRODUCT
-  },
-  {
-    link: ShopModuleType.ARTICLE,
-    label: "文章模块",
-    key: ShopModuleType.ARTICLE
-  }
-]
+
 
 interface Props {
   type: ShopModuleType;
+  tabType?: string;
 }
 
 export default (props: Props) => {
@@ -25,6 +15,19 @@ export default (props: Props) => {
   const handleClick = (e: { key: any; }) => {
     setCurrent(e.key)
   };
+
+  const menuList = [
+    {
+      link: ShopModuleType.PRODUCT,
+      label: `${props.tabType}模块`,
+      key: ShopModuleType.PRODUCT
+    },
+    {
+      link: ShopModuleType.ARTICLE,
+      label: "文章模块",
+      key: ShopModuleType.ARTICLE
+    }
+  ]
 
   return (
     <div>
