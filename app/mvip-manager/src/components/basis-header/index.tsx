@@ -5,8 +5,8 @@ import MainTitle from '@/components/main-title';
 import { getShopInfoApi } from '@/api/shop';
 import { ShopBasisType } from '@/enums';
 import { useParams } from 'umi';
-import {message} from "antd"
 import { RouteParams } from '@/interfaces/shop';
+import { errorMessage } from '@/components/message';
 interface basisHeader{
   type: ShopBasisType;
 }
@@ -23,7 +23,7 @@ export default (props: basisHeader) => {
       if (res?.success) {
         setTitle(res?.data?.name)
       } else {
-        message.error(res?.message)
+        errorMessage(res?.message)
       }
      })()
   }, [paramId]);

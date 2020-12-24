@@ -1,17 +1,17 @@
-
 import React, { useEffect, useState } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
-import QuitFormModal from '@/components/quit-form-modal';
+import MyModal, { ModalType } from '@/components/modal';
 import { articleForm, productForm } from '@/config/form';
-import { Form, Drawer, message, Modal } from 'antd';
-import { CateItem, CreateArticleApiParams, RouteParams } from '@/interfaces/shop';
+import { Drawer, Form, Modal } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { ContentCateType } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createArticleApi, updateArticleApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { isEmptyObject } from '@/utils';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   cateList: CateItem[];
@@ -27,6 +27,7 @@ export default (props: Props) => {
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
+  const [quotaModalVisible, setQuotaModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   // 弹窗错误显示
@@ -46,26 +47,6 @@ export default (props: Props) => {
 
     return ''
   }
-  const config = {
-    title: '温馨提示',
-    closable:true,
-    onOk: async()=>{
-      if(quota?.freeNum === 1) {
-        const resData = await createArticleApi(Number(params.id), formValues)
-        if (resData?.success) {
-          setTimeout(() =>  location.reload(), 500)
-        } else {
-          message.error(resData.message)
-        }
-      }
-    },
-    onCancel: ()=>{
-    },
-    content: (
-     <div className="quota-text" dangerouslySetInnerHTML={{__html: consumeText()}} >
-     </div>
-    ),
-  };
 
   useEffect(() => {
     // 初始化表单----> value
@@ -89,17 +70,17 @@ export default (props: Props) => {
     } else {
       if(quota?.freeNum === 1 || (quota?.freeNum === 0 && quota.postRemain < 6)){
         setFormLoading(false)
-        modal.confirm(config);
+        setQuotaModalVisible(true);
         return
       }
       resData = await createArticleApi(Number(params.id), values)
     }
     setFormLoading(false)
     if (resData?.success) {
-      message.success('发布成功')
+      successMessage('发布成功')
       setTimeout(() =>  location.reload(), 500)
     } else {
-      message.error(resData.message)
+      errorMessage(resData.message)
     }
   }
 
@@ -134,11 +115,31 @@ export default (props: Props) => {
           groupUpdate={(item: CateItem) => { console.log(null) }}
           groupCreate={(item: CateItem) => updateCateList(item)}
           onClose={() => setModalVisible(false)} />
-        <QuitFormModal
-          visible={quitModalVisible} onOk={() => {
-          setQuitModalVisible(false)
-          onClose() }}
-          onCancel={() => setQuitModalVisible(false)}/>
+          <MyModal
+            title="确认关闭"
+            content="您还没有提交，退出后当前页面的内容不会保存，确认退出？"
+            visible={quitModalVisible}
+            onOk={() => {
+              setQuitModalVisible(false)
+              onClose() }}
+            onCancel={() => setQuitModalVisible(false)}/>
+        <MyModal
+          title="温馨提示"
+          content={<div className="quota-text" dangerouslySetInnerHTML={{__html: consumeText()}} >
+          </div>}
+          type={ModalType.warning}
+          visible={quotaModalVisible}
+          onOk={async()=>{
+            if(quota?.freeNum === 1) {
+              const resData = await createArticleApi(Number(params.id), formValues)
+              if (resData?.success) {
+                setTimeout(() =>  location.reload(), 500)
+              } else {
+                errorMessage(resData.message)
+              }
+            }
+          }}
+          onCancel={() => setQuotaModalVisible(false)}/>
         {contextHolder}
     </Drawer>
   );

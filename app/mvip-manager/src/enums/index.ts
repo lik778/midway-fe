@@ -3,6 +3,12 @@ export enum ShopModuleType {
   ARTICLE = 'article'
 }
 
+export enum ProductType {
+  B2B = 'SALE',
+  VIP = 'SERVICE'
+}
+
+
 export enum ShopBasisType {
   NAV = 'nav',
   CAROUSEL = 'carousel',

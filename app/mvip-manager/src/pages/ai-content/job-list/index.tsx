@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { message, Table } from 'antd';
+import { Table } from 'antd';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
@@ -8,6 +8,7 @@ import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
 import { addKeyForListData, formatTime } from '@/utils';
 import { AiTaskStatusText } from '@/constants';
+import { errorMessage } from '@/components/message';
 
 export default (props: any) => {
   const [page, setPage] = useState<number>(1);
@@ -22,7 +23,7 @@ export default (props: any) => {
          setAiList(addKeyForListData(res.data.result || [], page))
          setTotal(res.data.totalRecord)
        } else {
-         message.error(res.message)
+         errorMessage(res.message)
        }
        setListLoading(false)
     })()

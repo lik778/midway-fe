@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {Upload, Modal, message, Button } from 'antd';
+import {Upload, Modal, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImgToUpyunHandle } from '@/utils';
+import { errorMessage } from '@/components/message';
 
 const getBase64 = function(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -61,7 +62,7 @@ export const BannerImgUpload = (props: Props) => {
       if(res?.code === 200) {
         onChange(`${res?.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
       }else {
-        message.error(res?.message);
+        errorMessage(res?.message);
       }
     }
   }
@@ -69,11 +70,11 @@ export const BannerImgUpload = (props: Props) => {
   const beforeUpload= (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg';
     if (!isJpgOrPng) {
-      message.error('请上传jpg、jpeg、png格式的图片');
+      errorMessage('请上传jpg、jpeg、png格式的图片');
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
     if (!isLt2M && isJpgOrPng) {
-      message.error('请上传不超过1M的图片');
+      errorMessage('请上传不超过1M的图片');
     }
     return isJpgOrPng && isLt2M;
   }

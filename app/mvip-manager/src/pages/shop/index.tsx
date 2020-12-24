@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
+import MyModal, { ModalType } from '@/components/modal';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box';
@@ -32,6 +33,8 @@ export default (props: any) => {
   const [shopOperateStatus, setOperate] = useState(0)
   // 是否是后缀域名(前缀B2B，后缀服务)
   const [isSuffix, setIsSuffix] = useState(true)
+  // 是否是后缀域名(前缀B2B，后缀服务)
+  const [isNewShopDisabled, setIsNewShopDisabled] = useState(false)
   // 弹窗报错
   const [isInputErr, setInputErr] = useState({
     key:'',
@@ -53,8 +56,6 @@ export default (props: any) => {
   })
 
   // 相关文案和参数处理
-  // 限制只显示2个
-  let isNewShopDisabled = false
   // 弹窗文案
   const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
   const isDomainDisabled = shopOperateStatus === 1 ? true : false
@@ -161,7 +162,7 @@ export default (props: any) => {
     if (notEmptyObject(shopStatus)) {
       setEditVisible(!shopStatus.isUserPerfect)
       setIsSuffix(shopStatus.domainType === 'SUFFIX')
-      isNewShopDisabled = !(shopStatus?.isTicketAvailable) || false
+      setIsNewShopDisabled(!(shopStatus?.isTicketAvailable))
     }
   }, [shopStatus])
 
@@ -289,14 +290,15 @@ export default (props: any) => {
             </li>
           </ul>
         </Modal>
-        <Modal title="去完善信息"
-               closable={false}
-               maskClosable={false}
-               onCancel={() => setEditVisible(false)}
-               onOk={() => history.push('/company-info/base')}
-               visible={editVisible}>
-          <p>您的企业资料还未填写，请完善您的企业资料</p>
-        </Modal>
+        <MyModal
+           title="去完善信息"
+           content="您的企业资料还未填写，请完善您的企业资料"
+           type={ModalType.info}
+           closable={false}
+           maskClosable={false}
+           onCancel={() => setEditVisible(false)}
+           onOk={() => history.push('/company-info/base')}
+           visible={editVisible} />
         <div className="container">
           {shopSitePage()}
         </div>

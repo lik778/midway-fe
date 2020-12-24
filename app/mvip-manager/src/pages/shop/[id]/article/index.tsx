@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { message } from 'antd';
 import ContentHeader from '@/components/content-header';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
@@ -9,8 +8,9 @@ import { getArticleListApi } from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { ContentCateType, ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import './index.less';
+import { errorMessage } from '@/components/message';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
@@ -23,6 +23,7 @@ export default (props: any) => {
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   const [quota, setQuota] = useState<any>(null)
+  const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
   useEffect(() => {
@@ -35,7 +36,7 @@ export default (props: any) => {
         setTotal(res?.data?.articleList?.totalRecord)
         setQuota(res?.data?.quotaInfo)
       } else {
-        message.error(res?.message || '出错了');
+        errorMessage(res?.message || '出错了');
       }
       setListLoading(false)
     })()
@@ -45,8 +46,16 @@ export default (props: any) => {
     setQuota(q)
   }
 
+  const onChangeType = (type: ProductType) => {{
+    if(type == ProductType.B2B) {
+      setTypeTxt('产品')
+    }else{
+      setTypeTxt('服务')
+    }
+  }}
+
   return (<div>
-    <ContentHeader type={ShopModuleType.ARTICLE}/>
+    <ContentHeader type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
