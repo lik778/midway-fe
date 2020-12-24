@@ -21,7 +21,7 @@ export default (props: any) => {
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number | null>(null);
   const [quota, setQuota] = useState<any>(null)
   const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
@@ -91,7 +91,7 @@ export default (props: any) => {
         editData={editArticleData}
         updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
-        onClose={() => {setTimeout(() =>setArticleFormVisible(false), 300)}}
+        onClose={() => {setTimeout(() =>setArticleFormVisible(false), 500)}}
         quota={quota}
         updateQuota={updateQuota}
         />
