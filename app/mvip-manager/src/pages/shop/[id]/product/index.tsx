@@ -80,7 +80,7 @@ export default (props: any) => {
             createBtnText="新建分组"
             cateList={cateList}
             updateCateList={(list) => setCateList(list)}
-            onClose={() => setModuleGroupVisible(false)}
+            onClose={() => setTimeout(() => setModuleGroupVisible(false), 500)}
             visible={moduleGroupVisible}
             save={() => { setModuleGroupVisible(false) }} />
           <ProductBox

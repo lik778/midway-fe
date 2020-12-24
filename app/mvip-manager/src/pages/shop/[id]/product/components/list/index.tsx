@@ -84,7 +84,7 @@ export default (props: Props) => {
         </div>
       }
       {
-        total && total > 0 && <div>
+        total !== null && total > 0 && <div>
           <MyModal
             title="确认删除"
             content="删除后无法恢复，确认删除？"
