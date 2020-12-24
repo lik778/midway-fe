@@ -113,7 +113,7 @@ const WildcatForm = (props: Props) => {
             }
           } else if (item.type === FormType.AreaSelect) {
             const value = getEditData(item.name || '');
-            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
               <AreaSelect initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')}/>
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
