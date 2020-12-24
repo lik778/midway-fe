@@ -16,7 +16,7 @@ export default (props: {
     <div className="empty-msg-box">
       <img className="img" src={img}/>
       <p className="msg">{msg}</p>
-      {btn && <Button type="primary" className="primary-btn" onClick={props.onClick}>+{btn}</Button>}
+      {btn && <Button type="primary" className="primary-btn p-btn" onClick={props.onClick}>+{btn}</Button>}
     </div>
   );
 }

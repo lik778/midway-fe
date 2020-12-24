@@ -1,6 +1,5 @@
-import { Controller, Get, Req, Res, Param, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Req, Res, Param } from '@nestjs/common';
 import { Request, Response } from 'express';
-import * as dayjs from 'dayjs';
 import { SitemapService } from '../services/sitemap.service';
 
 @Controller('/sitemap')
@@ -9,7 +8,6 @@ export class SitemapController {
 
   @Get('/increment_:date.xml')
   async incrementSitemap(@Param() params, @Req() req: Request, @Res() res: Response) {
-    console.log('23')
     const { date } = params;
     const resData = await this.sitemapService.getSitemapByDate(date)
     res.setHeader('Content-Type', 'text/xml')

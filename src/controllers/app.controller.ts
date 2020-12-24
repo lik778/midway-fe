@@ -2,11 +2,12 @@ import { Controller, Get, HttpException, HttpStatus, Req, Res } from '@nestjs/co
 import { Request, Response } from 'express';
 import { join } from 'path';
 import * as fs  from 'fs';
+import config from '../config';
 
 const staticFiles = join(__dirname , '..', '..', '/assets/static')
 const files = fs.readdirSync(staticFiles);
 
-@Controller('/')
+@Controller({ host: config().hostType.fuwu, path: '/' })
 export class AppController {
   @Get('/')
   home (@Req() req: Request, @Res() res: Response) {

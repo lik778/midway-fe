@@ -3,6 +3,12 @@ export enum ShopModuleType {
   ARTICLE = 'article'
 }
 
+export enum ProductType {
+  B2B = 'SALE',
+  VIP = 'SERVICE'
+}
+
+
 export enum ShopBasisType {
   NAV = 'nav',
   CAROUSEL = 'carousel',
@@ -68,4 +74,9 @@ export enum DomainStatus {
   PREFIX = "PREFIX", // 前缀
   SUFFIX = "SUFFIX", // 后缀
   CUSTOM = "CUSTOM" // 自定义
+}
+
+export enum KFStatus {
+  CLOSE = 'CLOSE',
+  OPEN= 'OPEN'
 }

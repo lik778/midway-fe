@@ -1,11 +1,12 @@
 .aboutus
     .aboutus-top
         .aboutus-title
-            p 关于我们
+            h4 关于我们
         .aboutus-content
             //-传递给模板的字符串中保留HTML使用！
-            p.about-hidden !{ company.about.replace(/\n/g, '<br/>') || '暂时还未添加公司介绍哦'}
-    if company.about.length >61
+            p.sample !{ company.about.slice(0,141).replace(/\n/g, '<br/>') || '暂时还未添加公司介绍哦'}
+            p.all !{ company.about.replace(/\n/g, '<br/>') || '暂时还未添加公司介绍哦'}
+    if company.about.length >141
         .s-open 点击展开
             img(src="//file.baixing.net/202012/41b0db79b7b9316481aa69058d3ed37b.png", alt="")
         .s-off 点击收起

@@ -10,7 +10,10 @@
                 p 商家地址：#{ renderData.basic.company.address }
         .pro-bottom
             .pro-title
-                h3 产品详情
+                if domainType == 'fuwu'
+                    h4 服务详情
+                else
+                    h4 产品详情
             .pro-content.
                 !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
 

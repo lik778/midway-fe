@@ -1,16 +1,16 @@
 import React,  { useState, useEffect } from 'react';
-import { message } from 'antd';
 import { useParams } from "umi";
 import ContentHeader from '@/components/content-header';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ProductBox from '@/components/product-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';
-import { ContentCateType, ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
-import { addKeyForListData } from '@/utils';
+import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
 import './index.less'
 import { CateItem, RouteParams } from '@/interfaces/shop';
+import { errorMessage } from '@/components/message';
 
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 export default (props: any) => {
@@ -22,7 +22,8 @@ export default (props: any) => {
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number | null>(null);
+  const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
 
@@ -35,15 +36,22 @@ export default (props: any) => {
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res.data.productList.totalRecord)
       } else {
-        message.error(res.message);
+        errorMessage(res.message);
       }
       setListLoading(false)
     })()
   }, [page, contentCateId])
 
+  const onChangeType = (type: ProductType) => {{
+    if(type == ProductType.B2B) {
+      setTypeTxt('产品')
+    }else{
+      setTypeTxt('服务')
+    }
+  }}
   return (
     <div>
-      <ContentHeader type={ShopModuleType.PRODUCT}/>
+      <ContentHeader type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
@@ -52,7 +60,8 @@ export default (props: any) => {
             showCreate={() => {
               setEditProductData({})
               setProductFormVisible(true)
-            }} />
+            }}
+            type={typeTxt}/>
           <ProductList
             total={total}
             page={page}
@@ -62,36 +71,23 @@ export default (props: any) => {
               setEditProductData({...item});
               setProductFormVisible(true);
             }}
+            type={typeTxt}
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
             type={ContentCateType.PRODUCT}
-            title="服务分组"
+            title={`${typeTxt}分组`}
             createBtnText="新建分组"
             cateList={cateList}
             updateCateList={(list) => setCateList(list)}
-            onClose={() => setModuleGroupVisible(false)}
+            onClose={() => removeOverflow(() => setModuleGroupVisible(false)) }
             visible={moduleGroupVisible}
-            save={() => { setModuleGroupVisible(false) }} />
+            save={() => removeOverflow(() => setModuleGroupVisible(false))} />
           <ProductBox
-            addProductList={(item) => {
-              const addList = [item, ...productList]
-              setProductList(addKeyForListData([item, ...productList], page))
-              setTotal(addList.length)
-              // 处理一下cateList的num
-              const cateItem: any = cateList.find((x: any) => x.id == item.contentCateId)
-              cateItem.num += 1
-              setCateList([...cateList ])
-            }}
-            updateProductList={(item) => {
-              const editIndex = productList.findIndex((a: any) => a.id === item.id)
-              productList.splice(editIndex, 1, item)
-              setProductList(addKeyForListData([...productList], page))
-            }}
             cateList={cateList}
             editData={editProductData}
             updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
             visible={productFormVisible}
-            onClose={() => setProductFormVisible(false)}/>
+            onClose={() => removeOverflow(() => setProductFormVisible(false))}/>
       </div>
   </div>)
 }

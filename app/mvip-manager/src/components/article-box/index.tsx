@@ -1,52 +1,52 @@
-
 import React, { useEffect, useState } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
-import QuitFormModal from '@/components/quit-form-modal';
+import MyModal, { ModalType } from '@/components/modal';
 import { articleForm, productForm } from '@/config/form';
-import { Form, Drawer, message, Modal } from 'antd';
-import { CateItem, CreateArticleApiParams, RouteParams } from '@/interfaces/shop';
+import { Drawer, Form, Modal } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { ContentCateType } from '@/enums';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createArticleApi, updateArticleApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { isEmptyObject } from '@/utils';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   cateList: CateItem[];
   editData?: any;
   visible: boolean;
+  quota?: any;
   onClose(): void;
   updateCateList(item: CateItem): void;
-  addArticleList(item: any): void;
-  updateArticleList(item: any): void;
+  updateQuota(quota:any):void;
 }
 export default (props: Props) => {
-  const { visible, editData, onClose, cateList, updateCateList, addArticleList, updateArticleList } = props
+  const { quota, visible, editData, cateList, updateCateList, onClose} = props
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
+  const [quotaModalVisible, setQuotaModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
   const params: RouteParams = useParams();
   const [modal, contextHolder] = Modal.useModal();
-  const rechargeTxt = `您的免费发文额度已用完，信息发布点不足。<i style='color:rgb(255, 134, 0)'>去充值&gt;</i>`
-  const consumeTxt = `您的免费发文额度已用完，继续发文会消耗套餐内的信息发布点`
-  const config = {
-    title: '温馨提示',
-    closable:true,
-    onOk:()=>{
-    },
-    onCancel: ()=>{
-    },
-    content: (
-     <div className="quota-text" dangerouslySetInnerHTML={{__html: rechargeTxt}} >
-     </div>
-    ),
-  };
+  let formValues:any = null;
+  const rechargeTxt = (url: string) => {return `您的免费发文额度已用完，信息发布点不足。<a href=${url} target='_blank'><i style='color:rgb(255, 134, 0)'>去充值&gt;</i></a>`}
+  const consumeTxt = `您剩余1个免费发文额度，免费额度用完继续发文会消耗套餐内的信息发布点`
+
+  const consumeText = () => {
+    if(quota?.freeNum === 0 && quota?.postRemain<6) {
+        return rechargeTxt(quota?.buyUrl)
+    }else if(quota?.freeNum === 1){
+       return consumeTxt
+    }
+
+    return ''
+  }
 
   useEffect(() => {
     // 初始化表单----> value
@@ -56,30 +56,31 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
-    // modal.confirm(config);
     values.name = values.name.trim()
     let resData: any;
     const isEdit = !isEmptyObject(editData);
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
+    formValues = values
+
     setFormLoading(true)
     if (isEdit) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
     } else {
+      if(quota?.freeNum === 1 || (quota?.freeNum === 0 && quota.postRemain < 6)){
+        setFormLoading(false)
+        setQuotaModalVisible(true);
+        return
+      }
       resData = await createArticleApi(Number(params.id), values)
     }
     setFormLoading(false)
     if (resData?.success) {
-      message.success('发布成功')
-      if (isEdit) {
-        updateArticleList(resData.data)
-      } else {
-        addArticleList(resData.data)
-      }
-      onClose()
+      successMessage('发布成功')
+      setTimeout(() =>  location.reload(), 500)
     } else {
-      message.error(resData.message)
+      errorMessage(resData.message)
     }
   }
 
@@ -114,11 +115,31 @@ export default (props: Props) => {
           groupUpdate={(item: CateItem) => { console.log(null) }}
           groupCreate={(item: CateItem) => updateCateList(item)}
           onClose={() => setModalVisible(false)} />
-        <QuitFormModal
-          visible={quitModalVisible} onOk={() => {
-          setQuitModalVisible(false)
-          onClose() }}
-          onCancel={() => setQuitModalVisible(false)}/>
+          <MyModal
+            title="确认关闭"
+            content="您还没有提交，退出后当前页面的内容不会保存，确认退出？"
+            visible={quitModalVisible}
+            onOk={() => {
+              setQuitModalVisible(false)
+              onClose() }}
+            onCancel={() => setQuitModalVisible(false)}/>
+        <MyModal
+          title="温馨提示"
+          content={<div className="quota-text" dangerouslySetInnerHTML={{__html: consumeText()}} >
+          </div>}
+          type={ModalType.warning}
+          visible={quotaModalVisible}
+          onOk={async()=>{
+            if(quota?.freeNum === 1) {
+              const resData = await createArticleApi(Number(params.id), formValues)
+              if (resData?.success) {
+                setTimeout(() =>  location.reload(), 500)
+              } else {
+                errorMessage(resData.message)
+              }
+            }
+          }}
+          onCancel={() => setQuotaModalVisible(false)}/>
         {contextHolder}
     </Drawer>
   );

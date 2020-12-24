@@ -1,17 +1,16 @@
 .aboutus
     width 100%
     margin-top 16px
-    background-color #ffffff
+    background-color #fff
     .aboutus-title
         padding 16px
+        height 18px
         line-height 18px
-        p
-            padding-left 10px
+        h4
+            padding-left 5px
             border-left 3px solid#1565C1
-            color #333333
+            color #333
             font-size 16px
-            font-weight 600
-
     .aboutus-content
         padding-bottom 4px
         p
@@ -19,13 +18,8 @@
             font-size 14px
             margin 0 21px 17px 18px
             word-break break-all
-            //此处把隐藏属性独立出来成一个类，供jquery点击增删
-        .about-hidden
-            overflow hidden
-            display -webkit-box
-            -webkit-line-clamp 3
-            -webkit-box-orient vertical
-
+        .all
+            display none
     .s-open,
     .s-off
         height 44px

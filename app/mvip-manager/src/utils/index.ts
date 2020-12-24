@@ -1,5 +1,7 @@
 import { uploadImgToUpyunReq } from '@/api/haojing';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
+import { DomainStatus } from '@/enums';
+import { productText } from '@/constants';
 
 export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
   const params = new FormData()
@@ -41,6 +43,38 @@ export const isEmptyObject = (obj: any): boolean =>  {
   return JSON.stringify(obj) === '{}';
 }
 
+export const notEmptyObject = (obj: any): boolean =>  {
+  return JSON.stringify(obj) !== '{}';
+}
+
 export const randomStr = () => {
   return Math.random().toString(15).substr(2)
+}
+
+// 产品名字翻译机
+export const translateProductText  = (name: string, type: DomainStatus): string => {
+  const aliasItem = productText()[type];
+  return aliasItem ? aliasItem[name] : '';
+}
+
+export const randomList = (list: string[], limitNum: number): string[] => {
+  if (!list || list.length === 0) return [];
+  const res: string[] = [];
+  while (res.length < limitNum) {
+    const randomIndex: number = Math.floor(Math.random() * list.length);
+    const randomItem = list[randomIndex];
+    if (!res.includes(randomItem)) {
+      res.push(list[randomIndex]);
+    }
+  }
+  return res
+}
+
+export const removeOverflowY = () => {
+  document.body.removeAttribute('style')
+}
+
+export const removeOverflow = (cb: any) => {
+  setTimeout(cb(), 500);
+  setTimeout(() => removeOverflowY(), 1000);
 }

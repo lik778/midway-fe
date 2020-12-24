@@ -8,7 +8,7 @@
         each item,index in cateList
             li(class='tab-li')
                 a(href=item.urlSuffix) #{item.name}
-    //-这里其实应该是判断超过2行显示。
+    //-这里使用了简略区块和全部区块来交互。
     if  cateList.length >8
         .s-open 点击展开
             img(src="//file.baixing.net/202012/41b0db79b7b9316481aa69058d3ed37b.png", alt="")

@@ -7,12 +7,15 @@ html
         meta(name='keywords' content=renderData.meta.keywords || "")
         meta(name='description' content=renderData.meta.description || "")
         link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+            //-增加53kf
+        if renderData.kf53 && renderData.kf53.length> 0
+            | !{renderData.kf53}
         block styles
     body
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
-        - const { company } = renderData.basic
-        - const { currentPage, currentPathname, categoryId } = renderData
+        - const { company, person } = renderData.basic
+        - const { currentPage, currentPathname, categoryId, domainType } = renderData
         block header
             include ./components/header.pug
         block nav

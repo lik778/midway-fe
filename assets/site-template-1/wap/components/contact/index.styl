@@ -5,20 +5,27 @@
   height 52px
   background #fff
   display flex
-  .wechat-box
-    border-left 1px solid #ccc
   .sms-box, .wechat-box
     width 25%
     height 52px
     line-height 52px
     text-align center
     position relative
+    img
+      vertical-align middle
     span
       font-size 12px
+      vertical-align middle
       color #EF6A31
     .icon
       height 12px
+      width 16px
       margin-right 5px
+  .wechat-box
+    border-left 1px solid #ccc
+    .icon
+      height 16px
+      width 20px
   .phone-box
     float right
     display flex
@@ -33,6 +40,7 @@
     .tel-icon
       float left
       height 25px
+      margin-top 2px
     .info
       float left
       font-size 12px
