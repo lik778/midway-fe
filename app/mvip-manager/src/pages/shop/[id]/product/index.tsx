@@ -7,7 +7,7 @@ import ProductList from './components/list';
 import ProductNav from './components/nav';
 import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
-import { addKeyForListData } from '@/utils';
+import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
 import './index.less'
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
@@ -49,7 +49,6 @@ export default (props: any) => {
       setTypeTxt('服务')
     }
   }}
-
   return (
     <div>
       <ContentHeader type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
@@ -80,15 +79,15 @@ export default (props: any) => {
             createBtnText="新建分组"
             cateList={cateList}
             updateCateList={(list) => setCateList(list)}
-            onClose={() => setTimeout(() => setModuleGroupVisible(false), 500)}
+            onClose={() => removeOverflow(() => setModuleGroupVisible(false)) }
             visible={moduleGroupVisible}
-            save={() => { setModuleGroupVisible(false) }} />
+            save={() => removeOverflow(() => setModuleGroupVisible(false))} />
           <ProductBox
             cateList={cateList}
             editData={editProductData}
             updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
             visible={productFormVisible}
-            onClose={() => setTimeout(() =>setProductFormVisible(false), 500)}/>
+            onClose={() => removeOverflow(() => setProductFormVisible(false))}/>
       </div>
   </div>)
 }

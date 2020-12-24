@@ -10,7 +10,7 @@ export const successMessage = (content: string) => {
 }
 
 export const errorMessage = (content: string) => {
-  message.success({ content: content, duration: 1.5,
+  message.error({ content: content, duration: 1.5,
     className: 'my-message-box my-message-error-box',
     icon: <img src="//file.baixing.net/202012/b04026daec92a0ba9e7b336b54a2e760.png"/> })
 }

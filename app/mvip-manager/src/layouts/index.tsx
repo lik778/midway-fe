@@ -7,6 +7,7 @@ import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
+import { removeOverflowY } from '@/utils';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -18,9 +19,7 @@ export default (props: any) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
   // 处理overflow: hidden问题
-  useEffect(() => {
-    document.body.removeAttribute('style')
-  });
+  useEffect(() => removeOverflowY());
 
   useEffect(() => {
     (async () => {

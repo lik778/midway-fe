@@ -5,7 +5,7 @@ import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
-import { addKeyForListData } from '@/utils';
+import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
@@ -72,9 +72,9 @@ export default (props: any) => {
         createBtnText="新建分组"
         cateList={cateList}
         updateCateList={(list) => setCateList(list)}
-        onClose={() => setModuleGroupVisible(false)}
+        onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
         visible={moduleGroupVisible}
-        save={() => { setTimeout(() => setModuleGroupVisible(false), 500) }}
+        save={() => removeOverflow(() => setModuleGroupVisible(false))}
       />
       <ArticleList
         total={total}
@@ -91,7 +91,7 @@ export default (props: any) => {
         editData={editArticleData}
         updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
-        onClose={() => {setTimeout(() =>setArticleFormVisible(false), 500)}}
+        onClose={() => removeOverflow(() => setArticleFormVisible(false)) }
         quota={quota}
         updateQuota={updateQuota}
         />

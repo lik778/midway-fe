@@ -69,3 +69,12 @@ export const randomList = (list: string[], limitNum: number): string[] => {
   }
   return res
 }
+
+export const removeOverflowY = () => {
+  document.body.removeAttribute('style')
+}
+
+export const removeOverflow = (cb: any) => {
+  setTimeout(cb(), 500);
+  setTimeout(() => removeOverflowY(), 1000);
+}
