@@ -91,7 +91,7 @@ export default (props: any) => {
         editData={editArticleData}
         updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
-        onClose={() => setArticleFormVisible(false)}
+        onClose={() => {setTimeout(() =>setArticleFormVisible(false), 300)}}
         quota={quota}
         updateQuota={updateQuota}
         />

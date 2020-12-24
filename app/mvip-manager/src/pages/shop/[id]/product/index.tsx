@@ -61,7 +61,7 @@ export default (props: any) => {
             showCreate={() => {
               setEditProductData({})
               setProductFormVisible(true)
-            }} 
+            }}
             type={typeTxt}/>
           <ProductList
             total={total}
@@ -88,7 +88,7 @@ export default (props: any) => {
             editData={editProductData}
             updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
             visible={productFormVisible}
-            onClose={() => setProductFormVisible(false)}/>
+            onClose={() => setTimeout(() =>setProductFormVisible(false), 300)}/>
       </div>
   </div>)
 }
