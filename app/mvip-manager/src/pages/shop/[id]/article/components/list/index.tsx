@@ -74,7 +74,7 @@ export default (props: Props) => {
         </div>
       }
       {
-        total && total > 0 && <div>
+        total !== null && total > 0 && <div>
           <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
                  onCancel={() => setVisibleDeleteDialog(false)}
                  onOk={() => confirmDelete()}

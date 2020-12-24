@@ -74,7 +74,7 @@ export default (props: any) => {
         updateCateList={(list) => setCateList(list)}
         onClose={() => setModuleGroupVisible(false)}
         visible={moduleGroupVisible}
-        save={() => { setModuleGroupVisible(false) }}
+        save={() => { setTimeout(() => setModuleGroupVisible(false), 500) }}
       />
       <ArticleList
         total={total}
