@@ -35,7 +35,7 @@ export const KF53 =  (props: Prop) => {
   }
 
   return <Form form={form} name="kf53-form" onValuesChange={formChange} >
-    <FormItem style={{ width: 346 }} name="kefuStatus" valuePropName='checked'>
+    <FormItem label="是否展示" style={{ width: 346 }} name="kefuStatus" valuePropName='checked'>
       <Switch />
     </FormItem>
     {
