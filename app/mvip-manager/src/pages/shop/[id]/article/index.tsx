@@ -9,7 +9,7 @@ import { getArticleListApi } from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { ContentCateType, ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import './index.less';
 
 export default (props: any) => {
@@ -23,6 +23,7 @@ export default (props: any) => {
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   const [quota, setQuota] = useState<any>(null)
+  const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
   useEffect(() => {
@@ -45,8 +46,16 @@ export default (props: any) => {
     setQuota(q)
   }
 
+  const onChangeType = (type: ProductType) => {{
+    if(type == ProductType.B2B) {
+      setTypeTxt('产品')
+    }else{
+      setTypeTxt('服务')
+    }
+  }}
+
   return (<div>
-    <ContentHeader type={ShopModuleType.ARTICLE}/>
+    <ContentHeader type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}

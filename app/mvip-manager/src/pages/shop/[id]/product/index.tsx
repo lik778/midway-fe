@@ -6,7 +6,7 @@ import ShopModuleGroup from '@/components/shop-module-group';
 import ProductBox from '@/components/product-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';
-import { ContentCateType, ShopModuleType } from '@/enums';
+import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import { getProductListApi }  from '@/api/shop';
 import { addKeyForListData } from '@/utils';
 import './index.less'
@@ -23,6 +23,7 @@ export default (props: any) => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+  const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
 
@@ -41,9 +42,17 @@ export default (props: any) => {
     })()
   }, [page, contentCateId])
 
+  const onChangeType = (type: ProductType) => {{
+    if(type == ProductType.B2B) {
+      setTypeTxt('产品')
+    }else{
+      setTypeTxt('服务')
+    }
+  }}
+
   return (
     <div>
-      <ContentHeader type={ShopModuleType.PRODUCT}/>
+      <ContentHeader type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
@@ -52,7 +61,8 @@ export default (props: any) => {
             showCreate={() => {
               setEditProductData({})
               setProductFormVisible(true)
-            }} />
+            }} 
+            type={typeTxt}/>
           <ProductList
             total={total}
             page={page}
@@ -65,7 +75,7 @@ export default (props: any) => {
             onChange={(page) => setPage(page)}/>
           <ShopModuleGroup
             type={ContentCateType.PRODUCT}
-            title="服务分组"
+            title={`${typeTxt}分组`}
             createBtnText="新建分组"
             cateList={cateList}
             updateCateList={(list) => setCateList(list)}
