@@ -4,8 +4,8 @@ import MainTitle from '@/components/main-title';
 import { getShopInfoApi } from '@/api/shop';
 import { ShopModuleType, ProductType } from '@/enums';
 import { useParams } from 'umi';
-import {message} from "antd"
 import { RouteParams } from '@/interfaces/shop';
+import { errorMessage } from '@/components/message';
 interface contentHeader{
   type: ShopModuleType;
   onChangeType(type:ProductType):void;
@@ -24,7 +24,7 @@ export default (props: contentHeader) => {
         setTitle(res?.data?.name)
         onChangeType(res?.data?.type)
       } else {
-        message.error(res?.message)
+        errorMessage(res?.message)
       }
      })()
   }, [paramId]);

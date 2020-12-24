@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { message } from 'antd';
 import ContentHeader from '@/components/content-header';
 import ShopModuleGroup from '@/components/shop-module-group';
 import ArticleBox from '@/components/article-box';
@@ -11,6 +10,7 @@ import { CateItem, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import './index.less';
+import { errorMessage } from '@/components/message';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
@@ -36,7 +36,7 @@ export default (props: any) => {
         setTotal(res?.data?.articleList?.totalRecord)
         setQuota(res?.data?.quotaInfo)
       } else {
-        message.error(res?.message || '出错了');
+        errorMessage(res?.message || '出错了');
       }
       setListLoading(false)
     })()

@@ -4,9 +4,9 @@ import './index.less';
 import { BannerImgUpload } from '@/components/banner-img-upload';
 import { createBannerApi, deleteBannerApi } from '@/api/shop';
 import { useParams } from 'umi';
-import {message} from "antd"
 import { RouteParams } from '@/interfaces/shop';
 import { DeviceType } from '@/enums';
+import { errorMessage, successMessage } from '@/components/message';
 interface Props {
   onChange(type: DeviceType): void;
   fileList:any[];
@@ -24,10 +24,10 @@ export default (props: Props) => {
       type,
     })
     if(res?.success){
-      message.success('上传成功');
+      successMessage('上传成功');
       onChange(type)
     }else{
-      message.error(`上传失败:${res?.message}`);
+      errorMessage(`上传失败:${res?.message}`);
     }
   }
 
@@ -36,10 +36,10 @@ export default (props: Props) => {
       id,
     })
     if(res?.success){
-      message.success('删除成功');
+      successMessage('删除成功');
       onChange(type)
     }else{
-      message.error(res?.message);
+      errorMessage(res?.message);
     }
   }
 

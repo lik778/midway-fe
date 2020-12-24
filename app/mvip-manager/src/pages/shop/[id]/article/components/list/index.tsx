@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Table, message } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Table } from 'antd';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ArticleSource } from '@/enums'
 import { deleteArticleApi } from '@/api/shop';
 import { auditStatusText, ArticleSourceText } from '@/constants';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   dataSource: any[];
@@ -33,10 +34,10 @@ export default (props: Props) => {
   const confirmDelete = async () => {
     const res  = await deleteArticleApi(Number(params.id), { id: actionId })
     if (res.success) {
-      message.success(res.message);
+      successMessage(res.message);
       location.reload()
     } else {
-      message.warning(res.message);
+      errorMessage(res.message);
     }
   }
 

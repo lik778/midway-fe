@@ -4,11 +4,12 @@ import { Link } from 'umi';
 import { CateItem } from '@/interfaces/shop';
 import { getAiShopListApi } from '@/api/ai-content';
 import { checkHasShow } from '@/utils';
-import { Form, message, Select } from 'antd';
+import { Form, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import Loading from '@/components/loading';
 import Recharge from '@/components/recharge';
 import './index.less';
+import { errorMessage } from '@/components/message';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -31,7 +32,7 @@ export const CreateAiContentNav = (props: Props): any => {
           showGroupWordPanel(res.data)
           setShopList(res.data || [])
         } else {
-          message.error(res.message)
+          errorMessage(res.message)
         }
       })()
     }, [])

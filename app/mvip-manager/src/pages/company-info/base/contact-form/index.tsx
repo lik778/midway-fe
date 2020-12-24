@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, message } from 'antd';
+import { Button, Form } from 'antd';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '@/config/form';
 import { QQCustomService } from '@/pages/company-info/base/qq-custom-service';
@@ -9,6 +9,7 @@ import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
 import { KF53 } from '@/pages/company-info/base/kf53';
 import { KFStatus } from '@/enums';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   editDataSource: UserEnterpriseInfo | null;
@@ -64,9 +65,9 @@ const ContactForm = (props: Props) => {
     const res = await saveEnterpriseContactInfoApi(info)
     setLoading(false)
     if (res.success) {
-       message.success('更新联系方式成功')
+       successMessage('更新联系方式成功')
     } else {
-      message.error(res.message)
+      errorMessage(res.message)
     }
   }
 
