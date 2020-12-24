@@ -16,6 +16,12 @@ export default (props: any) => {
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
+
+  // 处理overflow: hidden问题
+  useEffect(() => {
+    document.body.removeAttribute('style')
+  });
+
   useEffect(() => {
     (async () => {
       const res = await getUserBaseInfoApi();

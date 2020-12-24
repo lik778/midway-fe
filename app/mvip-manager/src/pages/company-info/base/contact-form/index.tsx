@@ -10,6 +10,7 @@ import { formUnvalid, isEmptyObject } from '@/utils';
 import { KF53 } from '@/pages/company-info/base/kf53';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
+import './index.less';
 
 interface Props {
   editDataSource: UserEnterpriseInfo | null;
@@ -83,8 +84,8 @@ const ContactForm = (props: Props) => {
       </Form.Item>
       <Form.Item label="QQ客服">
         <QQCustomService values={qqList}  onChange={(list) => setQQList(list)}/>
-        <div style={{ marginTop: 32 }}>
-          <Button loading={loading} type="primary" size="large" onClick={saveInfo}>保存</Button>
+        <div className="contact-form-box" >
+          <Button loading={loading} className="btn" type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
         </div>
       </Form.Item>
