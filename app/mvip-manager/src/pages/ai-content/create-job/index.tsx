@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Tooltip, Form, Button, Modal, Input, Row, Col } from 'antd';
+import { Tooltip, Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
@@ -10,6 +10,7 @@ import qsIcon from '../../../styles/qs-icon.svg'
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
+import MyModal, { ModalType } from '@/components/modal';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -146,16 +147,17 @@ export default (props: any) => {
             </p>
             <Button type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
           </div>
-          <Modal
-          title="确认提交"
-          visible={modalVisible}
-          onCancel={() => setModalVisible(false)}
-          footer={<div>
-            <Button onClick={() => setModalVisible(false)}>取消</Button>
-            <Button type="primary" loading={submitLoading} onClick={() =>submitData()}>确认</Button>
-          </div>}>
-          <p>提交后不可修改，确认提交吗？</p>
-          </Modal>
+          <MyModal
+            title="确认提交"
+            content="提交后不可修改，确认提交吗？"
+            type={ModalType.info}
+            onCancel={() => setModalVisible(false)}
+            onOk={() => history.push('/company-info/base')}
+            footer={<div>
+              <Button onClick={() => setModalVisible(false)}>取消</Button>
+              <Button type="primary" loading={submitLoading} onClick={() =>submitData()}>确认</Button>
+            </div>}
+            visible={modalVisible} />
         </div>
       )}
 

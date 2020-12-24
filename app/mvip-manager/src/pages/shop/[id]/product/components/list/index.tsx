@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Table } from 'antd';
+import { Table } from 'antd';
+import MyModal from '@/components/modal';
 import { deleteProductApi } from '@/api/shop';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
@@ -69,12 +70,12 @@ export default (props: Props) => {
 
   return (
     <div>
-      <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
-             onCancel={() => setVisibleDeleteDialog(false)}
-             onOk={() => confirmDelete()}
-             visible={visibleDeleteDialog}>
-        <p>删除后无法恢复，确认删除？</p>
-      </Modal>
+      <MyModal
+        title="确认删除"
+        content="删除后无法恢复，确认删除？"
+        onCancel={() => setVisibleDeleteDialog(false)}
+        onOk={() => confirmDelete()}
+        visible={visibleDeleteDialog}/>
       <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
         showSizeChanger: false,  current: page, onChange, total, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
     </div>)
