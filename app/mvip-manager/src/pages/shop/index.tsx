@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
+import MyModal, { ModalType } from '@/components/modal';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box';
@@ -289,15 +290,15 @@ export default (props: any) => {
             </li>
           </ul>
         </Modal>
-        <Modal title="去完善信息"
-               closable={false}
-               maskClosable={false}
-               onCancel={() => setEditVisible(false)}
-               onOk={() => history.push('/company-info/base')}
-               visible={editVisible}
-               >
-          <p>您的企业资料还未填写，请完善您的企业资料</p>
-        </Modal>
+        <MyModal
+           title="去完善信息"
+           content="您的企业资料还未填写，请完善您的企业资料"
+           type={ModalType.info}
+           closable={false}
+           maskClosable={false}
+           onCancel={() => setEditVisible(false)}
+           onOk={() => history.push('/company-info/base')}
+           visible={editVisible} />
         <div className="container">
           {shopSitePage()}
         </div>
