@@ -8,7 +8,7 @@ const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgen
 export const eventTracker = (clickType, clickPosition) => {
   return new Promise((resolve, reject) => {
     $.post('/tracker', {
-      type: BXMAINSITE,
+      eventType: BXMAINSITE,
       data: {
         event_type: BXMAINSITE,
         site_id: 'dianpu',
