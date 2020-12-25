@@ -79,7 +79,7 @@ const ContactForm = (props: Props) => {
            onInit={(form) => setFormInstance(form)}
            config={config} formChange={formChange}/>
       </Form.Item>
-      <Form.Item label="第三方客服">
+      <Form.Item label="智能接待系统">
         <KF53 editDataSource={editDataSource} onChange={(values) => setKf53Data(values)}/>
       </Form.Item>
       <Form.Item label="QQ客服">
