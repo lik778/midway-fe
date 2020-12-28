@@ -83,12 +83,11 @@ const WildcatForm = (props: Props) => {
               return (<FormItem className={item.className} key={item.label} >
                 {
                   item.images.map((img) => {
-                  const url = getEditData(img.name || '');
                   return (<FormItem name={img.name} key={img.name}
                                     style={{ width: item.width }} labelCol={{ span: 3 }}
                                     label={item.label} rules={[{required: item.required, message: `请上传${item.label}` }]}>
-                      <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
-                                 onChange={(newValue) => onChange(newValue, item.name || '')}/>
+                      <ImgUpload key={img.text} name={img.name} text={img.text}  editData={editDataSource}
+                                 maxLength={item.maxLength || 0}  onChange={(newValue) => onChange(newValue, item.name || '')}/>
                     </FormItem>
                   )
                   })
@@ -100,9 +99,8 @@ const WildcatForm = (props: Props) => {
                   style={{ width: item.width }} labelCol={{ span: 3 }} label={item.label}>
                 {
                   item.images.map((img) => {
-                    const url = getEditData(img.name || '');
                     return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                        <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
+                        <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={item.maxLength || 0}
                            onChange={(newValue) => onChange(newValue, item.name || '')}/>
                       </FormItem>
                     )
