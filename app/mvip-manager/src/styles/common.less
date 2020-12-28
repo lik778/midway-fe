@@ -7,7 +7,10 @@
 }
 
 .primary-btn {
-  background: #096DD9;
+  background: #096DD9!important;
+}
+
+.p-btn{
   width: 120px;
   height: 40px;
   color: #ffffff;
@@ -48,9 +51,32 @@
 .a-menu{
   background: none;
   font-size: 16px;
-  color: #666666;
   margin-left:36px;
+  .ant-menu-item{
+    color: #666666!important;
+    a{
+      color: #666666!important;
+    }
+  }
+  .ant-menu-item.ant-menu-item-selected{
+    color: #096DD9;
+    a{
+      color: #096DD9!important;
+    }
+  }
 }
+.shop-nav{
+  .ant-checkbox-wrapper-checked .ant-checkbox-inner{
+    background-color:#FF8D19;
+    border-color:#FF8D19;
+  }
+
+  .ant-checkbox-disabled .ant-checkbox-inner{
+    background-color:#F2F2F2;
+    border-color:#F2F2F2;
+  }
+}
+
 
 .ant-drawer-header{
   padding: 25px 32px;
@@ -67,7 +93,7 @@
     text-align: right;
     margin-right: 20px;
     display: block;
-    
+
   }
   .ant-form-item:nth-child(1){
     margin-bottom: -8px;
@@ -76,9 +102,9 @@
     margin-bottom: 0;
   }
   .primary-btn {
-    background: #ffffff;
+    background: #ffffff!important;
     border: 1px solid #096DD9;
-    color: #096DD9;
+    color: #096DD9!important;
     margin-left: 16px;
   }
 
@@ -227,11 +253,15 @@
         border: 1px solid #D8D8D8;
         color: #333333;
         margin: 20px 0px;
+        font-size: 14px;
       }
     }
     .t-form{
       border-left: 1px solid #D8D8D8;
       padding: 29px 30px;
+      .ant-input:placeholder-shown{
+        font-size:14px;
+      }
       .tag-module{
         margin-left: -4px;
       }
@@ -246,10 +276,20 @@
           height: 80px;
         }
       }
+      .il-module{
+        input{
+          font-size:14px;
+        }
+      }
       .ant-input-textarea-show-count::after{
         position: absolute;
         right: 8px;
         bottom:2px;
+      }
+      .ant-btn-primary{
+        background: #096DD9;
+        width: 120px;
+        height: 40px;
       }
     }
   }
@@ -301,6 +341,37 @@
   .img-upload{
     margin-left: 5px;
   }
-  
+
 }
 
+.ant-modal-footer{
+  border-top: none!important;
+  margin-top: -27px;
+  padding: 10px 26px 40px 10px!important;
+  .ant-btn{
+    width: 86px;
+    height: 32px;
+  }
+  .ant-btn-primary{
+    background: #096DD9;
+  }
+}
+
+.g-modal{
+  .ant-modal-footer{
+    margin-top: 0px;
+  }
+}
+
+.no-list-data {
+  text-align: center;
+  margin-top: 20vh;
+  img {
+    height: 130px;
+  }
+  p {
+    font-size: 14px;
+    color: #999;
+    margin-top: 24px;
+  }
+}

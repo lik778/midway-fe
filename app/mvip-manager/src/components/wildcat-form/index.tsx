@@ -66,7 +66,6 @@ const WildcatForm = (props: Props) => {
             return (
                 <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
                   <InputLen width={item.inputWidth} placeholder={item.placeholder}  maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount}/>
-                  {/* <Input style={{ width: item.inputWidth }} placeholder={item.placeholder} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled}/> */}
                 </FormItem>
               )
           } else if (item.type === FormType.Textarea) {
@@ -84,26 +83,24 @@ const WildcatForm = (props: Props) => {
               return (<FormItem className={item.className} key={item.label} >
                 {
                   item.images.map((img) => {
-                  const url = getEditData(img.name || '');
                   return (<FormItem name={img.name} key={img.name}
                                     style={{ width: item.width }} labelCol={{ span: 3 }}
                                     label={item.label} rules={[{required: item.required, message: `请上传${item.label}` }]}>
-                      <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
-                                 onChange={(newValue) => onChange(newValue, item.name || '')}/>
+                      <ImgUpload key={img.text} name={img.name} text={img.text}  editData={editDataSource}
+                                 maxLength={item.maxLength || 0}  onChange={(newValue) => onChange(newValue, item.name || '')}/>
                     </FormItem>
                   )
                   })
                 }
-                <FormItem style={{ width: item.width, marginLeft: 83 }}><p className="tip">{item.tip}</p></FormItem>
+                <FormItem style={{ width: item.width, marginLeft: 83, color: '#999' }}><p className="tip">{item.tip}</p></FormItem>
               </FormItem>)
             } else if (item.images && item.images.length > 1) {
               return (<FormItem className={item.className} key={item.label}
                   style={{ width: item.width }} labelCol={{ span: 3 }} label={item.label}>
                 {
                   item.images.map((img) => {
-                    const url = getEditData(img.name || '');
                     return (<FormItem name={img.name} key={img.name} style={{ display: 'inline-block' }}>
-                        <ImgUpload key={img.text} text={img.text} url={ url || (`empty${randomStr()}`) } maxLength={item.maxLength || 0}
+                        <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={item.maxLength || 0}
                            onChange={(newValue) => onChange(newValue, item.name || '')}/>
                       </FormItem>
                     )
@@ -114,13 +111,13 @@ const WildcatForm = (props: Props) => {
             }
           } else if (item.type === FormType.AreaSelect) {
             const value = getEditData(item.name || '');
-            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+            return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
               <AreaSelect initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')}/>
             </FormItem>)
           } else if (item.type === FormType.GroupSelect) {
             return (<FormItem key={item.label}>
               <FormItem className={item.className} label={item.label} name={item.name}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+                <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }} getPopupContainer={triggerNode => triggerNode.parentNode}>
                   { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
                 </Select>
               </FormItem>

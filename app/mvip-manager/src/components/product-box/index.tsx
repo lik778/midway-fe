@@ -3,14 +3,15 @@ import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '@/components/group-modal';
 import { productForm } from '@/config/form';
-import { Drawer, Form, message } from 'antd';
-import { CateItem, CreateProductApiParams, RouteParams } from '@/interfaces/shop';
+import { Drawer, Form } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { ContentCateType } from '@/enums';
-import QuitFormModal from '@/components/quit-form-modal';
+import MyModal from '@/components/modal';
 import { isEmptyObject } from '@/utils';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   cateList: CateItem[];
@@ -18,12 +19,10 @@ interface Props {
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;
-  addProductList(item: any): void;
-  updateProductList(item: any): void;
 }
 
 export default (props: Props) => {
-  const { onClose, visible, editData, cateList, updateCateList, addProductList, updateProductList } = props;
+  const { onClose, visible, editData, cateList, updateCateList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -57,15 +56,10 @@ export default (props: Props) => {
     }
     setFormLoading(false)
     if (resData.success) {
-      message.success(resData.message)
-      if (isEdit) {
-        updateProductList(resData.data)
-      } else {
-        addProductList(resData.data)
-      }
-      onClose()
+      successMessage(resData.message)
+      setTimeout(() =>  location.reload(), 500)
     } else {
-      message.error(resData.message)
+      errorMessage(resData.message)
     }
   }
 
@@ -99,11 +93,13 @@ export default (props: Props) => {
            groupUpdate={(item: CateItem) => { console.log(null) }}
            groupCreate={(item: CateItem) => updateCateList(item)}
            onClose={() => setModalVisible(false)} />
-          <QuitFormModal
-            visible={quitModalVisible} onOk={() => {
-            setQuitModalVisible(false)
-            onClose() }}
-            onCancel={() => setQuitModalVisible(false)}/>
+        <MyModal
+          title="确认关闭"
+          content="您还没有提交，退出后当前页面的内容不会保存，确认退出？"
+          visible={quitModalVisible} onOk={() => {
+          setQuitModalVisible(false)
+          onClose() }}
+          onCancel={() => setQuitModalVisible(false)}/>
     </Drawer>
   );
 }

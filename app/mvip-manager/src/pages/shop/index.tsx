@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
+import MyModal, { ModalType } from '@/components/modal';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from '@/components/shop-box';
@@ -13,7 +14,7 @@ import { notEmptyObject } from '@/utils';
 const emptyMsg = {
   btn: '新建店铺',
   msg: '暂无店铺',
-  img: "//file.baixing.net/202012/c201a04d7d3ac516b3598eb3eb6bd4c1.png",
+  img: "//file.baixing.net/202012/ead8b543db23259dc9838e753f865732.png",
 }
 
 export default (props: any) => {
@@ -32,6 +33,8 @@ export default (props: any) => {
   const [shopOperateStatus, setOperate] = useState(0)
   // 是否是后缀域名(前缀B2B，后缀服务)
   const [isSuffix, setIsSuffix] = useState(true)
+  // 是否是后缀域名(前缀B2B，后缀服务)
+  const [isNewShopDisabled, setIsNewShopDisabled] = useState(false)
   // 弹窗报错
   const [isInputErr, setInputErr] = useState({
     key:'',
@@ -53,8 +56,6 @@ export default (props: any) => {
   })
 
   // 相关文案和参数处理
-  // 限制只显示2个
-  const isNewShopDisabled = totalCount >= 2  ? true : false
   // 弹窗文案
   const operateShopTxt = shopOperateStatus === 0 ? '新建店铺' : '修改店铺'
   const isDomainDisabled = shopOperateStatus === 1 ? true : false
@@ -161,6 +162,7 @@ export default (props: any) => {
     if (notEmptyObject(shopStatus)) {
       setEditVisible(!shopStatus.isUserPerfect)
       setIsSuffix(shopStatus.domainType === 'SUFFIX')
+      setIsNewShopDisabled(!(shopStatus?.isTicketAvailable))
     }
   }, [shopStatus])
 
@@ -220,7 +222,7 @@ export default (props: any) => {
     if(totalCount) {
       return (
         <div className="my-shop-list">
-          <Button type="primary" className="primary-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
+          <Button type="primary" className="primary-btn p-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
           <div className="shop-list">
             {
               shopListData.map((shopChild, index) => {
@@ -288,14 +290,15 @@ export default (props: any) => {
             </li>
           </ul>
         </Modal>
-        <Modal title="去完善信息"
-               closable={false}
-               maskClosable={false}
-               onCancel={() => setEditVisible(false)}
-               onOk={() => history.push('/company-info/base')}
-               visible={editVisible}>
-          <p>您的企业资料还未填写，请完善您的企业资料</p>
-        </Modal>
+        <MyModal
+           title="去完善信息"
+           content="您的企业资料还未填写，请完善您的企业资料"
+           type={ModalType.info}
+           closable={false}
+           maskClosable={false}
+           onCancel={() => setEditVisible(false)}
+           onOk={() => history.push('/company-info/base')}
+           visible={editVisible} />
         <div className="container">
           {shopSitePage()}
         </div>

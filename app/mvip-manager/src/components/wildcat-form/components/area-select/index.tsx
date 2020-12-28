@@ -19,12 +19,6 @@ export default (props: any) => {
     })
   }
 
-  // const formatValue = (data: string[] | any): string[] => {
-  //   if (!data) return [];
-  //   if (Array.isArray(data)) return data;
-  //   return Object.keys(data).map((k: string) => k)
-  // }
-
   const getAreasInfo = async (areaId: string) => {
       const res = await getAreasApi(areaId);
       if (res?.success) {
@@ -32,9 +26,6 @@ export default (props: any) => {
       }
   }
 
-  useEffect(() => {
-    getAreasInfo('m0')
-  }, [])
 
   useEffect(() => {
     if (initialValues) {
@@ -49,6 +40,12 @@ export default (props: any) => {
     setSelectValue(list)
   }
 
+  const onPopupVisibleChange = (value: any) => {
+    if (value && areas.length === 0) {
+      getAreasInfo('m0')
+    }
+  }
+
   const loadData = async (selectedOptions: any) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
@@ -61,5 +58,6 @@ export default (props: any) => {
   };
 
   return (<Cascader size='large' options={areas} value={selectValue}
+          onPopupVisibleChange={onPopupVisibleChange}
           loadData={loadData} onChange={onSelectChange} changeOnSelect />)
 }

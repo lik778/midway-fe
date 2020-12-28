@@ -60,7 +60,7 @@ export const translateProductText  = (name: string, type: DomainStatus): string 
 export const randomList = (list: string[], limitNum: number): string[] => {
   if (!list || list.length === 0) return [];
   const res: string[] = [];
-  while (res.length <= limitNum) {
+  while (res.length < limitNum) {
     const randomIndex: number = Math.floor(Math.random() * list.length);
     const randomItem = list[randomIndex];
     if (!res.includes(randomItem)) {
@@ -68,4 +68,13 @@ export const randomList = (list: string[], limitNum: number): string[] => {
     }
   }
   return res
+}
+
+export const removeOverflowY = () => {
+  document.body.removeAttribute('style')
+}
+
+export const removeOverflow = (cb: any) => {
+  setTimeout(cb(), 500);
+  setTimeout(() => removeOverflowY(), 1000);
 }

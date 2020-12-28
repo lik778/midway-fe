@@ -3,7 +3,7 @@ import { TrackerType } from '../enums/tracker';
 
 export class TrackerDTO {
   @IsString()
-  readonly type: TrackerType;
+  readonly eventType: TrackerType;
 
   @IsObject()
   readonly data: any;

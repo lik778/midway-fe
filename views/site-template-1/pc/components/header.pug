@@ -1,6 +1,8 @@
 .header.clearfix
 	img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
 	h3 #{ renderData.shopInfo.name }
+	if person.uid
+		p(style="display:none") uid：#{person.uid}
 	.header-tel
 		img(src="//file.baixing.net/202011/41bb9867c53b194f8d20aa00de837e18.png", alt="logo")
 		.tel-hoticon

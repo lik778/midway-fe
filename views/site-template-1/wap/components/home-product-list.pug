@@ -1,7 +1,10 @@
 .product
     - const productList= renderData.productList.result
     .product-title.clearfix
-        h4 服务内容
+        if domainType == 'fuwu'
+            h4 服务内容
+        else
+            h4 产品中心
         if moreProductArr && moreProductArr.length>0
             a(href=moreProductArr[0].content) 更多
                 .right-icon

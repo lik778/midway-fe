@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { message, Table } from 'antd';
+import { Table } from 'antd';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
@@ -8,6 +8,7 @@ import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
 import { addKeyForListData, formatTime } from '@/utils';
 import { AiTaskStatusText } from '@/constants';
+import { errorMessage } from '@/components/message';
 
 export default (props: any) => {
   const [page, setPage] = useState<number>(1);
@@ -22,7 +23,7 @@ export default (props: any) => {
          setAiList(addKeyForListData(res.data.result || [], page))
          setTotal(res.data.totalRecord)
        } else {
-         message.error(res.message)
+         errorMessage(res.message)
        }
        setListLoading(false)
     })()
@@ -57,7 +58,7 @@ export default (props: any) => {
       <div className="ai-list-container">
         { isLoding && <Loading />}
         { total === 0 && <div className="empty-info">
-          <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
+          <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>}
         { total > 0 && <Table columns={columns} loading={listLoading} dataSource={aiList || []} pagination={{

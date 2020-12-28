@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Table, Checkbox, Button, message } from 'antd';
+import { Table, Checkbox, Button } from 'antd';
 import InputLen from "@/components/input-len"
-import Loading from "@/components/loading-status"
+import Loading from "@/components/loading"
 import './index.less';
 import { getNavListingApi, updateNavApi }  from '@/api/shop';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from "umi";
 import { NavItem, ModifyNavItem } from '@/interfaces/shop';
+import { errorMessage, successMessage } from '@/components/message';
 
 export default (props: any) => {
   const [navList, setNavList] = useState<NavItem[]>([]);
@@ -37,7 +38,7 @@ export default (props: any) => {
     {
       title: '是否显示',
       key: 'action',
-      render: (node: NavItem) => 
+      render: (node: NavItem) =>
        {
         const checked = node?.display? true : false
         const isDisabled = node?.isDisabled || false
@@ -74,8 +75,8 @@ export default (props: any) => {
 
   const handleInputChange = (e: any) =>{
     const target = e.target
-    const name = target.name 
-    const value = target.value.trim()   
+    const name = target.name
+    const value = target.value.trim()
     const navCloneList = navList.concat()
     const modifyCloneList = modifyList.concat()
     navCloneList.map(n=>{
@@ -101,9 +102,9 @@ export default (props: any) => {
   const updateNav = async() => {
     const res = await updateNavApi(Number(params.id), modifyList)
     if (res?.success) {
-      message.success(res?.message);
+      successMessage(res?.message);
     } else {
-      message.error(res?.message);
+      errorMessage(res?.message);
     }
   }
 
@@ -117,12 +118,12 @@ export default (props: any) => {
     })
 
     if(isError) {
-      message.error('输入框不能为空')
+      errorMessage('输入框不能为空')
       return
     }
     updateNav()
   }
-  
+
   useEffect(() => {
     (async () => {
       const res = await getNavListingApi(Number(params.id))
@@ -147,7 +148,7 @@ export default (props: any) => {
         setModifyList(modifyRes)
         setIsLoading(false)
       } else {
-        message.error(res?.message);
+        errorMessage(res?.message);
       }
     })()
   }, [])

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Form, Input } from 'antd';
 import { KF53Info, UserEnterpriseInfo } from '@/interfaces/user';
 import { KFStatus } from '@/enums';
+import './index.less'
 const FormItem = Form.Item;
 
 const styles = {
@@ -35,16 +36,16 @@ export const KF53 =  (props: Prop) => {
   }
 
   return <Form form={form} name="kf53-form" onValuesChange={formChange} >
-    <FormItem style={{ width: 346 }} name="kefuStatus" valuePropName='checked'>
+    <FormItem label="是否展示" style={{ width: 346 }} name="kefuStatus" valuePropName='checked'>
       <Switch />
     </FormItem>
     {
       isOpenKFStatus && <FormItem>
-        <FormItem label="公司名称" name="companyName" style={{ width: 346 }}>
-          <Input size="large" placeholder="请输入公司名称"/>
+        <FormItem label="公司名称" name="companyName" style={{ width: 346 }} rules={[{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字'}]}>
+          <Input size="large" placeholder="请输入公司名称" minLength={2} maxLength={20} />
         </FormItem>
         <FormItem label="客服昵称" name="bname" style={{ width: 346 }}>
-          <Input size="large" placeholder="请输入客服昵称"/>
+          <Input size="large" placeholder="请输入客服昵称" maxLength={8} />
         </FormItem>
         <FormItem>
           <p style={styles.p}>1.关注 <span style={styles.s}>“百姓商户”</span> 公众号，即可随时随地获取客户咨询线索。</p>
