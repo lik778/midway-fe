@@ -1,7 +1,7 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-  title: '站内千词后台管理',
+  title: '优选推后台管理',
   locale: {},
   hash: true,
   favicon: '//s.baixing.net/favicon.ico',
