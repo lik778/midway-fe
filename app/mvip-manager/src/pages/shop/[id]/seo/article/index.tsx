@@ -10,7 +10,7 @@ import { Form } from 'antd';
 import { useParams } from 'umi';
 import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
 import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
-import LoadingStatus from '@/components/loading-status';
+import Loading from '@/components/loading';
 export default (props: any) => {
   const [formConfig, setFormConfig] = useState<FormConfig>(tdkForm)
   const params: RouteParams = useParams();
@@ -61,7 +61,7 @@ export default (props: any) => {
 
   const formPage = ()=>{
     if(loading) {
-      return <LoadingStatus />
+      return <Loading />
     }else{
       return (
         <div className="t-content">

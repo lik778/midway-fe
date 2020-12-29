@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Checkbox, Button } from 'antd';
 import InputLen from "@/components/input-len"
-import Loading from "@/components/loading-status"
+import Loading from "@/components/loading"
 import './index.less';
 import { getNavListingApi, updateNavApi }  from '@/api/shop';
 import { RouteParams } from '@/interfaces/shop';

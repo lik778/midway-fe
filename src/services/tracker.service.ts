@@ -22,9 +22,9 @@ export class TrackerService {
   }
 
   public point(req: Request, body: TrackerDTO): Promise<any> {
-    const { type, data } = body
+    const { eventType, data } = body
     return this.httpService.post(`${this.host}/api/midway/internal/event/tracking/report`,
-      JSON.stringify({ type, data: Object.assign(data, this.trackerBasicData(req)) }), { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
+      JSON.stringify({ eventType, data: Object.assign(data, this.trackerBasicData(req)) }), { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err)
         throw new BadRequestException('打点错误');
       })
@@ -33,7 +33,7 @@ export class TrackerService {
   //pv,event公共的打点
   public trackerBasicData(req: Request): any {
       return {
-        _trackId: (req.cookies && req.cookies._trackId) || '',
+        _trackId: (req.cookies && req.cookies.__trackId) || '',
         url: req.protocol + '://' + req.get('host') + req.originalUrl,
         ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         ua: req.headers['user-agent']
