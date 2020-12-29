@@ -7,9 +7,12 @@ html
         meta(name='keywords' content=renderData.meta.keywords || "")
         meta(name='description' content=renderData.meta.description || "")
         link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
-            //-增加53kf
-        if renderData.kf53 && renderData.kf53.length> 0
-            | !{renderData.kf53}
+        //-增加53客服并打点
+        - a = renderData.kf53
+        if a && a.length> 0
+            - x = a.lastIndexOf('";var')
+            - kf53Tarcker = a.slice(0,x) + '?u_cust_id=' + renderData.trackId + a.slice(x)
+            | !{ kf53Tarcker }
         block styles
     body
         //-初始化公共数据
