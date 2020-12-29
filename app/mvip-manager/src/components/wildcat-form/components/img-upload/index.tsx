@@ -15,7 +15,8 @@ const getBase64 = function(file: Blob) {
 }
 
 interface Props {
-  url: string;
+  name: string;
+  editData: any;
   text: string;
   imgType?: "text" | "picture-card" | "picture" | undefined;
   maxLength: number | undefined;
@@ -24,10 +25,8 @@ interface Props {
   fileList?:any[];
 }
 export const ImgUpload = (props: Props) => {
-  const list = props?.fileList || []
-  const { text, url, onChange } = props
+  const { editData, name, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
-  const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([])
   const uploadButton = (isDisable?:boolean | undefined) =>{
@@ -42,12 +41,12 @@ export const ImgUpload = (props: Props) => {
   }
 
   useEffect(() => {
-    if (/^empty/.test(url)) {
-      setFileList([])
-    } else {
-      setFileList([{ uid: '-1', status: 'done', url, thumbUrl: url }])
+    if (editData) {
+      if (name && editData[name]) {
+        setFileList([{ uid: '-1', status: 'done', url: editData[name], thumbUrl: editData[name] }])
+      }
     }
-  }, [url])
+  }, [editData])
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -59,7 +58,6 @@ export const ImgUpload = (props: Props) => {
       }
       setPreviewImage(file.url || file.preview)
       setPreviewVisible(true)
-      setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
 
   const handleChange = async (e: any) => {
@@ -69,10 +67,12 @@ export const ImgUpload = (props: Props) => {
         setFileList([e.file])
         onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
       }
-    } else if (e.file.status === 'removed') {
-      setFileList([])
-      onChange('')
     }
+  }
+
+  const handleRemove = (file: any) => {
+    setFileList([])
+    onChange('')
   }
 
   const beforeUpload= (file: any) => {
@@ -98,6 +98,7 @@ export const ImgUpload = (props: Props) => {
           onPreview={handlePreview}
           beforeUpload={beforeUpload}
           onChange={handleChange}
+          onRemove={handleRemove}
           isImageUrl={(file) => { return true }}
           disabled={ fileList.length > (props.maxLength || 0)}
         >

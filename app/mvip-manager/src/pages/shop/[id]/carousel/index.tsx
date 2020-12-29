@@ -6,7 +6,7 @@ import './index.less'
 import { getBannerListApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
-import Loading from '@/components/loading-status';
+import Loading from '@/components/loading';
 import EmptyStatus from '@/components/empty-status';
 
 export default (props: any) => {
@@ -38,7 +38,7 @@ export default (props: any) => {
         setWapBannerList(list)
         setIsWapLoading(false)
       }
-      
+
     }
   }
 
@@ -55,7 +55,7 @@ export default (props: any) => {
       return <EmptyStatus emptyMsg={emptyMsg}/>
     }
   }
-  
+
   const imgContainer = () =>{
     if(isWapLoading || isPcLoading) {
       return <Loading />
@@ -84,7 +84,7 @@ export default (props: any) => {
         <BasisHeader type={ShopBasisType.CAROUSEL}/>
         <div className="container">
           {imgContainer()}
-        </div>    
+        </div>
       </div>
     );
 }
