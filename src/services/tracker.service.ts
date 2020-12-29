@@ -33,7 +33,7 @@ export class TrackerService {
   //pv,event公共的打点
   public trackerBasicData(req: Request): any {
       return {
-        _trackId: (req.cookies && req.cookies.__trackId) || '',
+        _trackId: (req.cookies && req.cookies.__trackId) || null,
         url: req.protocol + '://' + req.get('host') + req.originalUrl,
         ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         ua: req.headers['user-agent']
