@@ -81,6 +81,7 @@ export class BaseSiteController {
           site_id: 'dianpu',
           shop_id: shopName,
           pageType: 'view_ad',
+          tracktype: 'pageview',
           _platform: device,
           contentType: 'article',
           category: '',
@@ -100,6 +101,7 @@ export class BaseSiteController {
           shop_id: shopName,
           pageType: 'view_ad',
           _platform: device,
+          tracktype: 'pageview',
           contentType: 'article',
           category: '',
           refer: ''
@@ -153,6 +155,7 @@ export class BaseSiteController {
           shop_id: shopName,
           pageType: 'view_ad',
           _platform: device,
+          tracktype: 'pageview',
           contentType: 'product',
           category: '',
           refer: ''
@@ -171,6 +174,7 @@ export class BaseSiteController {
           shop_id: shopName,
           pageType: 'view_ad',
           _platform: device,
+          tracktype: 'pageview',
           contentType: 'product',
           category: '',
           refer: ''
