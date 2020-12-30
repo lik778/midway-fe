@@ -10,7 +10,7 @@ export class TrackerController {
 
   @Post('/')
   async tracker(@Req() req: Request, @Res() res: Response, @Body() body: TrackerDTO) {
-    const resData = await this.trackerService.point(req, body)
+    const resData = await this.trackerService.point(req, res, body)
     res.send(resData.data)
   }
 }
