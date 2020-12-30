@@ -40,8 +40,9 @@ export class BaseSiteController {
     })
     const templateUrl = `site-template-1/${device}/home/index`
     const { kf53 } = data.basic.contact;
+    const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, kf53, shopId, trackId }, isHome: true });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isHome: true });
   }
 
   @Get('/n')
@@ -96,8 +97,9 @@ export class BaseSiteController {
       })
       const templateUrl = `site-template-1/${device}/news-detail/index`
       const { kf53 } = data.basic.contact;
+      const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, kf53, shopId, trackId } });
+      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -175,8 +177,9 @@ export class BaseSiteController {
       })
       const templateUrl = `site-template-1/${device}/product-detail/index`
       const { kf53 } = data.basic.contact;
+      const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, kf53, shopId, trackId } });
+      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);

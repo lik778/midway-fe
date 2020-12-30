@@ -34,4 +34,7 @@ block content
 
 block scripts
     :combine(fileName="site-template-1-product-pc.js")
-
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.trackSrc = 'listing';

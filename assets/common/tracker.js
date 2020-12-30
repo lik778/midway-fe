@@ -9,6 +9,7 @@ export const eventTracker = (clickType, clickPosition) => {
   return new Promise((resolve, reject) => {
     $.post('/tracker', {
       eventType: BXMAINSITE,
+
       data: {
         event_type: BXMAINSITE,
         site_id: 'dianpu',
@@ -17,10 +18,10 @@ export const eventTracker = (clickType, clickPosition) => {
         action: 'click',
         clickType,
         clickPosition,
-        src: '',
+        src: window.trackSrc,
         _platform: isWap? 'wap' : 'pc',
         _ad: '',
-        contentType: '',
+        contentType: window.contentType,
         category: '',
         refer: ''
       },
