@@ -18,7 +18,7 @@ html
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
-        - const { currentPage, currentPathname, domainType } = renderData
+        - const { currentPage, currentPathname, domainType, shopId } = renderData
         block header
         block content
         block footer
@@ -37,4 +37,6 @@ html
 
 
     block scripts
-
+    block append scripts
+        script.
+            window.shopId = #{ shopId }
