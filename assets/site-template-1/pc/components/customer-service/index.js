@@ -13,8 +13,16 @@ export const qqModule = function() {
 		});
 
 		//点击QQ客服event打点
-		$(".customer-box a").click(()=>{
+		$(".customer-box>dl a").click(()=>{
 			eventTracker("qq-pc", "float-pc")
+		});
+		//电话打点
+		$(".customer-box .center").click(()=>{
+			eventTracker("phone-pc", "float-pc")
+		});
+		//微信打点
+		$(".customer-box .footer").click(()=>{
+			eventTracker("wechat-pc", "float-pc")
 		});
 	})
 }
