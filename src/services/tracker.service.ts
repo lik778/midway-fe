@@ -46,10 +46,10 @@ export class TrackerService {
 
   public getTrackId(req: Request, res: Response) {
     const trackId = req.cookies && req.cookies.__trackId;
-    if (!trackId || /^[0-9]{15}$/.test(trackId)) {
+    if (!trackId || !/^[0-9]{15}$/.test(trackId)) {
       const gTrackId = this.generateTrackId();
       res.cookie(this.TRACKID, gTrackId, {
-        maxAge: 86400 * 365 * 2,
+        maxAge: 60 * 1000 * 60 * 24 * 365 * 2,
         httpOnly: true,
         domain: this.haojingDomain
       });
