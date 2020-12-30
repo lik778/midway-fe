@@ -20,14 +20,12 @@ export const eventTracker = (clickType, clickPosition) => {
         clickPosition,
         src: window.trackSrc,
         _platform: isWap? 'wap' : 'pc',
-        _ad: '',
+        _ad: window.adId,
         contentType: window.contentType,
         category: '',
         refer: ''
       },
-      success: (res) => {
-        console.log(res)
-      }
+      //success: (res) => {//console.log(res)}
     })
   }).catch(err => {
     throw err;
