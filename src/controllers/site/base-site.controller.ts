@@ -27,7 +27,7 @@ export class BaseSiteController {
     const { data } = await this.midwayApiService.getHomePageData(shopName, device, domain);
     // 打点
     const shopID = data.basic.shop.id
-    this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
         site_id: 'dianpu',
         shop_id: shopID,
@@ -51,7 +51,7 @@ export class BaseSiteController {
     const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage }, domain);
     // 打点
     const shopID = data.basic.shop.id
-    this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
         site_id: 'dianpu',
         shop_id: shopID,
@@ -79,7 +79,7 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId }, domain);
       // 打点
       const shopID = data.basic.shop.id
-      this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopID,
@@ -99,7 +99,7 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
       // 打点
       const shopID = data.basic.shop.id
-      this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopID,
@@ -127,7 +127,7 @@ export class BaseSiteController {
     const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 }, domain);
     // 打点
     const shopID = data.basic.shop.id
-    this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
         site_id: 'dianpu',
         shop_id: shopID,
@@ -155,7 +155,7 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId }, domain);
       // 打点
       const shopID = data.basic.shop.id
-      this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopID,
@@ -175,7 +175,7 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
       // 打点
       const shopID = data.basic.shop.id
-      this.trackerService.point(req, { eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopID,
