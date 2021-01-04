@@ -20,8 +20,8 @@ export const eventTracker = (clickType, clickPosition) => {
         clickPosition,
         src: window.trackSrc,
         _platform: isWap? 'wap' : 'pc',
-        _ad: window.adId,
         contentType: window.contentType,
+        _ad: window.adId,
         category: '',
         refer: ''
       },
