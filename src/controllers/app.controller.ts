@@ -37,7 +37,7 @@ export class AppController {
       [COOKIE_TOKEN_KEY, COOKIE_HASH_KEY, COOKIE_USER_KEY].forEach((cookieKey: string) => {
         const cookieValue = req.cookies[cookieKey]
         if (cookieValue) {
-          res.cookie(cookieKey, cookieValue, { httpOnly: true })
+          res.cookie(cookieKey, cookieValue, { httpOnly: true, domain: `localhost` })
         }
       })
       res.json({ success: true, message: '操作成功', code: 200 })
