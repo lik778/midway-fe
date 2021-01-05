@@ -14,10 +14,10 @@ html
             - s = a.indexOf('src')
             - hr = a.slice(s, x)
             if hr.indexOf('?') == -1
-                - kf53Tarcker = a.slice(0,x) + '?u_cust_id = ' + renderData.trackId + '&u_cust_name = ' + renderData.trackId + a.slice(x)
+                - kf53Tarcker = a.slice(0,x) + '?u_cust_id=' + renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
                 | !{ kf53Tarcker }
             else
-                - kf53Tarcker = a.slice(0,x) + '&u_cust_id = ' + renderData.trackId + '&u_cust_name = ' + renderData.trackId + a.slice(x)
+                - kf53Tarcker = a.slice(0,x) + '&u_cust_id=' + renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
                 | !{ kf53Tarcker }
         block styles
     body
