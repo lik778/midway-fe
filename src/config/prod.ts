@@ -1,4 +1,5 @@
 export default {
+  env: 'production',
   services: {
     'midway-service': {
       host: 'http://midway-service'

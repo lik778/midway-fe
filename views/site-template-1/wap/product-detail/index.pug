@@ -11,3 +11,8 @@ block content
 
 block scripts
     :combine(fileName="site-template-1-product-detail-wap.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.trackSrc = 'viewad';
+        window.adId = #{renderData.productInfo.id};

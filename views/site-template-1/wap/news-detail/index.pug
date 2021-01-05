@@ -12,3 +12,8 @@ block content
 
 block scripts
     :combine(fileName="site-template-1-news-detail-wap.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'viewad';
+        window.adId = #{renderData.articleInfo.id};

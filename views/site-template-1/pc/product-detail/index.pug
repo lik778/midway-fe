@@ -32,4 +32,7 @@ block content
 
 block scripts
     :combine(fileName="site-template-1-product-detail-pc.js")
-
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.adId = #{renderData.productInfo.id};
