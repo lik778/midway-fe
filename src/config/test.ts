@@ -1,4 +1,5 @@
 export default {
+  env: 'test',
   services: {
     'midway-service': {
       host: 'http://172.30.2.14:30257'
