@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import { eventTracker } from '../../../../common/tracker';
 
 //本页目的：只要页面归属某个导航栏，则该导航区块高亮
 export const navModule = function() {
@@ -22,7 +23,13 @@ export const navModule = function() {
 			const t = windowPath.slice(targetIndex+1, targetIndex+2); //提取当前url的尾部，展示n,p
 			if(h==windowHref || t==n){
 				$(tab).addClass('nav-active')
+				//siblings():所有同级a 元素去掉该class。
+				$(tab).parent().siblings().find('a').removeClass('nav-active')
 			}
 		})
+	});
+	//点击顶部右上角电话event打点
+	$(".tel-desc").click(()=>{
+		eventTracker("phone-top", "top-pc")
 	});
 }
