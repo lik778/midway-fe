@@ -1,13 +1,13 @@
 import { Get, HostParam, Param, Query, Req, Res } from '@nestjs/common';
-import { MidwayService } from '../../services/midway.service';
+import { SiteService } from '../../services/site.service';
 import { Request, Response } from 'express';
-import { UserAgent } from '../../decorator';
+import { UserAgent } from '../../decorator/user-agent.decorator';
 import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { TrackerType } from '../../enums/tracker';
 
 export class BaseSiteController {
-  constructor(protected readonly midwayApiService: MidwayService,
+  constructor(protected readonly midwayApiService: SiteService,
               protected readonly trackerService: TrackerService,
               protected domainType: DomainTypeEnum) {}
 

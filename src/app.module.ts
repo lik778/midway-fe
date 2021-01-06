@@ -2,7 +2,7 @@ import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import config from './config';
 import { ManagementController } from './controllers/management.controller';
-import { MidwayService } from './services/midway.service';
+import { SiteService } from './services/site.service';
 import { RequestService } from './services/request.service';
 import { AppController } from './controllers/app.controller';
 import { HaojingController } from './controllers/haojing.controller';
@@ -14,6 +14,7 @@ import { B2bSiteController } from './controllers/site/b2b-site.controller';
 import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 import { TrackerService } from './services/tracker.service';
 import { TrackerController } from './controllers/tracker.controller';
+import { ManagementService } from './services/management.service';
 
 /**
  * 应用程序根模块
@@ -36,7 +37,8 @@ import { TrackerController } from './controllers/tracker.controller';
   providers: [
     LogService,
     RequestService,
-    MidwayService,
+    ManagementService,
+    SiteService,
     HaojingService,
     SitemapService,
     TrackerService

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { configure, getLogger } from 'log4js';
 import { join } from "path";
-import { AxiosError } from 'axios';
 
 @Injectable()
 export class LogService {

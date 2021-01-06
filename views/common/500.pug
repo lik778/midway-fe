@@ -3,7 +3,7 @@ html
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
         meta(http-equiv='X-UA-Compatible', content='ie=edge')
-        title 页面找不到
+        title 出错了
         link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
         block styles
             style.
@@ -49,9 +49,11 @@ html
                 }
     body
         .container
-            img(src="//file.baixing.net/202012/fb7a973eef780d1aff76e925a7d36377.png")
+            img(src="//file.baixing.net/202101/51c9430483f9221774452876f056dabd.png")
             h1
-                | 页面找不到
+                | 出错了
+            p.message
+                | #{exceptionRes && exceptionRes.message}
             a(href=haojingHost) 去首页
 
 
