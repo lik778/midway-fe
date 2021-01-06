@@ -1,9 +1,11 @@
 export default {
+  env: 'development',
   services: {
     'midway-service': {
       host: 'http://172.30.2.14:31257'
     }
   },
+  cdnPath: '',
   haojing: 'http://wulei.baixing.cn',
   haojingDomain: 'baixing.cn',
   hostType: {
