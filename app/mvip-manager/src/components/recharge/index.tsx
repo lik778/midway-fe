@@ -1,8 +1,27 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getShopQuotaApi } from '@/api/shop';
+import { QuotaInfo } from '@/interfaces/shop';
 import './index.less';
-export default (props: any) => {
-  const {quota} = props
+
+interface Props {
+  shopId: number | null;
+  getQuotaData?(quota: QuotaInfo): void;
+}
+export default (props: Props) => {
+  const { shopId, getQuotaData } = props
+  const [quota, setQuota] = useState<QuotaInfo | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      if (shopId) {
+        const res = await getShopQuotaApi({ id: shopId })
+        setQuota(res?.data);
+        if (getQuotaData) { getQuotaData(res?.data); }
+      }
+    })()
+
+  }, [shopId])
 
   const url = ()=> {
     if(quota?.buyUrl){
