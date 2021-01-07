@@ -9,7 +9,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  publicPath: '/assets/',
+  publicPath: process.env.NODE_ENV === 'production' ? '//yxt.baixing.net/assets/' : '/assets/',
   "proxy": {
     "/management/api": {
       "target": "http://localhost:7001",

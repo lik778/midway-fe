@@ -10,10 +10,11 @@ interface Props {
   onChange(cate: number): void;
   showGroup(): void;
   showCreate(): void;
+  shopId: number;
 }
 
-export default (props: any) => {
-  const { cateList, onChange, showGroup, showCreate, quota} = props;
+export default (props: Props) => {
+  const { cateList, onChange, showGroup, showCreate, shopId} = props;
   return (
     <div>
       <div className="nav-container">
@@ -42,7 +43,6 @@ export default (props: any) => {
           <Button style={{ background: '#096DD9', borderColor: '#096DD9' }} onClick={showCreate} icon={<PlusOutlined />} size="large" type="primary">新建文章</Button>
         </div>
       </div>
-      <Recharge quota={quota}/>
     </div>
   )
 }
