@@ -45,7 +45,7 @@ export default (props: Props) => {
 
   const createDeleteGroupItemModal = async (item: any) => {
     // 请求cate的num
-    if (!isProductCate && !numsMap.has(Number(item?.id))) {
+    if (!numsMap.has(Number(item?.id))) {
       const res = await getCateNumApi(shopId, { id: item?.id })
       if (res?.success) {
         numsMap.set(Number(item?.id), res.data)

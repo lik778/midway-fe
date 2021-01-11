@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Tooltip, Form, Button, Input, Row, Col } from 'antd';
+import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
-import qsIcon from '../../../styles/qs-icon.svg'
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
@@ -25,6 +24,7 @@ export default (props: any) => {
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   // 店铺信息
   const { shopStatus } = props
+  const symbolRegExp = /[^\u4e00-\u9fa5a-zA-Z0-9\n]+/
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     // 这里来去重(包含空格)
