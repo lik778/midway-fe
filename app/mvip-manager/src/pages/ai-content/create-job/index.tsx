@@ -107,6 +107,13 @@ export default (props: any) => {
       <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)}/>
       { visiblePanel && (
         <div>
+          <ul className="ai-handle-tips">
+            <h3>说明：</h3>
+            <li>1、请填写「地区+前缀+核心词+后缀」，例如生成「上海+靠谱的+家电维修+价格」，该信息将用于生成文章及站点SEO元素</li>
+            <li>2、每个词语之间请换行</li>
+            <li>3、避免填写标点符号、错别字、以及有违规风险的词</li>
+            <li>4、提交并通过审核后，不可修改</li>
+          </ul>
           <div className="ai-create-box">
             <Form name="create-job-form" form={form} onFinish={submitData}>
               <Row className="group-words-list" gutter={16} style={{ paddingTop: 32 }}>
@@ -114,15 +121,9 @@ export default (props: any) => {
                   Object.keys(wordsItemConfig).map((k) => {
                     const x = wordsItemConfig[k];
                     return (<Col key={k} className="gutter-row group-words-item" span={6}>
-                        <h4>{x.label}：
-                          <Tooltip placement="topLeft" title={x.rules}>
-                            <span className="ai-group-word-tips">
-                              {x.label}规则<img src={qsIcon} />
-                            </span>
-                          </Tooltip>
-                        </h4>
+                        <h4>{x.label}：<span>{x.rules}</span></h4>
                         <FormItem name={x.name}>
-                          <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
+                          <TextArea rows={15} placeholder={x.placeholder} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
                         </FormItem>
                         <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
                         <div className="ai-content-actions">
