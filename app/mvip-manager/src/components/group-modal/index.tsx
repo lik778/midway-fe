@@ -22,44 +22,48 @@ const groupConfig = [
     value: '',
     initLen: 0,
     err: '请输入大于2个字的名称',
-    errClass:''
+    errClass:'',
+    visible: true
   },
-  // {
-  //   label: 'SEO标题',
-  //   placeholder: "请输入标题, 9~50个字",
-  //   required: false,
-  //   maxLength:50,
-  //   minLength:9,
-  //   id:'seoT',
-  //   value: '',
-  //   initLen: 0,
-  //   err: '请输入大于9个字的SEO标题',
-  //   errClass:''
-  // },
-  // {
-  //   label: 'SEO关键词',
-  //   placeholder: "请输入关键词",
-  //   required: false,
-  //   id:'seoK',
-  //   value: '',
-  //   initLen: 0,
-  //   minLength: 0,
-  //   maxLength: 100,
-  //   err: '',
-  //   errClass:''
-  // },
-  // {
-  //   label: 'SEO描述',
-  //   placeholder: "请输入描述, 40~80个字",
-  //   required: false,
-  //   maxLength:80,
-  //   minLength:40,
-  //   id: 'seoD',
-  //   value: '',
-  //   initLen: 0,
-  //   err:'请输入大于40个字的SEO描述',
-  //   errClass:''
-  // },
+  {
+    label: 'SEO标题',
+    placeholder: "请输入标题, 9~50个字",
+    required: false,
+    maxLength:50,
+    minLength:9,
+    id:'seoT',
+    value: '',
+    initLen: 0,
+    err: '请输入大于9个字的SEO标题',
+    errClass:'',
+    visible: false
+  },
+  {
+    label: 'SEO关键词',
+    placeholder: "请输入关键词",
+    required: false,
+    id:'seoK',
+    value: '',
+    initLen: 0,
+    minLength: 0,
+    maxLength: 100,
+    err: '',
+    errClass:'',
+    visible: false
+  },
+  {
+    label: 'SEO描述',
+    placeholder: "请输入描述, 40~80个字",
+    required: false,
+    maxLength:80,
+    minLength:40,
+    id: 'seoD',
+    value: '',
+    initLen: 0,
+    err:'请输入大于40个字的SEO描述',
+    errClass:'',
+    visible: false
+  },
 ]
 
 
@@ -139,7 +143,6 @@ export default (props: Props) => {
     if(errInfo.length) {
       return;
     }
-
     setConfirmLoading(true)
     // to api
     if (editItem) {
@@ -207,7 +210,7 @@ export default (props: Props) => {
         <ul className="g-main">
             { config && config.map(g => {
               return(
-                <li className="f-input" key={g.id}>
+                g.visible && <li className="f-input" key={g.id}>
                   <label htmlFor={g.id} className={classNames({'required': g.required})}>{g.label}</label>
                   <Input placeholder={g.placeholder} id={g.id} name={g.id} className={g.errClass} maxLength={g.maxLength} minLength={g.minLength} onChange={handleChange}
                          value={g.value}/>
