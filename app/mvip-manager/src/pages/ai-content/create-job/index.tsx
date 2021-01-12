@@ -40,7 +40,7 @@ export default (props: any) => {
     const values = form.getFieldsValue()
     const fieldValue = values[name]
     if (fieldValue) {
-      const formatFieldValue: string = fieldValue.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n]+/, '')
+      const formatFieldValue: string = fieldValue.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n]+/g, '')
       values[name] = formatFieldValue
       form.setFieldsValue(values)
       counters[name] = formatFieldValue.split('\n').filter(x => x !== '').length;
