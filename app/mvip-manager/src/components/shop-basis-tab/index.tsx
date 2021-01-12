@@ -21,11 +21,11 @@ export default (props: Props) => {
       label: "轮播图设置",
       key: ShopBasisType.CAROUSEL,
     },
-    {
-      link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
-      label: "SEO设置",
-      key: ShopBasisType.SEO,
-    }
+    // {
+    //   link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
+    //   label: "SEO设置",
+    //   key: ShopBasisType.SEO,
+    // }
   ]
   const [current, setCurrent] = useState(props.type)
   const handleClick = (e: { key: any; }) => {

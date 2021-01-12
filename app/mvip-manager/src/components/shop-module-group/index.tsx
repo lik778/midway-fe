@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import GroupModal from '@/components/group-modal'
-import { deleteContentCateApi } from '@/api/shop';
+import { deleteContentCateApi, getCateNumApi } from '@/api/shop';
 import './index.less';
 import { ContentCateType } from '@/enums';
 import { RouteParams, CateItem } from '@/interfaces/shop';
@@ -26,9 +26,12 @@ export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState<boolean>(false);
   const [editItem, setEditItem] = useState<CateItem | null>(null);
   const [deleteItem, setDeleteItem] = useState<CateItem | null>(null);
+  const [numsMap, setNumsMap] = useState<Map<number, number>>(new Map());
   const { cateList, updateCateList, type } = props
   const hasData = cateList && cateList.length
   const params: RouteParams = useParams();
+  const shopId = Number(params.id);
+  const isProductCate = (type === ContentCateType.PRODUCT);
 
   const createGroupItem = () => {
     setGroupModalVisible(true);
@@ -41,6 +44,14 @@ export default (props: Props) => {
   }
 
   const createDeleteGroupItemModal = async (item: any) => {
+    // 请求cate的num
+    if (!numsMap.has(Number(item?.id))) {
+      const res = await getCateNumApi(shopId, { id: item?.id })
+      if (res?.success) {
+        numsMap.set(Number(item?.id), res.data)
+        setNumsMap(new Map(numsMap));
+      }
+    }
     setVisibleDeleteDialog(true);
     setDeleteItem(item);
   }
@@ -60,13 +71,6 @@ export default (props: Props) => {
     }
   }
 
-  const deleteModalPage = () => {
-    if(deleteItem?.num){
-      return (<p>删除后，“{deleteItem?.name}”分类下的{deleteItem?.num}个{ type === ContentCateType.PRODUCT ?  '服务' : '文章' }会全部删除，确认删除吗</p>)
-    }else{
-      return (<p>删除后，“{deleteItem?.name}”分类下的{ type === ContentCateType.PRODUCT ?  '服务' : '文章' }会全部删除，确认删除吗</p>)
-    }
-  }
   return (
     <Drawer
       title={props.title}
@@ -107,7 +111,9 @@ export default (props: Props) => {
         </div>
         <MyModal
         title="确认删除"
-        content={deleteModalPage()}
+        content={<p>删除后，“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
+         ? `${numsMap.get(Number(deleteItem?.id))}个` : '' }
+        { isProductCate ?  '服务' : '文章' }会全部删除，确认删除吗</p>}
         visible={visibleDeleteDialog}
         onOk={() => deleteGroupItem()}
         onCancel={() => setVisibleDeleteDialog(false)}/>

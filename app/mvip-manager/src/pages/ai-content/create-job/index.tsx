@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Tooltip, Form, Button, Input, Row, Col } from 'antd';
+import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
-import qsIcon from '../../../styles/qs-icon.svg'
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
@@ -27,8 +26,7 @@ export default (props: any) => {
   const { shopStatus } = props
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
-    // 这里来去重(包含空格)
-    const wordsList = words.split('\n').map(x => x.replace(/\s+/g, ''))
+    const wordsList = words.split('\n')
     const dedupWordsList =  Array.from(new Set(wordsList));
     const maxLength = wordsItemConfig[name].max;
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
@@ -36,6 +34,18 @@ export default (props: any) => {
     form.setFieldsValue(values)
     counters[name] = data.filter(x => x !== '').length;
     setCounters({ ...counters })
+  }
+
+  const onFiledBlur = (name: string) => {
+    const values = form.getFieldsValue()
+    const fieldValue = values[name]
+    if (fieldValue) {
+      const formatFieldValue: string = fieldValue.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n]+/g, '')
+      values[name] = formatFieldValue
+      form.setFieldsValue(values)
+      counters[name] = formatFieldValue.split('\n').filter(x => x !== '').length;
+      setCounters({ ...counters })
+    }
   }
 
   const clearAll = (name: string) => {
@@ -50,7 +60,6 @@ export default (props: any) => {
     const maxLength = wordsItemConfig[name].max;
     const formValues = form.getFieldsValue()
     const dataName = type ? `${name}-${type}` : name
-    // 这里要做一下随机值
     const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
     formValues[name] = concatWords.join('\n')
     counters[name] = concatWords.length
@@ -123,7 +132,8 @@ export default (props: any) => {
                     return (<Col key={k} className="gutter-row group-words-item" span={6}>
                         <h4>{x.label}：<span>{x.rules}</span></h4>
                         <FormItem name={x.name}>
-                          <TextArea rows={15} placeholder={x.placeholder} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
+                          <TextArea rows={15} placeholder={x.placeholder} onBlur={() => onFiledBlur(x.name)}
+                              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
                         </FormItem>
                         <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
                         <div className="ai-content-actions">

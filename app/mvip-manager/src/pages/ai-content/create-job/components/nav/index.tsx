@@ -22,9 +22,8 @@ interface Props {
 export const CreateAiContentNav = (props: Props): any => {
     const { form, showPanel } = props
     const [shopList, setShopList] = useState<AiShopList[] | null>(null)
-    const [shopId, setShopId] = useState<number>(0)
+    const [shopId, setShopId] = useState<number | null>(null)
     const [articleList, setArticleList] = useState<CateItem[] | null>(null)
-    const [quota, setQuota] = useState<any>(null)
     useEffect(() => {
       (async () => {
         const res = await getAiShopListApi()
@@ -44,7 +43,7 @@ export const CreateAiContentNav = (props: Props): any => {
       }
     }
 
-    const onShopChange = (shopId: number) => {
+    const onShopChange = async (shopId: number) => {
       setShopId(shopId)
       const item = shopList && shopList.find((x: AiShopList) => x.id === shopId)
       const articleCates = (item && item.articleCates) || []
@@ -53,7 +52,6 @@ export const CreateAiContentNav = (props: Props): any => {
       }
       form.resetFields(['contentCateId'])
       setArticleList((item && item.articleCates) || [])
-      setQuota(item?.quotaInfo)
     }
 
     return (
@@ -84,7 +82,7 @@ export const CreateAiContentNav = (props: Props): any => {
         }
         { checkHasShow<AiShopList>(shopList) === 'hide' &&
             <p className="ai-no-shop-tips" >先去创建店铺和文章分组才能新建任务，<Link to="/shop">去创建店铺</Link></p>}
-        <Recharge quota={quota}/>
+        <Recharge shopId={shopId}/>
       </div>
     )
 }

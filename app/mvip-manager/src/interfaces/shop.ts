@@ -25,8 +25,8 @@ export interface CreateArticleApiParams {
   tags: string[];
 }
 
-export interface DeleteApiParams {
-  id: number;
+export interface HandleApiParams {
+  id: number | null | undefined;
 }
 
 export interface CateItem {
@@ -100,4 +100,10 @@ export interface TdkDetailMeta {
 export interface ShopStatus {
   isUserPerfect: boolean;
   domainType: DomainStatus;
+}
+
+export interface QuotaInfo {
+  freeNum: number;
+  postRemain: number;
+  buyUrl: string;
 }
