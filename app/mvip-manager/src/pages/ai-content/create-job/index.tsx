@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Tooltip, Form, Button, Input, Row, Col } from 'antd';
+import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from './config';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
-import qsIcon from '../../../styles/qs-icon.svg'
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
@@ -27,8 +26,7 @@ export default (props: any) => {
   const { shopStatus } = props
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
-    // 这里来去重(包含空格)
-    const wordsList = words.split('\n').map(x => x.replace(/\s+/g, ''))
+    const wordsList = words.split('\n')
     const dedupWordsList =  Array.from(new Set(wordsList));
     const maxLength = wordsItemConfig[name].max;
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
@@ -36,6 +34,18 @@ export default (props: any) => {
     form.setFieldsValue(values)
     counters[name] = data.filter(x => x !== '').length;
     setCounters({ ...counters })
+  }
+
+  const onFiledBlur = (name: string) => {
+    const values = form.getFieldsValue()
+    const fieldValue = values[name]
+    if (fieldValue) {
+      const formatFieldValue: string = fieldValue.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n]+/, '')
+      values[name] = formatFieldValue
+      form.setFieldsValue(values)
+      counters[name] = formatFieldValue.split('\n').filter(x => x !== '').length;
+      setCounters({ ...counters })
+    }
   }
 
   const clearAll = (name: string) => {
@@ -50,7 +60,6 @@ export default (props: any) => {
     const maxLength = wordsItemConfig[name].max;
     const formValues = form.getFieldsValue()
     const dataName = type ? `${name}-${type}` : name
-    // 这里要做一下随机值
     const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
     formValues[name] = concatWords.join('\n')
     counters[name] = concatWords.length
@@ -107,6 +116,13 @@ export default (props: any) => {
       <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)}/>
       { visiblePanel && (
         <div>
+          <ul className="ai-handle-tips">
+            <h3>说明：</h3>
+            <li>1、请填写「地区+前缀+核心词+后缀」，例如生成「上海+靠谱的+家电维修+价格」，该信息将用于生成文章及站点SEO元素</li>
+            <li>2、每个词语之间请换行</li>
+            <li>3、避免填写标点符号、错别字、以及有违规风险的词</li>
+            <li>4、提交并通过审核后，不可修改</li>
+          </ul>
           <div className="ai-create-box">
             <Form name="create-job-form" form={form} onFinish={submitData}>
               <Row className="group-words-list" gutter={16} style={{ paddingTop: 32 }}>
@@ -114,15 +130,10 @@ export default (props: any) => {
                   Object.keys(wordsItemConfig).map((k) => {
                     const x = wordsItemConfig[k];
                     return (<Col key={k} className="gutter-row group-words-item" span={6}>
-                        <h4>{x.label}：
-                          <Tooltip placement="topLeft" title={x.rules}>
-                            <span className="ai-group-word-tips">
-                              {x.label}规则<img src={qsIcon} />
-                            </span>
-                          </Tooltip>
-                        </h4>
+                        <h4>{x.label}：<span>{x.rules}</span></h4>
                         <FormItem name={x.name}>
-                          <TextArea rows={15} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
+                          <TextArea rows={15} placeholder={x.placeholder} onBlur={() => onFiledBlur(x.name)}
+                              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
                         </FormItem>
                         <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
                         <div className="ai-content-actions">

@@ -65,10 +65,10 @@ const ContactForm = (props: Props) => {
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
     setLoading(false)
-    if (res.success) {
+    if (res?.success) {
        successMessage('更新联系方式成功')
     } else {
-      errorMessage(res.message)
+      errorMessage(res?.message || '出错了')
     }
   }
 

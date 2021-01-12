@@ -48,12 +48,12 @@ export default (props: any) => {
     setLoading(true)
     const res = await saveEnterpriseForShopApi(values)
     setLoading(false)
-    if (res && res.success) {
+    if (res?.success) {
       successMessage('修改基础资料成功')
       setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
       next()
     } else {
-      errorMessage(res.message || '出错啦')
+      errorMessage(res?.message || '出错啦')
     }
   }
 

@@ -25,8 +25,9 @@ export class AppController {
   }
 
 
-  @Get('/health')
+  @Get('/midway/health')
   async managementView(@Req() req: Request, @Res() res: Response) {
     res.send(process.env.NODE_ENV + ': everything is ok!!!')
   }
+
 }

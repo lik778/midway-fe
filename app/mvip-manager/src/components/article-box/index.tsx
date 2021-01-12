@@ -20,7 +20,6 @@ interface Props {
   quota?: any;
   onClose(): void;
   updateCateList(item: CateItem): void;
-  updateQuota(quota:any):void;
 }
 export default (props: Props) => {
   const { quota, visible, editData, cateList, updateCateList, onClose} = props
