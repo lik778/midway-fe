@@ -96,6 +96,15 @@ export default (props: Props) => {
                 )
               }) }
             </div>
+            <div className="group-tips">
+              <h3>分组说明</h3>
+              <p className="q">1.怎么填写分组？</p>
+              <p>答：根据您从事的行业进行分组；例如您从事家电维修行业，可以创建“热水
+                器维修/空调维修/电视机维修”等分组。</p>
+              <p className="q">2.分组的目的（在哪里使用）？</p>
+              <p>答：分组，方便管理您的文章；在站点可以根据您的“分组”生成分类，便于
+                seo和用户检索。</p>
+            </div>
           <GroupModal
             type={type}
             editItem={editItem}
