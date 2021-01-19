@@ -1,7 +1,7 @@
 - const bannerList= renderData.banner
   .swiper-container
     .swiper-wrapper
-      if false
+      if bannerList && bannerList.length > 0
         each item in bannerList
           .swiper-slide
               img(src=item.displayImgUrl)
