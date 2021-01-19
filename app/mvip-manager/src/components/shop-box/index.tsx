@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link, history } from 'umi';
+import { history } from 'umi';
 import './index.less';
 import moment from 'moment';
 
