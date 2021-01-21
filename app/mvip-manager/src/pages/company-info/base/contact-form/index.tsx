@@ -12,6 +12,7 @@ import { KF53 } from '@/pages/company-info/base/kf53';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import './index.less';
+import { isNewUserApi } from '@/api/shop';
 
 interface Props {
   editDataSource: UserEnterpriseInfo | null;
@@ -67,20 +68,24 @@ const ContactForm = (props: Props) => {
     const res = await saveEnterpriseContactInfoApi(info)
     setLoading(false)
     if (res?.success) {
-       // successMessage('更新联系方式成功')
       // 判断是否为新人需要一个接口字段
-      Modal.confirm({
-        width: 532,
-        className: 'contact-newman-modal',
-        icon: '',
-        content: '您的企业资料已经填写完毕，是否现在去创建店铺？',
-        title: <img src="//file.baixing.net/202101/17914d789bc8679e787dbcf12b49de6c.png" />,
-        cancelButtonProps: { className: 'cancel-btn' },
-        okButtonProps: { className: 'ok-btn' },
-        okText: '立即前往',
-        cancelText: '稍后再说',
-        onOk: () => history.push('/shop'),
-      })
+      const res2 = await isNewUserApi()
+      if (res2.data) {
+        Modal.confirm({
+          width: 532,
+          className: 'contact-newman-modal',
+          icon: '',
+          content: '您的企业资料已经填写完毕，是否现在去创建店铺？',
+          title: <img src="//file.baixing.net/202101/17914d789bc8679e787dbcf12b49de6c.png" />,
+          cancelButtonProps: { className: 'cancel-btn' },
+          okButtonProps: { className: 'ok-btn' },
+          okText: '立即前往',
+          cancelText: '稍后再说',
+          onOk: () => history.push('/shop'),
+        })
+      } else {
+        successMessage('更新联系方式成功')
+      }
     } else {
       errorMessage(res?.message || '出错了')
     }
