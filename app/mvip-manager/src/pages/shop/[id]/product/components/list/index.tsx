@@ -57,7 +57,9 @@ export default (props: Props) => {
           </div>
         )
       }},
-    { title: `${type}名称`, dataIndex: 'name', key: 'name' },
+    { title: `${type}名称`, dataIndex: 'name', key: 'name',
+      render: (text: string, record: any) => <a className="article-action-btn" href={record.urlSuffix} target="_blank">{text}</a>
+    },
     { title: '价格', dataIndex: 'price', key: 'price' },
     { title: `${type}分组`, dataIndex: 'cateName', key: 'cateName' },
     { title: '审核结果', dataIndex: 'status', key: 'status',
@@ -68,6 +70,7 @@ export default (props: Props) => {
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
+          <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a>
           <span onClick={() => editAction(record)} className="action-btn">修改</span>
           <span onClick={() => deleteAction(record.id)} className="action-btn">删除</span>
         </div>)
