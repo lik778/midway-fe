@@ -118,3 +118,7 @@ export const getCateNumApi = (shopId: number, params: HandleApiParams) => {
   return postApiData('contentCate/getCateNum', params, setShopHeader(shopId))
 }
 
+// api: 是否店铺新用户
+export const isNewUserApi = () => {
+  return postApiData('shop/isNewUser', {})
+}

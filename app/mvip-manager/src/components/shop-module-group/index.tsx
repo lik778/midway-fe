@@ -12,7 +12,6 @@ import MyModal from '@/components/modal';
 interface Props {
   type: ContentCateType,
   title: string;
-  createBtnText: string;
   visible: boolean;
   cateList: any;
   updateCateList(list: any): void;
@@ -80,8 +79,9 @@ export default (props: Props) => {
       width="700">
         <div>
             <div style={{ overflow: 'hidden' }}>
-              <Button style={{ float: 'right' }} onClick={() => createGroupItem() }
-                icon={<PlusOutlined />} size="large" type="primary">{props.createBtnText}</Button>
+              <Button style={{ float: 'right', backgroundColor: '#096dd9',
+                borderColor: '#096dd9' }} onClick={() => createGroupItem() }
+                icon={<PlusOutlined />} size="large" type="primary">新建分组</Button>
             </div>
             <div className='group-list'>
               { Boolean(hasData) && cateList.map((x: CateItem) => {
@@ -95,6 +95,14 @@ export default (props: Props) => {
                   </div>
                 )
               }) }
+            </div>
+            <div className="group-tips">
+              <h3>分组说明</h3>
+              <p className="q">怎么填写分组？</p>
+              <p>答：分组是将您公司从事的业务/售卖的产品进行分类。</p>
+              <p>举例：您从事家电维修行业，您的分组可以是：热水器维修、空调维修、电视机维修、洗衣机维修等</p>
+              <p className="q">分组的目的（在哪里使用）：</p>
+              <p>答：分组是为了更合理的管理您网站的文章，在网站前端展示，有利于SEO收录和检索</p>
             </div>
           <GroupModal
             type={type}

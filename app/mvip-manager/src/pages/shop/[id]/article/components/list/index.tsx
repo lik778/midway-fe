@@ -44,7 +44,9 @@ export default (props: Props) => {
 
   const columns = [
     { title: '序号', dataIndex: 'key', key: 'key' },
-    { title: '文章标题', dataIndex: 'name', key: 'name' },
+    { title: '文章标题', dataIndex: 'name', key: 'name',
+      render: (text: string, record: any) => <a className="article-action-btn" href={record.urlSuffix} target="_blank">{text}</a>
+    },
     { title: '文章分组', dataIndex: 'cateName', key: 'cateName' },
     { title: '发文来源', dataIndex: 'source', key: 'source',
       render: (text: string) => <span style={{
@@ -58,8 +60,9 @@ export default (props: Props) => {
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
-          <span onClick={() => editAction(record)} className="action-btn">修改</span>
-          <span onClick={() => deleteAction(record.id)} className="action-btn">删除</span>
+          { record.status === AuditStatus.APPROVE && <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a> }
+          <span onClick={() => editAction(record)} className="article-action-btn">修改</span>
+          <span onClick={() => deleteAction(record.id)} className="article-action-btn">删除</span>
         </div>)
     },
   ];

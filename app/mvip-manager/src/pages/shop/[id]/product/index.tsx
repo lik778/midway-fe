@@ -76,7 +76,6 @@ export default (props: any) => {
           <ShopModuleGroup
             type={ContentCateType.PRODUCT}
             title={`${typeTxt}分组`}
-            createBtnText="新建分组"
             cateList={cateList}
             updateCateList={(list) => setCateList(list)}
             onClose={() => removeOverflow(() => setModuleGroupVisible(false)) }
