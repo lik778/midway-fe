@@ -5,12 +5,13 @@ import ArticleBox from '@/components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
-import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
-import { CateItem, RouteParams } from '@/interfaces/shop';
+import { addKeyForListData, removeOverflow } from '@/utils';
+import { CateItem, QuotaInfo, RouteParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import './index.less';
 import { errorMessage } from '@/components/message';
+import Recharge from '@/components/recharge';
 
 export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
@@ -22,19 +23,19 @@ export default (props: any) => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number | null>(null);
-  const [quota, setQuota] = useState<any>(null)
+  const [quota, setQuota] = useState<QuotaInfo | null>(null)
   const [typeTxt, setTypeTxt] = useState<string>('服务')
   // 获取店铺id
   const params: RouteParams = useParams();
+  const shopId = Number(params.id);
   useEffect(() => {
     (async () => {
       setListLoading(true)
-      const res = await getArticleListApi(Number(params.id), { page, contentCateId, size: 10 })
+      const res = await getArticleListApi(shopId, { page, contentCateId, size: 10 })
       if (res?.success) {
         setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res?.data?.articleList?.totalRecord)
-        setQuota(res?.data?.quotaInfo)
       } else {
         errorMessage(res?.message || '出错了');
       }
@@ -42,9 +43,6 @@ export default (props: any) => {
     })()
   }, [page, contentCateId])
 
-  const updateQuota = (q: any) =>{
-    setQuota(q)
-  }
 
   const onChangeType = (type: ProductType) => {{
     if(type == ProductType.B2B) {
@@ -61,15 +59,15 @@ export default (props: any) => {
         cateList={cateList}
         onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
         showGroup={() => setModuleGroupVisible(true)}
-        quota={quota}
+        shopId={shopId}
         showCreate={() => {
           setEditArticleData({})
           setArticleFormVisible(true)
-        }}  />
+        }} />
+      <Recharge shopId={shopId} getQuotaData={(quota) => setQuota(quota)}/>
       <ShopModuleGroup
         type={ContentCateType.ARTICLE}
         title="文章分组"
-        createBtnText="新建分组"
         cateList={cateList}
         updateCateList={(list) => setCateList(list)}
         onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
@@ -92,9 +90,7 @@ export default (props: any) => {
         updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
         visible={articleFormVisible}
         onClose={() => removeOverflow(() => setArticleFormVisible(false)) }
-        quota={quota}
-        updateQuota={updateQuota}
-        />
+        quota={quota} />
     </div>
   </div>)
 }

@@ -2,7 +2,7 @@ import { postApiData, setShopHeader } from './base'
 import {
   GetContentApiParams,
   CreateProductApiParams,
-  DeleteApiParams,
+  HandleApiParams,
   CreateContentCateApiParams,
   CreateArticleApiParams,
   ModifyNavItem,
@@ -72,7 +72,7 @@ export const updateProductApi = (shopId: number, params: CreateProductApiParams)
   return postApiData('product/update', params, setShopHeader(shopId))
 }
 
-export const deleteProductApi = (shopId: number, params: DeleteApiParams) => {
+export const deleteProductApi = (shopId: number, params: HandleApiParams) => {
   return postApiData('product/delete', params, setShopHeader(shopId))
 }
 
@@ -89,7 +89,7 @@ export const updateArticleApi = (shopId: number, params: CreateArticleApiParams)
   return postApiData('article/update', params, setShopHeader(shopId))
 }
 // api: 删除文章
-export const deleteArticleApi = (shopId: number, params: DeleteApiParams) => {
+export const deleteArticleApi = (shopId: number, params: HandleApiParams) => {
   return postApiData('article/delete', params, setShopHeader(shopId))
 }
 
@@ -104,6 +104,21 @@ export const updateContentCateApi = (shopId: number, params: CreateContentCateAp
 }
 
 // api: 删除分类
-export const deleteContentCateApi = (shopId: number, params: DeleteApiParams) => {
+export const deleteContentCateApi = (shopId: number, params: HandleApiParams) => {
   return postApiData('contentCate/delete', params, setShopHeader(shopId))
+}
+
+// api: quota信息
+export const getShopQuotaApi = (params: HandleApiParams) => {
+  return postApiData('shop/quotaInfo', params)
+}
+
+// api: 获取cateNum
+export const getCateNumApi = (shopId: number, params: HandleApiParams) => {
+  return postApiData('contentCate/getCateNum', params, setShopHeader(shopId))
+}
+
+// api: 是否店铺新用户
+export const isNewUserApi = () => {
+  return postApiData('shop/isNewUser', {})
 }

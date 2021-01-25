@@ -14,7 +14,6 @@ export interface AiShopList {
   id: number;
   name: string;
   articleCates: CateItem[];
-  quotaInfo?:any;
 }
 
 export interface AiContentItem {
