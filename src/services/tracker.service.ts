@@ -1,10 +1,11 @@
-import { BadRequestException, HttpService, Injectable } from '@nestjs/common';
+import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import * as dayjs from 'dayjs';
 import { LogService } from './log.service';
 import { apiSecret } from '../constant';
 import { TrackerDTO } from '../dto/tracker.dto';
+import { ApiException } from '../exceptions/api.exception';
 
 @Injectable()
 export class TrackerService {
@@ -29,8 +30,8 @@ export class TrackerService {
     const { eventType, data } = body
     return this.httpService.post(`${this.host}/api/midway/internal/event/tracking/report`,
       JSON.stringify({ eventType, data: Object.assign(data, this.trackerBasicData(req, res)) }), { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
-        this.logService.errorLog(err)
-        throw new BadRequestException('打点错误');
+        this.logService.errorLog(err);
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '打点错误');
       })
   }
 

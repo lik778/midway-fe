@@ -1,8 +1,9 @@
-import { BadRequestException, HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as dayjs from 'dayjs';
 import { LogService } from './log.service';
 import { apiSecret } from '../constant'
+import { ApiException } from '../exceptions/api.exception';
 @Injectable()
 export class SitemapService {
   host: string;
@@ -25,10 +26,10 @@ export class SitemapService {
         headers: this.setSitemampHeaders()
       }).toPromise().catch(err => {
         this.logService.errorLog(err)
-        throw new BadRequestException('请求sitemap错误');
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '请求sitemap错误');
       })
     } else {
-      throw new HttpException('sitemap时间戳错误', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, 'sitemap时间戳错误');
     }
   }
 
@@ -36,8 +37,8 @@ export class SitemapService {
       return this.httpService.get(`${this.host}/api/midway/internal/sitemap/shop_${shopId}.xml`, {
         headers: this.setSitemampHeaders()
       }).toPromise().catch(err => {
-        this.logService.errorLog(err)
-        throw new BadRequestException('请求单店铺sitemap错误');
+        this.logService.errorLog(err);
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '请求单店铺sitemap错误');
       })
   }
 
