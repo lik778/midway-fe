@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { Route, Switch } from "react-router-dom";
-import Verify from './pages/Verify'
-
+import Layout from './components/Layout';
+import VerifyWord from './pages/VerifyWord';
 
 export default () => {
   return (<Switch>
-    <Route path="/verify-list" component={Verify} />
+    <Layout>
+      <Route path="/verify-word" component={VerifyWord} />
+
+    </Layout>
   </Switch>)
 }
