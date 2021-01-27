@@ -18,6 +18,8 @@ export const AiTaskStatusText: any = {
   [AiTaskStatus.ON_TASK]: '发文中',
   [AiTaskStatus.ON_PAUSE]: '已暂停',
   [AiTaskStatus.DONE]: '已发完',
+  [AiTaskStatus.REJECT]: '审核驳回',
+  [AiTaskStatus.DEFAULT]: '待审核'
 }
 
 export const productText = (): any => {
