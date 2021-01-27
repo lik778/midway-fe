@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 
 const BASE_URL = '/management/api'
-const PREFIX = '/api/midway/backend/'
+const PREFIX = '/api/midway/manager/'
 
 // tips: 前端请求的需要的参数
 export interface ManagementReqParams {
@@ -23,7 +23,11 @@ const request = axios.create({
 })
 
 request.interceptors.response.use((res: AxiosResponse) => {
-  return Promise.resolve(res?.data.data)
+  if (res?.data.success) {
+    return Promise.resolve(res?.data.data)
+  } else {
+    message.error(res?.data.message);
+  }
 }, (err: AxiosError) => {
   const errorInfo = err.response && err.response.data && err.response.data.message || '出错了'
   message.error(errorInfo);

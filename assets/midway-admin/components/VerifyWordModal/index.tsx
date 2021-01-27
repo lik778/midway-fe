@@ -1,25 +1,38 @@
 import * as React from 'react';
-import { message, Input, Button, Collapse, Modal } from 'antd';
+import { message, Form, Input, Button, Collapse, Modal } from 'antd';
 import './index.styl';
-import { VerifyAction } from '../../enums/verify';
+import { AiTaskStatus, VerifyAction } from '../../enums/verify';
+import { VerifyWordItem } from '../../interfaces/verify';
+import { verifyWordApi } from '../../api/verify';
+import { useState } from 'react';
 
 const { Panel } = Collapse;
 const TextArea = Input.TextArea;
-
+const FormItem = Form.Item;
 interface Props {
   visible: boolean;
-  close();
+  editItem: VerifyWordItem;
+  close(taskId?: number);
 }
 
 export const VerifyWordModal =  (props: Props) => {
-  const { visible, close } = props
-  const wordName = ['区域', '前缀', '核心词', '后缀']
+  const [loading, setLoading] = useState<boolean>(false)
+  const [form] = Form.useForm();
+  const { visible, close, editItem } = props
+  const wordNames = [
+      { label: '区域', name: 'wordA' },
+      { label: '前缀', name: 'wordB' },
+      { label: '核心词', name: 'wordC' },
+      { label: '后缀', name: 'wordD' }]
 
-  const verifiyAction = (action: VerifyAction) => {
+  const verifiyAction = async (action: VerifyAction) => {
     if (action === VerifyAction.RESOVE) {
         // to api 审核
-        message.success('审核通过')
-        close()
+        setLoading(true)
+        await verifyWordApi({ id: editItem.taskId, approve: true })
+        setLoading(false)
+        message.success('操作成功')
+        setTimeout(close(editItem.taskId))
     } else if (action === VerifyAction.REJECTED) {
         // 出现一个弹框
         createRejectModal()
@@ -34,37 +47,49 @@ export const VerifyWordModal =  (props: Props) => {
       icon: null,
       okText: '确定',
       okType: 'primary',
-      content: <TextArea placeholder="请输入审核失败原因" rows={6} showCount/>,
-      onOk: () => {
+      content:
+        <Form form={form}>
+          <FormItem name="memo">
+              <TextArea placeholder="请输入审核失败原因" rows={6}/>
+          </FormItem>
+        </Form>,
+      onOk: async () => {
         // 去打接口
-        console.log('审核失败')
-        close()
-        return Promise.resolve()
+        const formData = form.getFieldsValue()
+        if (!formData.memo) {
+          message.warn('请填写审核失败原因')
+        } else {
+          await verifyWordApi({ id: editItem.taskId, approve: false, ...formData })
+          form.resetFields()
+          message.success('操作成功')
+          setTimeout(close(editItem.taskId))
+          return;
+        }
       }
     })
   }
 
   return <Modal
-    title="审核词"
+    title="详情"
     visible={visible}
     width={800}
     maskClosable={false}
     footer={null}
-    onCancel={close}
+    onCancel={() => close()}
     closable={true}>
     <div className="verify-word-modal">
       <Collapse className="list" defaultActiveKey={[0, 1, 2, 3]}>
-      { wordName.map((name, i) => {
+      { wordNames.map((w, i) => {
         return (
-          <Panel header={name} key={i} >
-            <div>词组1，词组2</div>
+          <Panel header={w.label} key={i} >
+            <div>{ editItem[w.name].join('，') }</div>
           </Panel>) })
       }
       </Collapse>
-      <div className="action">
-        <Button type="primary" onClick={() => verifiyAction(VerifyAction.RESOVE)}>审核通过</Button>
-        <Button type="primary" danger onClick={() => verifiyAction(VerifyAction.REJECTED)}>审核驳回</Button>
-      </div>
+      { editItem.status === AiTaskStatus.DEFAULT && <div className="action">
+          <Button type="primary" loading={loading} onClick={() => verifiyAction(VerifyAction.RESOVE)}>审核通过</Button>
+          <Button type="primary" danger onClick={() => verifiyAction(VerifyAction.REJECTED)}>审核驳回</Button>
+      </div> }
     </div>
   </Modal>
 }
