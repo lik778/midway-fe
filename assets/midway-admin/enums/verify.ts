@@ -5,3 +5,8 @@ export enum AiTaskStatus {
   REJECT = 3, // 审核驳回
   DEFAULT = 4 // 已审核
 }
+
+export enum VerifyAction {
+  RESOVE = 'resolve',
+  REJECTED = 'rejected'
+}

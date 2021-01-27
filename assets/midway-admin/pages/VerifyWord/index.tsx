@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Button, Select, Form } from 'antd';
+import { VerifyWordModal } from '../../components/VerifyWordModal'
 import { AiTaskStatusText } from '../../constant/verify';
 import { getAiListApi } from '../../api/verify';
 
@@ -8,11 +9,16 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 export default () => {
+  const [ modalVisible, setModalVisible ] = useState<boolean | null>(null)
   useEffect(() => {
     (async () => {
       const res = await getAiListApi({ page: 1, size: 10 });
     })()
   }, [])
+
+  const viewWord = () => {
+    setModalVisible(true)
+  }
 
   const dataSource = [
     {
@@ -66,7 +72,7 @@ export default () => {
     },
     {
       title: '操作',
-      render: () => <Button type="primary">查看</Button>
+      render: () => <Button type="primary" onClick={() => viewWord() }>查看</Button>
     },
   ];
 
@@ -85,6 +91,7 @@ export default () => {
       <Table dataSource={dataSource} columns={columns} pagination={{
         showSizeChanger: false, current: 1, total: 11 || 0,
         hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}}/>
+      {  modalVisible !== null &&  <VerifyWordModal visible={modalVisible} close={() => setModalVisible(false)}/> }
     </div>
   )
 }
