@@ -1,10 +1,19 @@
 import * as React from 'react';
-import { Table, Select, Form } from 'antd';
+import { useEffect } from 'react';
+import { Table, Button, Select, Form } from 'antd';
+import { AiTaskStatusText } from '../../constant/verify';
+import { getAiListApi } from '../../api/verify';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 export default () => {
+  useEffect(() => {
+    (async () => {
+      const res = await getAiListApi({ page: 1, size: 10 });
+    })()
+  }, [])
+
   const dataSource = [
     {
       key: '1',
@@ -14,9 +23,8 @@ export default () => {
       address: '1号',
       cate: '搬家',
       create_time: '2021-07-08',
-      status: 1
-    },
-
+      status: 0
+    }
   ];
 
   const columns = [
@@ -54,10 +62,11 @@ export default () => {
       title: '审核状态',
       dataIndex: 'status',
       key: 'status',
+      render: (status: string) => <span>{ AiTaskStatusText[Number(status)] }</span>
     },
     {
       title: '操作',
-      render: () => <span>查看</span>
+      render: () => <Button type="primary">查看</Button>
     },
   ];
 
@@ -73,7 +82,9 @@ export default () => {
           </Select>
         </FormItem>
       </Form>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} pagination={{
+        showSizeChanger: false, current: 1, total: 11 || 0,
+        hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}}/>
     </div>
   )
 }
