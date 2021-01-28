@@ -34,7 +34,7 @@ export default (props: any) => {
       setListLoading(true)
       const res = await getArticleListApi(shopId, { page, contentCateId, size })
       if (res?.success) {
-        setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
+        setArticleList(addKeyForListData(res.data.articleList.result, page, size) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res?.data?.articleList?.totalRecord)
       } else {
