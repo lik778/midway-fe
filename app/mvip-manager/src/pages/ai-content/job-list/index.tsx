@@ -35,17 +35,25 @@ export default (props: any) => {
         return formatTime(text)
     } },
     { title: '文章分组', dataIndex: 'contentCateName', key: 'contentCateName' },
+    { title: '预计发文', dataIndex: 'topArticleNum', key: 'topArticleNum' },
+    { title: '昨日发文', dataIndex: 'yesterdayArticleNum', key: 'yesterdayArticleNum' },
     { title: '状态', dataIndex: 'status', key: 'status', render: (text: string) => {
         return AiTaskStatusText[Number(text)];
     }},
-    { title: '发文数量', dataIndex: 'articleNum', key: 'articleNum', render: (text: string) => {
-        return <label>已发文<span style={{ color: '#096DD9' }}>{text}</span>篇</label>
+    { title: '累计发文', dataIndex: 'articleNum', key: 'articleNum', render: (text: string, record: AiContentItem) => {
+        return <div>
+          <label>已发文<span style={{ color: '#096DD9' }}>{text}</span>篇</label>
+          <span> | </span>
+          <Link to={`/shop/${record.shopId}/article`}>
+            <span className="action-btn">查看发文</span>
+          </Link>
+        </div>
     }},
     { title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: AiContentItem) => (
-        <Link to={`/shop/${record.shopId}/article`}>
-          <span className="action-btn">查看发文</span>
-        </Link>
+        <div>
+          <span>查看词组</span>
+        </div>
       )
     },
   ];
