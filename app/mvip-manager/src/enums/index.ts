@@ -82,3 +82,8 @@ export enum KFStatus {
   CLOSE = 'CLOSE',
   OPEN= 'OPEN'
 }
+
+export enum AiTaskAction {
+  START = 'start',
+  PAUSE = 'pause'
+}
