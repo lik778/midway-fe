@@ -15,12 +15,13 @@ interface Props {
   loading: boolean;
   openEditForm(item: any): void;
   onChange(page: number): void;
+  onShowSizeChange(page: number, size: number): void;
 }
 
 export default (props: Props) => {
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false);
   const [actionId, setActionId] = useState(0);
-  const { onChange, total, page, loading, dataSource, openEditForm } = props
+  const { onChange, onShowSizeChange, total, page, loading, dataSource, openEditForm } = props
   // 获取店铺id
   const params: RouteParams = useParams();
   const editAction = (item: any) => {
@@ -85,7 +86,7 @@ export default (props: Props) => {
             <p>删除后无法恢复，确认删除？</p>
           </Modal>
           <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
-            showSizeChanger: false, current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+            showSizeChanger: true, onShowSizeChange, current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
         </div>
       }
     </div>
