@@ -3,6 +3,7 @@ import { Table, Tooltip } from 'antd';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
+import AiEditModal from '@/components/ai-edit-modal';
 import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
@@ -12,6 +13,8 @@ import { AiTaskAction, AiTaskStatus } from '@/enums';
 import { AiTaskStatusText } from '@/constants';
 
 export default (props: any) => {
+  const [ aiEditModalVisible, setAiEditModalVisible ] = useState<boolean>(false);
+  const [ editAiTask, setEditAiTask ] = useState<AiContentItem | null>(null);
   const [page, setPage] = useState<number>(1);
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
@@ -53,7 +56,8 @@ export default (props: any) => {
   }
 
   const viewWords = (record: AiContentItem) => {
-    console.log(record)
+    setEditAiTask(record)
+    setAiEditModalVisible(true)
   }
 
   const viewWordsBtn = (record: AiContentItem, text = '查看词组') => {
@@ -132,6 +136,7 @@ export default (props: any) => {
           onChange:(page: number) => setPage(page), total, showSizeChanger: false,
           hideOnSinglePage: (aiList && aiList.length < 10) || undefined, pageSize: 10, position: ['bottomCenter']}} />}
       </div>
+      <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask}/>
     </div>
   )
 }

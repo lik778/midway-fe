@@ -21,6 +21,7 @@ export interface AiContentItem {
   id: number;
   articleNum: number;
   contentCateName: string;
+  contentCateId: number;
   createdTime: number;
   status: AiTaskStatus;
   topArticleNum: number;
