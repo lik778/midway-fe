@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import MainTitle from '@/components/main-title';
-import { wordsItemConfig } from './config';
+import { wordsItemConfig } from '@/constants';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
 import { CreateAiContentNav } from  './components/nav';
