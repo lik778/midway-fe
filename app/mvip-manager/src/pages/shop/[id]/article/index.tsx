@@ -22,6 +22,7 @@ export default (props: any) => {
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+  const [size, setSize ] = useState<number>(10);
   const [total, setTotal] = useState<number | null>(null);
   const [quota, setQuota] = useState<QuotaInfo | null>(null)
   const [typeTxt, setTypeTxt] = useState<string>('服务')
@@ -31,9 +32,9 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       setListLoading(true)
-      const res = await getArticleListApi(shopId, { page, contentCateId, size: 10 })
+      const res = await getArticleListApi(shopId, { page, contentCateId, size })
       if (res?.success) {
-        setArticleList(addKeyForListData(res.data.articleList.result, page) || [])
+        setArticleList(addKeyForListData(res.data.articleList.result, page, size) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res?.data?.articleList?.totalRecord)
       } else {
@@ -41,7 +42,7 @@ export default (props: any) => {
       }
       setListLoading(false)
     })()
-  }, [page, contentCateId])
+  }, [page, size, contentCateId])
 
 
   const onChangeType = (type: ProductType) => {{
@@ -83,7 +84,8 @@ export default (props: any) => {
           setEditArticleData({ ...item });
           setArticleFormVisible(true);
         }}
-        onChange={(page) => setPage(page)}/>
+        onChange={(page) => setPage(page) }
+        onShowSizeChange={(page, size) => setSize(size) }/>
       <ArticleBox
         cateList={cateList}
         editData={editArticleData}
