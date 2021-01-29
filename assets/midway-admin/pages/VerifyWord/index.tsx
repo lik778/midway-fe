@@ -52,8 +52,8 @@ export default () => {
         if (Number(status) === AiTaskStatus.REJECT) {
           return <div>
             <span style={{ color: '#f1492c' }}>审核驳回</span>
-            {record.memo && <Tooltip placement="bottom" title={record.memo}>
-              <p style={{ fontSize: 12 }}>(查看失败原因)</p>
+            { record.memo && <Tooltip placement="bottom" title={record.memo}>
+              <p style={{ fontSize: 12 }}>{ `${record.memo.substring(0, 3)}...` }</p>
             </Tooltip>}
           </div>
         }
