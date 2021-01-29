@@ -68,9 +68,11 @@ export const VerifyWordModal =  (props: Props) => {
       }
     })
   }
-
   return <Modal
-    title="详情"
+    title={<div>详情<span style={{ fontSize: 12, color: 'red' }}>
+      { [AiTaskStatus.REJECT, AiTaskStatus.DEFAULT].includes(editItem.status) && editItem.memo ?
+        `（${editItem.status === AiTaskStatus.DEFAULT ? '上一次' : ''}
+        审核失败原因：${editItem.memo}）` : '' }</span></div>}
     visible={visible}
     width={800}
     maskClosable={false}
