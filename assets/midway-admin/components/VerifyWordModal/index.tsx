@@ -50,7 +50,7 @@ export const VerifyWordModal =  (props: Props) => {
       content:
         <Form form={form}>
           <FormItem name="memo">
-              <TextArea placeholder="请输入审核失败原因" rows={6}/>
+              <TextArea showCount placeholder="请输入审核失败原因" rows={6} maxLength={100}/>
           </FormItem>
         </Form>,
       onOk: async () => {

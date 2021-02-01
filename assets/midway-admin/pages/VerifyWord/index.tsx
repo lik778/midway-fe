@@ -81,6 +81,9 @@ export default () => {
         <FormItem label="任务id" name="taskId">
           <Input placeholder="请输入任务id"/>
         </FormItem>
+        <FormItem label="店铺id" name="shopId">
+          <Input placeholder="请输入店铺id"/>
+        </FormItem>
         <FormItem>
           <Button type="primary" onClick={() => obtainVerifyData(1)}>查询</Button>
         </FormItem>
