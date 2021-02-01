@@ -5,6 +5,7 @@ import { ManagementController } from './controllers/management.controller';
 import { SiteService } from './services/site.service';
 import { RequestService } from './services/request.service';
 import { AppController } from './controllers/app.controller';
+import { AdminController } from './controllers/admin.controller';
 import { HaojingController } from './controllers/haojing.controller';
 import { HaojingService } from './services/haojing.service';
 import { SitemapController } from './controllers/sitemap.controller';
@@ -27,6 +28,7 @@ import { ManagementService } from './services/management.service';
   }), HttpModule ],
   controllers: [
     AppController,
+    AdminController,
     ManagementController,
     SitemapController,
     B2bSiteController,
