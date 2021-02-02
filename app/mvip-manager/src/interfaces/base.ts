@@ -1,3 +1,5 @@
+import { Dispatch } from 'dva';
+
 export interface CascaderOption {
   value: string | number;
   label: React.ReactNode;
@@ -15,4 +17,9 @@ export interface ListRes<T> {
   totalPage: number;
   totalRecord: number;
   pageSize: number;
+}
+
+export interface BaseProps {
+  dispacth?: Dispatch<any>;
+  history?: History;
 }

@@ -1,5 +1,6 @@
 import { getUpyunImgConfig } from './api/haojing'
 import { UpyunImgConfig } from '@/interfaces/haojing';
+import { enableMapSet } from 'immer';
 import '@/styles/common.less';
 
 declare global {
@@ -10,6 +11,7 @@ declare global {
 
 // 一些全局请求直接放入window中
 (async function () {
+  enableMapSet()
   const upYunConfig = await getUpyunImgConfig()
   window.__upyunImgConfig = upYunConfig
 })()
