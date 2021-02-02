@@ -107,3 +107,23 @@ export interface QuotaInfo {
   postRemain: number;
   buyUrl: string;
 }
+
+export interface ShopInfo {
+  about: string;
+  copyRight: string;
+  createdTime: number;
+  domain: string;
+  domainType: DomainStatus;
+  expiredTime: number;
+  id: number;
+  modifiedTime: number;
+  name: string;
+  portId: number;
+  serviceCode: string;
+  shopDomain: string;
+  status: number;
+  templateId: string;
+  thumb: string;
+  type: string;
+  usrId: number;
+}

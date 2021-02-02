@@ -2,7 +2,7 @@ export default {
   env: 'local',
   services: {
     'midway-service': {
-      host: 'http://localhost:8080'
+      host: 'http://172.30.2.14:30257'
     }
   },
   cdnPath: '',
