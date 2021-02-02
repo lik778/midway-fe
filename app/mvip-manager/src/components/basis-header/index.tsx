@@ -1,42 +1,33 @@
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ShopBasisTab from '@/components/shop-basis-tab';
 import MainTitle from '@/components/main-title';
-import { getShopInfoApi } from '@/api/shop';
 import { ShopBasisType } from '@/enums';
-import { useParams, Link } from 'umi';
-import { RouteParams } from '@/interfaces/shop';
-import { errorMessage } from '@/components/message';
+import { Link } from 'umi';
+import { ShopInfo } from '@/interfaces/shop';
 import './index.less';
+import { connect } from 'dva';
 
 interface Props {
   type: ShopBasisType;
+  shopInfo?: ShopInfo | null;
 }
 
-export default (props: Props) => {
-  const { type } = props
-  const [title, setTitle] = useState('')
-  const [shopUrl, setShopUrl] = useState('')
-  // 获取店铺id
-  const params: RouteParams = useParams();
-  const shopId = Number(params.id);
-  useEffect(() => {
-    (async () => {
-      const res =  await getShopInfoApi(shopId)
-      if (res?.success) {
-        setTitle(res?.data?.name)
-        setShopUrl(res?.data?.shopDomain)
-      } else {
-        errorMessage(res?.message)
-      }
-     })()
-  }, []);
+const BasicHeader = (props: Props) => {
+  const { type, shopInfo } = props
   return (
     <div className="basis-header">
-      { title && <Link className="arrow" to="/shop"></Link> }
-      { title && <MainTitle title={title}/> }
-      { title && <a className="visit-online"href={shopUrl} target="_blank">访问线上</a> }
+      { shopInfo?.name && <Link className="arrow" to="/shop"></Link> }
+      { shopInfo?.name && <MainTitle title={shopInfo?.name}/> }
+      { shopInfo?.name && <a className="visit-online"href={shopInfo?.shopDomain} target="_blank">访问线上</a> }
       <ShopBasisTab type={type}/>
     </div>
   );
 }
+
+const mapStateToProps = (state: any): any => {
+  const { shopInfo } = state.shop;
+  return { shopInfo }
+}
+
+export default connect(mapStateToProps)(BasicHeader)

@@ -19,5 +19,9 @@ export default defineConfig({
       "target": "http://localhost:7001",
       "changeOrigin": true
     },
+  },
+  dva: {
+    skipModelValidate: true,
+    immer: true,
   }
 });

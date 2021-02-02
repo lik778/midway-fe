@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, ConfigProvider } from 'antd';
 import { Link } from 'umi';
+import { connect } from 'dva';
 import './index.less'
 import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
@@ -8,16 +9,16 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY } from '@/utils';
+import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-export default (props: any) => {
+const Layouts =  (props: any) => {
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
-
   // 处理overflow: hidden问题
   useEffect(() => removeOverflowY());
 
@@ -27,26 +28,31 @@ export default (props: any) => {
       if (res?.success) {
         setUserInfo({...res.data})
       }
-    })()
-  }, [])
-
-  // 获取新增店铺的具体信息
-  useEffect(() => {
+    })();
     (async () => {
       const res = await getCreateShopStatusApi()
       if (res?.success) {
         setShopStatus(res.data)
       }
     })()
-  },[])
+  }, [])
+
+  const getCurrentShopInfo = () => {
+    const shopIdItem = RegExp(/\d+/).exec(props.location.pathname)
+    if (shopIdItem) {
+      const id = Number(shopIdItem[0])
+      props.dispatch({ type: GETSHOPINFO_OUT_ACTION, payload: { id }})
+    }
+  }
 
   useEffect(() => {
     const routeList = props.location.pathname.split('/')
     const isShopRoute = (routeList[1] === 'shop')
     setOpenKeys([routeList[1]])
     setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
+    // 获取当前店铺信息
+    getCurrentShopInfo()
   }, [props.location.pathname])
-
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -92,3 +98,5 @@ export default (props: any) => {
     </ConfigProvider>
   );
 }
+
+export default connect()(Layouts)

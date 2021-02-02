@@ -1,47 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ShopModuleTab from '@/components/shop-module-tab';
 import MainTitle from '@/components/main-title';
-import { getShopInfoApi } from '@/api/shop';
 import { ShopModuleType, ProductType } from '@/enums';
-import { Link, useParams } from 'umi';
-import { RouteParams } from '@/interfaces/shop';
-import { errorMessage } from '@/components/message';
-interface contentHeader{
+import { Link } from 'umi';
+import { connect } from 'dva';
+import { ShopInfo } from '@/interfaces/shop';
+import { BaseProps } from '@/interfaces/base';
+
+interface Props extends BaseProps {
   type: ShopModuleType;
   onChangeType(type:ProductType):void;
+  shopInfo?: ShopInfo | null;
 }
 
-export default (props: contentHeader) => {
-  const {type, onChangeType} = props
-  const [title, setTitle] = useState('')
-  const [shopUrl, setShopUrl] = useState('')
-  const [tabType, setTabType] = useState('')
-  // 获取店铺id
-  const params: RouteParams = useParams();
-  const [paramId, setParamId] = useState(Number(params.id))
-  useEffect(() => {
-    (async () => {
-      const res =  await getShopInfoApi(paramId)
-      if (res?.success) {
-        setTitle(res?.data?.name)
-        setShopUrl(res?.data?.shopDomain)
-        onChangeType(res?.data?.type)
-        if(res?.data?.type === ProductType.B2B){
-          setTabType('产品')
-        }else{
-          setTabType('服务')
-        }
-      } else {
-        errorMessage(res?.message)
-      }
-     })()
-  }, [paramId]);
+const ContentHeader = (props: Props) => {
+  const { type, shopInfo } = props
   return (
     <div className="content-header">
-      { title && <Link className="arrow" to="/shop"></Link> }
-      { title && <MainTitle title={title}/> }
-      { title && <a className="visit-online"href={shopUrl} target="_blank">访问线上</a>}
-      <ShopModuleTab type={type} tabType={tabType}/>
+      { shopInfo?.name && <Link className="arrow" to="/shop"></Link> }
+      { shopInfo?.name && <MainTitle title={shopInfo?.name}/> }
+      { shopInfo?.name && <a className="visit-online"href={shopInfo?.shopDomain} target="_blank">访问线上</a>}
+      <ShopModuleTab type={type} tabType={shopInfo?.type === ProductType.B2B ? '产品' : '服务'}/>
     </div>
   );
 }
+
+const mapStateToProps = (state: any): any => {
+  const { shopInfo } = state.shop;
+  return { shopInfo }
+}
+
+export default connect(mapStateToProps)(ContentHeader)
