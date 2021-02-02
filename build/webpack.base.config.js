@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: {
+    'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
     'site-template-1-home-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/home/index.js'),
     'site-template-1-home-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/home/index.js'),
     'site-template-1-news-pc': path.resolve(__dirname, '..', 'assets/site-template-1/pc/news/index.js'),
@@ -23,10 +24,21 @@ module.exports = {
     path: path.resolve(__dirname, "../dist/public"),
     filename: isProd? '[name].[contenthash].js' : '[name].js'
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.less', '.js', '.json'],
+    modules: ['node_modules']
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(ts|tsx)?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'ts-loader'
+        }
+      },
+      {
+        test: /\.(js)$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader'
@@ -42,12 +54,26 @@ module.exports = {
             },
           }, 'css-loader', 'stylus-loader']
       },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              esModule: false
+            },
+          }, 'css-loader']
+      },
     ]
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: isProd ? '[name].[contenthash].css' : '[name].css',
       chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
-    })
+    }),
+    // new HtmlWebpackPlugin({
+    //   filename: path.resolve(__dirname, "../dist/public/midway-admin.html"),
+    //   chunks: ['midway-admin']
+    // })
   ]
 }
