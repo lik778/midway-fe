@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Divider } from 'antd';
+import { Row, Col, Statistic, Divider } from 'antd';
 import LineChart from '@/components/charts/line-chart';
 import { getPVData } from '@/api/report';
 import MainTitle from '@/components/main-title';
@@ -14,7 +14,7 @@ export default (props: any) => {
       if (code === 200) {
         const { result } = data
         setLineOptions(composeOptions({
-          title: '关键词报表',
+          title: '关键词',
           result
         }))
       }
@@ -26,48 +26,33 @@ export default (props: any) => {
       <MainTitle title="关键词报表"/>
       <div className="page container">
         <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={3} />
-          <Col className="statics" span={7}>
-            <span className="num">16888</span>
-            <span className="num-label">凤鸣投放币</span>
+          <Col className="statics" span={7} style={{ marginBottom: 16 }}>
+            <Statistic title="凤鸣投放币" value={16888}/>
           </Col>
           <Col className="statics" span={7}>
-            <span className="num">16888</span>
-            <span className="num-label">标王投放币</span>
+            <Statistic title="标王投放币" value={16888}/>
           </Col>
           <Col className="statics" span={7}>
-            <span className="num">16888</span>
-            <span className="num-label">精品官网个数</span>
+            <Statistic title="精品官网个数" value={16888}/>
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics-label" span={3}>
-            <span>投放关键词数：</span>
+        <Row className="statics-con" gutter={16} style={{ marginBottom: 16 }}>
+          <Col className="statics" span={7}>
+            <Statistic title="凤鸣投放关键词数" value={6}/>
           </Col>
           <Col className="statics" span={7}>
-            <span className="num">6</span>
-            <span className="num-label">凤鸣</span>
+            <Statistic title="标王投放关键词数" value={6}/>
           </Col>
           <Col className="statics" span={7}>
-            <span className="num">7</span>
-            <span className="num-label">标王</span>
-          </Col>
-          <Col className="statics" span={7}>
-            <span className="num">120</span>
-            <span className="num-label">易慧推</span>
+            <Statistic title="易慧推投放关键词数" value={120}/>
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics-label" span={3}>
-            <span>关键词平均排名：</span>
+        <Row className="statics-con" gutter={16} style={{ marginBottom: 16 }}>
+          <Col className="statics" span={7}>
+            <Statistic title="凤鸣关键词平均排名" value={6}/>
           </Col>
           <Col className="statics" span={7}>
-            <span className="num">6</span>
-            <span className="num-label">凤鸣</span>
-          </Col>
-          <Col className="statics" span={7}>
-            <span className="num">7</span>
-            <span className="num-label">标王</span>
+            <Statistic title="标王关键词平均排名" value={6}/>
           </Col>
         </Row>
         <Divider />
