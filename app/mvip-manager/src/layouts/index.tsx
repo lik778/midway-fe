@@ -84,6 +84,20 @@ const Layouts =  (props: any) => {
                 <Link to="/ai-content/job-list">管理任务</Link>
               </Menu.Item>
             </SubMenu>
+            <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
+              <Menu.Item key="dashboard">
+                <Link to="/report/dashboard">总览</Link>
+              </Menu.Item>
+              <Menu.Item key="bax-flow">
+                <Link to="/report/bax-flow">搜索通流量</Link>
+              </Menu.Item>
+              <Menu.Item key="cate-flow">
+                <Link to="/report/cate-flow">主营流量</Link>
+              </Menu.Item>
+              <Menu.Item key="keyword">
+                <Link to="/report/keyword">关键词</Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout">
