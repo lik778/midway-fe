@@ -25,15 +25,14 @@ const defaultOptions = {
   series: []
 }
 
-export default function LineChart(props) {
+
+export default (props: any) => {
   const { option } = props
   const [washedOptions, setWashedOptions] = useState(null)
 
   useEffect(() => {
-    // TODO deepclone
     const opts = Object.assign({}, defaultOptions)
     const washed = Object.assign(opts, option)
-    console.log(washed)
     setWashedOptions(washed)
   }, [option])
 

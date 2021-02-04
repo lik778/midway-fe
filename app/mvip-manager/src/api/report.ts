@@ -1,7 +1,4 @@
-import { postApiData, setShopHeader } from './base'
-import { ServiceResponse } from '@/interfaces/api';
-
-export const getPVData = ():Promise<ServiceResponse<any>>  => {
+export const getPVData = (params: any): Promise<any>  => {
   return new Promise(resolve => {
     resolve({
       code: 200,
