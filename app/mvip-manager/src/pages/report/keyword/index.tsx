@@ -1,19 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import ReactEcharts from 'echarts-for-react';
-import { Form, Input, Button, Row, Col, Divider } from 'antd';
+import { Table, Form, Select, Input, Button, Row, Col, Divider } from 'antd';
 
 import LineChart from '@/components/charts/line-chart';
 import { getPVData } from '@/api/report';
 
 import './index.less';
 
-type LayoutType = Parameters<typeof Form>[0]['layout'];
+const dataSource = [
+  {
+    key: '1',
+    name: '胡彦斌',
+    age: 32,
+    address: '西湖区湖底公园1号',
+  },
+  {
+    key: '2',
+    name: '胡彦祖',
+    age: 42,
+    address: '西湖区湖底公园1号',
+  },
+];
+
+const columns = [
+  {
+    title: '姓名',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: '年龄',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: '住址',
+    dataIndex: 'address',
+    key: 'address',
+  },
+];
 
 // get ready to update to echarts@5
 // https://github.com/hustcc/echarts-for-react/issues/388
 
 export default function IndexPage() {
-  const [formConfig] = useState({ time: [] })
+  const [form] = Form.useForm()
   const [formLoading, setFormLoading] = React.useState<boolean>(false)
   const [lineOptions, setLineOptions] = useState({})
 
@@ -24,7 +55,7 @@ export default function IndexPage() {
       if (code === 200) {
         const { result } = data
         setLineOptions(composeOptions({
-          title: 'asdfasdf',
+          title: '关键词',
           result
         }))
       }
@@ -82,7 +113,23 @@ export default function IndexPage() {
       <Divider />
       <LineChart option={lineOptions} />
       <Divider />
-      {/* <LineChart option={lineOptions} /> */}
+      <span>关键词排名明细数据：</span>
+      <Form form={form} layout="inline">
+        <Form.Item
+          name="搜索引擎"
+          label="搜索引擎"
+          rules={[{ required: true, message: '请选择搜索引擎！' }]}
+        >
+          <Select placeholder="请选择搜索引擎">
+            <Select.Option value="baidu">百度</Select.Option>
+            <Select.Option value="sougou">搜狗</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary">搜索</Button>
+        </Form.Item>
+      </Form>
+      <Table dataSource={dataSource} columns={columns} />
     </div>
   );
 }
