@@ -16,9 +16,10 @@ const lineOptions = {
     }
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    top: '40px',
+    left: '20px',
+    right: '40px',
+    bottom: '0',
     containLabel: true
   },
   yAxis: [],

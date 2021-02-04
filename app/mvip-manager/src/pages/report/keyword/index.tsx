@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Select, Statistic, Input, Button, Row, Col, Divider } from 'antd';
+import { Table, Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd';
+import moment from 'moment'
 
+import MainTitle from '@/components/main-title';
 import { LineChart } from '@/components/charts';
 import { getPVData } from '@/api/report';
-import MainTitle from '@/components/main-title';
+
 import './index.less';
 
 const dataSource = [
@@ -44,28 +46,36 @@ const columns = [
 
 export default function IndexPage() {
   const [form] = Form.useForm()
+  const [queryChartForm] = Form.useForm()
   const [formLoading, setFormLoading] = React.useState<boolean>(false)
   const [lineOptions, setLineOptions] = useState({})
 
   useEffect(() => {
+    // const values = form.getFieldsValue()
+    // console.log(values)
     (async () => {
       setFormLoading(true)
       const { code, data } = await getPVData({ page: 1, size: 10 })
       if (code === 200) {
         const { result } = data
-        setLineOptions(genChartOptions({
-          title: '关键词报表',
-          result
-        }))
+        setLineOptions(genChartOptions(result))
       }
       setFormLoading(false)
     })()
-  },[])
+  },[form])
+
+  const queryChartData = (prop: string, value: any) => {
+    console.log('prop: ', prop, value)
+    const values = form.getFieldsValue()
+    const [start, end] = value
+    values[prop] = [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')]
+    form.setFieldsValue(values)
+  }
 
   return (
     <div>
       <MainTitle title="关键词报表"/>
-      <div className="page container">
+      <div className="container">
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={7} style={{ marginBottom: 16 }}>
             <Statistic title="凤鸣投放币" value={16888}/>
@@ -97,12 +107,30 @@ export default function IndexPage() {
           </Col>
         </Row>
         <Divider />
+
+        <h2>访问量统计（PV）</h2>
+        <Form layout="inline" form={queryChartForm}>
+          <Form.Item
+            name="date"
+            label="时间"
+            rules={[{ required: true, message: '请选择时间！' }]}>
+            <DatePicker.RangePicker
+              defaultValue={[
+                moment(),
+                moment()
+              ]}
+              format="YYYY-MM-DD"
+              onChange={value => queryChartData('date', value)}
+            />
+          </Form.Item>
+        </Form>
         <LineChart option={lineOptions} />
         <Divider />
-        <h1>关键词排名明细数据：</h1>
+
+        <h2>关键词排名明细数据：</h2>
         <Form form={form} layout="inline">
           <Form.Item
-            name="搜索引擎"
+            name="search"
             label="搜索引擎"
             rules={[{ required: true, message: '请选择搜索引擎！' }]}
           >
@@ -121,12 +149,8 @@ export default function IndexPage() {
   );
 }
 
-function genChartOptions(data: any) {
-  const {title, result} = data
+function genChartOptions(result: any) {
   return {
-    title: {
-      text: title
-    },
     xAxis : {
       type: 'category',
       data: result.map((x: any) => x.date)
