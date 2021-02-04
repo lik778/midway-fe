@@ -1,6 +1,8 @@
 import { getUpyunImgConfig } from './api/haojing'
 import { UpyunImgConfig } from '@/interfaces/haojing';
 import { enableMapSet } from 'immer';
+
+import '@/styles/report.less';
 import '@/styles/common.less';
 
 declare global {

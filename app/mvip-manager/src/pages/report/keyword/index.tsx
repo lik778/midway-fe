@@ -1,166 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd';
-import moment from 'moment'
+import React, { useState, useMemo } from 'react'
+import { Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd'
 
-import MainTitle from '@/components/main-title';
-import { LineChart } from '@/components/charts';
-import { getPVData } from '@/api/report';
+import MainTitle from '@/components/main-title'
+import Query from '@/components/search-list'
+import { PieChart } from '@/components/charts'
+import { getKeywordStatics, getKeywordRankList } from '@/api/report'
+import { keywordRankListConfig } from './config'
 
-import './index.less';
+import './index.less'
 
-const dataSource = [
-  {
-    key: '1',
-    name: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号',
-  },
-];
+export default function KeyWordPage(props: any) {
+  const [queryKeywordStaticsForm] = Form.useForm()
+  const [queryKeywordRankForm] = Form.useForm()
+  const [staticsDataSource, setStaticsDataSource] = React.useState([])
+  const [chartOptions, setChartOptions] = useState({})
 
-const columns = [
-  {
-    title: '姓名',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: '年龄',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: '住址',
-    dataIndex: 'address',
-    key: 'address',
-  },
-];
+  useMemo(async () => {
+    const { code, data } = await getKeywordStatics()
+    if (code === 200) {
+      const {
+        fm = 1,
+        bw = 1,
+        qc = 1,
+        cate = 1
+      } = data
+      setChartOptions(genChartOptions({ fm, bw, qc, cate }))
+    }
+  }, [])
 
-// get ready to update to echarts@5
-// https://github.com/hustcc/echarts-for-react/issues/388
-
-export default function IndexPage() {
-  const [form] = Form.useForm()
-  const [queryChartForm] = Form.useForm()
-  const [formLoading, setFormLoading] = React.useState<boolean>(false)
-  const [lineOptions, setLineOptions] = useState({})
-
-  useEffect(() => {
-    // const values = form.getFieldsValue()
-    // console.log(values)
-    (async () => {
-      setFormLoading(true)
-      const { code, data } = await getPVData({ page: 1, size: 10 })
-      if (code === 200) {
-        const { result } = data
-        setLineOptions(genChartOptions(result))
-      }
-      setFormLoading(false)
-    })()
-  },[form])
-
-  const queryChartData = (prop: string, value: any) => {
-    console.log('prop: ', prop, value)
-    const values = form.getFieldsValue()
-    const [start, end] = value
-    values[prop] = [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')]
-    form.setFieldsValue(values)
+  const queryRankList = async (query: any) => {
+    const { code, data } = await getKeywordRankList(query)
+    if (code === 200) {
+      const { result } = data
+      setStaticsDataSource(result)
+    }
   }
 
   return (
-    <div>
+    <div className='page-report page-report-keyword'>
       <MainTitle title="关键词报表"/>
       <div className="container">
         <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={7} style={{ marginBottom: 16 }}>
+          <Col className="statics" span={8} style={{ marginBottom: 24 }}>
             <Statistic title="凤鸣投放币" value={16888}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="标王投放币" value={16888}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="精品官网个数" value={16888}/>
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16} style={{ marginBottom: 16 }}>
-          <Col className="statics" span={7}>
+        <Row className="statics-con" gutter={16} style={{ marginBottom: 24 }}>
+          <Col className="statics" span={8}>
             <Statistic title="凤鸣投放关键词数" value={6}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="标王投放关键词数" value={6}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="易慧推投放关键词数" value={120}/>
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16} style={{ marginBottom: 16 }}>
-          <Col className="statics" span={7}>
+        <Row className="statics-con" gutter={16} style={{ marginBottom: 24 }}>
+          <Col className="statics" span={8}>
             <Statistic title="凤鸣关键词平均排名" value={6}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="标王关键词平均排名" value={6}/>
           </Col>
         </Row>
         <Divider />
 
-        <h2>访问量统计（PV）</h2>
-        <Form layout="inline" form={queryChartForm}>
-          <Form.Item
-            name="date"
-            label="时间"
-            rules={[{ required: true, message: '请选择时间！' }]}>
-            <DatePicker.RangePicker
-              defaultValue={[
-                moment(),
-                moment()
-              ]}
-              format="YYYY-MM-DD"
-              onChange={value => queryChartData('date', value)}
-            />
-          </Form.Item>
-        </Form>
-        <LineChart option={lineOptions} />
+        <h2>关键词统计</h2>
+        <PieChart option={chartOptions} />
         <Divider />
 
-        <h2>关键词排名明细数据：</h2>
-        <Form form={form} layout="inline">
-          <Form.Item
-            name="search"
-            label="搜索引擎"
-            rules={[{ required: true, message: '请选择搜索引擎！' }]}
-          >
-            <Select placeholder="请选择搜索引擎">
-              <Select.Option value="baidu">百度</Select.Option>
-              <Select.Option value="sougou">搜狗</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary">搜索</Button>
-          </Form.Item>
-        </Form>
-        <Table dataSource={dataSource} columns={columns} />
+        <h2>关键词排名明细</h2>
+        <Query
+          onQuery={queryRankList}
+          config={keywordRankListConfig({
+            form: queryKeywordRankForm,
+            dataSource: staticsDataSource
+          })}
+        />
       </div>
     </div>
-  );
+  )
 }
 
-function genChartOptions(result: any) {
+function genChartOptions({ fm, bw, qc, cate }) {
   return {
-    xAxis : {
-      type: 'category',
-      data: result.map((x: any) => x.date)
+    legend: {
+      left: 'bottom',
+      data: ['凤鸣','标王','易慧推','主营']
     },
-    yAxis : {
-      type : 'value'
-    },
-    series : [{
-      data: result.map((x: any) => x.pv),
-      type: 'bar',
-    }]
+    series : [
+      {
+        name: '访问来源',
+        type: 'pie',
+        radius : ['35%', '75%'],
+        data:[
+          {value:fm, name:'凤鸣'},
+          {value:bw, name:'标王'},
+          {value:qc, name:'易慧推'},
+          {value:cate, name:'主营'}
+        ],
+      }
+    ]
   }
 }

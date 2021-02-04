@@ -3,29 +3,50 @@ import ReactEcharts from 'echarts-for-react'
 
 import './index.less'
 
+// TODO split config info files
+
+const toolbox = {
+  feature: {
+    restore: {},
+    saveAsImage: {}
+  }
+}
+
 const lineOptions = {
-  title: {
-    text: '',
-  },
   tooltip: {
     trigger: 'axis'
   },
-  toolbox: {
-    feature: {
-      saveAsImage: {}
-    }
-  },
   grid: {
-    top: '40px',
+    top: '15px',
     left: '20px',
-    right: '40px',
+    right: '35px',
     bottom: '0',
     containLabel: true
   },
-  yAxis: [],
-  xAxis: [],
+  yAxis: {
+    type: 'value'
+  },
+  xAxis: {
+    type: 'value'
+  },
   legend: [],
   series: []
+}
+
+const funnelOptions = {
+  toolbox,
+  tooltip: {
+    trigger: 'item',
+    formatter: "{a} <br/>{b} : {c}%"
+  },
+  series: []
+}
+
+const pieOptions = {
+  tooltip : {
+    trigger: 'item',
+    formatter: "{a} <br/>{b} : {c} ({d}%)"
+  }
 }
 
 export default function Chart (props: any) {
@@ -50,5 +71,15 @@ export default function Chart (props: any) {
 
 export function LineChart(props: any) {
   const extendProps = { ...props, defaultOptions: lineOptions }
+  return <Chart {...extendProps} />
+}
+
+export function FunnelChart(props: any) {
+  const extendProps = { ...props, defaultOptions: funnelOptions }
+  return <Chart {...extendProps} />
+}
+
+export function PieChart(props: any) {
+  const extendProps = { ...props, defaultOptions: pieOptions }
   return <Chart {...extendProps} />
 }

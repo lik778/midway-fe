@@ -78,3 +78,10 @@ export const removeOverflow = (cb: any) => {
   setTimeout(cb(), 500);
   setTimeout(() => removeOverflowY(), 1000);
 }
+
+export const zip = (a: any[], b: any[]) => a.map((x, i) => [x, b[i]])
+
+// 从枚举类型创建 Options 值
+// @example: {value:'name'} 转化为 {label:'name', value:'value'}
+export const createOptions = (labelMap: any) =>
+  Object.entries(labelMap).map(([k, v]) => ({ label: v, value: k }))
