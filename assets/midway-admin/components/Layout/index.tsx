@@ -10,7 +10,7 @@ const { Header, Content, Sider } = Layout;
 export default (props: any) => {
   return (
     <ConfigProvider locale={zhCN}>
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout style={{ minHeight: '100vh', minWidth: 1400 }}>
         <Sider theme="light">
           <Header className="layout-side-header">
             <p>优选推管理后台</p>
