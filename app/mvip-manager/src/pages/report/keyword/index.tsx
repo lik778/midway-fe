@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Select, Input, Button, Row, Col, Divider } from 'antd';
 
-import LineChart from '@/components/charts/line-chart';
+import { LineChart } from '@/components/charts';
 import { getPVData } from '@/api/report';
 import MainTitle from '@/components/main-title';
 import './index.less';
@@ -49,14 +49,16 @@ export default function IndexPage() {
 
   useEffect(() => {
     (async () => {
+      setFormLoading(true)
       const { code, data } = await getPVData({ page: 1, size: 10 })
       if (code === 200) {
         const { result } = data
-        setLineOptions(composeOptions({
+        setLineOptions(genChartOptions({
           title: '关键词报表',
           result
         }))
       }
+      setFormLoading(false)
     })()
   },[])
 
@@ -112,13 +114,29 @@ export default function IndexPage() {
         <Divider />
         <LineChart option={lineOptions} />
         <Divider />
-        {/* <LineChart option={lineOptions} /> */}
+        <h1>关键词排名明细数据：</h1>
+        <Form form={form} layout="inline">
+          <Form.Item
+            name="搜索引擎"
+            label="搜索引擎"
+            rules={[{ required: true, message: '请选择搜索引擎！' }]}
+          >
+            <Select placeholder="请选择搜索引擎">
+              <Select.Option value="baidu">百度</Select.Option>
+              <Select.Option value="sougou">搜狗</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary">搜索</Button>
+          </Form.Item>
+        </Form>
+        <Table dataSource={dataSource} columns={columns} />
       </div>
     </div>
   );
 }
 
-function composeOptions(data: any) {
+function genChartOptions(data: any) {
   const {title, result} = data
   return {
     title: {

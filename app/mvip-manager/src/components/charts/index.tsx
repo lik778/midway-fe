@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 
-const defaultOptions = {
+import './index.less'
+
+const lineOptions = {
   title: {
     text: '',
   },
@@ -25,9 +27,8 @@ const defaultOptions = {
   series: []
 }
 
-
-export default (props: any) => {
-  const { option } = props
+export default function Chart (props: any) {
+  const { option, defaultOptions } = props
   const [washedOptions, setWashedOptions] = useState(null)
 
   useEffect(() => {
@@ -39,10 +40,14 @@ export default (props: any) => {
   return <>
     {washedOptions && (
       <ReactEcharts
+        className="react-echarts"
         option={washedOptions}
-        style={{ height: '350px', width: '100%' }}
-        className='react_for_echarts'
       />
     )}
   </>
+}
+
+export function LineChart(props: any) {
+  const extendProps = { ...props, defaultOptions: lineOptions }
+  return <Chart {...extendProps} />
 }
