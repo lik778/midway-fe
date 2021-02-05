@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from 'react'
-import { Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd'
+import { Form, Row, Col, Divider } from 'antd'
 
 import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
+import CountTo from '@/components/count-to'
 import { PieChart } from '@/components/charts'
 import { getKeywordStatics, getKeywordRankList } from '@/api/report'
 import { keywordRankListConfig } from './config'
@@ -16,7 +17,7 @@ export default function KeyWordPage(props: any) {
   const [chartOptions, setChartOptions] = useState({})
 
   useMemo(async () => {
-    const { code, data } = await getKeywordStatics()
+    const { code, data } = await getKeywordStatics({})
     if (code === 200) {
       const {
         fm = 1,
@@ -41,33 +42,33 @@ export default function KeyWordPage(props: any) {
       <MainTitle title="关键词报表"/>
       <div className="container">
         <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={8} style={{ marginBottom: 24 }}>
-            <Statistic title="凤鸣投放币" value={16888}/>
+          <Col className="statics" span={8}>
+            <CountTo title="凤鸣投放币" value={16888} />
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="标王投放币" value={16888}/>
+            <CountTo title="标王投放币" value={16888} />
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="精品官网个数" value={16888}/>
-          </Col>
-        </Row>
-        <Row className="statics-con" gutter={16} style={{ marginBottom: 24 }}>
-          <Col className="statics" span={8}>
-            <Statistic title="凤鸣投放关键词数" value={6}/>
-          </Col>
-          <Col className="statics" span={8}>
-            <Statistic title="标王投放关键词数" value={6}/>
-          </Col>
-          <Col className="statics" span={8}>
-            <Statistic title="易慧推投放关键词数" value={120}/>
+            <CountTo title="精品官网个数" value={16888} />
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16} style={{ marginBottom: 24 }}>
+        <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <Statistic title="凤鸣关键词平均排名" value={6}/>
+            <CountTo title="凤鸣投放关键词数" value={6} />
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="标王关键词平均排名" value={6}/>
+            <CountTo title="标王投放关键词数" value={6} />
+          </Col>
+          <Col className="statics" span={8}>
+            <CountTo title="易慧推投放关键词数" value={120} />
+          </Col>
+        </Row>
+        <Row className="statics-con" gutter={16}>
+          <Col className="statics" span={8}>
+            <CountTo title="凤鸣关键词平均排名" value={6} />
+          </Col>
+          <Col className="statics" span={8}>
+            <CountTo title="标王关键词平均排名" value={6} />
           </Col>
         </Row>
         <Divider />

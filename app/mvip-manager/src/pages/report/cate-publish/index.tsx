@@ -36,7 +36,7 @@ export default function KeyWordPage(props: any) {
       <MainTitle title="发布报表"/>
       <div className="container">
         <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={6} style={{ marginBottom: 24 }}>
+          <Col className="statics" span={6}>
             <Statistic title="总访问量（PV）" value={98712}/>
           </Col>
           <Col className="statics" span={1}>
