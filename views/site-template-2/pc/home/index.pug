@@ -6,8 +6,13 @@ block styles
 //-使用了统一的header和nav
 block content
     include ../components/swiper.pug
-    .container.clearfix
-        .main
+    .container
+        .hot-p-tit
+            img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png")
+            h2 热门产品
+        include ../components/product-list.pug
+        +product-list('hot')
+
 
     //-在线客服
     include ../components/customer-service.pug

@@ -1,0 +1,15 @@
+mixin product-list(type)
+	.product-list.clearfix
+		//-mock数据，等待后端热门产品数据
+		- productList = [{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"},{"id": 985,"name": "985发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-985.html"},{"id": 986,"name": "986发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-986.html"},{"id": 987,"name": "987发服务987发服务987发服务987发服务987发服务987发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-987.html"}]
+		if productList && productList.length >0
+			each item in productList
+				a.item-p(href=item.urlSuffix target="_blank")
+					img(src=item.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
+					if type == 'hot'
+						img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
+					p #{ item.name }
+					.show-desc 查看详情
+
+
+
