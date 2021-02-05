@@ -1,8 +1,0 @@
-//-导航栏是后端动态返回的。navigation": [{"id": 1,"name": "首页s","desc": "首页介绍","content": "/","display": 1}...]
-.nav-bg.clearfix
-	.nav
-		ul
-			if renderData.navigation && renderData.navigation.length>0
-				each item in renderData.navigation
-					li
-						a(href=item.content) #{item.name}
