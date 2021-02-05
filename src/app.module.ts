@@ -16,6 +16,7 @@ import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 import { TrackerService } from './services/tracker.service';
 import { TrackerController } from './controllers/tracker.controller';
 import { ManagementService } from './services/management.service';
+import { ReportController } from './controllers/report.controller';
 
 /**
  * 应用程序根模块
@@ -34,7 +35,8 @@ import { ManagementService } from './services/management.service';
     B2bSiteController,
     FuwuSiteController,
     HaojingController,
-    TrackerController
+    TrackerController,
+    ReportController
   ],
   providers: [
     LogService,
