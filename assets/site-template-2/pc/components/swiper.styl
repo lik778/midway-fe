@@ -1,10 +1,77 @@
 @import 'swiper/dist/css/swiper.min.css'
 
-.swiper-container
-  height 360px
-  width 100%
-  .swiper-wrapper
-    .swiper-slide
-      img
-        height 360px
-        width 100%
+#banner-container {
+	position: relative;
+	width: 1200px;
+	margin: 0 auto
+}
+
+#banner-container .swiper-container {
+	padding-bottom: 60px;
+  height: 360px;
+}
+
+#banner-container  .swiper-slide {
+	width: 520px;
+	background: #fff;
+	box-shadow: 0 8px 30px #ddd;
+}
+#banner-container  .swiper-slide img{
+	display:block;
+  width: 100%;
+}
+#banner-container  .swiper-slide p {
+	line-height: 98px;
+	padding-top: 0;
+	text-align: center;
+	color: #636363;
+	font-size: 1.1em;
+	margin: 0;
+}
+
+#banner-container .swiper-pagination {
+	width: 100%;
+	bottom: 20px;
+}
+
+#banner-container .swiper-pagination-bullets .swiper-pagination-bullet {
+	margin: 0 5px;
+	border: 3px solid #fff;
+	background-color: #d5d5d5;
+	width: 10px;
+	height: 10px;
+	opacity: 1;
+}
+
+#banner-container .swiper-pagination-bullets .swiper-pagination-bullet-active {
+	border: 3px solid #00aadc;
+	background-color: #fff;
+}
+
+#banner-container .swiper-button-prev {
+	left: -30px;
+	width: 45px;
+	height: 45px;
+	// background: url(../images/wm_button_icon.png) no-repeat;
+	background-position: 0 0;
+	background-size: 100%;
+}
+
+#banner-container .swiper-button-prev:hover {
+	background-position: 0 -46px;
+	background-size: 100%
+}
+
+#banner-container .swiper-button-next {
+	right: -30px;
+	width: 45px;
+	height: 45px;
+	// background: url(../images/wm_button_icon.png) no-repeat;
+	background-position: 0 -93px;
+	background-size: 100%;
+}
+
+#banner-container .swiper-button-next:hover {
+	background-position: 0 -139px;
+	background-size: 100%
+}
