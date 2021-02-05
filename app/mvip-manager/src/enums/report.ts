@@ -1,4 +1,4 @@
-export enum SearchEngineType {
+export enum PlatformType {
   BAI_DU = 1, // 百度
   SOU_GOU = 2, // 搜狗
   SHEN_MA = 3, // 神马

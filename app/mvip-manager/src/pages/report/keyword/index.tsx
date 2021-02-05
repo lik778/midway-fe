@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react'
-import { Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { Col, Divider, Form, Row, Statistic } from 'antd';
+import MainTitle from '@/components/main-title';
+import Query from '@/components/search-list';
+import { PieChart } from '@/components/charts';
+import { getKeywordRankList, getKeywordStatics, keywordDetailList, reportHealth } from '@/api/report';
+import { keywordRankListConfig } from './config';
 
-import MainTitle from '@/components/main-title'
-import Query from '@/components/search-list'
-import { PieChart } from '@/components/charts'
-import { getKeywordStatics, getKeywordRankList } from '@/api/report'
-import { keywordRankListConfig } from './config'
-
-import './index.less'
+import './index.less';
+import { BaxProductType, DisplayType, PlatformType } from '@/enums/report';
 
 export default function KeyWordPage(props: any) {
   const [queryKeywordStaticsForm] = Form.useForm()
@@ -15,17 +15,28 @@ export default function KeyWordPage(props: any) {
   const [staticsDataSource, setStaticsDataSource] = React.useState([])
   const [chartOptions, setChartOptions] = useState({})
 
-  useMemo(async () => {
-    const { code, data } = await getKeywordStatics()
-    if (code === 200) {
-      const {
-        fm = 1,
-        bw = 1,
-        qc = 1,
-        cate = 1
-      } = data
-      setChartOptions(genChartOptions({ fm, bw, qc, cate }))
-    }
+  useEffect( () => {
+    (async () => {
+      await keywordDetailList({
+        device: DisplayType.MOBILE,
+        pageNo: 0,
+        pageSize: 0,
+        platform: PlatformType.BAI_DU,
+        product: BaxProductType.BIAO_WANG,
+        user_id: 0
+      })
+      await reportHealth()
+      const { code, data } = await getKeywordStatics(null)
+      if (code === 200) {
+        const {
+          fm = 1,
+          bw = 1,
+          qc = 1,
+          cate = 1
+        } = data
+        setChartOptions(genChartOptions({ fm, bw, qc, cate }))
+      }
+    })()
   }, [])
 
   const queryRankList = async (query: any) => {

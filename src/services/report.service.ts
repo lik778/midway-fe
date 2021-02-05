@@ -3,29 +3,30 @@ import { RequestService } from './request.service';
 import { LogService } from './log.service';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
-import { ManagementReqParams } from '../interface';
+import { ApiReqParams } from '../interface';
 import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class ReportService {
+  report_base = '/api/reporting-service'
   host: string;
   haojingHost: string;
   constructor(
     private readonly requestService: RequestService,
     private readonly logService: LogService,
     private readonly configService: ConfigService) {
-    this.host = configService.get('services.report-service.host');
+    this.host = configService.get('services.reporting-service.host');
   }
 
-  public getReportData(req: Request, input: ManagementReqParams): Promise<AxiosResponse<any>> {
+  public getReportData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
     const {  path, params } = input
     const method = input.method.toLocaleLowerCase()
     switch (method) {
       case 'get':
-        return this.requestService.get(`${this.host}${path}`, params);
+        return this.requestService.get(`${this.host}${this.report_base}${path}`, params);
         break;
       case 'post':
-        return this.requestService.post(`${this.host}${path}`, params);
+        return this.requestService.post(`${this.host}${this.report_base}${path}`, params);
         break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);

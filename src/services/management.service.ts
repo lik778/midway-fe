@@ -4,7 +4,7 @@ import { LogService } from './log.service';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { ErrorCode } from '../enums/error';
-import { HeaderAuthParams, ManagementReqParams } from '../interface';
+import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
 import { AxiosResponse } from 'axios';
 
@@ -52,7 +52,7 @@ export class ManagementService {
       { headers: this.setApiAHeaders(req.cookies)}).toPromise()
   }
 
-  public getManagementData(req: Request, input: ManagementReqParams): Promise<AxiosResponse<any>> {
+  public getManagementData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
     const {  path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']

@@ -1,4 +1,23 @@
+import { postApi } from '@/api/base'
+import { KeywordDetailListParams } from '@/interfaces/report';
 /* 关键词 */
+const API_PREFIX = '/report/api'
+const GET_BASE_DATA = { method: 'get', params: null }
+const POST_BASE_DATA = { method: 'post' }
+
+const serializationData = function <T>(params: T): string {
+  return JSON.stringify(params)
+}
+// 健康检查
+export const reportHealth = () => {
+  return postApi(API_PREFIX, { path: '/health', ...GET_BASE_DATA })
+}
+
+// 关键词
+export const keywordDetailList = (params: KeywordDetailListParams) => {
+  return postApi(API_PREFIX, { path: '/keyword/detail',
+    ...POST_BASE_DATA, params: serializationData(params) })
+}
 
 export const getKeywordStatics = (params: any): Promise<any> => {
   return new Promise(resolve => {
