@@ -1,0 +1,20 @@
+.product
+    - const productList= renderData.productList.result
+    .product-title.clearfix
+        if domainType == 'fuwu'
+            h4 服务内容
+        else
+            h4 产品中心
+        if moreProductArr && moreProductArr.length>0
+            a(href=moreProductArr[0].content) 更多
+                .right-icon
+
+    .product-list.clearfix
+        if productList && productList.length >0
+            each item in productList.length >= 4 ? productList.slice(0,4):productList
+                a.item(href=item.urlSuffix)
+                    img(src=item.headImg || "//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
+                    p #{item.name}
+                    .btn 了解详情
+        else
+            p(style="margin-top: 10px") 暂时还没有数据哦

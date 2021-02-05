@@ -19,6 +19,22 @@ module.exports = {
     'site-template-1-product-child-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/product-child/index.js'),
     'site-template-1-news-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/news-detail/index.js'),
     'site-template-1-product-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-1/wap/product-detail/index.js'),
+
+    //新增模板2为B2B
+    'site-template-2-home-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/home/index.js'),
+    'site-template-2-home-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/home/index.js'),
+    //'site-template-2-news-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news/index.js'),
+    //'site-template-2-news-child-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news-child/index.js'),
+    //'site-template-2-news-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news-detail/index.js'),
+    //'site-template-2-news-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news/index.js'),
+    //'site-template-2-news-child-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news-child/index.js'),
+    //'site-template-2-product-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product/index.js'),
+    //'site-template-2-product-child-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product-child/index.js'),
+    //'site-template-2-product-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product-detail/index.js'),
+    //'site-template-2-product-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product/index.js'),
+    //'site-template-2-product-child-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product-child/index.js'),
+    //'site-template-2-news-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news-detail/index.js'),
+    //'site-template-2-product-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product-detail/index.js'),
   },
   output: {
     path: path.resolve(__dirname, "../dist/public"),

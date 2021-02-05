@@ -38,7 +38,7 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-1/${device}/home/index`
+    const templateUrl = `site-template-2/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)

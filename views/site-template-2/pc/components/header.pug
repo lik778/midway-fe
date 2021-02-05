@@ -1,0 +1,14 @@
+.header.clearfix
+	img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
+	h3 #{ renderData.shopInfo.name }
+	if person.uid
+		p(style="display:none") uid：#{person.uid}
+	.nav-right
+		a(href="") 店铺首页
+		a(href="") 产品中心
+		.nav-arrow
+		a(href="") 新闻中心
+		.nav-arrow
+		a(href="") 关于我们
+		a(href="") 联系我们
+

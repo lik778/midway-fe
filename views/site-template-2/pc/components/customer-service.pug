@@ -1,0 +1,30 @@
+//-在线客服
+.customer-box
+	.qq-title
+		if qq && qq.length>0
+			| QQ交谈
+		else
+			| 在线客服
+		img.qqshow(src="//file.baixing.net/202012/d3f156b57227810022a850b88711f010.png", alt="")
+	if qq && qq.length>0
+		dl.clearfix
+			each item in qq
+				dt
+					div #{item.name}：
+				dd
+					a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
+						img(src="//file.baixing.net/202011/be5237a19752ef6d8ec6a4c2d054eaec.png", alt="")
+	if phone.content
+		.customer-tel 联系电话
+		a.center(href="tel:" + phone.content )
+			img(src="//file.baixing.net/202011/ec4ef1af5fef2b0259060cf8cb6d66cf.png", alt="")
+			span #{phone.content}
+	if weChat.content
+		.weixin 联系微信
+		.footer
+			img(src="//file.baixing.net/202011/44808034b4acc19cb6c4de674b70e824.png", alt="")
+			span #{weChat.content}
+
+.customer-hide
+	img.qqhide(src="//file.baixing.net/202012/408111e490bddbfcc17509b406e871fe.png")
+	p 在线客服
