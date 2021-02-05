@@ -1,85 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Statistic, Divider } from 'antd';
-import LineChart from '@/components/charts/line-chart';
-import { getPVData } from '@/api/report';
-import MainTitle from '@/components/main-title';
-import './index.less';
+import React, { useState, useMemo } from 'react'
+import { Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd'
 
-export default (props: any) => {
-  const [lineOptions, setLineOptions] = useState({})
+import MainTitle from '@/components/main-title'
+import Query from '@/components/search-list'
+import { PieChart } from '@/components/charts'
+import { getKeywordStatics, getKeywordRankList } from '@/api/report'
+import { keywordRankListConfig } from './config'
 
-  useEffect(() => {
-    (async () => {
-      const { code, data } = await getPVData({ page: 1, size: 10 })
-      if (code === 200) {
-        const { result } = data
-        setLineOptions(composeOptions({
-          title: '关键词',
-          result
-        }))
-      }
-    })()
-  },[])
+import './index.less'
+
+export default function KeyWordPage(props: any) {
+  const [queryKeywordStaticsForm] = Form.useForm()
+  const [queryKeywordRankForm] = Form.useForm()
+  const [staticsDataSource, setStaticsDataSource] = React.useState([])
+  const [chartOptions, setChartOptions] = useState({})
+
+  useMemo(async () => {
+    const { code, data } = await getKeywordStatics()
+    if (code === 200) {
+      const {
+        fm = 1,
+        bw = 1,
+        qc = 1,
+        cate = 1
+      } = data
+      setChartOptions(genChartOptions({ fm, bw, qc, cate }))
+    }
+  }, [])
+
+  const queryRankList = async (query: any) => {
+    const { code, data } = await getKeywordRankList(query)
+    if (code === 200) {
+      const { result } = data
+      setStaticsDataSource(result)
+    }
+  }
 
   return (
-    <div>
+    <div className='page-report page-report-keyword'>
       <MainTitle title="关键词报表"/>
-      <div className="page container">
+      <div className="container">
         <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={7} style={{ marginBottom: 16 }}>
+          <Col className="statics" span={8} style={{ marginBottom: 24 }}>
             <Statistic title="凤鸣投放币" value={16888}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="标王投放币" value={16888}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="精品官网个数" value={16888}/>
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16} style={{ marginBottom: 16 }}>
-          <Col className="statics" span={7}>
+        <Row className="statics-con" gutter={16} style={{ marginBottom: 24 }}>
+          <Col className="statics" span={8}>
             <Statistic title="凤鸣投放关键词数" value={6}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="标王投放关键词数" value={6}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="易慧推投放关键词数" value={120}/>
           </Col>
         </Row>
-        <Row className="statics-con" gutter={16} style={{ marginBottom: 16 }}>
-          <Col className="statics" span={7}>
+        <Row className="statics-con" gutter={16} style={{ marginBottom: 24 }}>
+          <Col className="statics" span={8}>
             <Statistic title="凤鸣关键词平均排名" value={6}/>
           </Col>
-          <Col className="statics" span={7}>
+          <Col className="statics" span={8}>
             <Statistic title="标王关键词平均排名" value={6}/>
           </Col>
         </Row>
         <Divider />
-        <LineChart option={lineOptions} />
+
+        <h2>关键词统计</h2>
+        <PieChart option={chartOptions} />
         <Divider />
-        {/* <LineChart option={lineOptions} /> */}
+
+        <h2>关键词排名明细</h2>
+        <Query
+          onQuery={queryRankList}
+          config={keywordRankListConfig({
+            form: queryKeywordRankForm,
+            dataSource: staticsDataSource
+          })}
+        />
       </div>
     </div>
-  );
+  )
 }
 
-function composeOptions(data: any) {
-  const {title, result} = data
+function genChartOptions({ fm, bw, qc, cate }) {
   return {
-    title: {
-      text: title
+    legend: {
+      left: 'bottom',
+      data: ['凤鸣','标王','易慧推','主营']
     },
-    xAxis : {
-      type: 'category',
-      data: result.map((x: any) => x.date)
-    },
-    yAxis : {
-      type : 'value'
-    },
-    series : [{
-      data: result.map((x: any) => x.pv),
-      type: 'bar',
-    }]
+    series : [
+      {
+        name: '访问来源',
+        type: 'pie',
+        radius : ['35%', '75%'],
+        data:[
+          {value:fm, name:'凤鸣'},
+          {value:bw, name:'标王'},
+          {value:qc, name:'易慧推'},
+          {value:cate, name:'主营'}
+        ],
+      }
+    ]
   }
 }
