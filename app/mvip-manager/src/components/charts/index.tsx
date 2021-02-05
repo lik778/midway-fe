@@ -5,6 +5,16 @@ import './index.less'
 
 // TODO split config info files
 
+const color = [
+  'rgba(9, 109, 217, .68)',
+  'rgba(21, 9, 217, .68)',
+  'rgba(128, 9, 217, .68)',
+  'rgba(255, 11, 26, .68)',
+  'rgba(255, 148, 11, .68)',
+  'rgba(255, 197, 11, .68)',
+  'rgba(37, 222, 9, .68)',
+]
+
 const toolbox = {
   feature: {
     restore: {},
@@ -13,6 +23,7 @@ const toolbox = {
 }
 
 const lineOptions = {
+  color,
   tooltip: {
     trigger: 'axis'
   },
@@ -34,6 +45,7 @@ const lineOptions = {
 }
 
 const funnelOptions = {
+  color,
   toolbox,
   tooltip: {
     trigger: 'item',
@@ -43,6 +55,7 @@ const funnelOptions = {
 }
 
 const pieOptions = {
+  color,
   tooltip : {
     trigger: 'item',
     formatter: "{a} <br/>{b} : {c} ({d}%)"

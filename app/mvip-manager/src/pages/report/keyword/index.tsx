@@ -100,12 +100,24 @@ function genChartOptions({ fm, bw, qc, cate }) {
       {
         name: '访问来源',
         type: 'pie',
-        radius : ['35%', '75%'],
+        radius : ['45%', '85%'],
         data:[
-          {value:fm, name:'凤鸣'},
-          {value:bw, name:'标王'},
-          {value:qc, name:'易慧推'},
-          {value:cate, name:'主营'}
+          {
+            value:fm,
+            name:'凤鸣',
+          },
+          {
+            value:bw,
+            name:'标王'
+          },
+          {
+            value:qc,
+            name:'易慧推'
+          },
+          {
+            value:cate,
+            name:'主营'
+          }
         ],
       }
     ]
