@@ -18,15 +18,21 @@ export class ReportService {
     this.host = configService.get('services.reporting-service.host');
   }
 
+  private setHeader(): any {
+    return {
+      "Content-Type": "application/json;charset=utf-8"
+    }
+  }
+
   public getReportData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
     const {  path, params } = input
     const method = input.method.toLocaleLowerCase()
     switch (method) {
       case 'get':
-        return this.requestService.get(`${this.host}${this.report_base}${path}`, params);
+        return this.requestService.get(`${this.host}${this.report_base}${path}`, params, this.setHeader());
         break;
       case 'post':
-        return this.requestService.post(`${this.host}${this.report_base}${path}`, params);
+        return this.requestService.post(`${this.host}${this.report_base}${path}`, params, this.setHeader());
         break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
