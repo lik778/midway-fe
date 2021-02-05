@@ -3,9 +3,10 @@ import { ApiQeqDTO } from '../dto/api-req.dto';
 import { Request, Response } from 'express';
 import { join } from 'path'
 import { ManagementService } from '../services/management.service';
+import config from '../config';
 
 
-@Controller('/management')
+@Controller({ host: config().hostType.fuwu, path: '/management' })
 export class ManagementController {
   constructor(private managementService: ManagementService) {}
   @Get('*')
