@@ -21,5 +21,5 @@ export enum CateProductType {
 
 export enum DisplayType {
   PC = 1,
-  MOBILE = 2,
+  WAP = 2,
 }

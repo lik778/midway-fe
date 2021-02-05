@@ -3,7 +3,8 @@ import { Col, Divider, Form, Row, Statistic } from 'antd';
 import MainTitle from '@/components/main-title';
 import Query from '@/components/search-list';
 import { PieChart } from '@/components/charts';
-import { getKeywordRankList, getKeywordStatics, keywordDetailList, reportHealth } from '@/api/report';
+import { getKeywordRankList, getKeywordStatics,
+  getKeywordDetailListApi, reportHealthApi } from '@/api/report';
 import { keywordRankListConfig } from './config';
 
 import './index.less';
@@ -17,15 +18,15 @@ export default function KeyWordPage(props: any) {
 
   useEffect( () => {
     (async () => {
-      await keywordDetailList({
-        device: DisplayType.MOBILE,
+      await getKeywordDetailListApi({
+        device: DisplayType.WAP,
         pageNo: 0,
         pageSize: 0,
         platform: PlatformType.BAI_DU,
         product: BaxProductType.BIAO_WANG,
-        user_id: 0
+        userId: 0
       })
-      await reportHealth()
+      await reportHealthApi()
       const { code, data } = await getKeywordStatics(null)
       if (code === 200) {
         const {

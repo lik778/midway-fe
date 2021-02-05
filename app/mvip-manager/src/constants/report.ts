@@ -26,5 +26,5 @@ export const CateProductLabelMap = {
 
 export const DisplayLabelMap = {
   [DisplayType.PC]: '电脑端',
-  [DisplayType.MOBILE]: '手机端',
+  [DisplayType.WAP]: '手机端',
 }
