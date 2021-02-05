@@ -8,26 +8,7 @@ block content
     include ../components/swiper.pug
     .container.clearfix
         .main
-            include ../components/company-profile.pug
 
-            include ../components/product-title.pug
-            - const productList = renderData.productList.result.slice(0,12)
-            include ../components/product-list.pug
-            +product-list('home')
-
-        .side-bar
-            include ../components/sidebar/contact-title-home.pug
-            include ../components/sidebar/contact.pug
-
-            - const sidebarNewsList = renderData.articleList.result
-            include ../components/sidebar/home-sidebar-newslist-title.pug
-            include ../components/sidebar/sidebar-newslist.pug
-
-            include ../components/sidebar/category-icon.pug
-            - const cateList = renderData.productCateList
-            include ../components/sidebar/category-item.pug
-
-    include ../components/footer.pug
     //-在线客服
     include ../components/customer-service.pug
 
