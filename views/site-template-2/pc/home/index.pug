@@ -16,12 +16,7 @@ block content
         .block-title
             img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",alt="关于我们")
             h2 关于我们
-        .about-us
-            .about-us-text
-                .top.clearfix
-                    img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="企业头像")
-                    h3 #{ companyName }
-            .about-us-bgc
+        include ../components/about-us.pug
 
     //-在线客服
     include ../components/customer-service.pug
