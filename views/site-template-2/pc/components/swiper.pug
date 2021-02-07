@@ -1,26 +1,27 @@
-#banner-container
-  - const bannerList= renderData.banner
-    .swiper-container
-      .swiper-wrapper
-        if bannerList && bannerList.length > 0
-          each item in bannerList
+.banner-content
+  #banner-container
+    - const bannerList= renderData.banner
+      .swiper-container
+        .swiper-wrapper
+          if bannerList && bannerList.length > 0
+            each item in bannerList
+              .swiper-slide
+                  img(src=item.displayImgUrl)
+          else
             .swiper-slide
-                img(src=item.displayImgUrl)
-        else
-          .swiper-slide
-            img(src="//file.baixing.net/20171113/fa4817b9414298b458a5bd46fd23759a.png")
-            p 飞扬网络科技有限公司
-          .swiper-slide
-            img(src="//file.baixing.net/20171113/94fc4a376f210050c461fb1e7482e453.png")
-            p 飞扬网络科技有限公司
-          .swiper-slide
-            img(src="//file.baixing.net/20171113/94fc4a376f210050c461fb1e7482e453.png")
-            p 飞扬网络科技有限公司
-          .swiper-slide
-            img(src="//file.baixing.net/20171113/94fc4a376f210050c461fb1e7482e453.png")
-            p 飞扬网络科技有限公司
-  .swiper-pagination
-  .swiper-button-next
-  .swiper-button-prev
+              img(src="//file.baixing.net/202102/7cd41c391c5cbcd672bc5a524e35e7fa.jpg")
+              p 飞扬网络科技有限公司飞扬网络科技有限公司飞扬网络科技有限公司
+            .swiper-slide
+              img(src="//file.baixing.net/202102/6a9db4c332154823cee5aa0f035baa5f.jpg")
+              p 飞扬网络科技有限公司
+            .swiper-slide
+              img(src="//file.baixing.net/202102/7cd41c391c5cbcd672bc5a524e35e7fa.jpg")
+              p 飞扬网络科技有限公司
+            .swiper-slide
+              img(src="//file.baixing.net/202102/6a9db4c332154823cee5aa0f035baa5f.jpg")
+              p 飞扬网络科技有限公司
+    .swiper-pagination
+    .swiper-button-next
+    .swiper-button-prev
 
 
