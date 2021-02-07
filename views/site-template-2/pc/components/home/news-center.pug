@@ -1,6 +1,13 @@
 .new-center.clearfix
-	.news-left
-		.title 新闻资讯
-			img(src="", alt="更多")
-	.news-right
+	mixin news-box(title,data)
+		.news-box
+			.title
+				h3 #{ title }
+				img(src="", alt="更多")
+
+
+	- articleList =  renderData.articleList.result
+	+news-box('新闻资讯', articleList)
+	+news-box('推荐文章', articleList)
+
 

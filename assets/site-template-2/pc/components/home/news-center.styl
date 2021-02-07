@@ -1,8 +1,23 @@
 .new-center
-	.new-left
-		width 600px
+	.news-box
+		box-sizing border-box
+		width 49.3%
 		padding 40px 30px
 		background-color #fff
+		float left
+		margin-right 16px
+		&:nth-child(2n)
+			margin-right 0
 		.title
 			height 60px
 			border-bottom 1px solid #eaeaea
+			position relative
+			h3
+				font-size 20px
+				color #000
+				border-left 3px solid #FF2D38
+				padding-left 10px
+			img
+				position absolute
+				right 10px
+
