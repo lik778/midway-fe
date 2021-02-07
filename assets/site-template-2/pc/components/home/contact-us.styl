@@ -51,12 +51,13 @@
           position: relative;
           display: inline-block;
 
-          &::after
-            content: '*';
-            position: absolute;
-            color: red;
-            right: -10px;
-            top: 0;
+          &.required
+            &::after
+              content: '*';
+              position: absolute;
+              color: red;
+              right: -10px;
+              top: 0;
 
         input,
         textarea

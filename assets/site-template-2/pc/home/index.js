@@ -50,7 +50,7 @@ new Swiper('#banner-container .swiper-container', {
 function initialize () { 
   setTimeout(() => {
 		const map = new BMapGL.Map('baidu-map'); 
-		const point = new BMapGL.Point(121.368895,31.13529);  // 创建点坐标 
+		const point = new BMapGL.Point(121.368895, 31.13529);  // 创建点坐标 
 		map.centerAndZoom(point, 16);         
 		map.enableScrollWheelZoom(true);
 		// map.addControl(new BMapGL.ZoomControl());
@@ -64,6 +64,9 @@ function initialize () {
 			width : 150,
 			title : "百姓网股份有限公司" ,
 		});
+		marker.addEventListener('click', () => {
+			map.openInfoWindow(infoWindow, point);
+		})
 		map.openInfoWindow(infoWindow, point);
 	}, 1000)
 }

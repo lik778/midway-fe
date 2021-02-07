@@ -27,4 +27,8 @@ export const qqModule = function() {
 	})
 }
 
+$('#back-to-top').click(() => {
+	document.body.scrollIntoView({ block: 'start', behavior: 'smooth' })
+})
+
 
