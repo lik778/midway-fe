@@ -14,12 +14,13 @@ a:hover
 	color #FF2D38 !important
 
 //解决浮动问题
-.clearfix:after
+.clearfix::before,
+.clearfix::after
 	content ""
-	display block
-	height 0
+	display table
+
+.clearfix::after
 	clear both
-	visibility hidden
 //解决IE6,7不识别伪元素
 .clearfix
 	zoom  1
