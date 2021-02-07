@@ -1,9 +1,7 @@
-mixin product-list(type)
+mixin product-list(type,productList)
 	.product-list.clearfix
-		//-mock数据，等待后端热门产品数据
-		- productList = [{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"},{"id": 985,"name": "985发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-985.html"},{"id": 986,"name": "986发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-986.html"},{"id": 987,"name": "987发服务987发服务987发服务987发服务987发服务987发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-987.html"}]
 		if productList && productList.length >0
-			each item in productList
+			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,12)
 				a.item-p(href=item.urlSuffix target="_blank")
 					img(src=item.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
 					if type == 'hot'
