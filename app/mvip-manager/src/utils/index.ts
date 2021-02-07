@@ -89,3 +89,5 @@ export const createOptions = (labelMap: any) =>
 export const inIframe = (): boolean => {
   return !(window.self === window.top)
 }
+
+export const stringify = (params: any): string  => JSON.stringify(params)

@@ -1,70 +1,97 @@
-import { postApi } from '@/api/base'
+import { AxiosResponse } from 'axios'
+import { request } from '@/api/base'
+import { stringify } from '@/utils'
 import {
-  ByDateData, CateFlowByDateParams, FlowDetailData,
-  CateFlowDetailParams, CateFlowOverviewData, KeywordDetailData,
-  KeywordDetailListParams, keywordOverviewData,
-  ListResData, ReportResponse, BaxFlowParams} from '@/interfaces/report';
-import { AxiosResponse } from 'axios';
-/* 关键词 */
-const API_PREFIX = '/report/api'
-const GET_BASE_DATA = { method: 'get', params: null }
-const POST_BASE_DATA = { method: 'post' }
+  ByDateData,
+  CateFlowByDateParams,
+  FlowDetailData,
+  CateFlowDetailParams,
+  CateFlowOverviewData,
+  KeywordDetailData,
+  KeywordDetailListParams,
+  keywordOverviewData,
+  ListResData,
+  ReportResponse,
+  BaxFlowParams
+} from '@/interfaces/report'
 
-const serializationData = function <T>(params: T): string {
-  return JSON.stringify(params)
-}
+/* 基础请求函数封装 */
 
-// api 健康检查
-export const reportHealthApi = () => {
-  return postApi(API_PREFIX, { path: '/health', ...GET_BASE_DATA })
-}
+type Response<T> = Promise<AxiosResponse<ReportResponse<T>>>
+type ListResponse<T> = Response<T>
 
-// 主营流量报表
-// api: 主营概览
-export const getCateFlowOverviewApi = (): Promise<AxiosResponse<ReportResponse<CateFlowOverviewData>>> => {
-  return postApi(API_PREFIX, { path: '/seo/network/overview', ...GET_BASE_DATA })
-}
+const REPORT_URL_PREFIX = '/report/api'
 
-// api: 主营流量统计
-export const getCateFlowByDateApi = (params: CateFlowByDateParams): Promise<AxiosResponse<ReportResponse<ByDateData>>> => {
-  return postApi(API_PREFIX, { path: '/seo/network/statistical', ...POST_BASE_DATA, params: serializationData(params) })
+const createLocalRequest = (method: string): ((url: string, data?: any) => Response<any>) => {
+  return (url: string, data?: any): Response<any> => {
+    const { path = '', params = {} } = data || {}
+    return request.post(REPORT_URL_PREFIX, {
+      method,
+      path: url + path,
+      params: stringify(params)
+    })
+  }
 }
-// api: 主营流量详情
-export const getCateFlowDetailApi = (params: CateFlowDetailParams): Promise<AxiosResponse<ReportResponse<ListResData<FlowDetailData>>>> => {
-  return postApi(API_PREFIX, { path: '/seo/network/visit-detail', ...POST_BASE_DATA, params: serializationData(params) })
-}
+const post = createLocalRequest('post')
+const get = createLocalRequest('get')
 
-// 搜索通流量报表
-// api: 搜索通概览
-export const getBaxFlowOverviewApi = (): Promise<AxiosResponse<ReportResponse<any>>> => {
-  return postApi(API_PREFIX, { path: '/sem/network/overview', ...GET_BASE_DATA })
-}
+/* 业务 API 定义 */
 
-// api: 搜索通流量展现明细
-export const getBaxFlowDetailApi = (params: BaxFlowParams): Promise<AxiosResponse<ReportResponse<ListResData<FlowDetailData>>>> => {
-  return postApi(API_PREFIX, { path: '/sem/network/show-detail', ...POST_BASE_DATA, params: serializationData(params) })
-}
+// 健康检查
+export const reportHealthApi:
+  () => Response<string> =
+  () => get('/health')
 
-// api: 搜索通流量访问和展现统计
-export const getBaxFlowStatisticalApi = (params: BaxFlowParams): Promise<AxiosResponse<ReportResponse<ListResData<ByDateData>>>> => {
-  return postApi(API_PREFIX, { path: '/sem/network/statistical', ...POST_BASE_DATA, params: serializationData(params) })
-}
+// 主营流量接口
+export const getCateFlowOverviewApi:
+  () => Response<CateFlowOverviewData> =
+  () => post('/seo/network/overview')
 
-// api: 搜索通流量访问和展现统计
-export const getBaxFlowVisitDetailApi = (params: BaxFlowParams): Promise<AxiosResponse<ReportResponse<ListResData<FlowDetailData>>>> => {
-  return postApi(API_PREFIX, { path: '/sem/network/visit-detail', ...POST_BASE_DATA, params: serializationData(params) })
-}
+// 主营流量统计
+export const getCateFlowByDateApi:
+  (params: CateFlowByDateParams) => Response<ByDateData> =
+  (params) => post('/seo/network/statistical', params)
 
-// 关键词报表
-// api: 概览
-export const getKeywordOverviewApi = (): Promise<AxiosResponse<ReportResponse<keywordOverviewData>>> => {
-  return postApi(API_PREFIX, { path: '/keyword/overview', ...GET_BASE_DATA })
-}
+// 主营流量列表
+export const getCateFlowDetailApi:
+  (params: CateFlowDetailParams) => ListResponse<FlowDetailData> =
+  (params) => post('/seo/network/visit-detail', params)
 
-// api: 获取关键词详情
-export const getKeywordDetailListApi = (params: KeywordDetailListParams): Promise<AxiosResponse<ReportResponse<ListResData<KeywordDetailData[]>>>> => {
-  return postApi(API_PREFIX, { path: '/keyword/detail', ...POST_BASE_DATA, params: serializationData(params) })
-}
+// 搜索通流量概览
+export const getBaxFlowOverviewApi:
+  () => Response<any> =
+  () => post('/sem/network/overview')
+
+// 搜索通流量明细
+export const getBaxFlowDetailApi:
+  (params: BaxFlowParams) => ListResponse<FlowDetailData> =
+  (params) => post('/sem/network/show-detail', params)
+
+// 搜索通流量访问和展现统计
+export const getBaxFlowStatisticalApi:
+  (params: BaxFlowParams) => ListResponse<ByDateData> =
+  (params) => post('/sem/network/statistical', params)
+
+
+// 搜索通流量访问和展现统计
+export const getBaxFlowVisitDetailApi:
+  (params: BaxFlowParams) => ListResponse<FlowDetailData> =
+  (params) => post('/sem/network/visit-detail', params)
+
+// 关键词概览
+export const getKeywordOverviewApi:
+  () => Response<keywordOverviewData> =
+  () => post('/keyword/overview')
+
+// 关键词详情
+export const getKeywordDetailListApi:
+  (params: KeywordDetailListParams) => Response<ListResData<KeywordDetailData[]>> =
+  (params) => post('/keyword/detail', params)
+
+
+
+
+/* TODO mock data then */
 
 // mock
 export const getKeywordStatics = (params: any): Promise<any> => {
