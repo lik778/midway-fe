@@ -7,6 +7,5 @@ export class ApiQeqDTO {
   @IsString()
   readonly method: string;
 
-  @IsString()
-  readonly params: string;
+  readonly params: string | null;
 }

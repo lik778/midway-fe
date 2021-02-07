@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 // tips: 前端请求的需要的参数
-export interface ManagementReqParams {
+export interface ApiReqParams {
   method: string;
   path: string;
   params?: any;
@@ -23,16 +23,10 @@ const bePrefix = '/api/midway/backend/'
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res?.data)
   }, (err: AxiosError) => {
-  const errorInfo = err.response && err.response.data && err.response.data.message || '出错了'
-  const errorCode = err.response && err.response.data && err.response.data.code
-  // 该报错会触发系统报错，先注释
-  // message.error(errorInfo);
-  // 报错输出，前端监听处理
-  // 没有登录(域名先写死)
   return Promise.resolve(err.response && err.response.data)
 })
 
-export const postApi = (url: string, data: ManagementReqParams, headers?: any): Promise<AxiosResponse<any>> => {
+export const postApi = (url: string, data: ApiReqParams, headers?: any): Promise<AxiosResponse<any>> => {
   const { method, path, params } = data;
   return request.post(url, { method, params, path }, { headers });
 }

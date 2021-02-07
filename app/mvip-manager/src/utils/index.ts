@@ -85,3 +85,7 @@ export const zip = (a: any[], b: any[]) => a.map((x, i) => [x, b[i]])
 // @example: {value:'name'} 转化为 {label:'name', value:'value'}
 export const createOptions = (labelMap: any) =>
   Object.entries(labelMap).map(([k, v]) => ({ label: v, value: k }))
+
+export const inIframe = (): boolean => {
+  return !(window.self === window.top)
+}

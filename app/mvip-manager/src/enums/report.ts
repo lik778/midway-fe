@@ -1,25 +1,25 @@
-export enum SearchEngineType {
-  BAIDU = 'baidu',
-  SANLIULING = '360',
-  SHENMA = 'shenma',
-  SOUGOU = 'sougou',
+export enum PlatformType {
+  BAI_DU = 1, // 百度
+  SOU_GOU = 2, // 搜狗
+  SHEN_MA = 3, // 神马
+  QI_HU = 4, // 360
+
 }
 
 export enum BaxProductType {
-  FENG_MING = 'fm',
-  BIAO_WANG = 'bw',
-  QIAN_CI = 'qc',
+  BIAO_WANG = 1, // 标王
+  FENG_MING = 2, // 凤鸣
+  YI_HUI_TUI = 3, // 易慧推
 }
 
 export enum CateProductType {
-  TIE_ZI = 'tiezi',
-  WEN_DA = 'wenda',
-  DIAN_PU_ARTICLE = 'dianpu-article',
-  DIAN_PU_PRODUCT = 'dianpu-product',
+  SHOP = 4, // 店铺
+  QUESTION= 5, // 问答
+  POST = 6 // 帖子
 }
 
 
 export enum DisplayType {
   PC = 1,
-  MOBILE = 2,
+  WAP = 2,
 }

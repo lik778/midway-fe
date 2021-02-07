@@ -8,20 +8,22 @@ import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY } from '@/utils';
+import { removeOverflowY, inIframe } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const Layouts =  (props: any) => {
+  if (inIframe()) {
+    return React.cloneElement(props.children);
+  }
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   // 处理overflow: hidden问题
   useEffect(() => removeOverflowY());
-
   useEffect(() => {
     (async () => {
       const res = await getUserBaseInfoApi();
