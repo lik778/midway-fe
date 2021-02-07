@@ -38,53 +38,53 @@ const get = createLocalRequest('get')
 /* 业务 API 定义 */
 
 // 健康检查
-export const reportHealthApi:
+export const reportHealth:
   () => Response<string> =
   () => get('/health')
 
 // 主营流量接口
-export const getCateFlowOverviewApi:
+export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
   () => post('/seo/network/overview')
 
 // 主营流量统计
-export const getCateFlowByDateApi:
+export const getCateFlowByDate:
   (params: CateFlowByDateParams) => Response<ByDateData> =
   (params) => post('/seo/network/statistical', params)
 
 // 主营流量列表
-export const getCateFlowDetailApi:
+export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData> =
   (params) => post('/seo/network/visit-detail', params)
 
 // 搜索通流量概览
-export const getBaxFlowOverviewApi:
+export const getBaxFlowOverview:
   () => Response<any> =
   () => post('/sem/network/overview')
 
 // 搜索通流量明细
-export const getBaxFlowDetailApi:
+export const getBaxFlowDetail:
   (params: BaxFlowParams) => ListResponse<FlowDetailData> =
   (params) => post('/sem/network/show-detail', params)
 
 // 搜索通流量访问和展现统计
-export const getBaxFlowStatisticalApi:
+export const getBaxFlowStatistical:
   (params: BaxFlowParams) => ListResponse<ByDateData> =
   (params) => post('/sem/network/statistical', params)
 
 
 // 搜索通流量访问和展现统计
-export const getBaxFlowVisitDetailApi:
+export const getBaxFlowVisitDetail:
   (params: BaxFlowParams) => ListResponse<FlowDetailData> =
   (params) => post('/sem/network/visit-detail', params)
 
 // 关键词概览
-export const getKeywordOverviewApi:
+export const getKeywordOverview:
   () => Response<keywordOverviewData> =
   () => post('/keyword/overview')
 
 // 关键词详情
-export const getKeywordDetailListApi:
+export const getKeywordDetailList:
   (params: KeywordDetailListParams) => Response<ListResData<KeywordDetailData[]>> =
   (params) => post('/keyword/detail', params)
 
@@ -140,7 +140,7 @@ export const getPVData = (params: any): Promise<any> => {
   })
 }
 
-export const getRemainCapital = (params: any): Promise<any> => {
+export const getRemainCtal = (params: any): Promise<any> => {
   return new Promise(resolve => {
     resolve({
       code: 200,
@@ -202,6 +202,18 @@ export const getPublishDetails = (params: any): Promise<any> => {
           product: ~~(Math.random() * 100),
           all: ~~(Math.random() * 100),
         }))
+      }
+    })
+  })
+}
+
+export const getRemainCapital = (params: any): Promise<any> => {
+  return new Promise(resolve => {
+    resolve({
+      code: 200,
+      data: {
+        all: 216,
+        filtered: 112
       }
     })
   })

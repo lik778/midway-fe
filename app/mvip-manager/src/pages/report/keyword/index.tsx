@@ -5,7 +5,7 @@ import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
 import CountTo from '@/components/count-to'
 import { PieChart } from '@/components/charts'
-import { getKeywordRankList, getKeywordStatics, getKeywordDetailListApi, reportHealthApi } from '@/api/report';
+import { getKeywordRankList, getKeywordStatics, getKeywordDetailList, reportHealth } from '@/api/report';
 import { keywordRankListConfig } from './config'
 import { BaxProductType, DisplayType, PlatformType } from '@/enums/report';
 
@@ -19,7 +19,7 @@ export default function KeyWordPage(props: any) {
 
   useEffect( () => {
     (async () => {
-      await getKeywordDetailListApi({
+      await getKeywordDetailList({
         device: DisplayType.WAP,
         pageNo: 0,
         pageSize: 0,
@@ -27,7 +27,7 @@ export default function KeyWordPage(props: any) {
         product: BaxProductType.BIAO_WANG,
         userId: 0
       })
-      await reportHealthApi()
+      await reportHealth()
       const { code, data } = await getKeywordStatics(null)
       if (code === 200) {
         const {
