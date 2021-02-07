@@ -1,0 +1,10 @@
+//-侧边栏分类列表,后端已限制10个，列表页全不限制
+- p = renderData.productCateList
+	.product-catogeries
+		if p && p.length > 0
+			each item in p.slice(0,5)
+				a(href=item.urlSuffix) #{ item.name }
+			if p.length >= 5
+				a.all-category(href="#") 全部分类
+
+

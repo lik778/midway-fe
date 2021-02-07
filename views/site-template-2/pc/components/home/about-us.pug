@@ -3,12 +3,17 @@
 		.top.clearfix
 			img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="企业头像")
 			h3 #{ companyName }
-		.center-left
-			p 公司简介
-			span --------------------------
-			.intro
-				| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-		.center-right
-			p 工商保障
+		.center.clearfix
+			.center-left
+				p 公司简介
+				span - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				.intro
+					| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+			.center-right
+				p 工商保障
+				span - - - - - - - - - - - - - - - - - - - - - - -
+				.tag 已通过企业资料认证
+		.view-all-btn 查看全部
+
 
 
