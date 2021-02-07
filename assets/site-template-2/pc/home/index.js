@@ -3,33 +3,31 @@ import Swiper from 'swiper';
 import { qqModule } from '../components/customer-service/index';
 qqModule()
 
-var swiper = new Swiper('#banner-container .swiper-container', {
+new Swiper('#banner-container .swiper-container', {
 	watchSlidesProgress: true,
 	slidesPerView: 'auto',
 	centeredSlides: true,
 	loop: true,
 	loopedSlides: 5,
-	autoplay: true,
+	autoplay: {
+		delay: 5000,
+	},
 	navigation: {
 		nextEl: '.swiper-button-next',
 		prevEl: '.swiper-button-prev',
 	},
-	pagination: {
-		el: '.swiper-pagination',
-		clickable :true,
-	},
 	on: {
-		progress: function(progress) {
+		progress: function() {
 			for (let i = 0; i < this.slides.length; i++) {
-				var slide = this.slides.eq(i);
-				var slideProgress = this.slides[i].progress;
-				var modify = 1;
+				const slide = this.slides.eq(i);
+				const slideProgress = this.slides[i].progress;
+				let modify = 1;
 				if (Math.abs(slideProgress) > 1) {
 					modify = (Math.abs(slideProgress) - 1) * 0.3 + 1;
 				}
-				var translate = slideProgress * modify * 260 + 'px';
-				var scale = 1 - Math.abs(slideProgress) / 5;
-				var zIndex = 999 - Math.abs(Math.round(10 * slideProgress));
+				const translate = slideProgress * modify * 250 + 'px';
+				const scale = 1 - Math.abs(slideProgress) / 4;
+				const zIndex = 999 - Math.abs(Math.round(10 * slideProgress));
 				slide.transform('translateX(' + translate + ') scale(' + scale + ')');
 				slide.css('zIndex', zIndex);
 				slide.css('opacity', 1);
@@ -39,14 +37,12 @@ var swiper = new Swiper('#banner-container .swiper-container', {
 			}
 		},
 		setTransition: function(transition) {
-			for (var i = 0; i < this.slides.length; i++) {
-				var slide = this.slides.eq(i)
+			for (let i = 0; i < this.slides.length; i++) {
+				const slide = this.slides.eq(i)
 				slide.transition(transition);
 			}
-
 		}
 	}
-
 });
 
 
