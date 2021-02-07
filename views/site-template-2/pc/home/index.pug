@@ -5,23 +5,20 @@ block styles
 
 //-使用了统一的header和nav
 block content
-    include ../components/swiper.pug
+    include ../components/home/swiper.pug
     .container
         .block-title
             img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
             h2 热门产品
-        include ../components/product-list.pug
+        include ../components/home/product-list.pug
         +product-list('hot')
 
         .block-title
             img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
             h2 关于我们
-        include ../components/about-us.pug
+        include ../components/home/about-us.pug
         
-        .block-title
-            img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png",alt="关于我们")
-            h2 联系我们
-        include ../components/home/contact-us.pug
+        
 
         .block-title
             img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",alt="产品分类")
@@ -32,11 +29,12 @@ block content
             h2 新闻中心
 
         .block-title
-            img(src="", alt="联系我们")
+            img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png",alt="关于我们")
             h2 联系我们
+        include ../components/home/contact-us.pug
 
     //-在线客服
-    include ../components/customer-service.pug
+    include ../components/home/customer-service.pug
 
 block scripts
     :combine(fileName="site-template-2-home-pc.js")
