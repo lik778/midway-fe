@@ -66,7 +66,7 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-1/${device}/news/index`;
+    const templateUrl = `site-template-2/${device}/news/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -95,7 +95,7 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/news-detail/index`
+      const templateUrl = `site-template-2/${device}/news-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -117,7 +117,7 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/news-child/index`;
+      const templateUrl = `site-template-2/${device}/news-child/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -146,7 +146,7 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-1/${device}/product/index`;
+    const templateUrl = `site-template-2/${device}/product/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -175,7 +175,7 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/product-detail/index`
+      const templateUrl = `site-template-2/${device}/product-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -197,7 +197,7 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/product-child/index`;
+      const templateUrl = `site-template-2/${device}/product-child/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
