@@ -21,7 +21,7 @@
 			.service-modal 
 				.service-modal__mobile 
 					.mobile-title 咨询电话
-					.mobile-number 139 8990 0097
+					.mobile-number #{ phone.content }
 					.mobile-info 联系人：张先生
 					.mobile-info 工作时间：7*24
 		.service-item
@@ -31,6 +31,7 @@
 				.service-modal__wechat
 					.mobile-title 微信号码
 					.mobile-number #{ weChat.content }
+					textarea#wechat-id-textarea #{weChat.content}
 					.click-copy 复制号码
 	.customer-service__back-to-top 
 		#back-to-top

@@ -42,4 +42,14 @@ backToTop.click(() => {
 	document.body.scrollIntoView({ block: 'start', behavior: 'smooth' });
 });
 
+const weChatCopyBtn = $('.service-modal__wechat .click-copy');
+
+weChatCopyBtn.click(() => {
+	$('#wechat-id-textarea').select();
+	document.execCommand('copy');
+	weChatCopyBtn.text('复制成功！');
+	setTimeout(() => {
+		weChatCopyBtn.text('复制号码');
+	}, 2000)
+})
 

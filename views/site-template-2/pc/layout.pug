@@ -28,9 +28,11 @@ html
         - companyName = renderData.shopInfo.name
         - productList = renderData.productList.result
         block header
-            include ./components/topbar.pug
-            include ./components/header.pug
+            include ./components/common/topbar.pug
+            include ./components/common/header.pug
         block content
+        block footer
+            include ./components/common/footer.pug
 
     block scripts
     //-把打点值赋给window，便于传给node层和其他js层
