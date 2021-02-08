@@ -1,0 +1,38 @@
+.sidebar
+  margin-left: 15px
+  width: 224px
+
+  &-item
+    box-shadow: 0 4px 10px rgba(#000, 0.02);
+    padding: 15px
+    background-color: #fff
+    &__title
+      font-size: 18px
+      color: #EC2525
+      border-bottom: 1px solid #ddd
+      span
+        display: inline-block
+        padding-bottom: 10px
+        border-bottom: 2px solid #EC2525
+        margin-bottom: -1px
+
+  .articles
+    .article
+      margin: 15px 0
+      font-size: 14px
+      color: #666666
+      cursor: pointer
+      position: relative
+      &:last-child
+        margin-bottom: 0
+      &::after
+        content: ''
+        width: 8px
+        height: 8px
+        position: absolute
+        border: 1px solid #666
+        border-left: none
+        border-bottom: none
+        transform: rotate(45deg)
+        top: calc(50% - 5px)
+        right: 0
