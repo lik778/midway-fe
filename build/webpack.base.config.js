@@ -23,7 +23,7 @@ module.exports = {
     //新增模板2为B2B
     'site-template-2-home-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/home/index.js'),
     'site-template-2-home-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/home/index.js'),
-    //'site-template-2-news-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news/index.js'),
+    'site-template-2-news-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news/index.js'),
     //'site-template-2-news-child-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news-child/index.js'),
     //'site-template-2-news-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news-detail/index.js'),
     //'site-template-2-news-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news/index.js'),

@@ -1,0 +1,12 @@
+extends ../layout
+block styles
+    :combine(fileName="site-template-2-news-pc.css")
+
+block content
+
+block scripts
+    :combine(fileName="site-template-2-news-pc.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'listing';

@@ -25,6 +25,7 @@ block content
             h2 产品分类
         include ../components/home/product-catogeries.pug
         include ../components/home/product-list.pug
+        - productList = renderData.productList.result
         +product-list('nothot', productList)
 
         .block-title
