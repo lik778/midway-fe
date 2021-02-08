@@ -1,12 +1,14 @@
 extends ../layout
 block styles
-    :combine(fileName="site-template-2-news-pc.css")
+  :combine(fileName="site-template-2-news-pc.css")
 
 block content
+  .list-container
+    include ../components/news/news-list.pug
 
 block scripts
-    :combine(fileName="site-template-2-news-pc.js")
+  :combine(fileName="site-template-2-news-pc.js")
 block append scripts
-    script.
-        window.contentType = 'article';
-        window.trackSrc = 'listing';
+  script.
+    window.contentType = 'article';
+    window.trackSrc = 'listing';
