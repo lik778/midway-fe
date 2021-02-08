@@ -1,0 +1,19 @@
+extends ../layout
+
+block styles
+    :combine(fileName="site-template-2-product-detail-pc.css")
+
+block content
+    include ../components/breadcrumbs.pug
+
+    .container.clearfix
+        .main
+
+        .side-bar
+
+block scripts
+    :combine(fileName="site-template-2-product-detail-pc.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.adId = #{renderData.productInfo.id};
