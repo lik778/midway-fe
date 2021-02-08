@@ -1,14 +1,26 @@
 .new-center.clearfix
-	mixin news-box(title,data)
+	mixin news-box(title,newsList)
 		.news-box
 			.title
 				.line
 				h3 #{ title }
 				img(src="//file.baixing.net/202102/07403ddfb02bc55c442329926b7e0c2f.png", alt="更多")
-
+				//-这里需要点击跳转
+			.content
+				if newsList && newsList.length > 0
+					each item in newsList.length > 3 ? newsList.slice(0, 3) : newsList
+						//-这里需要后端给文章的图片和内容
+						a(href=item.urlSuffix)
+							img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png", alt="资讯图片")
+							.item-card
+								.item-title #{ item.name }
+								.item-content.
+									疫情之后，口罩机一直在市场上热火朝天，口罩机配件CNC加工的需求订单也多了起来，
+									特别是在我们惠州珠三角周边,特别是在我们惠州珠三角周边特别是在我们惠州珠三角周边......
 
 	- articleList =  renderData.articleList.result
 	+news-box('新闻资讯', articleList)
+	//-这里需要推荐接口
 	+news-box('推荐文章', articleList)
 
 
