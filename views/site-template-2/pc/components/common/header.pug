@@ -5,11 +5,15 @@
 		if person.uid
 			p(style="display:none") uid：#{person.uid}
 		.nav-right
-			a(href="") 店铺首页
-			a(href="") 产品中心
-			.nav-arrow
-			a(href="") 新闻中心
-			.nav-arrow
-			a(href="") 关于我们
-			a(href="") 联系我们
+			- nav = renderData.navigation
+			if nav.length > 0
+				a(href=nav[0].content) #{ nav[0].name }
+				if nav.length > 1
+					a(href=nav[1].content) #{ nav[1].name }
+						.nav-arrow
+					if nav.length > 2
+						a(href=nav[2].content) #{ nav[2].name }
+							.nav-arrow
+			//-后端需要增加一个导航
+			a(href="#") 关于我们
 
