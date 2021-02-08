@@ -7,7 +7,7 @@ export interface ApiReqParams {
   params?: any;
 }
 
-const request = axios.create({
+export const request = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 10000, // request timeout  设置请求超时时间
   responseType: "json",
