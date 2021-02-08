@@ -8,6 +8,7 @@ block content
     include ../components/home/swiper.pug
 
     .container
+        - productList = renderData.productList.result
         .block-title
             img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
             h2 热门产品
@@ -37,9 +38,6 @@ block content
             img(src="//file.baixing.net/202102/4be12cae4c491b647a8a2f69eafab548.png",alt="关于我们")
             h2 联系我们
         include ../components/home/contact-us.pug
-
-    //-在线客服
-    include ../components/common/customer-service.pug
 
 block scripts
     :combine(fileName="site-template-2-home-pc.js")
