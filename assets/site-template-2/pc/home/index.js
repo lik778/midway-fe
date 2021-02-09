@@ -46,37 +46,3 @@ new Swiper('#banner-container .swiper-container', {
 		}
 	}
 });
-
-function initialize () { 
-  setTimeout(() => {
-		const map = new BMapGL.Map('baidu-map'); 
-		const point = new BMapGL.Point(121.368895, 31.13529);  // 创建点坐标 
-		map.centerAndZoom(point, 16);         
-		map.enableScrollWheelZoom(true);
-		// map.addControl(new BMapGL.ZoomControl());
-		// map.addControl(new BMapGL.ScaleControl());
-
-		const marker = new BMapGL.Marker(point);
-		map.addOverlay(marker);
-
-		// 信息窗口
-		const infoWindow = new BMapGL.InfoWindow("地址：上海市闵行区顾戴路2337号维璟中心A栋", {
-			width : 150,
-			title : "百姓网股份有限公司" ,
-		});
-		marker.addEventListener('click', () => {
-			map.openInfoWindow(infoWindow, point);
-		})
-		map.openInfoWindow(infoWindow, point);
-	}, 1000)
-}
-
-// 百度地图
-function loadScript() { 
-  const script = document.createElement("script"); 
-  script.src = "https://api.map.baidu.com/api?v=1.0&type=webgl&ak=tvd0R7EFrjmY7CKT153pdNnTGiEo6Bp4&callback=initialize";
-  document.head.appendChild(script); 
-} 
-
-loadScript();
-initialize();

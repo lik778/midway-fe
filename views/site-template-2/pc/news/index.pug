@@ -3,11 +3,15 @@ block styles
   :combine(fileName="site-template-2-news-pc.css")
 
 block content
+  include ../components/breadcrumbs.pug
+
   .list-container
     include ../components/news/news-list.pug
     +news-list(renderData.articleList.result)
     .sidebar 
       include ../components/sidebar/articles.pug
+
+  include ../components/pagination.pug
 
 block scripts
   :combine(fileName="site-template-2-news-pc.js")
