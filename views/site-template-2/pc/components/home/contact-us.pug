@@ -5,26 +5,9 @@
         p.contact-us__detail 服务热线：400-857-8888
         p.contact-us__detail 微信号：16374578934
         .baidu-map-wrapper
-          #baidu-map
+          a#baidu-map(href="http://api.map.baidu.com/geocoder?address=上海市闵行区七莘路901号&output=html", target="__blank")
+            .address 上海市闵行区七莘路901号路901号路901号
+            .marker
     .contact-us__message
         .contact-us__title.align-center 留言咨询
-        form.contact-us__form
-          .form-group
-            .form-item
-              .form-item__label.required 姓名
-              .form-item__input 
-                input(type="text", placeholder="请输入您的称呼")
-            .form-item
-              .form-item__label.required 联系方式
-              .form-item__input 
-                input(type="text", placeholder="请输入电话号码")
-          .form-group
-            .form-item
-              .form-item__label 您的留言
-              .form-item__input 
-                textarea(name="", placeholder="请输入您的咨询留言")
-          .form-group
-            .form-item
-              button 提交
-
-
+        include ../common/contact-form

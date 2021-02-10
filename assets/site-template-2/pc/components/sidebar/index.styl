@@ -1,11 +1,15 @@
+@import './articles.styl'
+@import './company-info.styl'
+@import './products.styl'
+
 .sidebar
   margin-left: 15px
   width: 224px
-
   &-item
     box-shadow: 0 4px 10px rgba(#000, 0.02);
     padding: 15px
     background-color: #fff
+    margin-bottom: 20px
     &__title
       font-size: 18px
       color: #EC2525
@@ -15,24 +19,9 @@
         padding-bottom: 10px
         border-bottom: 2px solid #EC2525
         margin-bottom: -1px
-
-  .articles
-    .article
-      margin: 15px 0
-      font-size: 14px
-      color: #666666
-      cursor: pointer
-      position: relative
-      &:last-child
-        margin-bottom: 0
-      &::after
-        content: ''
-        width: 8px
-        height: 8px
-        position: absolute
-        border: 1px solid #666
-        border-left: none
-        border-bottom: none
-        transform: rotate(45deg)
-        top: calc(50% - 5px)
-        right: 0
+    &.company-info
+      height: 270px
+      padding: 30px 25px
+      box-sizing: border-box
+      background: url('//file.baixing.net/202102/ad9c3e596c810e1fa224f778c859fbcd.png') no-repeat top left/cover
+        

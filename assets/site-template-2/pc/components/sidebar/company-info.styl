@@ -1,0 +1,59 @@
+.sidebar
+  .company-info
+    .company-logo
+      width: 60px
+      height: 60px
+      margin: auto
+      border-radius: 50%
+      background-color: #fff
+    .company-name
+      font-size: 16px
+      margin: 15px 0
+      text-align: center
+    .company-medals
+      font-size: 12px
+      display: flex
+      justify-content: space-around
+      .medal
+        display: flex
+        align-items: center
+        &-name
+          color: #FF5500
+        &-img
+          width: 25px
+          height: 20px
+          background: url('//file.baixing.net/202102/b0e500e6cfa746ab5bd4980460d5dfb7.png') no-repeat center center/100%
+          margin-right: 5px
+        &.bx
+          .medal-name
+            color: #038CFF
+          .medal-img
+            width: 18px
+            height: 18px
+            background: url('//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png') no-repeat center center/100%
+    .certificate
+      &-label
+        color: #FF5500
+        font-size: 12px
+        text-align: center
+        margin: 20px 0 15px 0
+        position: relative
+        &::before,
+        &::after
+          content: ''
+          height: 1px
+          width: 30%
+          position: absolute
+          background-color: #FF5500
+          left: 0
+          top: 50%;
+        &::after
+          right: 0
+          left: auto
+    .certificate
+      &-icons
+        display: flex
+        justify-content: space-around
+      &-icon
+        img
+          width: 17px
