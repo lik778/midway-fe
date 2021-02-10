@@ -5,7 +5,6 @@
 		if person.uid
 			p(style="display:none") uid：#{person.uid}
 		.nav-right
-			- nav = renderData.navigation
 			if nav.length > 0
 				a(href=nav[0].content) #{ nav[0].name }
 				if nav.length > 1

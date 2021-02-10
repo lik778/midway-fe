@@ -1,15 +1,18 @@
 .footer
     .footer-container
-        .footer-title 上海创科五金制品
-        .footer-links 
-            a(href="") 公司首页
-            a(href="") 产品分类
-            a(href="") 新闻资讯
-            a(href="") 关于我们
+        .footer-title #{ companyName }
+        .footer-links
+            if nav.length > 0
+              a(href=nav[0].content) #{ nav[0].name }
+                if nav.length > 1
+                  a(href=nav[1].content) #{ nav[1].name }
+                    if nav.length > 2
+                      a(href=nav[2].content) #{ nav[2].name }
+              a(href="#") 关于我们
     .footer-container.copyright
         .footer-info
-          .footer-info__item 一站式企业服务有限公司
-          .footer-info__item 地址：上海市闵行区七莘路901号
+          .footer-info__item #{ companyName }
+          .footer-info__item 地址：#{ company.address }
         .footer-info
           .footer-info__item  &copy;版权所有本站由百姓网™匠心搭建客服服务热线：400-036-3650（周一至周五，9：00-18：00）热线：021-61300238（周一至周日，9：00 -18：00）
         .footer-info
