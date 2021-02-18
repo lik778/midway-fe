@@ -1,0 +1,7 @@
+
+if productList.length >=5
+    - pSide = productList.slice(4,5)
+    a.item-p(href=pSide.urlSuffix target="_blank")
+        img(src=pSide.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
+        p #{ pSide.name }
+        .show-desc 查看详情
