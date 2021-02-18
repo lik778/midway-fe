@@ -9,10 +9,13 @@ block content
     .main
       include ../components/news/news-list.pug
       +news-list(renderData.articleList.result)
+
+      include ../components/pagination.pug
+      - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
+      +pagination(totalPage, currentPage, `${currentPathname}`)
+
     .sidebar
       include ../components/sidebar/articles.pug
-
-  include ../components/pagination.pug
 
 block scripts
   :combine(fileName="site-template-2-news-pc.js")

@@ -11,6 +11,10 @@ block content
             include ../components/product/toptab.pug
             include ../components/product/product-list.pug
 
+            include ../components/pagination.pug
+            - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
+            +pagination(totalPage, currentPage, `${currentPathname}`)
+
         .sidebar
             include ../components/sidebar/articles.pug
             include ../components/sidebar/products.pug
