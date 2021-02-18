@@ -30,12 +30,10 @@ export interface BaseParams {
   userId: number;
 }
 
-export interface PaginationParams {
+export interface PageParams {
   pageNo: number;
   pageSize: number;
 }
-
-// 主营流量页面
 
 export interface CateFlowOverviewData extends BaseParams {
   totalVisits: number;
@@ -54,7 +52,7 @@ export interface CateFlowChartData {
   visits: number;
 }
 
-export interface CateFlowDetailParams extends BaseParams, PaginationParams {
+export interface CateFlowDetailParams extends BaseParams, PageParams {
   startTime: string;
   endTime: string;
   platform: PlatformType;
@@ -91,21 +89,11 @@ export interface BaxFlowChartData {
   visits: number;
 }
 
-export interface BaxFlowDetailParams extends BaseParams, PaginationParams {
+export interface BaxFlowDetailParams extends BaseParams, PageParams {
   startTime: string;
   endTime: string;
   platform: PlatformType;
   product: BaxProductType;
-}
-
-// TODO 对接口
-
-export interface KeywordDetailListParams extends BaseParams {
-  device: DisplayType;
-  pageNo: number;
-  pageSize: number;
-  platform: PlatformType;
-  product: BaxProductType | CateProductType;
 }
 
 export interface keywordOverviewProductDetail {
@@ -115,15 +103,21 @@ export interface keywordOverviewProductDetail {
   yiHuiTui: number;
 }
 
-export interface keywordOverviewData {
+export interface KeywordOverviewData {
   total: number;
   mainTotal: number;
-  searchTotal: number;
+  semTotal: number;
   distributionDetail: keywordOverviewProductDetail;
   rankingDetail: keywordOverviewProductDetail;
 }
 
-export interface KeywordDetailData {
+export interface KeywordDetailListParams extends BaseParams, PageParams {
+  device: DisplayType;
+  platform: PlatformType;
+  product: BaxProductType | CateProductType;
+}
+
+export interface KeywordDetailListData {
   device: DisplayType;
   keyword: string;
   platformType: PlatformType;

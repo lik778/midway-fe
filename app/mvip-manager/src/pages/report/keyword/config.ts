@@ -1,19 +1,14 @@
-import moment from 'moment'
-
 import { createOptions } from '@/utils'
-import {
-  SearchEngineType,
-  BaxProductType,
-  DisplayType
-} from '@/enums/report'
+import { KeywordDetailListData } from '@/interfaces/report'
 import {
   PlatformLabelMap,
   BaxProductLabelMap,
+  CateProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
-const ProductOptions = createOptions(BaxProductLabelMap)
+const ProductOptions = createOptions({...BaxProductLabelMap,...CateProductLabelMap})
 const DisplayOptions = createOptions(DisplayLabelMap)
 
 interface Config {
@@ -71,26 +66,29 @@ export const keywordRankListConfig = ({
       },
       {
         title: '搜索引擎',
-        dataIndex: 'search',
-        key: 'search',
-        render: (t: SearchEngineType) => PlatformLabelMap[t]
+        dataIndex: 'platformType',
+        key: 'platformType',
+        render: (_: any, row: KeywordDetailListData) => PlatformLabelMap[row.platformType]
       },
       {
         title: '排名',
-        dataIndex: 'rank',
-        key: 'rank',
+        dataIndex: 'ranking',
+        key: 'ranking',
       },
       {
         title: '展示端',
         dataIndex: 'display',
         key: 'display',
-        render: (t: DisplayType) => DisplayLabelMap[t]
+        render: (_: any, row: KeywordDetailListData) => DisplayLabelMap[row.device]
       },
       {
         title: '所属产品',
         dataIndex: 'product',
         key: 'product',
-        render: (t: BaxProductType) => BaxProductLabelMap[t]
+        render: (_: any, row: KeywordDetailListData) => ({
+          ...BaxProductLabelMap,
+          ...CateProductLabelMap
+        }[row.product])
       }
     ]
   }

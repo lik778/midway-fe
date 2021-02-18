@@ -12,10 +12,10 @@ import {
   BaxFlowChartParams,
   BaxFlowChartData,
   BaxFlowDetailParams,
+  KeywordOverviewData,
   // ...
-  KeywordDetailData,
+  KeywordDetailListData,
   KeywordDetailListParams,
-  keywordOverviewData
 } from '@/interfaces/report'
 
 /* 基础请求函数封装 */
@@ -88,7 +88,6 @@ export const getCateFlowDetail:
         totalElements: 100,
         totalPages: 4,
         result: Array(15).fill('').map((x,i) => ({
-          id: Math.random(),
           webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
           ip: '182.142.35.***',
           time: '2021-01-19 21:10:08',
@@ -148,7 +147,6 @@ export const getBaxFlowVisitDetail:
         totalElements: 100,
         totalPages: 4,
         result: Array(15).fill('').map((x,i) => ({
-          id: Math.random(),
           webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
           ip: '182.142.35.***',
           time: '2021-01-19 21:10:08',
@@ -172,7 +170,6 @@ export const getBaxFlowShowDetail:
         totalElements: 100,
         totalPages: 4,
         result: Array(15).fill('').map((x,i) => ({
-          id: Math.random(),
           webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
           ip: '182.142.35.***',
           time: '2021-01-19 21:10:08',
@@ -184,54 +181,57 @@ export const getBaxFlowShowDetail:
     })
   })
 
-
-// TODO 对接口
-
-// 关键词概览
+// 关键词概览数据
 export const getKeywordOverview:
-  () => Response<keywordOverviewData> =
-  () => post('/keyword/overview')
-
-// 关键词详情
-export const getKeywordDetailList:
-  (params: KeywordDetailListParams) => ListResponse<KeywordDetailData[]> =
-  (params) => post('/keyword/detail', params)
-
-
-/* TODO delete mock data */
-
-// mock
-export const getKeywordStatics = (params: any): Promise<any> => {
-  return new Promise(resolve => {
+  () => Response<KeywordOverviewData> =
+  // () => post('/keyword/overview')
+  () => new Promise(resolve => {
     resolve({
+      message: 'ok',
       code: 200,
       data: {
-        fm: 60,
-        bw: 70,
-        qc: 134,
-        cate: 234
+        total: 13920,
+        mainTotal: 3293,
+        semTotal: 10394,
+        distributionDetail: {
+          main: 9483,
+          biaoWang: 2352,
+          fengMing: 5938,
+          yiHuiTui: 2852,
+        },
+        rankingDetail: {
+          main: 5079,
+          biaoWang: 4728,
+          fengMing: 5860,
+          yiHuiTui: 3778,
+        },
       }
     })
   })
-}
 
-export const getKeywordRankList = (params: any): Promise<any> => {
-  return new Promise(resolve => {
+// 关键词详情
+export const getKeywordDetailList:
+  (params: KeywordDetailListParams) => ListResponse<KeywordDetailListData[]> =
+  // (params) => post('/keyword/detail', params)
+  (params) => new Promise(resolve => {
     resolve({
+      message: 'ok',
       code: 200,
       data: {
-        result: Array(10).fill('').map((x,i) => ({
-          key: i,
-          keyword: ['后曲小学桥架','江西鹰潭桥架','八一乡桥架材质'][~~(Math.random() * 3)],
-          rank: ~~(Math.random() * 100),
-          display: [1,2][~~(Math.random() * 2)],
-          product: ['fm','bw','qc'][~~(Math.random() * 3)],
-          search: ['baidu','360','shenma','sougou'][(~~(Math.random() * 3))],
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          device: ~~(Math.random() * 2) + 1,
+          keyword: '水箱和围栏',
+          platformType: ~~(Math.random() * 4) + 1,
+          product: ~~(Math.random() * 6) + 1,
+          ranking: ~~(Math.random() * 10) + 1
         }))
       }
     })
   })
-}
+
+// TODO delete mock data
 
 export const getRemainCtal = (params: any): Promise<any> => {
   return new Promise(resolve => {
@@ -240,21 +240,6 @@ export const getRemainCtal = (params: any): Promise<any> => {
       data: {
         all: 216,
         filtered: 112
-      }
-    })
-  })
-}
-
-export const getPVList = (params: any): Promise<any> => {
-  return new Promise(resolve => {
-    resolve({
-      code: 200,
-      data: {
-        result: Array(10).fill('').map((x,i) => ({
-          pageURL: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
-          ip: '183.21.240.***',
-          time: '2021-01-19 21:10:08'
-        }))
       }
     })
   })
