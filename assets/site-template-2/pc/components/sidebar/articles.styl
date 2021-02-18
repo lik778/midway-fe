@@ -3,6 +3,7 @@
   .side-news-list
     .news
     .article
+      display: block
       margin: 15px 0
       font-size: 14px
       color: #666666
@@ -14,6 +15,9 @@
       width: 192px
       box-sizing: border-box
       padding-right: 15px
+      &:hover
+        &::after
+          border-color: #ec2525
       &:last-child
         margin-bottom: 0
       &::after

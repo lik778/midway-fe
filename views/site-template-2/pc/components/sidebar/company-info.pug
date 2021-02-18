@@ -1,9 +1,8 @@
 .sidebar-item.company-info 
   .sidebar-item__content 
     .company-info
-      .company-logo 
-        img(src="", alt="")
-      .company-name 上海华硕机床有限公司
+      .company-logo(style=`background-image: url(${company.logo})`)
+      .company-name #{ company.name }
       .company-medals 
         .medal.shop
           .medal-img
