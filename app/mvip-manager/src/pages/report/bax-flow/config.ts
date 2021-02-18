@@ -1,5 +1,8 @@
 import moment from 'moment'
 
+import { PlatformLabelMap } from '@/constants/report'
+import { FlowDetailData } from '@/interfaces/report'
+
 interface Config {
   form: any
   dataSource?: any
@@ -18,12 +21,16 @@ export const flowConfig = ({
         moment(new Date()).subtract(1,'months'),
         moment()
       ],
+      format: (value: [moment.Moment, moment.Moment], query: any) => {
+        query.startTime = +value[0]
+        query.endTime = +value[1]
+      },
       required: true
     }
   ]
 })
 
-export const pvListConfig = ({
+export const visitListConfig = ({
   form,
   dataSource
 }: Config) => ({
@@ -38,6 +45,10 @@ export const pvListConfig = ({
         moment(new Date()).subtract(1,'months'),
         moment()
       ],
+      format: (value: [moment.Moment, moment.Moment], query: any) => {
+        query.startTime = +value[0]
+        query.endTime = +value[1]
+      },
       required: true
     }
   ],
@@ -45,8 +56,8 @@ export const pvListConfig = ({
     columns: [
       {
         title: '访问页面',
-        dataIndex: 'pageURL',
-        key: 'pageURL',
+        dataIndex: 'webPage',
+        key: 'webPage',
       },
       {
         title: '访问IP',
@@ -57,6 +68,17 @@ export const pvListConfig = ({
         title: '访问时间',
         dataIndex: 'time',
         key: 'time',
+      },
+      {
+        title: '搜索引擎',
+        dataIndex: 'platform',
+        key: 'platform',
+        render: (_: any, row: FlowDetailData) => PlatformLabelMap[row.platform]
+      },
+      {
+        title: '关键词',
+        dataIndex: 'keyword',
+        key: 'keyword',
       },
     ]
   }

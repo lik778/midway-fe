@@ -70,6 +70,34 @@ export interface FlowDetailData {
   product: CateProductType | BaxProductType;
 }
 
+export interface BaxFlowOverviewData extends BaseParams {
+  last15DayShows: number;
+  last15DayVisits: number;
+  last30DayShows: number;
+  last30DayVisits: number;
+  totalShows: number;
+  totalVisits: number;
+}
+
+export interface BaxFlowChartParams extends BaseParams {
+  endTime: string;
+  startTime: string;
+  product: BaxProductType;
+}
+
+export interface BaxFlowChartData {
+  date: string;
+  shows: number;
+  visits: number;
+}
+
+export interface BaxFlowDetailParams extends BaseParams, PaginationParams {
+  startTime: string;
+  endTime: string;
+  platform: PlatformType;
+  product: BaxProductType;
+}
+
 // TODO 对接口
 
 export interface KeywordDetailListParams extends BaseParams {
@@ -101,8 +129,4 @@ export interface KeywordDetailData {
   platformType: PlatformType;
   product: BaxProductType | CateProductType;
   ranking: number;
-}
-
-export interface BaxFlowParams extends CateFlowChartParams {
-  product: BaxProductType
 }

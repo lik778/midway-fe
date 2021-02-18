@@ -7,12 +7,12 @@ import {
   DisplayType
 } from '@/enums/report'
 import {
-  SearchEngineLabelMap,
+  PlatformLabelMap,
   BaxProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
 
-const SearchEngineOptions = createOptions(SearchEngineLabelMap)
+const SearchEngineOptions = createOptions(PlatformLabelMap)
 const ProductOptions = createOptions(BaxProductLabelMap)
 const DisplayOptions = createOptions(DisplayLabelMap)
 
@@ -73,7 +73,7 @@ export const keywordRankListConfig = ({
         title: '搜索引擎',
         dataIndex: 'search',
         key: 'search',
-        render: (t: SearchEngineType) => SearchEngineLabelMap[t]
+        render: (t: SearchEngineType) => PlatformLabelMap[t]
       },
       {
         title: '排名',

@@ -5,6 +5,7 @@ import MainTitle from '@/components/main-title'
 import CountTo from '@/components/count-to'
 import Query from '@/components/search-list'
 import { LineChart } from '@/components/charts'
+import { flowConfig, pvListConfig } from './config'
 import {
   getCateFlowOverview,
   getCateFlowChart,
@@ -17,7 +18,6 @@ import {
   CateFlowDetailParams,
   FlowDetailData
 } from '@/interfaces/report'
-import { flowConfig, pvListConfig } from './config'
 
 import './index.less'
 
@@ -99,8 +99,8 @@ function genChartOptions(data: CateFlowChartData[]) {
       data: data.map((x: any) => x.date)
     },
     series : [{
-      data: data.map((x: any) => x.visits),
       type: 'bar',
+      data: data.map((x: any) => x.visits),
     }]
   }
 }

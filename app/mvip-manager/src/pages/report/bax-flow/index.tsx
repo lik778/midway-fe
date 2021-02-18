@@ -1,50 +1,64 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd'
+import { Form, Row, Col, Divider } from 'antd'
 
 import MainTitle from '@/components/main-title'
+import CountTo from '@/components/count-to'
 import Query from '@/components/search-list'
 import { LineChart } from '@/components/charts'
-import { getPVData, getPVList } from '@/api/report'
-import { flowConfig, pvListConfig } from './config'
+import { flowConfig, visitListConfig } from './config'
+import {
+  getBaxFlowOverview,
+  getBaxFlowCharts,
+  getBaxFlowVisitDetail,
+  getBaxFlowShowDetail
+} from '@/api/report';
+import {
+  BaxFlowOverviewData,
+  BaxFlowChartParams,
+  BaxFlowChartData,
+  BaxFlowDetailParams,
+  FlowDetailData,
+} from '@/interfaces/report'
 
 import './index.less'
 
 export default function KeyWordPage(props: any) {
-  const [queryPVChartForm] = Form.useForm()
-  const [queryShowChartForm] = Form.useForm()
-  const [queryPVListForm] = Form.useForm()
+  const [overview, setOverview] = useState<BaxFlowOverviewData>()
+  const [queryChartForm] = Form.useForm()
+  const [chartsOptions, setChartsOptions] = useState([{},{}])
+  const [queryVisitListForm] = Form.useForm()
+  const [visitListData, setVisitListData] = useState<FlowDetailData[]>([])
   const [queryShowListForm] = Form.useForm()
-  const [pvDataSource, setPVDataSource] = React.useState([])
-  const [showDataSource, setShowDataSource] = React.useState([])
-  const [pvChartOptions, setPVChartOptions] = useState({})
-  const [showChartOptions, setShowChartOptions] = useState({})
+  const [showListData, setShowListData] = useState<FlowDetailData[]>([])
 
-  const queryPVChart = async (query: any) => {
-    const { code, data } = await getPVData({ page: 1, size: 10 })
+  useEffect(() => {
+    queryOverviewData()
+  }, [])
+
+  const queryOverviewData = async () => {
+    const { code, data } = await getBaxFlowOverview()
     if (code === 200) {
-      const { result } = data
-      setPVChartOptions(genChartOptions(result))
+      setOverview(data)
     }
   }
-  const queryShowChart = async (query: any) => {
-    const { code, data } = await getPVData({ page: 1, size: 10 })
+  const queryChartData = async (query: BaxFlowChartParams) => {
+    const { code, data } = await getBaxFlowCharts(query)
     if (code === 200) {
-      const { result } = data
-      setShowChartOptions(genChartOptions(result))
+      setChartsOptions(genChartsOptions(data))
     }
   }
-  const queryPVList = async (query: any) => {
-    const { code, data } = await getPVList(query)
+  const queryVisitList = async (query: BaxFlowDetailParams) => {
+    const { code, data } = await getBaxFlowVisitDetail(query)
     if (code === 200) {
       const { result } = data
-      setPVDataSource(result)
+      setVisitListData(result)
     }
   }
-  const queryShowList = async (query: any) => {
-    const { code, data } = await getPVList(query)
+  const queryShowList = async (query: BaxFlowDetailParams) => {
+    const { code, data } = await getBaxFlowShowDetail(query)
     if (code === 200) {
       const { result } = data
-      setShowDataSource(result)
+      setShowListData(result)
     }
   }
 
@@ -54,63 +68,56 @@ export default function KeyWordPage(props: any) {
       <div className="container">
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <Statistic title="总访问量（PV）" value={98712}/>
+            <CountTo title="总访问量（PV）" value={overview?.totalVisits}/>
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="近 15 天 PV" value={2342}/>
+            <CountTo title="近 15 天 PV" value={overview?.last15DayVisits}/>
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="近 30 天 PV" value={4785}/>
+            <CountTo title="近 30 天 PV" value={overview?.last30DayVisits}/>
           </Col>
         </Row>
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <Statistic title="总展现量" value={159232}/>
+            <CountTo title="总展现量" value={overview?.totalShows}/>
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="近 15 天展现量" value={4168}/>
+            <CountTo title="近 15 天展现量" value={overview?.last15DayShows}/>
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="近 30 天展现量" value={15021}/>
+            <CountTo title="近 30 天展现量" value={overview?.last30DayShows}/>
           </Col>
         </Row>
         <Divider />
 
         <h2>访问量统计（PV）</h2>
         <Query
-          onQuery={queryPVChart}
+          onQuery={queryChartData}
           config={flowConfig({
-            form: queryPVChartForm
+            form: queryChartForm
           })}
         />
-        <LineChart option={pvChartOptions} />
-        <Divider />
+        <LineChart option={chartsOptions[0]} />
 
         <h2>展现量统计</h2>
-        <Query
-          onQuery={queryShowChart}
-          config={flowConfig({
-            form: queryShowChartForm
-          })}
-        />
-        <LineChart option={showChartOptions} />
+        <LineChart option={chartsOptions[1]} />
         <Divider />
 
         <h2>访问明细</h2>
         <Query
-          onQuery={queryPVList}
-          config={pvListConfig({
-            form: queryPVListForm,
-            dataSource: pvDataSource
+          onQuery={queryVisitList}
+          config={visitListConfig({
+            form: queryVisitListForm,
+            dataSource: visitListData
           })}
         />
 
         <h2>展现明细</h2>
         <Query
           onQuery={queryShowList}
-          config={pvListConfig({
+          config={visitListConfig({
             form: queryShowListForm,
-            dataSource: showDataSource
+            dataSource: showListData
           })}
         />
       </div>
@@ -118,15 +125,27 @@ export default function KeyWordPage(props: any) {
   )
 }
 
-function genChartOptions(result: any) {
-  return {
-    xAxis : {
-      type: 'category',
-      data: result.map((x: any) => x.date)
+function genChartsOptions(data: BaxFlowChartData[]) {
+  return [
+    {
+      xAxis : {
+        type: 'category',
+        data: data.map((x: BaxFlowChartData) => x.date)
+      },
+      series : [{
+        type: 'bar',
+        data: data.map((x: BaxFlowChartData) => x.visits),
+      }]
     },
-    series : [{
-      data: result.map((x: any) => x.pv),
-      type: 'bar',
-    }]
-  }
+    {
+      xAxis : {
+        type: 'category',
+        data: data.map((x: BaxFlowChartData) => x.date)
+      },
+      series : [{
+        type: 'bar',
+        data: data.map((x: BaxFlowChartData) => x.shows),
+      }]
+    }
+  ]
 }

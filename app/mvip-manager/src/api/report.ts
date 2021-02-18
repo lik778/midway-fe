@@ -8,11 +8,14 @@ import {
   CateFlowChartData,
   CateFlowDetailParams,
   FlowDetailData,
+  BaxFlowOverviewData,
+  BaxFlowChartParams,
+  BaxFlowChartData,
+  BaxFlowDetailParams,
   // ...
   KeywordDetailData,
   KeywordDetailListParams,
-  keywordOverviewData,
-  BaxFlowParams
+  keywordOverviewData
 } from '@/interfaces/report'
 
 /* 基础请求函数封装 */
@@ -97,28 +100,92 @@ export const getCateFlowDetail:
     })
   })
 
-// TODO 对接口
-
 // 搜索通流量概览
 export const getBaxFlowOverview:
-  () => Response<any> =
-  () => post('/sem/network/overview')
-
-// 搜索通流量明细
-export const getBaxFlowDetail:
-  (params: BaxFlowParams) => ListResponse<FlowDetailData> =
-  (params) => post('/sem/network/show-detail', params)
+  () => Response<BaxFlowOverviewData> =
+  // () => post('/sem/network/overview')
+  () => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        userId: 312,
+        last15DayShows: 848,
+        last15DayVisits: 492,
+        last30DayShows: 533,
+        last30DayVisits: 3305,
+        totalShows: 2931,
+        totalVisits: 3495,
+      }
+    })
+  })
 
 // 搜索通流量访问和展现统计
-export const getBaxFlowStatistical:
-  (params: BaxFlowParams) => ListResponse<any> =
-  (params) => post('/sem/network/statistical', params)
+export const getBaxFlowCharts:
+  (params: BaxFlowChartParams) => Response<BaxFlowChartData[]> =
+  // (params) => post('/sem/network/statistical', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: Array(30).fill('').map((x,i) => ({
+        date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
+        shows: ~~(Math.random() * 1000),
+        visits: ~~(Math.random() * 1000)
+      }))
+    })
+  })
 
-
-// 搜索通流量访问和展现统计
+// 搜索通流量访问明细
 export const getBaxFlowVisitDetail:
-  (params: BaxFlowParams) => ListResponse<FlowDetailData> =
-  (params) => post('/sem/network/visit-detail', params)
+  (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  // (params) => post('/sem/network/visit-detail', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          id: Math.random(),
+          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
+          ip: '182.142.35.***',
+          time: '2021-01-19 21:10:08',
+          keyword: '围挡板设备',
+          platform: 1,
+          product: 2,
+        }))
+      }
+    })
+  })
+
+// 搜索通流量展现明细
+export const getBaxFlowShowDetail:
+  (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  // (params) => post('/sem/network/show-detail', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          id: Math.random(),
+          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
+          ip: '182.142.35.***',
+          time: '2021-01-19 21:10:08',
+          keyword: '围挡板设备',
+          platform: 1,
+          product: 2,
+        }))
+      }
+    })
+  })
+
+
+// TODO 对接口
 
 // 关键词概览
 export const getKeywordOverview:
