@@ -117,7 +117,7 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-2/${device}/news-child/index`;
+      const templateUrl = `site-template-2/${device}/news/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)

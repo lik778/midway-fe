@@ -1,5 +1,5 @@
 import './index.styl';
-import $ from 'jquery'
+import $ from 'jquery';
 import Swiper from 'swiper';
 import { qqModule } from '../components/customer-service/index';
 qqModule()

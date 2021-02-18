@@ -1,2 +1,7 @@
-.toptab
-	| 产品分类
+- const { productCateList, bread } = renderData
+- const renderList = productCateList.filter(cat => cat.name !== bread[bread.length - 1].name)
+.products-filter
+	span 产品分类 ：
+	.products-categories 
+		each item in renderList
+			a(href=item.urlSuffix, target="__blank") #{ item.name } 

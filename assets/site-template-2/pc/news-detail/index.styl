@@ -12,8 +12,18 @@
 
 .container
     width 1220px
-    margin 40px auto 72px
+    margin 30px auto 72px
     display flex
+
+#news-detail-swiper
+    .swiper-container
+        height 360px
+        width 100%
+        .swiper-wrapper
+            .swiper-slide
+            img
+                height 360px
+                width 100%
 
 .news-detail
     max-width: 960px
@@ -24,6 +34,12 @@
             background-color: #fff
             padding: 0 30px
             box-sizing: border-box
+
+            &__pic
+                text-align center
+                margin 40px auto
+                img
+                    max-width 100%
     
             &__text
                 color: #333333
