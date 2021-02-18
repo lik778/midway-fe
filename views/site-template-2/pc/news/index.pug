@@ -5,11 +5,11 @@ block styles
 block content
   include ../components/breadcrumbs.pug
 
-  .container
+  .container.clearfix
     .main
       include ../components/news/news-list.pug
       +news-list(renderData.articleList.result)
-    .sidebar 
+    .sidebar
       include ../components/sidebar/articles.pug
 
   include ../components/pagination.pug
