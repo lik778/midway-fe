@@ -1,0 +1,19 @@
+.company
+	- const { headImg, name, price, content, contentImg } = renderData.productInfo
+	.company-left
+		img(src=headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="logo")
+		.company-text
+			h3 #{ name }
+			p 价格：#{ price || '面议' }
+			.company-address
+				span 商家地址：
+				span #{ company.address }
+			a(href="tel:" + phone.content )
+				img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon")
+				span 查看电话
+			a(href="")
+				img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
+				span 在线咨询
+	.company-right
+		include ../sidebar/company-card.pug
+

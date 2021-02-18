@@ -5,11 +5,13 @@ block styles
 
 block content
     include ../components/breadcrumbs.pug
+    include ../components/product-detail/company-top.pug
+    //-include ../components/product/product-list.pug
 
     .container.clearfix
         .main
 
-        .side-bar
+        .sidebar
 
 block scripts
     :combine(fileName="site-template-2-product-detail-pc.js")
