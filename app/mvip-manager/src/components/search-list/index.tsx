@@ -23,6 +23,17 @@ export default function SearchList (props: Props) {
   })))
   const [isValid, setIsValid] = useState<boolean>(true)
   const [queryParams, setQueryParams] = useState(null)
+  const [indexedDataSource, setIndexedDataSource] = useState(dataSource)
+
+  // 默认给 dataSource 用索引设置 key
+  useEffect(() => {
+    if (dataSource && dataSource.length) {
+      setIndexedDataSource(dataSource.map((x: any, i: number) => {
+        x.key = x.key || i
+        return x
+      }))
+    }
+  }, [dataSource])
 
   useEffect(() => {
     setChangeFieldsCount(changeFieldsCount+1)
@@ -33,10 +44,22 @@ export default function SearchList (props: Props) {
     const itemHasError = fields.find((x: any) => x?.errors?.length)
     setIsValid(!itemHasError)
     if (itemHasError) {
-      // TODO 点击按钮再显示？
+      // TODO 显示校验错误的逻辑
       // notification.error({ message: JSON.stringify(itemHasError.errors[0]) })
     } else {
-      setQueryParams(fields.map((x: any) => ({ [x.name[0]]: x.value })))
+      setQueryParams(
+        fields.reduce((h: any, c: any) => {
+          const name = c.name[0]
+          const config = query.find((x: QueryConfigItem) => x.name === name)
+          const { format } = config || {}
+          if (format) {
+            format(c.value, h)
+          } else {
+            h[name] = c.value
+          }
+          return h
+        }, {})
+      )
     }
   }, [changeFieldsCount])
 
@@ -61,7 +84,7 @@ export default function SearchList (props: Props) {
         <Table
           className="cmpt-search-list-table"
           columns={columns}
-          dataSource={dataSource}
+          dataSource={indexedDataSource}
           pagination={pagination}
           bordered
           {...restTableProps}

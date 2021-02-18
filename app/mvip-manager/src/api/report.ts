@@ -1,34 +1,35 @@
-import { AxiosResponse } from 'axios'
 import { request } from '@/api/base'
 import { stringify } from '@/utils'
 import {
-  ByDateData,
-  CateFlowByDateParams,
-  FlowDetailData,
-  CateFlowDetailParams,
+  Response,
+  ListResponse,
   CateFlowOverviewData,
+  CateFlowChartParams,
+  CateFlowChartData,
+  CateFlowDetailParams,
+  FlowDetailData,
+  // ...
   KeywordDetailData,
   KeywordDetailListParams,
   keywordOverviewData,
-  ListResData,
-  ReportResponse,
   BaxFlowParams
 } from '@/interfaces/report'
 
 /* 基础请求函数封装 */
 
-type Response<T> = Promise<AxiosResponse<ReportResponse<T>>>
-type ListResponse<T> = Response<T>
+type Method = 'post' | 'get'
 
 const REPORT_URL_PREFIX = '/report/api'
 
-const createLocalRequest = (method: string): ((url: string, data?: any) => Response<any>) => {
+const createLocalRequest = (method: Method): ((url: string, data?: any) => Response<any>) => {
   return (url: string, data?: any): Response<any> => {
     const { path = '', params = {} } = data || {}
     return request.post(REPORT_URL_PREFIX, {
       method,
       path: url + path,
-      params: stringify(params)
+      params: method === 'get'
+        ? null
+        : stringify(params)
     })
   }
 }
@@ -42,20 +43,61 @@ export const reportHealth:
   () => Response<string> =
   () => get('/health')
 
-// 主营流量接口
+// 主营流量总览数据
 export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
-  () => post('/seo/network/overview')
+  // () => get('/seo/network/overview')
+  () => Promise.resolve({
+    message: 'ok',
+    code: 200,
+    data: {
+      userId: 0,
+      totalVisits: 148,
+      last15DayVisits: 512,
+      last30DayVisits: 380,
+    }
+  })
 
-// 主营流量统计
-export const getCateFlowByDate:
-  (params: CateFlowByDateParams) => Response<ByDateData> =
-  (params) => post('/seo/network/statistical', params)
+// 主营流量统计柱状图
+export const getCateFlowChart:
+  (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
+  // (params) => post('/seo/network/statistical', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: Array(30).fill('').map((x,i) => ({
+        date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
+        visits: ~~(Math.random() * 1000)
+      }))
+    })
+  })
 
-// 主营流量列表
+// 主营流量详情列表
 export const getCateFlowDetail:
-  (params: CateFlowDetailParams) => ListResponse<FlowDetailData> =
-  (params) => post('/seo/network/visit-detail', params)
+  (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  // (params) => post('/seo/network/visit-detail', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          id: Math.random(),
+          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
+          ip: '182.142.35.***',
+          time: '2021-01-19 21:10:08',
+          keyword: '测试关键词',
+          platform: 1,
+          product: 2,
+        }))
+      }
+    })
+  })
+
+// TODO 对接口
 
 // 搜索通流量概览
 export const getBaxFlowOverview:
@@ -69,7 +111,7 @@ export const getBaxFlowDetail:
 
 // 搜索通流量访问和展现统计
 export const getBaxFlowStatistical:
-  (params: BaxFlowParams) => ListResponse<ByDateData> =
+  (params: BaxFlowParams) => ListResponse<any> =
   (params) => post('/sem/network/statistical', params)
 
 
@@ -85,13 +127,11 @@ export const getKeywordOverview:
 
 // 关键词详情
 export const getKeywordDetailList:
-  (params: KeywordDetailListParams) => Response<ListResData<KeywordDetailData[]>> =
+  (params: KeywordDetailListParams) => ListResponse<KeywordDetailData[]> =
   (params) => post('/keyword/detail', params)
 
 
-
-
-/* TODO mock data then */
+/* TODO delete mock data */
 
 // mock
 export const getKeywordStatics = (params: any): Promise<any> => {
@@ -126,20 +166,6 @@ export const getKeywordRankList = (params: any): Promise<any> => {
   })
 }
 
-export const getPVData = (params: any): Promise<any> => {
-  return new Promise(resolve => {
-    resolve({
-      code: 200,
-      data: {
-        result: Array(10).fill('').map((x,i) => ({
-          date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
-          pv: ~~(Math.random() * 1000)
-        }))
-      }
-    })
-  })
-}
-
 export const getRemainCtal = (params: any): Promise<any> => {
   return new Promise(resolve => {
     resolve({
@@ -158,7 +184,6 @@ export const getPVList = (params: any): Promise<any> => {
       code: 200,
       data: {
         result: Array(10).fill('').map((x,i) => ({
-          key: i,
           pageURL: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
           ip: '183.21.240.***',
           time: '2021-01-19 21:10:08'

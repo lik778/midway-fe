@@ -42,6 +42,7 @@ export default function KeyWordPage(props: any) {
   }, [])
 
   const queryRankList = async (query: any) => {
+    console.log('query: ', query)
     const { code, data } = await getKeywordRankList(query)
     if (code === 200) {
       const { result } = data
