@@ -5,7 +5,7 @@ block styles
 block content
     include ../components/breadcrumbs.pug
     - const { name, contentImg, content, modifiedTime } = renderData.articleInfo
-    .list-container
+    .container
         .news-detail
             .news-content
                 .news-title
@@ -33,19 +33,22 @@ block content
                         .info-label 公司信息
                         .info-item 
                             span 商家称呼
-                            span 张先生
+                            span #{ person.name }
                         .info-item 
                             span 联系电话
-                            span 400-888-9967
+                            span #{ phone.content }
                         .info-item 
                             span 微信号码
-                            span hxjsioxisa1092
-                        .info-item 
-                            span QQ号码
-                            span 2992001829
+                            span #{ weChat.content }
+                        if qq && qq.length > 0
+                            .info-item 
+                                span QQ号码
+                                span #{ qq[0].content } 
+                                //- each item in qq
+                                //-     span #{ item.content }
                         .info-item 
                             span 公司地址
-                            span 上海市自贸试验区郑州片区黄河东路89号13号楼
+                            span #{ company.address }
                         
 
         .sidebar 
