@@ -10,6 +10,7 @@ block content
       .container.clearfix
           .main
               include ../components/product/toptab.pug
+              - productList = renderData.productList.result
               include ../components/product/product-list.pug
 
               include ../components/common/pagination.pug
