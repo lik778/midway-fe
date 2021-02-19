@@ -5,16 +5,19 @@ block styles
 block header
     include ../components/header
     include ../components/swiper
-
+    include ../components/nav
 
 block content
-    - const moreProductArr = (renderData.navigation.filter(x => x.position == "productListPage"))
-    - const moreNewsArr = (renderData.navigation.filter(x => x.position == "articleListPage"))
-    include ../components/shortcuts
-    include ../components/introduction
-    include ../components/aboutus
-    include ../components/home-product-list
-    include ../components/home-news-list
+    h2.block-title 热门推荐
+    include ../components/product-list.pug
+    +product-list('hot')
+
+    h2.block-title 最新产品
+    include ../components/product-list.pug
+    +product-list('')
+
+    include ../components/aboutus.pug
+    include ../components/contact-form.pug
 
 block scripts
     :combine(fileName="site-template-2-home-wap.js")
