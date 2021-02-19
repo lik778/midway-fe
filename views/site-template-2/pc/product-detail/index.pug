@@ -13,7 +13,9 @@ block content
         include ../components/product/product-list.pug
 
         .main
+            include ../components/product-detail/product-content.pug
             include ../components/common/contact-form-companyInfo.pug
+
         .sidebar
             //-articleCateList暂时没有数据
             - const { productCateList, articleCateList} = renderData
