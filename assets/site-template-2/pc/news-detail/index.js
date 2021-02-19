@@ -2,8 +2,10 @@ import './index.styl';
 import { qqModule } from '../components/customer-service/index';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
+import { navModule } from '../components/nav'
 
 qqModule()
+navModule()
 initializeSidebarProductSwiper()
 
 new Swiper('#news-detail-swiper .swiper-container', {

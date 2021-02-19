@@ -5,7 +5,9 @@ export const navModule = function() {
 	$(document).ready(function() {
 		$(".nav-item > a").each((index, tab) => {
 			const href = $(tab).attr('href')
-      if (href.replace(/\/$/, '').endsWith(window.location.pathname.replace(/\-?\d*\/?$/, ''))) {
+      if (href.replace(/\/$/, '').endsWith(window.location.pathname.replace(/[n|p]\-?\d*.*\/?$/, function(result) {
+				return result[0]
+			}))) {
         $(tab).addClass('nav-active')
       }
 		})
