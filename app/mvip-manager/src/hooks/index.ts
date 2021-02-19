@@ -12,7 +12,7 @@ export const useAnimationFrame = (callback: AnimationFrameCallBack) => {
   const requestRef = useRef<number | null>()
   const frameTimeRef = useRef<number>()
 
-  // 手动停止空循环，提高页面性能
+  // 手动停止空循环可以提高页面性能
   const stopAnimationFrame = () => {
     if (requestRef.current) {
       cancelAnimationFrame(requestRef.current)
@@ -67,16 +67,29 @@ export const useAnimation = ({
   callback
 }: useAnimationParams) => {
 
+  // TODO refactor 一堆 Ref 看起来很难看，肯定有更好的写法
+
   // 总动画耗时
   const consumedTimeRef = useRef(0)
-  // 确保返回的结果值的正确
-  const safe = (num: number) => (num > to ? to : num)
+  const fromRef = useRef(from)
+  const toRef = useRef(to)
+  const timeRef = useRef(time)
+  // 确保返回的结果不能超出范围
+  const safeRef = useRef((num: number) => (num > to ? to : num))
+
+  useEffect(() => {
+    consumedTimeRef.current = 0
+    toRef.current = to
+    safeRef.current = (num: number) => (num > toRef.current ? toRef.current : num)
+  }, [to])
 
   useAnimationFrame((frameTime: number, stop: any) => {
     consumedTimeRef.current += frameTime
-    const targetVal = ~~type(consumedTimeRef.current, from, to, time)
-    const nextVal = consumedTimeRef.current < time ? targetVal : safe(targetVal)
-    const shouldStop = nextVal === to
+    const targetVal = ~~type(consumedTimeRef.current, fromRef.current, toRef.current, timeRef.current)
+    const nextVal = consumedTimeRef.current < timeRef.current ? targetVal : safeRef.current(targetVal)
+
+    // TODO refactor 向外暴露API；更改默认行为
+    const shouldStop = nextVal === toRef.current && fromRef.current !== toRef.current
 
     shouldStop && stop && stop()
 

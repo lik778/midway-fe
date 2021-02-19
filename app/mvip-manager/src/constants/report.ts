@@ -5,7 +5,7 @@ import {
   DisplayType,
 } from '@/enums/report';
 
-export const SearchEngineLabelMap = {
+export const PlatformLabelMap = {
   [PlatformType.BAI_DU]: '百度',
   [PlatformType.QI_HU]: '360',
   [PlatformType.SHEN_MA]: '神马',

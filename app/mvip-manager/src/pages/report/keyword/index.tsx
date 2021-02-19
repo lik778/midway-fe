@@ -5,82 +5,73 @@ import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
 import CountTo from '@/components/count-to'
 import { PieChart } from '@/components/charts'
-import { getKeywordRankList, getKeywordStatics, getKeywordDetailList, reportHealth } from '@/api/report';
+import { getKeywordOverview, getKeywordDetailList } from '@/api/report'
+import {
+  KeywordOverviewData,
+  KeywordDetailListParams,
+  KeywordDetailListData,
+} from "@/interfaces/report"
 import { keywordRankListConfig } from './config'
-import { BaxProductType, DisplayType, PlatformType } from '@/enums/report';
 
 import './index.less'
 
 export default function KeyWordPage(props: any) {
-  const [queryKeywordStaticsForm] = Form.useForm()
-  const [queryKeywordRankForm] = Form.useForm()
-  const [staticsDataSource, setStaticsDataSource] = React.useState([])
+  const [overview, setOverview] = useState<KeywordOverviewData>()
   const [chartOptions, setChartOptions] = useState({})
+  const [queryKeywordDetailForm] = Form.useForm()
+  const [detailListData, setDetailListData] = useState<KeywordDetailListData[]>([])
 
-  useEffect( () => {
-    (async () => {
-      await getKeywordDetailList({
-        device: DisplayType.WAP,
-        pageNo: 0,
-        pageSize: 0,
-        platform: PlatformType.BAI_DU,
-        product: BaxProductType.BIAO_WANG,
-        userId: 0
-      })
-      await reportHealth()
-      const { code, data } = await getKeywordStatics(null)
-      if (code === 200) {
-        const {
-          fm = 1,
-          bw = 1,
-          qc = 1,
-          cate = 1
-        } = data
-        setChartOptions(genChartOptions({ fm, bw, qc, cate }))
-      }
-    })()
+  useEffect(() => {
+    queryOverviewData()
   }, [])
 
-  const queryRankList = async (query: any) => {
-    const { code, data } = await getKeywordRankList(query)
+  const queryOverviewData = async () => {
+    const { code, data } = await getKeywordOverview()
+    if (code === 200) {
+      setOverview(data)
+      setChartOptions(genChartOptions(data))
+    }
+  }
+  const queryDetailList = async (query: KeywordDetailListParams) => {
+    const { code, data } = await getKeywordDetailList(query)
     if (code === 200) {
       const { result } = data
-      setStaticsDataSource(result)
+      setDetailListData(result)
     }
   }
 
   return (
-    <div className='page-report page-report-keyword'>
-      <MainTitle title="关键词报表"/>
+    <div className="page-report page-report-keyword">
+      <MainTitle title="关键词报表" />
       <div className="container">
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <CountTo title="凤鸣投放币" value={16888} />
+            <CountTo title="排名关键词总数" value={overview?.total} />
           </Col>
           <Col className="statics" span={8}>
-            <CountTo title="标王投放币" value={16888} />
+            <CountTo title="主营关键词总数" value={overview?.mainTotal} />
           </Col>
           <Col className="statics" span={8}>
-            <CountTo title="精品官网个数" value={16888} />
-          </Col>
-        </Row>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={8}>
-            <CountTo title="凤鸣投放关键词数" value={6} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="标王投放关键词数" value={6} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="易慧推投放关键词数" value={120} />
+            <CountTo title="搜索通关键词总数" value={overview?.semTotal} />
           </Col>
         </Row>
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <CountTo title="凤鸣关键词平均排名" value={6} />
+            <CountTo title="标王投放关键词数" value={overview?.distributionDetail.biaoWang} />
           </Col>
           <Col className="statics" span={8}>
-            <CountTo title="标王关键词平均排名" value={6} />
+            <CountTo title="凤鸣投放关键词数" value={overview?.distributionDetail.fengMing} />
+          </Col>
+          <Col className="statics" span={8}>
+            <CountTo title="易慧推投放关键词数" value={overview?.distributionDetail.yiHuiTui} />
+          </Col>
+        </Row>
+        <Row className="statics-con" gutter={16}>
+          <Col className="statics" span={8}>
+            <CountTo title="标王关键词平均排名" value={overview?.rankingDetail.biaoWang} />
+          </Col>
+          <Col className="statics" span={8}>
+            <CountTo title="凤鸣关键词平均排名" value={overview?.rankingDetail.fengMing} />
           </Col>
         </Row>
         <Divider />
@@ -91,10 +82,10 @@ export default function KeyWordPage(props: any) {
 
         <h2>关键词排名明细</h2>
         <Query
-          onQuery={queryRankList}
+          onQuery={queryDetailList}
           config={keywordRankListConfig({
-            form: queryKeywordRankForm,
-            dataSource: staticsDataSource
+            form: queryKeywordDetailForm,
+            dataSource: detailListData,
           })}
         />
       </div>
@@ -102,7 +93,8 @@ export default function KeyWordPage(props: any) {
   )
 }
 
-function genChartOptions({ fm, bw, qc, cate }) {
+// 生成饼图所需数据，数据缺失时，默认值需要为1，因为为0时数据不会展示在图中
+function genChartOptions(data: KeywordOverviewData) {
   return {
     legend: {
       left: 'bottom',
@@ -115,20 +107,20 @@ function genChartOptions({ fm, bw, qc, cate }) {
         radius : ['45%', '85%'],
         data:[
           {
-            value:fm,
-            name:'凤鸣',
+            name: '凤鸣',
+            value: data?.distributionDetail.fengMing || 1
           },
           {
-            value:bw,
-            name:'标王'
+            name: '标王',
+            value: data?.distributionDetail.biaoWang || 1
           },
           {
-            value:qc,
-            name:'易慧推'
+            name: '易慧推',
+            value: data?.distributionDetail.yiHuiTui || 1
           },
           {
-            value:cate,
-            name:'主营'
+            name: '主营',
+            value: data?.distributionDetail.main || 1
           }
         ],
       }

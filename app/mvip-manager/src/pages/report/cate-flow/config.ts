@@ -1,8 +1,10 @@
 import moment from 'moment'
+import { QueryConfigItem } from '@/components/quick-form/interface'
 
 interface Config {
   form: any
-  dataSource?: any
+  dataSource?: any,
+  query?: QueryConfigItem[]
 }
 
 export const flowConfig = ({
@@ -18,6 +20,10 @@ export const flowConfig = ({
         moment(new Date()).subtract(1,'months'),
         moment()
       ],
+      format: (value: [moment.Moment, moment.Moment], query: any) => {
+        query.startTime = +value[0]
+        query.endTime = +value[1]
+      },
       required: true
     }
   ]
@@ -45,8 +51,8 @@ export const pvListConfig = ({
     columns: [
       {
         title: '访问页面',
-        dataIndex: 'pageURL',
-        key: 'pageURL',
+        dataIndex: 'webPage',
+        key: 'webPage',
       },
       {
         title: '访问IP',

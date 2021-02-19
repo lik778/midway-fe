@@ -1,34 +1,38 @@
-import { AxiosResponse } from 'axios'
 import { request } from '@/api/base'
 import { stringify } from '@/utils'
 import {
-  ByDateData,
-  CateFlowByDateParams,
-  FlowDetailData,
-  CateFlowDetailParams,
+  Response,
+  ListResponse,
   CateFlowOverviewData,
-  KeywordDetailData,
+  CateFlowChartParams,
+  CateFlowChartData,
+  CateFlowDetailParams,
+  FlowDetailData,
+  BaxFlowOverviewData,
+  BaxFlowChartParams,
+  BaxFlowChartData,
+  BaxFlowDetailParams,
+  KeywordOverviewData,
+  // ...
+  KeywordDetailListData,
   KeywordDetailListParams,
-  keywordOverviewData,
-  ListResData,
-  ReportResponse,
-  BaxFlowParams
 } from '@/interfaces/report'
 
 /* 基础请求函数封装 */
 
-type Response<T> = Promise<AxiosResponse<ReportResponse<T>>>
-type ListResponse<T> = Response<T>
+type Method = 'post' | 'get'
 
 const REPORT_URL_PREFIX = '/report/api'
 
-const createLocalRequest = (method: string): ((url: string, data?: any) => Response<any>) => {
+const createLocalRequest = (method: Method): ((url: string, data?: any) => Response<any>) => {
   return (url: string, data?: any): Response<any> => {
     const { path = '', params = {} } = data || {}
     return request.post(REPORT_URL_PREFIX, {
       method,
       path: url + path,
-      params: stringify(params)
+      params: method === 'get'
+        ? null
+        : stringify(params)
     })
   }
 }
@@ -42,103 +46,192 @@ export const reportHealth:
   () => Response<string> =
   () => get('/health')
 
-// 主营流量接口
+// 主营流量总览数据
 export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
-  () => post('/seo/network/overview')
+  // () => get('/seo/network/overview')
+  () => Promise.resolve({
+    message: 'ok',
+    code: 200,
+    data: {
+      userId: 0,
+      totalVisits: 148,
+      last15DayVisits: 512,
+      last30DayVisits: 380,
+    }
+  })
 
-// 主营流量统计
-export const getCateFlowByDate:
-  (params: CateFlowByDateParams) => Response<ByDateData> =
-  (params) => post('/seo/network/statistical', params)
+// 主营流量统计柱状图
+export const getCateFlowChart:
+  (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
+  // (params) => post('/seo/network/statistical', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: Array(30).fill('').map((x,i) => ({
+        date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
+        visits: ~~(Math.random() * 1000)
+      }))
+    })
+  })
 
-// 主营流量列表
+// 主营流量详情列表
 export const getCateFlowDetail:
-  (params: CateFlowDetailParams) => ListResponse<FlowDetailData> =
-  (params) => post('/seo/network/visit-detail', params)
+  (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  // (params) => post('/seo/network/visit-detail', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
+          ip: '182.142.35.***',
+          time: '2021-01-19 21:10:08',
+          keyword: '测试关键词',
+          platform: 1,
+          product: 2,
+        }))
+      }
+    })
+  })
 
 // 搜索通流量概览
 export const getBaxFlowOverview:
-  () => Response<any> =
-  () => post('/sem/network/overview')
-
-// 搜索通流量明细
-export const getBaxFlowDetail:
-  (params: BaxFlowParams) => ListResponse<FlowDetailData> =
-  (params) => post('/sem/network/show-detail', params)
+  () => Response<BaxFlowOverviewData> =
+  // () => post('/sem/network/overview')
+  () => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        userId: 312,
+        last15DayShows: 848,
+        last15DayVisits: 492,
+        last30DayShows: 533,
+        last30DayVisits: 3305,
+        totalShows: 2931,
+        totalVisits: 3495,
+      }
+    })
+  })
 
 // 搜索通流量访问和展现统计
-export const getBaxFlowStatistical:
-  (params: BaxFlowParams) => ListResponse<ByDateData> =
-  (params) => post('/sem/network/statistical', params)
+export const getBaxFlowCharts:
+  (params: BaxFlowChartParams) => Response<BaxFlowChartData[]> =
+  // (params) => post('/sem/network/statistical', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: Array(30).fill('').map((x,i) => ({
+        date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
+        shows: ~~(Math.random() * 1000),
+        visits: ~~(Math.random() * 1000)
+      }))
+    })
+  })
 
-
-// 搜索通流量访问和展现统计
+// 搜索通流量访问明细
 export const getBaxFlowVisitDetail:
-  (params: BaxFlowParams) => ListResponse<FlowDetailData> =
-  (params) => post('/sem/network/visit-detail', params)
+  (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  // (params) => post('/sem/network/visit-detail', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
+          ip: '182.142.35.***',
+          time: '2021-01-19 21:10:08',
+          keyword: '围挡板设备',
+          platform: 1,
+          product: 2,
+        }))
+      }
+    })
+  })
 
-// 关键词概览
+// 搜索通流量展现明细
+export const getBaxFlowShowDetail:
+  (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  // (params) => post('/sem/network/show-detail', params)
+  (params) => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
+          ip: '182.142.35.***',
+          time: '2021-01-19 21:10:08',
+          keyword: '围挡板设备',
+          platform: 1,
+          product: 2,
+        }))
+      }
+    })
+  })
+
+// 关键词概览数据
 export const getKeywordOverview:
-  () => Response<keywordOverviewData> =
-  () => post('/keyword/overview')
+  () => Response<KeywordOverviewData> =
+  // () => post('/keyword/overview')
+  () => new Promise(resolve => {
+    resolve({
+      message: 'ok',
+      code: 200,
+      data: {
+        total: 13920,
+        mainTotal: 3293,
+        semTotal: 10394,
+        distributionDetail: {
+          main: 9483,
+          biaoWang: 2352,
+          fengMing: 5938,
+          yiHuiTui: 2852,
+        },
+        rankingDetail: {
+          main: 5079,
+          biaoWang: 4728,
+          fengMing: 5860,
+          yiHuiTui: 3778,
+        },
+      }
+    })
+  })
 
 // 关键词详情
 export const getKeywordDetailList:
-  (params: KeywordDetailListParams) => Response<ListResData<KeywordDetailData[]>> =
-  (params) => post('/keyword/detail', params)
-
-
-
-
-/* TODO mock data then */
-
-// mock
-export const getKeywordStatics = (params: any): Promise<any> => {
-  return new Promise(resolve => {
+  (params: KeywordDetailListParams) => ListResponse<KeywordDetailListData[]> =
+  // (params) => post('/keyword/detail', params)
+  (params) => new Promise(resolve => {
     resolve({
+      message: 'ok',
       code: 200,
       data: {
-        fm: 60,
-        bw: 70,
-        qc: 134,
-        cate: 234
-      }
-    })
-  })
-}
-
-export const getKeywordRankList = (params: any): Promise<any> => {
-  return new Promise(resolve => {
-    resolve({
-      code: 200,
-      data: {
-        result: Array(10).fill('').map((x,i) => ({
-          key: i,
-          keyword: ['后曲小学桥架','江西鹰潭桥架','八一乡桥架材质'][~~(Math.random() * 3)],
-          rank: ~~(Math.random() * 100),
-          display: [1,2][~~(Math.random() * 2)],
-          product: ['fm','bw','qc'][~~(Math.random() * 3)],
-          search: ['baidu','360','shenma','sougou'][(~~(Math.random() * 3))],
+        totalElements: 100,
+        totalPages: 4,
+        result: Array(15).fill('').map((x,i) => ({
+          device: ~~(Math.random() * 2) + 1,
+          keyword: '水箱和围栏',
+          platformType: ~~(Math.random() * 4) + 1,
+          product: ~~(Math.random() * 6) + 1,
+          ranking: ~~(Math.random() * 10) + 1
         }))
       }
     })
   })
-}
 
-export const getPVData = (params: any): Promise<any> => {
-  return new Promise(resolve => {
-    resolve({
-      code: 200,
-      data: {
-        result: Array(10).fill('').map((x,i) => ({
-          date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
-          pv: ~~(Math.random() * 1000)
-        }))
-      }
-    })
-  })
-}
+// TODO delete mock data
 
 export const getRemainCtal = (params: any): Promise<any> => {
   return new Promise(resolve => {
@@ -147,22 +240,6 @@ export const getRemainCtal = (params: any): Promise<any> => {
       data: {
         all: 216,
         filtered: 112
-      }
-    })
-  })
-}
-
-export const getPVList = (params: any): Promise<any> => {
-  return new Promise(resolve => {
-    resolve({
-      code: 200,
-      data: {
-        result: Array(10).fill('').map((x,i) => ({
-          key: i,
-          pageURL: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
-          ip: '183.21.240.***',
-          time: '2021-01-19 21:10:08'
-        }))
       }
     })
   })

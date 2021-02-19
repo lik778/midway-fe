@@ -1,33 +1,54 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Select, Statistic, DatePicker, Button, Row, Col, Divider } from 'antd'
+import { Form, Row, Col, Divider } from 'antd'
 
 import MainTitle from '@/components/main-title'
+import CountTo from '@/components/count-to'
 import Query from '@/components/search-list'
 import { LineChart } from '@/components/charts'
-import { getPVData, getPVList } from '@/api/report'
 import { flowConfig, pvListConfig } from './config'
+import {
+  getCateFlowOverview,
+  getCateFlowChart,
+  getCateFlowDetail
+} from '@/api/report'
+import {
+  CateFlowOverviewData,
+  CateFlowChartParams,
+  CateFlowChartData,
+  CateFlowDetailParams,
+  FlowDetailData
+} from '@/interfaces/report'
 
 import './index.less'
 
-export default function KeyWordPage(props: any) {
-  const [queryFlowForm] = Form.useForm()
-  const [queryPVForm] = Form.useForm()
-  const [pvDataSource, setPVDataSource] = React.useState([])
+const PageCateFlow: React.FC = (props: any) => {
+  const [overview, setOverview] = useState<CateFlowOverviewData>()
+  const [queryChartForm] = Form.useForm()
   const [chartOptions, setChartOptions] = useState({})
+  const [queryListForm] = Form.useForm()
+  const [flowListDataSource, setFlowListDataSource] = useState<FlowDetailData[]>([])
 
-  const queryFlowList = async (query: any) => {
-    const { code, data } = await getPVData({ page: 1, size: 10 })
+  useEffect(() => {
+    queryOverviewData()
+  }, [])
+
+  const queryOverviewData = async () => {
+    const { code, data } = await getCateFlowOverview()
     if (code === 200) {
-      const { result } = data
-      setChartOptions(genChartOptions(result))
+      setOverview(data)
     }
   }
-
-  const queryPVList = async (query: any) => {
-    const { code, data } = await getPVList(query)
+  const queryFlowList = async (query: CateFlowChartParams) => {
+    const { code, data } = await getCateFlowChart(query)
+    if (code === 200) {
+      setChartOptions(genChartOptions(data))
+    }
+  }
+  const queryPVList = async (query: CateFlowDetailParams) => {
+    const { code, data } = await getCateFlowDetail(query)
     if (code === 200) {
       const { result } = data
-      setPVDataSource(result)
+      setFlowListDataSource(result)
     }
   }
 
@@ -37,13 +58,13 @@ export default function KeyWordPage(props: any) {
       <div className="container">
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <Statistic title="总访问量（PV）" value={98712}/>
+            <CountTo title="总访问量（PV）" value={overview?.totalVisits}/>
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="近 15 天 PV" value={2342}/>
+            <CountTo title="近 15 天 PV" value={overview?.last15DayVisits}/>
           </Col>
           <Col className="statics" span={8}>
-            <Statistic title="近 30 天 PV" value={4785}/>
+            <CountTo title="近 30 天 PV" value={overview?.last30DayVisits}/>
           </Col>
         </Row>
         <Divider />
@@ -52,7 +73,7 @@ export default function KeyWordPage(props: any) {
         <Query
           onQuery={queryFlowList}
           config={flowConfig({
-            form: queryFlowForm
+            form: queryChartForm
           })}
         />
         <LineChart option={chartOptions} />
@@ -62,8 +83,8 @@ export default function KeyWordPage(props: any) {
         <Query
           onQuery={queryPVList}
           config={pvListConfig({
-            form: queryPVForm,
-            dataSource: pvDataSource
+            form: queryListForm,
+            dataSource: flowListDataSource
           })}
         />
       </div>
@@ -71,15 +92,17 @@ export default function KeyWordPage(props: any) {
   )
 }
 
-function genChartOptions(result: any) {
+function genChartOptions(data: CateFlowChartData[]) {
   return {
     xAxis : {
       type: 'category',
-      data: result.map((x: any) => x.date)
+      data: data.map((x: any) => x.date)
     },
     series : [{
-      data: result.map((x: any) => x.pv),
       type: 'bar',
+      data: data.map((x: any) => x.visits),
     }]
   }
 }
+
+export default PageCateFlow
