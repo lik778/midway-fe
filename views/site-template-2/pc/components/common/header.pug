@@ -11,7 +11,7 @@
 					.nav-item
 						a(href=item.content) #{ item.name }
 							if item.name === '产品服务' || item.name === '新闻资讯'
-								.arrow.down
+								.down-arrow
 						if item.name === '产品服务' && productCateListNav
 							.nav-dropdown
 								each productCategory in productCateListNav
