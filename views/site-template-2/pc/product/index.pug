@@ -11,7 +11,6 @@ block content
             include ../components/product/toptab.pug
             - productList = renderData.productList.result
             include ../components/product/product-list.pug
-            +product-list('product-list')
 
             include ../components/pagination.pug
             - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1

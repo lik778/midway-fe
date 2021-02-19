@@ -1,8 +1,11 @@
 import './index.styl';
-import $ from 'jquery'
+import $ from 'jquery';
 import Swiper from 'swiper';
 import { qqModule } from '../components/customer-service/index';
+import { navModule } from '../components/nav'
+
 qqModule()
+navModule()
 
 // 轮播图
 new Swiper('#banner-container .swiper-container', {

@@ -1,3 +1,4 @@
+- const { productCateList: productCateListNav, articleCateList: articleCateListNav } = renderData
 .header-bgc
 	.header.clearfix
 		img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
@@ -6,13 +7,19 @@
 			p(style="display:none") uid：#{person.uid}
 		.nav-right
 			if nav.length > 0
-				a(href=nav[0].content) #{ nav[0].name }
-				if nav.length > 1
-					a(href=nav[1].content) #{ nav[1].name }
-						.nav-arrow
-					if nav.length > 2
-						a(href=nav[2].content) #{ nav[2].name }
-							.nav-arrow
+				each item in nav
+					.nav-item
+						a(href=item.content) #{ item.name }
+							if item.name === '产品服务' || item.name === '新闻资讯'
+								.nav-arrow
+						if item.name === '产品服务' && productCateListNav
+							.nav-dropdown 
+								each productCategory in productCateListNav
+									a.nav-dopdown__item(href=productCategory.urlSuffix) #{ productCategory.name }
+						if item.name === '新闻资讯' && articleCateListNav
+							.nav-dropdown 
+								each articleCategory in articleCateListNav
+									a.nav-dopdown__item(href=articleCategory.urlSuffix) #{ articleCategory.name }
 			//-后端需要增加一个导航
 			a(href="#") 关于我们
 

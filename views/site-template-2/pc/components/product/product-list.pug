@@ -1,11 +1,9 @@
-mixin product-list(page)
-	.product-list
-		if productList && productList.length >0
-			each item in productList
-				a.item-p(href=item.urlSuffix target="_blank")
-					img(src=item.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
-					p #{ item.name }
-					.show-desc 查看详情
-
-
-
+.product-list
+	if productList && productList.length >0
+		each item in productList
+			a.item-p(href=item.urlSuffix target="_blank")
+				img(src=item.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
+				p #{ item.name }
+				.show-desc 查看详情
+	else
+		p.no-content 当前页面暂无内容，敬请期待...
