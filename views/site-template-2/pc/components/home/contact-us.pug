@@ -1,12 +1,12 @@
 .contact-us
     .contact-us__address
-        .contact-us__title 一站式服务有限公司
-        p.contact-us__detail 公司地址：上海市闵行区七莘路901号
-        p.contact-us__detail 服务热线：400-857-8888
-        p.contact-us__detail 微信号：16374578934
+        .contact-us__title #{ company.name }
+        p.contact-us__detail 公司地址：#{ company.address }
+        p.contact-us__detail 服务热线：#{ phone.content }
+        p.contact-us__detail 微信号：#{ weChat.content }
         .baidu-map-wrapper
-          a#baidu-map(href="http://api.map.baidu.com/geocoder?address=上海市闵行区七莘路901号&output=html", target="__blank")
-            .address 上海市闵行区七莘路901号路901号路901号
+          a#baidu-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
+            .address #{ company.address }
             .marker
     .contact-us__message
         .contact-us__title.align-center 留言咨询

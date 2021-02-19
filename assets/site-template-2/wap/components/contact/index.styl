@@ -2,53 +2,37 @@
   position fixed
   bottom 0
   width 100%
-  height 52px
   background #fff
   display flex
-  .sms-box, .wechat-box
-    width 25%
-    height 52px
-    line-height 52px
-    text-align center
-    position relative
-    img
-      vertical-align middle
-    span
-      font-size 12px
-      vertical-align middle
-      color #EF6A31
-    .icon
-      height 12px
-      width 16px
-      margin-right 5px
-  .wechat-box
-    border-left 1px solid #ccc
-    .icon
-      height 16px
-      width 20px
+  align-items: center
+  padding: 10px 15px
+  box-sizing: border-box
+  justify-content: space-between
+  .bx-logo
+    width: 45px
+    height: 45px
+    background: url('//file.baixing.net/202102/f4cc4e3a39f50595a2560b5376152ee0.png') no-repeat center center/100% 
+    margin: 0 10px
+
+  .online-box
   .phone-box
-    float right
-    display flex
-    justify-content center
-    width 50%
-    padding 10px 0
-    background #EF6A31
-    color #fff
-    box-sizing border-box
     a
-      color #fff
-    .tel-icon
-      float left
-      height 25px
-      margin-top 2px
-    .info
-      float left
-      font-size 12px
-      margin-left 10px
-      position relative
-      top -5px
-      p:last-child
-        font-size 16px
+      display: inline-block
+      background-color: #EC2525
+      height: 40px
+      line-height: 40px
+      color: #fff
+      width: 120px
+      text-align: center
+      font-size: 14px
+      border-radius: 2px
+      border: 1px solid transparent
+      box-sizing: border-box
+  .online-box
+    a
+      background-color: #fff
+      color: #EC2525
+      border-color: #EC2525
 
 .dialog
   display none
