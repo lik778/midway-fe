@@ -17,8 +17,11 @@ block content
               +pagination(totalPage, currentPage, `${currentPathname}`)
 
           .sidebar
-              include ../components/sidebar/articles.pug
-              include ../components/sidebar/products.pug
+            - const sidecateList = renderData.articleCateList
+            include ../components/sidebar/cateList.pug
+            +side-cateList('文章分类', sidecateList)
+
+            include ../components/sidebar/products.pug
 
 
 block scripts

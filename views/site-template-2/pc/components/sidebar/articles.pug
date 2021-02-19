@@ -1,9 +1,0 @@
-- const { articleCateList } = renderData
-if articleCateList && articleCateList.length > 0
-  .sidebar-item 
-    .sidebar-item__title
-      span 文章分类
-    .sidebar-item__content 
-      .articles 
-        each item in articleCateList.slice(0, 8)
-          a.article(href=item.urlSuffix) #{ item.name }

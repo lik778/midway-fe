@@ -16,7 +16,12 @@ block content
             include ../components/common/contact-form-companyInfo.pug
         .sidebar
             //-articleCateList暂时没有数据
-            include ../components/sidebar/articles.pug
+            - const { productCateList, articleCateList} = renderData
+            include ../components/sidebar/cateList.pug
+            +side-cateList('产品分类', productCateList)
+            +side-cateList('文章分类', articleCateList)
+
+
 
 block scripts
     :combine(fileName="site-template-2-product-detail-pc.js")

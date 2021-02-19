@@ -1,0 +1,9 @@
+mixin side-cateList(type,list)
+  if list && list.length > 0
+    .sidebar-item
+      .sidebar-item__title
+        span #{ type }
+      .sidebar-item__content
+        .articles
+          each item in list.slice(0, 8)
+            a.article(href=item.urlSuffix) #{ item.name }

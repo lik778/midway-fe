@@ -58,7 +58,10 @@ block content
         .sidebar
             include ../components/sidebar/company-card.pug
             include ../components/sidebar/news-list.pug
-            include ../components/sidebar/articles.pug
+
+            - const sidecateList = renderData.articleCateList
+            include ../components/sidebar/cateList.pug
+            +side-cateList('文章分类', sidecateList)
             include ../components/sidebar/products.pug
 
 block scripts

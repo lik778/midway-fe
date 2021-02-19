@@ -15,7 +15,9 @@ block content
       +pagination(totalPage, currentPage, `${currentPathname}`)
 
     .sidebar
-      include ../components/sidebar/articles.pug
+      - const sidecateList = renderData.articleCateList
+      include ../components/sidebar/cateList.pug
+      +side-cateList('文章分类', sidecateList)
 
 block scripts
   :combine(fileName="site-template-2-news-pc.js")
