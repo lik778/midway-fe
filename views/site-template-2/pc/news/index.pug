@@ -3,14 +3,14 @@ block styles
   :combine(fileName="site-template-2-news-pc.css")
 
 block content
-  include ../components/breadcrumbs.pug
+  include ../components/common/breadcrumbs.pug
 
   .container.clearfix
     .main
       include ../components/news/news-list.pug
       +news-list(renderData.articleList.result)
 
-      include ../components/pagination.pug
+      include ../components/common/pagination.pug
       - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
       +pagination(totalPage, currentPage, `${currentPathname}`)
 

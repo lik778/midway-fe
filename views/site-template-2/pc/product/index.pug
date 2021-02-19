@@ -4,7 +4,7 @@ block styles
     :combine(fileName="site-template-2-product-pc.css")
 
 block content
-    include ../components/breadcrumbs.pug
+    include ../components/common/breadcrumbs.pug
 
     .container.clearfix
         .main
@@ -12,7 +12,7 @@ block content
             - productList = renderData.productList.result
             include ../components/product/product-list.pug
 
-            include ../components/pagination.pug
+            include ../components/common/pagination.pug
             - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
 

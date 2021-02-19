@@ -5,14 +5,14 @@ block styles
 
 block content
     .product-child-page
-      include ../components/breadcrumbs.pug
+      include ../components/common/breadcrumbs.pug
 
       .container.clearfix
           .main
               include ../components/product/toptab.pug
               include ../components/product/product-list.pug
 
-              include ../components/pagination.pug
+              include ../components/common/pagination.pug
               - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
               +pagination(totalPage, currentPage, `${currentPathname}`)
 
