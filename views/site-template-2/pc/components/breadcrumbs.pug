@@ -1,10 +1,10 @@
-.search-crumbs.clearfix
+.search-crumbs
 	p 当前位置：
 	ul
 		each item, index in renderData.bread
 			li
 				if index > 0
-					i &gt;
+					.arrow.right
 				if index != renderData.bread.length-1
 					a(href=item.urlSuffix)  #{item.name}
 				else

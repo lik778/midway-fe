@@ -11,13 +11,13 @@
 					.nav-item
 						a(href=item.content) #{ item.name }
 							if item.name === '产品服务' || item.name === '新闻资讯'
-								.nav-arrow
+								.down.arrow
 						if item.name === '产品服务' && productCateListNav
-							.nav-dropdown 
+							.nav-dropdown
 								each productCategory in productCateListNav
 									a.nav-dopdown__item(href=productCategory.urlSuffix) #{ productCategory.name }
 						if item.name === '新闻资讯' && articleCateListNav
-							.nav-dropdown 
+							.nav-dropdown
 								each articleCategory in articleCateListNav
 									a.nav-dopdown__item(href=articleCategory.urlSuffix) #{ articleCategory.name }
 			//-后端需要增加一个导航
