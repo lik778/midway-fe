@@ -21,6 +21,7 @@
 	- articleList =  renderData.articleList.result
 	+news-box('新闻资讯', articleList)
 	//-这里需要推荐接口
-	+news-box('推荐文章', articleList)
+	- const { articleRecommend } = renderData
+	+news-box('推荐文章', articleRecommend)
 
 

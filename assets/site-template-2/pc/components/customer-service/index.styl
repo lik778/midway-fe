@@ -4,7 +4,7 @@
 	bottom: 50px
 	z-index: 999
 
-	.customer-service__group 
+	.customer-service__group
 		background-color: #fff
 		box-shadow: 0 4px 10px rgba(#000, 0.05)
 
@@ -45,7 +45,7 @@
 					background: url('http://file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png') no-repeat center center/100%
 				&.wechat
 					background: url('http://file.baixing.net/202102/a278452bf26c6a6b4b870c69d2bcd615.png') no-repeat center center/100%
-			
+
 			&-item:hover
 				&::before
 					display: block
@@ -88,6 +88,7 @@
 						text-align: center
 						font-size: 14px
 						margin-bottom: 5px
+						width: 100px
 					.qq-link
 						width: 100px
 						height: 30px
@@ -103,9 +104,13 @@
 						align-items: center
 						justify-content: center
 						cursor: pointer
-						img
-							width: 16px
-							margin-right: 5px
+						> a
+							display: flex
+							align-items: center
+							color: #fff
+							img
+								width: 16px
+								margin-right: 5px
 
 				&__mobile,
 				&__wechat

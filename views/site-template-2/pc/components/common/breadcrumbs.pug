@@ -4,7 +4,7 @@
 		each item, index in renderData.bread
 			li
 				if index > 0
-					.arrow.right
+					.right-arrow
 				if index != renderData.bread.length-1
 					a(href=item.urlSuffix)  #{item.name}
 				else

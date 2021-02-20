@@ -78,4 +78,6 @@ public getNewsDetailData(shopName: string, device: string, params, domain: strin
   return this.requestService.post(`${this.prefixPath}/article/detail`, params,
     this.setPageHeaders(shopName, device, domain));
 }
+
+//public templateMapping
 }

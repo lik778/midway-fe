@@ -1,39 +1,46 @@
 //-在线客服
 .customer-service
-	.customer-service__group 
+	.customer-service__group
 		.service-item
 			.service-logo.qq
 			.service-name QQ交谈
-			.service-modal 
-				.service-modal__qq 
-					.qq-name 客服小张
-					.qq-link
-						img(src="//file.baixing.net/202102/bce82c406d3f290168828ffeb88d063a.png", alt="qq icon")
-						span 联系客服
-				.service-modal__qq 
-					.qq-name 客服小王
-					.qq-link
-						img(src="//file.baixing.net/202102/bce82c406d3f290168828ffeb88d063a.png", alt="qq icon")
-						span 联系客服
+			.service-modal
+				if qq && qq.length>0
+					each item in qq
+						.service-modal__qq
+							.qq-name #{item.name}
+							.qq-link
+								a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
+									img(src="//file.baixing.net/202102/bce82c406d3f290168828ffeb88d063a.png", alt="qq icon")
+									span 联系客服
+				else
+					.service-modal__qq
+						.qq-name 暂未添加QQ
 		.service-item
 			.service-logo.mobile
 			.service-name 联系电话
-			.service-modal 
-				.service-modal__mobile 
+			.service-modal
+				.service-modal__mobile
 					.mobile-title 咨询电话
 					.mobile-number #{ phone.content }
-					.mobile-info 联系人：张先生
+					.mobile-info 联系人：#{ person.name || company.name}
 					.mobile-info 工作时间：7*24
 		.service-item
 			.service-logo.wechat
 			.service-name 联系微信
-			.service-modal 
-				.service-modal__wechat
-					.mobile-title 微信号码
-					.mobile-number #{ weChat.content }
-					textarea#wechat-id-textarea #{weChat.content}
-					.click-copy 复制号码
-	.customer-service__back-to-top 
+			if !weChat.content
+				.service-modal
+					.service-modal__wechat
+						.mobile-title 微信号码
+						.mobile-number #{ weChat.content }
+						textarea#wechat-id-textarea #{weChat.content}
+						.click-copy 复制号码
+			else
+				.service-modal
+					.service-modal__wechat
+						.mobile-title 暂未添加微信号
+
+	.customer-service__back-to-top
 		#back-to-top
 			.back-to-top__icon
 			.back-to-top__text 返回顶部

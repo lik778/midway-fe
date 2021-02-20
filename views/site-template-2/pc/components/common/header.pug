@@ -1,4 +1,3 @@
-- const { productCateList: productCateListNav, articleCateList: articleCateListNav } = renderData
 .header-bgc
 	.header.clearfix
 		img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
@@ -10,16 +9,13 @@
 				each item in nav
 					.nav-item
 						a(href=item.content) #{ item.name }
-							if item.name === '产品服务' || item.name === '新闻资讯'
+							if item.position === 'productListPage' || item.position === 'articleListPage'
 								.down-arrow
-						if item.name === '产品服务' && productCateListNav
+						if item.contentCateBos && item.contentCateBos.length > 0
 							.nav-dropdown
-								each productCategory in productCateListNav
-									a.nav-dopdown__item(href=productCategory.urlSuffix) #{ productCategory.name }
-						if item.name === '新闻资讯' && articleCateListNav
-							.nav-dropdown
-								each articleCategory in articleCateListNav
-									a.nav-dopdown__item(href=articleCategory.urlSuffix) #{ articleCategory.name }
+								each i in item.contentCateBos
+									a.nav-dopdown__item(href=i.urlSuffix) #{ i.name }
+
 			//-后端需要增加一个导航
 			a(href="#") 关于我们
 

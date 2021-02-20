@@ -12,7 +12,7 @@ block content
             img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
             h2 热门产品
         include ../components/home/product-list.pug
-        - hotProductList = [{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"},{"id": 985,"name": "985发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-985.html"},{"id": 986,"name": "986发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-986.html"},{"id": 987,"name": "987发服务987发服务987发服务987发服务987发服务987发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-987.html"}]
+        - hotProductList = renderData.productRecommend
         +product-list('hot', hotProductList)
 
         .block-title
