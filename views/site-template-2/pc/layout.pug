@@ -25,7 +25,7 @@ html
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company, person } = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId } = renderData
-        - companyName = renderData.shopInfo.name
+        - companyName = renderData.basic.company.name
         - nav = renderData.navigation
         block header
             include ./components/common/topbar.pug
