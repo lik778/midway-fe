@@ -3,8 +3,8 @@
 	.product-catogeries
 		if p && p.length > 0
 			each item in p.slice(0,5)
-				a(href=item.urlSuffix) #{ item.name }
+				a(href= item.urlSuffix) #{ item.name }
 			if p.length >= 5
-				a.all-category(href=(nav.filter(x => x.position == "productListPage"))[0].content) 全部分类
+				a.all-category(href= productLink) 全部分类
 
 

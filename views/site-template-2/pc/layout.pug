@@ -27,6 +27,9 @@ html
         - const { currentPage, currentPathname, categoryId, domainType, shopId } = renderData
         - companyName = renderData.basic.company.name
         - nav = renderData.navigation
+        - productLink = (nav.filter(x => x.position == "productListPage"))[0].content
+        - newsLink = (nav.filter(x => x.position == "articleListPage"))[0].content
+        - defaultImg = "//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png"
         block header
             include ./components/common/topbar.pug
             include ./components/common/header.pug

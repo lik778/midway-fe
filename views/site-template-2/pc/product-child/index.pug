@@ -9,7 +9,7 @@ block content
 
       .container.clearfix
           .main
-              include ../components/product/toptab.pug
+              include ../components/product/cateList.pug
               - productList = renderData.productList.result
               include ../components/product/product-list.pug
 
@@ -18,10 +18,9 @@ block content
               +pagination(totalPage, currentPage, `${currentPathname}`)
 
           .sidebar
-            - const sidecateList = renderData.articleCateList
+            - const { articleList } = renderData
             include ../components/sidebar/cateList.pug
-            +side-cateList('文章分类', sidecateList)
-
+            +side-cateList('新闻资讯', articleList.result)
             include ../components/sidebar/products.pug
 
 

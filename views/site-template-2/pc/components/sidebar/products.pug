@@ -1,34 +1,44 @@
 //- 新闻资讯
-.sidebar-item 
+- const { productRecommend: pr } = renderData
+.sidebar-item
   .sidebar-item__title
     span 产品推荐
   #product-swiper.sidebar-item__content
     .swiper-container
       .swiper-wrapper
-        .side-products.swiper-slide
-          .side-product 
-            .product-img 
-              img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png", alt="")
-            .product-desc 妆品灌装机小型全自动医药品灌，装旋盖一体备份
-          .side-product 
-            .product-img 
-              img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png", alt="")
-            .product-desc 妆品灌装机小型全自动医药品灌，装旋盖一体备份
-          .side-product 
-            .product-img 
-              img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png", alt="")
-            .product-desc 妆品灌装机小型全自动医药品灌，装旋盖一体备份
-        .side-products.swiper-slide
-          .side-product 
-            .product-img 
-              img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png", alt="")
-            .product-desc 妆品灌装机小型全自动医药品灌，装旋盖一体备份
-          .side-product 
-            .product-img 
-              img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png", alt="")
-            .product-desc 妆品灌装机小型全自动医药品灌，装旋盖一体备份
-          .side-product 
-            .product-img 
-              img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png", alt="")
-            .product-desc 妆品灌装机小型全自动医药品灌，装旋盖一体备份
+        if pr && pr.length > 0
+          if  pr.length <= 3
+            .side-products.swiper-slide
+              each item in pr.slice(0,3)
+                  a.side-product
+                    .product-img
+                      img(src= item.headImg || defaultImg, alt="productImg")
+                    .product-desc #{ item.name }
+          else
+            .side-products.swiper-slide
+              each item in pr.slice(0,3)
+                  a.side-product
+                    .product-img
+                      img(src= item.headImg || defaultImg, alt="productImg")
+                    .product-desc #{ item.name }
+            .side-products.swiper-slide
+              each item in pr.slice(3,6)
+                  a.side-product
+                    .product-img
+                      img(src= item.headImg || defaultImg, alt="productImg")
+                    .product-desc #{ item.name }
+
+        else
+          .side-products.swiper-slide
+            a.side-product
+              .product-img
+                img(src=defaultImg, alt="defaultImg")
+              .product-desc 产品描述...
+
+          .side-products.swiper-slide
+            a.side-product
+              .product-img
+                img(src=defaultImg, alt="defaultImg")
+              .product-desc 产品描述...
+
     .swiper-pagination
