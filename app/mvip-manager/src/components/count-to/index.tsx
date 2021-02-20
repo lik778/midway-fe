@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Statistic } from 'antd'
 
-import { useAnimation } from '@/hooks'
+import { useAnimation } from '@/hooks/animation'
 
 export default function CountTo(props: any) {
   const {
     title,
     from = 0,
-    time = 500,
+    time = 1950,
     value : to = from,
     // TODO onFinish
   } = props

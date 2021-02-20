@@ -17,12 +17,6 @@ export enum CateProductType {
   POST = 6 // 帖子
 }
 
-// ? why not
-// export enum AllProductType {
-//   ...BaxProductType,
-//   ...CateProductType,
-// }
-
 export enum DisplayType {
   PC = 1,
   WAP = 2,
