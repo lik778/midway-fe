@@ -39,6 +39,7 @@ export class BaseSiteController {
         refer: ''
       }
     })
+    //console.log('data:',data)
     const templateUrl = `site-template-2/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;

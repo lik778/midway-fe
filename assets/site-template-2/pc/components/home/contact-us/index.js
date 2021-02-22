@@ -7,15 +7,22 @@ export const leaveLeads = function() {
             data.contact = $('#tel').val();
             data.content = $('#content').val();
             data.shopName = $('#shop-name').text();
+            if(data.name === '') {
+                alert('请留下您的姓名')
+                return false
+            }
+            if(!/[0-9]{11}/.test(data.contact)) {
+                alert('请填写正确的手机号码')
+                return false
+            }
             $.ajax({
                 url:"/site-api/leads",
                 type:'POST',
                 dataType: 'json',
                 data: data,
                 success:(res) =>{
-                    alert(1)
+                    alert("提交成功")
                 }
-                //(result)=>{"将隐藏的元素显示3秒"}
             });
             //e.preventDefault();
         })
