@@ -18,26 +18,28 @@ import {
   KeywordDetailListParams,
 } from '@/interfaces/report'
 
+// 请求成功回调的 code
+export const SUCCESS = 0
+
 /* 基础请求函数封装 */
 
 type Method = 'post' | 'get'
 
 const REPORT_URL_PREFIX = '/report/api'
 
-const createLocalRequest = (method: Method): ((url: string, data?: any) => Response<any>) => {
-  return (url: string, data?: any): Response<any> => {
-    const { path = '', params = {} } = data || {}
+const createRequest = (method: Method): ((path: string, params?: any) => Response<any>) => {
+  return (path: string, params?: any): Response<any> => {
     return request.post(REPORT_URL_PREFIX, {
       method,
-      path: url + path,
+      path,
       params: method === 'get'
         ? null
         : stringify(params)
     })
   }
 }
-const post = createLocalRequest('post')
-const get = createLocalRequest('get')
+const post = createRequest('post')
+const get = createRequest('get')
 
 /* 业务 API 定义 */
 
@@ -49,55 +51,17 @@ export const reportHealth:
 // 主营流量总览数据
 export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
-  // () => get('/seo/network/overview')
-  () => Promise.resolve({
-    message: 'ok',
-    code: 200,
-    data: {
-      userId: 0,
-      totalVisits: 148,
-      last15DayVisits: 512,
-      last30DayVisits: 380,
-    }
-  })
+  () => get('/seo/network/overview')
 
 // 主营流量统计柱状图
 export const getCateFlowChart:
   (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
-  // (params) => post('/seo/network/statistical', params)
-  (params) => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: Array(30).fill('').map((x,i) => ({
-        date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
-        visits: ~~(Math.random() * 1000)
-      }))
-    })
-  })
+  (params) => post('/seo/network/statistical', params)
 
 // 主营流量详情列表
 export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  // (params) => post('/seo/network/visit-detail', params)
-  (params) => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: {
-        totalElements: 100,
-        totalPages: 4,
-        result: Array(15).fill('').map((x,i) => ({
-          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
-          ip: '182.142.35.***',
-          time: '2021-01-19 21:10:08',
-          keyword: '测试关键词',
-          platform: 1,
-          product: 2,
-        }))
-      }
-    })
-  })
+  (params) => post('/seo/network/visit-detail', params)
 
 // 搜索通流量概览
 export const getBaxFlowOverview:

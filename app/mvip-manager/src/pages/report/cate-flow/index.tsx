@@ -7,6 +7,7 @@ import Query from '@/components/search-list'
 import { LineChart } from '@/components/charts'
 import { flowConfig, pvListConfig } from './config'
 import {
+  SUCCESS,
   getCateFlowOverview,
   getCateFlowChart,
   getCateFlowDetail
@@ -34,19 +35,19 @@ const PageCateFlow: React.FC = (props: any) => {
 
   const queryOverviewData = async () => {
     const { code, data } = await getCateFlowOverview()
-    if (code === 200) {
+    if (code === SUCCESS) {
       setOverview(data)
     }
   }
   const queryFlowList = async (query: CateFlowChartParams) => {
     const { code, data } = await getCateFlowChart(query)
-    if (code === 200) {
+    if (code === SUCCESS) {
       setChartOptions(genChartOptions(data))
     }
   }
   const queryPVList = async (query: CateFlowDetailParams) => {
     const { code, data } = await getCateFlowDetail(query)
-    if (code === 200) {
+    if (code === SUCCESS) {
       const { result } = data
       setFlowListDataSource(result)
     }

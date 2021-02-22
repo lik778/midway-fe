@@ -44,6 +44,10 @@ export const pvListConfig = ({
         moment(new Date()).subtract(1,'months'),
         moment()
       ],
+      format: (value: [moment.Moment, moment.Moment], query: any) => {
+        query.startTime = +value[0]
+        query.endTime = +value[1]
+      },
       required: true
     }
   ],
