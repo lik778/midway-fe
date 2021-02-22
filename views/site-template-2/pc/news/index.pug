@@ -5,7 +5,7 @@ block styles
 block content
   include ../components/common/breadcrumbs.pug
 
-  .container.clearfix
+  .container
     .main
       include ../components/news/news-list.pug
       +news-list(renderData.articleList.result)
@@ -18,6 +18,7 @@ block content
       - const sidecateList = renderData.articleCateList
       include ../components/sidebar/cateList.pug
       +side-cateList('文章分类', sidecateList)
+      include ../components/sidebar/products.pug
 
 block scripts
   :combine(fileName="site-template-2-news-pc.js")

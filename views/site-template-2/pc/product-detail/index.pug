@@ -8,8 +8,7 @@ block content
     .container.clearfix
         include ../components/product-detail/company-top.pug
         include ../components/product-detail/product-recom-title.pug
-        //-- productList = renderData.productRecommend.slice(0,5)
-        - productList = [{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"},{"id": 985,"name": "985发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-985.html"},{"id": 986,"name": "986发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-986.html"},{"id": 987,"name": "987发服务987发服务987发服务987发服务987发服务987发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-987.html"},{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"},{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"},{"id": 984,"name": "回归测试发服务","headImg": "","urlSuffix": "http://shop.baixing.cn/agui/p-984.html"}].slice(0,5)
+        - productList = renderData.productRecommend.slice(0,5)
         include ../components/product/product-list.pug
 
         .main
@@ -17,7 +16,6 @@ block content
             include ../components/common/contact-form-companyInfo.pug
 
         .sidebar
-            //-articleCateList暂时没有数据
             - const { productCateList, articleCateList} = renderData
             include ../components/sidebar/cateList.pug
             +side-cateList('产品分类', productCateList)
