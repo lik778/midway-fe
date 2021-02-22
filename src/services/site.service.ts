@@ -8,6 +8,11 @@ import { LogService } from './log.service';
 export class SiteService {
   private haojingHost: string;
   private prefixPath: string;
+  //定义：后端传的模板id对应的前端模板类型
+  static templateMapping = {
+    "5fb387d2f2db3f6b8e7080e5": "site-template-1",
+    "5fb387d2f2db3f6b8e7080e6": "site-template-2"
+  }
   constructor(
     private readonly httpService: HttpService,
     private readonly requestService: RequestService,
@@ -28,7 +33,7 @@ export class SiteService {
   }
 
   private setPageHeaders(shopName: string, device: string, domain: string): PageHeaderParams {
-    // 测试环境会出现localhost的情况，给一个默认值
+    // 本地开发时，测试环境会出现localhost的情况，给一个默认值，加了名字是跳转到B2B模板
     if (domain === 'localhost') {
       domain = 'agui.shop.baixing.cn'
     }
@@ -90,5 +95,4 @@ public leaveLeads(shopName: string, device: string, params: any, domain: string)
   return this.requestService.post(`${this.prefixPath}/home/message`, params,
   this.setPageHeaders(shopName, device, domain));
 }
-
 }

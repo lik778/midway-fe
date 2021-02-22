@@ -39,8 +39,11 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    //console.log('data:',data)
-    const templateUrl = `site-template-2/${device}/home/index`
+
+    //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
+    //const templateUrl = `site-template-2/${device}/home/index`;
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -68,7 +71,8 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-2/${device}/news/index`;
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -97,7 +101,9 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-2/${device}/news-detail/index`
+
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -119,7 +125,8 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-2/${device}/news/index`;
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -148,7 +155,8 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-2/${device}/product/index`;
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -177,7 +185,8 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-2/${device}/product-detail/index`
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -199,7 +208,8 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-2/${device}/product-child/index`;
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -228,6 +238,7 @@ export class BaseSiteController {
         refer: ''
       }
     })
+    //只有B2B模板有这个页面，因此不用根据模板id判断了
     const templateUrl = `site-template-2/${device}/about/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
