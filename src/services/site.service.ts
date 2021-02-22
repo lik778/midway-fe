@@ -84,10 +84,11 @@ public getAboutPageData(shopName: string, device: string, domain: string): Promi
   return this.requestService.post(`${this.prefixPath}/about/`, {},
     this.setPageHeaders(shopName, device, domain));
 }
-//留言资讯接口
-public leaveLeads(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+
+//留言资讯
+public leaveLeads(shopName: string, device: string, params: any, domain: string): Promise<any> {
   return this.requestService.post(`${this.prefixPath}/home/message`, params,
-    this.setPageHeaders(shopName, device, domain));
+  this.setPageHeaders(shopName, device, domain));
 }
 
 }

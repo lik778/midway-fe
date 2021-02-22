@@ -1,16 +1,14 @@
 import $ from 'jquery';
 export const leaveLeads = function() {
     $(document).ready(function() {
-        console.log(11);
         $(".form-item > button").click((e) => {
-            console.log(22);
             const data = {};
             data.name = $('#name').val();
             data.contact = $('#tel').val();
             data.content = $('#content').val();
-            console.log('data:',data);
+            data.shopName = $('#shop-name').text();
             $.ajax({
-                url:"/api/midway/frontend/home/message",
+                url:"/site-api/leads",
                 type:'POST',
                 dataType: 'json',
                 data: data,
@@ -19,8 +17,7 @@ export const leaveLeads = function() {
                 }
                 //(result)=>{"将隐藏的元素显示3秒"}
             });
-            e.preventDefault();
-
+            //e.preventDefault();
         })
     })
 }

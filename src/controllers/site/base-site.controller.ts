@@ -27,8 +27,6 @@ export class BaseSiteController {
 
     const { data } = await this.midwayApiService.getHomePageData(shopName, device, domain);
 
-    //此处转发留咨接口
-    //this.midwayApiService.leaveLeads(shopName, device, domain)
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {

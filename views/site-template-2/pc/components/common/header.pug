@@ -3,7 +3,9 @@
 		img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="")
 		h3 #{ companyName }
 		if person.uid
-			p(style="display:none") uid：#{person.uid}
+			p(style="display:none" ) uid：#{person.uid}
+		if shopName
+			p#shop-name(style="display:none") #{shopName}
 		.nav-right
 			if nav.length > 0
 				each item in nav
