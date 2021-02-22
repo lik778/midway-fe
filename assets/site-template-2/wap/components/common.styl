@@ -1,0 +1,50 @@
+*
+  padding 0
+  margin 0
+
+html
+  height 100%
+
+body
+  max-width 750px
+  margin 0 auto
+  position relative
+  min-height 100%
+  //设置一个最小高度,主要使他在内容很少（或没有内容）情况下，能保持100％的高度
+a
+  text-decoration none
+
+//解决浮动问题
+.clearfix:after
+	content ""
+	display block
+	height 0
+	clear both
+	visibility hidden
+//解决IE6,7不识别伪元素
+.clearfix
+	zoom  1
+
+.block-title
+  font-size: 18px
+  color: #333
+  font-weight: 400
+  margin: 30px 0
+  text-align: center
+
+.nav
+  background-color: #fff
+  display: flex
+  justify-content: space-between
+  padding: 0 30px
+
+  &-item
+    a
+      display: inline-block
+      padding: 15px 0
+      color: #333
+      font-size: 14px
+      &:hover
+      &.active
+        color: #EC2525
+        border-bottom: 2px solid #EC2525

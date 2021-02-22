@@ -1,0 +1,46 @@
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title #{ renderData.meta.title || "" }
+        meta(name='keywords' content=renderData.meta.keywords || "")
+        meta(name='description' content=renderData.meta.description || "")
+        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+        //-增加53客服并打点
+        - a = renderData.kf53
+        if a && a.length> 0
+            - x = a.lastIndexOf('";var')
+            - s = a.indexOf('src')
+            - hr = a.slice(s, x)
+            if hr.indexOf('?') == -1
+                - kf53Tarcker = a.slice(0,x) + '?u_cust_id=' + renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
+                | !{ kf53Tarcker }
+            else
+                - kf53Tarcker = a.slice(0,x) + '&u_cust_id=' + renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
+                | !{ kf53Tarcker }
+        block styles
+    body
+        //-初始化公共数据
+        - const { qq, phone, weChat } = renderData.basic.contact
+        - const { company } = renderData.basic
+        - const { currentPage, currentPathname, domainType, shopId } = renderData
+        block header
+        block content
+        block footer
+            include ./components/footer
+        block contact
+            include ./components/contact
+
+        .dialog
+            .cancel
+            .dialog-img
+                img(src="//file.baixing.net/201701/574b019ad4b8b9199666c2d8364433f6.png", alt="")
+            h2 请复制以下微信号添加好友
+            p #{weChat.content || "微信号暂未填写"}
+        .mask
+
+    block scripts
+    block append scripts
+        script.
+            window.shopId = #{ shopId };

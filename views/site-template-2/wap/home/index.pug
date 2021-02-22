@@ -1,0 +1,26 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-home-wap.css")
+
+block header
+    include ../components/header
+    include ../components/swiper
+    include ../components/nav
+
+block content
+    h2.block-title 热门推荐
+    include ../components/product-list.pug
+    +product-list('hot')
+
+    h2.block-title 最新产品
+    include ../components/product-list.pug
+    +product-list('')
+
+    include ../components/aboutus.pug
+    include ../components/contact-form.pug
+
+block scripts
+    :combine(fileName="site-template-2-home-wap.js")
+block append scripts
+    script.
+        window.trackSrc = 'home';

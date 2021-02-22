@@ -1,0 +1,25 @@
+section.news-detail__section
+    .news-detail__subtitle 留言咨询
+    .news-detail__contact-us
+        .contact-form
+            include ./contact-form.pug
+        .company-info
+            .info-label 公司信息
+            .info-item
+                span 商家称呼
+                span #{ person.name }
+            .info-item
+                span 联系电话
+                span #{ phone.content }
+            .info-item
+                span 微信号码
+                span #{ weChat.content }
+            if qq && qq.length > 0
+                .info-item
+                    span QQ号码
+                    span #{ qq[0].content }
+                    //- each item in qq
+                    //-     span #{ item.content }
+            .info-item
+                span 公司地址
+                span #{ company.address }
