@@ -1,5 +1,4 @@
 import { request } from '@/api/base'
-import { stringify } from '@/utils'
 import {
   Response,
   ListResponse,
@@ -13,7 +12,6 @@ import {
   BaxFlowChartData,
   BaxFlowDetailParams,
   KeywordOverviewData,
-  // ...
   KeywordDetailListData,
   KeywordDetailListParams,
 } from '@/interfaces/report'
@@ -32,9 +30,7 @@ const createRequest = (method: Method): ((path: string, params?: any) => Respons
     return request.post(REPORT_URL_PREFIX, {
       method,
       path,
-      params: method === 'get'
-        ? null
-        : stringify(params)
+      params: method === 'post' ? params : null
     })
   }
 }
@@ -56,94 +52,32 @@ export const getCateFlowOverview:
 // 主营流量统计柱状图
 export const getCateFlowChart:
   (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
-  (params) => post('/seo/network/statistical', params)
+  (params) => post('/seo/network/statistical', {...params, product: ''})
 
 // 主营流量详情列表
 export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  (params) => post('/seo/network/visit-detail', params)
+  (params) => post('/seo/network/visit-detail', {...params, product: '', platform: ''})
 
 // 搜索通流量概览
 export const getBaxFlowOverview:
   () => Response<BaxFlowOverviewData> =
-  // () => post('/sem/network/overview')
-  () => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: {
-        userId: 312,
-        last15DayShows: 848,
-        last15DayVisits: 492,
-        last30DayShows: 533,
-        last30DayVisits: 3305,
-        totalShows: 2931,
-        totalVisits: 3495,
-      }
-    })
-  })
+  () => get('/sem/network/overview')
 
 // 搜索通流量访问和展现统计
 export const getBaxFlowCharts:
   (params: BaxFlowChartParams) => Response<BaxFlowChartData[]> =
-  // (params) => post('/sem/network/statistical', params)
-  (params) => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: Array(30).fill('').map((x,i) => ({
-        date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
-        shows: ~~(Math.random() * 1000),
-        visits: ~~(Math.random() * 1000)
-      }))
-    })
-  })
+  (params) => post('/sem/network/statistical', {...params, product: ''})
 
 // 搜索通流量访问明细
 export const getBaxFlowVisitDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  // (params) => post('/sem/network/visit-detail', params)
-  (params) => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: {
-        totalElements: 100,
-        totalPages: 4,
-        result: Array(15).fill('').map((x,i) => ({
-          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
-          ip: '182.142.35.***',
-          time: '2021-01-19 21:10:08',
-          keyword: '围挡板设备',
-          platform: 1,
-          product: 2,
-        }))
-      }
-    })
-  })
+  (params) => post('/sem/network/visit-detail', {...params, product: '', platform: ''})
 
 // 搜索通流量展现明细
 export const getBaxFlowShowDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  // (params) => post('/sem/network/show-detail', params)
-  (params) => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: {
-        totalElements: 100,
-        totalPages: 4,
-        result: Array(15).fill('').map((x,i) => ({
-          webPage: `https://shop.baixing.com/yhfangshui/n-${~~(Math.random()*10000)}.html`,
-          ip: '182.142.35.***',
-          time: '2021-01-19 21:10:08',
-          keyword: '围挡板设备',
-          platform: 1,
-          product: 2,
-        }))
-      }
-    })
-  })
+  (params) => post('/sem/network/show-detail', {...params, product: '', platform: ''})
 
 // 关键词概览数据
 export const getKeywordOverview:
@@ -152,24 +86,7 @@ export const getKeywordOverview:
 // 关键词详情
 export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ListResponse<KeywordDetailListData[]> =
-  // (params) => post('/keyword/detail', params)
-  (params) => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: {
-        totalElements: 100,
-        totalPages: 4,
-        result: Array(15).fill('').map((x,i) => ({
-          device: ~~(Math.random() * 2) + 1,
-          keyword: '水箱和围栏',
-          platformType: ~~(Math.random() * 4) + 1,
-          product: ~~(Math.random() * 6) + 1,
-          ranking: ~~(Math.random() * 10) + 1
-        }))
-      }
-    })
-  })
+  (params) => post('/keyword/detail', {...params, product: '', platform: ''})
 
 // TODO delete mock data
 

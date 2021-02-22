@@ -5,7 +5,7 @@ import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
 import CountTo from '@/components/count-to'
 import { PieChart } from '@/components/charts'
-import { getKeywordOverview, getKeywordDetailList } from '@/api/report'
+import { SUCCESS, getKeywordOverview, getKeywordDetailList } from '@/api/report'
 import {
   KeywordOverviewData,
   KeywordDetailListParams,
@@ -27,14 +27,14 @@ export default function KeyWordPage(props: any) {
 
   const queryOverviewData = async () => {
     const { code, data } = await getKeywordOverview()
-    if (code === 200) {
+    if (code === SUCCESS) {
       setOverview(data)
       setChartOptions(genChartOptions(data))
     }
   }
   const queryDetailList = async (query: KeywordDetailListParams) => {
     const { code, data } = await getKeywordDetailList(query)
-    if (code === 200) {
+    if (code === SUCCESS) {
       const { result } = data
       setDetailListData(result)
     }
@@ -57,21 +57,21 @@ export default function KeyWordPage(props: any) {
         </Row>
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <CountTo title="标王投放关键词数" value={overview?.distributionDetail.biaoWang} />
+            <CountTo title="标王投放关键词数" value={overview?.distributionDetail?.biaoWang} />
           </Col>
           <Col className="statics" span={8}>
-            <CountTo title="凤鸣投放关键词数" value={overview?.distributionDetail.fengMing} />
+            <CountTo title="凤鸣投放关键词数" value={overview?.distributionDetail?.fengMing} />
           </Col>
           <Col className="statics" span={8}>
-            <CountTo title="易慧推投放关键词数" value={overview?.distributionDetail.yiHuiTui} />
+            <CountTo title="易慧推投放关键词数" value={overview?.distributionDetail?.yiHuiTui} />
           </Col>
         </Row>
         <Row className="statics-con" gutter={16}>
           <Col className="statics" span={8}>
-            <CountTo title="标王关键词平均排名" value={overview?.rankingDetail.biaoWang} />
+            <CountTo title="标王关键词平均排名" value={overview?.rankingDetail?.biaoWang} />
           </Col>
           <Col className="statics" span={8}>
-            <CountTo title="凤鸣关键词平均排名" value={overview?.rankingDetail.fengMing} />
+            <CountTo title="凤鸣关键词平均排名" value={overview?.rankingDetail?.fengMing} />
           </Col>
         </Row>
         <Divider />
@@ -108,19 +108,19 @@ function genChartOptions(data: KeywordOverviewData) {
         data:[
           {
             name: '凤鸣',
-            value: data?.distributionDetail.fengMing || 1
+            value: data?.distributionDetail?.fengMing || 1
           },
           {
             name: '标王',
-            value: data?.distributionDetail.biaoWang || 1
+            value: data?.distributionDetail?.biaoWang || 1
           },
           {
             name: '易慧推',
-            value: data?.distributionDetail.yiHuiTui || 1
+            value: data?.distributionDetail?.yiHuiTui || 1
           },
           {
             name: '主营',
-            value: data?.distributionDetail.main || 1
+            value: data?.distributionDetail?.main || 1
           }
         ],
       }

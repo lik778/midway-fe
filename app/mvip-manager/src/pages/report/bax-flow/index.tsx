@@ -7,6 +7,7 @@ import Query from '@/components/search-list'
 import { LineChart } from '@/components/charts'
 import { flowConfig, visitListConfig } from './config'
 import {
+  SUCCESS,
   getBaxFlowOverview,
   getBaxFlowCharts,
   getBaxFlowVisitDetail,
@@ -37,26 +38,26 @@ export default function KeyWordPage(props: any) {
 
   const queryOverviewData = async () => {
     const { code, data } = await getBaxFlowOverview()
-    if (code === 200) {
+    if (code === SUCCESS) {
       setOverview(data)
     }
   }
   const queryChartData = async (query: BaxFlowChartParams) => {
     const { code, data } = await getBaxFlowCharts(query)
-    if (code === 200) {
+    if (code === SUCCESS) {
       setChartsOptions(genChartsOptions(data))
     }
   }
   const queryVisitList = async (query: BaxFlowDetailParams) => {
     const { code, data } = await getBaxFlowVisitDetail(query)
-    if (code === 200) {
+    if (code === SUCCESS) {
       const { result } = data
       setVisitListData(result)
     }
   }
   const queryShowList = async (query: BaxFlowDetailParams) => {
     const { code, data } = await getBaxFlowShowDetail(query)
-    if (code === 200) {
+    if (code === SUCCESS) {
       const { result } = data
       setShowListData(result)
     }
