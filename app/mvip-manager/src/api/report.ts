@@ -183,31 +183,7 @@ export const getBaxFlowShowDetail:
 
 // 关键词概览数据
 export const getKeywordOverview:
-  () => Response<KeywordOverviewData> =
-  // () => post('/keyword/overview')
-  () => new Promise(resolve => {
-    resolve({
-      message: 'ok',
-      code: 200,
-      data: {
-        total: 13920,
-        mainTotal: 3293,
-        semTotal: 10394,
-        distributionDetail: {
-          main: 9483,
-          biaoWang: 2352,
-          fengMing: 5938,
-          yiHuiTui: 2852,
-        },
-        rankingDetail: {
-          main: 5079,
-          biaoWang: 4728,
-          fengMing: 5860,
-          yiHuiTui: 3778,
-        },
-      }
-    })
-  })
+  () => Response<KeywordOverviewData> = () => get('/keyword/overview')
 
 // 关键词详情
 export const getKeywordDetailList:

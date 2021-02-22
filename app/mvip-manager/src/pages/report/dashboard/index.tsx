@@ -4,7 +4,7 @@ import MainTitle from '@/components/main-title';
 import { Col, Divider, Row } from 'antd';
 import CountTo from '@/components/count-to';
 import { PieChart, LineChart } from '@/components/charts';
-import { getPublishData, getPVData } from '@/api/report';
+import { getPublishData } from '@/api/report';
 import './index.less';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
@@ -79,11 +79,6 @@ export default (props: any) => {
   useEffect(() => {
     setChartOptions(genChartOptions({ fm: 1, bw: 2, qc: 3, cate: 4 }));
     (async () => {
-      const pvData = await getPVData({ page: 1, size: 10 })
-      if (pvData.code === 200) {
-        const { result } = pvData.data
-        setPVChartOptions(genLineChartOptions(result))
-      }
       const publishData = await getPublishData({ page: 1, size: 10 })
       if (publishData.code === 200) {
         const { result } = publishData.data
