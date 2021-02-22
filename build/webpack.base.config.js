@@ -28,6 +28,7 @@ module.exports = {
     'site-template-2-product-child-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product/index.js'),
     'site-template-2-product-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product-detail/index.js'),
     'site-template-2-news-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news-detail/index.js'),
+    'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js'),
     'site-template-2-home-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/home/index.js'),
     //'site-template-2-product-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product/index.js'),
     //'site-template-2-product-child-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product-child/index.js'),

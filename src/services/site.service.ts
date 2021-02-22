@@ -79,5 +79,15 @@ public getNewsDetailData(shopName: string, device: string, params, domain: strin
     this.setPageHeaders(shopName, device, domain));
 }
 
-//public templateMapping
+//关于我们页面
+public getAboutPageData(shopName: string, device: string, domain: string): Promise<ServiceResponse<ShopComponents>> {
+  return this.requestService.post(`${this.prefixPath}/about/`, {},
+    this.setPageHeaders(shopName, device, domain));
+}
+//留言资讯接口
+public leaveLeads(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+  return this.requestService.post(`${this.prefixPath}/home/message`, params,
+    this.setPageHeaders(shopName, device, domain));
+}
+
 }

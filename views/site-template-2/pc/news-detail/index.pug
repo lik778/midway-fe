@@ -5,7 +5,7 @@ block styles
 block content
     include ./news-detail-swiper.pug
     include ../components/common/breadcrumbs.pug
-    - const { name, contentImg, content, modifiedTime } = renderData.articleInfo
+    - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo
     .container
         .news-detail
             .news-content
@@ -21,39 +21,16 @@ block content
                 //-      span 五金配件
                 //-      span 配件
             .news-nav
-                .news-nav__pre
-                    span 上一篇：
-                    a(href="") 搬家需要提前做哪些准备工作？
-                .news-nav__next
-                    span 下一篇：
-                    a(href="") 搬家需要提前做哪些准备工作？
+                if preArticle
+                    .news-nav__pre
+                        span 上一篇：
+                        a(href= preArticle.url) #{ preArticle.name}
+                if nextArticle
+                    .news-nav__next
+                        span 下一篇：
+                        a(href=nextArticle.url) #{ nextArticle.name }
 
-            section.news-detail__section
-                .news-detail__subtitle 留言咨询
-                .news-detail__contact-us
-                    .contact-form
-                        include ../components/common/contact-form.pug
-                    .company-info
-                        .info-label 公司信息
-                        .info-item
-                            span 商家称呼
-                            span #{ person.name }
-                        .info-item
-                            span 联系电话
-                            span #{ phone.content }
-                        .info-item
-                            span 微信号码
-                            span #{ weChat.content }
-                        if qq && qq.length > 0
-                            .info-item
-                                span QQ号码
-                                span #{ qq[0].content }
-                                //- each item in qq
-                                //-     span #{ item.content }
-                        .info-item
-                            span 公司地址
-                            span #{ company.address }
-
+            include ../components/common/contact-form-companyInfo.pug
 
         .sidebar
             include ../components/sidebar/company-card.pug
