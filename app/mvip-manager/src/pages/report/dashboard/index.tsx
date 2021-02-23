@@ -21,10 +21,10 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
         type: 'pie',
         radius : ['45%', '85%'],
         data:[
-          { value:fm, name:'凤鸣', },
-          { value:bw, name:'标王' },
-          { value:qc, name:'易慧推' },
-          { value:cate, name:'主营' }
+          { value: fm, name:'凤鸣', },
+          { value: bw, name:'标王' },
+          { value: qc, name:'易慧推' },
+          { value: cate, name:'主营' }
         ],
       }
     ]
@@ -44,7 +44,7 @@ function genLineChartOptions(result: any) {
   }
 }
 
-interface TitleProps { value: number; type: string }
+interface TitleProps { value: number | undefined; type: string }
 const Title = ({ value, type }: TitleProps) => {
   interface Item { title: string; subTitle: string; link: string }
   interface Config { [key: string]: Item; }
@@ -68,12 +68,14 @@ export default (props: any) => {
   const [pvChartOptions, setPVChartOptions] = useState({})
 
   useEffect(() => {
-    setChartOptions(genChartOptions({ fm: 1, bw: 2, qc: 3, cate: 4 }));
     (async function() {
       setLoading(true)
       const resData = await getSummaryOverview();
       setLoading(false)
+      const { data: { fengMingKeyword, biaoWangKeyword, mainTotalKeyword, yiHuiTuiKeyword } } = resData
       setOverview(resData.data)
+      setChartOptions(genChartOptions({
+        fm: fengMingKeyword, bw: biaoWangKeyword, qc: yiHuiTuiKeyword, cate: mainTotalKeyword }));
     }())
   }, [])
 
@@ -106,16 +108,14 @@ export default (props: any) => {
             </Col>
           </Row>
           <Divider />
-          <Row className="section">
-            <Col span={12}>
-              <Title value={2851} type="keyword" />
-              <PieChart option={chartOptions} />
-            </Col>
-            <Col span={12}>
-              <Title value={99993} type="pv" />
-              <LineChart option={pvChartOptions} />
-            </Col>
-          </Row>
+          <div>
+            <Title value={overview?.totalKeyword} type="keyword" />
+            <PieChart option={chartOptions} />
+          </div>
+          <div>
+            <Title value={overview?.totalVisits} type="pv" />
+            <LineChart option={pvChartOptions} />
+          </div>
         </div> }
       </div>
     </div>
