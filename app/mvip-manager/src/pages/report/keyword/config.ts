@@ -66,9 +66,9 @@ export const keywordRankListConfig = ({
       },
       {
         title: '搜索引擎',
-        dataIndex: 'platformType',
-        key: 'platformType',
-        render: (_: any, row: KeywordDetailListData) => PlatformLabelMap[row.platformType]
+        dataIndex: 'platform',
+        key: 'platform',
+        render: (_: any, row: KeywordDetailListData) => PlatformLabelMap[row.platform]
       },
       {
         title: '排名',

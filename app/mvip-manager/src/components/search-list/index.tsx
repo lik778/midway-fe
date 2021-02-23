@@ -5,14 +5,17 @@ import InlineForm from '@/components/quick-form'
 import { QueryConfigItem } from '@/components/quick-form/interface'
 
 interface Props {
-  config: any
+  config: {
+    form,
+    dataSource: any[],
+  }
   onQuery: any
   loading?: boolean
 }
 export default function SearchList (props: Props) {
   const { config, onQuery, loading } = props
   const { form, dataSource, query, table } = config
-  const { columns, pagination, ...restTableProps } = table || {}
+  const { columns, pagination = {}, ...restTableProps } = table || {}
 
   const [values, setValues] = useState<any>()
   // fields 会更新两次，一次改变值时，一次校验，所以要等两次结束后才能更新 values
@@ -129,15 +132,15 @@ export default function SearchList (props: Props) {
           dataSource={indexedDataSource}
           bordered
           pagination={{
-            ...pagination,
             ...paginationCountParams,
             ...paginationParams,
             onChange: changePage,
             onShowSizeChange: changePageSize,
+            ...pagination
           }}
           {...restTableProps}
         />
       )}
     </div>
-  )
+  );
 }

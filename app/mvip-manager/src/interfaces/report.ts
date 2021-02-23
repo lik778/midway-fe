@@ -120,7 +120,7 @@ export interface KeywordDetailListParams extends BaseParams, PageParams {
 export interface KeywordDetailListData {
   device: DisplayType;
   keyword: string;
-  platformType: PlatformType;
+  platform: PlatformType;
   product: BaxProductType | CateProductType;
   ranking: number;
 }
