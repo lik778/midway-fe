@@ -2,10 +2,13 @@ import './index.styl';
 import { qqModule } from '../components/customer-service/index';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
-import { navModule } from '../components/nav'
+import { navModule } from '../components/nav';
+import { leaveLeads } from '../components/home/contact-us';
+
 navModule()
 qqModule()
 initializeSidebarProductSwiper()
+leaveLeads()
 
 new Swiper('#news-detail-swiper .swiper-container', {
   //spaceBetween: 30,
