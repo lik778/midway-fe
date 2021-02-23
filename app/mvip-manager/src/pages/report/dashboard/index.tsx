@@ -84,35 +84,36 @@ export default (props: any) => {
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>
-          <h2>账户信息</h2>
-          <Row className="statics-con" gutter={16}>
-            <Col className="statics" span={8}>
-              <CountTo title="总关键词数" value={overview?.totalKeyword}/>
-            </Col>
-            <Col className="statics" span={8}>
-              <CountTo title="总PV" value={overview?.totalVisits}/>
-            </Col>
-            <Col className="statics" span={8}>
-              <CountTo title="主营关键词总数" value={overview?.mainTotalKeyword}/>
-            </Col>
-          </Row>
-          <Row className="statics-con" gutter={16}>
-            <Col className="statics" span={8}>
-              <CountTo title="标王关键词数" value={overview?.biaoWangKeyword}/>
-            </Col>
-            <Col className="statics" span={8}>
-              <CountTo title="凤鸣关键词数" value={overview?.fengMingKeyword}/>
-            </Col>
-            <Col className="statics" span={8}>
-              <CountTo title="易慧推关键词数" value={overview?.yiHuiTuiKeyword}/>
-            </Col>
-          </Row>
-          <Divider />
-          <div>
+          <div className="segment">
+            <h2>账户信息</h2>
+            <Row className="statics-con" gutter={16}>
+              <Col className="statics" span={8}>
+                <CountTo title="总关键词数" value={overview?.totalKeyword}/>
+              </Col>
+              <Col className="statics" span={8}>
+                <CountTo title="总PV" value={overview?.totalVisits}/>
+              </Col>
+              <Col className="statics" span={8}>
+                <CountTo title="主营关键词总数" value={overview?.mainTotalKeyword}/>
+              </Col>
+            </Row>
+            <Row className="statics-con" gutter={16}>
+              <Col className="statics" span={8}>
+                <CountTo title="标王关键词数" value={overview?.biaoWangKeyword}/>
+              </Col>
+              <Col className="statics" span={8}>
+                <CountTo title="凤鸣关键词数" value={overview?.fengMingKeyword}/>
+              </Col>
+              <Col className="statics" span={8}>
+                <CountTo title="易慧推关键词数" value={overview?.yiHuiTuiKeyword}/>
+              </Col>
+            </Row>
+          </div>
+          <div className="segment">
             <Title value={overview?.totalKeyword} type="keyword" />
             <PieChart option={chartOptions} />
           </div>
-          <div>
+          <div className="segment">
             <Title value={overview?.totalVisits} type="pv" />
             <LineChart option={pvChartOptions} />
           </div>

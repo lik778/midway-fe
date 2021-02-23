@@ -1,11 +1,28 @@
 .page-report{
+  .container {
+    position: relative;
+    margin: 16px;
+    padding: unset;
+    background: unset;
+    min-height: calc(100vh - 160px);
+
+    .segment {
+      padding: 30px;
+      background: #fff;
+
+      & > h2:first-child {
+        margin-top: 0;
+      }
+      & + .segment {
+        margin-top: 16px;
+      }
+    }
+  }
+
   h2 {
     margin: 24px 0;
     font-size: 18px;
     font-weight: bold;
-  }
-  .cmpt-search-list + h2 {
-    margin-top: 0;
   }
 
   .statics-con {
