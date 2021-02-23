@@ -2,8 +2,8 @@ import './index.styl';
 import $ from 'jquery';
 import Swiper from 'swiper';
 import { qqModule } from '../components/customer-service/index';
-import { navModule } from '../components/nav'
-import { leaveLeads } from '../components/home/contact-us'
+import { navModule } from '../components/nav';
+import { leaveLeads } from '../components/home/contact-us';
 
 qqModule()
 navModule()
