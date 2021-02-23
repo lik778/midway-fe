@@ -24,7 +24,8 @@ export const leaveLeads = function() {
                     alert("提交成功")
                 }
             });
-            //e.preventDefault();
+            //这里很奇怪，会跳走。先阻止
+            e.preventDefault();
         })
     })
 }
