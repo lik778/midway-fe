@@ -21,8 +21,12 @@ export const leaveLeads = function() {
                 type:'POST',
                 dataType: 'json',
                 data: data,
+                async:true,
                 success:(res) =>{
                     alert("提交成功")
+                },
+                error:(res)=>{
+                    alert(res)
                 }
             });
             //这里很奇怪，会跳走。先阻止
