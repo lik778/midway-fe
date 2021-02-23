@@ -1,7 +1,6 @@
-import moment from 'moment'
-
 import { PlatformLabelMap } from '@/constants/report'
 import { FlowDetailData } from '@/interfaces/report'
+import { getLastMonth, formatDateRange } from '@/utils'
 
 interface Config {
   form: any
@@ -17,14 +16,8 @@ export const flowConfig = ({
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
-      value: [
-        moment(new Date()).subtract(1,'months'),
-        moment()
-      ],
-      format: (value: [moment.Moment, moment.Moment], query: any) => {
-        query.startTime = +value[0]
-        query.endTime = +value[1]
-      },
+      value: getLastMonth(),
+      format: formatDateRange,
       required: true
     }
   ]
@@ -41,14 +34,8 @@ export const visitListConfig = ({
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
-      value: [
-        moment(new Date()).subtract(1,'months'),
-        moment()
-      ],
-      format: (value: [moment.Moment, moment.Moment], query: any) => {
-        query.startTime = +value[0]
-        query.endTime = +value[1]
-      },
+      value: getLastMonth(),
+      format: formatDateRange,
       required: true
     }
   ],

@@ -4,11 +4,9 @@ import { Table, notification } from 'antd'
 import InlineForm from '@/components/quick-form'
 import { QueryConfigItem } from '@/components/quick-form/interface'
 
+// TODO doc props
 interface Props {
-  config: {
-    form,
-    dataSource: any[],
-  }
+  config: any
   onQuery: any
   loading?: boolean
 }

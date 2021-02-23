@@ -1,5 +1,5 @@
-import moment from 'moment'
 import { QueryConfigItem } from '@/components/quick-form/interface'
+import { getLastMonth, formatDateRange } from '@/utils'
 
 interface Config {
   form: any
@@ -16,14 +16,8 @@ export const flowConfig = ({
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
-      value: [
-        moment(new Date()).subtract(1,'months'),
-        moment()
-      ],
-      format: (value: [moment.Moment, moment.Moment], query: any) => {
-        query.startTime = +value[0]
-        query.endTime = +value[1]
-      },
+      value: getLastMonth(),
+      format: formatDateRange,
       required: true
     }
   ]
@@ -40,14 +34,8 @@ export const pvListConfig = ({
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
-      value: [
-        moment(new Date()).subtract(1,'months'),
-        moment()
-      ],
-      format: (value: [moment.Moment, moment.Moment], query: any) => {
-        query.startTime = +value[0]
-        query.endTime = +value[1]
-      },
+      value: getLastMonth(),
+      format: formatDateRange,
       required: true
     }
   ],

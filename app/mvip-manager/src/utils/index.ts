@@ -1,5 +1,6 @@
 import { uploadImgToUpyunReq } from '@/api/haojing';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants';
 
@@ -91,3 +92,20 @@ export const inIframe = (): boolean => {
 }
 
 export const stringify = (params: any): string  => JSON.stringify(params)
+
+// 许多图表组件需要一个默认的选中时间，
+// 默认为上一个月
+export const getLastMonth = () => [
+  moment(moment().format('YYYY-MM-DD')).subtract(1,'months'),
+  moment(moment().format('YYYY-MM-DD'))
+]
+
+// 格式化 ant date-range 时间值，
+// 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天
+export const formatDateRange = (dates = [], query: any) => {
+  if (dates.length === 0) return []
+  const [start, end] = dates
+  query.startTime = String(start.unix())
+  query.endTime = String(end.add(1, 'day').unix())
+  return query
+}
