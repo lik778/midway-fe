@@ -25,7 +25,7 @@ export const keywordRankListConfig = ({
   query: [
     {
       label: '搜索引擎',
-      name: 'search',
+      name: 'platform',
       type: 'select',
       value: '',
       options: [
@@ -47,7 +47,7 @@ export const keywordRankListConfig = ({
     },
     {
       label: '展示端',
-      name: 'mobile',
+      name: 'device',
       type: 'select',
       value: '',
       options: [
@@ -66,9 +66,9 @@ export const keywordRankListConfig = ({
       },
       {
         title: '搜索引擎',
-        dataIndex: 'platformType',
-        key: 'platformType',
-        render: (_: any, row: KeywordDetailListData) => PlatformLabelMap[row.platformType]
+        dataIndex: 'platform',
+        key: 'platform',
+        render: (_: any, row: KeywordDetailListData) => PlatformLabelMap[row.platform]
       },
       {
         title: '排名',

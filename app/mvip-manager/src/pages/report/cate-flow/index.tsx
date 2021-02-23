@@ -50,6 +50,7 @@ const PageCateFlow: React.FC = (props: any) => {
     if (code === SUCCESS) {
       const { result } = data
       setFlowListDataSource(result)
+      return data
     }
   }
 

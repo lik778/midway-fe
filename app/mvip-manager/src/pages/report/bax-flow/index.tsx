@@ -53,6 +53,7 @@ export default function KeyWordPage(props: any) {
     if (code === SUCCESS) {
       const { result } = data
       setVisitListData(result)
+      return data
     }
   }
   const queryShowList = async (query: BaxFlowDetailParams) => {
@@ -60,6 +61,7 @@ export default function KeyWordPage(props: any) {
     if (code === SUCCESS) {
       const { result } = data
       setShowListData(result)
+      return data
     }
   }
 

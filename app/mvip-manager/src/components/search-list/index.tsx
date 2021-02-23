@@ -4,6 +4,7 @@ import { Table, notification } from 'antd'
 import InlineForm from '@/components/quick-form'
 import { QueryConfigItem } from '@/components/quick-form/interface'
 
+// TODO doc props
 interface Props {
   config: any
   onQuery: any
@@ -12,7 +13,7 @@ interface Props {
 export default function SearchList (props: Props) {
   const { config, onQuery, loading } = props
   const { form, dataSource, query, table } = config
-  const { columns, pagination, ...restTableProps } = table || {}
+  const { columns, pagination = {}, ...restTableProps } = table || {}
 
   const [values, setValues] = useState<any>()
   // fields 会更新两次，一次改变值时，一次校验，所以要等两次结束后才能更新 values
@@ -24,6 +25,24 @@ export default function SearchList (props: Props) {
   const [isValid, setIsValid] = useState<boolean>(true)
   const [queryParams, setQueryParams] = useState(null)
   const [indexedDataSource, setIndexedDataSource] = useState(dataSource)
+  const [paginationParams, setPaginationParams] = useState({ current: 1, pageSize: 10 })
+  const [paginationCountParams, setPaginationCountParams] = useState({
+    total: 0,
+    showSizeChanger: false,
+  })
+
+  const changePage = (val: number) => {
+    setPaginationParams({
+      ...paginationParams,
+      current: val,
+    })
+  }
+  const changePageSize = (current: number, size: number) => {
+    setPaginationParams({
+      ...paginationParams,
+      pageSize: size,
+    })
+  }
 
   // 默认给 dataSource 用索引设置 key
   useEffect(() => {
@@ -64,8 +83,32 @@ export default function SearchList (props: Props) {
   }, [changeFieldsCount])
 
   useEffect(() => {
-    isValid && queryParams && onQuery && onQuery(queryParams)
-  }, [queryParams])
+    const triggerQuery = isValid && queryParams && onQuery
+    const params = {
+      ...(queryParams || {}),
+      pageNo: paginationParams.current,
+      pageSize: paginationParams.pageSize,
+    }
+    if (triggerQuery) {
+      const queryRes = onQuery(params)
+      const isAsync = queryRes.then
+      if (isAsync) {
+        queryRes.then((data: any) => {
+          const { totalElements = 0 } = data || {}
+          setPaginationCountParams({
+            ...paginationCountParams,
+            total: totalElements,
+          })
+        })
+      } else {
+        const { totalElements = 0 } = queryRes || {}
+        setPaginationCountParams({
+          ...paginationCountParams,
+          total: totalElements,
+        })
+      }
+    }
+  }, [queryParams, paginationParams])
 
   return (
     <div className="cmpt-search-list">
@@ -85,11 +128,17 @@ export default function SearchList (props: Props) {
           className="cmpt-search-list-table"
           columns={columns}
           dataSource={indexedDataSource}
-          pagination={pagination}
           bordered
+          pagination={{
+            ...paginationCountParams,
+            ...paginationParams,
+            onChange: changePage,
+            onShowSizeChange: changePageSize,
+            ...pagination
+          }}
           {...restTableProps}
         />
       )}
     </div>
-  )
+  );
 }
