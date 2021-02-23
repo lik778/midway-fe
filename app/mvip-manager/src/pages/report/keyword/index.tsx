@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { Form, Row, Col, Divider } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Form, Row, Col } from 'antd'
 
 import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
@@ -45,50 +45,52 @@ export default function KeyWordPage(props: any) {
     <div className="page-report page-report-keyword">
       <MainTitle title="关键词报表" />
       <div className="container">
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={8}>
-            <CountTo title="排名关键词总数" value={overview?.total} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="主营关键词总数" value={overview?.mainTotal} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="搜索通关键词总数" value={overview?.semTotal} />
-          </Col>
-        </Row>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={8}>
-            <CountTo title="标王投放关键词数" value={overview?.distributionDetail?.biaoWang} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="凤鸣投放关键词数" value={overview?.distributionDetail?.fengMing} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="易慧推投放关键词数" value={overview?.distributionDetail?.yiHuiTui} />
-          </Col>
-        </Row>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={8}>
-            <CountTo title="标王关键词平均排名" value={overview?.rankingDetail?.biaoWang} />
-          </Col>
-          <Col className="statics" span={8}>
-            <CountTo title="凤鸣关键词平均排名" value={overview?.rankingDetail?.fengMing} />
-          </Col>
-        </Row>
-        <Divider />
-
-        <h2>关键词统计</h2>
-        <PieChart option={chartOptions} />
-        <Divider />
-
-        <h2>关键词排名明细</h2>
-        <Query
-          onQuery={queryDetailList}
-          config={keywordRankListConfig({
-            form: queryKeywordDetailForm,
-            dataSource: detailListData,
-          })}
-        />
+        <div className="segment">
+          <Row className="statics-con" gutter={16}>
+            <Col className="statics" span={8}>
+              <CountTo title="排名关键词总数" value={overview?.total} />
+            </Col>
+            <Col className="statics" span={8}>
+              <CountTo title="主营关键词总数" value={overview?.mainTotal} />
+            </Col>
+            <Col className="statics" span={8}>
+              <CountTo title="搜索通关键词总数" value={overview?.semTotal} />
+            </Col>
+          </Row>
+          <Row className="statics-con" gutter={16}>
+            <Col className="statics" span={8}>
+              <CountTo title="标王投放关键词数" value={overview?.distributionDetail?.biaoWang} />
+            </Col>
+            <Col className="statics" span={8}>
+              <CountTo title="凤鸣投放关键词数" value={overview?.distributionDetail?.fengMing} />
+            </Col>
+            <Col className="statics" span={8}>
+              <CountTo title="易慧推投放关键词数" value={overview?.distributionDetail?.yiHuiTui} />
+            </Col>
+          </Row>
+          <Row className="statics-con" gutter={16}>
+            <Col className="statics" span={8}>
+              <CountTo title="标王关键词平均排名" value={overview?.rankingDetail?.biaoWang} />
+            </Col>
+            <Col className="statics" span={8}>
+              <CountTo title="凤鸣关键词平均排名" value={overview?.rankingDetail?.fengMing} />
+            </Col>
+          </Row>
+        </div>
+        <div className="segment">
+          <h2>关键词统计</h2>
+          <PieChart option={chartOptions} />
+        </div>
+        <div className="segment">
+          <h2>关键词排名明细</h2>
+          <Query
+            onQuery={queryDetailList}
+            config={keywordRankListConfig({
+              form: queryKeywordDetailForm,
+              dataSource: detailListData,
+            })}
+          />
+        </div>
       </div>
     </div>
   )

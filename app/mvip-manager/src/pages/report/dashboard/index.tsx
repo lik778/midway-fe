@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
-import { Col, Divider, Row } from 'antd';
+import { Col, Row } from 'antd';
 import CountTo from '@/components/count-to';
 import { PieChart, LineChart } from '@/components/charts';
 import { getPublishData } from '@/api/report';
@@ -89,53 +89,57 @@ export default (props: any) => {
   return <div className='page-report page-report-keyword'>
       <MainTitle title="总览"/>
       <div className="container">
-        <h2>账户信息</h2>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={6}>
-            <CountTo title="总关键词数" value={98712}/>
-          </Col>
-          <Col className="statics" span={6}>
-            <CountTo title="总PV" value={2342}/>
-          </Col>
-          <Col className="statics" span={6}>
-            <CountTo title="总PV" value={112}/>
-          </Col>
-          <Col className="statics" span={6}>
-            <CountTo title="总发布数" value={112}/>
-          </Col>
-        </Row>
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={6}>
-            <CountTo title="主营关键词总数" value={1638}/>
-          </Col>
-          <Col className="statics" span={6}>
-            <CountTo title="标王关键词数" value={7}/>
-          </Col>
-          <Col className="statics" span={6}>
-            <CountTo title="凤鸣关键词数" value={6}/>
-          </Col>
-          <Col className="statics" span={6}>
-            <CountTo title="易慧推关键词数" value={1200}/>
-          </Col>
-        </Row>
-        <Divider />
-        <Row className="section">
-          <Col span={12}>
-            <Title value={2851} type="keyword" />
-            <PieChart option={chartOptions} />
-          </Col>
-          <Col span={12}>
-            <Title value={99993} type="pv" />
-            <LineChart option={pvChartOptions} />
-          </Col>
-        </Row>
-        <Divider />
-        <Row className="section">
-          <Col span={24}>
-            <Title value={99993} type="publish" />
-            <LineChart option={publishChartOptions} />
-          </Col>
-        </Row>
+        <div className="segment">
+          <h2>账户信息</h2>
+          <Row className="statics-con" gutter={16}>
+            <Col className="statics" span={6}>
+              <CountTo title="总关键词数" value={98712}/>
+            </Col>
+            <Col className="statics" span={6}>
+              <CountTo title="总PV" value={2342}/>
+            </Col>
+            <Col className="statics" span={6}>
+              <CountTo title="总PV" value={112}/>
+            </Col>
+            <Col className="statics" span={6}>
+              <CountTo title="总发布数" value={112}/>
+            </Col>
+          </Row>
+          <Row className="statics-con" gutter={16}>
+            <Col className="statics" span={6}>
+              <CountTo title="主营关键词总数" value={1638}/>
+            </Col>
+            <Col className="statics" span={6}>
+              <CountTo title="标王关键词数" value={7}/>
+            </Col>
+            <Col className="statics" span={6}>
+              <CountTo title="凤鸣关键词数" value={6}/>
+            </Col>
+            <Col className="statics" span={6}>
+              <CountTo title="易慧推关键词数" value={1200}/>
+            </Col>
+          </Row>
+        </div>
+        <div className="segm">
+          <Row className="section">
+            <Col span={12}>
+              <Title value={2851} type="keyword" />
+              <PieChart option={chartOptions} />
+            </Col>
+            <Col span={12}>
+              <Title value={99993} type="pv" />
+              <LineChart option={pvChartOptions} />
+            </Col>
+          </Row>
+        </div>
+        <div className="segment">
+          <Row className="section">
+            <Col span={24}>
+              <Title value={99993} type="publish" />
+              <LineChart option={publishChartOptions} />
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
 }

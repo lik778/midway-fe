@@ -35,46 +35,48 @@ export default function KeyWordPage(props: any) {
     <div className='page-report page-report-cate-flow'>
       <MainTitle title="发布报表"/>
       <div className="container">
-        <Row className="statics-con" gutter={16}>
-          <Col className="statics" span={6}>
-            <Statistic title="总访问量（PV）" value={98712}/>
-          </Col>
-          <Col className="statics" span={1}>
-            <Divider type='vertical' />
-          </Col>
-          <Col className="statics" span={4}>
-            <Statistic title="总帖子数" value={10514}/>
-          </Col>
-          <Col className="statics" span={4}>
-            <Statistic title="总问答数" value={1129}/>
-          </Col>
-          <Col className="statics" span={4}>
-            <Statistic title="总店铺文章数" value={6610}/>
-          </Col>
-          <Col className="statics" span={4}>
-            <Statistic title="总店铺产品数" value={13}/>
-          </Col>
-        </Row>
-        <Divider />
-
-        <h2>发布统计</h2>
-        <Query
-          onQuery={queryPublish}
-          config={publishConfig({
-            form: queryFlowForm
-          })}
-        />
-        <LineChart option={chartOptions} />
-        <Divider />
-
-        <h2>发布明细</h2>
-        <Query
-          onQuery={queryPublishDetails}
-          config={publishListConfig({
-            form: queryPVForm,
-            dataSource: pvDataSource
-          })}
-        />
+        <div className="segment">
+          <Row className="statics-con" gutter={16}>
+            <Col className="statics" span={6}>
+              <Statistic title="总访问量（PV）" value={98712}/>
+            </Col>
+            <Col className="statics" span={1}>
+              <Divider type='vertical' />
+            </Col>
+            <Col className="statics" span={4}>
+              <Statistic title="总帖子数" value={10514}/>
+            </Col>
+            <Col className="statics" span={4}>
+              <Statistic title="总问答数" value={1129}/>
+            </Col>
+            <Col className="statics" span={4}>
+              <Statistic title="总店铺文章数" value={6610}/>
+            </Col>
+            <Col className="statics" span={4}>
+              <Statistic title="总店铺产品数" value={13}/>
+            </Col>
+          </Row>
+        </div>
+        <div className="segment">
+          <h2>发布统计</h2>
+          <Query
+            onQuery={queryPublish}
+            config={publishConfig({
+              form: queryFlowForm
+            })}
+          />
+          <LineChart option={chartOptions} />
+        </div>
+        <div className="segment">
+          <h2>发布明细</h2>
+          <Query
+            onQuery={queryPublishDetails}
+            config={publishListConfig({
+              form: queryPVForm,
+              dataSource: pvDataSource
+            })}
+          />
+        </div>
       </div>
     </div>
   )
