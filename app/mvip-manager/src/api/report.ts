@@ -1,4 +1,3 @@
-import { request } from '@/api/base'
 import {
   Response,
   ListResponse,
@@ -13,11 +12,34 @@ import {
   BaxFlowDetailParams,
   KeywordOverviewData,
   KeywordDetailListData,
-  KeywordDetailListParams,
-} from '@/interfaces/report'
+  KeywordDetailListParams, SummaryOverviewData,
+} from '@/interfaces/report';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { errorMessage } from '@/components/message';
 
 // 请求成功回调的 code
 export const SUCCESS = 0
+
+const request = axios.create({
+  timeout: 10000, // request timeout  设置请求超时时间
+  responseType: "json",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json;charset=utf-8"
+  }
+})
+
+request.interceptors.response.use((res: AxiosResponse<any>) => {
+  if (res.data && res.data.code === 0) {
+    return Promise.resolve(res.data)
+  } else {
+    errorMessage('当前网络异常，请稍后重试', 0)
+    return Promise.reject(res.data)
+  }
+}, (err: AxiosError) => {
+  return Promise.reject(err.response && err.response.data)
+})
+
 
 /* 基础请求函数封装 */
 
@@ -43,6 +65,11 @@ const get = createRequest('get')
 export const reportHealth:
   () => Response<string> =
   () => get('/health')
+
+// 概览详情
+export const getSummaryOverview:
+  () => Response<SummaryOverviewData> =
+  () => get('/summary/overview')
 
 // 主营流量总览数据
 export const getCateFlowOverview:

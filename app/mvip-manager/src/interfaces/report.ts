@@ -35,6 +35,16 @@ export interface PageParams {
   pageSize: number;
 }
 
+export interface SummaryOverviewData {
+  biaoWangKeyword: number;
+  fengMingKeyword: number;
+  mainTotalKeyword: number;
+  searchTotalKeyword: number;
+  totalKeyword: number;
+  totalVisits: number;
+  yiHuiTuiKeyword: number;
+}
+
 export interface CateFlowOverviewData extends BaseParams {
   totalVisits: number;
   last15DayVisits: number;
