@@ -1,0 +1,25 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-news-wap.css")
+
+block header
+    include ../components/header
+    include ../components/swiper
+    include ../components/nav
+
+block content
+    //-- const cateList = renderData.articleCateList
+    //-include ../components/toptab
+
+    //-include ../components/news-list
+
+    //-- const { totalPage } = renderData.articleList
+    //-include ../components/pagination
+    //-+pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+
+block scripts
+    :combine(fileName="site-template-2-news-wap.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'listing';
