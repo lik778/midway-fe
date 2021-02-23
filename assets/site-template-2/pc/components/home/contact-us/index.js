@@ -2,6 +2,7 @@ import $ from 'jquery';
 export const leaveLeads = function() {
     $(document).ready(function() {
         $(".form-item > button").click((e) => {
+            e.preventDefault();
             const data = {};
             data.name = $('#name').val();
             data.contact = $('#tel').val();
@@ -29,8 +30,6 @@ export const leaveLeads = function() {
                     alert(res)
                 }
             });
-            //这里很奇怪，会跳走。先阻止
-            //e.preventDefault();
         })
     })
 }
