@@ -37,6 +37,7 @@ export default function KeyWordPage(props: any) {
     if (code === SUCCESS) {
       const { result } = data
       setDetailListData(result)
+      return data
     }
   }
 
