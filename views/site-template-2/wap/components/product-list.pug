@@ -1,53 +1,18 @@
-//- .product-list
-//- 	- const productList= renderData.productList.result
-//- 		//-默认每页最多展示10条
-//- 		ul
-//- 			if productList && productList.length>0
-//- 				each item in productList
-//- 					li
-//- 						a(href=item.urlSuffix)
-//- 							if item.headImg
-//- 								img(src=item.headImg, alt="")
-//- 							else
-//- 								img(src="//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png")
-//- 							.rec-text #{item.name}
-
-//- 			else
-//- 				p 当前页面暂无内容，敬请期待...
-mixin product-list(type)
+mixin product-list(type, productList)
+	- hotIcon = "//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png"
 	.products
-		.product
-			.product__img
-				img(src='//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
-				if type === 'hot'
-					img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
-			.product__desc
-				p 妆品灌装机小型全自动药品灌装旋盖一体…
-		.product
-			.product__img
-				img(src='//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
-				if type === 'hot'
-					img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
-			.product__desc
-				p 妆品灌装机小型全自动药品灌装旋盖一体…
-		.product
-			.product__img
-				img(src='//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
-				if type === 'hot'
-					img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
-			.product__desc
-				p 妆品灌装机小型全自动药品灌装旋盖一体…
-		.product
-			.product__img
-				img(src='//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
-				if type === 'hot'
-					img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
-			.product__desc
-				p 妆品灌装机小型全自动药品灌装旋盖一体…
-		.product
-			.product__img
-				img(src='//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png')
-				if type === 'hot'
-					img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
-			.product__desc
-				p 妆品灌装机小型全自动药品灌装旋盖一体…
+		if productList && productList.length >0
+			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,6)
+				a.product(href=item.urlSuffix)
+					.product__img
+						img(src=item.headImg || defaultImg)
+						if type === 'hot'
+							img.hot-icon(src=hotIcon)
+					p #{ item.name }
+		else
+			.product
+				.product__img
+					img(src=defaultImg)
+					if type === 'hot'
+						img.hot-icon(src=hotIcon)
+				p 产品描述...

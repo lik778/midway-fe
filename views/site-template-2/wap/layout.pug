@@ -25,12 +25,16 @@ html
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
         - const { currentPage, currentPathname, domainType, shopId } = renderData
+        - defaultImg = "//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png"
         block header
+            include ./components/header
+            include ./components/swiper
+            include ./components/nav
         block content
         block footer
             include ./components/footer
-        block contact
-            include ./components/contact
+        block footer-contact
+            include ./components/footer-contact
 
         .dialog
             .cancel

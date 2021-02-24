@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker';
 
-export const weixinModule = function(){
+export const footerContactModule = function(){
 	//等待DOM 结构加载完成，然后再执行操作
 	$(document).ready(function(){
 		$(".wechat-box").click(function(){
