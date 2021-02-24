@@ -102,8 +102,8 @@ export default function KeyWordPage(props: any) {
             })}
           />
           <LineChart option={chartsOptions[0]} />
-          <h2>展现量统计</h2>
-          <LineChart option={chartsOptions[1]} />
+          {/* <h2>展现量统计</h2>
+          <LineChart option={chartsOptions[1]} /> */}
         </div>
         <div className="segment">
           <h2>访问明细</h2>

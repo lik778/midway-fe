@@ -3,6 +3,19 @@ import ReactEcharts from 'echarts-for-react'
 
 import './index.less'
 
+// simple deepclone
+function deepClone (source: any) {
+  const targetObj: any = source instanceof Array ? [] : {}
+  Object.keys(source).forEach((keys) => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = deepClone(source[keys])
+    } else {
+      targetObj[keys] = source[keys]
+    }
+  })
+  return targetObj
+}
+
 // TODO split config info files
 
 const color = [
@@ -35,7 +48,8 @@ const lineOptions = {
     containLabel: true
   },
   yAxis: {
-    type: 'value'
+    type: 'value',
+    minInterval: 1
   },
   xAxis: {
     type: 'value'
@@ -67,9 +81,12 @@ export default function Chart (props: any) {
   const [washedOptions, setWashedOptions] = useState(null)
 
   useEffect(() => {
-    const opts = Object.assign({}, defaultOptions)
-    const washed = Object.assign(opts, option)
-    setWashedOptions(washed)
+    console.log("option: ", option);
+    const opts = Object.assign(
+      deepClone(defaultOptions),
+      option
+    )
+    setWashedOptions(opts)
   }, [option])
 
   return <>
