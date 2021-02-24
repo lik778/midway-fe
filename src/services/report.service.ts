@@ -30,19 +30,16 @@ export class ReportService {
     const { path } = input
     // tips: 在系统中userID数据的获取
     // const mixObj = { userId: (req.cookies && req.cookies[COOKIE_USER_KEY]) };
-    const mixObj = { userId: 4189197 };
+    const mixObj = { userId: 230264463 };
     params = params == null ? mixObj : Object.assign(params, mixObj)
     const method = input.method.toLocaleLowerCase()
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${this.report_base}${path}`, params, this.setHeader());
-        break;
       case 'post':
         return this.requestService.post(`${this.host}${this.report_base}${path}`, params, this.setHeader());
-        break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
-        break;
     }
   }
 }
