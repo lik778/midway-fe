@@ -2,16 +2,10 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-2-news-wap.css")
 
-//-block header
-//-    include ../components/header
-//-    include ../components/swiper
-//-    include ../components/nav
-
 block content
-    //-- const cateList = renderData.articleCateList
-    //-include ../components/toptab
-
-    //-include ../components/news-list
+    - const cateList = renderData.articleCateList
+    include ../components/toptab
+    include ../components/news-list
 
     //-- const { totalPage } = renderData.articleList
     //-include ../components/pagination

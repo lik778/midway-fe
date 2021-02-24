@@ -1,10 +1,12 @@
 .news-list
     - const newsList= renderData.articleList.result
     if newsList && newsList.length >0
-        ul.item
-            each item in newsList
-                li
-                    a(href=item.urlSuffix)
-                        p #{item.name}
+        each item in newsList
+            a.item(href=item.urlSuffix)
+                h3 #{ item.name }
+                p #{ dateFormat(item.modifiedTime) }
+                .text #{ item.limitText }
+
     else
-        p 当前页面暂无内容，敬请期待...
+        include ./default-content.pug
+        +default-content("")

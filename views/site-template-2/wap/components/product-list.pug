@@ -1,7 +1,7 @@
 mixin product-list(type, productList)
 	- hotIcon = "//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png"
-	.products
-		if productList && productList.length >0
+	if productList && productList.length >0
+		.products
 			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,6)
 				a.product(href=item.urlSuffix)
 					.product__img
@@ -9,10 +9,6 @@ mixin product-list(type, productList)
 						if type === 'hot'
 							img.hot-icon(src=hotIcon)
 					p #{ item.name }
-		else
-			.product
-				.product__img
-					img(src=defaultImg)
-					if type === 'hot'
-						img.hot-icon(src=hotIcon)
-				p 产品描述...
+	else
+		include ./default-content.pug
+		+default-content("product")

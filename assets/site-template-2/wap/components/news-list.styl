@@ -2,23 +2,40 @@
     width 100%
     margin-top 18px
     padding-bottom 13px
-    line-height 60px
     background-color #fff
-    ul
-        margin 0 20px
-        //min-height calc(100% - 470px)
-        li
-            list-style none
-            border-bottom 1px dashed #ddd
-            a
-                text-decoration none
-                p
-                    letter-spacing 0
-                    color #333
-                    font-size 16px
-                    overflow hidden
-                    white-space nowrap
-                    text-overflow ellipsis
+    padding-bottom 65px
+    a
+        display block
+        font-size 14px
+        border-bottom 1px solid #E2E2E2
+        padding 22px 16px 19px
+        &:last-child
+            border-bottom none
+        p
+            font-size 12px
+            color #999
+            margin 12px 0 8px
+        > .text
+            color #666
+            overflow hidden
+            white-space nowrap
+            text-overflow ellipsis
+            position relative
+            padding-right 15px
+            &:after
+                content ""
+                width 8px
+                height 8px
+                border 1px solid #666
+                border-left none
+                border-bottom none
+                transform rotate(45deg)
+                position absolute
+                top calc(50% - 5px)
+                right 3px
+
+
+
 
 
 
