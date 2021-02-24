@@ -106,19 +106,17 @@ export interface BaxFlowDetailParams extends BaseParams, PageParams {
   product: BaxProductType;
 }
 
-export interface keywordOverviewProductDetail {
-  main: number;
-  biaoWang: number;
-  fengMing: number;
-  yiHuiTui: number;
-}
 
 export interface KeywordOverviewData {
   total: number;
   mainTotal: number;
   semTotal: number;
-  distributionDetail: keywordOverviewProductDetail;
-  rankingDetail: keywordOverviewProductDetail;
+  biaoWangKeyword: number;
+  biaoWangRanking: number;
+  fengMingKeyword: number;
+  fengMingRanking: number;
+  yiHuiTuiKeyword: number;
+  yiHuiTuiRanking: number;
 }
 
 export interface KeywordDetailListParams extends BaseParams, PageParams {

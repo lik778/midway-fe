@@ -2,7 +2,7 @@ import {
   PlatformType,
   BaxProductType,
   CateProductType,
-  DisplayType,
+  DisplayType, ReportProductType,
 } from '@/enums/report';
 
 export const PlatformLabelMap = {
@@ -27,4 +27,11 @@ export const CateProductLabelMap = {
 export const DisplayLabelMap = {
   [DisplayType.PC]: '电脑端',
   [DisplayType.WAP]: '手机端',
+}
+
+export const ReportLinkMap: any = {
+  [ReportProductType.CATE]: '/a/vip?src=datacenter',
+  [ReportProductType.BIAOWANG]: '/a/quanwangtong?src=datacenter',
+  [ReportProductType.FENGMING]: '/a/quanwangtong?src=datacenter',
+  [ReportProductType.YIHUITUI]: '/a/yihuitui?src=datacenter'
 }

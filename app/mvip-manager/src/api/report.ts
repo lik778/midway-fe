@@ -118,7 +118,7 @@ export const getKeywordOverview:
 // 关键词详情
 export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ListResponse<KeywordDetailListData[]> =
-  (params) => post('/keyword/detail', {...params, product: '', platform: ''})
+  (params) => post('/keyword/detail', params)
 
 // TODO delete mock data
 

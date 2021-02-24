@@ -32,7 +32,6 @@ export const keywordRankListConfig = ({
         { label: '全部', value: '' },
         ...SearchEngineOptions
       ],
-      required: true
     },
     {
       label: '所属产品',
@@ -43,7 +42,6 @@ export const keywordRankListConfig = ({
         { label: '全部', value: '' },
         ...ProductOptions
       ],
-      required: true
     },
     {
       label: '展示端',
@@ -54,7 +52,6 @@ export const keywordRankListConfig = ({
         { label: '全部', value: '' },
         ...DisplayOptions
       ],
-      required: true
     },
   ],
   table: {

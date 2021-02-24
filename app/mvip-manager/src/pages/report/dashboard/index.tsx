@@ -8,6 +8,7 @@ import { PieChart, LineChart } from '@/components/charts';
 import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
 import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
 import './index.less';
+import { ReportProductType } from '@/enums/report';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
@@ -21,10 +22,10 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
         type: 'pie',
         radius : ['45%', '85%'],
         data:[
-          { value: fm, name:'凤鸣', },
-          { value: bw, name:'标王' },
-          { value: qc, name:'易慧推' },
-          { value: cate, name:'主营' }
+          { value: fm || 0, name:'凤鸣', },
+          { value: bw || 0, name:'标王' },
+          { value: qc || 0, name:'易慧推' },
+          { value: cate || 0, name:'主营' }
         ],
       }
     ]
@@ -96,18 +97,18 @@ export default (props: any) => {
                 <CountTo title="总PV" value={overview?.totalVisits}/>
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="主营关键词总数" value={overview?.mainTotalKeyword}/>
+                <CountTo title="主营关键词数" type={ReportProductType.CATE} value={overview?.mainTotalKeyword}/>
               </Col>
             </Row>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
-                <CountTo title="标王关键词数" value={overview?.biaoWangKeyword}/>
+                <CountTo title="标王关键词数" type={ReportProductType.BIAOWANG} value={overview?.biaoWangKeyword}/>
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="凤鸣关键词数" value={overview?.fengMingKeyword}/>
+                <CountTo title="凤鸣关键词数" type={ReportProductType.FENGMING} value={overview?.fengMingKeyword}/>
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="易慧推关键词数" value={overview?.yiHuiTuiKeyword}/>
+                <CountTo title="易慧推关键词数" type={ReportProductType.YIHUITUI} value={overview?.yiHuiTuiKeyword}/>
               </Col>
             </Row>
           </div>

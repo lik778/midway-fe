@@ -21,3 +21,10 @@ export enum DisplayType {
   PC = 1,
   WAP = 2,
 }
+
+export enum ReportProductType {
+  CATE = 'cate',
+  BIAOWANG = 'biaowang',
+  FENGMING = 'fengming',
+  YIHUITUI = 'yihuitui'
+}
