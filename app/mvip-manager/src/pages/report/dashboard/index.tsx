@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Divider, Row } from 'antd';
+import { Col, Row } from 'antd';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
 import CountTo from '@/components/count-to';
 import { PieChart, LineChart } from '@/components/charts';
-import { getSummaryOverview } from '@/api/report';
-import { SummaryOverviewData } from '@/interfaces/report';
+import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
+import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
 import './index.less';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
@@ -31,14 +31,14 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
   }
 }
 
-function genLineChartOptions(result: any) {
+function genLineChartOptions(result: FlowChartData[]) {
   return {
     xAxis : {
       type: 'category',
-      data: result.map((x: any) => x.date)
+      data: result.map((x: FlowChartData) => x.date)
     },
     series : [{
-      data: result.map((x: any) => x.pv),
+      data: result.map((x: FlowChartData) => x.visits),
       type: 'bar',
     }]
   }
@@ -70,10 +70,12 @@ export default (props: any) => {
   useEffect(() => {
     (async function() {
       setLoading(true)
-      const resData = await getSummaryOverview();
+      const summaryOverviewData = await getSummaryOverviewData();
+      const summaryFlowData = await getSummaryFlowData();
       setLoading(false)
-      const { data: { fengMingKeyword, biaoWangKeyword, mainTotalKeyword, yiHuiTuiKeyword } } = resData
-      setOverview(resData.data)
+      const { data: { fengMingKeyword, biaoWangKeyword, mainTotalKeyword, yiHuiTuiKeyword } } = summaryOverviewData
+      setOverview(summaryOverviewData.data)
+      setPVChartOptions(genLineChartOptions(summaryFlowData.data))
       setChartOptions(genChartOptions({
         fm: fengMingKeyword, bw: biaoWangKeyword, qc: yiHuiTuiKeyword, cate: mainTotalKeyword }));
     }())

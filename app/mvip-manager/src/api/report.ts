@@ -12,7 +12,7 @@ import {
   BaxFlowDetailParams,
   KeywordOverviewData,
   KeywordDetailListData,
-  KeywordDetailListParams, SummaryOverviewData,
+  KeywordDetailListParams, SummaryOverviewData, FlowChartData,
 } from '@/interfaces/report';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { errorMessage } from '@/components/message';
@@ -66,10 +66,15 @@ export const reportHealth:
   () => Response<string> =
   () => get('/health')
 
-// 概览详情
-export const getSummaryOverview:
+// 总览概览
+export const getSummaryOverviewData:
   () => Response<SummaryOverviewData> =
   () => get('/summary/overview')
+
+// 总览汇总流量统计
+export const getSummaryFlowData:
+  () => Response<FlowChartData[]> =
+  () => get('/summary/statistical')
 
 // 主营流量总览数据
 export const getCateFlowOverview:

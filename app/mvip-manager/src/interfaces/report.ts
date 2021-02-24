@@ -35,6 +35,11 @@ export interface PageParams {
   pageSize: number;
 }
 
+export interface FlowChartData {
+  date: string;
+  visits: number;
+}
+
 export interface SummaryOverviewData {
   biaoWangKeyword: number;
   fengMingKeyword: number;
@@ -57,10 +62,7 @@ export interface CateFlowChartParams extends BaseParams {
   product: CateProductType;
 }
 
-export interface CateFlowChartData {
-  date: string;
-  visits: number;
-}
+export interface CateFlowChartData extends FlowChartData { }
 
 export interface CateFlowDetailParams extends BaseParams, PageParams {
   startTime: string;
@@ -93,10 +95,8 @@ export interface BaxFlowChartParams extends BaseParams {
   product: BaxProductType;
 }
 
-export interface BaxFlowChartData {
-  date: string;
+export interface BaxFlowChartData  extends FlowChartData {
   shows: number;
-  visits: number;
 }
 
 export interface BaxFlowDetailParams extends BaseParams, PageParams {
