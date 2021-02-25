@@ -11,7 +11,7 @@ block content
             .news-content
                 .news-title
                     h1.news-title__text #{ name }
-                    .news-title__date #{ dateFormat(modifiedTime) }
+                    .news-title__date #{ dateFormat2(modifiedTime) }
                 if contentImg
                     .news-content__pic
                         img(src=contentImg, alt="")

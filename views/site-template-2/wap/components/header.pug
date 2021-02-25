@@ -1,5 +1,10 @@
 header.header
-  .header-logo(style=`background-image:url(${company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"})`)
-  h1.header-name #{ company.name }
-  .header-certificate(style=`background-image:url("//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png")`)
+  if !isDetail
+    .header-logo(style=`background-image:url(${company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"})`)
+    h1.header-name #{ company.name }
+    .header-certificate(style=`background-image:url("//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png")`)
+  else
+    .back-icon
+    .title #{ title }
+
 

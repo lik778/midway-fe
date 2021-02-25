@@ -24,21 +24,21 @@ html
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
-        - const { currentPage, currentPathname, domainType, shopId } = renderData
+        - const { currentPage, currentPathname, domainType, shopId, shopName } = renderData
+        - defaultImg = "//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png"
         block header
+            include ./components/header
+            include ./components/swiper
+            include ./components/nav
+        //-为了提供给留咨参数
+        if shopName
+            p#shop-name(style="display:none") #{shopName}
         block content
-        block footer
-            include ./components/footer
-        block contact
-            include ./components/contact
 
-        .dialog
-            .cancel
-            .dialog-img
-                img(src="//file.baixing.net/201701/574b019ad4b8b9199666c2d8364433f6.png", alt="")
-            h2 请复制以下微信号添加好友
-            p #{weChat.content || "微信号暂未填写"}
-        .mask
+        block footer
+        block footer-contact
+            div(style="padding-bottom:75px")
+            include ./components/footer-contact
 
     block scripts
     block append scripts

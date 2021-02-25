@@ -1,24 +1,32 @@
-.products 
-	padding: 0 12px
-	display: flex
-	flex-wrap: wrap
-	justify-content: space-between
+.products
+	padding 0 12px
+	//padding-bottom 65px
+	display flex
+	flex-wrap wrap
+	justify-content space-between
 	.product
-		background-color: #fff
-		display: flex
-		flex-direction: column
-		width: 48.5%
-		margin-bottom: 12px
+		background-color #fff
+		display flex
+		flex-direction column
+		width 48.5%
+		margin-bottom 12px
 		&__img
-			position: relative
+			position relative
 			.hot-icon
-				position: absolute
-				bottom: 0
-				left: 0
+				position absolute
+				bottom 0
+				left 0
 			img
-				width: 100%
-		&__desc
-			color: #333
-			padding: 15px
-			font-size: 14px
+				width 100%
+		p
+			color #333
+			margin 15px
+			font-size 14px
+			overflow hidden
+			text-overflow ellipsis
+			display -webkit-box
+			-webkit-box-orient vertical
+			-webkit-line-clamp 2
+			word-break break-all
+
 

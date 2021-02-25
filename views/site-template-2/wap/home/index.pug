@@ -2,22 +2,22 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-2-home-wap.css")
 
-block header
-    include ../components/header
-    include ../components/swiper
-    include ../components/nav
-
 block content
     h2.block-title 热门推荐
     include ../components/product-list.pug
-    +product-list('hot')
+    - hotProductList = renderData.productRecommend.slice(0,8)
+    +product-list('hot', hotProductList)
 
     h2.block-title 最新产品
     include ../components/product-list.pug
-    +product-list('')
+    - productList = renderData.productList.result.slice(0,6)
+    +product-list('', productList)
 
     include ../components/aboutus.pug
     include ../components/contact-form.pug
+
+block footer
+    include ../components/footer.pug
 
 block scripts
     :combine(fileName="site-template-2-home-wap.js")

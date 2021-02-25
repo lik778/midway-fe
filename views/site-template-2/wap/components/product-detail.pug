@@ -1,22 +1,19 @@
 .product-detail
     - const { headImg, name, price, content, contentImg} = renderData.productInfo
-        .pro-top.clearfix
+        .pro-top
             img(src=headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="")
             .pro-meta
                 h3 #{ name }
                 p 价格：#{ price || '面议'}
-                p 联系电话：
-                    span #{ phone.content }
                 p 商家地址：#{ renderData.basic.company.address }
+        .pro-center
+            include ./company-info.pug
         .pro-bottom
             .pro-title
-                if domainType == 'fuwu'
-                    h4 服务详情
-                else
-                    h4 产品详情
-            .pro-content.
-                !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
-
+                h4 产品详情
             if contentImg !== ""
                 .pro-pic
                     img(src=contentImg, alt="")
+            .pro-content.
+                !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+
