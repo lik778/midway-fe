@@ -88,7 +88,8 @@ export default (props: any) => {
         { loading && <Loading/> }
         { !loading && <div>
           <div className="segment">
-            <h2>账户信息</h2>
+            <h2>账户信息<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
+              （说明：关键词数据每周更新一次。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
                 <CountTo title="总关键词数" value={overview?.totalKeyword}/>
@@ -113,10 +114,12 @@ export default (props: any) => {
             </Row>
           </div>
           <div className="segment">
+            <h2>总关键词统计</h2>
             <Title value={overview?.totalKeyword} type="keyword" />
             <PieChart option={chartOptions} />
           </div>
           <div className="segment">
+            <h2>总访问量统计（PV）</h2>
             <Title value={overview?.totalVisits} type="pv" />
             <LineChart option={pvChartOptions} />
           </div>

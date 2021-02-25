@@ -75,6 +75,7 @@ export default function KeyWordPage(props: any) {
       { loading && <Loading/> }
       { !loading && <div className="container">
         <div className="segment">
+          <h2>概览</h2>
           <Row className="statics-con" gutter={16}>
             <Col className="statics" span={8}>
               <CountTo title="总访问量（PV）" value={overview?.totalVisits}/>

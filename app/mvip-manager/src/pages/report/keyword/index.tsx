@@ -75,6 +75,8 @@ export default function KeyWordPage(props: any) {
         { loading && <Loading/> }
         { !loading && <div>
           <div className="segment">
+            <h2>概览<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
+              （说明：关键词数据每周更新一次。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
                 <CountTo title="排名关键词总数" value={overview?.total} />
