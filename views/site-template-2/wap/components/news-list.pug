@@ -4,7 +4,7 @@
         each item in newsList
             a.item(href=item.urlSuffix)
                 h3 #{ item.name }
-                p #{ dateFormat(item.modifiedTime) }
+                p #{ dateFormat2(item.modifiedTime) }
                 .text #{ item.limitText }
 
     else

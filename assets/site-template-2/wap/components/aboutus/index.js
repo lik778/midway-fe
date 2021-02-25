@@ -7,7 +7,6 @@ export const aboutModule = function(){
 		const expandContentSlice = $('.aboutus-content .aboutus-content-slice');
 		const expandContentFull = $('.aboutus-content .aboutus-content-full');
 		expandBtn.click(() => {
-			console.log('click');
 			if (expandContentSlice.hasClass('active')) {
 				expandContentSlice.removeClass('active')
 				expandContentFull.addClass('active')

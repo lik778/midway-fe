@@ -2,7 +2,7 @@ mixin product-list(type, productList)
 	- hotIcon = "//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png"
 	if productList && productList.length >0
 		.products
-			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,6)
+			each item in productList
 				a.product(href=item.urlSuffix)
 					.product__img
 						img(src=item.headImg || defaultImg)

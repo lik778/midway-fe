@@ -1,11 +1,11 @@
 .aboutus
     h2.block-title 关于公司
-    .aboutus-item.company-address
+    a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
         .aboutus-icon
             img(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
         .aboutus-text
             span 公司地址：
-                a(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`) #{ company.address }
+                | #{ company.address }
     .aboutus-item
         .aboutus-icon
             img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")

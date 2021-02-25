@@ -5,13 +5,12 @@ block styles
 block content
     h2.block-title 热门推荐
     include ../components/product-list.pug
-    - hotProductList = renderData.productRecommend
+    - hotProductList = renderData.productRecommend.slice(0,8)
     +product-list('hot', hotProductList)
 
     h2.block-title 最新产品
     include ../components/product-list.pug
-
-    - productList = renderData.productList.result
+    - productList = renderData.productList.result.slice(0,6)
     +product-list('', productList)
 
     include ../components/aboutus.pug
