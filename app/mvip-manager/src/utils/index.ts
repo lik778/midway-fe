@@ -100,6 +100,7 @@ export const getLastMonth = () => [
   moment(moment().format('YYYY-MM-DD'))
 ]
 
+// TODO refactor
 // 格式化 ant date-range 时间值，
 // 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天
 export const formatDateRange = (dates = [], query: any) => {
@@ -107,5 +108,4 @@ export const formatDateRange = (dates = [], query: any) => {
   const [start, end] = dates
   query.startTime = String(start.unix())
   query.endTime = String(end.unix())
-  return query
 }

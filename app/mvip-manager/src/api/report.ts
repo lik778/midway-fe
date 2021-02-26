@@ -84,12 +84,12 @@ export const getCateFlowOverview:
 // 主营流量统计柱状图
 export const getCateFlowChart:
   (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
-  (params) => post('/seo/network/statistical', {...params, product: ''})
+  (params) => post('/seo/network/statistical', params)
 
 // 主营流量详情列表
 export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  (params) => post('/seo/network/visit-detail', {...params, product: '', platform: ''})
+  (params) => post('/seo/network/visit-detail', params)
 
 // 搜索通流量概览
 export const getBaxFlowOverview:
@@ -99,17 +99,17 @@ export const getBaxFlowOverview:
 // 搜索通流量访问和展现统计
 export const getBaxFlowCharts:
   (params: BaxFlowChartParams) => Response<BaxFlowChartData[]> =
-  (params) => post('/sem/network/statistical', {...params, product: ''})
+  (params) => post('/sem/network/statistical', params)
 
 // 搜索通流量访问明细
 export const getBaxFlowVisitDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  (params) => post('/sem/network/visit-detail', {...params, product: '', platform: ''})
+  (params) => post('/sem/network/visit-detail', params)
 
 // 搜索通流量展现明细
 export const getBaxFlowShowDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
-  (params) => post('/sem/network/show-detail', {...params, product: '', platform: ''})
+  (params) => post('/sem/network/show-detail', params)
 
 // 关键词概览数据
 export const getKeywordOverview:
@@ -121,6 +121,7 @@ export const getKeywordDetailList:
   (params) => post('/keyword/detail', params)
 
 // TODO delete mock data
+// 以下是非 P0 页面的 Mock 数据
 
 export const getRemainCtal = (params: any): Promise<any> => {
   return new Promise(resolve => {

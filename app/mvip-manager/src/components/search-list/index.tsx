@@ -66,20 +66,19 @@ export default function SearchList (props: Props) {
       // TODO 显示校验错误的逻辑
       // notification.error({ message: JSON.stringify(itemHasError.errors[0]) })
     } else {
-      setQueryParams(
-        fields.reduce((h: any, c: any) => {
-          const name = c.name[0]
-          const config = query.find((x: QueryConfigItem) => x.name === name)
-          const { format } = config || {}
-          if (format) {
-            const res = format(c.value, h)
-            if (res) h[name] = res
-          } else {
-            h[name] = c.value
-          }
-          return h
-        }, {})
-      )
+      const params = fields.reduce((h: any, c: any) => {
+        const name = c.name[0]
+        const config = query.find((x: QueryConfigItem) => x.name === name)
+        const { format } = config || {}
+        if (format) {
+          const res = format(c.value, h)
+          if (res) h[name] = res
+        } else {
+          h[name] = c.value
+        }
+        return h
+      }, {})
+      setQueryParams(params)
     }
   }, [changeFieldsCount])
 

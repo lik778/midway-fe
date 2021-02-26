@@ -81,7 +81,6 @@ export default function Chart (props: any) {
   const [washedOptions, setWashedOptions] = useState(null)
 
   useEffect(() => {
-    console.log("option: ", option);
     const opts = Object.assign(
       deepClone(defaultOptions),
       option
