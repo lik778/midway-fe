@@ -1,0 +1,13 @@
+mixin product-list(type,productList)
+	.product-list.clearfix
+		if productList && productList.length >0
+			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,12)
+				a.item-p(href=item.urlSuffix target="_blank")
+					img(src=item.headImg || defaultImg)
+					if type == 'hot'
+						img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
+					p #{ item.name }
+					.show-desc 查看详情
+
+
+

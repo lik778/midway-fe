@@ -1,0 +1,50 @@
+extends ../layout
+block styles
+    :combine(fileName="site-template-2-news-detail-pc.css")
+
+block content
+    include ./news-detail-swiper.pug
+    include ../components/common/breadcrumbs.pug
+    - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo
+    .container
+        .news-detail
+            .news-content
+                .news-title
+                    h1.news-title__text #{ name }
+                    .news-title__date #{ dateFormat2(modifiedTime) }
+                if contentImg
+                    .news-content__pic
+                        img(src=contentImg, alt="")
+                .news-content__text.
+                    !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+                //- .news-content__tags 标签：
+                //-      span 五金配件
+                //-      span 配件
+            .news-nav
+                if preArticle
+                    .news-nav__pre
+                        span 上一篇：
+                        a(href= preArticle.url) #{ preArticle.name}
+                if nextArticle
+                    .news-nav__next
+                        span 下一篇：
+                        a(href=nextArticle.url) #{ nextArticle.name }
+
+            include ../components/common/contact-form-companyInfo.pug
+
+        .sidebar
+            include ../components/sidebar/company-card.pug
+            include ../components/sidebar/news-list.pug
+
+            - const sidecateList = renderData.articleCateList
+            include ../components/sidebar/cateList.pug
+            +side-cateList('文章分类', sidecateList)
+            include ../components/sidebar/products.pug
+
+block scripts
+    :combine(fileName="site-template-2-news-detail-pc.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'viewad';
+        window.adId = #{renderData.articleInfo.id};

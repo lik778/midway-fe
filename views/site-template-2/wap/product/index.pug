@@ -1,0 +1,18 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-product-wap.css")
+
+block content
+    - const cateList = renderData.productCateList
+    include ../components/toptab
+
+    include ../components/product-list
+    - productList = renderData.productList.result
+    +product-list('', productList)
+
+block scripts
+    :combine(fileName="site-template-2-product-wap.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.trackSrc = 'listing';

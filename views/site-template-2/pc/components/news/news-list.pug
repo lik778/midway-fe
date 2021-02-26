@@ -1,0 +1,20 @@
+mixin news-list (articleList)
+  .news-list
+    if articleList && articleList.length > 0
+      each item in articleList
+        .news-item
+          .news-item__inner
+            .news-date
+              - dateObj = new Date(item.modifiedTime * 1000)
+              - date = dateObj.getDate()
+              - year = dateObj.getFullYear()
+              - month = dateObj.getMonth() + 1
+              .news-date__day #{date > 9 ? date : `0${date}`}
+              .news-date__year #{year}/#{month > 9 ? month : `0${month}`}
+            .news-content
+              .news-content__title #{item.name}
+              .news-content__desc #{ item.limitText }
+              .news-content__cta
+                a.cta-btn(href=item.urlSuffix target="_blank") 查看详情
+    else
+      .no-content 当前页面暂无内容，敬请期待...

@@ -1,0 +1,91 @@
+.contact-box
+  position fixed
+  bottom 0
+  width 100%
+  background #fff
+  display flex
+  align-items: center
+  padding: 10px 15px
+  box-sizing: border-box
+  justify-content: space-between
+  .bx-logo
+    width: 45px
+    height: 45px
+    background: url('//file.baixing.net/202102/f4cc4e3a39f50595a2560b5376152ee0.png') no-repeat center center/100% 
+    margin: 0 10px
+
+  .online-box
+  .phone-box
+    a
+      display: inline-block
+      background-color: #EC2525
+      height: 40px
+      line-height: 40px
+      color: #fff
+      width: 120px
+      text-align: center
+      font-size: 14px
+      border-radius: 2px
+      border: 1px solid transparent
+      box-sizing: border-box
+  .online-box
+    a
+      background-color: #fff
+      color: #EC2525
+      border-color: #EC2525
+
+.dialog
+  display none
+  position fixed
+  bottom 170px
+  width 282px
+  left 50%
+  margin-left -141px
+  z-index 100
+  min-height 80px
+  text-align center
+  border-radius 8px
+  font-size 14px
+  color #333
+  background-color #fff
+  .cancel
+    position absolute
+    right 0
+    top 0
+    width 35px
+    height 35px
+    color rgba(0,0,0,.4)
+    border-radius 8px
+    -webkit-tap-highlight-color transparent
+    z-index 110
+    &::after
+      content '×'
+      line-height 42px
+      font-size 32px
+  .dialog-img
+    img
+      width 100%
+      height 120px
+  h2
+    padding 15px
+    font-size 18px
+    font-weight inherit
+  p
+    font-size 20px
+    font-weight 600
+    color #333
+    margin-bottom 20px
+//蒙层
+.mask
+  display none
+  position absolute
+  left 0
+  top 0
+  z-index 99
+  width 100%
+  height 100%
+  background #000
+  opacity .6
+  -webkit-tap-highlight-color transparent
+
+
