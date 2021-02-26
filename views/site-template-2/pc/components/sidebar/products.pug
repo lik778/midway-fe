@@ -13,20 +13,23 @@
                   a.side-product(href=item.urlSuffix)
                     .product-img
                       img(src= item.headImg || defaultImg, alt="productImg")
-                    .product-desc #{ item.name }
+                    .product-desc
+                      p #{ item.name }
           else
             .side-products.swiper-slide
               each item in pr.slice(0,3)
                   a.side-product(href=item.urlSuffix)
                     .product-img
                       img(src= item.headImg || defaultImg, alt="productImg")
-                    .product-desc #{ item.name }
+                    .product-desc
+                      p #{ item.name }
             .side-products.swiper-slide
               each item in pr.slice(3,6)
                   a.side-product(href=item.urlSuffix)
                     .product-img
                       img(src= item.headImg || defaultImg, alt="productImg")
-                    .product-desc #{ item.name }
+                    .product-desc
+                      p #{ item.name }
 
         else
           .side-products.swiper-slide

@@ -23,8 +23,20 @@
         width: 194px
         height: 128px
       .product-desc
-        font-size: 12px
-        padding: 15px 13px
-        background: #F7F7F7
-        color: #666
+        width: 100%
+        background-color: #F7F7F7
+
+        padding: 15px 0
+        p
+          font-size: 12px
+          margin: 0 13px
+          //padding 15px 13px
+          width: calc(100% - 26px)
+          color: #666
+          overflow: hidden
+          text-overflow: ellipsis
+          display: -webkit-box
+          -webkit-box-orient: vertical
+          -webkit-line-clamp: 2
+          word-break: break-all
 
