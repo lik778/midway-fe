@@ -72,7 +72,8 @@ export default function SearchList (props: Props) {
           const config = query.find((x: QueryConfigItem) => x.name === name)
           const { format } = config || {}
           if (format) {
-            format(c.value, h)
+            const res = format(c.value, h)
+            if (res) h[name] = res
           } else {
             h[name] = c.value
           }

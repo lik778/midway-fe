@@ -28,6 +28,7 @@ export const publishConfig = ({
       name: 'product',
       type: 'select',
       value: '',
+      format: Number,
       options: [
         { label: '全部', value: '' },
         ...ProductOptions

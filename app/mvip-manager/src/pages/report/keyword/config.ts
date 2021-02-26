@@ -28,6 +28,7 @@ export const keywordRankListConfig = ({
       name: 'platform',
       type: 'select',
       value: '',
+      format: Number,
       options: [
         { label: '全部', value: '' },
         ...SearchEngineOptions
@@ -38,6 +39,7 @@ export const keywordRankListConfig = ({
       name: 'product',
       type: 'select',
       value: '',
+      format: Number,
       options: [
         { label: '全部', value: '' },
         ...ProductOptions
@@ -48,6 +50,7 @@ export const keywordRankListConfig = ({
       name: 'device',
       type: 'select',
       value: '',
+      format: Number,
       options: [
         { label: '全部', value: '' },
         ...DisplayOptions
