@@ -1,13 +1,10 @@
 //-这里要改成B2B模板的新样式
 .tab-header
-    - list_4 = cateList.slice(0, 4)
-    ul.sample
-
-        each item,index in list_4
-            li(class='tab-li')
-                a(href=item.urlSuffix) #{item.name}
-        if  cateList.length > 4
-            img(src="//file.baixing.net/202012/13a5e125202a182d2f48da2392404cd8.png", alt="")
+    .sample
+        each item,index in cateList
+            a(href=item.urlSuffix).tab-active
+                p #{item.name}
+    img(src="//file.baixing.net/202102/a3ff55e3142c133ab3d984fed7132bf7.png", alt="")
 
     ul.all
         each item,index in cateList

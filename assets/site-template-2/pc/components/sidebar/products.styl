@@ -18,9 +18,14 @@
           background: #FF2D38
   .side-products
     a.side-product
-      display: block
+      display block
+      width 192px
+      //box-shadow: 0 4px 10px rgba(#000, 0.02)
+      border 1px solid transparent
+      &:hover
+        border-color #f7f7f7
       img
-        width: 194px
+        width: 100%
         height: 128px
       .product-desc
         width: 100%
@@ -30,7 +35,6 @@
         p
           font-size: 12px
           margin: 0 13px
-          //padding 15px 13px
           width: calc(100% - 26px)
           color: #666
           overflow: hidden
