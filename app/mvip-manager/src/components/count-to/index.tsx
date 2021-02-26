@@ -17,6 +17,6 @@ export default function CountTo(props: any) {
   useAnimation({ from, to, time, callback (nextVal: number) {
       setDisplayNum(nextVal)
     }})
-  return <Statistic title={title} value={to === null ? (type ? '暂未开通' : '-') : displayNum}
+  return <Statistic title={title} value={to === null ? '暂无数据' : displayNum}
         suffix={to === null && type && <Button target="_blank" href={`${config().haojing}${ReportLinkMap[type]}`}>去开通</Button>}/>
 }

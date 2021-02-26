@@ -21,8 +21,10 @@ import {
 } from '@/interfaces/report'
 
 import './index.less'
+import Loading from '@/components/loading';
 
 const PageCateFlow: React.FC = (props: any) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [overview, setOverview] = useState<CateFlowOverviewData>()
   const [queryChartForm] = Form.useForm()
   const [chartOptions, setChartOptions] = useState({})
@@ -34,11 +36,14 @@ const PageCateFlow: React.FC = (props: any) => {
   }, [])
 
   const queryOverviewData = async () => {
+    setLoading(true)
     const { code, data } = await getCateFlowOverview()
+    setLoading(false)
     if (code === SUCCESS) {
       setOverview(data)
     }
   }
+
   const queryFlowList = async (query: CateFlowChartParams) => {
     const { code, data } = await getCateFlowChart(query)
     if (code === SUCCESS) {
@@ -57,8 +62,10 @@ const PageCateFlow: React.FC = (props: any) => {
   return (
     <div className="page-report page-report-cate-flow">
       <MainTitle title="主营流量报表" />
-      <div className="container">
+      { loading && <Loading/> }
+      { !loading && <div className="container">
         <div className="segment">
+          <h2>概览</h2>
           <Row className="statics-con" gutter={16}>
             <Col className="statics" span={8}>
               <CountTo title="总访问量（PV）" value={overview?.totalVisits} />
@@ -91,7 +98,7 @@ const PageCateFlow: React.FC = (props: any) => {
             })}
           />
         </div>
-      </div>
+      </div> }
     </div>
   );
 }

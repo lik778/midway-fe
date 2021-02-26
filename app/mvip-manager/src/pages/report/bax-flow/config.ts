@@ -18,7 +18,6 @@ export const flowConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      required: true
     }
   ]
 })
@@ -36,7 +35,6 @@ export const visitListConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      required: true
     }
   ],
   table: {

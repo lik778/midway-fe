@@ -22,8 +22,10 @@ import {
 } from '@/interfaces/report'
 
 import './index.less'
+import Loading from '@/components/loading';
 
 export default function KeyWordPage(props: any) {
+  const [loading, setLoading] = useState<boolean>(false)
   const [overview, setOverview] = useState<BaxFlowOverviewData>()
   const [queryChartForm] = Form.useForm()
   const [chartsOptions, setChartsOptions] = useState([{},{}])
@@ -37,7 +39,9 @@ export default function KeyWordPage(props: any) {
   }, [])
 
   const queryOverviewData = async () => {
+    setLoading(true)
     const { code, data } = await getBaxFlowOverview()
+    setLoading(false)
     if (code === SUCCESS) {
       setOverview(data)
     }
@@ -68,8 +72,10 @@ export default function KeyWordPage(props: any) {
   return (
     <div className='page-report page-report-bax-flow'>
       <MainTitle title="搜索通流量报表"/>
-      <div className="container">
+      { loading && <Loading/> }
+      { !loading && <div className="container">
         <div className="segment">
+          <h2>概览</h2>
           <Row className="statics-con" gutter={16}>
             <Col className="statics" span={8}>
               <CountTo title="总访问量（PV）" value={overview?.totalVisits}/>
@@ -123,7 +129,7 @@ export default function KeyWordPage(props: any) {
             })}
           />
         </div>
-      </div>
+      </div> }
     </div>
   )
 }
