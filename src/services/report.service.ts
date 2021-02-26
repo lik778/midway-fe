@@ -29,8 +29,7 @@ export class ReportService {
     let {  params } = input
     const { path } = input
     // tips: 在系统中userID数据的获取
-    // const mixObj = { userId: (req.cookies && req.cookies[COOKIE_USER_KEY]) };
-    const mixObj = { userId: 4189197 };
+    const mixObj = { userId: (req.cookies && req.cookies[COOKIE_USER_KEY]) };
     params = params == null ? mixObj : Object.assign(params, mixObj)
     const method = input.method.toLocaleLowerCase()
     switch (method) {
