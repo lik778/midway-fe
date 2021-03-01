@@ -1,12 +1,11 @@
-//- 新闻资讯
 - const { productRecommend: pr } = renderData
-.sidebar-item
-  .sidebar-item__title
-    span 产品推荐
-  #product-swiper.sidebar-item__content
-    .swiper-container
-      .swiper-wrapper
-        if pr && pr.length > 0
+if pr && pr.length > 0
+  .sidebar-item
+    .sidebar-item__title
+      span 产品推荐
+    #product-swiper.sidebar-item__content
+      .swiper-container
+        .swiper-wrapper
           if  pr.length <= 3
             .side-products.swiper-slide
               each item in pr.slice(0,3)
@@ -30,18 +29,4 @@
                       img(src= item.headImg || defaultImg, alt="productImg")
                     .product-desc
                       p #{ item.name }
-
-        else
-          .side-products.swiper-slide
-            a.side-product
-              .product-img
-                img(src=defaultImg, alt="defaultImg")
-              .product-desc 产品描述...
-
-          .side-products.swiper-slide
-            a.side-product
-              .product-img
-                img(src=defaultImg, alt="defaultImg")
-              .product-desc 产品描述...
-
-    .swiper-pagination
+      .swiper-pagination
