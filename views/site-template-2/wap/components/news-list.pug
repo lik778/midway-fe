@@ -1,0 +1,12 @@
+.news-list
+    - const newsList= renderData.articleList.result
+    if newsList && newsList.length >0
+        each item in newsList
+            a.item(href=item.urlSuffix)
+                h3 #{ item.name }
+                p #{ dateFormat2(item.modifiedTime) }
+                .text #{ item.limitText }
+
+    else
+        include ./default-content.pug
+        +default-content("")

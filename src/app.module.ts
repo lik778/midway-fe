@@ -18,6 +18,7 @@ import { TrackerController } from './controllers/tracker.controller';
 import { ManagementService } from './services/management.service';
 import { ReportController } from './controllers/report.controller';
 import { ReportService } from './services/report.service';
+import { SiteCommonController } from './controllers/site/site-common.controller';
 
 /**
  * 应用程序根模块
@@ -33,6 +34,7 @@ import { ReportService } from './services/report.service';
     AdminController,
     ManagementController,
     SitemapController,
+    SiteCommonController,
     B2bSiteController,
     FuwuSiteController,
     HaojingController,

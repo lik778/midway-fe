@@ -24,6 +24,7 @@ export class BaseSiteController {
     } else if (this.domainType === DomainTypeEnum.B2B) {
       shopName = HostShopName
     }
+
     const { data } = await this.midwayApiService.getHomePageData(shopName, device, domain);
 
     // 打点
@@ -38,7 +39,11 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-1/${device}/home/index`
+
+    //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
+    //const templateUrl = `site-template-2/${device}/home/index`;
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -66,7 +71,8 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-1/${device}/news/index`;
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -95,11 +101,13 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/news-detail/index`
+
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
+      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isDetail: true });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -117,7 +125,8 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/news-child/index`;
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -146,7 +155,8 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    const templateUrl = `site-template-1/${device}/product/index`;
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -175,11 +185,12 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/product-detail/index`
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
+      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isDetail: true  });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -197,11 +208,41 @@ export class BaseSiteController {
           refer: ''
         }
       })
-      const templateUrl = `site-template-1/${device}/product-child/index`;
+      const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
       return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
     }
+  }
+
+  //关于我们
+  @Get('/about')
+  async about(@Param() params, @HostParam('shopName') HostShopName: string,
+      @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const { data } = await this.midwayApiService.getAboutPageData(shopName, device, domain);
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        contentType: 'article',
+        category: '',
+        _platform: device,
+        tracktype: 'pageview',
+        refer: ''
+      }
+    })
+    //只有B2B模板有这个页面，因此不用根据模板id判断了
+    const templateUrl = `site-template-2/${device}/about/index`;
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
   }
 }

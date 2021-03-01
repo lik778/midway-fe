@@ -1,0 +1,129 @@
+@import "../components/common"
+@import "../components/topbar"
+@import "../components/header"
+@import "../components/breadcrumbs"
+@import "../components/pagination"
+@import "../components/customer-service"
+@import "../components/footer"
+@import "../components/news/news-list"
+@import "../components/sidebar/index"
+@import "../components/home/contact-us"
+@import "../components/swiper"
+@import "../components/contact-form-companyInfo"
+
+.container
+    width 1220px
+    margin 0 auto 72px
+    display flex
+
+#news-detail-swiper
+    .swiper-container
+        height 360px
+        width 100%
+        .swiper-wrapper
+            .swiper-slide
+            img
+                height 360px
+                width 100%
+
+.news-detail
+    max-width: 960px
+    margin-bottom: 30px
+
+    .news
+        &-content
+            background-color: #fff
+            padding: 0 30px
+            box-sizing: border-box
+
+            &__pic
+                text-align center
+                margin 40px auto
+                img
+                    max-width 100%
+
+            &__text
+                color: #333333
+                line-height: 28px
+                font-size: 16px
+                padding: 30px 0
+                word-break: break-all
+            &__tags
+                margin-top: 30px
+                span
+                    background: #F2F2F2
+                    margin-right: 20px
+                    font-size: 14px
+                    color: #666666
+                    padding: 0 15px
+                    height: 32px
+                    line-height: 32px
+                    display: inline-block
+        &-title
+            padding: 30px 0
+            text-align: center
+            border-bottom: 2px dashed #EAEAEA
+            &__text
+                font-size: 32px
+                margin-bottom: 15px
+            &__date
+                color: #333
+
+        &-nav
+            margin-top: 10px
+            background-color: #fff
+            display: flex
+            justify-content: space-between
+            padding: 27px 30px
+
+            &__pre,
+            &__next
+                display: flex
+                flex: 1
+                span
+                    color: #EC2525
+                    margin-right: 5px
+                a
+                    color: #666666
+
+    //&__subtitle
+    //    font-size: 16px
+    //    color: #333333
+    //    margin: 30px 30px
+    //    font-weight: bold
+
+    //&__contact-us
+    //    background-color: #fff
+    //    padding: 30px
+    //    display: flex
+
+    //    .contact-form
+    //        width: 530px
+    //        .form-item
+    //            font-size: 14px
+    //            input,
+    //            textarea
+    //                font-size: 14px
+    //            textarea
+    //                min-height: 90px
+
+    //            &__label
+    //                font-weight: normal
+
+    //    .company
+    //        &-info
+    //            padding: 15px 15px 0 70px
+    //            font-size: 14px
+    //            color: #333333
+    //    .info-item
+    //        margin: 20px 0
+    //        display: flex;
+    //        span:first-child
+    //            color: #999999
+    //            margin-right: 15px
+    //            min-width: 70px
+    //            display: inline-block
+
+
+
+

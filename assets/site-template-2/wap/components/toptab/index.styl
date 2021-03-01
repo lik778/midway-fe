@@ -1,0 +1,93 @@
+.tab-header
+    width 100%
+    background-color #ffffff
+    font-size 16px
+    font-weight 600
+    position relative
+    .sample
+        display flex
+        align-items center
+        //实现横向滚动
+        flex-flow nowrap
+        overflow-x auto
+        justify-content space-between
+        margin 0 12px
+        height 48px
+        border-top 1px solid #f2f2f2
+        margin-bottom 22px
+        //去除滚动条
+        &::-webkit-scrollbar
+            display none
+        a
+            display inline-block
+            padding 8px 10px
+            margin-right 15px
+            p
+                font-size 12px
+                color #666
+                white-space nowrap
+    img
+        display inline-block
+        width 48px
+        height 47px
+        position absolute
+        right 0
+        top 1
+
+//弹窗
+.all
+    display none
+    background-color #fff
+    position absolute
+    top 0
+    right 0
+    width 70%
+    height 100%
+    z-index 11
+    padding 50px 25px 60px 20px
+    a
+        display inline-block
+        margin-right 15px
+        background-color #f2f2f2
+        padding 8px 10px
+        border-radius 17px
+        margin-bottom 15px
+        p
+            color #666
+            font-size 12px
+    .btn
+        width 100%
+        text-align center
+        button
+            width 80%
+            margin 0 auto
+            height 40px
+            background-color #fff
+            border 1px solid #F58C91
+            color #EC2525
+            margin-top 30px
+            font-size 14px
+
+
+.tab-active
+    background-color #F7EEEE
+    border-radius 17px
+    padding 8px 10px
+    p
+        color #EC2525 !important
+
+//遮罩
+.mask
+    display none
+    position absolute
+    left 0
+    top 0
+    z-index 10
+    width 100%
+    height 100%
+    background #000
+    opacity .6
+    -webkit-tap-highlight-color transparent
+
+
+

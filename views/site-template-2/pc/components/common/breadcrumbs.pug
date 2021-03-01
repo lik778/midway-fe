@@ -1,0 +1,12 @@
+.search-crumbs
+	p 当前位置：
+	ul
+		each item, index in renderData.bread
+			li
+				if index > 0
+					.right-arrow
+				if index != renderData.bread.length-1
+					a(href=item.urlSuffix)  #{item.name}
+				else
+					//-最后一个面包屑不能点击
+					span #{ item.name }
