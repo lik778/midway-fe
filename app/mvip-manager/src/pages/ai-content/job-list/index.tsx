@@ -46,11 +46,15 @@ export default (props: any) => {
       const res = await pauseAiTaskApi(record.id)
       if (res.success) {
         setAiListStatus(id, AiTaskStatus.ON_PAUSE)
+      } else {
+        errorMessage(res.message)
       }
     } else if (action === AiTaskAction.START) {
       const res = await startAiTaskApi(record.id)
       if (res.success) {
         setAiListStatus(id, AiTaskStatus.ON_TASK)
+      } else {
+        errorMessage(res.message)
       }
     }
   }
