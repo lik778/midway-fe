@@ -3,7 +3,7 @@ import { qqModule } from '../components/customer-service/index';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
 import { navModule } from '../components/nav';
-import { leaveLeads } from '../components/home/contact-us';
+import { leaveLeads } from '../components/contact-us';
 
 navModule()
 qqModule()
