@@ -1,16 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { message } from 'antd';
-
-
 const BASE_URL = '/management/api'
 const PREFIX = '/api/midway/manager/'
-
-// tips: 前端请求的需要的参数
-export interface ManagementReqParams {
-  method: string;
-  path: string;
-  params?: any;
-}
 
 const request = axios.create({
   baseURL: BASE_URL, // api 的 base_url

@@ -1,5 +1,6 @@
 import { uploadImgToUpyunReq } from '@/api/haojing';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants';
 
@@ -77,4 +78,34 @@ export const removeOverflowY = () => {
 export const removeOverflow = (cb: any) => {
   setTimeout(cb(), 500);
   setTimeout(() => removeOverflowY(), 1000);
+}
+
+export const zip = (a: any[], b: any[]) => a.map((x, i) => [x, b[i]])
+
+// 从枚举类型创建 Options 值
+// @example: {value:'name'} 转化为 {label:'name', value:'value'}
+export const createOptions = (labelMap: any) =>
+  Object.entries(labelMap).map(([k, v]) => ({ label: v, value: k }))
+
+export const inIframe = (): boolean => {
+  return !(window.self === window.top)
+}
+
+export const stringify = (params: any): string  => JSON.stringify(params)
+
+// 许多图表组件需要一个默认的选中时间，
+// 默认为上一个月
+export const getLastMonth = () => [
+  moment(moment().format('YYYY-MM-DD')).subtract(1,'months'),
+  moment(moment().format('YYYY-MM-DD'))
+]
+
+// TODO refactor
+// 格式化 ant date-range 时间值，
+// 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天
+export const formatDateRange = (dates = [], query: any) => {
+  if (dates.length === 0) return []
+  const [start, end] = dates
+  query.startTime = String(start.unix())
+  query.endTime = String(end.unix())
 }

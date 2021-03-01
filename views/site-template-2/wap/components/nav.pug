@@ -1,0 +1,12 @@
+- const nav = renderData.navigation
+//-这里前后设计矛盾，后台导航可人工设置显示隐藏，但前台要求全部显示，且写死导航名
+if nav && nav.length > 0
+  .nav
+    .nav-item
+      a(href=nav[0].content)  首页产品
+    if nav.length > 1
+      .nav-item
+        a(href=nav[1].content)  全部产品
+    if nav.length > 2
+      .nav-item
+        a(href=nav[2].content)  新闻资讯

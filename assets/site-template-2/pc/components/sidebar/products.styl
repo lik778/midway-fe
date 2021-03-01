@@ -1,0 +1,46 @@
+.sidebar
+  #product-swiper
+    padding-bottom: 30px
+    position: relative
+    .swiper-wrapper
+      height: auto
+    .swiper-pagination
+      position: absolute
+      left: 50%
+      bottom: 10px
+      transform: translateX(-50%)
+      .swiper-pagination-bullet
+        width: 16px
+        height: 3px
+        border-radius: 0
+        margin: 0 5px
+        &-active
+          background: #FF2D38
+  .side-products
+    a.side-product
+      display block
+      width 192px
+      //box-shadow: 0 4px 10px rgba(#000, 0.02)
+      border 1px solid transparent
+      &:hover
+        border-color #f7f7f7
+      img
+        width: 100%
+        height: 128px
+      .product-desc
+        width: 100%
+        background-color: #F7F7F7
+
+        padding: 15px 0
+        p
+          font-size: 12px
+          margin: 0 13px
+          width: calc(100% - 26px)
+          color: #666
+          overflow: hidden
+          text-overflow: ellipsis
+          display: -webkit-box
+          -webkit-box-orient: vertical
+          -webkit-line-clamp: 2
+          word-break: break-all
+

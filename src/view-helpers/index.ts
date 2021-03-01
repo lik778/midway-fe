@@ -22,5 +22,8 @@ export default {
   //这里定义了时间戳转换方法
   dateFormat: function(date: number) {
     return dayjs.unix(date).toJSON().substr(0, 10)
+  },
+  dateFormat2: function(date: number) {
+    return dayjs.unix(date).format('YYYY.MM.DD')
   }
 }
