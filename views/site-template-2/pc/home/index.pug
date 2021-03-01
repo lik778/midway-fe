@@ -30,15 +30,16 @@ block content
             include ../components/home/product-list.pug
             +product-list('nothot', productList)
 
-        - articleList =  renderData.articleList.result
+        - articleList = renderData.articleList.result
         - const { articleRecommend } = renderData
-        if articleList && articleList.length >0 || articleRecommend && articleRecommend.length
+        if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
             .block-title
                 img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
                 h2 新闻中心
             include ../components/home/news-center.pug
-            +news-box('新闻资讯', articleList)
-            +news-box('推荐文章', articleRecommend)
+            .new-center.clearfix
+                +news-box('新闻资讯', articleList)
+                +news-box('推荐文章', articleRecommend)
 
         .block-title
             img(src="//file.baixing.net/202102/4be12cae4c491b647a8a2f69eafab548.png",alt="关于我们")
