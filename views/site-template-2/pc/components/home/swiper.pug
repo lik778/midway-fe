@@ -1,13 +1,14 @@
 .banner-content
-  #banner-container
-    - const bannerList= renderData.productList.result
+  - const bannerList= renderData.productList.result
+  if bannerList && bannerList.length > 0
+    #banner-container
       .swiper-container
         .swiper-wrapper
           if bannerList && bannerList.length > 0
             each item in bannerList.slice(0,5)
-              .swiper-slide
-                  img(src=item.headImg)
-                  p #{ item.name }
+              a.swiper-slide(href=item.urlSuffix)
+                img(src=item.headImg)
+                p #{ item.name }
           else
             .swiper-slide
               img(src="//file.baixing.net/202102/7a378e568c893854d701eeaa9c2ce70d.png")
@@ -21,8 +22,8 @@
             .swiper-slide
               img(src="//file.baixing.net/202102/c594d35d02f2f3fe604a9abfd935fa34.png")
               p 飞扬网络科技有限公司
-    .swiper-pagination
-    .swiper-button-next(style="right: -3%")
-    .swiper-button-prev(style="left: -3%")
+      .swiper-pagination
+      .swiper-button-next(style="right: -3%")
+      .swiper-button-prev(style="left: -3%")
 
 
