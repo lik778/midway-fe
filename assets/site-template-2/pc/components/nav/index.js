@@ -31,7 +31,8 @@ export const navModule = function() {
 			console.log("n:",n);
 			console.log("h:",h);
 			console.log("windowHref:",windowHref);
-			if(h==windowHref || t==n){
+			console.log("windowPath:",windowPath);
+			if(h==windowHref || t==n || h==windowPath){
 				$(tab).addClass('nav-active')
 				//siblings():所有同级a 元素去掉该class。
 				//$(tab).parent().siblings().find('a').removeClass('nav-active')
