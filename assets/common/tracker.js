@@ -11,8 +11,14 @@ const BANNER_ID_FM = [BANNER_ID_SOGOU, BANNER_ID_QIHU, BANNER_ID_BAIDU, BANNER_I
 const BANNER_ID_QC = [2280]
 const isValidBannerID = id => [...BANNER_ID_FM, ...BANNER_ID_BW, ...BANNER_ID_QC].includes(+id)
 
-const BASE_URL = process.env.NODE_ENV === 'production' ?
-  '//cloud.baixing.com.cn' : '//dev-api.baixing.cn'
+let host = 'localhost'
+try {
+  host = window.location.host
+} catch (e) {
+  console.log(e)
+}
+const isPro = host.indexOf('baixing.com') !== -1
+const BASE_URL = isPro ? '//cloud.baixing.com.cn' : '//dev-api.baixing.cn'
 
 
 export const eventTracker = (clickType, clickPosition) => {
