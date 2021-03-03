@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Upload, Modal, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { uploadImgToUpyunHandle } from '@/utils';
 import { errorMessage } from '@/components/message';
 
 const getBase64 = function(file: Blob) {
@@ -56,15 +55,12 @@ export const BannerImgUpload = (props: Props) => {
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
   }
 
-  const handleChange = async ({file}) => {
-    if (file.status === 'done') {
-      const res = await uploadImgToUpyunHandle(file.originFileObj);
-      if(res?.code === 200) {
-        onChange(`${res?.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
-      }else {
-        errorMessage(res?.message);
-      }
+  const handleChange = async (e: any) => {
+    if (e.file.status === 'done') {
+      const { url } = e.file.response
+      onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
     }
+    // setFileList(e.fileList)
   }
 
   const beforeUpload= (file: any) => {
@@ -87,6 +83,11 @@ export const BannerImgUpload = (props: Props) => {
   return (
     <div className="img-upload">
       <Upload
+        action={window.__upyunImgConfig?.uploadUrl}
+        data={{
+          policy: window.__upyunImgConfig?.uploadParams?.policy,
+          signature: window.__upyunImgConfig?.uploadParams?.signature
+        }}
         showUploadList={{showRemoveIcon:true}}
         listType="picture-card"
         fileList={fileList}
