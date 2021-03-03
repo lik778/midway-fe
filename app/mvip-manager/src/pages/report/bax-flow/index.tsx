@@ -11,7 +11,7 @@ import {
   getBaxFlowOverview,
   getBaxFlowCharts,
   getBaxFlowVisitDetail,
-  getBaxFlowShowDetail
+  // getBaxFlowShowDetail
 } from '@/api/report';
 import {
   BaxFlowOverviewData,
@@ -29,8 +29,8 @@ export default function KeyWordPage(props: any) {
   const [chartsOptions, setChartsOptions] = useState([{},{}])
   const [queryVisitListForm] = Form.useForm()
   const [visitListData, setVisitListData] = useState<FlowDetailData[]>([])
-  const [queryShowListForm] = Form.useForm()
-  const [showListData, setShowListData] = useState<FlowDetailData[]>([])
+  // const [queryShowListForm] = Form.useForm()
+  // const [showListData, setShowListData] = useState<FlowDetailData[]>([])
 
   useEffect(() => {
     queryOverviewData()
@@ -56,14 +56,14 @@ export default function KeyWordPage(props: any) {
       return data
     }
   }
-  const queryShowList = async (query: BaxFlowDetailParams) => {
-    const { code, data } = await getBaxFlowShowDetail(query)
-    if (code === SUCCESS) {
-      const { result } = data
-      setShowListData(result)
-      return data
-    }
-  }
+  // const queryShowList = async (query: BaxFlowDetailParams) => {
+  //   const { code, data } = await getBaxFlowShowDetail(query)
+  //   if (code === SUCCESS) {
+  //     const { result } = data
+  //     setShowListData(result)
+  //     return data
+  //   }
+  // }
 
   return (
     <div className='page-report page-report-bax-flow'>
@@ -114,14 +114,15 @@ export default function KeyWordPage(props: any) {
               dataSource: visitListData
             })}
           />
-          <h2>展现明细</h2>
+          {/* 暂时关闭展现明细的展示 */}
+          {/* <h2>展现明细</h2>
           <Query
             onQuery={queryShowList}
             config={visitListConfig({
               form: queryShowListForm,
               dataSource: showListData
             })}
-          />
+          /> */}
         </div>
       </div>
     </div>
