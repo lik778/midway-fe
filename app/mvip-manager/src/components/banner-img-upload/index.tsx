@@ -60,7 +60,7 @@ export const BannerImgUpload = (props: Props) => {
       const { url } = e.file.response
       onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
     }
-    // setFileList(e.fileList)
+    setFileList(e.fileList)
   }
 
   const beforeUpload= (file: any) => {
