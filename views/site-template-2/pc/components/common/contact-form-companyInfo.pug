@@ -10,10 +10,10 @@ section.news-detail__section
                 span #{ contactName.content }
             .info-item
                 span 联系电话
-                span #{ phone.content }
+                span #{ phone.content || "暂未添加电话"}
             .info-item
                 span 微信号码
-                span #{ weChat.content }
+                span #{ weChat.content || "暂未添加微信号"}
             if qq && qq.length > 0
                 .info-item
                     span QQ号码
@@ -22,4 +22,4 @@ section.news-detail__section
                     //-     span #{ item.content }
             .info-item
                 span 公司地址
-                span #{ company.address }
+                span #{ company.address || "暂未添加公司地址"}
