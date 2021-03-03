@@ -36,13 +36,11 @@ function genChartOptions(data: KeywordOverviewData) {
       }
     ]
   }
-  // TODO
   /* 优化值为 0 时的显示效果 */
-  // const totalZero = res.series[0].data.reduce((h, c) => h + c.value, 0)
-  // const threeZero = res.series[0].data.filter(x => x.value === 0).length === 3
-  // if (totalZero || threeZero) {
-  //   res.series[0].data.map(x => x.value = x.value || 1)
-  // }
+  const totalZero = res.series[0].data.reduce((h, c) => h + c.value, 0) === 0
+  if (!totalZero) {
+    res.series[0].data = res.series[0].data.filter(x => x.value > 0)
+  }
   return res
 }
 
