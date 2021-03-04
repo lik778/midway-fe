@@ -56,19 +56,16 @@ input,select,checkbox
   margin 26px 0
   text-align center
 
-//.nav
-//  background-color #fff
-//  display flex
-//  justify-content space-between
-//  padding 0 30px
-//  font-size 16px
-//  &-item
-//    a
-//      display inline-block
-//      padding 15px 0
-//      color #333
-//      font-size 16px
-//      &:hover
-//      &.active
-//        color #EC2525
-//        border-bottom 2px solid #EC2525
+//单行超出点点隐藏
+.only-oneline
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.only-twoline
+  overflow hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-box-orient vertical
+  -webkit-line-clamp 2
+  word-break break-all
