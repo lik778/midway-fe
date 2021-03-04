@@ -10,6 +10,10 @@ block content
     - productList = renderData.productList.result
     +product-list('', productList)
 
+    - const { totalPage } = renderData.productList
+    include ../components/pagination
+    +pagination(totalPage, currentPage, `${currentPathname}`)
+
 block scripts
     :combine(fileName="site-template-2-product-wap.js")
 block append scripts

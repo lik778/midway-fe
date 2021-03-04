@@ -8,7 +8,7 @@ mixin pagination(totalPage, currentPage, pathname)
 				a.prev-page(href=baseUrl + "?page=" + (parseInt(currentPage)-1)) 上一页
 
 			span.select-change-container
-				span.select-page-num #{`第 ${currentPage} 页`}
+				span.select-page-num #{`${currentPage}/${totalPage}`}
 				select(onchange="window.location=this.value")
 					- for (var i = 1; i <= totalPage; i++)
 						if i == currentPage
