@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { uploadImgToUpyunHandle } from '@/utils';
 import './index.less';
 import { errorMessage } from '@/components/message';
 
@@ -62,12 +61,10 @@ export const ImgUpload = (props: Props) => {
 
   const handleChange = async (e: any) => {
     if (e.file.status === 'done') {
-      const res = await uploadImgToUpyunHandle(e.file.originFileObj);
-      if(res?.code === 200) {
-        setFileList([e.file])
-        onChange(`${res.url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
-      }
+      const { url } = e.file.response
+      onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
     }
+    setFileList([...e.fileList])
   }
 
   const handleRemove = (file: any) => {
@@ -93,6 +90,11 @@ export const ImgUpload = (props: Props) => {
   return (
     <div className="img-upload">
       <Upload
+          action={window.__upyunImgConfig?.uploadUrl}
+          data={{
+              policy: window.__upyunImgConfig?.uploadParams?.policy,
+              signature: window.__upyunImgConfig?.uploadParams?.signature
+          }}
           listType="picture-card"
           fileList={fileList}
           onPreview={handlePreview}
