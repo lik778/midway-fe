@@ -46,6 +46,7 @@ export const pvListConfig = ({
         title: '访问页面',
         dataIndex: 'webPage',
         key: 'webPage',
+        ellipsis: true
       },
       {
         title: '访问IP',
