@@ -28,6 +28,8 @@ export default (props: Props) => {
   const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [quotaModalVisible, setQuotaModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
+  const [formData, setFormData] = useState<any>({})
+  const [modalLoading, setModalLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
@@ -62,7 +64,6 @@ export default (props: Props) => {
       values.tags = values.tags.split(',')
     }
     formValues = values
-
     setFormLoading(true)
     if (isEdit) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
@@ -70,6 +71,7 @@ export default (props: Props) => {
       if(quota?.freeNum === 1 || (quota?.freeNum === 0 && quota.postRemain < 6)){
         setFormLoading(false)
         setQuotaModalVisible(true);
+        setFormData(formValues);
         return
       }
       resData = await createArticleApi(Number(params.id), values)
@@ -128,14 +130,19 @@ export default (props: Props) => {
           </div>}
           type={ModalType.warning}
           visible={quotaModalVisible}
+          confirmLoading={modalLoading}
           onOk={async()=>{
             if(quota?.freeNum === 1) {
-              const resData = await createArticleApi(Number(params.id), formValues)
+              setModalLoading(true)
+              const resData = await createArticleApi(Number(params.id), formData)
+              setModalLoading(false)
               if (resData?.success) {
                 setTimeout(() =>  location.reload(), 500)
               } else {
                 errorMessage(resData.message)
               }
+            } else {
+              setQuotaModalVisible(false)
             }
           }}
           onCancel={() => setQuotaModalVisible(false)}/>
