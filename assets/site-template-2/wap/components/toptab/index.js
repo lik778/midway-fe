@@ -29,7 +29,15 @@ export const tabModule = function(){
 			if(h.indexOf(windowPath) != -1){
 				$(tab).addClass('tab-active')
 				//siblings():所有同级a 元素去掉该class。
-				$(tab).parent().siblings().find('a').removeClass('tab-active')
+				//$(tab).parent().siblings().find('a').removeClass('tab-active')
+			}
+		})
+
+		$(".all a").each((index,tab) => {
+			const x = $(tab).attr('href')
+			console.log("x:",x);
+			if(x.indexOf(windowPath) != -1){
+				$(tab).addClass('tab-active')
 			}
 		})
 	})
