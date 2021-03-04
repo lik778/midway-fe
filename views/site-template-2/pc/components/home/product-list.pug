@@ -6,7 +6,7 @@ mixin product-list(type,productList)
 					img(src=item.headImg || defaultImg)
 					if type == 'hot'
 						img.hot-icon(src="//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png")
-					p #{ item.name }
+					p.only-twoline #{ item.name }
 					.show-desc 查看详情
 
 

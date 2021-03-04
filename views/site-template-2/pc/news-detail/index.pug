@@ -22,14 +22,14 @@ block content
                 .news-nav__pre
                     span 上一篇：
                     if preArticle
-                        a(href= preArticle.url) #{ preArticle.name}
+                        a(href= preArticle.url).only-oneline #{ preArticle.name}
                     else
                         a 无
 
                 .news-nav__next
                     span 下一篇：
                     if nextArticle
-                        a(href=nextArticle.url) #{ nextArticle.name }
+                        a(href=nextArticle.url).only-oneline #{ nextArticle.name }
                     else
                         a 无
 

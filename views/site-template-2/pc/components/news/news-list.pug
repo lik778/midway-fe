@@ -13,7 +13,7 @@ mixin news-list (articleList)
               .news-date__year #{year}/#{month > 9 ? month : `0${month}`}
             .news-content
               .news-content__title #{item.name}
-              .news-content__desc #{ item.limitText }
+              .news-content__desc.only-oneline #{ item.limitText }
               .news-content__cta
                 .cta-btn 查看详情
     else
