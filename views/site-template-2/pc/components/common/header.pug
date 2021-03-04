@@ -8,14 +8,14 @@
 			p#shop-name(style="display:none") #{shopName}
 		.nav-right
 			if nav.length > 0
-				each item in nav
+				each item in nav.slice(0,10)
 					.nav-item
 						a(href=item.content) #{ item.name }
 							if item.position === 'productListPage' || item.position === 'articleListPage'
 								.down-arrow
 						if item.contentCateBos && item.contentCateBos.length > 0
 							.nav-dropdown
-								each i in item.contentCateBos
+								each i in item.contentCateBos.slice(0,10)
 									a.nav-dopdown__item(href=i.urlSuffix) #{ i.name }
 
 			.nav-item(style="margin-right: 0")

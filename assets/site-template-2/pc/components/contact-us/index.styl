@@ -1,135 +1,136 @@
 .contact-us
-  display: flex;
+  display flex
 
   &__address
-    width: 435px;
-    background-color: #fff;
-    padding: 90px 50px 50px;
-    margin-right: 16px;
-    color: #666
-    box-sizing: border-box;
-    background: url('//file.baixing.net/202102/9612863cfe9db6407b85fb5bbcc7b8ed.png') no-repeat center center/cover,
-                linear-gradient(200deg, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0.85) 28%, #FFFFFF 44%);
+    width 435px
+    background-color #fff
+    padding 90px 50px 50px
+    margin-right 16px
+    color #666
+    box-sizing border-box
+    background url('//file.baixing.net/202102/9612863cfe9db6407b85fb5bbcc7b8ed.png') no-repeat center center/cover,
+                linear-gradient(200deg, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0.85) 28%, #FFFFFF 44%)
   &__title
-    font-weight: bold;
-    font-size: 20px;
-    color: #333333;
-    margin-bottom: 27px;
+    font-weight bold
+    font-size 20px
+    color #333333
+    margin-bottom 27px
     &.align-center
-      text-align: center;
+      text-align center
 
   &__detail
-    margin: 0 0 23px;
+    margin 0 0 23px
   .baidu-map-wrapper
-    padding-top: 20px;
-    width: 100%;
+    padding-top 20px
+    width 100%
   #baidu-map
-    width: 100%;
-    height: 230px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center
-    align-items: center
-    flex-direction: column
-    background: url('//file.baixing.net/202102/f64b84ae7bdb0c3a576f855624b7d186.png') no-repeat center center/100%;
+    width 100%
+    height 230px
+    cursor pointer
+    color #3A50CB
+    display flex
+    justify-content center
+    align-items center
+    flex-direction column
+    background url('//file.baixing.net/202102/f64b84ae7bdb0c3a576f855624b7d186.png') no-repeat center center/100%
     &:hover
       .marker
-        opacity: 1;
+        opacity 1
       .address
-        color: #5062C8
+        color #FF2D38
     .marker
-      width: 100px
-      height: 100px
-      opacity: 0.7;
-      transition: 0.3s ease
-      background: url('//file.baixing.net/202102/19545902294734e177f9ddb4c3f40491.png') no-repeat center center/100%;
+      width 100px
+      height 100px
+      opacity 0.7
+      transition 0.3s ease
+      background url('//file.baixing.net/202102/19545902294734e177f9ddb4c3f40491.png') no-repeat center center/100%
     .address
-      background-color: #fff
-      display: inline-block;
-      padding: 0 20px
-      box-sizing: border-box
-      text-align: center
-      border-radius: 3px
-      box-shadow: 0 4px 10px rgba(#000, 0.2);
-      font-size: 16px
-      transition: 0.3s ease
-      width: 286px
-      height: 50px
-      line-height: 50px
-      overflow: hidden
-      text-overflow: ellipsis
-      white-space: nowrap
-      color: rgba(#5062C8, 0.7)
+      background-color #fff
+      display inline-block
+      padding 0 20px
+      box-sizing border-box
+      text-align center
+      border-radius 3px
+      box-shadow 0 4px 10px rgba(#000, 0.2)
+      font-size 16px
+      transition 0.3s ease
+      width 286px
+      height 50px
+      line-height 50px
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+      color rgba(#5062C8, 0.7)
 
   &__message
-    flex: 1;
-    background-color: #fff;
-    padding: 50px;
+    flex 1
+    background-color #fff
+    padding 50px
   &__form
-    position: relative;
+    position relative
     .form-group
-      display: flex;
-      padding: 15px 0;
+      display flex
+      padding 15px 0
 
       &:last-child
-        padding-bottom: 0;
+        padding-bottom 0
 
       .form-item
-        flex: 1;
+        flex 1
 
-        &:not(&:last-child)
-          margin-right: 30px;
+        &:not(&last-child)
+          margin-right 30px
 
         &__label
-          margin-bottom: 8px;
-          color: #333333;
-          font-weight: bold;
-          position: relative;
-          display: inline-block;
+          margin-bottom 8px
+          color #333333
+          font-weight bold
+          position relative
+          display inline-block
 
           &.required
-            &::after
-              content: '*';
-              position: absolute;
-              color: red;
-              right: -10px;
-              top: 0;
+            &:after
+              content '*'
+              position absolute
+              color red
+              right -10px
+              top 0
 
         input,
         textarea
-          background: #F7F7F7;
-          border: none;
-          font-size: 16px;
-          color: #999999;
-          width: 100%;
-          padding: 15px;
+          background #F7F7F7
+          border none
+          font-size 16px
+          color #999999
+          width 100%
+          padding 15px
         textarea
-          resize: vertical;
-          min-height: 200px;
+          resize vertical
+          min-height 200px
 
         button
-          background: #FF2D38;
-          font-size: 16px;
-          color: #FFFFFF;
-          border: none;
-          padding: 10px 50px;
-          cursor: pointer;
+          background #FF2D38
+          font-size 16px
+          color #FFFFFF
+          border none
+          padding 10px 50px
+          cursor pointer
     .result-msg
-      display: none
-      width: 160px
-      height: 100px
-      box-shadow: 0 0 10px 0 rgba(0,0,0,0.14)
-      border-radius: 4px
-      position: absolute
-      left: 200px
-      bottom: -13px
-      text-align: center
-      align-items: center
-      justify-content: center
-      color: #6ACE2D
+      display none
+      width 160px
+      height 100px
+      box-shadow 0 0 10px 0 rgba(0,0,0,0.14)
+      border-radius 4px
+      position absolute
+      left 200px
+      bottom -13px
+      text-align center
+      align-items center
+      justify-content center
+      color #6ACE2D
       img
-        width: 30px
-        margin-right: 10px
+        width 30px
+        margin-right 10px
 
 
 
