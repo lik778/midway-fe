@@ -3,15 +3,15 @@
 		.top.clearfix
 			img(src=company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png", alt="企业头像")
 			h3 #{ companyName }
-		.center.clearfix
+		.center
 			.center-left
 				p 公司简介
-				span - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				.dash1
 				.intro
 					| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
 			.center-right
 				p 工商保障
-				span - - - - - - - - - - - - - - - - - - - - - - - - -
+				.dash2
 				.certification-icon
 					img.img1(src="//file.baixing.net/202102/b0e500e6cfa746ab5bd4980460d5dfb7.png", alt="icon")
 					.tag1 实力商家
@@ -23,7 +23,7 @@
 				dl
 					dt 商家称呼
 					dd #{ contactName.content }
-		//-这里要跳转到关于我们路由
+	.view-all
 		a(href="/about") 查看全部
 
 
