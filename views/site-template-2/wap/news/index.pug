@@ -7,9 +7,9 @@ block content
     include ../components/toptab
     include ../components/news-list
 
-    //-- const { totalPage } = renderData.articleList
-    //-include ../components/pagination
-    //-+pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+    - const { totalPage } = renderData.articleList
+    include ../components/pagination
+    +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
 block scripts
     :combine(fileName="site-template-2-news-wap.js")
