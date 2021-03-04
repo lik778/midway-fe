@@ -53,11 +53,15 @@ h1,h2,h3,h4,h5,h6
 	border-right 1px solid #666
 	transform rotate(45deg)
 
-//.down-arrow
-//	display inline-block
-//	margin 0 2px 4px 9px
-//	width 6px
-//	height 6px
-//	border-top 1px solid #666
-//	border-right 1px solid #666
-//	transform rotate(135deg)
+//单行超出点点隐藏
+.only-oneline
+	overflow hidden
+	text-overflow ellipsis
+	white-space nowrap
+.only-twoline
+	overflow hidden
+	text-overflow ellipsis
+	display -webkit-box
+	-webkit-box-orient vertical
+	-webkit-line-clamp 2
+	word-break break-all

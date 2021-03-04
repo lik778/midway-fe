@@ -5,7 +5,7 @@
             a.item(href=item.urlSuffix)
                 h3 #{ item.name }
                 p #{ dateFormat2(item.modifiedTime) }
-                .text #{ item.limitText }
+                .text.only-oneline #{ item.limitText }
 
     else
         include ./default-content.pug
