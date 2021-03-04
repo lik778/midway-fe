@@ -11,9 +11,10 @@
 			a.telBtn(href="tel:" + phone.content )
 				img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon")
 				span 查看电话
-			a(href="")
-				img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
-				span 在线咨询
+			if kf53StyleUrl && kf53StyleUrl.length > 0
+				a(href=kf53StyleUrl)
+					img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
+					span 在线咨询
 	.company-right
 		include ../sidebar/company-card.pug
 
