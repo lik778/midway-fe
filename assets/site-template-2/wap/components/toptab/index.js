@@ -22,12 +22,14 @@ export const tabModule = function(){
 
 		//wapd端顶部的tab导航，与当前链接匹配时高亮
 		const windowPath=window.location.pathname;
-		$("#cateItem").each((index,tab) => {
-			console.log($(tab).attr('href'));
-			if($(tab).attr('href').indexOf(windowPath) != -1){
+		$(".tab-header a").each((index,tab) => {
+			const h = $(tab).attr('href')
+			console.log(h);
+			console.log("windowPath:",windowPath);
+			if(h.indexOf(windowPath) != -1){
 				$(tab).addClass('tab-active')
 				//siblings():所有同级a 元素去掉该class。
-				//$(tab).parent().siblings().find('a').removeClass('tab-active')
+				$(tab).parent().siblings().find('a').removeClass('tab-active')
 			}
 		})
 	})
