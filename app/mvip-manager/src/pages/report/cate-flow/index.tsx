@@ -61,7 +61,7 @@ const PageCateFlow: React.FC = (props: any) => {
 
   return (
     <div className="page-report page-report-cate-flow">
-      <MainTitle title="主营流量报表" />
+      <MainTitle title="主站流量报表" />
       { loading && <Loading/> }
       { !loading && <div className="container">
         <div className="segment">
