@@ -7,19 +7,17 @@ section.news-detail__section
             .info-label 公司信息
             .info-item
                 span 商家称呼
-                span #{ person.name }
+                span #{ contactName.content }
             .info-item
                 span 联系电话
-                span #{ phone.content }
+                span #{ phone.content || "暂未添加电话"}
             .info-item
                 span 微信号码
-                span #{ weChat.content }
+                span #{ weChat.content || "暂未添加微信号"}
             if qq && qq.length > 0
                 .info-item
                     span QQ号码
                     span #{ qq[0].content }
-                    //- each item in qq
-                    //-     span #{ item.content }
             .info-item
                 span 公司地址
-                span #{ company.address }
+                span #{ company.address || "暂未添加公司地址"}

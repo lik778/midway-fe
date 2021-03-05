@@ -22,15 +22,15 @@ html
         block styles
     body
         //-初始化公共数据
-        - const { qq, phone, weChat } = renderData.basic.contact
-        - const { company, person } = renderData.basic
+        - const { qq, phone, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
+        - const { company, person, copyRight } = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName } = renderData
         - companyName = renderData.basic.company.name
         - nav = renderData.navigation
         - productLink = (nav.filter(x => x.position == "productListPage"))[0].content
         - newsLink = (nav.filter(x => x.position == "articleListPage"))[0].content
-        - defaultImg = "//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png"
-
+        - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
+        - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
         block header
             include ./components/common/topbar.pug
             include ./components/common/header.pug

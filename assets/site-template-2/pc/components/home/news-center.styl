@@ -2,7 +2,7 @@
 	.news-box
 		box-sizing border-box
 		width 49.3%
-		padding 40px 30px 0
+		padding 24px 30px 0
 		background-color #fff
 		float left
 		margin-right 16px
@@ -35,6 +35,9 @@
 				border-bottom 1px dashed #eaeaea
 				&:last-child
 					border-bottom none
+				&:hover
+					.item-title
+						color #FF2D38
 				.left-img
 					width 85px
 					height 85px
@@ -54,21 +57,14 @@
 						margin-top -15px
 						color #666
 				.item-card
+					width 418px
 					.item-title
 						font-weight 600
 						margin-bottom 10px
-						&:hover
-							color #FF2D38
 					.item-content
 						color #999
 						line-height 24px
-						overflow hidden
-						text-overflow ellipsis
-						display -webkit-box
-						-webkit-box-orient vertical
-						-webkit-line-clamp 2
-						width 418px
-						word-break break-all
+
 
 
 

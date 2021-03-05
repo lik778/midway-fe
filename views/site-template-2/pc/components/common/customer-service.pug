@@ -23,12 +23,12 @@
 				.service-modal__mobile
 					.mobile-title 咨询电话
 					.mobile-number #{ phone.content }
-					.mobile-info 联系人：#{ person.name || company.name}
+					.mobile-info 联系人：#{ contactName.content }
 					.mobile-info 工作时间：7*24
 		.service-item
 			.service-logo.wechat
 			.service-name 联系微信
-			if !weChat.content
+			if weChat.content
 				.service-modal
 					.service-modal__wechat
 						.mobile-title 微信号码

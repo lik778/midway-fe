@@ -17,6 +17,6 @@
         .aboutus-text
             span 微信号码：#{ weChat.content }
     .aboutus-content
-        p.aboutus-content-slice.active #{ company.about.slice(0, 10) }...
-        p.aboutus-content-full #{ company.about }
+        p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+        p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
         #aboutus-click-to-expand.click-to-expand.active 点击展开

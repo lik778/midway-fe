@@ -1,9 +1,6 @@
 import './index.styl'
+import '../components/swiper/index'
 import '../layout/index'
-//import { qqModule } from '../components/customer-service/index';
-//import { navModule } from '../components/nav/index';
-//import { contactUsModule } from '../components/sidebar/contact-us/index';
+import { tabModule } from '../components/toptab/index';
 
-//navModule()
-//qqModule()
-//contactUsModule()
+tabModule()

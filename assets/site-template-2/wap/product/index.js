@@ -1,9 +1,8 @@
 import './index.styl'
 import '../layout/index'
-//import { menusModule } from '../components/header/index'
-//import { tabModule } from '../components/toptab/index'
-//import { footerContactModule } from '../components/footer-contact/index'
+import '../components/swiper/index'
+import { tabModule } from '../components/toptab/index';
+import { scrollMore } from '../components/scroll-more'
 
-//menusModule()
-//tabModule()
-//footerContactModule()
+tabModule()
+scrollMore()

@@ -3,11 +3,14 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-2-news-detail-wap.css")
 
+block header
+    include ../components/header
+    include ../components/swiper
+
 block content
     include ../components/company-info.pug
     - const cateList = renderData.articleCateList
     include ../components/news-detail.pug
-    include ../components/aboutus.pug
     include ../components/contact-form.pug
 
 block footer

@@ -1,12 +1,12 @@
 .contact-us
     .contact-us__address
-        .contact-us__title #{ company.name }
-        p.contact-us__detail 公司地址：#{ company.address }
-        p.contact-us__detail 服务热线：#{ phone.content }
-        p.contact-us__detail 微信号：#{ weChat.content }
+        .contact-us__title #{ company.name || '暂未添加公司名称' }
+        p.contact-us__detail 公司地址：#{ company.address || '暂未添加地址' }
+        p.contact-us__detail 服务热线：#{ phone.content || '暂未添加电话'}
+        p.contact-us__detail 微信号：#{ weChat.content || '暂未添加微信号'}
         .baidu-map-wrapper
           a#baidu-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
-            .address #{ company.address }
+            .address.only-oneline #{ company.address }
             .marker
     .contact-us__message
         .contact-us__title.align-center 留言咨询
