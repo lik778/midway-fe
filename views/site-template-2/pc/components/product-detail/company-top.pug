@@ -1,7 +1,7 @@
 .company
 	- const { headImg, name, price, contentImg } = renderData.productInfo
 	.company-left
-		img(src=headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="logo")
+		img(src=headImg || defaultImg, alt="logo")
 		.company-text
 			h3 #{ name }
 			p 价格：#{ price || '面议' }
