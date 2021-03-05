@@ -24,8 +24,6 @@ export const tabModule = function(){
 		const windowPath=window.location.pathname;
 		$(".tab-header a").each((index,tab) => {
 			const h = $(tab).attr('href')
-			console.log(h);
-			console.log("windowPath:",windowPath);
 			if(h.indexOf(windowPath) != -1){
 				$(tab).addClass('tab-active')
 				//siblings():所有同级a 元素去掉该class。
@@ -35,7 +33,6 @@ export const tabModule = function(){
 
 		$(".all a").each((index,tab) => {
 			const x = $(tab).attr('href')
-			console.log("x:",x);
 			if(x.indexOf(windowPath) != -1){
 				$(tab).addClass('tab-active')
 			}
