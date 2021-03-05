@@ -16,7 +16,7 @@ export class ReportController {
     }
     // url做了兼容
     res.render('report/share', { title: '数据总览',
-      url: `${ config().hostType.fuwu || '//localhost:1024' }/management/report/dashboard?userId=${query.userId}` });
+      url: `//${ config().hostType.fuwu || 'localhost:1024' }/management/report/dashboard?userId=${query.userId}` });
   }
 
   @Post('/api')
