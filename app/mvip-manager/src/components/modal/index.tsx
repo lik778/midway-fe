@@ -18,11 +18,13 @@ interface Props {
   maskClosable?: boolean;
   type?: ModalType;
   footer?: any;
+  confirmLoading?: boolean;
   onOk(): void;
   onCancel(): void;
 }
 export default (props: Props) => {
-  const { visible, onOk, onCancel, title, content, type, footer, closable, maskClosable } = props
+  const { visible, onOk, onCancel, title, content, type, footer, closable, maskClosable,
+    confirmLoading } = props
 
   const createTitle = (type: ModalType = ModalType.superWarning) => {
     if (type === ModalType.info) {
@@ -49,6 +51,7 @@ export default (props: Props) => {
             footer={footer}
             onCancel={onCancel}
             onOk={onOk}
+            confirmLoading={confirmLoading}
             visible={visible}>
     <div>{content}</div>
   </Modal>
