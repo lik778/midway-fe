@@ -8,7 +8,6 @@ export const leaveLeads = function() {
             data.contact = $('#tel').val();
             data.content = $('#content').val();
             data.shopName = $('#shop-name').text();
-            console.log('data:',data);
             if(data.name === '') {
                 alert('请留下您的姓名')
                 return false
