@@ -1,0 +1,95 @@
+@import "../components/nav"
+@import "../components/footer-contact"
+div,p,h1,h2,h3,h4,h5,h6
+  margin 0
+  padding 0
+  font-family "'PingFangSC-Regular','Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif"
+  color #333
+
+html
+  height 100%
+
+body
+  max-width 750px
+  margin 0 auto
+  background-color #f5f5f5
+  position relative
+  min-height 100%
+  //设置一个最小高度,主要使他在内容很少（或没有内容）情况下，能保持100％的高度
+a
+  text-decoration none
+
+//解决浮动问题
+.clearfix:after
+  content ""
+  display block
+  height 0
+  clear both
+  visibility hidden
+//解决IE6,7不识别伪元素
+.clearfix
+  zoom  1
+
+img
+  border 0
+
+ul,li,dl,dt,dd
+  list-style none
+  margin 0
+  padding 0
+
+input,select,checkbox
+  vertical-align middle
+
+.right-arrow
+  display inline-block
+  width 8px
+  height 8px
+  border-top 1px solid #666
+  border-right 1px solid #666
+  transform rotate(45deg)
+
+.block-title
+  font-size 18px
+  color #333
+  font-weight 400
+  margin 26px 0
+  text-align center
+  //position relative
+  //&::before
+  //  content ""
+  //  transform rotate(24deg)
+  //  background #ff2d38
+  //  border-radius 6px
+  //  position absolute
+  //  left 126px
+  //  top calc(50% - 8px)
+  //  width 6px
+  //  height 14px
+  //.dianLine
+  //  //content ""
+  //  display inline-block
+  //  transform rotate(24deg)
+  //  opacity 0.5
+  //  background #FF2D38
+  //  border-radius 6px
+  //  position absolute
+  //  left 115px
+  //  top calc(50% - 8px)
+  //  width 5px
+  //  height 9px
+
+
+//单行超出点点隐藏
+.only-oneline
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.only-twoline
+  overflow hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-box-orient vertical
+  -webkit-line-clamp 2
+  word-break break-all

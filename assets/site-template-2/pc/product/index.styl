@@ -1,0 +1,52 @@
+@import "../components/common"
+@import "../components/topbar"
+@import "../components/header"
+@import "../components/breadcrumbs"
+@import "../components/product/product-list"
+@import "../components/product/cateList"
+@import "../components/sidebar/products"
+@import "../components/customer-service"
+@import "../components/footer"
+@import "../components/sidebar/index"
+@import "../components/pagination"
+@import "../components/swiper"
+
+.container
+    width 1220px
+    margin 0 auto 72px
+    display flex
+    .main
+        width 980px
+
+    .sidebar
+        width 224px
+        margin-left 15px
+
+.product-child-page
+    .search-crumbs
+        ul
+            li:last-child
+                span
+                    background: #FFFFFF
+                    color: #FF2D38
+                    border: 1px solid #FF2D38
+                    display: inline-block
+                    height: 34px
+                    line-height: 34px
+                    padding: 0 45px 0 15px
+                    cursor: pointer
+                    position: relative
+                    &::after,
+                    &::before
+                        content: ''
+                        width: 15px
+                        height: 1px
+                        background: #FF2D38
+                        position: absolute
+                        right: 15px
+                        top: 17px
+                        transform: rotate(45deg)
+                    &::after
+                        transform: rotate(-45deg)
+
+

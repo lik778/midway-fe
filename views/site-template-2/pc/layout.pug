@@ -1,0 +1,49 @@
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title #{ renderData.meta.title || "" }
+        meta(name='keywords' content=renderData.meta.keywords || "")
+        meta(name='description' content=renderData.meta.description || "")
+        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+        //-增加53客服并打点
+        - a = renderData.kf53
+        if a && a.length> 0
+            - x = a.lastIndexOf('";var')
+            - s = a.indexOf('src')
+            - hr = a.slice(s, x)
+            if hr.indexOf('?') == -1
+                - kf53Tarcker = a.slice(0,x) + '?u_cust_id=' + renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
+                | !{ kf53Tarcker }
+            else
+                - kf53Tarcker = a.slice(0,x) + '&u_cust_id=' + renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
+                | !{ kf53Tarcker }
+        block styles
+    body
+        //-初始化公共数据
+        - const { qq, phone, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
+        - const { company, person, copyRight } = renderData.basic
+        - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName } = renderData
+        - companyName = renderData.basic.company.name
+        - nav = renderData.navigation
+        - productLink = (nav.filter(x => x.position == "productListPage"))[0].content
+        - newsLink = (nav.filter(x => x.position == "articleListPage"))[0].content
+        - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
+        - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
+        block header
+            include ./components/common/topbar.pug
+            include ./components/common/header.pug
+        block content
+        include ./components/common/customer-service.pug
+
+        block footer
+            include ./components/common/footer.pug
+
+
+    block scripts
+    //-把打点值赋给window，便于传给node层和其他js层
+    block append scripts
+        script.
+            window.shopId = #{shopId};
+

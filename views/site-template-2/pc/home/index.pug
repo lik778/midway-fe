@@ -1,0 +1,53 @@
+extends ../layout
+
+block styles
+    :combine(fileName="site-template-2-home-pc.css")
+
+//-使用了统一的header和nav
+block content
+    include ../components/home/swiper.pug
+
+    .container
+        - hotProductList = renderData.productRecommend
+        if hotProductList && hotProductList.length>0
+            .block-title
+                img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
+                h2 热门产品
+            include ../components/home/product-list.pug
+            +product-list('hot', hotProductList)
+
+        .block-title
+            img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
+            h2 关于我们
+        include ../components/home/about-us.pug
+
+        - productList = renderData.productList.result
+        if productList && productList.length>0
+            .block-title
+                img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",style="width:283px",alt="产品分类")
+                h2 产品分类
+            include ../components/home/product-catogeries.pug
+            include ../components/home/product-list.pug
+            +product-list('nothot', productList)
+
+        - articleList = renderData.articleList.result
+        - const { articleRecommend } = renderData
+        if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+            .block-title
+                img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
+                h2 新闻中心
+            include ../components/home/news-center.pug
+            .new-center.clearfix
+                +news-box('新闻资讯', articleList)
+                +news-box('推荐文章', articleRecommend)
+
+        .block-title
+            img(src="//file.baixing.net/202102/4be12cae4c491b647a8a2f69eafab548.png",alt="关于我们")
+            h2 联系我们
+        include ../components/home/contact-us.pug
+
+block scripts
+    :combine(fileName="site-template-2-home-pc.js")
+block append scripts
+    script.
+        window.trackSrc = 'home';
