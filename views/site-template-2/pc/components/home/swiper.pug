@@ -13,7 +13,7 @@
           else
             each item in bannerList.slice(0,5)
               a.swiper-slide(href=item.urlSuffix)
-                img(src=item.headImg)
+                img(src=item.headImg || defaultImg)
                 p #{ item.name }
         else
           .swiper-slide
