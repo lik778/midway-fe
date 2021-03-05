@@ -14,6 +14,7 @@ export const leaveLeads = function() {
             }
             if(data.contact == ''){
                 alert('请留下您的联系方式')
+                return false
             }
             //if(!/[0-9]{11}/.test(data.contact)) {
             //    alert('请填写正确的手机号码')
