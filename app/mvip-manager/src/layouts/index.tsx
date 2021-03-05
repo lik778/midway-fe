@@ -8,7 +8,7 @@ import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe } from '@/utils';
+import { removeOverflowY, inIframe, notInIframe } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
 
 const { SubMenu } = Menu;
@@ -16,7 +16,11 @@ const { Header, Content, Sider } = Layout;
 
 const Layouts =  (props: any) => {
   if (inIframe()) {
-    return React.cloneElement(props.children);
+    return <Layout className="site-layout">
+      <Content>
+        { React.cloneElement(props.children) }
+      </Content>
+    </Layout>
   }
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
@@ -108,7 +112,7 @@ const Layouts =  (props: any) => {
             </SubMenu>
           </Menu>
         </Sider>
-        <Layout className="site-layout">
+        <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1240 : '' }}>
           <Header className="layoutHeader">
             <div>{userInfo.userName}</div>
           </Header>

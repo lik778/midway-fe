@@ -16,6 +16,7 @@ import {
 } from '@/interfaces/report';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { errorMessage } from '@/components/message';
+import { inIframe } from '@/utils';
 
 // 请求成功回调的 code
 export const SUCCESS = 0
@@ -27,6 +28,13 @@ const request = axios.create({
   headers: {
     "Content-Type": "application/json;charset=utf-8"
   }
+})
+
+request.interceptors.request.use((req: any) => {
+  if (inIframe()) {
+    req.url = `${req.url}${location.search}`
+  }
+  return Promise.resolve(req)
 })
 
 request.interceptors.response.use((res: AxiosResponse<any>) => {

@@ -7,8 +7,8 @@ import CountTo from '@/components/count-to';
 import { PieChart, LineChart } from '@/components/charts';
 import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
 import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
-import './index.less';
 import { ReportProductType } from '@/enums/report';
+import { notInIframe } from '@/utils';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
@@ -58,7 +58,7 @@ const Title = ({ value, type }: TitleProps) => {
   if (!item) return null;
   return <h3 className="report-dashboard-section-title">
       <span>{item.subTitle}<strong>{value}</strong></span>
-      <Link className="link" target="_blank" to={item.link}>&nbsp;&nbsp;查看详细</Link>
+      { notInIframe() && <Link className="link" target="_blank" to={item.link}>&nbsp;&nbsp;查看详细</Link> }
    </h3>
 }
 
@@ -83,7 +83,7 @@ export default (props: any) => {
   }, [])
 
   return <div className='page-report page-report-keyword'>
-      <MainTitle title="总览"/>
+      { notInIframe() &&<MainTitle title="总览"/> }
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>
