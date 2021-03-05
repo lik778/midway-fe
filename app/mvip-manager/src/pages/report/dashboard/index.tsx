@@ -7,14 +7,14 @@ import CountTo from '@/components/count-to';
 import { PieChart, LineChart } from '@/components/charts';
 import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
 import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
-import './index.less';
 import { ReportProductType } from '@/enums/report';
+import { notInIframe } from '@/utils';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
     legend: {
       left: 'bottom',
-      data: ['凤鸣','标王','易慧推','主营']
+      data: ['凤鸣','标王','易慧推','主站']
     },
     series : [
       {
@@ -25,7 +25,7 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
           { value: fm || 0, name:'凤鸣', },
           { value: bw || 0, name:'标王' },
           { value: qc || 0, name:'易慧推' },
-          { value: cate || 0, name:'主营' }
+          { value: cate || 0, name:'主站' }
         ],
       }
     ]
@@ -51,14 +51,14 @@ const Title = ({ value, type }: TitleProps) => {
   interface Config { [key: string]: Item; }
   const config: Config = {
     keyword: { title: '排名关键词数：', subTitle: '总关键词数：', link: '/report/keyword' },
-    pv: { title: '流量：', subTitle: '总PV：', link: '/report/cate-flow' },
+    pv: { title: '流量：', subTitle: '总PV：', link: '/report/bax-flow' },
     publish: { title: '发布数：', subTitle: '总发布数：', link: '/report/cate-publish' }
   }
   const item  = config[type]
   if (!item) return null;
   return <h3 className="report-dashboard-section-title">
       <span>{item.subTitle}<strong>{value}</strong></span>
-      <Link className="link" target="_blank" to={item.link}>&nbsp;&nbsp;查看详细</Link>
+      { notInIframe() && <Link className="link" target="_blank" to={item.link}>&nbsp;&nbsp;查看详细</Link> }
    </h3>
 }
 
@@ -83,7 +83,7 @@ export default (props: any) => {
   }, [])
 
   return <div className='page-report page-report-keyword'>
-      <MainTitle title="总览"/>
+      { notInIframe() &&<MainTitle title="总览"/> }
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>
@@ -98,7 +98,7 @@ export default (props: any) => {
                 <CountTo title="总PV" value={overview?.totalVisits}/>
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="主营关键词数" type={ReportProductType.CATE} value={overview?.mainTotalKeyword}/>
+                <CountTo title="主站关键词数" type={ReportProductType.CATE} value={overview?.mainTotalKeyword}/>
               </Col>
             </Row>
             <Row className="statics-con" gutter={16}>

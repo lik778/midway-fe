@@ -17,18 +17,21 @@ block content
                         img(src=contentImg, alt="")
                 .news-content__text.
                     !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
-                //- .news-content__tags 标签：
-                //-      span 五金配件
-                //-      span 配件
+
             .news-nav
-                if preArticle
-                    .news-nav__pre
-                        span 上一篇：
-                        a(href= preArticle.url) #{ preArticle.name}
-                if nextArticle
-                    .news-nav__next
-                        span 下一篇：
-                        a(href=nextArticle.url) #{ nextArticle.name }
+                .news-nav__pre
+                    span 上一篇：
+                    if preArticle
+                        a(href= preArticle.url).only-oneline #{ preArticle.name}
+                    else
+                        a 无
+
+                .news-nav__next
+                    span 下一篇：
+                    if nextArticle
+                        a(href=nextArticle.url).only-oneline #{ nextArticle.name }
+                    else
+                        a 无
 
             include ../components/common/contact-form-companyInfo.pug
 

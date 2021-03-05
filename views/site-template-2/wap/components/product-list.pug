@@ -8,7 +8,7 @@ mixin product-list(type, productList)
 						img(src=item.headImg || defaultImg)
 						if type === 'hot'
 							img.hot-icon(src=hotIcon)
-					p #{ item.name }
+					p.only-twoline #{ item.name }
 	else
 		include ./default-content.pug
 		+default-content("product")

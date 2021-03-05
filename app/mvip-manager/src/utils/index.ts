@@ -1,22 +1,8 @@
-import { uploadImgToUpyunReq } from '@/api/haojing';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants';
 
-export const uploadImgToUpyunHandle = (file: File | Blob): Promise<any> => {
-  const params = new FormData()
-  const { uploadParams: { policy, signature }, uploadUrl} = window.__upyunImgConfig
-  params.append('file', file)
-  params.append('policy', policy)
-  params.append('signature', signature)
-  return new Promise((resolve, reject) => {
-    uploadImgToUpyunReq(uploadUrl, params).then(res => {
-      const { code } = res.data
-      code === 200 ? resolve(res.data) : reject(res)
-    })
-  })
-}
 
 export const addKeyForListData = (list: any, page?: number, size?: number) => {
   const pageSize = size ? size : 10;
@@ -80,15 +66,17 @@ export const removeOverflow = (cb: any) => {
   setTimeout(() => removeOverflowY(), 1000);
 }
 
-export const zip = (a: any[], b: any[]) => a.map((x, i) => [x, b[i]])
-
 // 从枚举类型创建 Options 值
 // @example: {value:'name'} 转化为 {label:'name', value:'value'}
 export const createOptions = (labelMap: any) =>
   Object.entries(labelMap).map(([k, v]) => ({ label: v, value: k }))
 
+export const notInIframe = (): boolean => {
+  return (window.self === window.top)
+}
+
 export const inIframe = (): boolean => {
-  return !(window.self === window.top)
+  return !notInIframe()
 }
 
 export const stringify = (params: any): string  => JSON.stringify(params)
@@ -108,4 +96,12 @@ export const formatDateRange = (dates = [], query: any) => {
   const [start, end] = dates
   query.startTime = String(start.unix())
   query.endTime = String(end.add(1, 'day').subtract(1, 'second').unix())
+}
+
+export const insertStyle= (cssText: string) => {
+    const style = document.createElement('style');
+    const textNode = document.createTextNode(cssText);
+    const head = document.head || document.getElementsByTagName('head')[0];
+    style.appendChild(textNode);
+    head.appendChild(style);
 }

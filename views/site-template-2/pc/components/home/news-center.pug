@@ -20,7 +20,7 @@ mixin news-box(title,newsList)
 							.news-date__year #{year}/#{month > 9 ? month : `0${month}`}
 
 						.item-card
-							.item-title #{ item.name }
-							.item-content.
+							.item-title.only-oneline #{ item.name }
+							.item-content.only-twoline.
 								#{ item.limitText }
 

@@ -1,7 +1,7 @@
 .product-detail
     - const { headImg, name, price, content, contentImg} = renderData.productInfo
         .pro-top
-            img(src=headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png', alt="")
+            img(src=headImg || defaultImg, alt="")
             .pro-meta
                 h3 #{ name }
                 p 价格：#{ price || '面议'}

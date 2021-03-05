@@ -62,9 +62,9 @@ export const ImgUpload = (props: Props) => {
   const handleChange = async (e: any) => {
     if (e.file.status === 'done') {
       const { url } = e.file.response
-      setFileList([...e.fileList])
       onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
     }
+    setFileList([...e.fileList])
   }
 
   const handleRemove = (file: any) => {

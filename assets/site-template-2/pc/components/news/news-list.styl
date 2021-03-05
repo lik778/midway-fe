@@ -11,9 +11,20 @@
         display: flex
         position: relative
         font-size: 14px
+        &:hover
+          .news-content__title
+            color: #ff2d38
+          .cta-btn
+            border: 1px solid #ff2d38
+            color: #ff2d38
+            &::after
+              background-color: #ff2d38
+            &::before
+              border-color: #ff2d38
+
       &:not(:last-child)
         .news-item__inner
-          border-bottom: 2px dashed #EAEAEA
+          border-bottom: 1px dashed #eee
     &-date
       padding: 0 30px 30px 0
       &__day
@@ -28,9 +39,6 @@
       &__desc
         margin-top: 12px
         color: #666666
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
         width: 800px
       &__cta
         padding-top: 30px
@@ -64,11 +72,3 @@
             border-bottom: none
             transform: rotate(45deg)
             top: calc(50% - 4px)
-
-          &:hover
-            border: 1px solid #ff2d38
-            color: #ff2d38
-            &::after
-              background-color: #ff2d38
-            &::before
-              border-color: #ff2d38
