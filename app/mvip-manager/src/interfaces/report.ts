@@ -110,7 +110,7 @@ export interface BaxFlowDetailParams extends BaseParams, PageParams {
 export interface KeywordOverviewData {
   total: number;
   mainTotal: number;
-  semTotal: number;
+  searchTotal: number;
   biaoWangKeyword: number;
   biaoWangRanking: number;
   fengMingKeyword: number;

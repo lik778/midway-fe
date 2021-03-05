@@ -46,7 +46,7 @@ export default function SearchList (props: Props) {
 
   // 默认给 dataSource 用索引设置 key
   useEffect(() => {
-    if (dataSource && dataSource.length) {
+    if (dataSource && dataSource.length >= 0) {
       setIndexedDataSource(dataSource.map((x: any, i: number) => {
         x.key = x.key || i
         return x
