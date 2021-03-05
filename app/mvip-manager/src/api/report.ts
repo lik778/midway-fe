@@ -16,6 +16,7 @@ import {
 } from '@/interfaces/report';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { errorMessage } from '@/components/message';
+import { inIframe } from '@/utils';
 
 // 请求成功回调的 code
 export const SUCCESS = 0
@@ -27,6 +28,13 @@ const request = axios.create({
   headers: {
     "Content-Type": "application/json;charset=utf-8"
   }
+})
+
+request.interceptors.request.use((req: any) => {
+  if (inIframe()) {
+    req.url = `${req.url}${location.search}`
+  }
+  return Promise.resolve(req)
 })
 
 request.interceptors.response.use((res: AxiosResponse<any>) => {
@@ -76,17 +84,17 @@ export const getSummaryFlowData:
   () => Response<FlowChartData[]> =
   () => get('/summary/statistical')
 
-// 主营流量总览数据
+// 主站流量总览数据
 export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
   () => get('/seo/network/overview')
 
-// 主营流量统计柱状图
+// 主站流量统计柱状图
 export const getCateFlowChart:
   (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
   (params) => post('/seo/network/statistical', params)
 
-// 主营流量详情列表
+// 主站流量详情列表
 export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/seo/network/visit-detail', params)
