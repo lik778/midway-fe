@@ -9,6 +9,7 @@ import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
 import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
 import { ReportProductType } from '@/enums/report';
 import { notInIframe } from '@/utils';
+import PageCateFlow from '@/pages/report/cate-flow';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
@@ -62,7 +63,7 @@ const Title = ({ value, type }: TitleProps) => {
    </h3>
 }
 
-export default (props: any) => {
+function DashboardPage(props: any) {
   const [loading, setLoading] = useState<boolean>(false)
   const [overview, setOverview] = useState<SummaryOverviewData>()
   const [chartOptions, setChartOptions] = useState({})
@@ -127,3 +128,7 @@ export default (props: any) => {
       </div>
     </div>
 }
+
+DashboardPage.wrappers = ['@/wrappers/report-auth']
+
+export default DashboardPage
