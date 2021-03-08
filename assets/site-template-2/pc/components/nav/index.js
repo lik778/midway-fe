@@ -25,7 +25,5 @@ export const navModule = function() {
 				//$(tab).parent().siblings().find('a').removeClass('nav-active')
 			}
 		})
-
-
 	})
 }
