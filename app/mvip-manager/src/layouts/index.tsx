@@ -6,7 +6,6 @@ import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
-import config from '@/config/env';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
@@ -25,7 +24,8 @@ const Layouts = (props: any) => {
   }
   // 用户未登录
   if (!isLogin()) {
-    location.href = `${ config().haojing }/oz/login?redirect=${encodeURIComponent(location.href)}`
+    // 先写死，后面查看环境变量问题
+    location.href = `//www.baixing.com/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
 
