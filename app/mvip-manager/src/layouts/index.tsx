@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Menu, ConfigProvider } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
-import './index.less'
 import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
+import config from '@/config/env';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe, notInIframe } from '@/utils';
+import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
+import './index.less';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-const Layouts =  (props: any) => {
+const Layouts = (props: any) => {
   if (inIframe()) {
     return <Layout className="site-layout">
       <Content>
@@ -22,6 +23,12 @@ const Layouts =  (props: any) => {
       </Content>
     </Layout>
   }
+  // 用户未登录
+  if (!isLogin()) {
+    location.href = `${ config().haojing }/oz/login`
+    return <div></div>;
+  }
+
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
@@ -90,7 +97,7 @@ const Layouts =  (props: any) => {
                 <Link to="/ai-content/job-list">管理任务</Link>
               </Menu.Item>
             </SubMenu>
-            <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
+            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
               <Menu.Item key="dashboard">
                 <Link to="/report/dashboard">总览</Link>
               </Menu.Item>
@@ -100,16 +107,16 @@ const Layouts =  (props: any) => {
               <Menu.Item key="cate-flow">
                 <Link to="/report/cate-flow">主站流量</Link>
               </Menu.Item>
-              {/* <Menu.Item key="cate-publish">
+              <Menu.Item key="cate-publish">
                 <Link to="/report/cate-publish">主站发布</Link>
-              </Menu.Item> */}
+              </Menu.Item>
               <Menu.Item key="bax-flow">
                 <Link to="/report/bax-flow">搜索通流量</Link>
               </Menu.Item>
-              {/* <Menu.Item key="remain">
+              <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>
-              </Menu.Item> */}
-            </SubMenu>
+              </Menu.Item>
+            </SubMenu> }
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1240 : '' }}>

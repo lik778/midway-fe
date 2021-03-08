@@ -4,10 +4,15 @@ import { Row, Col, Statistic } from 'antd'
 import MainTitle from '@/components/main-title'
 import { FunnelChart } from '@/components/charts'
 import { getRemainCapital } from '@/api/report'
+import EmptyReport from '@/components/empty-report'
 
 import './index.less'
 
-export default function KeyWordPage(props: any) {
+
+function RemainPage(props: any) {
+  // 未上线, 做一下处理
+  return <EmptyReport />
+
   const [chartOptions, setChartOptions] = useState({})
 
   const queryRemainCapital = async () => {
@@ -60,3 +65,6 @@ function genChartOptions(all: number, filtered: number) {
     ]
   }
 }
+
+RemainPage.wrappers = ['@/wrappers/report-auth']
+export default RemainPage

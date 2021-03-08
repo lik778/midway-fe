@@ -6,10 +6,25 @@ import Query from '@/components/search-list'
 import { LineChart } from '@/components/charts'
 import { getPublishData, getPublishDetails } from '@/api/report'
 import { publishConfig, publishListConfig } from './config'
-
+import EmptyReport from '@/components/empty-report'
 import './index.less'
 
-export default function KeyWordPage(props: any) {
+function genChartOptions(result: any) {
+  return {
+    xAxis : {
+      type: 'category',
+      data: result.map((x: any) => x.date)
+    },
+    series : Array(result[0].counts.length).fill('').map((_, i) => ({
+      data: result.map((x: any) => x.counts[i]),
+      type: 'bar'
+    }))
+  }
+}
+
+function CatePublishPage(props: any) {
+  // 未上线, 做一下处理
+  return <EmptyReport />
   const [queryFlowForm] = Form.useForm()
   const [queryPVForm] = Form.useForm()
   const [pvDataSource, setPVDataSource] = React.useState([])
@@ -82,15 +97,6 @@ export default function KeyWordPage(props: any) {
   )
 }
 
-function genChartOptions(result: any) {
-  return {
-    xAxis : {
-      type: 'category',
-      data: result.map((x: any) => x.date)
-    },
-    series : Array(result[0].counts.length).fill('').map((_, i) => ({
-      data: result.map(x => x.counts[i]),
-      type: 'bar'
-    }))
-  }
-}
+CatePublishPage.wrappers = ['@/wrappers/report-auth']
+
+export default CatePublishPage

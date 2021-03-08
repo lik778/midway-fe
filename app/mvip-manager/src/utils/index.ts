@@ -105,3 +105,18 @@ export const insertStyle= (cssText: string) => {
     style.appendChild(textNode);
     head.appendChild(style);
 }
+
+// 灰度测试用, 让测试人员使用
+export const hasReportAuth = (): boolean => {
+  return !!(localStorage.getItem('shAgent'))
+}
+
+export const getCookie = (name: string): string => {
+  let result: any = document.cookie.match("(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)")
+  return result ? result.pop() : ''
+}
+
+export const isLogin = (): boolean => {
+  return getCookie('__u') !== ''
+}
+
