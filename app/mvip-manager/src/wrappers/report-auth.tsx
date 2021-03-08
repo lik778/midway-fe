@@ -1,9 +1,9 @@
 import React from 'react'
-import { hasReportRole, inIframe } from '@/utils';
+import { hasReportAuth, inIframe } from '@/utils';
 import { Redirect } from 'umi';
 
 export default (props: any) => {
-  if (hasReportRole() || inIframe()) {
+  if (hasReportAuth() || inIframe()) {
     return <div>{ props.children }</div>;
   } else {
     return <Redirect to="/" />;

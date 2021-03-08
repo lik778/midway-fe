@@ -8,7 +8,7 @@ import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe, notInIframe, hasReportRole } from '@/utils';
+import { removeOverflowY, inIframe, notInIframe, hasReportAuth } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
 
 const { SubMenu } = Menu;
@@ -90,7 +90,7 @@ const Layouts =  (props: any) => {
                 <Link to="/ai-content/job-list">管理任务</Link>
               </Menu.Item>
             </SubMenu>
-            { hasReportRole() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
+            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
               <Menu.Item key="dashboard">
                 <Link to="/report/dashboard">总览</Link>
               </Menu.Item>

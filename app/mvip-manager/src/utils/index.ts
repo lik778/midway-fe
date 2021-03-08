@@ -107,6 +107,6 @@ export const insertStyle= (cssText: string) => {
 }
 
 // 灰度测试用, 让测试人员使用
-export const hasReportRole = () => {
+export const hasReportAuth = () => {
   return !!(localStorage.getItem('shAgent'))
 }
