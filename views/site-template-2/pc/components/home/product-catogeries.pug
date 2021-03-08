@@ -5,6 +5,6 @@
 			each item in p.slice(0,5)
 				a(href= item.urlSuffix) #{ item.name }
 			if p.length >= 5
-				a.all-category(href= productLink) 全部分类
+				a.all-category(href= productLink || "#") 全部分类
 
 
