@@ -4,8 +4,8 @@
     margin-top: 10px
     .block-title
         margin: 0
-        padding-bottom: 15px
-        border-bottom: 1px solid #E2E2E2
+        //padding-bottom: 15px
+        //border-bottom: 1px solid #E2E2E2
     &-item
         display: flex
         align-items: center
@@ -32,8 +32,10 @@
             text-overflow: ellipsis
             white-space: nowrap
             display: block
-    &-item.company-address
+    .company-address
         position: relative
+        border-top 1px solid #e2e2e2
+        padding-top 15px
         &::after
             content: ''
             width: 8px
@@ -43,8 +45,9 @@
             border-bottom: none
             position: absolute
             right: 5px
-            top: calc(50%)
+            top: calc(50% + 6px)
             transform: translateY(-50%) rotate(45deg)
+
     &-content
         text-align: center
         p.active
