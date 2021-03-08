@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Menu, ConfigProvider } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
-import './index.less'
 import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
+import config from '@/config/env';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe, notInIframe, hasReportAuth } from '@/utils';
+import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
+import './index.less';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-const Layouts =  (props: any) => {
+const Layouts = (props: any) => {
   if (inIframe()) {
     return <Layout className="site-layout">
       <Content>
@@ -22,6 +23,12 @@ const Layouts =  (props: any) => {
       </Content>
     </Layout>
   }
+  // 用户未登录
+  if (!isLogin()) {
+    location.href = `${ config().haojing }/oz/login`
+    return <div></div>;
+  }
+
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
