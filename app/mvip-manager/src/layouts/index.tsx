@@ -25,7 +25,7 @@ const Layouts = (props: any) => {
   }
   // 用户未登录
   if (!isLogin()) {
-    location.href = `${ config().haojing }/oz/login`
+    location.href = `${ config().haojing }/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
 
