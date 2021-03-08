@@ -125,5 +125,5 @@ function KeyWordPage(props: any) {
   )
 }
 
-PageCateFlow.wrappers = ['@/wrappers/report-auth']
+KeyWordPage.wrappers = ['@/wrappers/report-auth']
 export default KeyWordPage
