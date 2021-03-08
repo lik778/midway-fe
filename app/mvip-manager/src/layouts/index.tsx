@@ -25,6 +25,7 @@ const Layouts = (props: any) => {
   }
   // 用户未登录
   if (!isLogin()) {
+    // 先写死，后面查看环境变量问题
     location.href = `//www.baixing.com/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
