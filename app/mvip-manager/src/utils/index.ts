@@ -111,7 +111,12 @@ export const hasReportAuth = (): boolean => {
   return !!(localStorage.getItem('shAgent'))
 }
 
+export const getCookie = (name: string): string => {
+  let result: any = document.cookie.match("(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)")
+  return result ? result.pop() : ''
+}
+
 export const isLogin = (): boolean => {
-  return document.cookie.includes('__u')
+  return getCookie('__u') !== ''
 }
 
