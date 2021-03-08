@@ -16,6 +16,8 @@ import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 import { TrackerService } from './services/tracker.service';
 import { TrackerController } from './controllers/tracker.controller';
 import { ManagementService } from './services/management.service';
+import { ReportController } from './controllers/report.controller';
+import { ReportService } from './services/report.service';
 import { SiteCommonController } from './controllers/site/site-common.controller';
 
 /**
@@ -36,7 +38,8 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     B2bSiteController,
     FuwuSiteController,
     HaojingController,
-    TrackerController
+    TrackerController,
+    ReportController
   ],
   providers: [
     LogService,
@@ -45,7 +48,8 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     SiteService,
     HaojingService,
     SitemapService,
-    TrackerService
+    TrackerService,
+    ReportService
   ],
 })
 export class AppModule {}

@@ -1,45 +1,47 @@
 {
-    "private": true,
-    "scripts": {
-        "start": "umi dev",
-        "build": "umi build",
-        "build:dev": "cross-env ENV=development umi build",
-        "build:test": "cross-env ENV=test umi build",
-        "build:prod": "cross-env ENV=production umi build",
-        "postinstall": "umi generate tmp",
-        "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-        "test": "umi-test",
-        "test:coverage": "umi-test --coverage"
-    },
-    "gitHooks": {
-        "pre-commit": "lint-staged"
-    },
-    "lint-staged": {
-        "*.{js,jsx,less,md,json}": [
-            "prettier --write"
-        ],
-        "*.ts?(x)": [
-            "prettier --parser=typescript --write"
-        ]
-    },
-    "dependencies": {
-        "@ant-design/pro-layout": "^5.0.12",
-        "@umijs/preset-react": "1.x",
-        "@umijs/test": "^3.2.27",
-        "classname": "0.0.0",
-        "dayjs": "^1.9.6",
-        "lint-staged": "^10.0.7",
-        "lodash": "^4.17.20",
-        "moment": "^2.29.1",
-        "prettier": "^1.19.1",
-        "rc-tween-one": "^2.7.3",
-        "react": "^16.14.0",
-        "react-dom": "^16.12.0",
-        "umi": "^3.2.27",
-        "yorkie": "^2.0.0"
-    },
-    "devDependencies": {
-        "@types/classnames": "^2.2.11",
-        "cross-env": "^7.0.3"
-    }
+  "private": true,
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "build:dev": "cross-env ENV=development umi build",
+    "build:test": "cross-env ENV=test umi build",
+    "build:prod": "cross-env ENV=production umi build",
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "^5.0.12",
+    "@umijs/preset-react": "1.x",
+    "@umijs/test": "^3.2.27",
+    "classname": "0.0.0",
+    "dayjs": "^1.9.6",
+    "echarts": "^4.0.3",
+    "echarts-for-react": "^2.0.16",
+    "lint-staged": "^10.0.7",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "prettier": "^1.19.1",
+    "rc-tween-one": "^2.7.3",
+    "react": "^16.14.0",
+    "react-dom": "^16.12.0",
+    "umi": "^3.2.27",
+    "yorkie": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.11",
+    "cross-env": "^7.0.3"
+  }
 }

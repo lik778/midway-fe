@@ -7,11 +7,10 @@ export interface CommonRes {
 }
 
 // tips: 前端请求的需要的参数
-export interface ManagementReqParams {
+export interface ApiReqParams {
   method: string;
   path: string;
   params?: any;
-  shopId?: number;
 }
 
 // tips: 请求midway-service的头部参数

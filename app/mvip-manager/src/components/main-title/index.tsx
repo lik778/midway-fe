@@ -7,7 +7,7 @@ interface Props {
 const style = {
   fontSize: 18,
   color: '#333',
-  margin: '24px 0 24px 55px'
+  margin: '24px 0 24px 50px'
 }
 
 export default (props: Props) => {
