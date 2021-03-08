@@ -7,7 +7,6 @@ import { getRemainCapital } from '@/api/report'
 import EmptyReport from '@/components/empty-report'
 
 import './index.less'
-import PageCateFlow from '@/pages/report/cate-flow';
 
 
 function RemainPage(props: any) {
