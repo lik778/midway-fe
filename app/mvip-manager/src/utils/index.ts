@@ -105,3 +105,8 @@ export const insertStyle= (cssText: string) => {
     style.appendChild(textNode);
     head.appendChild(style);
 }
+
+// 灰度测试用, 让测试人员使用
+export const hasReportRole = () => {
+  return !!(localStorage.getItem('shAgent'))
+}

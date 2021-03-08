@@ -5,7 +5,7 @@ import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
 import CountTo from '@/components/count-to'
 import { PieChart } from '@/components/charts'
-import { SUCCESS, getKeywordOverview, getKeywordDetailList } from '@/api/report'
+import { getKeywordOverview, getKeywordDetailList } from '@/api/report'
 import {
   KeywordOverviewData,
   KeywordDetailListParams,
@@ -15,6 +15,7 @@ import { keywordRankListConfig } from './config'
 import './index.less'
 import { ReportProductType } from '@/enums/report';
 import Loading from '@/components/loading';
+import PageCateFlow from '@/pages/report/cate-flow';
 
 function genChartOptions(data: KeywordOverviewData) {
   const res = {
@@ -44,7 +45,7 @@ function genChartOptions(data: KeywordOverviewData) {
   return res
 }
 
-export default function KeyWordPage(props: any) {
+function KeyWordPage(props: any) {
   const [loading, setLoading] = useState<boolean>(false)
   const [overview, setOverview] = useState<KeywordOverviewData>()
   const [chartOptions, setChartOptions] = useState({})
@@ -59,19 +60,15 @@ export default function KeyWordPage(props: any) {
     setLoading(true)
     const { code, data } = await getKeywordOverview()
     setLoading(false)
-    if (code === SUCCESS) {
-      setOverview(data)
-      setChartOptions(genChartOptions(data))
-    }
+    setOverview(data)
+    setChartOptions(genChartOptions(data))
   }
 
   const queryDetailList = async (query: KeywordDetailListParams) => {
-    const { code, data } = await getKeywordDetailList(query)
-    if (code === SUCCESS) {
-      const { result } = data
-      setDetailListData(result)
-      return data
-    }
+    const { data } = await getKeywordDetailList(query)
+    const { result } = data
+    setDetailListData(result)
+    return data
   }
 
   return (
@@ -134,3 +131,5 @@ export default function KeyWordPage(props: any) {
   )
 }
 
+PageCateFlow.wrappers = ['@/wrappers/report-auth']
+export default KeyWordPage
