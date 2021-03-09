@@ -15,7 +15,6 @@ import { keywordRankListConfig } from './config'
 import './index.less'
 import { ReportProductType } from '@/enums/report';
 import Loading from '@/components/loading';
-import PageCateFlow from '@/pages/report/cate-flow';
 
 function genChartOptions(data: KeywordOverviewData) {
   const res = {

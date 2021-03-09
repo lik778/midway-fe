@@ -49,12 +49,10 @@ export default function KeyWordPage(props: any) {
     }
   }
   const queryVisitList = async (query: BaxFlowDetailParams) => {
-    const { code, data } = await getBaxFlowVisitDetail(query)
-    if (code === SUCCESS) {
-      const { result } = data
-      setVisitListData(result)
-      return data
-    }
+    const { data } = await getBaxFlowVisitDetail(query)
+    const { result } = data
+    setVisitListData(result)
+    return data
   }
   // const queryShowList = async (query: BaxFlowDetailParams) => {
   //   const { code, data } = await getBaxFlowShowDetail(query)
