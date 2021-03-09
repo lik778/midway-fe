@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { createOptions } from '@/utils'
 import { CateProductType } from '@/enums/report'
 import { CateProductLabelMap } from '@/constants/report'
@@ -21,7 +22,7 @@ export const publishConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      required: true
+      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
     },
     {
       label: '所属产品',
@@ -51,7 +52,7 @@ export const publishListConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      required: true
+      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
     },
     {
       label: '所属产品',

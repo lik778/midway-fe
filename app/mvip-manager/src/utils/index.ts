@@ -95,7 +95,7 @@ export const formatDateRange = (dates = [], query: any) => {
   if (dates.length === 0) return []
   const [start, end] = dates
   query.startTime = String(start.unix())
-  query.endTime = String(end.unix())
+  query.endTime = String(end.add(1, 'day').subtract(1, 'second').unix())
 }
 
 export const insertStyle= (cssText: string) => {
