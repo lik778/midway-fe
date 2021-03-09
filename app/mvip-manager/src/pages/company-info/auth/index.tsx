@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Row } from 'antd';
 import MainTitle from '../../../components/main-title';
+import config from '@/config/env';
 import './index.less';
 import Loading from '@/components/loading';
 import { getUserVerifyListApi } from '@/api/user';
@@ -11,7 +12,7 @@ export default (props: any) => {
   const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const haojingHost = '//www.baixing.com';
+  const haojingHost = config().haojing;
   useEffect(() => {
     (async () => {
       setIsLoading(true)

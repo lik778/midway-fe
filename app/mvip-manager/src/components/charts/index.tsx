@@ -77,7 +77,7 @@ const pieOptions = {
 }
 
 export default function Chart (props: any) {
-  const { option, defaultOptions, height = '400px' } = props
+  const { option, defaultOptions } = props
   const [washedOptions, setWashedOptions] = useState(null)
 
   useEffect(() => {
@@ -88,17 +88,14 @@ export default function Chart (props: any) {
     setWashedOptions(opts)
   }, [option])
 
-  return (
-    <>
-      {washedOptions && (
-        <ReactEcharts
-          className="react-echarts"
-          option={washedOptions}
-          style={{ height, width: "100%" }}
-        />
-      )}
-    </>
-  );
+  return <>
+    {washedOptions && (
+      <ReactEcharts
+        className="react-echarts"
+        option={washedOptions}
+      />
+    )}
+  </>
 }
 
 export function LineChart(props: any) {
