@@ -138,12 +138,12 @@ export default function InlineForm(props: Props) {
 }
 
 function getFormItemInstance(allProps: any) {
-  const { type } = allProps
+  const { type, item = {} } = allProps
   switch (type) {
     case 'select':
-      return <FormSelect {...allProps} />
+      return <FormSelect {...allProps} {...item} />
     case 'range-picker':
-      return <FormRangePicker {...allProps} />
+      return <FormRangePicker {...allProps} {...item} />
     case 'line':
       return <div />
     case 'null':

@@ -6,6 +6,7 @@ import {
   CateProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
+import { BaxProductType } from '@/enums/report'
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
 const ProductOptions = createOptions({...BaxProductLabelMap,...CateProductLabelMap})
@@ -74,6 +75,12 @@ export const keywordRankListConfig = ({
         title: '排名',
         dataIndex: 'ranking',
         key: 'ranking',
+        render: (_: any, row: KeywordDetailListData) => {
+          if (row.product === BaxProductType.YI_HUI_TUI) {
+            return '已上词'
+          }
+          return row.ranking
+        }
       },
       {
         title: '展示端',

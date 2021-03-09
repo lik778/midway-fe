@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { QueryConfigItem } from '@/components/quick-form/interface'
 import { getLastMonth, formatDateRange } from '@/utils'
 
@@ -18,6 +19,7 @@ export const flowConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
+      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
     }
   ]
 })
@@ -35,6 +37,7 @@ export const pvListConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
+      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
     }
   ],
   table: {
@@ -43,6 +46,7 @@ export const pvListConfig = ({
         title: '访问页面',
         dataIndex: 'webPage',
         key: 'webPage',
+        ellipsis: true
       },
       {
         title: '访问IP',
