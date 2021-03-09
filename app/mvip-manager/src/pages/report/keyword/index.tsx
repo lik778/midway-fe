@@ -18,7 +18,7 @@ import Loading from '@/components/loading';
 import PageCateFlow from '@/pages/report/cate-flow';
 
 function genChartOptions(data: KeywordOverviewData) {
-  return {
+  const res = {
     legend: {
       left: 'bottom',
       data: ['凤鸣','标王','易慧推','主站']
@@ -37,6 +37,12 @@ function genChartOptions(data: KeywordOverviewData) {
       }
     ]
   }
+  /* 优化值为 0 时的显示效果 */
+  const totalZero = res.series[0].data.reduce((h, c) => h + c.value, 0) === 0
+  if (!totalZero) {
+    res.series[0].data = res.series[0].data.filter(x => x.value > 0)
+  }
+  return res
 }
 
 function KeyWordPage(props: any) {
@@ -82,7 +88,7 @@ function KeyWordPage(props: any) {
                 <CountTo title="主站关键词总数" type={ReportProductType.CATE} value={overview?.mainTotal} />
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="搜索通关键词总数" value={overview?.semTotal} />
+                <CountTo title="搜索通关键词总数" value={overview?.searchTotal} />
               </Col>
             </Row>
             <Row className="statics-con" gutter={16}>

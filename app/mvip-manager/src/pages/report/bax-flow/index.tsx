@@ -11,7 +11,7 @@ import {
   getBaxFlowOverview,
   getBaxFlowCharts,
   getBaxFlowVisitDetail,
-  getBaxFlowShowDetail
+  // getBaxFlowShowDetail
 } from '@/api/report';
 import {
   BaxFlowOverviewData,
@@ -54,8 +54,8 @@ function BaxFlowPage(props: any) {
   const [chartsOptions, setChartsOptions] = useState([{},{}])
   const [queryVisitListForm] = Form.useForm()
   const [visitListData, setVisitListData] = useState<FlowDetailData[]>([])
-  const [queryShowListForm] = Form.useForm()
-  const [showListData, setShowListData] = useState<FlowDetailData[]>([])
+  // const [queryShowListForm] = Form.useForm()
+  // const [showListData, setShowListData] = useState<FlowDetailData[]>([])
 
   useEffect(() => {
     queryOverviewData()
