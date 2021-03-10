@@ -35,7 +35,7 @@ function genChartOptions(data: CateFlowChartData[]) {
   }
 }
 
-function PageCateFlow(props: any) {
+function CateFlowPage(props: any) {
   const [loading, setLoading] = useState<boolean>(false)
   const [overview, setOverview] = useState<CateFlowOverviewData>()
   const [queryChartForm] = Form.useForm()
@@ -113,5 +113,5 @@ function PageCateFlow(props: any) {
   );
 }
 
-PageCateFlow.wrappers = ['@/wrappers/report-auth']
-export default PageCateFlow
+CateFlowPage.wrappers = ['@/wrappers/report-auth']
+export default CateFlowPage

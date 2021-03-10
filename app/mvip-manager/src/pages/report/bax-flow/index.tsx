@@ -23,7 +23,32 @@ import {
 import './index.less'
 import Loading from '@/components/loading';
 
-export default function KeyWordPage(props: any) {
+function genChartsOptions(data: BaxFlowChartData[]) {
+  return [
+    {
+      xAxis : {
+        type: 'category',
+        data: data.map((x: BaxFlowChartData) => x.date)
+      },
+      series : [{
+        type: 'bar',
+        data: data.map((x: BaxFlowChartData) => x.visits),
+      }]
+    },
+    {
+      xAxis : {
+        type: 'category',
+        data: data.map((x: BaxFlowChartData) => x.date)
+      },
+      series : [{
+        type: 'bar',
+        data: data.map((x: BaxFlowChartData) => x.shows),
+      }]
+    }
+  ]
+}
+
+function BaxFlowPage(props: any) {
   const [loading, setLoading] = useState<boolean>(false)
   const [overview, setOverview] = useState<BaxFlowOverviewData>()
   const [queryChartForm] = Form.useForm()
@@ -129,27 +154,5 @@ export default function KeyWordPage(props: any) {
   )
 }
 
-function genChartsOptions(data: BaxFlowChartData[]) {
-  return [
-    {
-      xAxis : {
-        type: 'category',
-        data: data.map((x: BaxFlowChartData) => x.date)
-      },
-      series : [{
-        type: 'bar',
-        data: data.map((x: BaxFlowChartData) => x.visits),
-      }]
-    },
-    {
-      xAxis : {
-        type: 'category',
-        data: data.map((x: BaxFlowChartData) => x.date)
-      },
-      series : [{
-        type: 'bar',
-        data: data.map((x: BaxFlowChartData) => x.shows),
-      }]
-    }
-  ]
-}
+BaxFlowPage.wrappers = ['@/wrappers/report-auth']
+export default BaxFlowPage
