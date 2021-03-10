@@ -1,11 +1,12 @@
 import moment from 'moment'
-import { QueryConfigItem } from '@/components/quick-form/interface'
-import { getLastMonth, formatDateRange } from '@/utils'
+import { PlatformLabelMap } from '@/constants/report'
+import { FlowDetailData } from '@/interfaces/report'
+import { getLastMonth, formatDateRange, isUrl } from '@/utils';
+import React from 'react';
 
 interface Config {
   form: any
-  dataSource?: any,
-  query?: QueryConfigItem[]
+  dataSource?: any
 }
 
 export const flowConfig = ({
@@ -24,7 +25,7 @@ export const flowConfig = ({
   ]
 })
 
-export const pvListConfig = ({
+export const visitListConfig = ({
   form,
   dataSource
 }: Config) => ({
@@ -46,7 +47,8 @@ export const pvListConfig = ({
         title: '访问页面',
         dataIndex: 'webPage',
         key: 'webPage',
-        ellipsis: true
+        ellipsis: true,
+        render: (text: string) => isUrl(text) ? <a href={text} target="_blank"></a> : text
       },
       {
         title: '访问IP',
@@ -57,6 +59,17 @@ export const pvListConfig = ({
         title: '访问时间',
         dataIndex: 'time',
         key: 'time',
+      },
+      {
+        title: '搜索引擎',
+        dataIndex: 'platform',
+        key: 'platform',
+        render: (_: any, row: FlowDetailData) => PlatformLabelMap[row.platform]
+      },
+      {
+        title: '关键词',
+        dataIndex: 'keyword',
+        key: 'keyword',
       },
     ]
   }

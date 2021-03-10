@@ -20,7 +20,7 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
       {
         name: '访问来源',
         type: 'pie',
-        radius : ['45%', '85%'],
+        radius : ['45%', '80%'],
         data:[
           { value: fm || 0, name:'凤鸣', },
           { value: bw || 0, name:'标王' },
@@ -56,7 +56,7 @@ const Title = ({ type }: { type: string }) => {
   if (!item) return null;
   return <h2>
       <span>{ item.title }</span>
-      { notInIframe() && <Link style={{ fontSize: 14 }} target="_blank" to={ item.link }>(查看详细)</Link> }
+      { notInIframe() && <Link style={{ fontSize: 14 }} to={ item.link }>(查看详细)</Link> }
    </h2>
 }
 
@@ -65,7 +65,6 @@ function DashboardPage(props: any) {
   const [overview, setOverview] = useState<SummaryOverviewData>()
   const [chartOptions, setChartOptions] = useState({})
   const [pvChartOptions, setPVChartOptions] = useState({})
-
   useEffect(() => {
     (async function() {
       setLoading(true)

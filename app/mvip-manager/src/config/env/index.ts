@@ -12,6 +12,4 @@ const config: any = {
   [PRODUCTION_ENV]: prodConfig
 }
 
-const env = process.env.ENV || DEVELOPMENT_ENV
-
-export default () => config[env]
+export default () => config[ENV || DEVELOPMENT_ENV]

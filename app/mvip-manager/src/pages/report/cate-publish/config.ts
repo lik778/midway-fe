@@ -1,6 +1,5 @@
 import moment from 'moment'
 import { createOptions } from '@/utils'
-import { CateProductType } from '@/enums/report'
 import { CateProductLabelMap } from '@/constants/report'
 import { getLastMonth, formatDateRange } from '@/utils'
 

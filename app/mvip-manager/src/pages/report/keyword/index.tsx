@@ -26,7 +26,7 @@ function genChartOptions(data: KeywordOverviewData) {
       {
         name: '访问来源',
         type: 'pie',
-        radius : ['45%', '85%'],
+        radius : ['45%', '80%'],
         data:[
           { name: '凤鸣', value: data?.fengMingKeyword || 0 },
           { name: '标王', value: data?.biaoWangKeyword || 0 },
