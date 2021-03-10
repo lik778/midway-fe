@@ -23,11 +23,11 @@ const Layouts = (props: any) => {
     </Layout>
   }
   // 用户未登录
-  if (!isLogin()) {
-    // 先写死，后面查看环境变量问题
-    location.href = `//www.baixing.com/oz/login?redirect=${encodeURIComponent(location.href)}`
-    return <div></div>;
-  }
+  // if (!isLogin()) {
+  //   // 先写死，后面查看环境变量问题
+  //   location.href = `//www.baixing.com/oz/login?redirect=${encodeURIComponent(location.href)}`
+  //   return <div></div>;
+  // }
 
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
@@ -104,14 +104,14 @@ const Layouts = (props: any) => {
               <Menu.Item key="keyword">
                 <Link to="/report/keyword">关键词</Link>
               </Menu.Item>
+              <Menu.Item key="bax-flow">
+                <Link to="/report/bax-flow">搜索通流量</Link>
+              </Menu.Item>
               <Menu.Item key="cate-flow">
                 <Link to="/report/cate-flow">主站流量</Link>
               </Menu.Item>
               <Menu.Item key="cate-publish">
                 <Link to="/report/cate-publish">主站发布</Link>
-              </Menu.Item>
-              <Menu.Item key="bax-flow">
-                <Link to="/report/bax-flow">搜索通流量</Link>
               </Menu.Item>
               <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>

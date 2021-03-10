@@ -33,6 +33,7 @@ function genChartOptions(data: KeywordOverviewData) {
           { name: '易慧推', value: data?.yiHuiTuiKeyword || 0 },
           { name: '主站', value: data?.mainTotal || 0 }
         ],
+        label: { fontSize: 16 }
       }
     ]
   }
