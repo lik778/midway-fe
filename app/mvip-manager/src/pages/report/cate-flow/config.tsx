@@ -1,11 +1,13 @@
 import moment from 'moment'
 import { QueryConfigItem } from '@/components/quick-form/interface'
-import { getLastMonth, formatDateRange } from '@/utils'
+import { getLastMonth, formatDateRange, isUrl } from '@/utils';
+import React from 'react';
 
 interface Config {
   form: any
   dataSource?: any,
-  query?: QueryConfigItem[]
+  query?: QueryConfigItem[],
+  render?: any
 }
 
 export const flowConfig = ({
@@ -26,7 +28,8 @@ export const flowConfig = ({
 
 export const pvListConfig = ({
   form,
-  dataSource
+  dataSource,
+  render
 }: Config) => ({
   form,
   dataSource,
@@ -46,7 +49,8 @@ export const pvListConfig = ({
         title: '访问页面',
         dataIndex: 'webPage',
         key: 'webPage',
-        ellipsis: true
+        ellipsis: true,
+        render: (text: string) => isUrl(text) ? <a style={{ color: '#096DD9' }} href={text} target="_blank">{ text }</a> : text
       },
       {
         title: '访问IP',

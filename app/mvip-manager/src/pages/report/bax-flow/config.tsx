@@ -1,7 +1,8 @@
 import moment from 'moment'
 import { PlatformLabelMap } from '@/constants/report'
 import { FlowDetailData } from '@/interfaces/report'
-import { getLastMonth, formatDateRange } from '@/utils'
+import { getLastMonth, formatDateRange, isUrl } from '@/utils';
+import React from 'react';
 
 interface Config {
   form: any
@@ -46,7 +47,8 @@ export const visitListConfig = ({
         title: '访问页面',
         dataIndex: 'webPage',
         key: 'webPage',
-        ellipsis: true
+        ellipsis: true,
+        render: (text: string) => (isUrl(text) ? <a style={{ color: '#096DD9' }} href={text} target="_blank">{ text }</a> : text)
       },
       {
         title: '访问IP',
