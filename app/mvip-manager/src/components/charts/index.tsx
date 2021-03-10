@@ -49,10 +49,12 @@ const lineOptions = {
   },
   yAxis: {
     type: 'value',
-    minInterval: 1
+    minInterval: 1,
+    axisLabel: { fontSize: 14, color: '#666' }
   },
   xAxis: {
-    type: 'value'
+    type: 'value',
+    axisLabel: { fontSize: 14, color: '#666' }
   },
   legend: [],
   series: []

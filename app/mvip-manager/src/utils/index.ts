@@ -120,3 +120,14 @@ export const isLogin = (): boolean => {
   return getCookie('__u') !== ''
 }
 
+export const isUrl = (text: string): boolean => {
+  return /^(http:\/\/|https:\/\/)/.test(text)
+}
+
+export const isLocalEnv = (): boolean => {
+  return location.host.includes('localhost')
+}
+
+export const isNotLocalEnv = (): boolean => {
+  return !isLocalEnv()
+}

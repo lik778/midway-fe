@@ -9,7 +9,6 @@ import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
 import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
 import { ReportProductType } from '@/enums/report';
 import { notInIframe } from '@/utils';
-import PageCateFlow from '@/pages/report/cate-flow';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
@@ -21,13 +20,14 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
       {
         name: '访问来源',
         type: 'pie',
-        radius : ['45%', '85%'],
+        radius : ['45%', '80%'],
         data:[
           { value: fm || 0, name:'凤鸣', },
           { value: bw || 0, name:'标王' },
           { value: qc || 0, name:'易慧推' },
           { value: cate || 0, name:'主站' }
         ],
+        label: { fontSize: 16 }
       }
     ]
   }
@@ -37,7 +37,7 @@ function genLineChartOptions(result: FlowChartData[]) {
   return {
     xAxis : {
       type: 'category',
-      data: result.map((x: FlowChartData) => x.date)
+      data: result.map((x: FlowChartData) => x.date),
     },
     series : [{
       data: result.map((x: FlowChartData) => x.visits),
@@ -46,21 +46,18 @@ function genLineChartOptions(result: FlowChartData[]) {
   }
 }
 
-interface TitleProps { value: number | undefined; type: string }
-const Title = ({ value, type }: TitleProps) => {
-  interface Item { title: string; subTitle: string; link: string }
-  interface Config { [key: string]: Item; }
-  const config: Config = {
-    keyword: { title: '排名关键词数：', subTitle: '总关键词数：', link: '/report/keyword' },
-    pv: { title: '流量：', subTitle: '总PV：', link: '/report/bax-flow' },
-    publish: { title: '发布数：', subTitle: '总发布数：', link: '/report/cate-publish' }
+const Title = ({ type }: { type: string }) => {
+  const config: { [key: string]: { title: string; link: string } } = {
+    keyword: { title: '总关键词统计', link: '/report/keyword' },
+    pv: { title: '总访问量统计', link: '/report/bax-flow' },
+    publish: { title: '发布数', link: '/report/cate-publish' }
   }
   const item  = config[type]
   if (!item) return null;
-  return <h3 className="report-dashboard-section-title">
-      <span>{item.subTitle}<strong>{value}</strong></span>
-      { notInIframe() && <Link className="link" target="_blank" to={item.link}>&nbsp;&nbsp;查看详细</Link> }
-   </h3>
+  return <h2>
+      <span>{ item.title }</span>
+      { notInIframe() && <Link style={{ fontSize: 14 }} to={ item.link }>(查看详细)</Link> }
+   </h2>
 }
 
 function DashboardPage(props: any) {
@@ -68,7 +65,6 @@ function DashboardPage(props: any) {
   const [overview, setOverview] = useState<SummaryOverviewData>()
   const [chartOptions, setChartOptions] = useState({})
   const [pvChartOptions, setPVChartOptions] = useState({})
-
   useEffect(() => {
     (async function() {
       setLoading(true)
@@ -115,13 +111,11 @@ function DashboardPage(props: any) {
             </Row>
           </div>
           <div className="segment">
-            <h2>总关键词统计</h2>
-            <Title value={overview?.totalKeyword} type="keyword" />
+            <Title type="keyword" />
             <PieChart option={chartOptions} />
           </div>
           <div className="segment">
-            <h2>总访问量统计（PV）</h2>
-            <Title value={overview?.totalVisits} type="pv" />
+            <Title type="pv" />
             <LineChart option={pvChartOptions} />
           </div>
         </div> }
