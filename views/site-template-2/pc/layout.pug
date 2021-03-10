@@ -51,4 +51,12 @@ html
     block append scripts
         script.
             window.shopId = #{shopId};
+        script.
+            var _hmt = _hmt || [];
+            (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?456d6cd761940a10545eca2491da5d4c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+            })();
 
