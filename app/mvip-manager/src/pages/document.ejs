@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title><%= context.config.title %></title>
+</head>
+<body>
+<div id="root"></div>
+</body>
+    <% if (process.env.ENV === 'production') { %>
+        <script>
+          var _hmt = _hmt || [];
+          (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?11294cf3a33304eac21c0a48590bc84b";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+          })();
+        </script>
+    <% } %>
+
+</html>

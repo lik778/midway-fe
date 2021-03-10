@@ -1,0 +1,47 @@
+.page-report{
+  .container {
+    position: relative;
+    margin: 16px;
+    padding: unset;
+    background: unset;
+    min-height: calc(100vh - 160px);
+    .ant-statistic-content-suffix {
+      display: block;
+    }
+    .segment {
+      padding: 30px;
+      background: #fff;
+
+      & > h2:first-child {
+        margin-top: 0;
+      }
+      & + .segment {
+        margin-top: 16px;
+      }
+    }
+  }
+  h2 {
+    margin: 24px 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .statics-con {
+    .statics {
+      text-align: center;
+    }
+    .ant-statistic-title {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .ant-statistic-content {
+      font-size: 32px;
+    }
+  }
+  .ant-row + .ant-row {
+    & > .statics {
+      margin-top: 24px;
+    }
+  }
+}

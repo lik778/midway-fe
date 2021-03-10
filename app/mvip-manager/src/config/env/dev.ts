@@ -1,3 +1,3 @@
 export default {
-  haojing: 'http://wulei.baixing.cn'
+  haojing: '//wulei.baixing.cn'
 }
