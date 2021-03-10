@@ -6,7 +6,6 @@ import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
-import config from '@/config/env';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';

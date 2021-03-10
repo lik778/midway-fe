@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Statistic } from 'antd';
 import { useAnimation } from '@/hooks/animation';
 import { ReportLinkMap } from '@/constants/report';
-import config from '@/config/env';
 
 export default function CountTo(props: any) {
   const {
