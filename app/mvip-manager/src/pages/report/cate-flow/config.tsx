@@ -50,7 +50,7 @@ export const pvListConfig = ({
         dataIndex: 'webPage',
         key: 'webPage',
         ellipsis: true,
-        render: (text: string) => isUrl(text) ? <a href={text} target="_blank"></a> : text
+        render: (text: string) => isUrl(text) ? <a style={{ color: '#096DD9' }} href={text} target="_blank">{ text }</a> : text
       },
       {
         title: '访问IP',

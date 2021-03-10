@@ -56,7 +56,7 @@ const Title = ({ type }: { type: string }) => {
   if (!item) return null;
   return <h2>
       <span>{ item.title }</span>
-      { notInIframe() && <Link style={{ fontSize: 14 }} to={ item.link }>(查看详细)</Link> }
+      { notInIframe() && <Link style={{ fontSize: 14, color: '#096DD9' }} to={ item.link }>(查看详细)</Link> }
    </h2>
 }
 
