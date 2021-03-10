@@ -17,6 +17,16 @@ export default function CountTo(props: any) {
   useAnimation({ from, to, time, callback (nextVal: number) {
       setDisplayNum(nextVal)
     }})
-  return <Statistic title={title} value={to === null ? '暂无数据' : displayNum}
-        suffix={to === null && type && <Button target="_blank" href={`${config().haojing}${ReportLinkMap[type]}`}>去开通</Button>}/>
+  const notOpen = to === null;
+  const showOpenBtn  = notOpen && type;
+  const haojingHost = config().env;
+  // 先写死，后面查看环境变量问题
+  return <div>
+    <Statistic title={title} value={notOpen ? '' : displayNum}
+     valueStyle={{ display: showOpenBtn ? 'none' : ''  }} />
+    { showOpenBtn && <div>
+    <p style={{ height: 50, lineHeight: '50px' }}>暂无数据</p>
+    <Button target="_blank" href={`${ haojingHost }${ReportLinkMap[type]}`}>去开通</Button>
+  </div> }
+  </div>
 }

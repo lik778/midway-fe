@@ -6,11 +6,11 @@ import { getUserBaseInfoApi } from '@/api/user'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
-import config from '@/config/env';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin } from '@/utils';
+import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
 import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
 import './index.less';
+import config from '@/config/env';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -24,8 +24,10 @@ const Layouts = (props: any) => {
     </Layout>
   }
   // 用户未登录
-  if (!isLogin()) {
-    location.href = `${ config().haojing }/oz/login`
+  if (!isLogin() && isNotLocalEnv()) {
+    const haojingHost = config().env;
+    // 先写死，后面查看环境变量问题
+    location.href = `${ haojingHost }/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
 
@@ -104,14 +106,14 @@ const Layouts = (props: any) => {
               <Menu.Item key="keyword">
                 <Link to="/report/keyword">关键词</Link>
               </Menu.Item>
+              <Menu.Item key="bax-flow">
+                <Link to="/report/bax-flow">搜索通流量</Link>
+              </Menu.Item>
               <Menu.Item key="cate-flow">
                 <Link to="/report/cate-flow">主站流量</Link>
               </Menu.Item>
               <Menu.Item key="cate-publish">
                 <Link to="/report/cate-publish">主站发布</Link>
-              </Menu.Item>
-              <Menu.Item key="bax-flow">
-                <Link to="/report/bax-flow">搜索通流量</Link>
               </Menu.Item>
               <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>

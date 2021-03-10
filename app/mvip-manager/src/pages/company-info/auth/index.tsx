@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Row } from 'antd';
 import MainTitle from '../../../components/main-title';
-import config from '@/config/env';
 import './index.less';
 import Loading from '@/components/loading';
 import { getUserVerifyListApi } from '@/api/user';
 import { VerifyStatus, VerifyType } from '@/enums';
+import config from '@/config/env';
 
 
 export default (props: any) => {
   const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const haojingHost = config().haojing;
+  const haojingHost = config().env;
   useEffect(() => {
     (async () => {
       setIsLoading(true)

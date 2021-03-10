@@ -49,10 +49,12 @@ const lineOptions = {
   },
   yAxis: {
     type: 'value',
-    minInterval: 1
+    minInterval: 1,
+    axisLabel: { fontSize: 14, color: '#666' }
   },
   xAxis: {
-    type: 'value'
+    type: 'value',
+    axisLabel: { fontSize: 14, color: '#666' }
   },
   legend: [],
   series: []
@@ -77,7 +79,7 @@ const pieOptions = {
 }
 
 export default function Chart (props: any) {
-  const { option, defaultOptions } = props
+  const { option, defaultOptions, height = '400px' } = props
   const [washedOptions, setWashedOptions] = useState(null)
 
   useEffect(() => {
@@ -88,14 +90,17 @@ export default function Chart (props: any) {
     setWashedOptions(opts)
   }, [option])
 
-  return <>
-    {washedOptions && (
-      <ReactEcharts
-        className="react-echarts"
-        option={washedOptions}
-      />
-    )}
-  </>
+  return (
+    <>
+      {washedOptions && (
+        <ReactEcharts
+          className="react-echarts"
+          option={washedOptions}
+          style={{ height, width: "100%" }}
+        />
+      )}
+    </>
+  );
 }
 
 export function LineChart(props: any) {
