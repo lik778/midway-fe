@@ -21,7 +21,6 @@ import {
 
 import './index.less'
 import Loading from '@/components/loading';
-import BaxFlowPage from '@/pages/report/bax-flow';
 
 function genChartOptions(data: CateFlowChartData[]) {
   return {
@@ -50,7 +49,7 @@ function PageCateFlow(props: any) {
 
   const queryOverviewData = async () => {
     setLoading(true)
-    const { code, data } = await getCateFlowOverview()
+    const { data } = await getCateFlowOverview()
     setLoading(false)
     setOverview(data)
   }
