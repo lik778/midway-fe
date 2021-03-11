@@ -24,7 +24,7 @@ function genChartOptions(data: KeywordOverviewData) {
     },
     series : [
       {
-        name: '访问来源',
+        name: '关键词',
         type: 'pie',
         radius : ['45%', '80%'],
         data:[
