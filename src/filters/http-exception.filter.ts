@@ -1,6 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import config from '../config'
+import { sentryCaptureException } from '../util/sentry';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -10,12 +11,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const res = ctx.getResponse<Response>();
     const status = exception.getStatus();
     let exceptionRes = exception.getResponse();
-
     // 做一下转换处理
     if (typeof exceptionRes === 'string') {
       exceptionRes = { message: exceptionRes, code: status, success: false }
     }
-
+    sentryCaptureException(exception);
     if (status === HttpStatus.NOT_FOUND) {
       if (req.url.includes('api')) {
         res.send('请求接口不存在');
