@@ -12,4 +12,4 @@ const config: any = {
   [PRODUCTION_ENV]: prodConfig
 }
 
-export default () => config[ENV || DEVELOPMENT_ENV]
+export default () => config[DEVELOPMENT_ENV]

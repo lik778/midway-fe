@@ -14,7 +14,7 @@ export interface AiShopList {
   id: number;
   name: string;
   articleCates: CateItem[];
-  isSupportAi: boolean;
+  isSupportAi: Boolean;
 }
 
 export interface AiContentItem {

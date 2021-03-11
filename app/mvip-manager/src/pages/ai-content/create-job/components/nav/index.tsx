@@ -4,7 +4,7 @@ import { Link } from 'umi';
 import { CateItem } from '@/interfaces/shop';
 import { getAiShopListApi } from '@/api/ai-content';
 import { checkHasShow } from '@/utils';
-import { Form, Select, Modal } from 'antd';
+import { Form, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import Loading from '@/components/loading';
 import Recharge from '@/components/recharge';
@@ -24,7 +24,6 @@ export const CreateAiContentNav = (props: Props): any => {
     const [shopList, setShopList] = useState<AiShopList[] | null>(null)
     const [shopId, setShopId] = useState<number | null>(null)
     const [articleList, setArticleList] = useState<CateItem[] | null>(null)
-    //const [modalVisible, setModalVisible] = useState<boolean>(false)
     useEffect(() => {
       (async () => {
         const res = await getAiShopListApi()
@@ -46,14 +45,7 @@ export const CreateAiContentNav = (props: Props): any => {
 
     const onShopChange = async (shopId: number) => {
       setShopId(shopId)
-      const item = shopList && shopList.find((x: AiShopList) => (x.id === shopId && x.isSupportAi) )
-      //if (item && item.isSupportAi) {
-      //  console.log('此处应该弹窗',item.isSupportAi)
-      //  Modal.error({
-      //    content: '该店铺不支持AI功能，请重新选择...',
-      //  });
-      //}
-
+      const item = shopList && shopList.find((x: AiShopList) => x.id === shopId)
       const articleCates = (item && item.articleCates) || []
       if (articleCates.length > 0) {
         showPanel();
@@ -69,7 +61,8 @@ export const CreateAiContentNav = (props: Props): any => {
             <Form layout="inline" form={form}>
               <FormItem label="所属店铺" name="shopId" key="shopId">
                 <Select  style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺" onChange={onShopChange}>
-                  { shopList && shopList.length > 0 && shopList.map((shop: any) => {
+                  {/* 待选项里，会先过滤掉，购买时套餐不含AI发文的店铺 */}
+                  { shopList && shopList.length > 0 && shopList.filter(x => x.isSupportAi).map((shop: any) => {
                     return (<Option key={shop.id} value={shop.id}>{shop.name}</Option>)
                   }) }
                 </Select>
