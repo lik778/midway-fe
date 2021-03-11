@@ -1,0 +1,9 @@
+//-目的：增加53客服并打点。需确保base-site.controller.ts里res.render定义了kf53和trackId
+- a = renderData.kf53
+if a && a.length> 0
+    - x = a.lastIndexOf('";var')
+    - s = a.indexOf('src')
+    - hr = a.slice(s, x)
+    - isHello = (hr.indexOf('?') == -1)? '?' : '&'
+    - kf53Js = a.slice(0,x) + isHello + 'u_cust_id='+ renderData.trackId + '&u_cust_name=' + renderData.trackId + a.slice(x)
+    | !{ kf53Js }

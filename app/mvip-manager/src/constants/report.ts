@@ -31,7 +31,7 @@ export const DisplayLabelMap = {
 
 export const ReportLinkMap: any = {
   [ReportProductType.CATE]: '/a/vip?src=datacenter',
-  [ReportProductType.BIAOWANG]: '/a/quanwangtong?src=datacenter',
-  [ReportProductType.FENGMING]: '/a/quanwangtong?src=datacenter',
+  [ReportProductType.BIAOWANG]: '/a/quanwangtong?src=datacenter#four',
+  [ReportProductType.FENGMING]: '/a/quanwangtong?src=datacenter#three',
   [ReportProductType.YIHUITUI]: '/a/yihuitui?src=datacenter'
 }
