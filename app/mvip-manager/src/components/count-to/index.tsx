@@ -9,9 +9,9 @@ export default function CountTo(props: any) {
     type,
     title,
     from = 0,
-    time = 1950,
+    time = 1150,
     value : to = from,
-    // TODO onFinish
+    // TODO onFinish event
   } = props
   const [displayNum, setDisplayNum] = useState<number>(from)
   useAnimation({ from, to, time, callback (nextVal: number) {

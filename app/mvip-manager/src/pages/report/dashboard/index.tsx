@@ -18,7 +18,7 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
     },
     series : [
       {
-        name: '访问来源',
+        name: '关键词',
         type: 'pie',
         radius : ['45%', '80%'],
         data:[
