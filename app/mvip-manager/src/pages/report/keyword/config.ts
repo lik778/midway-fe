@@ -6,10 +6,12 @@ import {
   CateProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
-import { BaxProductType } from '@/enums/report'
+import { BaxProductType, CateProductType } from '@/enums/report'
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
-const ProductOptions = createOptions({...BaxProductLabelMap,...CateProductLabelMap})
+const ProductOptions = createOptions({...BaxProductLabelMap, ...{
+  [CateProductType.SHOP]: '主营'
+}})
 const DisplayOptions = createOptions(DisplayLabelMap)
 
 interface Config {
