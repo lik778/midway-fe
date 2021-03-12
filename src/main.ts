@@ -7,6 +7,7 @@ import { ValidationPipe } from './pipes/validate.pipe';
 import pugFilters, { setPugViewEngineHeplers } from './view-helpers'
 import { PORT } from './constant';
 import { exceptionFilters } from './filters';
+import './base/sentry';
 
 /**
  * 创建应用实例
@@ -25,7 +26,6 @@ async function bootstrap() {
   setPugViewEngineHeplers(pugFilters);
 
   app.useGlobalPipes(new ValidationPipe());
-
   app.useGlobalFilters(...exceptionFilters);
 
   await app.listen(PORT);
