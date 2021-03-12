@@ -86,7 +86,7 @@ function DashboardPage(props: any) {
         { !loading && <div>
           <div className="segment">
             <h2>账户信息<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
-              （说明：关键词数据每周更新一次。）</span></h2>
+              （说明：关键词数据每周更新一次；VIP产品数据包含店铺、帖子、问答；搜索通数据包含标王、凤鸣、易慧推。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
                 <CountTo title="总关键词数" value={overview?.totalKeyword}/>
