@@ -20,7 +20,7 @@ function genChartOptions(data: KeywordOverviewData) {
   const res = {
     legend: {
       left: 'bottom',
-      data: ['凤鸣','标王','易慧推','主站']
+      data: ['凤鸣','标王','易慧推','VIP产品']
     },
     series : [
       {
@@ -31,7 +31,7 @@ function genChartOptions(data: KeywordOverviewData) {
           { name: '凤鸣', value: data?.fengMingKeyword || 0 },
           { name: '标王', value: data?.biaoWangKeyword || 0 },
           { name: '易慧推', value: data?.yiHuiTuiKeyword || 0 },
-          { name: '主站', value: data?.mainTotal || 0 }
+          { name: 'VIP产品', value: data?.mainTotal || 0 }
         ],
         label: { fontSize: 16 }
       }
@@ -85,7 +85,7 @@ function KeyWordPage(props: any) {
                 <CountTo title="排名关键词总数" value={overview?.total} />
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="主站关键词总数" type={ReportProductType.CATE} value={overview?.mainTotal} />
+                <CountTo title="VIP产品关键词总数" type={ReportProductType.CATE} value={overview?.mainTotal} />
               </Col>
               <Col className="statics" span={8}>
                 <CountTo title="搜索通关键词总数" value={overview?.searchTotal} />

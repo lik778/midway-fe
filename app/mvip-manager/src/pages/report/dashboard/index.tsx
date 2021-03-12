@@ -14,7 +14,7 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
     legend: {
       left: 'bottom',
-      data: ['凤鸣','标王','易慧推','主站']
+      data: ['凤鸣','标王','易慧推','VIP产品']
     },
     series : [
       {
@@ -25,7 +25,7 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
           { value: fm || 0, name:'凤鸣', },
           { value: bw || 0, name:'标王' },
           { value: qc || 0, name:'易慧推' },
-          { value: cate || 0, name:'主站' }
+          { value: cate || 0, name:'VIP产品' }
         ],
         label: { fontSize: 16 }
       }
@@ -95,7 +95,7 @@ function DashboardPage(props: any) {
                 <CountTo title="总PV" value={overview?.totalVisits}/>
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="主站关键词数" type={ReportProductType.CATE} value={overview?.mainTotalKeyword}/>
+                <CountTo title="VIP产品关键词数" type={ReportProductType.CATE} value={overview?.mainTotalKeyword}/>
               </Col>
             </Row>
             <Row className="statics-con" gutter={16}>
