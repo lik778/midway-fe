@@ -8,7 +8,7 @@ import { PieChart, LineChart } from '@/components/charts';
 import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
 import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
 import { ReportProductType } from '@/enums/report';
-import { notInIframe } from '@/utils';
+import { inIframe, notInIframe } from '@/utils';
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {
@@ -20,14 +20,14 @@ function genChartOptions({ fm, bw, qc, cate }: any) {
       {
         name: '关键词',
         type: 'pie',
-        radius : ['45%', '80%'],
+        radius : ['45%', inIframe() ? '85%' : '80%'],
         data:[
           { value: fm || 0, name:'凤鸣', },
           { value: bw || 0, name:'标王' },
           { value: qc || 0, name:'易慧推' },
           { value: cate || 0, name:'VIP产品' }
         ],
-        label: { fontSize: 16 }
+        label: { fontSize: inIframe() ? 12 : 16 }
       }
     ]
   }
