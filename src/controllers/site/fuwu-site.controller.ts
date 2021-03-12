@@ -5,7 +5,7 @@ import config from '../../config'
 import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 
-@Controller({ host: config().hostType.fuwu, path: '/:shopName' })
+@Controller({ host: config().hostType.base, path: '/:shopName' })
 export class FuwuSiteController extends BaseSiteController{
   constructor(protected readonly midwayApiService: SiteService,
               protected readonly trackerService: TrackerService) {

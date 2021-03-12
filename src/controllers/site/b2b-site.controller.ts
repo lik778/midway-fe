@@ -5,7 +5,7 @@ import config from '../../config'
 import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 
-@Controller({ host: config().hostType.b2b })
+@Controller({ host: config().hostType.prefix })
 export class B2bSiteController extends BaseSiteController {
   constructor(protected readonly midwayApiService: SiteService,
               protected readonly trackerService: TrackerService) {
