@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'antd';
-import { history } from 'umi';
+import { Button, Form } from 'antd';
 import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import WildcatForm from '@/components/wildcat-form';
-import { baseInfoForm, contactForm } from '../../config';
+import { contactForm } from '../../config';
 import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
+import genNewUserModal from '../new-user-modal';
 import { KF53 } from '../kf53';
 import { QQCustomService } from '../qq-custom-service';
 import { KFStatus } from '@/enums';
@@ -71,21 +71,9 @@ function ContactForm (props: any) {
     setLoading(false)
     if (res?.success) {
       props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, playload: info })
-      // 判断是否为新人需要一个接口字段
-      const res2 = await isNewUserApi()
-      if (res2.data) {
-        Modal.confirm({
-          width: 532,
-          className: 'contact-newman-modal',
-          icon: '',
-          content: '您的企业资料已经填写完毕，是否现在去创建店铺？',
-          title: <img src="//file.baixing.net/202101/17914d789bc8679e787dbcf12b49de6c.png" />,
-          cancelButtonProps: { className: 'cancel-btn' },
-          okButtonProps: { className: 'ok-btn' },
-          okText: '立即前往',
-          cancelText: '稍后再说',
-          onOk: () => history.push('/shop'),
-        })
+      const newUserRes = await isNewUserApi()
+      if (newUserRes.data) {
+        genNewUserModal()
       } else {
         successMessage('更新联系方式成功')
       }
