@@ -1,68 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { Steps, Button, Row, Col } from 'antd';
-import './index.less';
-import { baseInfoForm } from '../../../config/form'
+import { connect } from 'dva';
+import { cloneDeepWith } from 'lodash';
+import { baseInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import Loading from '@/components/loading';
 import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-import { getEnterpriseForShopApi, saveEnterpriseForShopApi } from '@/api/user'
+import { saveEnterpriseForShopApi } from '@/api/user'
 import { UserEnterpriseInfo } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
-const { Step } = Steps
+import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import './index.less';
+const { Step } = Steps;
 
-
-export default (props: any) => {
+function CompanyInfoBase (props: any) {
+  const { companyInfo } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
-  const [config, setConfig] = useState<FormConfig>(baseInfoForm);
+  const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
+  const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
   const steps = [ '基础信息', '联系方式']
 
   useEffect(() => {
-    (async () => {
-      setFormLoading(true)
-      const res = await getEnterpriseForShopApi()
-      if (res.success) {
-        setEnterpriseInfo(res.data)
-        const { companyNameLock } = res.data
-        if (companyNameLock) {
-          // 不可修改公司名
-          const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
-          companyFiled.disabled = true
-          setConfig({...config})
-        }
-      }
-      setFormLoading(false)
-    })()
+    props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
   },[])
 
+  useEffect(() => {
+    if (companyInfo) {
+      setEnterpriseInfo(companyInfo)
+      setFormLoading(false)
+      const { companyNameLock } = companyInfo
+      if (companyNameLock) {
+        const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
+        companyFiled.disabled = true
+        setConfig({...config})
+      }
+    } else {
+      setFormLoading(true)
+    }
+  }, [ companyInfo ])
+
+  const next = () => {
+    setHasEditFofrm(false)
+    setCurrentStep(currentStep + 1)
+  }
+
   const nextStep = async (values: any) => {
-    // 这里处理一下
+    if (!hasEditForm) {
+      next(); return
+    }
     if (!Array.isArray(values.area)) {
       values.area = Object.keys(values.area).map(k => k)
     }
     setLoading(true)
-    const res = await saveEnterpriseForShopApi(values)
+    const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
-    if (res?.success) {
+    if (success) {
       successMessage('修改基础资料成功')
-      setEnterpriseInfo(Object.assign(enterpriseInfo, res.data))
+      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, playload: data })
       next()
     } else {
-      errorMessage(res?.message || '出错啦')
+      errorMessage(message || '出错啦')
     }
   }
-
-  const next = () => {
-    setCurrentStep(currentStep + 1);
-  };
-
-  const prev = () => {
-    setCurrentStep(currentStep - 1);
-  };
 
   return (
     <div>
@@ -76,6 +80,7 @@ export default (props: any) => {
         { formLoading && <Loading />}
         { !formLoading && currentStep == 0 &&
           <WildcatForm
+           formChange={() => setHasEditFofrm(true)}
            useLabelCol={true} submit={nextStep}
            editDataSource={enterpriseInfo} config={config} loading={loading}
             submitBtn={
@@ -86,8 +91,11 @@ export default (props: any) => {
               </Row>
             }/>
         }
-        { !formLoading && currentStep == 1 && <ContactForm back={prev} editDataSource={enterpriseInfo}/>}
+        { !formLoading && currentStep == 1 &&
+        <ContactForm back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );
 }
+
+export default connect(companyInfoStateToProps)(CompanyInfoBase)
