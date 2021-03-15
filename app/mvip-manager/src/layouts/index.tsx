@@ -8,7 +8,7 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
+import { GET_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 import './index.less';
 // import config from '@/config/env';
 
@@ -57,7 +57,7 @@ const Layouts = (props: any) => {
     const shopIdItem = RegExp(/\d+/).exec(props.location.pathname)
     if (shopIdItem) {
       const id = Number(shopIdItem[0])
-      props.dispatch({ type: GETSHOPINFO_OUT_ACTION, payload: { id }})
+      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_INFO_ACTION}`, payload: { id }})
     }
   }
 

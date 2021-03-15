@@ -12,7 +12,7 @@ export default {
   haojing: 'https://www.baixing.com',
   haojingDomain: 'baixing.com',
   hostType: {
-    b2b: ':shopName.shop.baixing.com',
-    fuwu: 'shop.baixing.com',
+    prefix: ':shopName.shop.baixing.com',
+    base: 'shop.baixing.com'
   }
 }
