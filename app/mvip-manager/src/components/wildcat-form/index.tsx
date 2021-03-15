@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
@@ -6,8 +6,7 @@ import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
-import  Btn  from '@/components/btn';
-import { isEmptyObject, randomStr } from '@/utils';
+import { isEmptyObject } from '@/utils';
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -30,7 +29,6 @@ interface Props {
 const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
-
   useEffect(() => {
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
@@ -122,7 +120,7 @@ const WildcatForm = (props: Props) => {
                 </Select>
               </FormItem>
               <FormItem >
-                <Btn btnConfig={item.btnConfig} onClick={props.onClick}></Btn>
+                { item.btnConfig && <Button type="primary" className="primary-btn p-btn mvip-primary-btn" onClick={props.onClick}>+{ item.btnConfig && item.btnConfig.text }</Button> }
               </FormItem>
             </FormItem>)
           }else if (item.type === FormType.Tag) {
