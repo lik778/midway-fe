@@ -3,23 +3,22 @@ import { Button, Form, Modal } from 'antd';
 import { history } from 'umi';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '@/config/form';
-import { QQCustomService } from '@/pages/company-info/base/qq-custom-service';
 import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
-import { KF53 } from '@/pages/company-info/base/kf53';
+import { KF53 } from '../kf53';
+import { QQCustomService } from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
-import './index.less';
 import { isNewUserApi } from '@/api/shop';
+import './index.less';
 
-interface Props {
+
+const ContactForm = (props: {
   editDataSource: UserEnterpriseInfo | null;
   back(): void;
-}
-
-const ContactForm = (props: Props) => {
+}) => {
   const { editDataSource } = props
   const [qqList, setQQList] = useState<QQItem[]>([]);
   const [kf53Data, setKf53Data] = useState<any>({});

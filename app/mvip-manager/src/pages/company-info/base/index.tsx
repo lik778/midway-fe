@@ -5,12 +5,11 @@ import { baseInfoForm } from '../../../config/form'
 import WildcatForm from '@/components/wildcat-form';
 import Loading from '@/components/loading';
 import MainTitle from '@/components/main-title';
-import ContactForm from './contact-form';
+import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { getEnterpriseForShopApi, saveEnterpriseForShopApi } from '@/api/user'
 import { UserEnterpriseInfo } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
-
 const { Step } = Steps
 
 
