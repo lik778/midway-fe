@@ -1,3 +1,4 @@
+import React from 'react'
 import { createOptions } from '@/utils'
 import { KeywordDetailListData } from '@/interfaces/report'
 import {
@@ -6,20 +7,24 @@ import {
   CateProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
-import { BaxProductType } from '@/enums/report'
+import { BaxProductType, CateProductType } from '@/enums/report'
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
-const ProductOptions = createOptions({...BaxProductLabelMap,...CateProductLabelMap})
+const ProductOptions = createOptions({...BaxProductLabelMap, ...{
+  [CateProductType.SHOP]: '主营'
+}})
 const DisplayOptions = createOptions(DisplayLabelMap)
 
 interface Config {
   form: any
   dataSource?: any
+  keywordRender?: any
 }
 
 export const keywordRankListConfig = ({
   form,
-  dataSource
+  dataSource,
+  keywordRender
 }: Config) => ({
   form,
   dataSource,
@@ -64,6 +69,8 @@ export const keywordRankListConfig = ({
         title: '关键词',
         dataIndex: 'keyword',
         key: 'keyword',
+        render: keywordRender
+
       },
       {
         title: '搜索引擎',

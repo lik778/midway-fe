@@ -6,9 +6,9 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from './pipes/validate.pipe';
 import pugFilters, { setPugViewEngineHeplers } from './view-helpers'
 import { PORT } from './constant';
-import { ApiExceptionFilter } from './filters/api-exception.filter';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
-import { SiteExceptionFilter } from './filters/site-exception.filter';
+import { exceptionFilters } from './filters';
+import './base/sentry';
+
 /**
  * 创建应用实例
  * 用来启动http服务器，它允许应用程序等待入站http请求
@@ -26,12 +26,7 @@ async function bootstrap() {
   setPugViewEngineHeplers(pugFilters);
 
   app.useGlobalPipes(new ValidationPipe());
-
-  app.useGlobalFilters(
-    new ApiExceptionFilter(),
-    new SiteExceptionFilter(),
-    new HttpExceptionFilter(),
-  );
+  app.useGlobalFilters(...exceptionFilters);
 
   await app.listen(PORT);
 }
