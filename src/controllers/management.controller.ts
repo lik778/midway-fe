@@ -6,7 +6,7 @@ import { ManagementService } from '../services/management.service';
 import config from '../config';
 
 
-@Controller({ host: config().hostType.fuwu, path: '/management' })
+@Controller({ host: config().hostType.base, path: '/management' })
 export class ManagementController {
   constructor(private managementService: ManagementService) {}
   @Get('*')
