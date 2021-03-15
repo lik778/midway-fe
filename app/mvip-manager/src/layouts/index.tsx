@@ -111,10 +111,10 @@ const Layouts = (props: any) => {
                 <Link to="/report/bax-flow">搜索通流量</Link>
               </Menu.Item>
               <Menu.Item key="cate-flow">
-                <Link to="/report/cate-flow">主站流量</Link>
+                <Link to="/report/cate-flow">VIP产品流量</Link>
               </Menu.Item>
               <Menu.Item key="cate-publish">
-                <Link to="/report/cate-publish">主站发布</Link>
+                <Link to="/report/cate-publish">VIP产品发布</Link>
               </Menu.Item>
               <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>

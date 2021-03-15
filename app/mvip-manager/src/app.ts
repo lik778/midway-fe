@@ -17,13 +17,16 @@ declare global {
   if (inIframe()) {
     insertStyle(`
       @media screen and (max-width: 700px) {
+        .page-report .statics-con .ant-statistic-title {
+          font-size: 14px;
+        }
         .page-report .statics-con .ant-statistic-content-value {
           font-size: 18px;
         }
         .page-report .react-echarts {
           height: 200px !important;
         }
-      };
+      }
       @media screen and (max-width: 370px) {
         .page-report .statics-con .ant-statistic-title {
           text-overflow: ellipsis;
