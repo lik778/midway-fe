@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Row, Col } from 'antd'
+import { Tooltip, Form, Row, Col, Divider } from 'antd';
 
 import MainTitle from '@/components/main-title'
 import Query from '@/components/search-list'
@@ -19,8 +19,8 @@ import Loading from '@/components/loading';
 function genChartOptions(data: KeywordOverviewData) {
   const res = {
     legend: {
-      left: 'bottom',
-      data: ['凤鸣','标王','易慧推','VIP产品']
+      orient: 'vertical',
+      left: 'left',
     },
     series : [
       {
@@ -28,10 +28,8 @@ function genChartOptions(data: KeywordOverviewData) {
         type: 'pie',
         radius : ['45%', '80%'],
         data:[
-          { name: '凤鸣', value: data?.fengMingKeyword || 0 },
-          { name: '标王', value: data?.biaoWangKeyword || 0 },
-          { name: '易慧推', value: data?.yiHuiTuiKeyword || 0 },
-          { name: 'VIP产品', value: data?.mainTotal || 0 }
+          { name: '竞价', value: data?.searchTotal || 0 },
+          { name: '快照', value: data?.mainTotal || 0 }
         ],
         label: { fontSize: 16 }
       }
@@ -56,6 +54,22 @@ function KeyWordPage(props: any) {
     queryOverviewData()
   }, [])
 
+  const genMainTitle = (key: string) => {
+    const tooltipsMap: any = {
+      total: { name: '总关键词数', tips: '总关键词数包括快照关键词数与竞价关键词数总和' },
+      mainTotal: { name: '快照关键词数', tips: '快照关键词数包括店铺、帖子等关键词总和。' },
+      searchTotal: { name: '竞价关键词数', tips: '竞价关键词总数包括凤鸣、标王、易慧推竞价关键词数总和。'  },
+      yihuitui: { name: '易慧推竞价关键词数', tips: '易慧推竞价关键词数仅含竞价关键词，易慧推竞价总关键词请结合快照关键词数一起分析。' }
+    }
+    const titleItem = tooltipsMap[key]
+    return (<Tooltip placement="top"
+        title={titleItem.tips}>
+      <p style={{ marginBottom: 4 }}>{titleItem.name}
+      <span className="tips">?</span>
+      </p>
+    </Tooltip>)
+  }
+
   const queryOverviewData = async () => {
     setLoading(true)
     const { code, data } = await getKeywordOverview()
@@ -79,35 +93,33 @@ function KeyWordPage(props: any) {
         { !loading && <div>
           <div className="segment">
             <h2>概览<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
-              （说明：关键词数据每周更新一次；VIP产品数据包含店铺、帖子、问答；搜索通数据包含标王、凤鸣、易慧推。）</span></h2>
+              （说明：关键词数据每周更新一次；快照数据包含店铺、帖子、问答；竞价数据包含标王、凤鸣、易慧推竞价。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
-                <CountTo title="总关键词数" value={overview?.total} />
+                <CountTo title={genMainTitle('total')}
+                 value={overview?.total} />
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="VIP产品关键词数" type={ReportProductType.CATE} value={overview?.mainTotal} />
+                <CountTo title={genMainTitle('mainTotal')}
+                 type={ReportProductType.CATE} value={overview?.mainTotal} />
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="搜索通关键词总数" value={overview?.searchTotal} />
+                <CountTo title={genMainTitle('searchTotal')}
+                 value={overview?.searchTotal} />
               </Col>
             </Row>
+            <Divider />
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
-                <CountTo title="标王关键词数" type={ReportProductType.BIAOWANG} value={overview?.biaoWangKeyword} />
+                <CountTo title="标王关键词数" isSub={true} type={ReportProductType.BIAOWANG}
+                         value={overview?.biaoWangKeyword} />
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="凤鸣关键词数" type={ReportProductType.FENGMING} value={overview?.fengMingKeyword} />
+                <CountTo title="凤鸣关键词数" isSub={true} type={ReportProductType.FENGMING} value={overview?.fengMingKeyword} />
               </Col>
               <Col className="statics" span={8}>
-                <CountTo title="易慧推关键词数" type={ReportProductType.YIHUITUI} value={overview?.yiHuiTuiKeyword} />
-              </Col>
-            </Row>
-            <Row className="statics-con" gutter={16}>
-              <Col className="statics" span={8}>
-                <CountTo title="标王关键词平均排名" value={overview?.biaoWangRanking} />
-              </Col>
-              <Col className="statics" span={8}>
-                <CountTo title="凤鸣关键词平均排名" value={overview?.fengMingRanking} />
+                <CountTo title={genMainTitle('yihuitui')} isSub={true}
+                  type={ReportProductType.YIHUITUI} value={overview?.yiHuiTuiKeyword} />
               </Col>
             </Row>
           </div>
@@ -121,12 +133,7 @@ function KeyWordPage(props: any) {
               onQuery={queryDetailList}
               config={keywordRankListConfig({
                 form: queryKeywordDetailForm,
-                dataSource: detailListData,
-                keywordRender: (keyword: string) => (
-                  <a href={'//www.baidu.com/s?wd='+keyword}>
-                    <i className="highlight left-m">{keyword}</i>
-                  </a>
-                )
+                dataSource: detailListData
               })}
             />
           </div>
