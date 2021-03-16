@@ -12,6 +12,7 @@ export default (props: any) => {
 
   const linkTo = (link: string) => {
     if (props.notInterceptCreateShop()) {
+      // todo 存储当前选择店铺, 传入id
       history.push(link)
     }
   }
@@ -45,12 +46,12 @@ export default (props: any) => {
       </div>
       <div className="s-title" >
         <a href={s.shopDomain} target="_blank"><h4>{s?.name}</h4></a>
-        {editPage()}
+        { editPage() }
       </div>
       <div className="dead-time">
         到期时间：{moment(s?.expiredTime * 1000).format('YYYY/MM/DD')}
       </div>
-      {editBtn()}
+      { editBtn() }
     </div>
   );
 }

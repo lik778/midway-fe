@@ -7,11 +7,13 @@ import { errorMessage } from '@/components/message';
 
 interface ShopModelState {
   shopInfo: ShopInfo | null;
+  curShopInfo: ShopInfo | null;
   shopInfoMap: Map<number, ShopInfo>;
 }
 
 const defaultState: ShopModelState = {
   shopInfo: null,
+  curShopInfo: null,
   shopInfoMap: new Map()
 }
 
@@ -19,6 +21,9 @@ export const SHOP_NAMESPACE = 'shop'
 export const SET_SHOP_INFO_ACTION = 'setShopInfoAction'
 export const SET_SHOP_INFO_MAP_ACTION = 'setShopInfoMapAction'
 export const GET_SHOP_INFO_ACTION = 'getShopInfoAction'
+
+export const SET_CUR_SHOP_INFO_ACTION = 'getCurShopInfoAction'
+export const GET_CUR_SHOP_INFO_ACTION = 'getCurShopInfoAction'
 
 export default <Model>{
   namespace: SHOP_NAMESPACE,
@@ -53,6 +58,9 @@ export default <Model>{
     [SET_SHOP_INFO_ACTION](state: ShopModelState, action: AnyAction) {
       const shopInfo = { ...action.payload }
       return { ...state, shopInfo };
+    },
+    [SET_CUR_SHOP_INFO_ACTION]() {
+
     },
   }
 }
