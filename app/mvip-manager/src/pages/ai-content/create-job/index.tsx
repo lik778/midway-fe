@@ -24,7 +24,7 @@ export default (props: any) => {
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   // 店铺信息
   const { shopStatus } = props
-  const wordsChange = (words: st ring, name: string) => {
+  const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     const wordsList = words.split('\n')
     const dedupWordsList =  Array.from(new Set(wordsList));
