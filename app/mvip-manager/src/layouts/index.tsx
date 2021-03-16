@@ -8,7 +8,7 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import { GETSHOPINFO_OUT_ACTION } from '@/models/shop';
+import { GET_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 import './index.less';
 // import config from '@/config/env';
 
@@ -57,7 +57,7 @@ const Layouts = (props: any) => {
     const shopIdItem = RegExp(/\d+/).exec(props.location.pathname)
     if (shopIdItem) {
       const id = Number(shopIdItem[0])
-      props.dispatch({ type: GETSHOPINFO_OUT_ACTION, payload: { id }})
+      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_INFO_ACTION}`, payload: { id }})
     }
   }
 
@@ -111,10 +111,10 @@ const Layouts = (props: any) => {
                 <Link to="/report/bax-flow">搜索通流量</Link>
               </Menu.Item>
               <Menu.Item key="cate-flow">
-                <Link to="/report/cate-flow">主站流量</Link>
+                <Link to="/report/cate-flow">VIP产品流量</Link>
               </Menu.Item>
               <Menu.Item key="cate-publish">
-                <Link to="/report/cate-publish">主站发布</Link>
+                <Link to="/report/cate-publish">VIP产品发布</Link>
               </Menu.Item>
               <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>

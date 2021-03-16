@@ -7,7 +7,7 @@ import config from '../config';
 const staticFiles = join(__dirname , '..', '..', '/assets/static')
 const files = fs.readdirSync(staticFiles);
 
-@Controller({ host: config().hostType.fuwu, path: '/' })
+@Controller({ host: config().hostType.base, path: '/' })
 export class AppController {
   @Get('/')
   home (@Req() req: Request, @Res() res: Response) {

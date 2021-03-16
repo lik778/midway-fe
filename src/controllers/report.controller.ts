@@ -5,7 +5,7 @@ import { ReportService } from '../services/report.service';
 import config from '../config';
 import { PageException } from '../exceptions/page.exception';
 
-@Controller({ host: config().hostType.fuwu, path: '/report' })
+@Controller({ host: config().hostType.base, path: '/report' })
 export class ReportController {
   constructor(private reportService: ReportService) {}
   // 报表分享
@@ -16,7 +16,7 @@ export class ReportController {
     }
     // url做了兼容
     res.render('report/share', { title: '数据总览',
-      url: `//${ config().hostType.fuwu || 'localhost:1024' }/management/report/dashboard?userId=${query.userId}` });
+      url: `//${ config().hostType.base || 'localhost:1024' }/management/report/dashboard?userId=${query.userId}` });
   }
 
   @Post('/api')

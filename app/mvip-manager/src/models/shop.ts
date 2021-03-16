@@ -16,16 +16,15 @@ const defaultState: ShopModelState = {
 }
 
 export const SHOP_NAMESPACE = 'shop'
-export const SAVESHOPINFO_ACTION = 'saveShopInfo'
-export const SET_SHOPINFOMAP_ACTION = 'setShopInfoMap'
-export const GETSHOPINFO_ACTION = 'getShopInfo'
-export const GETSHOPINFO_OUT_ACTION = `${SHOP_NAMESPACE}/${GETSHOPINFO_ACTION}`
+export const SET_SHOP_INFO_ACTION = 'setShopInfoAction'
+export const SET_SHOP_INFO_MAP_ACTION = 'setShopInfoMapAction'
+export const GET_SHOP_INFO_ACTION = 'getShopInfoAction'
 
 export default <Model>{
   namespace: SHOP_NAMESPACE,
   state: cloneDeepWith(defaultState),
   effects: {
-    *getShopInfo(action: AnyAction, effects: EffectsCommandMap) {
+    [GET_SHOP_INFO_ACTION]: function * (action: AnyAction, effects: EffectsCommandMap) {
       const { put, select } = effects
       const shopModel: ShopModelState = yield select((state: any) => state.shop)
       const { shopInfoMap  } = shopModel
@@ -39,19 +38,19 @@ export default <Model>{
           resData = res.data
           const cloneShopInfoMap = new Map(shopInfoMap)
           cloneShopInfoMap.set(id, resData)
-          yield put({ type: SET_SHOPINFOMAP_ACTION, payload: cloneShopInfoMap });
+          yield put({ type: SET_SHOP_INFO_MAP_ACTION, payload: cloneShopInfoMap });
         } else {
           errorMessage(res.message)
         }
       }
-      yield put({ type: SAVESHOPINFO_ACTION, payload: resData });
+      yield put({ type: SET_SHOP_INFO_ACTION, payload: resData });
     }
   },
   reducers: {
-    [SET_SHOPINFOMAP_ACTION](state: ShopModelState, action: AnyAction) {
+    [SET_SHOP_INFO_MAP_ACTION](state: ShopModelState, action: AnyAction) {
       return { ...state, shopInfoMap: action.payload };
     },
-    [SAVESHOPINFO_ACTION](state: ShopModelState, action: AnyAction) {
+    [SET_SHOP_INFO_ACTION](state: ShopModelState, action: AnyAction) {
       const shopInfo = { ...action.payload }
       return { ...state, shopInfo };
     },

@@ -84,17 +84,17 @@ export const getSummaryFlowData:
   () => Response<FlowChartData[]> =
   () => get('/summary/statistical')
 
-// 主站流量总览数据
+// VIP产品流量总览数据
 export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
   () => get('/seo/network/overview')
 
-// 主站流量统计柱状图
+// VIP产品流量统计柱状图
 export const getCateFlowChart:
   (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
   (params) => post('/seo/network/statistical', params)
 
-// 主站流量详情列表
+// VIP产品流量详情列表
 export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/seo/network/visit-detail', params)
