@@ -29,7 +29,7 @@ export const CreateAiContentNav = (props: Props): any => {
         const res = await getAiShopListApi()
         if (res?.success) {
           showGroupWordPanel(res.data)
-          setShopList(res.data || [])
+          setShopList(res.data.filter(x => x.isSupportAi) || [])
         } else {
           errorMessage(res.message)
         }
@@ -61,6 +61,7 @@ export const CreateAiContentNav = (props: Props): any => {
             <Form layout="inline" form={form}>
               <FormItem label="所属店铺" name="shopId" key="shopId">
                 <Select  style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺" onChange={onShopChange}>
+                  {/* 待选项里，会先过滤掉，购买时套餐不含AI发文的店铺 */}
                   { shopList && shopList.length > 0 && shopList.map((shop: any) => {
                     return (<Option key={shop.id} value={shop.id}>{shop.name}</Option>)
                   }) }
