@@ -5,11 +5,18 @@
     padding: unset;
     background: unset;
     min-height: calc(100vh - 160px);
+    .report-sub-statistic {
+      .ant-statistic-title {
+        font-size: 20px;
+      }
+    }
     .ant-statistic-title {
-      font-size: 16px;
+      font-size: 30px;
+      font-weight: bold;
       color: #666;
     }
     .ant-statistic-content-value {
+      font-size: 30px;
       color: #096DD9;
     }
     .ant-statistic-content-suffix {
@@ -24,6 +31,18 @@
       }
       & + .segment {
         margin-top: 16px;
+      }
+      .tips {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        cursor: pointer;
+        border-radius: 100%;
+        font-size: 12px;
+        color: #096DD9;
+        border: 1px solid #096DD9;
+        margin-left: 5px;
       }
     }
   }
