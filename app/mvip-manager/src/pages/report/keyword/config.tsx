@@ -11,7 +11,7 @@ import { BaxProductType, CateProductType } from '@/enums/report'
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
 const ProductOptions = createOptions({...BaxProductLabelMap, ...{
-  [CateProductType.SHOP]: '主营'
+  [CateProductType.SHOP]: '快照'
 }})
 const DisplayOptions = createOptions(DisplayLabelMap)
 
@@ -24,7 +24,6 @@ interface Config {
 export const keywordRankListConfig = ({
   form,
   dataSource,
-  keywordRender
 }: Config) => ({
   form,
   dataSource,
@@ -69,8 +68,10 @@ export const keywordRankListConfig = ({
         title: '关键词',
         dataIndex: 'keyword',
         key: 'keyword',
-        render: keywordRender
-
+        render: (keyword: string) => (
+          <a href={'//www.baidu.com/s?wd='+keyword} target="_blank">
+          <i className="highlight left-m">{keyword}</i></a>
+        )
       },
       {
         title: '搜索引擎',
@@ -103,6 +104,11 @@ export const keywordRankListConfig = ({
           ...BaxProductLabelMap,
           ...CateProductLabelMap
         }[row.product])
+      },
+      {
+        title: '查询时间',
+        dataIndex: 'queryDate',
+        key: 'queryDate'
       }
     ]
   }

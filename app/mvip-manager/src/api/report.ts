@@ -84,37 +84,37 @@ export const getSummaryFlowData:
   () => Response<FlowChartData[]> =
   () => get('/summary/statistical')
 
-// VIP产品流量总览数据
+// 快照流量总览数据
 export const getCateFlowOverview:
   () => Response<CateFlowOverviewData> =
   () => get('/seo/network/overview')
 
-// VIP产品流量统计柱状图
+// 快照流量统计柱状图
 export const getCateFlowChart:
   (params: CateFlowChartParams) => Response<CateFlowChartData[]> =
   (params) => post('/seo/network/statistical', params)
 
-// VIP产品流量详情列表
+// 快照流量详情列表
 export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/seo/network/visit-detail', params)
 
-// 搜索通流量概览
+// 竞价流量概览
 export const getBaxFlowOverview:
   () => Response<BaxFlowOverviewData> =
   () => get('/sem/network/overview')
 
-// 搜索通流量访问和展现统计
+// 竞价流量访问和展现统计
 export const getBaxFlowCharts:
   (params: BaxFlowChartParams) => Response<BaxFlowChartData[]> =
   (params) => post('/sem/network/statistical', params)
 
-// 搜索通流量访问明细
+// 竞价流量访问明细
 export const getBaxFlowVisitDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/sem/network/visit-detail', params)
 
-// 搜索通流量展现明细
+// 竞价流量展现明细
 export const getBaxFlowShowDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/sem/network/show-detail', params)
