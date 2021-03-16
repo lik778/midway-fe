@@ -103,22 +103,22 @@ const Layouts = (props: any) => {
                 <Link to="/ai-content/base-information">基础资料填写</Link>
               </Menu.Item>
             </SubMenu>
-            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
-              <Menu.Item key="dashboard">
-                <Link to="/report/dashboard">总览</Link>
-              </Menu.Item>
+            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">
+              {/*<Menu.Item key="dashboard">*/}
+              {/*  <Link to="/report/dashboard">总览</Link>*/}
+              {/*</Menu.Item>*/}
               <Menu.Item key="keyword">
                 <Link to="/report/keyword">关键词</Link>
               </Menu.Item>
               <Menu.Item key="bax-flow">
-                <Link to="/report/bax-flow">搜索通流量</Link>
+                <Link to="/report/bax-flow">流量</Link>
               </Menu.Item>
-              <Menu.Item key="cate-flow">
-                <Link to="/report/cate-flow">VIP产品流量</Link>
-              </Menu.Item>
-              <Menu.Item key="cate-publish">
-                <Link to="/report/cate-publish">VIP产品发布</Link>
-              </Menu.Item>
+              {/*<Menu.Item key="cate-flow">*/}
+              {/*  <Link to="/report/cate-flow">快照流量</Link>*/}
+              {/*</Menu.Item>*/}
+              {/*<Menu.Item key="cate-publish">*/}
+              {/*  <Link to="/report/cate-publish">快照发布</Link>*/}
+              {/*</Menu.Item>*/}
               <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>
               </Menu.Item>
