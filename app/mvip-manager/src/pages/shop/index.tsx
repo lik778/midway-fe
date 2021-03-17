@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
+import { connect } from 'dva';
 import MyModal, { ModalType } from '@/components/modal';
 import EmptyStatus from '@/components/empty-status'
 import MainTitle from '@/components/main-title';
-import ShopBox from '@/components/shop-box';
+import ShopBox from './components/shop-box';
 import Loading from '@/components/loading';
-import './index.less';
 import { postApiData } from '@/api/base';
 import { notEmptyObject } from '@/utils';
+import {
+  GET_SHOP_LIST_ACTION,
+  GET_SHOP_TOTAL_ACTION,
+  SET_SHOP_LIST_ACTION,
+  SET_SHOP_TOTAL_ACTION,
+  SHOP_NAMESPACE,
+} from '@/models/shop';
+import { ShopInfo } from '@/interfaces/shop';
+import './index.less';
 
 // 空状态基本配置
 const emptyMsg = {
@@ -17,18 +26,14 @@ const emptyMsg = {
   img: "//file.baixing.net/202012/ead8b543db23259dc9838e753f865732.png",
 }
 
-export default (props: any) => {
-  const { shopStatus } = props
+function ShopPage(props: any) {
+  const { shopStatus, shopList, shopTotal } = props
   // isLoaded
   const [isLoading, setIsLoading] = useState(true)
   // 弹窗显示隐藏
   const [visible, setVisible] = useState(false)
   // 弹窗错误显示
   const [err, setError] = useState('')
-  // 弹窗列表显示
-  const [shopListData, setShopList] = useState<any[]>([])
-  // 弹窗总数
-  const [totalCount, setCount] = useState(0)
   // 显示弹窗的来源
   const [shopOperateStatus, setOperate] = useState(0)
   // 是否是后缀域名(前缀B2B，后缀服务)
@@ -74,20 +79,6 @@ export default (props: any) => {
     const data = await postApiData('shop/update',params)
     setShopSiteRes(data)
   }
-
-
-  // 获取店铺列表
-  const getShopListing = async () => {
-    const data = await postApiData('shop/listing', { page: 1, size: 10 })
-    setIsLoading(false)
-    if(data && data.code === 200) {
-      const resData = data.data
-      const result = resData.result || []
-      setShopList(result)
-      setCount(resData.totalRecord)
-    }
-  }
-
 
   const notInterceptCreateShop = (): boolean => {
     setEditVisible(!shopStatus.isUserPerfect)
@@ -135,8 +126,13 @@ export default (props: any) => {
   };
 
   useEffect(() => {
-    getShopListing()
-  }, []);
+    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_LIST_ACTION}` })
+    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_TOTAL_ACTION}` })
+  }, [])
+
+  useEffect(() => {
+    if (shopList) setIsLoading(false)
+  }, [shopList]);
 
   useEffect(
     () => {
@@ -145,12 +141,11 @@ export default (props: any) => {
         if(shopOperateStatus != 1) {
           // 由于es返回慢，改用前端新增数据
           const newData = shopSiteRes?.data || null
-          setShopList([newData, ...shopListData])
-          setCount(totalCount+1)
+          props.dispacth({ type: SET_SHOP_LIST_ACTION, payload: [newData, ...shopList] })
+          props.dispacth({ type: SET_SHOP_TOTAL_ACTION, payload: shopTotal + 1 })
         }else {
-          getShopListing()
+          props.dispacth({ type: GET_SHOP_LIST_ACTION })
         }
-
       }else {
         setError(shopSiteRes && shopSiteRes.message || '')
       }
@@ -219,15 +214,16 @@ export default (props: any) => {
       return <Loading />
     }
     // 店铺列表
-    if(totalCount) {
+    if(shopTotal) {
       return (
         <div className="my-shop-list">
           <Button type="primary" className="primary-btn p-btn btn" onClick={(ev: any) => {showModal(ev, 0)}} disabled={isNewShopDisabled}>+新建店铺</Button>
           <div className="shop-list">
             {
-              shopListData.map((shopChild, index) => {
+              shopList.map((shopInfo: ShopInfo, index: number) => {
                return (
-                <ShopBox notInterceptCreateShop={notInterceptCreateShop} shopChild={shopChild} key={index} index={index} onClick={(ev: any) => {showModal(ev, 1, shopChild)}}/>
+                <ShopBox dispatch={props.dispatch} notInterceptCreateShop={notInterceptCreateShop} shopInfo={shopInfo} key={index} index={index}
+                     onClick={(ev: any) => {showModal(ev, 1, shopInfo)}}/>
                )
             })}
           </div>
@@ -306,5 +302,8 @@ export default (props: any) => {
   )
 }
 
-
+export default connect((state: any): { [key: string]: ShopInfo[] | number } => {
+  const { shopList, shopTotal } = state[SHOP_NAMESPACE]
+  return { shopList, shopTotal }
+})(ShopPage)
 

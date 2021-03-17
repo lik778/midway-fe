@@ -68,7 +68,7 @@ function CateFlowPage(props: any) {
 
   return (
     <div className="page-report page-report-cate-flow">
-      <MainTitle title="VIP产品流量报表" />
+      <MainTitle title="快照流量报表" />
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>

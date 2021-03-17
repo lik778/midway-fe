@@ -8,6 +8,7 @@ export default function CountTo(props: any) {
   const {
     type,
     title,
+    isSub,
     from = 0,
     time = 1150,
     value : to = from,
@@ -23,7 +24,7 @@ export default function CountTo(props: any) {
   const haojingHost = '//www.baixing.com';
   // 先写死，后面查看环境变量问题
   return <div>
-    <Statistic title={title} value={notOpen ? '' : displayNum}
+    <Statistic className={isSub ? 'report-sub-statistic' : ''} title={title} value={notOpen ? '' : displayNum}
      valueStyle={{ display: showOpenBtn ? 'none' : ''  }} />
     { showOpenBtn && <div>
     <p style={{ height: 50, lineHeight: '50px' }}>暂无数据</p>

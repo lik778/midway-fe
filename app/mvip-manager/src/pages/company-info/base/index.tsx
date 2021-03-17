@@ -92,7 +92,7 @@ function CompanyInfoBase (props: any) {
             }/>
         }
         { !formLoading && currentStep == 1 &&
-        <ContactForm back={() => setCurrentStep(currentStep - 1)} />}
+        <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );
