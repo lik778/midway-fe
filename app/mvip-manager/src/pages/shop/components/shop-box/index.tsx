@@ -17,13 +17,13 @@ export default (props: any) => {
     }
   }
 
-  const editPage = () => {
+  const genEditBtn = () => {
     if(s?.status === 1 || s?.status === 2) {
-      return (<span className="s-edit iconfont" onClick={props.onClick}>&#xe61b;</span>)
+      return (<span className="s-edit" onClick={props.onClick}></span>)
     }
   }
 
-  const editBtn = () => {
+  const genLinkPanel = () => {
     if(s?.status === 1 || s?.status === 2) {
       return (<div className="s-btn">
       <span onClick={() => linkTo(s.id, `/shop/${s.id}/nav`) } >基础设置</span>
@@ -34,10 +34,6 @@ export default (props: any) => {
 
   return (
     <div className="shop-box">
-      <div className="shop-icon">
-        <i className="iconfont">&#xe61e;</i>
-        店铺{props.index + 1}
-      </div>
       <div className="s-img">
         <a href={s.shopDomain} target="_blank">
           <img src={s?.thumb}/>
@@ -45,13 +41,13 @@ export default (props: any) => {
         </a>
       </div>
       <div className="s-title" >
-        <a href={s.shopDomain} target="_blank"><h4>{s?.name}</h4></a>
-        { editPage() }
+        <a href={s.shopDomain} target="_blank">{s?.name}</a>
+        { genEditBtn() }
       </div>
       <div className="dead-time">
         到期时间：{moment(s?.expiredTime * 1000).format('YYYY/MM/DD')}
       </div>
-      { editBtn() }
+      { genLinkPanel() }
     </div>
   );
 }
