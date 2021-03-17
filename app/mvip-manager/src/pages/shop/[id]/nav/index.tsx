@@ -7,7 +7,7 @@ import './index.less'
 export default (props: any) => {
   return (
       <div>
-        <BasisHeader type={ShopBasisType.NAV}/>
+        <BasisHeader {...props} type={ShopBasisType.NAV}/>
        <div className="container">
           <ShopNav/>
        </div>

@@ -81,7 +81,7 @@ export default (props: any) => {
 
   return (
       <div>
-        <BasisHeader type={ShopBasisType.CAROUSEL}/>
+        <BasisHeader {...props} type={ShopBasisType.CAROUSEL}/>
         <div className="container">
           {imgContainer()}
         </div>

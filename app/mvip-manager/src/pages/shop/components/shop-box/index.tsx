@@ -3,16 +3,16 @@ import React from 'react';
 import { history } from 'umi';
 import './index.less';
 import moment from 'moment';
+import { SET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 
 export default (props: any) => {
-  const s = props?.shopChild
+  const s = props?.shopInfo
   const status = s?.status === 1 ? 's-active' : 's-offline'
   const statusTxt = s?.status === 1 ? '生效中' : (s?.status === 2?'审核驳回':'已下线')
 
-
-  const linkTo = (link: string) => {
+  const linkTo = (id: number, link: string) => {
     if (props.notInterceptCreateShop()) {
-      // todo 存储当前选择店铺, 传入id
+      props.dispatch({ type: `${SHOP_NAMESPACE}/${SET_CUR_SHOP_INFO_ACTION}`, payload: id })
       history.push(link)
     }
   }
@@ -26,8 +26,8 @@ export default (props: any) => {
   const editBtn = () => {
     if(s?.status === 1 || s?.status === 2) {
       return (<div className="s-btn">
-      <span onClick={() => linkTo(`/shop/${s.id}/nav`) } >基础设置</span>
-      <span onClick={() => linkTo(`/shop/${s.id}/product`) }>内容管理</span>
+      <span onClick={() => linkTo(s.id, `/shop/${s.id}/nav`) } >基础设置</span>
+      <span onClick={() => linkTo(s.id, `/shop/${s.id}/product`) }>内容管理</span>
     </div>)
     }
   }

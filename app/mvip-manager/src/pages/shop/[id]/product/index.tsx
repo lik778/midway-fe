@@ -51,7 +51,7 @@ export default (props: any) => {
   }}
   return (
     <div>
-      <ContentHeader type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
+      <ContentHeader {...props} type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
