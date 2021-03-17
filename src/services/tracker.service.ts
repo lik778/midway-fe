@@ -47,7 +47,7 @@ export class TrackerService {
 
   public getTrackId(req: Request, res: Response) {
     const trackId = req.cookies && req.cookies.__trackId;
-    console.log("req.cookies:",req.cookies.__trackId)
+    console.log("req.cookies:",req.cookies)
     if (!trackId || !/^[0-9]{15}$/.test(trackId)) {
       const gTrackId = this.generateTrackId();
       res.cookie(this.TRACKID, gTrackId, {
