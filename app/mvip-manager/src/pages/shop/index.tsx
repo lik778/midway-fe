@@ -125,10 +125,12 @@ function ShopPage(props: any) {
     }
   };
 
-  useEffect(() => {
+  const obtainShopList = () => {
     props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_LIST_ACTION}` })
     props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_TOTAL_ACTION}` })
-  }, [])
+  }
+
+  useEffect(() => obtainShopList(), [])
 
   useEffect(() => {
     if (shopList) setIsLoading(false)
@@ -141,10 +143,10 @@ function ShopPage(props: any) {
         if(shopOperateStatus != 1) {
           // 由于es返回慢，改用前端新增数据
           const newData = shopSiteRes?.data || null
-          props.dispacth({ type: SET_SHOP_LIST_ACTION, payload: [newData, ...shopList] })
-          props.dispacth({ type: SET_SHOP_TOTAL_ACTION, payload: shopTotal + 1 })
-        }else {
-          props.dispacth({ type: GET_SHOP_LIST_ACTION })
+          props.dispatch({ type: `${SHOP_NAMESPACE}/${SET_SHOP_LIST_ACTION}`, payload: [newData, ...shopList] })
+          props.dispatch({ type: `${SHOP_NAMESPACE}/${ SET_SHOP_TOTAL_ACTION}`, payload: shopTotal + 1 })
+        } else {
+          obtainShopList()
         }
       }else {
         setError(shopSiteRes && shopSiteRes.message || '')
