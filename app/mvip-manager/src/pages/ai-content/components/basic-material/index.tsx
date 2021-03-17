@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { Input , Form , Col , Row  , Button} from 'antd';
-import MainTitle from '@/components/main-title';
 import './index.less';
 import MyModal, { ModalType } from '@/components/modal';
 
@@ -47,7 +46,6 @@ export default (props: any) => {
   }
   return (
     <div>
-      <MainTitle title="基础信息素材"/>
       <div className="ai-list-container" style={{padding:'40px 10px'}}>
           <div className="ai-create-information-box">
             <Form name="base-information-box" form={form} onFinish={printdata}>
@@ -57,13 +55,13 @@ export default (props: any) => {
                     const x = contentName[k];
                     return (<Row key={k} className="gutter-row" gutter={40} justify="start">
                         <Col className="content-label" flex="170px" style={{padding:'3px'}}>
-                          <div><span style={{color:'red'}}>*</span>{x.label}：</div> 
+                          <div><span style={{color:'red'}}>*</span>{x.label}：</div>
                           <div>{x.ps}</div>
                         </Col>
                         <Col className="content-text" flex="800px" style={{padding:0}}>
                         <FormItem name={x.name}>
-                          <TextArea rows={5} 
-                          placeholder={"一行一个素材，至少填写5个，多个素材以回车分行区别。"} 
+                          <TextArea rows={5}
+                          placeholder={"一行一个素材，至少填写5个，多个素材以回车分行区别。"}
                           style={{resize:'none'}}
                           />
                         </FormItem>
