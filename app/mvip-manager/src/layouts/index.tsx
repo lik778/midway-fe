@@ -99,15 +99,15 @@ const Layouts = (props: any) => {
               <Menu.Item key="job-list">
                 <Link to="/ai-content/job-list">管理任务</Link>
               </Menu.Item>*/}
-              <Menu.Item key="shop-ai">
-                <Link to="/shop-ai">店铺AI</Link>
+              <Menu.Item key="ai-shop">
+                <Link to="/ai-content/ai-shop">店铺AI</Link>
               </Menu.Item>
-              <Menu.Item key="shop-ai">
-                <Link to="/zhidao-ai">问答AI</Link>
+              <Menu.Item key="ai-zhidao">
+                <Link to="/ai-content/ai-zhidao">问答AI</Link>
               </Menu.Item>
-              <Menu.Item key="base-information">
+              {/*<Menu.Item key="base-information">
                 <Link to="/ai-content/base-information">基础资料填写</Link>
-              </Menu.Item>
+              </Menu.Item>*/}
             </SubMenu>
             { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">
               {/*<Menu.Item key="dashboard">*/}
