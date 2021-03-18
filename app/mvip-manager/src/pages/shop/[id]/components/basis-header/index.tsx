@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ShopBasisTab from '@/components/shop-basis-tab';
+import ShopBasisTab from '../shop-basis-tab';
 import MainTitle from '@/components/main-title';
 import { ShopBasisType } from '@/enums';
 import { Link, useParams } from 'umi';

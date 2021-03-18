@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './index.less';
 import WildcatForm from '@/components/wildcat-form';
-import GroupModal from '@/components/group-modal';
+import GroupModal from '../../../components/group-modal';
 import { productForm } from '@/config/form';
 import { Drawer, Form } from 'antd';
 import { CateItem, RouteParams } from '@/interfaces/shop';

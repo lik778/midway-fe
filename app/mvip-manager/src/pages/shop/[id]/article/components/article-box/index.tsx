@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
-import GroupModal from '@/components/group-modal';
+import GroupModal from '../../../components/group-modal';
 import MyModal, { ModalType } from '@/components/modal';
 import { articleForm, productForm } from '@/config/form';
 import { Drawer, Form, Modal } from 'antd';

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import  CarouselImg from '@/components/carousel-img';
-import BasisHeader from '@/components/basis-header';
+import  CarouselImg from './components/carousel-img';
+import BasisHeader from '../components/basis-header';
 import { ShopBasisType, DeviceType } from '@/enums';
 import './index.less'
 import { getBannerListApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
 import Loading from '@/components/loading';
-import EmptyStatus from '@/components/empty-status';
+import EmptyStatus from '@/pages/shop/components/empty-status';
 
 export default (props: any) => {
   const [wapBannerList, setWapBannerList] = useState<any[]>([])

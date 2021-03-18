@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'antd';
-import { Link } from 'umi';
-import MainTitle from '@/components/main-title';
-import Loading from '@/components/loading';
-import CountTo from '@/components/count-to';
-import { PieChart, LineChart } from '@/components/charts';
-import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report';
-import { FlowChartData, SummaryOverviewData } from '@/interfaces/report';
-import { ReportProductType } from '@/enums/report';
-import { inIframe, notInIframe } from '@/utils';
+import React, { useEffect, useState } from 'react'
+import { Col, Row } from 'antd'
+import { Link } from 'umi'
+import MainTitle from '@/components/main-title'
+import Loading from '@/components/loading'
+import CountTo from '../components/count-to'
+import { PieChart, LineChart } from '../components/charts'
+import { getSummaryFlowData, getSummaryOverviewData } from '@/api/report'
+import { FlowChartData, SummaryOverviewData } from '@/interfaces/report'
+import { ReportProductType } from '@/enums/report'
+import { inIframe, notInIframe } from '@/utils'
 
 function genChartOptions({ fm, bw, qc, cate }: any) {
   return {

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import ShopModuleTab from '@/components/shop-module-tab';
-import MainTitle from '@/components/main-title';
-import { ShopModuleType, ProductType } from '@/enums';
-import { Link, useParams } from 'umi';
-import { connect, Dispatch } from 'dva';
-import { ShopInfo } from '@/interfaces/shop';
-import { BaseProps } from '@/interfaces/base';
-import { GET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
+import React, { useEffect } from 'react'
+import MainTitle from '@/components/main-title'
+import ShopModuleTab from '../shop-module-tab'
+import { ShopModuleType, ProductType } from '@/enums'
+import { Link, useParams } from 'umi'
+import { connect, Dispatch } from 'dva'
+import { ShopInfo } from '@/interfaces/shop'
+import { BaseProps } from '@/interfaces/base'
+import { GET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop'
 
 interface Props extends BaseProps {
   type: ShopModuleType;
