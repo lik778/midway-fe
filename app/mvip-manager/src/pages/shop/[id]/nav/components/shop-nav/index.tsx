@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Table, Checkbox, Button } from 'antd';
 import InputLen from "@/components/input-len"
 import Loading from "@/components/loading"
-import './index.less';
 import { getNavListingApi, updateNavApi }  from '@/api/shop';
 import { RouteParams } from '@/interfaces/shop';
 import { useParams } from "umi";
 import { NavItem, ModifyNavItem } from '@/interfaces/shop';
 import { errorMessage, successMessage } from '@/components/message';
+import './index.less';
 
 export default (props: any) => {
   const [navList, setNavList] = useState<NavItem[]>([]);

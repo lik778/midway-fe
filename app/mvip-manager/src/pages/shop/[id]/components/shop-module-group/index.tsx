@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import GroupModal from '@/components/group-modal'
+import GroupModal from '../group-modal'
 import { deleteContentCateApi, getCateNumApi } from '@/api/shop';
 import './index.less';
 import { ContentCateType } from '@/enums';

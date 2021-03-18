@@ -3,7 +3,7 @@ import { Modal, Input, Button } from 'antd';
 import { history } from 'umi';
 import { connect } from 'dva';
 import MyModal, { ModalType } from '@/components/modal';
-import EmptyStatus from '@/components/empty-status'
+import EmptyStatus from './components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from './components/shop-box';
 import Loading from '@/components/loading';

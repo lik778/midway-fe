@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ContentHeader from '@/components/content-header';
-import ShopModuleGroup from '@/components/shop-module-group';
+import ContentHeader from '../components/content-header';
+import ShopModuleGroup from '../components/shop-module-group';
 import ArticleBox from './components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';

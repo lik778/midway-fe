@@ -1,7 +1,7 @@
 import React,  { useState, useEffect } from 'react';
 import { useParams } from "umi";
-import ContentHeader from '@/components/content-header';
-import ShopModuleGroup from '@/components/shop-module-group';
+import ContentHeader from '../components/content-header';
+import ShopModuleGroup from '../components/shop-module-group';
 import ProductBox from './components/product-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';

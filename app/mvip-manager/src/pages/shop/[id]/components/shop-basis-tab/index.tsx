@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'umi';
-import { ShopBasisType, ShopTDKType } from '@/enums';
+import { ShopBasisType } from '@/enums';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
 interface Props {
