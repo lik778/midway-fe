@@ -51,6 +51,7 @@ export default <Model>{
   reducers: {
     [SET_COMPANY_INFO_ACTION]: (state: UserModelState, action: AnyAction) => {
       const companyInfo = action.payload
+      console.log(companyInfo)
       return { ...state, companyInfo  };
     }
   }
