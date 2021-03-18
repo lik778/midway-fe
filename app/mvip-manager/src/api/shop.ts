@@ -10,14 +10,31 @@ import {
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
-  TdkDetailMeta, ShopStatus,
+  TdkDetailMeta, ShopStatus, ShopInfo,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 
-// 店铺
+// 店铺初始信息
 export const getCreateShopStatusApi = ():Promise<ServiceResponse<ShopStatus>>  => {
   return postApiData('shop/init', {})
 }
+
+// 创建店铺
+export const createShopApi = (params: any):Promise<ServiceResponse<any>> => {
+  return postApiData('shop/create', params)
+}
+
+// 更新店铺
+export const updateShopApi = (params: ShopInfo):Promise<ServiceResponse<any>> => {
+  return postApiData('shop/update', params)
+}
+
+// 获取店铺列表
+export const getShopListApi = ():Promise<ServiceResponse<ShopInfo>>  => {
+  // tips: // 这里的params写死，因为用户店铺不会超过10个
+  return postApiData('shop/listing', { page: 1, size: 10 })
+}
+
 
 // 基础配置
 // 获取导航列表

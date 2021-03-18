@@ -1,33 +1,38 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import ShopBasisTab from '@/components/shop-basis-tab';
 import MainTitle from '@/components/main-title';
 import { ShopBasisType } from '@/enums';
-import { Link } from 'umi';
+import { Link, useParams } from 'umi';
 import { ShopInfo } from '@/interfaces/shop';
 import './index.less';
-import { connect } from 'dva';
+import { connect, Dispatch } from 'dva';
+import { GET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 
 interface Props {
   type: ShopBasisType;
-  shopInfo?: ShopInfo | null;
+  curShopInfo?: ShopInfo | null;
+  dispatch: Dispatch;
 }
 
 const BasicHeader = (props: Props) => {
-  const { type, shopInfo } = props
+  const { type, curShopInfo } = props
+  const { id } = useParams()
+  useEffect(() => {
+    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_CUR_SHOP_INFO_ACTION}`, id: Number(id) })
+  }, [])
   return (
     <div className="basis-header">
-      { shopInfo?.name && <Link className="arrow" to="/shop"></Link> }
-      { shopInfo?.name && <MainTitle title={shopInfo?.name}/> }
-      { shopInfo?.name && <a className="visit-online"href={shopInfo?.shopDomain} target="_blank">访问线上</a> }
+      { curShopInfo?.name && <Link className="arrow" to="/shop"></Link> }
+      { curShopInfo?.name && <MainTitle title={curShopInfo?.name}/> }
+      { curShopInfo?.name && <a className="visit-online"href={curShopInfo?.shopDomain} target="_blank">访问线上</a> }
       <ShopBasisTab type={type}/>
     </div>
   );
 }
 
 const mapStateToProps = (state: any): any => {
-  const { shopInfo } = state.shop;
-  return { shopInfo }
+  const { curShopInfo } = state[SHOP_NAMESPACE];
+  return { curShopInfo }
 }
 
 export default connect(mapStateToProps)(BasicHeader)

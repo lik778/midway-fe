@@ -17,7 +17,6 @@ export const SET_USER_INFO_ACTION = 'setUserInfoAction'
 // 公司信息
 export const GET_COMPANY_INFO_ACTION = 'getCompanyInfoAction'
 export const SET_COMPANY_INFO_ACTION = 'setCompanyInfoAction'
-export const SAVE_COMPANY_INFO_ACTION = 'saveCompanyInfoAction'
 
 const defaultState: UserModelState = {
   companyInfo: null,
@@ -37,11 +36,11 @@ export default <Model>{
       const { select, put } = effects
       let companyInfo: UserEnterpriseInfo = yield select((state: any) => state[USER_NAMESPACE].companyInfo)
       if (companyInfo) {
-        yield put({ type: SET_COMPANY_INFO_ACTION, playload: companyInfo });
+        yield put({ type: SET_COMPANY_INFO_ACTION, payload: companyInfo });
       } else {
         const { success, message, data } =  yield getEnterpriseForShopApi()
         if (success) {
-          yield put({ type: SET_COMPANY_INFO_ACTION, playload: data });
+          yield put({ type: SET_COMPANY_INFO_ACTION, payload: data });
         } else {
           errorMessage(message)
           return
@@ -51,7 +50,7 @@ export default <Model>{
   },
   reducers: {
     [SET_COMPANY_INFO_ACTION]: (state: UserModelState, action: AnyAction) => {
-      const companyInfo = action.playload
+      const companyInfo = action.payload
       return { ...state, companyInfo  };
     }
   }

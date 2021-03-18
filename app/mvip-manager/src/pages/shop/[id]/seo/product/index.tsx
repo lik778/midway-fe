@@ -84,7 +84,7 @@ export default (props: any) => {
 
   return (
       <div>
-        <BasisHeader type={ShopBasisType.SEO} />
+        <BasisHeader {...props} type={ShopBasisType.SEO} />
        <div className="container">
          <div className="tdk-box">
            <h4>

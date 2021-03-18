@@ -8,7 +8,6 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import { GET_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 import './index.less';
 // import config from '@/config/env';
 
@@ -53,21 +52,11 @@ const Layouts = (props: any) => {
     })()
   }, [])
 
-  const getCurrentShopInfo = () => {
-    const shopIdItem = RegExp(/\d+/).exec(props.location.pathname)
-    if (shopIdItem) {
-      const id = Number(shopIdItem[0])
-      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_INFO_ACTION}`, payload: { id }})
-    }
-  }
-
   useEffect(() => {
     const routeList = props.location.pathname.split('/')
     const isShopRoute = (routeList[1] === 'shop')
     setOpenKeys([routeList[1]])
     setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
-    // 获取当前店铺信息
-    getCurrentShopInfo()
   }, [props.location.pathname])
 
   return (
