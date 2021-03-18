@@ -5,6 +5,7 @@ import './index.less';
 import Loading from '@/components/loading';
 import { getUserVerifyListApi } from '@/api/user';
 import { VerifyStatus, VerifyType } from '@/enums';
+import { errorMessage } from '@/components/message';
 // import config from '@/config/env';
 
 
@@ -27,6 +28,8 @@ export default (props: any) => {
             setUserVerifyStatus(x.status)
           }
         })
+      } else {
+        errorMessage(res.message)
       }
     })()
   }, [])

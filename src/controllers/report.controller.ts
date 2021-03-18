@@ -9,14 +9,14 @@ import { PageException } from '../exceptions/page.exception';
 export class ReportController {
   constructor(private reportService: ReportService) {}
   // 报表分享
-  @Get('/dashboard')
+  @Get('/keyword')
   overviewReport(@Req() req: Request, @Res() res: Response, @Query() query) {
     if (!query.userId) {
       throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '无效的用户');
     }
     // url做了兼容
     res.render('report/share', { title: '数据总览',
-      url: `//${ config().hostType.base || 'localhost:1024' }/management/report/dashboard?userId=${query.userId}` });
+      url: `//${ config().hostType.base || 'localhost:1024' }/management/report/keyword?userId=${query.userId}` });
   }
 
   @Post('/api')

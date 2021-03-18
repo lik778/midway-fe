@@ -8,7 +8,6 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import { GET_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 import './index.less';
 // import config from '@/config/env';
 
@@ -53,21 +52,11 @@ const Layouts = (props: any) => {
     })()
   }, [])
 
-  const getCurrentShopInfo = () => {
-    const shopIdItem = RegExp(/\d+/).exec(props.location.pathname)
-    if (shopIdItem) {
-      const id = Number(shopIdItem[0])
-      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_INFO_ACTION}`, payload: { id }})
-    }
-  }
-
   useEffect(() => {
     const routeList = props.location.pathname.split('/')
     const isShopRoute = (routeList[1] === 'shop')
     setOpenKeys([routeList[1]])
     setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
-    // 获取当前店铺信息
-    getCurrentShopInfo()
   }, [props.location.pathname])
 
   return (
@@ -100,22 +89,22 @@ const Layouts = (props: any) => {
                 <Link to="/ai-content/job-list">管理任务</Link>
               </Menu.Item>
             </SubMenu>
-            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表">
-              <Menu.Item key="dashboard">
-                <Link to="/report/dashboard">总览</Link>
-              </Menu.Item>
+            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">
+              {/*<Menu.Item key="dashboard">*/}
+              {/*  <Link to="/report/dashboard">总览</Link>*/}
+              {/*</Menu.Item>*/}
               <Menu.Item key="keyword">
                 <Link to="/report/keyword">关键词</Link>
               </Menu.Item>
               <Menu.Item key="bax-flow">
-                <Link to="/report/bax-flow">搜索通流量</Link>
+                <Link to="/report/bax-flow">流量</Link>
               </Menu.Item>
-              <Menu.Item key="cate-flow">
-                <Link to="/report/cate-flow">VIP产品流量</Link>
-              </Menu.Item>
-              <Menu.Item key="cate-publish">
-                <Link to="/report/cate-publish">VIP产品发布</Link>
-              </Menu.Item>
+              {/*<Menu.Item key="cate-flow">*/}
+              {/*  <Link to="/report/cate-flow">快照流量</Link>*/}
+              {/*</Menu.Item>*/}
+              {/*<Menu.Item key="cate-publish">*/}
+              {/*  <Link to="/report/cate-publish">快照发布</Link>*/}
+              {/*</Menu.Item>*/}
               <Menu.Item key="remain">
                 <Link to="/report/remain">留资</Link>
               </Menu.Item>

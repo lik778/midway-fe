@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Row, Col } from 'antd'
-
+import Loading from '@/components/loading'
 import MainTitle from '@/components/main-title'
-import CountTo from '@/components/count-to'
-import Query from '@/components/search-list'
-import { LineChart } from '@/components/charts'
+import CountTo from '../components/count-to'
+import Query from '../components/search-list'
+import { LineChart } from '../components/charts'
 import { flowConfig, pvListConfig } from './config'
 import {
   getCateFlowOverview,
@@ -18,9 +18,7 @@ import {
   CateFlowDetailParams,
   FlowDetailData
 } from '@/interfaces/report'
-
 import './index.less'
-import Loading from '@/components/loading';
 
 function genChartOptions(data: CateFlowChartData[]) {
   return {
@@ -68,7 +66,7 @@ function CateFlowPage(props: any) {
 
   return (
     <div className="page-report page-report-cate-flow">
-      <MainTitle title="VIP产品流量报表" />
+      <MainTitle title="快照流量报表" />
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>

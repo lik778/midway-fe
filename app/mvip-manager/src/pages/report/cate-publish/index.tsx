@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Form, Statistic, Row, Col, Divider } from 'antd'
-
 import MainTitle from '@/components/main-title'
-import Query from '@/components/search-list'
-import { LineChart } from '@/components/charts'
+import Query from '../components/search-list'
+import { LineChart } from '../components/charts'
 import { getPublishData, getPublishDetails } from '@/api/report'
 import { publishConfig, publishListConfig } from './config'
-import EmptyReport from '@/components/empty-report'
 import './index.less'
 
 function genChartOptions(result: any) {
@@ -23,8 +21,6 @@ function genChartOptions(result: any) {
 }
 
 function CatePublishPage(props: any) {
-  // 未上线, 做一下处理
-  return <EmptyReport />
   const [queryFlowForm] = Form.useForm()
   const [queryPVForm] = Form.useForm()
   const [pvDataSource, setPVDataSource] = React.useState([])

@@ -1,18 +1,12 @@
 import React, { useState, useMemo } from 'react'
 import { Row, Col, Statistic } from 'antd'
-
 import MainTitle from '@/components/main-title'
-import { FunnelChart } from '@/components/charts'
+import { FunnelChart } from '../components/charts'
 import { getRemainCapital } from '@/api/report'
-import EmptyReport from '@/components/empty-report'
-
 import './index.less'
 
 
 function RemainPage(props: any) {
-  // 未上线, 做一下处理
-  return <EmptyReport />
-
   const [chartOptions, setChartOptions] = useState({})
 
   const queryRemainCapital = async () => {

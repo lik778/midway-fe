@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import ShopNav from '@/components/shop-nav';
-import BasisHeader from '@/components/basis-header';
-import { ShopBasisType } from '@/enums';
+import React from 'react'
+import BasisHeader from '@/pages/shop/[id]/components/basis-header'
+import ShopNav from './components/shop-nav'
+import { ShopBasisType } from '@/enums'
 import './index.less'
 
 export default (props: any) => {
   return (
       <div>
-        <BasisHeader type={ShopBasisType.NAV}/>
+       <BasisHeader {...props} type={ShopBasisType.NAV}/>
        <div className="container">
           <ShopNav/>
        </div>

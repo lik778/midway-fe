@@ -1,8 +1,8 @@
 import React,  { useState, useEffect } from 'react';
 import { useParams } from "umi";
-import ContentHeader from '@/components/content-header';
-import ShopModuleGroup from '@/components/shop-module-group';
-import ProductBox from '@/components/product-box';
+import ContentHeader from '../components/content-header';
+import ShopModuleGroup from '../components/shop-module-group';
+import ProductBox from './components/product-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';
 import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
@@ -51,7 +51,7 @@ export default (props: any) => {
   }}
   return (
     <div>
-      <ContentHeader type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
+      <ContentHeader {...props} type={ShopModuleType.PRODUCT} onChangeType={onChangeType}/>
       <div className="container">
           <ProductNav
             onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}

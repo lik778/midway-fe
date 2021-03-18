@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Row, Col } from 'antd'
-
 import MainTitle from '@/components/main-title'
-import CountTo from '@/components/count-to'
-import Query from '@/components/search-list'
-import { LineChart } from '@/components/charts'
+import CountTo from '../components/count-to'
+import Query from '../components/search-list'
+import { LineChart } from '../components/charts'
 import { flowConfig, visitListConfig } from './config'
 import {
   getBaxFlowOverview,
@@ -88,7 +87,7 @@ function BaxFlowPage(props: any) {
   // }
   return (
     <div className='page-report page-report-bax-flow'>
-      <MainTitle title="搜索通流量报表"/>
+      <MainTitle title="竞价流量报表"/>
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>
