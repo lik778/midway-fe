@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Row, Col } from 'antd'
-
 import MainTitle from '@/components/main-title'
-import CountTo from '@/components/count-to'
-import Query from '@/components/search-list'
-import { LineChart } from '@/components/charts'
+import CountTo from '../components/count-to'
+import Query from '../components/search-list'
+import { LineChart } from '../components/charts'
 import { flowConfig, visitListConfig } from './config'
 import {
   getBaxFlowOverview,

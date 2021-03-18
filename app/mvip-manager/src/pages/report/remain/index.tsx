@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { Row, Col, Statistic } from 'antd'
 import MainTitle from '@/components/main-title'
-import { FunnelChart } from '@/components/charts'
+import { FunnelChart } from '../components/charts'
 import { getRemainCapital } from '@/api/report'
 import './index.less'
 
