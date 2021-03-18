@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Form, Statistic, Row, Col, Divider } from 'antd'
-
 import MainTitle from '@/components/main-title'
-import Query from '@/components/search-list'
-import { LineChart } from '@/components/charts'
+import Query from '../components/search-list'
+import { LineChart } from '../components/charts'
 import { getPublishData, getPublishDetails } from '@/api/report'
 import { publishConfig, publishListConfig } from './config'
 import './index.less'

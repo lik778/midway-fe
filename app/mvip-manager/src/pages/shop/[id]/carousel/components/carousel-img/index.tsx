@@ -1,7 +1,7 @@
 
 import React from 'react';
 import './index.less';
-import { BannerImgUpload } from '@/components/banner-img-upload';
+import { BannerImgUpload } from '../banner-img-upload';
 import { createBannerApi, deleteBannerApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';

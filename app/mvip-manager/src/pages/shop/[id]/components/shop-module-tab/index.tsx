@@ -3,8 +3,6 @@ import { Menu } from 'antd';
 import { Link } from 'umi';
 import { ShopModuleType } from '@/enums';
 
-
-
 interface Props {
   type: ShopModuleType;
   tabType?: string;

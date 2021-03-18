@@ -1,6 +1,6 @@
 import React from 'react'
 import { hasReportAuth, inIframe } from '@/utils';
-import EmptyReport from '@/components/empty-report';
+import EmptyReport from '@/pages/report/components/empty-report';
 import { Redirect } from 'umi';
 
 export default (props: any) => {

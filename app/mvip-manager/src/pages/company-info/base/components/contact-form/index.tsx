@@ -70,7 +70,7 @@ function ContactForm (props: any) {
     const res = await saveEnterpriseContactInfoApi(info)
     setLoading(false)
     if (res?.success) {
-      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, playload: info })
+      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, payload: info })
       const newUserRes = await isNewUserApi()
       if (newUserRes.data) {
         genNewUserModal()

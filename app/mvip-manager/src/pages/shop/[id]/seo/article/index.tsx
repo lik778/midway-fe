@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import BasisHeader from '@/components/basis-header';
-import SeoTab from '@/components/seo-tab';
+import BasisHeader from '../../components/basis-header';
+import SeoTab from '../components/seo-tab';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopBasisType, ShopTDKType,ShopTDKPosition } from '@/enums';
 import { successMessage, errorMessage } from '@/components/message';

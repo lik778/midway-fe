@@ -3,18 +3,9 @@ import {
   Row,
   Col,
   Form,
-  Input,
   Select,
-  DatePicker,
-  Slider,
-  Switch,
-  TreeSelect,
-  InputNumber,
-  TimePicker,
-  Radio
+  DatePicker
 } from 'antd'
-import moment from 'moment'
-
 import './index.less'
 
 const FormItem = Form.Item
@@ -172,7 +163,7 @@ function FormSelect(props: any) {
   return (
     <FormItem name={name} label={label} rules={[{required,message}]} {...colStyle}>
       <Select allowClear style={themed(style, type)} {...rest}>
-        {options.map(({ label, value }) => (
+        {options.map(({ label, value }: any) => (
           <Option value={value} key={value}>
             {label}
           </Option>

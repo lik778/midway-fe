@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Table, notification } from 'antd'
 
-import InlineForm from '@/components/quick-form'
-import { QueryConfigItem } from '@/components/quick-form/interface'
+import InlineForm from '@/pages/report/components/quick-form'
+import { QueryConfigItem } from '@/pages/report/components/quick-form/interface'
 
 // TODO doc props
 interface Props {

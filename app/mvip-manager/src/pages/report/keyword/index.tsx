@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Tooltip, Form, Row, Col, Divider } from 'antd';
-
+import { Tooltip, Form, Row, Col, Divider } from 'antd'
+import Loading from '@/components/loading'
 import MainTitle from '@/components/main-title'
-import Query from '@/components/search-list'
-import CountTo from '@/components/count-to'
-import { PieChart } from '@/components/charts'
+import Query from '../components/search-list'
+import CountTo from '../components/count-to'
+import { PieChart } from '../components/charts'
 import { getKeywordOverview, getKeywordDetailList } from '@/api/report'
 import {
   KeywordOverviewData,
@@ -12,9 +12,8 @@ import {
   KeywordDetailListData,
 } from "@/interfaces/report"
 import { keywordRankListConfig } from './config'
+import { ReportProductType } from '@/enums/report'
 import './index.less'
-import { ReportProductType } from '@/enums/report';
-import Loading from '@/components/loading';
 
 function genChartOptions(data: KeywordOverviewData) {
   const res = {
