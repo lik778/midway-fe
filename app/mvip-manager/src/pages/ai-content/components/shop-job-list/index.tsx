@@ -129,7 +129,7 @@ export default (props: any) => {
 
   return (
     <div>
-      <MainTitle title="任务列表"/>
+      {/*<MainTitle title="任务列表"/>*/}
       <div className="ai-list-container">
         { isLoding && <Loading />}
         { total === 0 && <div className="empty-info">
