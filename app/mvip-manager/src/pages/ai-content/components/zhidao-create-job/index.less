@@ -1,24 +1,39 @@
-.ai-create-job-box {
+.ai-create-task-box {
   margin: 16px;
   .ai-handle-tips {
     background: #fff;
-    padding: 16px;
+    padding: 27px 45px;
     margin-top: 16px;
+    li {
+      font-family: PingFangSC-Regular;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-align: justify;
+      line-height: 35px;
+    }
   }
-
-  .ai-filters-box {
-    background: #fff;
-    padding: 20px 40px;
+  .ai-create-box{
+    height: 550px;
   }
   .group-words-list {
     .group-words-item {
-      padding: 0 8px;
+      padding: 5px 8px;
       .ai-content-actions {
-        margin-top: 16px;
+        margin-top: 10px;
       }
+    }
+    .suffix-container-dropdown{
+      transform:scale(1,1);
+      width: 100px;
+      height: 30px;
+      overflow: hidden;
+      position: absolute;
+      right: 6px;
+      // max-width: 100px;
     }
     textarea {
       resize: none;
+      padding: 10px 15px;
     }
   }
   .group-words-rules {
@@ -28,6 +43,14 @@
     span {
       margin: 0 16px;
     }
+  }
+}
+
+:global{
+  .ant-select-selection--multiple{
+    width: 100px;
+    max-height: 32px;
+    overflow: hidden;
   }
 }
 
