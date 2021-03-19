@@ -1,7 +1,7 @@
 import { postApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams, QuestionListItem } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -31,4 +31,19 @@ export const pauseAiTaskApi = (id: number): Promise<ServiceResponse<any>> => {
 // 更新AI任务
 export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
   return postApiData('ai/update', params)
+}
+
+/** 获取问答任务列表 */
+export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionListItem[]>>> => {
+  return postApiData('', params)
+}
+
+/** 获取问答任务详情 */
+export const getQuestionTaskDetailApi = (id: number): Promise<ServiceResponse<QuestionListItem[]>> => {
+  return postApiData('', { id })
+}
+
+/** 更新生成的问题内容 */
+export const editQuestion = (question: QuestionListItem): Promise<ServiceResponse<boolean>> => {
+  return postApiData('', question)
 }
