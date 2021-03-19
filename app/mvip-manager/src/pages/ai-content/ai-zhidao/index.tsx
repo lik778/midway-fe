@@ -8,18 +8,18 @@ import BasicMaterial from '../components/basic-material';
 const { TabPane } = Tabs;
 
 export default (props: any) => {
-    return (<div>
-        <MainTitle title="问答AI"/>
-        <Tabs defaultActiveKey="job-list">
-            <TabPane tab="任务列表" key="job-list">
-                <JobList {...props} />
-            </TabPane>
-            <TabPane tab="新建任务" key="create-job">
-                <CreateJob {...props} />
-            </TabPane>
-            <TabPane tab="基础素材库" key="basic-material">
-                <BasicMaterial {...props} />
-            </TabPane>
-        </Tabs>
-    </div>)
+  return (<div>
+    <MainTitle title="问答AI" />
+    <Tabs defaultActiveKey="job-list">
+      <TabPane tab="任务列表" key="">
+        <JobList {...props} />
+      </TabPane>
+      <TabPane tab="新建任务" key="create-job">
+        <CreateJob {...props} />
+      </TabPane>
+      <TabPane tab="基础素材库" key="basic-material">
+        <BasicMaterial {...props} />
+      </TabPane>
+    </Tabs>
+  </div>)
 }

@@ -5,7 +5,7 @@ import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from '@/constants';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
-import { CreateAiContentNav } from  './components/nav';
+import { CreateAiContentNav } from './components/nav';
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
@@ -19,7 +19,7 @@ export default (props: any) => {
   const defaultCounters: any = {};
   Object.keys(wordsItemConfig).forEach((k: string) => defaultCounters[k] = 0)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [visiblePanel, setVisiblePanel] = useState<boolean>(false)
+  const [visiblePanel, setVisiblePanel] = useState<boolean>(true)
   const [counters, setCounters] = useState<any>(defaultCounters)
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   // 店铺信息
@@ -27,7 +27,7 @@ export default (props: any) => {
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     const wordsList = words.split('\n')
-    const dedupWordsList =  Array.from(new Set(wordsList));
+    const dedupWordsList = Array.from(new Set(wordsList));
     const maxLength = wordsItemConfig[name].max;
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
     values[name] = data.join('\n')
@@ -63,11 +63,11 @@ export default (props: any) => {
     const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
     formValues[name] = concatWords.join('\n')
     counters[name] = concatWords.length
-    setCounters({ ...counters})
+    setCounters({ ...counters })
     form.setFieldsValue(formValues)
   }
 
-  const isValidForm =(): boolean => {
+  const isValidForm = (): boolean => {
     const errorList: string[] = []
     Object.keys(counters).forEach(x => {
       const min = wordsItemConfig[x].min
@@ -85,10 +85,6 @@ export default (props: any) => {
   }
 
   const submitData = async () => {
-    if (!form.getFieldValue('contentCateId')) {
-      errorMessage('请选择文章分组')
-      return
-    }
     if (isValidForm()) {
       const values = form.getFieldsValue()
       const groupNames = Object.keys(wordsItemConfig).map((x: string) => x)
@@ -102,7 +98,7 @@ export default (props: any) => {
       setSubmitLoading(false)
       if (res.success) {
         successMessage('添加成功')
-        history.push(`/ai-content/job-list`);
+        history.push(`/ai-content/${res.data.id}/ai-zhidao-detail?pageType=edit`);
       } else {
         errorMessage(res.message)
       }
@@ -113,8 +109,7 @@ export default (props: any) => {
   return (<div>
     {/*<MainTitle title="新建任务"/>*/}
     <div className="ai-create-job-box">
-      <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)}/>
-      { visiblePanel && (
+      {visiblePanel && (
         <div>
           <ul className="ai-handle-tips">
             <h3>说明：</h3>
@@ -130,19 +125,19 @@ export default (props: any) => {
                   Object.keys(wordsItemConfig).map((k) => {
                     const x = wordsItemConfig[k];
                     return (<Col key={k} className="gutter-row group-words-item" span={6}>
-                        <h4>{x.label}：<span>{x.rules}</span></h4>
-                        <FormItem name={x.name}>
-                          <TextArea rows={15} placeholder={x.placeholder} onBlur={() => onFiledBlur(x.name)}
-                              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
-                        </FormItem>
-                        <div>已输入:  { counters[x.name] } / { wordsItemConfig[k].max }</div>
-                        <div className="ai-content-actions">
-                          { x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button> }
-                          { x.name === 'wordD' && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
-                            { translateProductText('aiRecommond', shopStatus.domainType) }</Button> }
-                          <Button onClick={() => clearAll(x.name)}>清空</Button>
-                        </div>
-                      </Col>
+                      <h4>{x.label}：<span>{x.rules}</span></h4>
+                      <FormItem name={x.name}>
+                        <TextArea rows={15} placeholder={x.placeholder} onBlur={() => onFiledBlur(x.name)}
+                          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
+                      </FormItem>
+                      <div>已输入:  {counters[x.name]} / {wordsItemConfig[k].max}</div>
+                      <div className="ai-content-actions">
+                        {x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button>}
+                        {x.name === 'wordD' && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
+                          {translateProductText('aiRecommond', shopStatus.domainType)}</Button>}
+                        <Button onClick={() => clearAll(x.name)}>清空</Button>
+                      </div>
+                    </Col>
                     )
                   })
                 }
@@ -166,7 +161,7 @@ export default (props: any) => {
             onOk={() => history.push('/company-info/base')}
             footer={<div>
               <Button onClick={() => setModalVisible(false)}>取消</Button>
-              <Button type="primary" loading={submitLoading} onClick={() =>submitData()}>确认</Button>
+              <Button type="primary" loading={submitLoading} onClick={() => submitData()}>确认</Button>
             </div>}
             visible={modalVisible} />
         </div>
