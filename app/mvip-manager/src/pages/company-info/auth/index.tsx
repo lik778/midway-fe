@@ -14,7 +14,7 @@ export default (props: any) => {
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const haojingHost = config().env;
-  const haojingHost = '//www.baixing.com';
+  const haojingHost = '//www.baixing.com'
   useEffect(() => {
     (async () => {
       setIsLoading(true)

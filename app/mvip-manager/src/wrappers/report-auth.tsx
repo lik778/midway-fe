@@ -5,7 +5,7 @@ import { Redirect } from 'umi';
 
 export default (props: any) => {
   const { route: { path: urlPath } } = props
-  const whiteList = ['/report/keyword', '/report/bax-flow', '/report/remain']
+  const whiteList = ['/report/keyword']
   const onlineList = ['/report/keyword']
   if (((hasReportAuth() && whiteList.includes(urlPath)) || inIframe())) {
     return onlineList.includes(urlPath) ? <div>{ props.children }</div> : <EmptyReport />
