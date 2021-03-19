@@ -1,20 +1,17 @@
 import React, { FC, useEffect, useState, useRef } from 'react'
 import { Spin, Input } from 'antd'
-import { AnswerListItem } from '@/interfaces/ai-content'
 
 interface ExpandableItemProp {
-  answer: AnswerListItem,
+  answer: string,
   upDataLoading: boolean,
   editable: boolean
-  handleChangeAnswer: (answer: AnswerListItem) => void
+  handleChangeAnswer: (answer: string) => void
 }
 
 const ExpandableItem: FC<ExpandableItemProp> = (props) => {
   const { answer, upDataLoading, editable, handleChangeAnswer } = props
   const [editing, setEditing] = useState(false);
-  const [localAnswer, setLocalAnswer] = useState<AnswerListItem>({
-    ...answer
-  })
+  const [localAnswer, setLocalAnswer] = useState<string>(answer)
 
   const inputRef = useRef<Input>(null);
 
@@ -26,9 +23,7 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
 
   // 只有修改了数据并保存 后 answer才会修改
   useEffect(() => {
-    setLocalAnswer({
-      ...answer
-    })
+    setLocalAnswer(answer)
   }, [answer])
 
   const toggleEdit = () => {
@@ -40,15 +35,12 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
   };
 
   const changeAnswer = (e: any) => {
-    setLocalAnswer({
-      ...localAnswer,
-      content: e.target.value
-    })
+    setLocalAnswer(e.target.value)
   }
 
   const save = async () => {
     try {
-      if (localAnswer.content !== answer.content) {
+      if (localAnswer !== answer) {
         await handleChangeAnswer(localAnswer);
       }
       toggleEdit();
@@ -60,7 +52,7 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
 
   return editable && editing ? (
     <Spin spinning={upDataLoading}>
-      <Input value={localAnswer.content} ref={inputRef} onPressEnter={save} onBlur={save} onChange={(e) => {
+      <Input value={localAnswer} ref={inputRef} onPressEnter={save} onBlur={save} onChange={(e) => {
         e.persist()
         changeAnswer(e)
       }} />
@@ -69,7 +61,7 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
     <div style={{
       cursor: editable ? 'pointer' : 'null'
     }} onClick={() => toggleEdit()}>
-      {localAnswer.content}
+      {localAnswer}
     </div>
   )
 }

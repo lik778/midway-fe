@@ -57,32 +57,26 @@ export interface QuestionTaskApiParams {
 /** 问答任务生成的问题列表 */
 export interface QuestionListItem {
   id: number,
-  title: string,
-  answer: AnswerListItem[],
-  /** 0 待审核，1 已通过，2 未通过 */
-  status: 0 | 1 | 2,
+  question: string,
+  answers: string[],
   tip: string
-
+  wordTypes: string,
+  questionType: string,
+  words: string[],
+  coreWords: string,
+  /** 0 待审核，1 已通过，2 未通过 */
+  status: 0 | 1 | 2 | 3 | 4,
   // 自用字段
   /** 判断当前问题是否修改 */
   isEdit?: boolean
-  [key: string]: any
+  index?: number
+  // [key: string]: any
 }
 
-/** 答案列表 */
-export interface AnswerListItem {
-  id: number
-  content: string,
-
-  // 自用字段
-  /** 判断当前问题的答案是否修改 */
-  isEdit?: boolean
-  [key: string]: any
-}
 
 /** 修改问题内容发送请求 */
 export interface EditQuestion {
   id: number,
   title: string,
-  answer: AnswerListItem[],
+  answer: string[],
 }
