@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Spin } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { EditableContext } from './context'
 import style from './style.less'
@@ -18,6 +18,7 @@ interface EditableCellProps {
   children: React.ReactNode;
   dataIndex: keyof Item;
   record: Item;
+  upDataLoading: boolean;
   handleSave: (record: Item) => void;
 }
 
@@ -27,6 +28,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   children,
   dataIndex,
   record,
+  upDataLoading,
   handleSave,
   ...restProps
 }) => {
@@ -41,6 +43,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
   }, [editing]);
 
   const toggleEdit = () => {
+    // 如果数据在上传 则不允许修改其他项（因为没记录当前修改项）
+    if (upDataLoading) return
     setEditing(!editing);
     form.setFieldsValue({ [dataIndex]: record[dataIndex] });
   };
@@ -48,11 +52,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const save = async () => {
     try {
       const values = await form.validateFields();
-
+      if (values[dataIndex] !== record[dataIndex]) {
+        await handleSave({ ...record, ...values });
+      }
       toggleEdit();
-      handleSave({ ...record, ...values });
     } catch (errInfo) {
-      console.log('Save failed:', errInfo);
+      form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+      console.log('保存失败', errInfo);
     }
   };
 
@@ -60,18 +66,20 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   if (editable) {
     childNode = editing ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-          },
-        ]}
-      >
-        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-      </Form.Item>
+      <Spin spinning={upDataLoading}>
+        <Form.Item
+          style={{ margin: 0 }}
+          name={dataIndex}
+          rules={[
+            {
+              required: true,
+              message: `${title} is required.`,
+            },
+          ]}
+        >
+          <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+        </Form.Item>
+      </Spin>
     ) : (
       <div className={style['editable-cell-value-wrap']} style={{ paddingRight: 24 }} onClick={toggleEdit}>
         {children}

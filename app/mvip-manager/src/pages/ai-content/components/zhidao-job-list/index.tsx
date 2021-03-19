@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import Loading from '@/components/loading';
-import { getAiTaskListApi } from '@/api/ai-content';
+import { getQuestionTaskListApi } from '@/api/ai-content';
 import './index.less';
 import { QuestionTaskListItem } from '@/interfaces/ai-content';
 import { addKeyForListData, formatTime } from '@/utils';
@@ -17,7 +17,7 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       setListLoading(true)
-      // const res = await getAiTaskListApi({ page, size: 10 })
+      // const res = await getQuestionTaskListApi({ page, size: 10 })
       /** 模拟数据，正式数据则解开上面的注释 */
       const res = await mockData<QuestionTaskListItem>('list', {
         id: 1,

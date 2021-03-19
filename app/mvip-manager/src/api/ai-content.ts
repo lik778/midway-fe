@@ -34,15 +34,16 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
 }
 
 /** 获取问答任务列表 */
-export const getAiTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionListItem[]>>> => {
+export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionListItem[]>>> => {
   return postApiData('', params)
 }
 
 /** 获取问答任务详情 */
-export const getAiTaskDetailApi = (id: number): Promise<ServiceResponse<QuestionListItem[]>> => {
-  return postApiData('', { id })}
+export const getQuestionTaskDetailApi = (id: number): Promise<ServiceResponse<QuestionListItem[]>> => {
+  return postApiData('', { id })
+}
 
-// 创建ai问答
-export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
-  return postApiData('ai/create', params)
+/** 更新生成的问题内容 */
+export const editQuestion = (question: QuestionListItem): Promise<ServiceResponse<boolean>> => {
+  return postApiData('', question)
 }

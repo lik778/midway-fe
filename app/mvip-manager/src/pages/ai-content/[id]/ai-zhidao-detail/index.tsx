@@ -3,12 +3,13 @@ import { TableColumnProps, Table, Spin, Tooltip } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
 import { QuestionListItem, AnswerListItem } from '@/interfaces/ai-content'
-import { getAiTaskDetailApi } from '@/api/ai-content'
+import { getQuestionTaskDetailApi, editQuestion } from '@/api/ai-content'
 import { addKeyForListData, formatTime, mockData } from '@/utils';
 import { errorMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
+import EditableExpandable from './components/expandable'
 
 interface JobListDetailProp {
 
@@ -24,7 +25,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
 
   const [dataList, setDataList] = useState<QuestionListItem[]>([]);
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
-  const [total, setTotal] = useState<number | null>(null);
+  const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
 
   const columsEdit: TableColumnProps<QuestionListItem>[] = [
     {
@@ -36,9 +37,10 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
       dataIndex: 'title',
       onCell: (record: QuestionListItem) => ({
         record,
-        editable: true,
+        editable: pageType === 'edit',
         dataIndex: 'title',
         title: '问题标题',
+        upDataLoading,
         handleSave: handleSave,
       }),
     },
@@ -69,7 +71,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
 
   const getData = async () => {
     setGetDataLoading(true)
-    // const res = await getAiTaskDetailApi(Number(id))
+    // const res = await getQuestionTaskDetailApi(Number(id))
     let i = 1
     const data = []
     while (i <= 200) {
@@ -98,7 +100,6 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
         index: index + 1,
         ...item
       })))
-      setTotal(res.data.length)
     } else {
       errorMessage(res.message)
     }
@@ -113,15 +114,19 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
     getData()
   }, [])
 
-  const handleSave = (row: QuestionListItem) => {
-    const newData = dataList;
-    const index = newData.findIndex(item => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
+  const handleSave = async (row: QuestionListItem) => {
+    console.log(row)
+    setUpDataLoading(true)
+    // await editQuestion(row)
+    await mockData<boolean>('data', true)
+    const index = dataList.findIndex(item => row.index === item.index);
+    const item = dataList[index];
+    dataList.splice(index, 1, {
       ...item,
       ...row,
     });
-    setDataList(newData)
+    setDataList([...dataList])
+    setUpDataLoading(false)
   };
 
   return (
@@ -133,11 +138,14 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
       </div>
       <Spin spinning={getDataLoading}>
         <div className={styles['ai-list-container']} >
-          <Table columns={pageType === 'edit' ? columsEdit : columsSee} dataSource={dataList} rowKey="id"
+          <Table components={{
+            body: {
+              row: EditableRow,
+              cell: EditableCell,
+            },
+          }} columns={pageType === 'edit' ? columsEdit : columsSee} dataSource={dataList} rowKey="id"
             expandable={{
-              expandedRowRender: record => (record.answer || []).map(item => <div className={styles['answer-item']} key={item.id}>
-                {item.content}
-              </div>),
+              expandedRowRender: (record, index) => <EditableExpandable record={record} upDataLoading={upDataLoading} handleSave={handleSave} editable={pageType === 'edit'}></EditableExpandable>,
               rowExpandable: record => record.answer && record.answer.length > 0,
             }}
             expandedRowClassName={() => styles['expanded-row']}

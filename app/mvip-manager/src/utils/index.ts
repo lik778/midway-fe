@@ -133,6 +133,10 @@ export const isNotLocalEnv = (): boolean => {
 }
 
 
+
+/**
+ * 用于mock数据使用
+ */
 import { ServiceResponse } from '@/interfaces/api';
 /**
  * @param {Number|null} ms 需要延时的毫秒数
