@@ -33,8 +33,6 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
   return postApiData('ai/update', params)
 }
 
-
-
 /** 获取问答任务列表 */
 export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionListItem[]>>> => {
   return postApiData('', params)

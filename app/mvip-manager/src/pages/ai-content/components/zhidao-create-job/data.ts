@@ -158,9 +158,28 @@ export const suffixB2BDefaultData: string[] = [
   "价格优惠",
 ]
 
+export const auxiliaryDefaultData: string[] = [
+  "在线等！",
+  "有大佬知道的嘛？",
+  "求高手帮助",
+  "信赖推荐",
+  "值得信赖",
+  "货真价实",
+  "量大从优",
+  "厂家供应",
+  "询问报价",
+  "免费咨询",
+  "价格行情",
+  "厂家直供",
+  "品质售后无忧",
+  "今日行情",
+  "承诺守信",
+
+]
 
 export const aiDefaultWord: any = {
   wordB: prefixDefaultData,
   "wordD-PREFIX": suffixServiceDefaultData,
-  "wordD-SUFFIX": suffixB2BDefaultData
+  "wordD-SUFFIX": suffixB2BDefaultData,
+  wordE: auxiliaryDefaultData
 }
