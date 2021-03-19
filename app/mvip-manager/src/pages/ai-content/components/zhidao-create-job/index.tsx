@@ -1,294 +1,20 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Form, Button, Input, Row, Col, Select } from 'antd';
 import { history } from 'umi'
 import './index.less';
 import { createAizhidaoApi } from '@/api/ai-content';
-import { randomList, translateProductText } from '@/utils';
+import { randomList } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
+import { UserInfo } from '@/interfaces/user';
+import { getUserBaseInfoApi } from '@/api/user'
+
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
-
-const QAwordsItemConfig : any = {
-  wordA: {
-    label: '地区',
-    name: 'wordA',
-    placeholder: '举例：\n浦东新区\n东方明珠\n南京西路',
-    min: 7,
-    max: 20,
-    rules: '7-20个'
-  },
-  wordB: {
-    label: '前缀',
-    name: 'wordB',
-    placeholder: '举例：\n修饰词：\n靠谱的\n附近的\n\n行业细分词：\n公司注册：科技公司、游戏公司',
-    min: 7,
-    max: 20,
-    rules: '7-20个'
-  },
-  wordC: {
-    label: '核心词',
-    name: 'wordC',
-    placeholder: '举例：\n冰箱维修\n气动隔膜泵',
-    min: 7,
-    max: 20,
-    rules: '7-20个'
-  },
-  wordD: {
-    label: '疑问词',
-    name: 'wordD',
-    placeholder: '',
-    min: 30,
-    max: 50,
-    rules: '3-5个类型'
-  },
-  wordE: {
-    label: '辅助词',
-    name: 'wordE',
-    placeholder: '举例：\n在线等！\n有大佬知道的吗？\n求高手帮助',
-    min: 3,
-    max: 10,
-    rules: ''
-  }
-}
-
-const wordDitems : any = {
-  brandPublicity: {
-    id:1,
-    name: '品牌宣传',
-    value: 'brandPublicity',
-    child: [
-      {
-        id:1,
-        name :'1词语a'
-      },
-      {
-        id:2,
-        name:'1词语b'
-      },
-      {
-        id:3,
-        name:'1词语c'
-      },
-      {
-        id:4,
-        name:'1词语d'
-      },
-      {
-        id:5,
-        name:'1词语e'
-      },
-      {
-        id:6,
-        name :'1词语a'
-      },
-      {
-        id:7,
-        name:'1词语b'
-      },
-      {
-        id:8,
-        name:'1词语c'
-      },
-      {
-        id:9,
-        name:'1词语d'
-      },
-      {
-        id:10,
-        name:'1词语e'
-      },
-    ],
-  },
-  priceDecision: {      
-    id:2,
-    name: '价格决策',
-    value: 'priceDecision',
-    child: [
-      {
-        id:1,
-        name:'2词语a'
-      },
-      {
-        id:2,
-        name:'2词语b'
-      },
-      {
-        id:3,
-        name:'2词语c'
-      },
-      {
-        id:4,
-        name:'2词语d'
-      },
-      {
-        id:5,
-        name:'2词语e'
-      },
-      {
-        id:6,
-        name:'2词语a'
-      },
-      {
-        id:7,
-        name:'2词语b'
-      },
-      {
-        id:8,
-        name:'2词语c'
-      },
-      {
-        id:9,
-        name:'2词语d'
-      },
-      {
-        id:10,
-        name:'2词语e'
-      },
-    ],
-  },
-  qualityDecision: {
-    name: '品质决策',
-    value: 'qualityDecision',
-    child: [
-      {
-        id:1,
-        name:'3词语a'
-      },
-      {
-        id:2,
-        name:'3词语b'
-      },
-      {
-        id:3,
-        name:'3词语c'
-      },
-      {
-        id:4,
-        name:'3词语d'
-      },
-      {
-        id:5,
-        name:'3词语e'
-      },
-      {
-        id:6,
-        name:'3词语a'
-      },
-      {
-        id:7,
-        name:'3词语b'
-      },
-      {
-        id:8,
-        name:'3词语c'
-      },
-      {
-        id:9,
-        name:'3词语d'
-      },
-      {
-        id:10,
-        name:'3词语e'
-      }
-    ],
-  },
-  contactWay: {
-    name: '联系方式',
-    value: 'contactWay',
-    child: [
-      {
-        id:1,
-        name:'4词语a'
-      },
-      {
-        id:2,
-        name:'4词语b'
-      },
-      {
-        id:3,
-        name:'4词语c'
-      },
-      {
-        id:4,
-        name:'4词语d'
-      },
-      {
-        id:5,
-        name:'4词语e'
-      },
-      {
-        id:6,
-        name:'4词语a'
-      },
-      {
-        id:7,
-        name:'4词语b'
-      },
-      {
-        id:8,
-        name:'4词语c'
-      },
-      {
-        id:9,
-        name:'4词语d'
-      },
-      {
-        id:10,
-        name:'4词语e'
-      }
-    ],
-  },
-  attention: {
-    name: '注意事项',
-    value: 'attention',
-    child: [
-      {
-        id:1,
-        name:'5词语a'
-      },
-      {
-        id:2,
-        name:'5词语b'
-      },
-      {
-        id:3,
-        name:'5词语c'
-      },
-      {
-        id:4,
-        name:'5词语d'
-      },
-      {
-        id:5,
-        name:'5词语e'
-      },
-      {
-        id:6,
-        name:'5词语a'
-      },
-      {
-        id:7,
-        name:'5词语b'
-      },
-      {
-        id:8,
-        name:'5词语c'
-      },
-      {
-        id:9,
-        name:'5词语d'
-      },
-      {
-        id:10,
-        name:'5词语e'
-      }
-    ],
-  }
-}
+const { QAwordsItemConfig, suffixitems  } = aiDefaultWord
 
 export default (props: any) => {
   const [form] = Form.useForm();
@@ -297,6 +23,17 @@ export default (props: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [counters, setCounters] = useState<any>(defaultCounters)
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
+  const [userInfo, setUserInfo] = useState<UserInfo | any>({})
+  const [selectItems,setselectItems] = useState<string[]>([])
+
+  useEffect(() => {
+    (async () => {
+      const res = await getUserBaseInfoApi();
+      if (res?.success) {
+        setUserInfo({...res.data})
+      }
+    })();
+  }, [])
 
   // 问答信息
   const { shopStatus } = props
@@ -330,11 +67,9 @@ export default (props: any) => {
     const values = form.getFieldsValue()
     values[name] = ''
     counters[name] = 0
-    if(name === 'wordD'){
-      form.resetFields
-    }
     form.setFieldsValue(values);
     setCounters({ ...counters })
+    setselectItems([])
   }
 
   // 获取通用数据
@@ -350,33 +85,35 @@ export default (props: any) => {
   }
 
   // 选中添加疑问词
-  const selectitem = (Dname: string, type?: string) => {
+  const selectItem = (Dname: string, type?: string) => {
+    setselectItems([...selectItems,Dname])
     const formValues = form.getFieldsValue()
     const dataName = type ? `${Dname}-${type}` : Dname
-    const children: string[] = wordDitems[dataName].child
+    const children: string[] = suffixitems[dataName].child
     let concatWords : string[] = []
     children.forEach((element) => {
       concatWords.push(element.name);
     }) 
     const CW = concatWords.join('\n');
-    formValues['wordD'] ? ( formValues['wordD'] = formValues['wordD'] + '\n' + CW ) : ( formValues['wordD'] = CW )
-    counters['wordD'] = formValues['wordD'].split('\n').length
+    formValues['suffix'] ? ( formValues['suffix'] = formValues['suffix'] + '\n' + CW ) : ( formValues['suffix'] = CW )
+    counters['suffix'] = formValues['suffix'].split('\n').length
     setCounters({ ...counters})
     form.setFieldsValue(formValues)
   }
 
   // 取消选择疑问词
-  const deleteSelectitem = (Dname: string, type?: string) => {
+  const deleteSelectItem = (Dname: string, type?: string) => {
+    setselectItems(selectItems.filter(item=>item!==Dname))
     const formValues = form.getFieldsValue()
     const dataName = type ? `${Dname}-${type}` : Dname
-    const children: string[] = wordDitems[dataName].child
+    const children: string[] = suffixitems[dataName].child
     const cancelWords : string = children[0].name
     const cancelnum : number = 10
-    const WordD : string[] = formValues['wordD'].split('\n');
-    const cancelindex = WordD.indexOf(cancelWords);
-    WordD.splice(cancelindex, cancelnum);
-    formValues['wordD'] = WordD.join('\n')
-    counters['wordD'] = formValues['wordD'].split('\n').length
+    const suffix : string[] = formValues['suffix'].split('\n');
+    const cancelindex = suffix.indexOf(cancelWords);
+    suffix.splice(cancelindex, cancelnum);
+    formValues['suffix'] = suffix.join('\n')
+    counters['suffix'] = formValues['suffix'].split('\n').length
     setCounters({ ...counters})
     form.setFieldsValue(formValues)
   }
@@ -406,23 +143,41 @@ export default (props: any) => {
   const submitData = async () => {
     if (isValidForm()) {
       const values = form.getFieldsValue()
+      values['uid'] = userInfo.userId
       const groupNames = Object.keys(QAwordsItemConfig).map((x: string) => x)
       Object.keys(values).forEach((k: string) => {
         if (groupNames.includes(k)) {
           values[k] = (values[k] && values[k].split('\n')) || []
         }
+        if ( k === "suffix" ){
+          let wordSuffix : string[] = [];
+          const splitSuffix = values[k];
+          Object.keys(suffixitems).forEach((k) => {
+            const s = suffixitems[k];
+            const child = s.child
+            const suffixname = s.name
+            if (splitSuffix.indexOf(child[0].name) !== -1 ){
+              child.forEach( ( e: any ) => {
+                const word = e.id + "|||" + e.name + "|||" + suffixname;
+                wordSuffix.push(word);
+              });
+            }
+          })
+          values[k].splice(0,values[k].length)
+          wordSuffix.forEach((e:string) => {
+            values[k].push(e)
+          });
+        }
       })
-      console.log(values);
-      
-      // setSubmitLoading(true)
-      // const res = await createAizhidaoApi(values)
-      // setSubmitLoading(false)
-      // if (res.success) {
-      //   successMessage('添加成功')
-      //   history.push(`/ai-content/job-list`);
-      // } else {
-      //   errorMessage(res.message)
-      // }
+      setSubmitLoading(true)
+      const res = await createAizhidaoApi(values)
+      setSubmitLoading(false)
+      if (res.success) {
+        successMessage('添加成功')
+        history.push(`/ai-content/zhidao-job-list`);
+      } else {
+        errorMessage(res.message)
+      }
     }
   }
 
@@ -446,21 +201,26 @@ export default (props: any) => {
                     return (<Col key={k} className="gutter-row group-words-item" flex="20%"  style={{padding:'6px'}}>
                         <h4 style={{marginBottom:'8px', height:'32px', lineHeight:'32px'}}>
                           {x.label}：<span style={{color:'blue'}}>{x.rules}</span>
-                          { x.name === 'wordD' && 
-                          <Select mode="multiple"  className="suffix-container-dropdown"
-                            showArrow={true} maxTagCount={'responsive'} 
+                          { x.name === 'suffix' && 
+                          <Select mode="multiple"  className="wordD-container-dropdown"
+                            showArrow={true} maxTagCount={'responsive'} placeholder={'请选择'}
                             // allowClear={true}
-                            onSelect={(value:string) => selectitem(value)}
-                            onDeselect={(value:string) => deleteSelectitem(value)} >
-                            { Object.keys(wordDitems).map((data)=>{
-                              const dd = wordDitems[data];
+                            value={selectItems}
+                            onSelect={(value:string) => selectItem(value)}
+                            onDeselect={(value:string) => deleteSelectItem(value)}
+                            filterOption={(input, option) =>
+                              option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                            >
+                            { Object.keys(suffixitems).map((data)=>{
+                              const dd = suffixitems[data];
                               return <Option value={dd.value} key={dd.value}>{dd.name}</Option>
                               })
                             }
                           </Select>}
                         </h4>
                         <FormItem name={x.name} style={{marginBottom:18}}>
-                          { x.name === 'wordD' ?
+                          { x.name === 'suffix' ?
                             <TextArea rows={15} 
                               placeholder={x.placeholder} 
                               onBlur={() => onFiledBlur(x.name)}
@@ -474,8 +234,8 @@ export default (props: any) => {
                           }
                         </FormItem>
                         <div className="ai-content-actions">
-                          { x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button> }
-                          { x.name === 'wordE' && <Button onClick={() => obtainData(x.name)}>通用辅助词</Button> }
+                          { x.name === 'prefix' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button> }
+                          { x.name === 'modal' && <Button onClick={() => obtainData(x.name)}>通用辅助词</Button> }
                           <Button onClick={() => clearAll(x.name)}>清空</Button>
                         </div>
                       </Col>
