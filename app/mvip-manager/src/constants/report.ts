@@ -13,8 +13,8 @@ export const PlatformLabelMap = {
 }
 
 export const BaxProductLabelMap = {
-  [BaxProductType.FENG_MING]: '凤鸣',
-  [BaxProductType.BIAO_WANG]: '标王',
+  [BaxProductType.FENG_MING]: '凤鸣广告',
+  [BaxProductType.BIAO_WANG]: '标王广告',
   [BaxProductType.YI_HUI_TUI]: '易慧推广告',
 }
 

@@ -9,7 +9,7 @@ import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
 import './index.less';
-import config from '@/config/env';
+// import config from '@/config/env';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -24,7 +24,8 @@ const Layouts = (props: any) => {
   }
   // 用户未登录
   if (!isLogin() && isNotLocalEnv()) {
-    const haojingHost = config().env;
+    // const haojingHost = config().env;
+    const haojingHost = '//www.baixing.com'
     location.href = `${ haojingHost }/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
