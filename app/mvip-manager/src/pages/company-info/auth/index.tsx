@@ -6,15 +6,14 @@ import Loading from '@/components/loading';
 import { getUserVerifyListApi } from '@/api/user';
 import { VerifyStatus, VerifyType } from '@/enums';
 import { errorMessage } from '@/components/message';
-// import config from '@/config/env';
+import config from '@/config/env';
 
 
 export default (props: any) => {
   const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const haojingHost = config().env;
-  const haojingHost = '//www.baixing.com';
+  const haojingHost = config().env;
   useEffect(() => {
     (async () => {
       setIsLoading(true)
