@@ -32,3 +32,8 @@ export const pauseAiTaskApi = (id: number): Promise<ServiceResponse<any>> => {
 export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
   return postApiData('ai/update', params)
 }
+
+// 创建ai问答
+export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
+  return postApiData('ai/create', params)
+}
