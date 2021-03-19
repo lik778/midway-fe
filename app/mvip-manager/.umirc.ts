@@ -10,7 +10,7 @@ export default defineConfig({
     type: 'none',
   },
   define: {
-    ENV: process.env.ENV
+    CUR_ENV: process.env.ENV
   },
   publicPath: process.env.ENV === 'production' ? '//yxt.baixing.net/assets/' : '/assets/',
   "proxy": {

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Statistic } from 'antd';
 import { useAnimation } from '@/hooks/animation';
 import { ReportLinkMap } from '@/constants/report';
-// import config from '@/config/env';
+import config from '@/config/env';
 
 export default function CountTo(props: any) {
   const {
@@ -20,9 +20,7 @@ export default function CountTo(props: any) {
     }})
   const notOpen = to === null;
   const showOpenBtn  = notOpen && type;
-  // const haojingHost = config().env;
-  const haojingHost = '//www.baixing.com';
-  // 先写死，后面查看环境变量问题
+  const haojingHost = config().env;
   return <div>
     <Statistic className={isSub ? 'report-sub-statistic' : ''} title={title} value={notOpen ? '' : displayNum}
      valueStyle={{ display: showOpenBtn ? 'none' : ''  }} />
