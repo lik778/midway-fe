@@ -96,18 +96,18 @@ const Layouts = (props: any) => {
               <Menu.Item key="keyword">
                 <Link to="/report/keyword">关键词</Link>
               </Menu.Item>
-              <Menu.Item key="bax-flow">
-                <Link to="/report/bax-flow">流量</Link>
-              </Menu.Item>
+              {/*<Menu.Item key="bax-flow">*/}
+              {/*  <Link to="/report/bax-flow">流量</Link>*/}
+              {/*</Menu.Item>*/}
               {/*<Menu.Item key="cate-flow">*/}
               {/*  <Link to="/report/cate-flow">快照流量</Link>*/}
               {/*</Menu.Item>*/}
               {/*<Menu.Item key="cate-publish">*/}
               {/*  <Link to="/report/cate-publish">快照发布</Link>*/}
               {/*</Menu.Item>*/}
-              <Menu.Item key="remain">
-                <Link to="/report/remain">留资</Link>
-              </Menu.Item>
+              {/*<Menu.Item key="remain">*/}
+              {/*  <Link to="/report/remain">留资</Link>*/}
+              {/*</Menu.Item>*/}
             </SubMenu> }
           </Menu>
         </Sider>

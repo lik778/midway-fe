@@ -119,8 +119,7 @@ export default function SearchList (props: Props) {
           items={query}
           fields={fields}
           onFieldsChange={(newFields: any) => setFields(newFields)}
-          onValuesChange={(newVals: any) => setValues(newVals)}
-          // loading={loading}
+          onValuesChange={(newVals: any) => { setValues(newVals); changePage(1) }}
         />
       )}
       {table && (
