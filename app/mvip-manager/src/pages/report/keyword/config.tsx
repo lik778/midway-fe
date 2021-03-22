@@ -68,9 +68,10 @@ export const keywordRankListConfig = ({
         dataIndex: 'keyword',
         key: 'keyword',
         render: (keyword: string, row: KeywordDetailListData) => {
-          const { url, product } = row
+          const { url, product, isExcellentWord } = row
           const productType: any = product;
-          const showContent = <i className="highlight left-m">{keyword}</i>
+          const isShowExcellentWord = BaxProductType.YI_HUI_TUI === product && isExcellentWord
+          const showContent = <i className="highlight left-m">{ `${keyword}${ isShowExcellentWord && '(甄选词)' }` }</i>
           if ([BaxProductType.BIAO_WANG, BaxProductType.YI_HUI_TUI].includes(productType)) {
             return url ?
                 <a href={url} target="_blank">{ showContent }</a> :
