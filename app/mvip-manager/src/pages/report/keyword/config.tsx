@@ -67,10 +67,18 @@ export const keywordRankListConfig = ({
         title: '关键词',
         dataIndex: 'keyword',
         key: 'keyword',
-        render: (keyword: string) => (
-          <a href={'//www.baidu.com/s?wd='+keyword} target="_blank">
-          <i className="highlight left-m">{keyword}</i></a>
-        )
+        render: (keyword: string, row: KeywordDetailListData) => {
+          const { url, product } = row
+          const productType: any = product;
+          const showContent = <i className="highlight left-m">{keyword}</i>
+          if ([BaxProductType.BIAO_WANG, BaxProductType.YI_HUI_TUI].includes(productType)) {
+            return url ?
+                <a href={url} target="_blank">{ showContent }</a> :
+                <span>{ showContent }</span>
+          } else {
+            return <a href={'//www.baidu.com/s?wd='+keyword} target="_blank">{ showContent }</a>
+          }
+        }
       },
       {
         title: '搜索引擎',
