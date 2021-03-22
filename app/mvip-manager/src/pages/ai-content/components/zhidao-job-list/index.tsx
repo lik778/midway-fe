@@ -17,20 +17,23 @@ export default (props: any) => {
   useEffect(() => {
     (async () => {
       setListLoading(true)
+      // TODO;
       // const res = await getQuestionTaskListApi({ page, size: 10 })
       /** 模拟数据，正式数据则解开上面的注释 */
       const res = await mockData<QuestionTaskListItem>('list', {
-        id: 1,
-        no: 1,
+        /** 任务id 同时也是编号 */
+        taskId: 1,
+        /** 已发布数量 */
+        publishedNum: 2,
+        /** 预期发布数量 */
+        expectNum: 4,
         createdTime: 1616054198,
-        expect: 2, // 预期
-        actual: 10 // 实际
       }, 'contentCateName', page, 10)
       if (res.success) {
         setAiList(addKeyForListData(res.data.result || [], page))
         setTotal(res.data.totalRecord)
       } else {
-        errorMessage(res.message)
+        errorMessage(res.message || '暂无进行的任务，你可以去新建任务')
       }
       setListLoading(false)
     })()
@@ -38,25 +41,24 @@ export default (props: any) => {
 
 
   const columns: TableColumnProps<QuestionTaskListItem>[] = [
-    { title: '编号', dataIndex: 'id', key: 'id' },
+    { title: '编号', dataIndex: 'taskId', align: 'center' },
     {
-      title: '创建时间', dataIndex: 'createdTime', key: 'createdTime', render: (text: string) => {
+      title: '创建时间', dataIndex: 'createdTime', align: 'center', render: (text: string) => {
         return formatTime(text)
       }
     },
-    { title: '预计发布数量', dataIndex: 'expect', key: 'expect' },
+    { title: '预计发布数量', dataIndex: 'expectNum', align: 'center' },
     {
-      title: '已发布数量', dataIndex: 'actual', key: 'actual'
+      title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
     },
-    { title: '操作', dataIndex: '', key: 'x', render: (text: any, record: QuestionTaskListItem) => <Link to={`/ai-content/${record.id}/ai-zhidao-detail?pageType=see`}>查看详情</Link> },
+    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <Link to={`/ai-content/${record.taskId}/ai-zhidao-detail?pageType=see`}>查看详情</Link> },
   ];
 
   const isLoding = aiList === null
-
   return (
     <>
       <div className="ai-list-container">
-        {isLoding && <Loading />}
+        {isLoding && listLoading && <Loading />}
         {total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>

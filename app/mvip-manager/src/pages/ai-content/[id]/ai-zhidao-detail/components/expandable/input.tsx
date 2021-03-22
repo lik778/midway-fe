@@ -1,17 +1,20 @@
 import React, { FC, useEffect, useState, useRef } from 'react'
 import { Spin, Input } from 'antd'
+import styles from '../../index.less'
+import { errorMessage } from '@/components/message'
 
 interface ExpandableItemProp {
-  answer: string,
+  answers: string[],
+  index: number
   upDataLoading: boolean,
   editable: boolean
-  handleChangeAnswer: (answer: string) => void
+  handleChangeAnswer: (answer: string, index: number) => void
 }
 
 const ExpandableItem: FC<ExpandableItemProp> = (props) => {
-  const { answer, upDataLoading, editable, handleChangeAnswer } = props
+  const { answers, index, upDataLoading, editable, handleChangeAnswer } = props
   const [editing, setEditing] = useState(false);
-  const [localAnswer, setLocalAnswer] = useState<string>(answer)
+  const [localAnswer, setLocalAnswer] = useState<string>(answers[index])
 
   const inputRef = useRef<Input>(null);
 
@@ -23,8 +26,8 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
 
   // 只有修改了数据并保存 后 answer才会修改
   useEffect(() => {
-    setLocalAnswer(answer)
-  }, [answer])
+    setLocalAnswer(answers[index])
+  }, [answers])
 
   const toggleEdit = () => {
     // 查看模式不允许修改
@@ -40,29 +43,46 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
 
   const save = async () => {
     try {
-      if (localAnswer !== answer) {
-        await handleChangeAnswer(localAnswer);
+      if (localAnswer !== answers[index]) {
+        if (!localAnswer || localAnswer.length === 0) {
+          errorMessage('答案内容不得为空！')
+          setLocalAnswer(answers[index])
+        } else if (answers.some((item, cIndex) => item === localAnswer && cIndex !== index)) {
+          errorMessage('修改后答案不得与其他答案重复！')
+          setLocalAnswer(answers[index])
+        } else {
+          await handleChangeAnswer(localAnswer, index);
+        }
       }
       toggleEdit();
     } catch (errInfo) {
-      setLocalAnswer(answer)
+      setLocalAnswer(answers[index])
       console.log('保存失败', errInfo);
     }
   };
 
-  return editable && editing ? (
-    <Spin spinning={upDataLoading}>
-      <Input value={localAnswer} ref={inputRef} onPressEnter={save} onBlur={save} onChange={(e) => {
-        e.persist()
-        changeAnswer(e)
-      }} />
-    </Spin>
-  ) : (
-    <div style={{
-      cursor: editable ? 'pointer' : 'null'
-    }} onClick={() => toggleEdit()}>
-      {localAnswer}
-    </div>
+  return (
+    <div className={`${styles['answer-item']} ${editable && editing ? styles['flex'] : ''}`}>
+      <span className={styles['answer-label']}>答案{index + 1}：</span>
+      {
+        editable && editing ? (
+          <div className={styles['answer-input']}>
+            <Spin spinning={upDataLoading}>
+              <Input value={localAnswer} ref={inputRef} onPressEnter={save} onBlur={save} onChange={(e) => {
+                e.persist()
+                changeAnswer(e)
+              }} />
+            </Spin>
+          </div>
+        ) : (
+          <span style={{
+            cursor: editable ? 'pointer' : 'null'
+          }} onClick={() => toggleEdit()}>
+            {localAnswer}
+          </span>
+        )
+      }
+    </div >
   )
 }
 

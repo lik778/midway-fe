@@ -35,14 +35,6 @@ export interface AiContentItem {
 }
 
 
-/** 问答任务列表 */
-export interface QuestionTaskListItem {
-  id: number,
-  no: number,
-  createdTime: number;
-  expect: number, // 预期
-  actual: number // 实际
-}
 
 /** 问答任务生成问题请求参数 */
 export interface QuestionTaskApiParams {
@@ -54,29 +46,52 @@ export interface QuestionTaskApiParams {
   wordD: string[];
 }
 
-/** 问答任务生成的问题列表 */
+/** 问答任务列表 */
+export interface QuestionTaskListItem {
+  /** 任务id 同时也是编号 */
+  taskId: number,
+  /** 已发布数量 */
+  publishedNum: number,
+  /** 预期发布数量 */
+  expectNum: number,
+  createdTime: number,
+}
+
+/** 问答任务详情（问答包列表） */
 export interface QuestionListItem {
   id: number,
   question: string,
   answers: string[],
-  tip: string
+  /** 被驳回时的提示文本 */
+  tip: string,// 缺少
   wordTypes: string,
   questionType: string,
   words: string[],
   coreWords: string,
-  /** 0 待审核，1 已通过，2 未通过 */
-  status: 0 | 1 | 2 | 3 | 4,
+  /** 问答题目状态 */
+  status: 0 | 1 | 2 | 3 | 4,// 缺少
+
   // 自用字段
   /** 判断当前问题是否修改 */
   isEdit?: boolean
   index?: number
-  // [key: string]: any
 }
 
 
 /** 修改问题内容发送请求 */
 export interface EditQuestion {
-  id: number,
-  title: string,
-  answer: string[],
+  questionId: number
+  /** 修改答案需传（答案的序号） */
+  answerId?: number,
+  content: string,
+}
+
+/** 基础素材库提交 */
+export interface BasicMaterialApiParams {
+  /**  */
+  wordA: string[],
+  wordB: string[],
+  wordC: string[],
+  wordD: string[],
+  wordE: string[],
 }

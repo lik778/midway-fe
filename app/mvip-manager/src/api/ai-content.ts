@@ -1,7 +1,7 @@
 import { postApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, QuestionListItem } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -34,16 +34,21 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
 }
 
 /** 获取问答任务列表 */
-export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionListItem[]>>> => {
-  return postApiData('', params)
+export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionTaskListItem[]>>> => {
+  return postApiData('ai/getAiTaskList', params)
 }
 
-/** 获取问答任务详情 */
+/** 获取问答任务详情（问答包列表） */
 export const getQuestionTaskDetailApi = (id: number): Promise<ServiceResponse<QuestionListItem[]>> => {
-  return postApiData('', { id })
+  return postApiData('ai/showQaList', { id })
 }
 
 /** 更新生成的问题内容 */
-export const editQuestion = (question: QuestionListItem): Promise<ServiceResponse<boolean>> => {
-  return postApiData('', question)
+export const editQuestion = (question: EditQuestion): Promise<ServiceResponse<never>> => {
+  return postApiData('ai/updateQuestionAnswer', question)
+}
+
+/** 基础素材库提交 */
+export const submitBasicMaterial = (requestData: BasicMaterialApiParams): Promise<ServiceResponse<never>> => {
+  return postApiData('ai/saveUserRepository', requestData)
 }

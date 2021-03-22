@@ -1,91 +1,114 @@
-import React, {useState} from 'react';
-import { Input , Form , Col , Row  , Button} from 'antd';
-import './index.less';
+import React, { useState } from 'react';
+import { Input, Form, Col, Row, Button } from 'antd';
+import styles from './index.less';
 import MyModal, { ModalType } from '@/components/modal';
+import { BasicMaterialApiParams } from '@/interfaces/ai-content'
+import { submitBasicMaterial } from '@/api/ai-content'
+import { errorMessage, successMessage } from '@/components/message';
+import { mockData } from '@/utils';
+import { castArray } from 'lodash';
+const { TextArea } = Input;
+const FormItem = Form.Item;
 
-export default (props: any) => {
+interface FormItemListItem {
+  key: keyof BasicMaterialApiParams,
+  label: string,
+  placeholder: string,
+  required: boolean
+}
+
+export default () => {
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const FormItem = Form.Item;
-  const TextArea = Input.TextArea;
+  const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
 
-  const contentName: any = {
-    wordA: {
-      label: '公司优势',
-      name: 'Advantage',
-    },
-    wordB: {
-      label: '公司好评',
-      name: 'Praise',
-    },
-    wordC: {
-      label: '公司服务承诺',
-      name: 'ServicePromise',
-    },
-    wordD: {
-      label: '公司服务产品',
-      name: 'ServiceProduct',
-    },
-    wordE: {
-      label: '行业小知识',
-      name: 'Industry knowledge',
-      ps:'（回答通用素材库）',
+  const formItemList: FormItemListItem[] = [{
+    key: 'wordA',
+    label: '公司产品/服务',
+    placeholder: `例如：\n本公司从事家电维修行业，主营业务有空调维修、电视机维修、冰箱维修等。\n一行一个素材，至少填写5个，多个素材以回车换行区分。`,
+    required: true
+  }, {
+    key: 'wordB',
+    label: '公司优势 ',
+    placeholder: `例如：\n1.我们有专业的技术团队\n2.我们有高质量的服务标准\n3.我们的产品质量行业TOP100`,
+    required: true
+  }, {
+    key: 'wordC',
+    label: '公司好评 ',
+    placeholder: `例如：\nXX搬家公司，获得全国驰名商标荣耀\nXX开锁公司，获取洛阳锁王称号，XXX小区开王`,
+    required: true
+  }, {
+    key: 'wordD',
+    label: '服务承诺',
+    placeholder: `例如：\n1.提供24小时一条龙服务\n2.无额外收费， 统一标价`,
+    required: true
+  }, {
+    key: 'wordE',
+    label: '行业小知识',
+    placeholder: `请填写行业小知识等信息。\n一行一句回答素材，多个以回车换行区分。`,
+    required: false
+  },]
+
+  // 点击提交按钮弹出弹窗
+  const handleClickSubmit = async () => {
+    try {
+      await form.validateFields();
+      setModalVisible(true)
+    } catch (e) {
+      console.log(e)
     }
   }
 
-  const printdata = () => {
+  // 提交单词
+  const submit = async () => {
     const values = form.getFieldsValue()
-    const groupNames = Object.keys(contentName).map((x: string) => x)
-      Object.keys(values).forEach((k: string) => {
-        if (groupNames.includes(k)) {
-          values[k] = (values[k] && values[k].split('\n')) || []
-        }
-      })
-      console.log(values);
-      setModalVisible(false);
+    const requestData: BasicMaterialApiParams = {} as BasicMaterialApiParams
+    formItemList.forEach(item => {
+      requestData[item.key] = values[item.key] ? values[item.key].split('\n').filter((item: string) => item !== '') : []
+    })
+    setUpdataLoading(true)
+    // TODO;
+    // const res = await submitBasicMaterial(requestData)
+    const res = await mockData('data', null)
+    if (res.success) {
+      successMessage(res.message || '添加成功')
+      form.resetFields()
+    } else {
+      errorMessage(res.message || '添加失败')
+    }
+    setUpdataLoading(false)
+    setModalVisible(false);
   }
+
   return (
-    <div>
-      <div className="ai-list-container" style={{padding:'40px 10px'}}>
-          <div className="ai-create-information-box">
-            <Form name="base-information-box" form={form} onFinish={printdata}>
-              <Col className="content-list" span={20}>
-                {
-                  Object.keys(contentName).map((k) => {
-                    const x = contentName[k];
-                    return (<Row key={k} className="gutter-row" gutter={40} justify="start">
-                        <Col className="content-label" flex="170px" style={{padding:'3px'}}>
-                          <div><span style={{color:'red'}}>*</span>{x.label}：</div>
-                          <div>{x.ps}</div>
-                        </Col>
-                        <Col className="content-text" flex="800px" style={{padding:0}}>
-                        <FormItem name={x.name}>
-                          <TextArea rows={5}
-                          placeholder={"一行一个素材，至少填写5个，多个素材以回车分行区别。"}
-                          style={{resize:'none'}}
-                          />
-                        </FormItem>
-                        </Col>
-                      </Row>
-                    )
-                  })
-                }
-              </Col>
-            </Form>
-            <Button style={{ width: 120, height: 40, background: '#096DD9', borderColor: '#096DD9' }} type="primary" onClick={() => setModalVisible(true)} htmlType="submit">提交</Button>
-          </div>
-          <MyModal
-            title="确认提交"
-            content="提交后不可修改，确认提交吗？"
-            type={ModalType.info}
-            onCancel={() => setModalVisible(false)}
-            onOk={() => setModalVisible(false)}
-            footer={<div>
-              <Button onClick={() => setModalVisible(false)}>取消</Button>
-              <Button type="primary" onClick={() =>printdata()}>确认</Button>
-            </div>}
-            visible={modalVisible} />
-        </div>
-    </div>
+    <>
+      <div className={styles['ai-content-container']} >
+        <Form className={styles['base-information-box']} form={form} labelCol={{ span: 4 }} >
+          {
+            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={[{ required: item.required, message: `请输入${item.label}！` }]}>
+              <TextArea rows={5}
+                placeholder={item.placeholder}
+              />
+            </FormItem>)
+          }
+          <FormItem wrapperCol={{ offset: 4 }}>
+            <Button className={styles['submit-btn']} onClick={handleClickSubmit} htmlType="submit">提交</Button>
+          </FormItem>
+        </Form>
+
+
+      </div>
+      <MyModal
+        title="确认提交"
+        content="提交后不可修改，确认提交吗？"
+        type={ModalType.info}
+        onCancel={() => setModalVisible(false)}
+        onOk={() => setModalVisible(false)}
+        footer={<div>
+          <Button onClick={() => setModalVisible(false)}>取消</Button>
+          <Button type="primary" onClick={() => submit()} disabled={upDataLoading} loading={upDataLoading}>确认</Button>
+        </div>}
+        visible={modalVisible} />
+    </>
   )
 }

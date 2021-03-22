@@ -10,7 +10,7 @@ const { TabPane } = Tabs;
 export default (props: any) => {
   return (<div>
     <MainTitle title="问答AI" />
-    <Tabs defaultActiveKey="job-list">
+    <Tabs defaultActiveKey="basic-material">
       <TabPane tab="任务列表" key="">
         <JobList {...props} />
       </TabPane>

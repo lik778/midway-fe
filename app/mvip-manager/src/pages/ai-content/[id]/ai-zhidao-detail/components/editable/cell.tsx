@@ -3,6 +3,7 @@ import { Table, Input, Button, Popconfirm, Form, Spin } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { EditableContext } from './context'
 import style from './style.less'
+import { errorMessage } from '@/components/message';
 
 
 interface Item {
@@ -53,7 +54,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
     try {
       const values = await form.validateFields();
       if (values[dataIndex] !== record[dataIndex]) {
-        await handleSave({ ...record, ...values });
+        if (!values[dataIndex] || values[dataIndex].length === 0) {
+          errorMessage('问题内容不得为空！')
+        } else {
+          await handleSave({ ...record, ...values });
+        }
       }
       toggleEdit();
     } catch (errInfo) {
@@ -70,12 +75,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
         <Form.Item
           style={{ margin: 0 }}
           name={dataIndex}
-          rules={[
-            {
-              required: true,
-              message: `${title} is required.`,
-            },
-          ]}
         >
           <Input ref={inputRef} onPressEnter={save} onBlur={save} />
         </Form.Item>

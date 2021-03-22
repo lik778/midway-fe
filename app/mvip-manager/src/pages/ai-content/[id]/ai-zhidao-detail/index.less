@@ -39,12 +39,24 @@
       color           : #333333;
       background-color: #fff;
 
+      &.flex {
+        display        : flex;
+        justify-content: flex-start;
+        align-items    : center;
+      }
+
       &+.answer-item {
         border-top: 1px solid rgb(233, 233, 233);
       }
 
       &:hover {
         background-color: #fafafa;
+      }
+
+      .answer-label {}
+
+      .answer-input {
+        flex: 1
       }
     }
   }
