@@ -4,7 +4,6 @@ import { KeywordDetailListData } from '@/interfaces/report'
 import {
   PlatformLabelMap,
   BaxProductLabelMap,
-  CateProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
 import { BaxProductType, CateProductType } from '@/enums/report'
@@ -94,10 +93,10 @@ export const keywordRankListConfig = ({
         title: '所属产品',
         dataIndex: 'product',
         key: 'product',
-        render: (_: any, row: KeywordDetailListData) => ({
-          ...BaxProductLabelMap,
-          ...CateProductLabelMap
-        }[row.product])
+        render: (product: any): string => {
+          const labels: any  = { ...BaxProductLabelMap, [CateProductType.SHOP]: '快照' };
+          return labels[product]
+        }
       },
       {
         title: '展示端',
