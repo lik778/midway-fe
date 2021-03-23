@@ -61,7 +61,7 @@ function KeyWordPage(props: any) {
   const genMainTitle = (key: string) => {
     const tooltipsMap: any = {
       total: { name: '总关键词数', tips: '总关键词数包括快照（SEO）关键词数与广告（SEM）关键词数总和' },
-      mainTotal: { name: '快照关键词数', tips: '快照（SEO）关键词数包括店铺、帖子等关键词总和。' },
+      mainTotal: { name: '快照关键词数', tips: '快照（SEO）关键词数包括店铺、帖子等关键词总和。店铺仅2-180天内有创建过AI发文的才会统计关键词数。' },
       searchTotal: { name: '广告关键词数', tips: '广告（SEM）关键词总数包括凤鸣广告、标王广告、易慧推广告（SEM）关键词数总和。'  },
       yihuitui: { name: '易慧推广告关键词数', tips: '易慧推广告（SEM）关键词数仅含广告关键词，易慧推广告（SEM）总关键词请结合快照（SEO）关键词数一起分析。' }
     }

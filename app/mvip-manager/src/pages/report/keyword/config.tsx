@@ -6,7 +6,7 @@ import {
   BaxProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
-import { BaxProductType, CateProductType } from '@/enums/report'
+import { BaxProductType, CateProductType, DisplayType } from '@/enums/report';
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
 const ProductOptions = createOptions({...BaxProductLabelMap, ...{
@@ -67,10 +67,20 @@ export const keywordRankListConfig = ({
         title: '关键词',
         dataIndex: 'keyword',
         key: 'keyword',
-        render: (keyword: string) => (
-          <a href={'//www.baidu.com/s?wd='+keyword} target="_blank">
-          <i className="highlight left-m">{keyword}</i></a>
-        )
+        render: (keyword: string, row: KeywordDetailListData) => {
+          const { url, product, isExcellentWord, device } = row
+          const productType: any = product;
+          const isShowExcellentWord = BaxProductType.YI_HUI_TUI === product && isExcellentWord
+          const showContent = <i className="highlight left-m">{ `${keyword}${ isShowExcellentWord && '(甄选词)' }` }</i>
+          if ([BaxProductType.BIAO_WANG, BaxProductType.YI_HUI_TUI].includes(productType)) {
+            return url ?
+                <a href={url} target="_blank">{ showContent }</a> :
+                <span>{ showContent }</span>
+          } else {
+            return <a href={`//${ device === DisplayType.PC ? 'www' : 'm' }.baidu.com/s?wd=${keyword}`}
+                    target="_blank">{ showContent }</a>
+          }
+        }
       },
       {
         title: '搜索引擎',
