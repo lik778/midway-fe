@@ -74,6 +74,9 @@ const Layouts = (props: any) => {
               <Menu.Item key="auth">
                 <Link to="/company-info/auth">认证资料</Link>
               </Menu.Item>
+              <Menu.Item key="zhidao">
+                <Link to="/company-info/zhidao">问答素材</Link>
+              </Menu.Item>
             </SubMenu>
             <SubMenu style={{ marginBottom: '10px' }} key="shop" title="店铺管理" className="shop-manage">
               <Menu.Item key="list">
