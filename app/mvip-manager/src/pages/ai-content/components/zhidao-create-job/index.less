@@ -1,56 +1,77 @@
 .ai-create-task-box {
-  margin: 16px;
+  padding: 0 16px;
+
   .ai-handle-tips {
     background: #fff;
-    padding: 27px 45px;
+    padding   : 27px 45px;
     margin-top: 16px;
+
     li {
-      font-family: PingFangSC-Regular;
-      font-size: 14px;
+      font-family   : PingFangSC-Regular;
+      font-size     : 14px;
       letter-spacing: 0;
-      text-align: justify;
-      line-height: 35px;
+      text-align    : justify;
+      line-height   : 35px;
+
+      .tip {
+        color: rgb(255, 149, 17)
+      }
     }
   }
-  .ai-create-box{
-    height: 550px;
-  }
+
   .group-words-list {
+    margin-bottom: 30px;
+
     .group-words-item {
-      padding: 5px 8px;
+      .form-item-header {
+        margin-bottom: 8px;
+        line-height  : 32px
+      }
+
       .ai-content-actions {
         margin-top: 10px;
       }
     }
-    .suffix-container-dropdown{
-      transform:scale(1,1);
-      width: 100px;
-      height: 30px;
-      overflow: hidden;
-      position: absolute;
-      right: 6px;
+
+    .suffix-container-dropdown {
+      transform   : scale(1, 1);
+      width       : 100px;
+      height      : 30px;
+      overflow    : hidden;
+      position    : absolute;
+      right       : 6px;
       // max-width: 100px;
     }
+
     textarea {
-      resize: none;
+      resize : none;
       padding: 10px 15px;
     }
   }
+
   .group-words-rules {
-    font-size: 14px;
-    color: #999;
+    font-size : 14px;
+    color     : #999;
     margin-top: 32px;
+
     span {
       margin: 0 16px;
     }
   }
-}
 
-:global{
-  .ant-select-selection--multiple{
-    width: 100px;
-    max-height: 32px;
-    overflow: hidden;
+  .create-question-btn {
+    width       : 120px;
+    height      : 40px;
+    background  : #096DD9;
+    border-color: #096DD9;
+    color       : #fff
   }
 }
 
+:global {
+  .ant-select-selection--multiple {
+    width     : 100px;
+    max-height: 32px;
+    overflow  : hidden;
+  }
+}

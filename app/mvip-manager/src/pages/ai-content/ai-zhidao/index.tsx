@@ -7,19 +7,28 @@ import BasicMaterial from '../components/basic-material';
 
 const { TabPane } = Tabs;
 
+export type ActiveKey = 'job-list' | 'create-job' | 'basic-material'
+
 export default (props: any) => {
-  return (<div>
+
+  const [activeKey, setActiveKey] = useState<ActiveKey>('create-job')
+
+  const changeActiveKey = (key: ActiveKey) => {
+    setActiveKey(key)
+  }
+
+  return (<>
     <MainTitle title="问答AI" />
-    <Tabs defaultActiveKey="basic-material">
-      <TabPane tab="任务列表" key="">
+    <Tabs activeKey={activeKey} onChange={(activeKey) => changeActiveKey(activeKey as ActiveKey)}>
+      <TabPane tab="任务列表" key="job-list">
         <JobList {...props} />
       </TabPane>
       <TabPane tab="新建任务" key="create-job">
-        <CreateJob {...props} />
+        <CreateJob {...props} changeActiveKey={changeActiveKey} activeKey={activeKey} />
       </TabPane>
       <TabPane tab="基础素材库" key="basic-material">
         <BasicMaterial {...props} />
       </TabPane>
     </Tabs>
-  </div>)
+  </>)
 }

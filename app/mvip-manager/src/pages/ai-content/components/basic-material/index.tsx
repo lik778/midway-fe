@@ -50,7 +50,7 @@ export default () => {
   },]
 
   // 点击提交按钮弹出弹窗
-  const handleClickSubmit = async () => {
+  const handleClickValidate = async () => {
     try {
       await form.validateFields();
       setModalVisible(true)
@@ -92,7 +92,7 @@ export default () => {
             </FormItem>)
           }
           <FormItem wrapperCol={{ offset: 4 }}>
-            <Button className={styles['submit-btn']} onClick={handleClickSubmit} htmlType="submit">提交</Button>
+            <Button className={styles['submit-btn']} onClick={handleClickValidate} htmlType="submit">提交</Button>
           </FormItem>
         </Form>
 
