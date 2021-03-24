@@ -36,10 +36,10 @@ const validateItem: (key: string, min: number, max: number, rule: Rule, value: s
   if (key === 'area' || key === 'prefix' || key === 'coreWords') {
     const dataList = value && typeof value === 'string' ? value.split('\n').filter((item: string) => item !== '') : []
     if (dataList.length < min) {
-      return Promise.reject(new Error(`单词数不得少于${min}个`));
+      return Promise.reject(new Error(`词语数不得少于${min}个`));
     }
     if (dataList.length > max) {
-      return Promise.reject(new Error(`单词数不得多于${max}个`));
+      return Promise.reject(new Error(`词语数不得多于${max}个`));
     }
   } else {
     const wordCount = (value as InterrogativeListItem[]).reduce((total, item) => {
@@ -144,9 +144,13 @@ export default (props: ZhidaoCreateJobProp) => {
   const [showTipModal, setShowTipModal] = useState<boolean>(false)
 
   useEffect(() => {
-    if (pageStatus && componentBasicData) {
+    if (pageStatus) {
       // 只有正常的时候才不用显示弹窗
-      setShowTipModal(!(pageStatus === 'create' && componentBasicData.canCreateTask && componentBasicData.nextAction === 'SHOW_CREATE'))
+      if (pageStatus === 'loading') {
+        setShowTipModal(true)
+      } else if (pageStatus === 'create' && componentBasicData) {
+        setShowTipModal(!(pageStatus === 'create' && componentBasicData.canCreateTask && componentBasicData.nextAction === 'SHOW_CREATE'))
+      }
     } else {
       setShowTipModal(false)
     }
@@ -163,7 +167,7 @@ export default (props: ZhidaoCreateJobProp) => {
   const getComponentStatus = async () => {
     // TODO;
     // const res = await getCreateQuestionTaskPageStatus()
-    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
+    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'create')
     if (res.success) {
       setPageStatus(res.data)
     } else {
@@ -196,9 +200,9 @@ export default (props: ZhidaoCreateJobProp) => {
     // TODO;
     // const res = await getCreateQuestionTaskBasicData()
     const res = await mockData<CreateQuestionTaskBasicData>('data', {
-      canCreateTask: false,
-      forceNotice: true,
-      nextAction: 'CREATE_WAITING',
+      canCreateTask: true,
+      forceNotice: false,
+      nextAction: 'SHOW_CREATE',
       notice: '测试文本',
       suggestSuffix: mockInterrogativeWord()
     })
@@ -220,7 +224,7 @@ export default (props: ZhidaoCreateJobProp) => {
     const pageStatus = await getComponentStatus()
     if (pageStatus === 'showQuestionList') {
       history.push(`/ai-content/edit/ai-zhidao-detail?pageType=edit`)
-    } else {
+    } else if (pageStatus === 'create') {
       await getCreateQuestionTaskBasicDataFn()
     }
     setGetDataLoading(false)
@@ -327,6 +331,11 @@ export default (props: ZhidaoCreateJobProp) => {
     initCompoment()
   }
 
+  const taskBuildSuccess = () => {
+    setShowTipModal(false)
+    initCompoment()
+  }
+
   return (<Spin spinning={getDataLoading}>
     <div className={styles["ai-create-task-box"]} onClick={() => closeTipModal(false)}>
       <ul className={styles["ai-handle-tips"]}>
@@ -383,7 +392,7 @@ export default (props: ZhidaoCreateJobProp) => {
       content="提交后不可修改，确认提交吗？"
       type={ModalType.info}
       onCancel={() => setModalVisible(false)}
-      onOk={() => history.push('/company-info/base')}
+      onOk={() => submit()}
       footer={<div>
         <Button onClick={() => setModalVisible(false)}>取消</Button>
         <Button type="primary" disabled={upDataLoading} loading={upDataLoading} onClick={() => submit()}>确认</Button>
@@ -391,7 +400,7 @@ export default (props: ZhidaoCreateJobProp) => {
       visible={modalVisible} />
     {
       /* 当处于创建阶段与等待阶段都有可能出现这个组件 */
-      (pageStatus === 'create' || pageStatus === 'loading') && componentBasicData && <TipModal showModal={showTipModal} pageStatus={pageStatus} componentBasicData={componentBasicData} changeActiveKey={changeActiveKey} closeModal={() => closeTipModal(false)} />
+      (pageStatus === 'create' || pageStatus === 'loading') && <TipModal showModal={showTipModal} pageStatus={pageStatus} componentBasicData={componentBasicData} changeActiveKey={changeActiveKey} closeModal={() => closeTipModal(false)} taskBuildSuccess={taskBuildSuccess} />
     }
   </Spin>
   )

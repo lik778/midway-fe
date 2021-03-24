@@ -11,7 +11,7 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 
 interface FormItemListItem {
-  key: keyof BasicMaterialApiParams,
+  key: string,
   label: string,
   placeholder: string,
   required: boolean
@@ -62,10 +62,14 @@ export default () => {
   // 提交单词
   const submit = async () => {
     const values = form.getFieldsValue()
-    const requestData: BasicMaterialApiParams = {} as BasicMaterialApiParams
-    formItemList.forEach(item => {
-      requestData[item.key] = values[item.key] ? values[item.key].split('\n').filter((item: string) => item !== '') : []
+    const requestData: BasicMaterialApiParams = [] as BasicMaterialApiParams
+    formItemList.forEach((item, index) => {
+      requestData.push({
+        type: index,
+        content: values[item.key] ? values[item.key].split('\n').filter((item: string) => item !== '') : []
+      })
     })
+    console.log(requestData)
     setUpdataLoading(true)
     // TODO;
     // const res = await submitBasicMaterial(requestData)
@@ -80,12 +84,20 @@ export default () => {
     setModalVisible(false);
   }
 
+  /** 
+  * 去除特殊字符 
+  * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
+  * */
+  const clearSpecialCharacter = (value: string) => {
+    return value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '')
+  }
+
   return (
     <>
       <div className={styles['ai-content-container']} >
         <Form className={styles['base-information-box']} form={form} labelCol={{ span: 4 }} >
           {
-            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={[{ required: item.required, message: `请输入${item.label}！` }]}>
+            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={[{ required: item.required, message: `请输入${item.label}！` }]} >
               <TextArea rows={5}
                 placeholder={item.placeholder}
               />

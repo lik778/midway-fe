@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
-import { TableColumnProps, Table, Spin, Tooltip } from 'antd'
+import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
 import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
-import { getQuestionTaskDetailApi, editQuestion } from '@/api/ai-content'
+import { getQuestionTaskDetailApi, editQuestion, submitTask } from '@/api/ai-content'
 import { mockData } from '@/utils';
-import { errorMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
@@ -125,6 +125,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
     history.goBack()
   }
 
+
   useEffect(() => {
     getData()
   }, [])
@@ -151,6 +152,24 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
     setUpDataLoading(false)
   };
 
+  const submit = async () => {
+    setUpDataLoading(true)
+    // TODO;
+    // const res = await submitTask()
+    const res = await mockData('data', {})
+    if (res.success) {
+      successMessage(res.message || '发布成功')
+      if (history.length > 1) {
+        history.goBack()
+      } else {
+        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+      }
+    } else {
+      errorMessage(res.message || '发布失败')
+    }
+    setUpDataLoading(false)
+  }
+
   return (
     <>
       <div className={styles['go-back']} onClick={handleClickBack}>
@@ -171,11 +190,14 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
               rowExpandable: record => record.answers && record.answers.length > 0,
             }}
             expandedRowClassName={() => styles['expanded-row']}
+            pagination={{
+              position: ["bottomLeft"]
+            }}
           ></Table>
+          <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问题</Button>
         </div>
       </Spin>
     </>
-
   )
 }
 

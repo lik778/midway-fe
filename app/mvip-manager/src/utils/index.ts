@@ -177,7 +177,7 @@ export function mockData<T>(type: 'data' | 'list', item: T, title?: string, page
       resolve({
         data: {
           result: dataList,
-          totalRecord: 2
+          totalRecord: 20
         },
         code: 200,
         success: true

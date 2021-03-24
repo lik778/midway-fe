@@ -106,14 +106,10 @@ export interface EditQuestion {
 }
 
 /** 基础素材库提交 */
-export interface BasicMaterialApiParams {
-  /**  */
-  wordA: string[],
-  wordB: string[],
-  wordC: string[],
-  wordD: string[],
-  wordE: string[],
-}
+export type BasicMaterialApiParams = {
+  type: number,
+  content: string[]
+}[]
 
 /** 页面当前状态 */
 export type CreateQuestionTaskPageStatus = 'create' | 'loading' | 'showQuestionList'

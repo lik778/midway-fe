@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'umi'
 import { Progress } from 'antd'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
@@ -9,19 +9,25 @@ import { getQuestionBuildStatus } from '@/api/ai-content'
 interface TipModalProp {
   showModal: boolean
   pageStatus: CreateQuestionTaskPageStatus,
-  componentBasicData: CreateQuestionTaskBasicData,
+  /** 当pageStatus === create时componentBasicData as CreateQuestionTaskBasicData, pageStatus===loading时componentBasicData as null */
+  componentBasicData: CreateQuestionTaskBasicData | null,
   changeActiveKey(activeKey: ActiveKey): void
   closeModal(showModal: boolean): void
+  /** 任务进度100%的回调函数 */
+  taskBuildSuccess(): void
 }
 
 const TipModal: FC<TipModalProp> = (props) => {
-  const { pageStatus, componentBasicData, showModal, closeModal, changeActiveKey } = props
-  const { canCreateTask, forceNotice, nextAction, notice } = componentBasicData
+  const { pageStatus, componentBasicData, showModal, closeModal, changeActiveKey, taskBuildSuccess } = props
+  const { canCreateTask, forceNotice, nextAction, notice } = (componentBasicData || {})
+
   const [getProgressTimer, setGetProgressTimer] = useState<NodeJS.Timeout | null>(null)
   const [progress, setProgress] = useState<number>(0)
 
   // 获取生成进度
-  const getCreateTaskProgress = useCallback(async () => {
+  const getCreateTaskProgress = useRef<() => void>()
+
+  const getCreateTaskProgressFn = async () => {
     const res = await getQuestionBuildStatus()
     // if (progress === 90) {
     //   setProgress(100)
@@ -34,36 +40,46 @@ const TipModal: FC<TipModalProp> = (props) => {
       }
       setProgress(100)
     } else {
-      setProgress(90)
+      // TODO;
+      if (progress < 90) {
+        setProgress(progress => progress + 10)
+      } else {
+        setProgress(100)
+      }
     }
-  }, [getProgressTimer])
+  }
 
   useEffect(() => {
-    if (nextAction === 'CREATE_WAITING') {
-      if (getProgressTimer) {
-        clearInterval(getProgressTimer)
-      };
-      getCreateTaskProgress()
-      const timer = setInterval(() => {
-        getCreateTaskProgress()
-      }, 1000)
-      setGetProgressTimer(timer)
-    }
+    getCreateTaskProgress.current = getCreateTaskProgressFn
+  })
+
+  useEffect(() => {
+    if (pageStatus !== 'loading') return
+    if (getProgressTimer) {
+      clearInterval(getProgressTimer)
+    };
+    getCreateTaskProgress.current!()
+    const timer = setInterval(() => {
+      getCreateTaskProgress.current!()
+    }, 1000)
+    setGetProgressTimer(timer)
     return () => {
       if (getProgressTimer) {
         clearInterval(getProgressTimer);
       }
     }
-  }, [nextAction])
+  }, [pageStatus])
 
-  useEffect(()=>{
-    if(progress===100){
-      
+  useEffect(() => {
+    if (progress === 100) {
+      taskBuildSuccess()
+      setProgress(0)
     }
-  },[progress])
+  }, [progress])
 
   return showModal ? <div className={styles["tip-modal"]}>
     {
+      // 补充基础素材库 可以关闭弹窗
       nextAction === 'USER_MATERIAL' && <CloseOutlined className={styles['close']} onClick={() => closeModal(false)} />
     }
     {
@@ -77,7 +93,7 @@ const TipModal: FC<TipModalProp> = (props) => {
       )
     }
     {
-      // 需要补充用户信息
+      // 补充基础素材库
       pageStatus === 'create' && nextAction === 'USER_MATERIAL' && (
         <>
           <InfoCircleOutlined className={`${styles['icon']} ${styles['icon-user-material']}`} />
@@ -88,10 +104,10 @@ const TipModal: FC<TipModalProp> = (props) => {
     }
     {
       // 请求过程量
-      pageStatus === 'loading' && nextAction === 'CREATE_WAITING' && (
+      pageStatus === 'loading' && (
         <>
           <Progress className={styles['progress']} type="circle" percent={progress} />
-          <div  className={styles["notice"]}>{notice || '问答包生成中，请稍候~'}</div>
+          <div className={styles["notice"]}>正在为您生成问答，请不要关闭页面</div>
         </>
       )
     }
