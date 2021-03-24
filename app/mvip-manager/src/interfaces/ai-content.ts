@@ -33,3 +33,29 @@ export interface AiContentItem {
   wordC: string[];
   wordD: string[];
 }
+
+
+export interface ChooseWord {
+  wordsGrouped:{
+    "AC": {
+     id:number,
+     seoWord:string,
+     type:string
+    },
+    "ABC": {
+      id:number,
+      seoWord:string,
+      type:string
+     },
+     "ACD": {
+      id:number,
+      seoWord:string,
+      type:string
+     },
+     "ABCD": {
+      id:number,
+      seoWord:string,
+      type:string
+     },
+  }
+}

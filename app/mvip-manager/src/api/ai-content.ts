@@ -1,7 +1,7 @@
 import { postApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams , ChooseWord } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -36,4 +36,9 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
 // 创建ai问答
 export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
   return postApiData('ai/create', params)
+}
+
+/** 获得文章对应选词列表 **/
+export const getAiChooseWordListApi = ( taskId: number ): Promise<ServiceResponse<ChooseWord>> =>{
+  return postApiData('seoword/hotword', { taskId })
 }

@@ -4,6 +4,7 @@ import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
 import AiEditModal from '@/components/ai-edit-modal';
+import AiChooseModal from '@/components/ai-choose-modal';
 import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
@@ -14,6 +15,7 @@ import { AiTaskStatusText } from '@/constants';
 
 export default (props: any) => {
   const [ aiEditModalVisible, setAiEditModalVisible ] = useState<boolean>(false);
+  const [ aiChooseModalVisible, setAiChooseModalVisible ] = useState<boolean>(false);
   const [ editAiTask, setEditAiTask ] = useState<AiContentItem | null>(null);
   const [page, setPage] = useState<number>(1);
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
@@ -64,6 +66,11 @@ export default (props: any) => {
     setAiEditModalVisible(true)
   }
 
+  const chooseWords = (record: AiContentItem) => {
+    setEditAiTask(record)
+    setAiChooseModalVisible(true)
+  }
+
   const viewWordsBtn = (record: AiContentItem, text = '查看词组') => {
     return <span onClick={() => viewWords(record)}>{ text }</span>
   }
@@ -86,8 +93,16 @@ export default (props: any) => {
         </Tooltip>
         { viewWordsBtn(record) }
       </div>
+    } else if(status === AiTaskStatus.ON_SELECT) {
+      return <div className="ai-action-box">
+        <Tooltip placement="top" title="去选词">
+          <span onClick={() => chooseWords(record)} className="ai-action ai-choose-action"/>
+        </Tooltip>
+        { viewWordsBtn(record) }</div>
     } else {
-      return <div className="ai-action-box">{ viewWordsBtn(record) }</div>
+      return <div className="ai-action-box"><Tooltip placement="top" title="去选词">
+      <span onClick={() => chooseWords(record)} className="ai-action ai-choose-action"/>
+    </Tooltip>{ viewWordsBtn(record) }</div>
     }
   }
 
@@ -141,6 +156,7 @@ export default (props: any) => {
           hideOnSinglePage: (aiList && aiList.length < 10) || undefined, pageSize: 10, position: ['bottomCenter']}} />}
       </div>
       <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask}/>
+      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} editItem={editAiTask} />
     </div>
   )
 }
