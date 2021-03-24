@@ -1,16 +1,17 @@
 import React, { FC, useEffect, useState } from 'react'
-import { TableColumnProps, Table, Spin, Tooltip } from 'antd'
+import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
-import { QuestionListItem, } from '@/interfaces/ai-content'
-import { getQuestionTaskDetailApi, editQuestion } from '@/api/ai-content'
+import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
+import { getQuestionTaskDetailApi, editQuestion, submitTask } from '@/api/ai-content'
 import { mockData } from '@/utils';
-import { errorMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
 import { AiTaskStatus } from '@/enums/index'
+import { AiTaskStatusText } from '@/constants/index'
 interface JobListDetailProp {
 
 }
@@ -41,7 +42,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
         dataIndex: 'question',
         title: '问题标题',
         upDataLoading,
-        handleSave: handleSave,
+        handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
       }),
     },
   ]
@@ -53,19 +54,23 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
     width: 200,
     render: (text: number, record: QuestionListItem, index: number) => {
       if (text === 2) {
+        // 已发出
         return <div className={styles['question-status-1']}>{
-          AiTaskStatus[text]
+          AiTaskStatusText[text]
         }</div>
       } else if (text === 3) {
+        // 审核驳回 
         return (
           <Tooltip title={record.tip}>
-            <div className={styles['question-status-2']}>发布失败</div>
+            <div className={styles['question-status-2']}>{
+              AiTaskStatusText[text]
+            }</div>
             <div className={styles['question-status-2-tip']}>{record.tip}</div>
           </Tooltip>
         )
       } else {
         return <div className={styles['question-status-0']}>{
-          AiTaskStatus[text]
+          AiTaskStatusText[text]
         }</div>
       }
     }
@@ -75,6 +80,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
 
   const getData = async () => {
     setGetDataLoading(true)
+    // TODO;
     // const res = await getQuestionTaskDetailApi(Number(id))
     let i = 1
     const data = []
@@ -97,20 +103,20 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
           "帮忙回答一下呗"
         ],
         "coreWords": "冰箱维修",
-        /** 0 待审核，1 已通过，2 未通过 */
-        status: 0 as 0,
+        status: 4 as 0,
         tip: `这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示${i}`
       })
       i++
     }
     const res = await mockData<QuestionListItem[]>('data', data)
+
     if (res.success) {
       setDataList(res.data.map((item, index) => ({
         index: index + 1,
         ...item
       })))
     } else {
-      errorMessage(res.message)
+      errorMessage(res.message || '暂无任务详情')
     }
     setGetDataLoading(false)
   }
@@ -119,24 +125,50 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
     history.goBack()
   }
 
+
   useEffect(() => {
     getData()
   }, [])
 
-  const handleSave = async (row: QuestionListItem) => {
+  // 这里传row是为了知道修改的序号
+  const handleSave = async (requestData: EditQuestion, row: QuestionListItem) => {
+    console.log(requestData)
     console.log(row)
     setUpDataLoading(true)
-    // await editQuestion(row)
-    await mockData<boolean>('data', true)
-    const index = dataList.findIndex(item => row.index === item.index);
-    const item = dataList[index];
-    dataList.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    setDataList([...dataList])
+    // TODO;
+    // const res = await editQuestion(requestData)
+    const res = await mockData<boolean>('data', true)
+    if (res.success) {
+      const index = dataList.findIndex(item => row.index === item.index);
+      const item = dataList[index];
+      dataList.splice(index, 1, {
+        ...item,
+        ...row,
+      });
+      setDataList([...dataList])
+    } else {
+      errorMessage(res.message || '修改失败')
+    }
     setUpDataLoading(false)
   };
+
+  const submit = async () => {
+    setUpDataLoading(true)
+    // TODO;
+    // const res = await submitTask()
+    const res = await mockData('data', {})
+    if (res.success) {
+      successMessage(res.message || '发布成功')
+      if (history.length > 1) {
+        history.goBack()
+      } else {
+        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+      }
+    } else {
+      errorMessage(res.message || '发布失败')
+    }
+    setUpDataLoading(false)
+  }
 
   return (
     <>
@@ -158,11 +190,14 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
               rowExpandable: record => record.answers && record.answers.length > 0,
             }}
             expandedRowClassName={() => styles['expanded-row']}
+            pagination={{
+              position: ["bottomLeft"]
+            }}
           ></Table>
+          <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问题</Button>
         </div>
       </Spin>
     </>
-
   )
 }
 

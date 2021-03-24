@@ -39,6 +39,12 @@
       color           : #333333;
       background-color: #fff;
 
+      &.flex {
+        display        : flex;
+        justify-content: flex-start;
+        align-items    : center;
+      }
+
       &+.answer-item {
         border-top: 1px solid rgb(233, 233, 233);
       }
@@ -46,8 +52,24 @@
       &:hover {
         background-color: #fafafa;
       }
+
+      .answer-label {}
+
+      .answer-input {
+        flex: 1
+      }
     }
   }
+
+  .create-question-btn {
+    width       : 120px;
+    height      : 40px;
+    margin-top  : 30px;
+    background  : #096DD9;
+    border-color: #096DD9;
+    color       : #fff
+  }
+
 }
 
 .go-back {
