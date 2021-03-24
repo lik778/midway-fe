@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { QueryConfigItem } from '@/components/quick-form/interface'
+import { QueryConfigItem } from '@/pages/report/components/quick-form/interface'
 import { getLastMonth, formatDateRange, isUrl } from '@/utils';
 import React from 'react';
 
