@@ -26,6 +26,7 @@ interface FormItemListItem {
   label: string,
   min: number,
   max: number,
+  auto?: number
   tip: string,
   rules: Rule[],
   placeholder: string,
@@ -81,24 +82,25 @@ export default (props: ZhidaoCreateJobProp) => {
     label: '地区',
     key: 'area',
     min: 7,
-    max: 20,
-    tip: '7-20个',
+    max: 30,
+    tip: '7-30个',
     rules: [{
       required: true,
-      // message: `请输入地区！(7-20个)`,
-      validator: (rule: Rule, value: any) => validateItem('area', 7, 20, rule, value),
+      // message: `请输入地区！(7-30个)`,
+      validator: (rule: Rule, value: any) => validateItem('area', 7, 30, rule, value),
     }],
     placeholder: '举例：\n浦东新区\n东方明珠\n南京西路',
   }, {
     label: '前缀',
     key: 'prefix',
-    min: 7,
-    max: 20,
-    tip: '7-20个',
+    min: 15,
+    max: 30,
+    auto: 8,
+    tip: '15-30个',
     rules: [{
       required: true,
-      // message: `请输入前缀！(7-20个)`,
-      validator: (rule: Rule, value: any) => validateItem('prefix', 7, 20, rule, value),
+      // message: `请输入前缀！(15-30个)`,
+      validator: (rule: Rule, value: any) => validateItem('prefix', 15, 30, rule, value),
     }],
     placeholder: '举例：\n修饰词：\n靠谱的\n附近的\n\n行业细分词：\n公司注册：科技公司、游戏公司',
   }, {
@@ -106,12 +108,12 @@ export default (props: ZhidaoCreateJobProp) => {
     key: 'coreWords',
     placeholder: '举例：\n冰箱维修\n气动隔膜泵',
     min: 7,
-    max: 20,
-    tip: '7-20个',
+    max: 30,
+    tip: '7-30个',
     rules: [{
       required: true,
-      // message: `请输入核心词！(7-20个)`,
-      validator: (rule: Rule, value: any) => validateItem('coreWords', 7, 20, rule, value),
+      // message: `请输入核心词！(7-30个)`,
+      validator: (rule: Rule, value: any) => validateItem('coreWords', 7, 30, rule, value),
     }],
   }, {
     label: '疑问词',
@@ -129,8 +131,9 @@ export default (props: ZhidaoCreateJobProp) => {
     label: '辅助词',
     key: 'modal',
     placeholder: '举例：\n在线等！\n有大佬知道的吗？\n求高手帮助',
-    min: 3,
-    max: 10,
+    min: 0,
+    max: 10000,
+    auto: 10000,
     tip: '',
     rules: [],
   }], [interrogativeWord])
@@ -163,19 +166,6 @@ export default (props: ZhidaoCreateJobProp) => {
     }
   }
 
-  /** 获取页面状态  如果能创建任务 则请求接下来的基础数据 */
-  const getComponentStatus = async () => {
-    // TODO;
-    // const res = await getCreateQuestionTaskPageStatus()
-    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'create')
-    if (res.success) {
-      setPageStatus(res.data)
-    } else {
-      console.log(res)
-    }
-    return res.data
-  }
-
   const mockInterrogativeWord = (): InterrogativeListItem[] => {
     const childList: InterrogativeChildListItem[] = []
     let i = 0
@@ -200,11 +190,24 @@ export default (props: ZhidaoCreateJobProp) => {
     // TODO;
     // const res = await getCreateQuestionTaskBasicData()
     const res = await mockData<CreateQuestionTaskBasicData>('data', {
+      // canCreateTask: false,
+      // forceNotice: true,
+      // nextAction: 'USER_PROFILE',
+      // notice: '填充用户基础信息',
+      // suggestSuffix: mockInterrogativeWord()
+
+      // canCreateTask: false,
+      // forceNotice: true,
+      // nextAction: 'USER_MATERIAL',
+      // notice: '补充基础素材库',
+      // suggestSuffix: mockInterrogativeWord()
+
       canCreateTask: true,
       forceNotice: false,
       nextAction: 'SHOW_CREATE',
-      notice: '测试文本',
+      notice: '可以创建',
       suggestSuffix: mockInterrogativeWord()
+
     })
     if (res.success) {
       setComponentBasicData(res.data)
@@ -214,6 +217,21 @@ export default (props: ZhidaoCreateJobProp) => {
     } else {
       console.log(res)
     }
+  }
+
+  /** 获取页面状态  如果能创建任务 则请求接下来的基础数据 */
+  const getComponentStatus = async () => {
+    // TODO;
+    // const res = await getCreateQuestionTaskPageStatus()
+    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'create')
+    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
+    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'showQuestionList')
+    if (res.success) {
+      setPageStatus(res.data)
+    } else {
+      console.log(res)
+    }
+    return res.data
   }
 
   /** 初始化组件 
@@ -267,11 +285,15 @@ export default (props: ZhidaoCreateJobProp) => {
   }
 
   /** 
-   * 去除特殊字符 
+   * 去重 去特殊符号
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
-  const clearSpecialCharacter = (value: string) => {
-    return value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '')
+  const outgoingControl = (value: string) => {
+    const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '')
+    if (newValue[newValue.length - 1] === '\n') {
+      return `${[...new Set(newValue.split('\n').filter(item => item !== ''))].join('\n')}\n`
+    }
+    return newValue
   }
 
   /**
@@ -280,7 +302,7 @@ export default (props: ZhidaoCreateJobProp) => {
   const obtainData = (key: string, name: string, type?: string) => {
     const formItem = formItemList.find(item => item.key === key)
     const dataName = type ? `${name}-${type}` : name
-    const concatWords: string[] = randomList(aiDefaultWord[dataName], formItem!.max)
+    const concatWords: string[] = randomList(aiDefaultWord[dataName], formItem!.auto || formItem!.max)
     form.setFieldsValue({
       [key]: concatWords.join('\n')
     })
@@ -313,7 +335,7 @@ export default (props: ZhidaoCreateJobProp) => {
     }
     for (let i in values) {
       if (i !== 'suffix') {
-        requestData[i as keyof QuestionTaskApiParams] = (values[i] as string).split('\n').filter((item: string) => item !== '')
+        requestData[i as keyof QuestionTaskApiParams] = (values[i] as string).split('\n')
       } else {
         requestData.suffix = interrogativeWord.filter(item => item.isSelect).reduce((total, item) => {
           return total.concat(item.child.map(cItem => `${cItem.id}|||${cItem.content}|||${item.name}`))
@@ -366,7 +388,8 @@ export default (props: ZhidaoCreateJobProp) => {
                       }
                     </Select>}
                 </div>
-                <FormItem name={item.key} style={{ marginBottom: 18 }} rules={item.rules} normalize={clearSpecialCharacter} validateTrigger={item.key === 'suffix' ? 'onChange' : 'onChange'}>
+                <FormItem name={item.key} style={{ marginBottom: 18 }} rules={item.rules} normalize={outgoingControl
+                } validateTrigger={item.key === 'suffix' ? 'onChange' : 'onChange'}>
                   <TextArea rows={15}
                     placeholder={item.placeholder}
                     readOnly={item.key === 'suffix'}

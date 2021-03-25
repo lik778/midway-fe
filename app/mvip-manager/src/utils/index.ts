@@ -47,7 +47,7 @@ export const translateProductText = (name: string, type: DomainStatus): string =
 export const randomList = (list: string[], limitNum: number): string[] => {
   if (!list || list.length === 0) return [];
   const res: string[] = [];
-  while (res.length < limitNum) {
+  while (res.length < limitNum && res.length < list.length) {
     const randomIndex: number = Math.floor(Math.random() * list.length);
     const randomItem = list[randomIndex];
     if (!res.includes(randomItem)) {

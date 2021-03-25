@@ -35,7 +35,7 @@ export default () => {
   }, {
     key: 'wordC',
     label: '公司好评 ',
-    placeholder: `例如：\nXX搬家公司，获得全国驰名商标荣耀\nXX开锁公司，获取洛阳锁王称号，XXX小区开王`,
+    placeholder: `例如：\nXX搬家公司，获得全国驰名商标荣耀\nXX开锁公司，获取洛阳锁王称号，XXX小区开锁王`,
     required: true
   }, {
     key: 'wordD',
@@ -65,7 +65,7 @@ export default () => {
     const requestData: BasicMaterialApiParams = [] as BasicMaterialApiParams
     formItemList.forEach((item, index) => {
       requestData.push({
-        type: index,
+        type: index + 1,
         content: values[item.key] ? values[item.key].split('\n').filter((item: string) => item !== '') : []
       })
     })

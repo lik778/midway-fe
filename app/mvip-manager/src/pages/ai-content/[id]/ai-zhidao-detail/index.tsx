@@ -194,7 +194,10 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
               position: ["bottomLeft"]
             }}
           ></Table>
-          <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问题</Button>
+          {
+            pageType === 'edit' && <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问题</Button>
+          }
+
         </div>
       </Spin>
     </>
