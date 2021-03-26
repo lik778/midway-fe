@@ -1,38 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Table, Tooltip } from 'antd';
 import { Link } from 'umi';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
 import AiEditModal from '@/components/ai-edit-modal';
-import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
+import AiChooseModal from '@/pages/ai-content/components/shop-job-list/components/ai-choose-modal';
+import { getAiListApi, pauseAiTaskApi, startAiTaskApi, getAiChooseWordListApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
-import { addKeyForListData, formatTime } from '@/utils';
+import { addKeyForListData, formatTime, mockData } from '@/utils';
 import { errorMessage } from '@/components/message';
 import { AiTaskAction, AiTaskStatus } from '@/enums';
 import { AiTaskStatusText } from '@/constants';
 
 export default (props: any) => {
   const [aiEditModalVisible, setAiEditModalVisible] = useState<boolean>(false);
+  const [aiChooseModalVisible, setAiChooseModalVisible] = useState<boolean>(false);
   const [editAiTask, setEditAiTask] = useState<AiContentItem | null>(null);
   const [page, setPage] = useState<number>(1);
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
-  // TODO;
+  const [wordId, setWordId] = useState<number | null>(null)
+
   useEffect(() => {
-    (async () => {
-      setListLoading(true)
-      const res = await getAiListApi({ page, size: 10 })
-      if (res.success) {
-        setAiList(addKeyForListData(res.data.result || [], page))
-        setTotal(res.data.totalRecord)
-      } else {
-        errorMessage(res.message)
-      }
-      setListLoading(false)
-    })()
+    getList()
   }, [page])
+
+  const getList = async () => {
+    setListLoading(true)
+    const res = await getAiListApi({ page, size: 10 })
+    if (res.success) {
+      setAiList(addKeyForListData(res.data.result || [], page))
+      setTotal(res.data.totalRecord)
+    } else {
+      errorMessage(res.message)
+    }
+    setListLoading(false)
+  }
 
   const setAiListStatus = (id: number, status: AiTaskStatus) => {
     if (!aiList || aiList.length === 0) return
@@ -63,6 +68,12 @@ export default (props: any) => {
   const viewWords = (record: AiContentItem) => {
     setEditAiTask(record)
     setAiEditModalVisible(true)
+
+  }
+
+  const chooseWords = (record: number) => {
+    setWordId(record)
+    setAiChooseModalVisible(true)
   }
 
   const viewWordsBtn = (record: AiContentItem, text = '查看词组') => {
@@ -87,6 +98,12 @@ export default (props: any) => {
         </Tooltip>
         {viewWordsBtn(record)}
       </div>
+    } else if (status === AiTaskStatus.ON_SELECT) {
+      return <div className="ai-action-box">
+        <Tooltip placement="top" title="去选词">
+          <span onClick={() => chooseWords(record.id)} className="ai-action ai-choose-action" />
+        </Tooltip>
+        {viewWordsBtn(record)}</div>
     } else {
       return <div className="ai-action-box">{viewWordsBtn(record)}</div>
     }
@@ -150,6 +167,7 @@ export default (props: any) => {
         }} />}
       </div>
       <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} />
+      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} wordId={wordId}/>
     </div>
   )
 }

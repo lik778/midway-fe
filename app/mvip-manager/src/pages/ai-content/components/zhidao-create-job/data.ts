@@ -39,125 +39,6 @@ export const prefixDefaultData: string[] = [
   "规模大的"
 ]
 
-export const suffixServiceDefaultData: string[] = [
-  "在线咨询",
-  "服务至上",
-  "承诺守信",
-  "信赖推荐",
-  "值得信赖",
-  "咨询客服",
-  "来电咨询",
-  "询问报价",
-  "免费咨询",
-  "优选企业",
-  "欢迎来电",
-  "诚信企业",
-  "择优推荐",
-  "服务为先",
-  "最新报价",
-  "诚信企业推荐",
-  "信息推荐",
-  "品牌企业",
-  "服务介绍",
-  "价格合理",
-  "优质商家",
-  "推荐",
-  "性价比出众",
-  "的行业须知",
-  "市场前景如何",
-  "价格如何计算",
-  "高性价比的选择",
-  "给您好的建议",
-  "行业专家在线为您服务",
-  "多重优惠",
-  "常用指南",
-  "常用解决方案",
-  "点击了解更多",
-  "专业团队在线服务",
-  "服务放心可靠",
-  "服务平台",
-  "收费标准",
-  "服务方案",
-  "企业服务",
-  "服务内容",
-  "服务范围",
-  "诚信商家",
-  "最新行情",
-  "口碑好不好",
-  "用户体验",
-  "哪家公司比较好",
-  "有哪些特点",
-  "业务详情"
-]
-
-export const suffixB2BDefaultData: string[] = [
-  "在线咨询",
-  "最新价格",
-  "今日报价",
-  "信赖推荐",
-  "值得信赖",
-  "货真价实",
-  "量大从优",
-  "厂家供应",
-  "询问报价",
-  "免费咨询",
-  "价格行情",
-  "厂家直供",
-  "品质售后无忧",
-  "今日行情",
-  "承诺守信",
-  "源头直供厂家",
-  "诚信企业",
-  "规格齐全",
-  "来电咨询",
-  "性价比高",
-  "欢迎来电",
-  "生产基地",
-  "好货源好价格",
-  "按需定制",
-  "最新报价",
-  "推荐厂家",
-  "推荐货源",
-  "可量尺定做",
-  "信息推荐",
-  "服务为先",
-  "源头好货",
-  "货源充足",
-  "优质商家",
-  "畅销全国",
-  "产品介绍",
-  "价格合理",
-  "诚信企业推荐",
-  "推荐",
-  "规格尺寸",
-  "厂家实力雄厚",
-  "择优推荐",
-  "质量材质上乘",
-  "厂家报价",
-  "性价比出众",
-  "的行业须知",
-  "的用途和特点",
-  "市场前景如何",
-  "价格如何计算",
-  "高品质的选择",
-  "给您好的建议",
-  "行业专家在线为您服务",
-  "多重优惠",
-  "常用指南",
-  "常用解决方案",
-  "点击了解更多",
-  "专业团队在线服务",
-  "质量放心可靠",
-  "诚信商家",
-  "口碑好不好",
-  "效果好吗",
-  "用户体验",
-  "性价比高不高",
-  "生产厂家",
-  "行业领头羊",
-  "价格优惠",
-]
-
 export const auxiliaryDefaultData: string[] = [
   "在线等！",
   "有大佬知道的嘛？",
@@ -177,9 +58,287 @@ export const auxiliaryDefaultData: string[] = [
 
 ]
 
+const QAwordsItemConfig : any = {
+  area: {
+    label: '地区',
+    name: 'area',
+    placeholder: '举例：\n浦东新区\n东方明珠\n南京西路',
+    min: 7,
+    max: 20,
+    rules: '7-20个'
+  },
+  prefix: {
+    label: '前缀',
+    name: 'prefix',
+    placeholder: '举例：\n修饰词：\n靠谱的\n附近的\n\n行业细分词：\n公司注册：科技公司、游戏公司',
+    min: 7,
+    max: 20,
+    rules: '7-20个'
+  },
+  coreWords: {
+    label: '核心词',
+    name: 'coreWords',
+    placeholder: '举例：\n冰箱维修\n气动隔膜泵',
+    min: 7,
+    max: 20,
+    rules: '7-20个'
+  },
+  suffix: {
+    label: '疑问词',
+    name: 'suffix',
+    placeholder: '',
+    min: 30,
+    max: 50,
+    rules: '3-5个类型'
+  },
+  modal: {
+    label: '辅助词',
+    name: 'modal',
+    placeholder: '举例：\n在线等！\n有大佬知道的吗？\n求高手帮助',
+    min: 3,
+    max: 10,
+    rules: ''
+  }
+}
+
+const suffixitems : any = {
+  brandPublicity: {
+    id:1,
+    name: '品牌宣传',
+    value: 'brandPublicity',
+    child: [
+      {
+        id:1,
+        name :'1词语a'
+      },
+      {
+        id:2,
+        name:'1词语b'
+      },
+      {
+        id:3,
+        name:'1词语c'
+      },
+      {
+        id:4,
+        name:'1词语d'
+      },
+      {
+        id:5,
+        name:'1词语e'
+      },
+      {
+        id:6,
+        name :'1词语a'
+      },
+      {
+        id:7,
+        name:'1词语b'
+      },
+      {
+        id:8,
+        name:'1词语c'
+      },
+      {
+        id:9,
+        name:'1词语d'
+      },
+      {
+        id:10,
+        name:'1词语e'
+      },
+    ],
+  },
+  priceDecision: {      
+    id:2,
+    name: '价格决策',
+    value: 'priceDecision',
+    child: [
+      {
+        id:1,
+        name:'2词语a'
+      },
+      {
+        id:2,
+        name:'2词语b'
+      },
+      {
+        id:3,
+        name:'2词语c'
+      },
+      {
+        id:4,
+        name:'2词语d'
+      },
+      {
+        id:5,
+        name:'2词语e'
+      },
+      {
+        id:6,
+        name:'2词语a'
+      },
+      {
+        id:7,
+        name:'2词语b'
+      },
+      {
+        id:8,
+        name:'2词语c'
+      },
+      {
+        id:9,
+        name:'2词语d'
+      },
+      {
+        id:10,
+        name:'2词语e'
+      },
+    ],
+  },
+  qualityDecision: {
+    name: '品质决策',
+    value: 'qualityDecision',
+    child: [
+      {
+        id:1,
+        name:'3词语a'
+      },
+      {
+        id:2,
+        name:'3词语b'
+      },
+      {
+        id:3,
+        name:'3词语c'
+      },
+      {
+        id:4,
+        name:'3词语d'
+      },
+      {
+        id:5,
+        name:'3词语e'
+      },
+      {
+        id:6,
+        name:'3词语a'
+      },
+      {
+        id:7,
+        name:'3词语b'
+      },
+      {
+        id:8,
+        name:'3词语c'
+      },
+      {
+        id:9,
+        name:'3词语d'
+      },
+      {
+        id:10,
+        name:'3词语e'
+      }
+    ],
+  },
+  contactWay: {
+    name: '联系方式',
+    value: 'contactWay',
+    child: [
+      {
+        id:1,
+        name:'4词语a'
+      },
+      {
+        id:2,
+        name:'4词语b'
+      },
+      {
+        id:3,
+        name:'4词语c'
+      },
+      {
+        id:4,
+        name:'4词语d'
+      },
+      {
+        id:5,
+        name:'4词语e'
+      },
+      {
+        id:6,
+        name:'4词语a'
+      },
+      {
+        id:7,
+        name:'4词语b'
+      },
+      {
+        id:8,
+        name:'4词语c'
+      },
+      {
+        id:9,
+        name:'4词语d'
+      },
+      {
+        id:10,
+        name:'4词语e'
+      }
+    ],
+  },
+  attention: {
+    name: '注意事项',
+    value: 'attention',
+    child: [
+      {
+        id:1,
+        name:'5词语a'
+      },
+      {
+        id:2,
+        name:'5词语b'
+      },
+      {
+        id:3,
+        name:'5词语c'
+      },
+      {
+        id:4,
+        name:'5词语d'
+      },
+      {
+        id:5,
+        name:'5词语e'
+      },
+      {
+        id:6,
+        name:'5词语a'
+      },
+      {
+        id:7,
+        name:'5词语b'
+      },
+      {
+        id:8,
+        name:'5词语c'
+      },
+      {
+        id:9,
+        name:'5词语d'
+      },
+      {
+        id:10,
+        name:'5词语e'
+      }
+    ],
+  }
+}
+
 export const aiDefaultWord: any = {
-  wordB: prefixDefaultData,
-  "wordD-PREFIX": suffixServiceDefaultData,
-  "wordD-SUFFIX": suffixB2BDefaultData,
-  wordE: auxiliaryDefaultData
+  QAwordsItemConfig:QAwordsItemConfig,
+  suffixitems:suffixitems,
+  prefix: prefixDefaultData,
+  modal: auxiliaryDefaultData
 }

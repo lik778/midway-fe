@@ -1,7 +1,7 @@
 import { postApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams,ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -18,8 +18,6 @@ export const getAiShopListApi = (): Promise<ServiceResponse<AiShopList[]>> => {
   return postApiData('shop/aiShopList', {})
 }
 
-
-
 // 开始AI任务
 export const startAiTaskApi = (id: number): Promise<ServiceResponse<any>> => {
   return postApiData('ai/work', { id })
@@ -35,6 +33,20 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
   return postApiData('ai/update', params)
 }
 
+// 创建ai问答
+export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
+  return postApiData('ai/create', params)
+}
+
+/** 获得文章对应选词列表 **/
+export const getAiChooseWordListApi = ( params : { taskId : number | null} ): Promise<ServiceResponse<ChooseWord>> =>{
+  return postApiData('ai/hotword', params)
+}
+
+/** 提交选词列表 **/
+export const submitAiChooseWordListApi = ( params : { taskId:number | null, notSelectWordIds:number[]} ): Promise<ServiceResponse<null>> =>{
+  return postApiData('ai/select', params)
+}
 
 /** 判断显示页面 */
 export const getCreateQuestionTaskPageStatus = (): Promise<ServiceResponse<CreateQuestionTaskPageStatus>> => {
