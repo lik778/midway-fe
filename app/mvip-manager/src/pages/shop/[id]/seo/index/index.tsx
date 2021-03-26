@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import BasisHeader from '@/components/basis-header';
-import SeoTab from '@/components/seo-tab';
+import BasisHeader from '../../components/basis-header';
+import SeoTab from '../components/seo-tab';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopBasisType, ShopTDKType, ShopTDKPosition } from '@/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
@@ -85,7 +85,7 @@ export default (props: any) => {
 
   return (
       <div>
-        <BasisHeader type={ShopBasisType.SEO}/>
+        <BasisHeader {...props} type={ShopBasisType.SEO}/>
        <div className="container">
          <div className="tdk-box">
            <h4>

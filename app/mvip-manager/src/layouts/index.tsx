@@ -8,7 +8,6 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import { GET_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
 import './index.less';
 // import config from '@/config/env';
 
@@ -26,8 +25,7 @@ const Layouts = (props: any) => {
   // 用户未登录
   if (!isLogin() && isNotLocalEnv()) {
     // const haojingHost = config().env;
-    const haojingHost = '//www.baixing.com';
-    // 先写死，后面查看环境变量问题
+    const haojingHost = '//www.baixing.com'
     location.href = `${ haojingHost }/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
@@ -53,21 +51,11 @@ const Layouts = (props: any) => {
     })()
   }, [])
 
-  const getCurrentShopInfo = () => {
-    const shopIdItem = RegExp(/\d+/).exec(props.location.pathname)
-    if (shopIdItem) {
-      const id = Number(shopIdItem[0])
-      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_INFO_ACTION}`, payload: { id }})
-    }
-  }
-
   useEffect(() => {
     const routeList = props.location.pathname.split('/')
     const isShopRoute = (routeList[1] === 'shop')
     setOpenKeys([routeList[1]])
     setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
-    // 获取当前店铺信息
-    getCurrentShopInfo()
   }, [props.location.pathname])
 
   return (
@@ -85,6 +73,9 @@ const Layouts = (props: any) => {
               </Menu.Item>
               <Menu.Item key="auth">
                 <Link to="/company-info/auth">认证资料</Link>
+              </Menu.Item>
+              <Menu.Item key="zhidao">
+                <Link to="/company-info/zhidao">问答素材</Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu style={{ marginBottom: '10px' }} key="shop" title="店铺管理" className="shop-manage">
@@ -116,18 +107,18 @@ const Layouts = (props: any) => {
               <Menu.Item key="keyword">
                 <Link to="/report/keyword">关键词</Link>
               </Menu.Item>
-              <Menu.Item key="bax-flow">
-                <Link to="/report/bax-flow">流量</Link>
-              </Menu.Item>
+              {/*<Menu.Item key="bax-flow">*/}
+              {/*  <Link to="/report/bax-flow">流量</Link>*/}
+              {/*</Menu.Item>*/}
               {/*<Menu.Item key="cate-flow">*/}
               {/*  <Link to="/report/cate-flow">快照流量</Link>*/}
               {/*</Menu.Item>*/}
               {/*<Menu.Item key="cate-publish">*/}
               {/*  <Link to="/report/cate-publish">快照发布</Link>*/}
               {/*</Menu.Item>*/}
-              <Menu.Item key="remain">
-                <Link to="/report/remain">留资</Link>
-              </Menu.Item>
+              {/*<Menu.Item key="remain">*/}
+              {/*  <Link to="/report/remain">留资</Link>*/}
+              {/*</Menu.Item>*/}
             </SubMenu> }
           </Menu>
         </Sider>

@@ -99,22 +99,22 @@ export const getCateFlowDetail:
   (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/seo/network/visit-detail', params)
 
-// 竞价流量概览
+// 广告流量概览
 export const getBaxFlowOverview:
   () => Response<BaxFlowOverviewData> =
   () => get('/sem/network/overview')
 
-// 竞价流量访问和展现统计
+// 广告流量访问和展现统计
 export const getBaxFlowCharts:
   (params: BaxFlowChartParams) => Response<BaxFlowChartData[]> =
   (params) => post('/sem/network/statistical', params)
 
-// 竞价流量访问明细
+// 广告流量访问明细
 export const getBaxFlowVisitDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/sem/network/visit-detail', params)
 
-// 竞价流量展现明细
+// 广告流量展现明细
 export const getBaxFlowShowDetail:
   (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
   (params) => post('/sem/network/show-detail', params)

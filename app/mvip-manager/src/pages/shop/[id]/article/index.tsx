@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import ContentHeader from '@/components/content-header';
-import ShopModuleGroup from '@/components/shop-module-group';
-import ArticleBox from '@/components/article-box';
+import ContentHeader from '../components/content-header';
+import ShopModuleGroup from '../components/shop-module-group';
+import ArticleBox from './components/article-box';
 import ArticleList from './components/list';
 import ArticleNav from './components/nav';
 import { getArticleListApi } from '@/api/shop';
@@ -54,7 +54,7 @@ export default (props: any) => {
   }}
 
   return (<div>
-    <ContentHeader type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
+    <ContentHeader {...props} type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}

@@ -61,7 +61,7 @@ function CompanyInfoBase (props: any) {
     setLoading(false)
     if (success) {
       successMessage('修改基础资料成功')
-      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, playload: data })
+      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, payload: data })
       next()
     } else {
       errorMessage(message || '出错啦')
@@ -92,7 +92,7 @@ function CompanyInfoBase (props: any) {
             }/>
         }
         { !formLoading && currentStep == 1 &&
-        <ContactForm back={() => setCurrentStep(currentStep - 1)} />}
+        <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );

@@ -91,12 +91,6 @@ export const keywordRankListConfig = ({
         }
       },
       {
-        title: '展示端',
-        dataIndex: 'display',
-        key: 'display',
-        render: (_: any, row: KeywordDetailListData) => DisplayLabelMap[row.device]
-      },
-      {
         title: '所属产品',
         dataIndex: 'product',
         key: 'product',
@@ -104,6 +98,12 @@ export const keywordRankListConfig = ({
           ...BaxProductLabelMap,
           ...CateProductLabelMap
         }[row.product])
+      },
+      {
+        title: '展示端',
+        dataIndex: 'display',
+        key: 'display',
+        render: (_: any, row: KeywordDetailListData) => DisplayLabelMap[row.device]
       },
       {
         title: '查询时间',

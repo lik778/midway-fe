@@ -8,7 +8,7 @@ export enum PlatformType {
 export enum BaxProductType {
   BIAO_WANG = 1, // 标王
   FENG_MING = 2, // 凤鸣
-  YI_HUI_TUI = 3, // 易慧推竞价
+  YI_HUI_TUI = 3, // 易慧推广告
 }
 
 export enum CateProductType {

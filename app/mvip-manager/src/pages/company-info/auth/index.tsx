@@ -5,6 +5,7 @@ import './index.less';
 import Loading from '@/components/loading';
 import { getUserVerifyListApi } from '@/api/user';
 import { VerifyStatus, VerifyType } from '@/enums';
+import { errorMessage } from '@/components/message';
 // import config from '@/config/env';
 
 
@@ -13,7 +14,7 @@ export default (props: any) => {
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const haojingHost = config().env;
-  const haojingHost = '//www.baixing.com';
+  const haojingHost = '//www.baixing.com'
   useEffect(() => {
     (async () => {
       setIsLoading(true)
@@ -27,6 +28,8 @@ export default (props: any) => {
             setUserVerifyStatus(x.status)
           }
         })
+      } else {
+        errorMessage(res.message)
       }
     })()
   }, [])
