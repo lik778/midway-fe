@@ -3,7 +3,7 @@ import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { history } from 'umi'
 import styles from './index.less';
 import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords } from '@/api/ai-content';
-import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData } from '@/interfaces/ai-content'
+import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo } from '@/interfaces/ai-content'
 import { mockData, randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
@@ -166,24 +166,31 @@ export default (props: ZhidaoCreateJobProp) => {
     }
   }
 
-  const mockInterrogativeWord = (): InterrogativeListItem[] => {
-    const childList: InterrogativeChildListItem[] = []
-    let i = 0
-    while (i < 10) {
-      childList.push({
-        id: i,
-        content: `关键字${i}`
-      })
-      i++
-    }
-    return ['品牌宣传', '价格决策', '品质决策', '联系方式', '注意事项'].map((item, index) => ({
-      id: index + 1,
-      name: item,
-      child: childList.map(cItem => ({
-        id: index * 10 + cItem.id,
-        content: `${item}-${cItem.content}`
-      }))
-    }))
+  const mockInterrogativeWord = (): InterrogativeDataVo => {
+    const word = ['品牌宣传', '价格决策', '品质决策', '联系方式', '注意事项']
+
+    return word.reduce((total, item, index) => {
+      const childObj: {
+        [key: string]: string
+      } = {}
+      let i = 0;
+      while (i < 10) {
+        childObj[`${index * 10 + i}`] = `${item}-数据${i}`
+        i++
+      }
+      total[item] = childObj
+      return total
+    }, {} as InterrogativeDataVo)
+
+
+    // return ['品牌宣传', '价格决策', '品质决策', '联系方式', '注意事项'].map((item, index) => ({
+    //   id: index + 1,
+    //   name: item,
+    //   child: childList.map(cItem => ({
+    //     id: index * 10 + cItem.id,
+    //     content: `${item}-${cItem.content}`
+    //   }))
+    // }))
   }
 
   const getCreateQuestionTaskBasicDataFn = async () => {
@@ -207,12 +214,21 @@ export default (props: ZhidaoCreateJobProp) => {
       nextAction: 'SHOW_CREATE',
       notice: '可以创建',
       suggestSuffix: mockInterrogativeWord()
-
     })
     if (res.success) {
+      const { suggestSuffix } = res.data
+      const data: InterrogativeListItem[] = []
+      data.push(...Object.keys(suggestSuffix).map((item, index) => ({
+        id: index + 1,
+        name: item,
+        child: [...Object.keys(suggestSuffix[item]).map((cItem) => ({
+          id: Number(cItem),
+          content: suggestSuffix[item][cItem]
+        }))],
+      })))
       setComponentBasicData(res.data)
-      if (res.data.suggestSuffix.length !== interrogativeWord.length) {
-        setInterrogativeWord(res.data.suggestSuffix)
+      if (data.length !== interrogativeWord.length) {
+        setInterrogativeWord(data)
       }
     } else {
       console.log(res)

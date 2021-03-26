@@ -41,6 +41,14 @@ export interface InterrogativeChildListItem {
   content: string
 }
 
+/** 疑问词大类接口返回的vo */
+export interface InterrogativeDataVo {
+  [key: string]: {
+    [key: string]: string
+  }
+}
+
+
 /** 疑问词大类列表 */
 export interface InterrogativeListItem {
   id: number,
@@ -131,5 +139,5 @@ export interface CreateQuestionTaskBasicData {
   /** 弹窗提示文本 */
   notice: string
   /** 疑问词列表 */
-  suggestSuffix: InterrogativeListItem[]
+  suggestSuffix: InterrogativeDataVo
 }
