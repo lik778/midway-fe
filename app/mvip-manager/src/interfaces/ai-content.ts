@@ -34,29 +34,19 @@ export interface AiContentItem {
   wordD: string[];
 }
 
-/** 优选词列表 **/ 
+/** 优选词 **/
 export interface ChooseWord {
-  wordsGrouped:{
-    "AC": {
-     id:number,
-     seoWord:string,
-     type:string
-    }[],
-    "ABC": {
-      id:number,
-      seoWord:string,
-      type:string
-     }[],
-     "ACD": {
-      id:number,
-      seoWord:string,
-      type:string
-     }[],
-     "ABCD": {
-      id:number,
-      seoWord:string,
-      type:string
-     }[],
+  id: number,
+  seoWord: string,
+  type: string
+}
+/** 优选词列表 **/
+export interface ChooseWordList {
+  wordsGrouped: {
+    "AC": ChooseWord[],
+    "ABC": ChooseWord[],
+    "ACD": ChooseWord[],
+    "ABCD": ChooseWord[],
   }
 }
 /** 疑问词具体字符列表 */
