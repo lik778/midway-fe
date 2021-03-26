@@ -4,6 +4,7 @@ import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import { history } from 'umi';
 import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-content';
+import { ChooseWord } from '@/interfaces/ai-content';
 
 interface DataType {
   id: number;
@@ -43,7 +44,7 @@ export default (props: Props) => {
       const value = res.data.wordsGrouped
       const newSeoWord = Object.values(value).reduce((total, items: { id: number, seoWord: string, type: string }[], index) => {
         return total.concat(items)
-      }, [] as { id: number, seoWord: string, type: string }[]).map((item,index) => ({
+      }, [] as ChooseWord[]).map((item,index) => ({
         ...item, isCheck: true,key:index+1
       }))
       setSeoWord(newSeoWord)
@@ -119,7 +120,7 @@ export default (props: Props) => {
       const index = seoWord.findIndex((value,index)=>{
         return value.id === record.id
       })
-      const newSeoWord = seoWord.splice(index, 1, { 
+      seoWord.splice(index, 1, { 
         ...record,
         isCheck: selected
       })
@@ -130,7 +131,7 @@ export default (props: Props) => {
       const index = seoWord.findIndex((value,index)=>{
         return value.id === changeRows[0].id
       })
-      const newSeoWord = seoWord.splice(index, changeRows.length, ...changeRows.map(item=>({ 
+      seoWord.splice(index, changeRows.length, ...changeRows.map(item=>({ 
         ...item,
         isCheck: selected
       })))
