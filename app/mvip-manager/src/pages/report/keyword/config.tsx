@@ -4,10 +4,9 @@ import { KeywordDetailListData } from '@/interfaces/report'
 import {
   PlatformLabelMap,
   BaxProductLabelMap,
-  CateProductLabelMap,
   DisplayLabelMap
 } from '@/constants/report'
-import { BaxProductType, CateProductType } from '@/enums/report'
+import { BaxProductType, CateProductType, DisplayType } from '@/enums/report';
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
 const ProductOptions = createOptions({...BaxProductLabelMap, ...{
@@ -68,10 +67,20 @@ export const keywordRankListConfig = ({
         title: '关键词',
         dataIndex: 'keyword',
         key: 'keyword',
-        render: (keyword: string) => (
-          <a href={'//www.baidu.com/s?wd='+keyword} target="_blank">
-          <i className="highlight left-m">{keyword}</i></a>
-        )
+        render: (keyword: string, row: KeywordDetailListData) => {
+          const { url, product, isExcellentWord, device } = row
+          const productType: any = product;
+          const isShowExcellentWord = BaxProductType.YI_HUI_TUI === product && isExcellentWord
+          const showContent = <i className="highlight left-m">{ `${keyword}${ isShowExcellentWord ? '(甄选词)' : ''  }` }</i>
+          if ([BaxProductType.BIAO_WANG, BaxProductType.YI_HUI_TUI].includes(productType)) {
+            return url ?
+                <a href={url} target="_blank">{ showContent }</a> :
+                <span>{ showContent }</span>
+          } else {
+            return <a href={`//${ device === DisplayType.PC ? 'www' : 'm' }.baidu.com/s?wd=${keyword}`}
+                    target="_blank">{ showContent }</a>
+          }
+        }
       },
       {
         title: '搜索引擎',
@@ -91,19 +100,19 @@ export const keywordRankListConfig = ({
         }
       },
       {
+        title: '所属产品',
+        dataIndex: 'product',
+        key: 'product',
+        render: (product: any): string => {
+          const labels: any  = { ...BaxProductLabelMap, [CateProductType.SHOP]: '快照' };
+          return labels[product]
+        }
+      },
+      {
         title: '展示端',
         dataIndex: 'display',
         key: 'display',
         render: (_: any, row: KeywordDetailListData) => DisplayLabelMap[row.device]
-      },
-      {
-        title: '所属产品',
-        dataIndex: 'product',
-        key: 'product',
-        render: (_: any, row: KeywordDetailListData) => ({
-          ...BaxProductLabelMap,
-          ...CateProductLabelMap
-        }[row.product])
       },
       {
         title: '查询时间',

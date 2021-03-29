@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
-import { QQItem } from '@/interfaces/user';
+import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 
 const styles = {
   p: {  color: '#999', fontSize: 12, lineHeight: 1 },
@@ -11,13 +11,21 @@ const styles = {
   delete: { color: '#096DD9', fontSize: 14, marginLeft: 15, cursor: 'pointer' }
 }
 
-interface Props {
-  onChange(list: QQItem[]): void;
-  values: QQItem[];
-}
-export const QQCustomService = (props: Props) => {
-  const { onChange, values } = props
+
+export const QQCustomService = function (props: {
+  onChange(list: QQItem[]): void,
+  companyInfo: UserEnterpriseInfo,
+}) {
+  const { onChange, companyInfo } = props
   const [list, setList] = React.useState<QQItem[]>([]);
+
+  useEffect(() => {
+    if (companyInfo) {
+      const { qqMap } = companyInfo
+      const list = qqMap && Object.keys(qqMap).map(k => ({ qq: k, name: qqMap[k] })) || []
+      setList(list)
+    }
+  }, [ companyInfo ])
 
   const addAction = function() {
     setList([...list, { name: '', qq: '' }]);
@@ -34,8 +42,6 @@ export const QQCustomService = (props: Props) => {
     setList([...list]);
     onChange(list);
   }
-
-  useEffect(() => setList(values), [values])
 
   return (
     <div>
