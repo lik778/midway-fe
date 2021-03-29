@@ -20,7 +20,7 @@ export class B2bSiteController extends BaseSiteController {
   @Get('/about')
   async about(@Param() params, @HostParam('shopName') HostShopName: string,
               @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
-    if (device === DeviceType.PC) throw new HttpException('页面找不到', HttpStatus.NOT_FOUND)
+    if (device === DeviceType.WAP) throw new HttpException('页面找不到', HttpStatus.NOT_FOUND)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const { data } = await this.midwayApiService.getAboutPageData(shopName, device, domain);
