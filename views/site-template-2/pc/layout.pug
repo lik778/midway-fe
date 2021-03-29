@@ -33,7 +33,7 @@ html
         block footer
             include ./components/common/footer.pug
 
-
+    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
     block scripts
     //-把打点值赋给window，便于传给node层和其他js层
     block append scripts

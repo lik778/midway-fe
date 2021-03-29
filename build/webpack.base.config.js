@@ -1,32 +1,17 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { genSiteTemplateEntry } = require('./util');
-const { SITE_TEMPLATE_1_PAGE_NAMES } = require('./constant');
+const { TB_FUWU_PAGE_NAMES, TB_B2B_PAGE_NAMES, TB_FUWU_TYPE, TB_B2B_TYPE } = require('./constant');
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: Object.assign({
-    'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx')
-    }, genSiteTemplateEntry(1, SITE_TEMPLATE_1_PAGE_NAMES, [
-    path.resolve(__dirname, '..', 'assets/common/index.js')
-  ]), {
-    //新增模板2为B2B
-    'site-template-2-home-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/home/index.js'),
-    'site-template-2-news-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news/index.js'),
-    'site-template-2-news-child-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news/index.js'),
-    'site-template-2-product-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product/index.js'),
-    'site-template-2-product-child-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product/index.js'),
-    'site-template-2-product-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/product-detail/index.js'),
-    'site-template-2-news-detail-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/news-detail/index.js'),
-    'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js'),
-    'site-template-2-home-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/home/index.js'),
-    'site-template-2-news-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news/index.js'),
-    'site-template-2-news-child-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news/index.js'),
-    'site-template-2-product-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product/index.js'),
-    'site-template-2-product-child-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product/index.js'),
-    'site-template-2-news-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/news-detail/index.js'),
-    'site-template-2-product-detail-wap': path.resolve(__dirname, '..', 'assets/site-template-2/wap/product-detail/index.js'),
-  }),
+    'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
+    'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js')
+  },
+    genSiteTemplateEntry(TB_FUWU_TYPE, TB_FUWU_PAGE_NAMES),
+    genSiteTemplateEntry(TB_B2B_TYPE, TB_B2B_PAGE_NAMES)
+  ),
   output: {
     path: path.resolve(__dirname, "../dist/public"),
     filename: isProd? '[name].[contenthash].js' : '[name].js'
@@ -72,6 +57,23 @@ module.exports = {
           }, 'css-loader']
       },
     ]
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        'tb-vendors': {
+          test: /[\\/]node_modules[\\/](jquery)[\\/]/,
+          name: 'tb-vendors',
+          chunks: 'all',
+        },
+        'tb-commons': {
+          test: (module) => module.resource && module.resource.endsWith('.js'),
+          name: 'tb-commons',
+          chunks: 'initial',
+          minChunks: 3
+        }
+      },
+    },
   },
   plugins: [
     new MiniCssExtractPlugin({
