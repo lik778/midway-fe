@@ -35,7 +35,7 @@ const TipModal: FC<TipModalProp> = (props) => {
     //   setProgress(100)
     //   return
     // }
-    if (res.success) {
+    if (res.success && res.data === "success") {
       if (getProgressTimer) {
         clearInterval(getProgressTimer)
         setGetProgressTimer(null)
@@ -51,7 +51,7 @@ const TipModal: FC<TipModalProp> = (props) => {
   })
 
   useEffect(() => {
-    if (pageStatus !== 'loading') return
+    if (pageStatus !== 'CREATE_WAITING') return
     if (getProgressTimer) {
       clearInterval(getProgressTimer)
     };
@@ -75,9 +75,6 @@ const TipModal: FC<TipModalProp> = (props) => {
   }, [progress])
 
   return <>
-    {
-
-    }
     <MyModal
       title="去完善信息"
       content={notice}
@@ -92,9 +89,9 @@ const TipModal: FC<TipModalProp> = (props) => {
           changeActiveKey('basic-material')
         }
       }}
-      visible={pageStatus === 'create' && showModal} />
+      visible={pageStatus === 'SHOW_CREATE' && showModal} />
     {
-      pageStatus === 'loading' && <div className={styles["tip-modal"]}>
+      pageStatus === 'CREATE_WAITING' && <div className={styles["tip-modal"]}>
         <Progress className={styles['progress']} type="circle" percent={progress} />
         <div className={styles["notice"]}>正在为您生成问答，请不要关闭页面</div>
         <div className={styles['spin-box']}>

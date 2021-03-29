@@ -41,6 +41,7 @@ export default (props: Props) => {
     if (res.success) {
       setDataLoading(true)
       const value = res.data.wordsGrouped
+      // TODO;下方 item 类型定义
       const newSeoWord = Object.values(value).reduce((total, items: { id: number, seoWord: string, type: string }[], index) => {
         return total.concat(items)
       }, [] as { id: number, seoWord: string, type: string }[]).map((item,index) => ({
@@ -130,6 +131,7 @@ export default (props: Props) => {
       const index = seoWord.findIndex((value,index)=>{
         return value.id === changeRows[0].id
       })
+      // TODO; newSeoWord是否有存在的必要性
       const newSeoWord = seoWord.splice(index, changeRows.length, ...changeRows.map(item=>({ 
         ...item,
         isCheck: selected

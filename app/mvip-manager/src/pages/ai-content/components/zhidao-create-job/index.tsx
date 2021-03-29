@@ -143,16 +143,15 @@ export default (props: ZhidaoCreateJobProp) => {
   const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
-
   const [showTipModal, setShowTipModal] = useState<boolean>(false)
 
   useEffect(() => {
     if (pageStatus) {
       // 只有正常的时候才不用显示弹窗
-      if (pageStatus === 'loading') {
+      if (pageStatus === 'CREATE_WAITING') {
         setShowTipModal(true)
-      } else if (pageStatus === 'create' && componentBasicData) {
-        setShowTipModal(!(pageStatus === 'create' && componentBasicData.canCreateTask && componentBasicData.nextAction === 'SHOW_CREATE'))
+      } else if (pageStatus === 'SHOW_CREATE' && componentBasicData) {
+        setShowTipModal(Boolean(!(pageStatus === 'SHOW_CREATE' && componentBasicData.canCreateTask) && componentBasicData.forceNotice))
       }
     } else {
       setShowTipModal(false)
@@ -195,40 +194,44 @@ export default (props: ZhidaoCreateJobProp) => {
 
   const getCreateQuestionTaskBasicDataFn = async () => {
     // TODO;
-    // const res = await getCreateQuestionTaskBasicData()
-    const res = await mockData<CreateQuestionTaskBasicData>('data', {
-      // canCreateTask: false,
-      // forceNotice: true,
-      // nextAction: 'USER_PROFILE',
-      // notice: '填充用户基础信息',
-      // suggestSuffix: mockInterrogativeWord()
+    const res = await getCreateQuestionTaskBasicData()
+    // const res = await mockData<CreateQuestionTaskBasicData>('data', {
+    //   // canCreateTask: false,
+    //   // forceNotice: true,
+    //   // nextAction: 'USER_PROFILE',
+    //   // notice: '填充用户基础信息',
+    //   // suggestSuffix: mockInterrogativeWord()
 
-      // canCreateTask: false,
-      // forceNotice: true,
-      // nextAction: 'USER_MATERIAL',
-      // notice: '补充基础素材库',
-      // suggestSuffix: mockInterrogativeWord()
+    //   // canCreateTask: false,
+    //   // forceNotice: true,
+    //   // nextAction: 'USER_MATERIAL',
+    //   // notice: '补充基础素材库',
+    //   // suggestSuffix: mockInterrogativeWord()
 
-      canCreateTask: true,
-      forceNotice: false,
-      nextAction: 'SHOW_CREATE',
-      notice: '可以创建',
-      suggestSuffix: mockInterrogativeWord()
-    })
+    //   canCreateTask: true,
+    //   forceNotice: false,
+    //   nextAction: 'SHOW_CREATE',
+    //   notice: '可以创建',
+    //   suggestSuffix: mockInterrogativeWord()
+    // })
     if (res.success) {
-      const { suggestSuffix } = res.data
-      const data: InterrogativeListItem[] = []
-      data.push(...Object.keys(suggestSuffix).map((item, index) => ({
-        id: index + 1,
-        name: item,
-        child: [...Object.keys(suggestSuffix[item]).map((cItem) => ({
-          id: Number(cItem),
-          content: suggestSuffix[item][cItem]
-        }))],
-      })))
+      const { canCreateTask, suggestSuffix } = res.data
       setComponentBasicData(res.data)
-      if (data.length !== interrogativeWord.length) {
-        setInterrogativeWord(data)
+      if (suggestSuffix) {
+        const data: InterrogativeListItem[] = []
+        data.push(...Object.keys(suggestSuffix).map((item, index) => ({
+          id: index + 1,
+          name: item,
+          child: [...Object.keys(suggestSuffix[item]).map((cItem) => ({
+            id: Number(cItem),
+            content: suggestSuffix[item][cItem]
+          }))],
+        })))
+        if (data.length !== interrogativeWord.length) {
+          setInterrogativeWord(data)
+        }
+      } else {
+
       }
     } else {
       console.log(res)
@@ -238,10 +241,11 @@ export default (props: ZhidaoCreateJobProp) => {
   /** 获取页面状态  如果能创建任务 则请求接下来的基础数据 */
   const getComponentStatus = async () => {
     // TODO;
-    // const res = await getCreateQuestionTaskPageStatus()
-    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'create')
-    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
-    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'showQuestionList')
+    setComponentBasicData(null)
+    const res = await getCreateQuestionTaskPageStatus()
+    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'create')
+    // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
+    // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'showQuestionList')
     if (res.success) {
       setPageStatus(res.data)
     } else {
@@ -254,11 +258,13 @@ export default (props: ZhidaoCreateJobProp) => {
    * @description 先判断是否要跳页再请求具体参数
   */
   const initCompoment = async () => {
+    setPageStatus(null)
+    setComponentBasicData(null)
     setGetDataLoading(true)
     const pageStatus = await getComponentStatus()
-    if (pageStatus === 'showQuestionList') {
+    if (pageStatus === 'SHOW_QA_LIST') {
       history.push(`/ai-content/edit/ai-zhidao-detail?pageType=edit`)
-    } else if (pageStatus === 'create') {
+    } else if (pageStatus === 'SHOW_CREATE') {
       await getCreateQuestionTaskBasicDataFn()
     }
     setGetDataLoading(false)
@@ -315,10 +321,9 @@ export default (props: ZhidaoCreateJobProp) => {
   /**
    * 获取通用数据
    *  */
-  const obtainData = (key: string, name: string, type?: string) => {
+  const obtainData = (key: string) => {
     const formItem = formItemList.find(item => item.key === key)
-    const dataName = type ? `${name}-${type}` : name
-    const concatWords: string[] = randomList(aiDefaultWord[dataName], formItem!.auto || formItem!.max)
+    const concatWords: string[] = randomList(aiDefaultWord[key], formItem!.auto || formItem!.max)
     form.setFieldsValue({
       [key]: concatWords.join('\n')
     })
@@ -361,8 +366,8 @@ export default (props: ZhidaoCreateJobProp) => {
     console.log(requestData)
     setUpdataLoading(true)
     // TODO;
-    // const res = await submitCoreWords(requestData)
-    const res = await mockData('data', {})
+    const res = await submitCoreWords(requestData)
+    // const res = await mockData('data', {})
     // 提交之后 重新请求用户状态
     setUpdataLoading(false)
     setModalVisible(false)
@@ -374,7 +379,7 @@ export default (props: ZhidaoCreateJobProp) => {
     initCompoment()
   }
 
-  return (<Spin spinning={getDataLoading}>
+  return (<Spin spinning={getDataLoading || upDataLoading}>
     <div className={styles["ai-create-task-box"]} onClick={() => closeTipModal(false)}>
       <ul className={styles["ai-handle-tips"]}>
         <h3>组合规则说明：</h3>
@@ -413,8 +418,8 @@ export default (props: ZhidaoCreateJobProp) => {
                   />
                 </FormItem>
                 <div className={styles["ai-content-actions"]}>
-                  {item.key === 'prefix' && <Button onClick={() => obtainData(item.key, 'wordB')} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>通用前缀</Button>}
-                  {item.key === 'modal' && <Button onClick={() => obtainData(item.key, 'wordE')} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>通用辅助词</Button>}
+                  {item.key === 'prefix' && <Button onClick={() => obtainData(item.key)} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>通用前缀</Button>}
+                  {item.key === 'modal' && <Button onClick={() => obtainData(item.key)} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>通用辅助词</Button>}
                   <Button onClick={() => handleClickClearItem(item.key)} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>清空</Button>
                 </div>
               </Col>
@@ -424,6 +429,9 @@ export default (props: ZhidaoCreateJobProp) => {
         </Row>
       </Form>
       <Button className={styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问题</Button>
+      {
+        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>您当前没有资源创建问答ai任务</div>
+      }
     </div>
 
     <MyModal
@@ -439,7 +447,7 @@ export default (props: ZhidaoCreateJobProp) => {
       visible={modalVisible} />
     {
       /* 当处于创建阶段与等待阶段都有可能出现这个组件 */
-      (pageStatus === 'create' || pageStatus === 'loading') && <TipModal showModal={showTipModal} pageStatus={pageStatus} componentBasicData={componentBasicData} changeActiveKey={changeActiveKey} closeModal={() => closeTipModal(false)} taskBuildSuccess={taskBuildSuccess} />
+      (pageStatus === 'SHOW_CREATE' || pageStatus === 'CREATE_WAITING') && <TipModal showModal={showTipModal} pageStatus={pageStatus} componentBasicData={componentBasicData} changeActiveKey={changeActiveKey} closeModal={() => closeTipModal(false)} taskBuildSuccess={taskBuildSuccess} />
     }
   </Spin>
   )

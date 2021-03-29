@@ -34,29 +34,29 @@ export interface AiContentItem {
   wordD: string[];
 }
 
-/** 优选词列表 **/ 
+/** 优选词列表 **/
 export interface ChooseWord {
-  wordsGrouped:{
+  wordsGrouped: {
     "AC": {
-     id:number,
-     seoWord:string,
-     type:string
+      id: number,
+      seoWord: string,
+      type: string
     }[],
     "ABC": {
-      id:number,
-      seoWord:string,
-      type:string
-     }[],
-     "ACD": {
-      id:number,
-      seoWord:string,
-      type:string
-     }[],
-     "ABCD": {
-      id:number,
-      seoWord:string,
-      type:string
-     }[],
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
+    "ACD": {
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
+    "ABCD": {
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
   }
 }
 /** 疑问词具体字符列表 */
@@ -144,24 +144,30 @@ export type BasicMaterialApiParams = {
 }[]
 
 /** 页面当前状态 */
-export type CreateQuestionTaskPageStatus = 'create' | 'loading' | 'showQuestionList'
+
+// SHOW_CREATE
+//     SHOW_QA_LIST
+//     CREATE_WAITING
+//     USER_PROFILE
+//     USER_MATERIAL
+export type CreateQuestionTaskPageStatus = 'SHOW_CREATE' | 'CREATE_WAITING' | 'SHOW_QA_LIST'
 
 /** 获取创建页面基础数据 */
 export interface CreateQuestionTaskBasicData {
   /** 是否允许创建任务 */
   canCreateTask: boolean
   /** 是否强制通知禁止关闭弹窗 */
-  forceNotice: boolean
+  forceNotice: boolean | null
   /** 弹窗建议跳转的页面
    * @type SHOW_CREATE 显示创建页面
    * @type SHOW_QA_LIST 显示问答包列表
    * @type CREATE_WAITING 是否在等待生成
    * @type USER_PROFILE 提示用户是否需要跳转企业基础信息信息（强制）
-   * @type USER_MATERIAL 提示用户是否需要跳转补充素材（非强制）
+   * @type USER_MATERIAL 提示用户是否需要跳转补充素材（强制）
    */
-  nextAction: 'SHOW_CREATE' | 'SHOW_QA_LIST' | 'CREATE_WAITING' | 'USER_PROFILE' | 'USER_MATERIAL'
+  nextAction: 'SHOW_CREATE' | 'SHOW_QA_LIST' | 'CREATE_WAITING' | 'USER_PROFILE' | 'USER_MATERIAL' | null
   /** 弹窗提示文本 */
-  notice: string
+  notice: string | null
   /** 疑问词列表 */
-  suggestSuffix: InterrogativeDataVo
+  suggestSuffix: InterrogativeDataVo | null
 }

@@ -70,13 +70,13 @@ function ShopPage(props: any) {
   // 接口列表
   // 创建店铺
   const createShop = async (params:any) => {
-    const data = await postApiData('shop/create',params)
+    const data = await postApiData('midway/backend/shop/create',params)
     setShopSiteRes(data)
   }
 
   // 修改店铺
   const updateShop = async (params:any) => {
-    const data = await postApiData('shop/update',params)
+    const data = await postApiData('midway/backend/shop/update',params)
     setShopSiteRes(data)
   }
 

@@ -72,8 +72,8 @@ export default () => {
     console.log(requestData)
     setUpdataLoading(true)
     // TODO;
-    // const res = await submitBasicMaterial(requestData)
-    const res = await mockData('data', null)
+    const res = await submitBasicMaterial(requestData)
+    // const res = await mockData('data', null)
     if (res.success) {
       successMessage(res.message || '添加成功')
       form.resetFields()
@@ -84,13 +84,6 @@ export default () => {
     setModalVisible(false);
   }
 
-  /** 
-  * 去除特殊字符 
-  * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
-  * */
-  const clearSpecialCharacter = (value: string) => {
-    return value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '')
-  }
 
   return (
     <>
