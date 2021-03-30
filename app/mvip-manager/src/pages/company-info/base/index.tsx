@@ -57,6 +57,8 @@ function CompanyInfoBase (props: any) {
       values.area = Object.keys(values.area).map(k => k)
     }
     setLoading(true)
+    //保存企业资料
+    console.log("企业资料入参values：",values)
     const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (success) {

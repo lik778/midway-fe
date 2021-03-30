@@ -4,6 +4,7 @@ import { getAreasApi } from '@/api/user';
 import { CascaderOption } from '@/interfaces/base';
 
 interface Props {
+  //下面是返回area数据{m30: "上海", m7254: "闵行", m2212: "莘庄"}
   initialValues: string[];
   onChange(values: string[]): void;
 }

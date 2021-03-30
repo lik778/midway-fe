@@ -5,6 +5,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
+import CateSelect from '@/components/wildcat-form/components/cate-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 
@@ -15,6 +16,7 @@ const FormItem = Form.Item;
 interface Props {
   config: FormConfig;
   onInit?(form: any): void;
+  //原始接口返回数据
   editDataSource?: any;
   submit?(values: any): void;
   formChange?(changeValue: any, allValues: any): void;
@@ -27,10 +29,12 @@ interface Props {
 
 
 const WildcatForm = (props: Props) => {
+  //通过 Form.useForm 对表单数据域进行交互
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
   useEffect(() => {
     if (editDataSource) {
+      console.log("editDataSource:",editDataSource)
       form.setFieldsValue(editDataSource)
     } if (isEmptyObject(editDataSource)) {
       form.resetFields()
@@ -46,7 +50,10 @@ const WildcatForm = (props: Props) => {
 
   const onChange = (newValue: any, name: string) => {
     const values = form.getFieldsValue()
+    console.log("form.getFieldsValue():",values)
     values[name] = newValue
+    console.log("name:",name,"newValue:",newValue)
+    //给表格数据加选择后的数据
     form.setFieldsValue(values)
   }
 
@@ -54,6 +61,17 @@ const WildcatForm = (props: Props) => {
     return editDataSource && editDataSource[name];
   }
   const CheckboxGroup = Checkbox.Group;
+
+  const OnChangeCate = (catogoryName: string) => {
+
+  }
+
+//  const getAreasInfo = async (areaId: string) => {
+//    const res = await getAreasApi(areaId);
+//    if (res?.success) {
+//        setAreas(formatAreas(res.data, false, 1))
+//    }
+//}
 
   return (
     <div>
@@ -136,18 +154,20 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           }else if (item.type === FormType.categorySelect){
             //企业资料增加类目选择。这里先mock数据
-            item.options = [{"key":"1","value":"工装服务"},{"key":"2","value":"家庭装修"}];
+            //item.options = [{"key":"1","value":"工装服务"},{"key":"2","value":"家庭装修"}];
+            const value = getEditData(item.name || '');
+            console.log("类目原始value:",value)
+            //返回{zhuangxiu: "工装服务", jiatingzhuangxiu: "家庭装修"}
             return (
               <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <Select
-                  showSearch
-                  placeholder={item.placeholder}
-                  size='large'
+                <CateSelect
+                  initialValues={value}
+                  //placeholder={item.placeholder}
                   //这里选择类目后，需要弹出对应的服务内容meta,onChange里需要打接口或先获取，到meta信息，进行状态重新setState
-                  //onChange={(newValue) => onChange(newValue, item.name || '')}
+                  onChange={ OnChangeCate }
                   >
-                  { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.value}</Option>)}
-                </Select>
+                  {/*{ item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.value}</Option>)}*/}
+                </CateSelect>
               </FormItem>
             )
           }else if(item.type === FormType.metaChecbox){
@@ -155,7 +175,10 @@ const WildcatForm = (props: Props) => {
             const initialCheckedMetas = ["m35988"];
             return (
               <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <CheckboxGroup options={metas} defaultValue={initialCheckedMetas}/>
+                <CheckboxGroup options={metas}
+                //这个defaultValue提示报可能不能用，待查
+                defaultValue={initialCheckedMetas}
+                />
               </FormItem>
             )
           //引用原先的

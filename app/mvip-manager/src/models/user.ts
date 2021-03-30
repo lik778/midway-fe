@@ -14,7 +14,7 @@ export const USER_NAMESPACE = 'user'
 export const GET_USER_INFO_ACTION = 'getUserInfoAction'
 export const SET_USER_INFO_ACTION = 'setUserInfoAction'
 
-// 公司信息
+// 企业资料信息companyInfo
 export const GET_COMPANY_INFO_ACTION = 'getCompanyInfoAction'
 export const SET_COMPANY_INFO_ACTION = 'setCompanyInfoAction'
 

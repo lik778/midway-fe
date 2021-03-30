@@ -20,9 +20,9 @@ export const baseInfoForm: FormConfig = {
       minLength: 50, maxLength: 300, patternList: [ { pattern: /^[\s\S]{50,300}$/, message: '50～300个字'}  ] },
     { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
       required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' },
-    { width: 353, className:'f-category-select',label: '类目', name: 'category', type: FormType.categorySelect, required: true, placeholder: '请选择类目' },
+    { width: 353, className:'f-category-select',label: '类目', name: 'secondCategories', type: FormType.categorySelect, required: false, placeholder: '请选择类目' },
     { width: 353, className:'f-category-select',label: '服务内容', name: 'meta', type: FormType.metaChecbox, required: true },
-    { inputWidth: 260, className:'f-middle',label: '公司人数', name: 'employeesNum', type: FormType.Input, required: true, placeholder: '请输入公司人数' },
+    { inputWidth: 260, className:'f-middle',label: '公司人数', name: 'employeeCount', type: FormType.Input, required: true, placeholder: '请输入公司人数' },
     { inputWidth: 260, className:'f-middle',label: '公司年限', name: 'companyYears', type: FormType.Input, required: true, placeholder: '请输入公司已经营年限' },
   ]
 }

@@ -37,3 +37,6 @@ export const getAreasApi = (areaId: string): Promise<ServiceResponse<any>> => {
 export const getUserVerifyListApi = (): Promise<ServiceResponse<VerifyItem[]>> => {
   return postApiData('user/getVerifyList', {})
 }
+
+//获取三级meta信息
+//export const getThirdCategoryMetas =():Promise

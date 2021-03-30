@@ -294,7 +294,7 @@ function ShopPage(props: any) {
            type={ModalType.info}
            closable={false}
            maskClosable={false}
-           onCancel={() => setEditVisible(false)}
+           onCancel={() => setEditVisible(true)}
            onOk={() => history.push('/company-info/base')}
            visible={editVisible} />
         <div className="container">

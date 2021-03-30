@@ -12,8 +12,10 @@ export interface SaveEnterpriseForShopParams {
   companyDescription: string;
   companyName: string;
   promoteImg: string;
-  category: string[];
-  employeesNum: number;
+  //知道企业资料合并新加入参字段
+  thirdMetas: string[];
+  secondCategory: string[];
+  employeeCount: number;
   companyYears: number;
 }
 
