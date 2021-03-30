@@ -63,7 +63,7 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
 
   return (
     <div className={`${styles['answer-item']} ${editable && editing ? styles['flex'] : ''}`}>
-      <span className={styles['answer-label']}>答案{index + 1}：</span>
+      <span className={styles['answer-label']}>{index > 0 ? `其他回答${index + 1}` : '最佳答案'}：</span>
       {
         editable && editing ? (
           <div className={styles['answer-input']}>

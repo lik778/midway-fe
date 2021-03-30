@@ -35,7 +35,7 @@ export default () => {
   }, {
     key: 'wordC',
     label: '公司好评 ',
-    placeholder: `例如：\nXX搬家公司，获得全国驰名商标荣耀\nXX开锁公司，获取洛阳锁王称号，XXX小区开王`,
+    placeholder: `例如：\nXX搬家公司，获得全国驰名商标荣耀\nXX开锁公司，获取洛阳锁王称号，XXX小区开锁王`,
     required: true
   }, {
     key: 'wordD',
@@ -65,15 +65,15 @@ export default () => {
     const requestData: BasicMaterialApiParams = [] as BasicMaterialApiParams
     formItemList.forEach((item, index) => {
       requestData.push({
-        type: index,
+        type: index + 1,
         content: values[item.key] ? values[item.key].split('\n').filter((item: string) => item !== '') : []
       })
     })
     console.log(requestData)
     setUpdataLoading(true)
     // TODO;
-    // const res = await submitBasicMaterial(requestData)
-    const res = await mockData('data', null)
+    const res = await submitBasicMaterial(requestData)
+    // const res = await mockData('data', null)
     if (res.success) {
       successMessage(res.message || '添加成功')
       form.resetFields()
@@ -84,13 +84,6 @@ export default () => {
     setModalVisible(false);
   }
 
-  /** 
-  * 去除特殊字符 
-  * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
-  * */
-  const clearSpecialCharacter = (value: string) => {
-    return value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '')
-  }
 
   return (
     <>

@@ -1,11 +1,13 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'umi'
-import { Progress } from 'antd'
+import { Link, history } from 'umi'
+import { Progress, Spin } from 'antd'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { ExclamationCircleOutlined, InfoCircleOutlined, CloseOutlined } from '@ant-design/icons'
 import { CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData } from '@/interfaces/ai-content'
 import styles from './index.less'
 import { getQuestionBuildStatus } from '@/api/ai-content'
+import MyModal, { ModalType } from '@/components/modal';
+
 interface TipModalProp {
   showModal: boolean
   pageStatus: CreateQuestionTaskPageStatus,
@@ -33,19 +35,14 @@ const TipModal: FC<TipModalProp> = (props) => {
     //   setProgress(100)
     //   return
     // }
-    if (res.success) {
+    if (res.success && res.data === "success") {
       if (getProgressTimer) {
         clearInterval(getProgressTimer)
         setGetProgressTimer(null)
       }
       setProgress(100)
     } else {
-      // TODO;
-      if (progress < 90) {
-        setProgress(progress => progress + 10)
-      } else {
-        setProgress(100)
-      }
+      setProgress(90)
     }
   }
 
@@ -54,7 +51,7 @@ const TipModal: FC<TipModalProp> = (props) => {
   })
 
   useEffect(() => {
-    if (pageStatus !== 'loading') return
+    if (pageStatus !== 'CREATE_WAITING') return
     if (getProgressTimer) {
       clearInterval(getProgressTimer)
     };
@@ -77,42 +74,32 @@ const TipModal: FC<TipModalProp> = (props) => {
     }
   }, [progress])
 
-  return showModal ? <div className={styles["tip-modal"]}>
+  return <>
+    <MyModal
+      title="去完善信息"
+      content={notice}
+      type={ModalType.info}
+      closable={false}
+      maskClosable={false}
+      onCancel={() => changeActiveKey('job-list')}
+      onOk={() => {
+        if (nextAction === 'USER_PROFILE') {
+          history.push('/company-info/base')
+        } else if (nextAction === 'USER_MATERIAL') {
+          changeActiveKey('basic-material')
+        }
+      }}
+      visible={pageStatus === 'SHOW_CREATE' && showModal} />
     {
-      // 补充基础素材库 可以关闭弹窗
-      nextAction === 'USER_MATERIAL' && <CloseOutlined className={styles['close']} onClick={() => closeModal(false)} />
+      pageStatus === 'CREATE_WAITING' && <div className={styles["tip-modal"]}>
+        <Progress className={styles['progress']} type="circle" percent={progress} />
+        <div className={styles["notice"]}>正在为您生成问答，请不要关闭页面</div>
+        <div className={styles['spin-box']}>
+          <Spin />
+        </div>
+      </div>
     }
-    {
-      // 需要补充用户信息
-      pageStatus === 'create' && forceNotice && nextAction === 'USER_PROFILE' && (
-        <>
-          <ExclamationCircleOutlined className={`${styles['icon']} ${styles['icon-user-profile']}`} />
-          <div className={styles["notice"]}>{notice}</div>
-          <Link to="/company-info/base">点击完善基础资料</Link>
-        </>
-      )
-    }
-    {
-      // 补充基础素材库
-      pageStatus === 'create' && nextAction === 'USER_MATERIAL' && (
-        <>
-          <InfoCircleOutlined className={`${styles['icon']} ${styles['icon-user-material']}`} />
-          <div className={styles["notice"]}>{notice}</div>
-          <div className={styles["goto-user-material"]} onClick={() => changeActiveKey('basic-material')}>点击补充基础素材</div>
-        </>
-      )
-    }
-    {
-      // 请求过程量
-      pageStatus === 'loading' && (
-        <>
-          <Progress className={styles['progress']} type="circle" percent={progress} />
-          <div className={styles["notice"]}>正在为您生成问答，请不要关闭页面</div>
-        </>
-      )
-    }
-
-  </div> : <></>
+  </>
 }
 
 export default TipModal
