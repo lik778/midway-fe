@@ -21,9 +21,7 @@ function CompanyInfoBase(props: any) {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-      console.log(companyInfo)
-      if (companyInfo) {
-      console.log(companyInfo)
+    if (companyInfo) {
       setEnterpriseInfo(companyInfo)
       setFormLoading(false)
       setConfig({ ...config })

@@ -15,6 +15,7 @@ import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_C
 import './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
 import { objToTargetObj } from '@/utils';
+import { ConnectState } from '@/models/connect';
 
 
 const { Step } = Steps;
@@ -27,18 +28,14 @@ function CompanyInfoBase(props: any) {
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
   const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
-  const steps = [ '基础信息', '联系方式']
+  const steps = ['基础信息', '联系方式']
   const [thirdMetas, setThirdMetas] = useState<ThirdMetas[] | null>(null)
 
-  useEffect(() => {``
-    props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
-  },[])
-
   //获取三级类目meta
-  const getThirdCategoryMetasFn = async (catogoryName: any) =>{
+  const getThirdCategoryMetasFn = async (catogoryName: any) => {
     const res = await getThirdCategoryMetas(catogoryName);
     if (res?.success) {
-      const metas=objToTargetObj(res.data,"label")
+      const metas = objToTargetObj(res.data, "label")
       setThirdMetas(metas)
     }
   }
@@ -72,7 +69,7 @@ function CompanyInfoBase(props: any) {
       }
 
 
-      if (item.name === 'metaChecbox'){
+      if (item.name === 'metaChecbox') {
         item.options = thirdMetas!
       }
 
@@ -122,8 +119,8 @@ function CompanyInfoBase(props: any) {
         ))}
       </Steps>
       <div className="container">
-        { formLoading && <Loading />}
-        { !formLoading && currentStep == 0 &&
+        {formLoading && <Loading />}
+        {!formLoading && currentStep == 0 &&
           <WildcatForm
             formChange={() => setHasEditFofrm(true)}
             useLabelCol={true} submit={nextStep}
@@ -143,4 +140,8 @@ function CompanyInfoBase(props: any) {
   );
 }
 
-export default connect(companyInfoStateToProps)(CompanyInfoBase)
+export default connect((state: ConnectState) => {
+  return {
+    companyInfo: state[USER_NAMESPACE].companyInfo
+  }
+})(CompanyInfoBase)
