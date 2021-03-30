@@ -71,7 +71,7 @@ export const submitBasicMaterial = (requestData: BasicMaterialApiParams): Promis
 
 /** 获取问答任务详情（问答包列表） */
 export const getQuestionTaskDetailApi = (id: number): Promise<ServiceResponse<QuestionListItem[]>> => {
-  return postApiData('zhidao/v1/backend/ai/showAiTask', { taskId: id })
+  return postApiData('zhidao/v1/backend/ai/showAiTask', id)
 }
 
 /** 获取新建任务基础数据 */

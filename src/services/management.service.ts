@@ -22,7 +22,7 @@ export class ManagementService {
   }
 
   private setApiAHeaders(cookies: any, shopId?: string): HeaderAuthParams {
-    const headers =  {
+    const headers = {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
@@ -35,7 +35,7 @@ export class ManagementService {
     return headers;
   }
 
-  public managementRedirectTo (code: number, res: Response, callback: any) {
+  public managementRedirectTo(code: number, res: Response, callback: any) {
     if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
       res.redirect(`${this.haojingHost}/oz/login`)
       return
@@ -48,14 +48,15 @@ export class ManagementService {
   }
 
   public async canEnterManagement(req: Request, res: Response): Promise<any> {
-    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`,{},
-      { headers: this.setApiAHeaders(req.cookies)}).toPromise()
+    return this.httpService.post(`${this.host}/api/midway/backend/shop/init`, {},
+      { headers: this.setApiAHeaders(req.cookies) }).toPromise()
   }
 
   public getManagementData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
-    const {  path, params } = input
+    const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']
+    // TODO;
     console.log(`${this.host}${path}`)
     switch (method) {
       case 'get':

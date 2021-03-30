@@ -83,7 +83,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
         return formatTime(text)
       }
     },
-    { title: '预计发布数量', dataIndex: 'expectNum', align: 'center' },
+    { title: '预计发布数量', dataIndex: 'expectPublishedNum', align: 'center' },
     {
       title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
     },

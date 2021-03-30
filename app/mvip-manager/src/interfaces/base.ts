@@ -16,7 +16,8 @@ export interface ListRes<T> {
   result: T;
   totalPage: number;
   totalRecord: number;
-  pageSize: number;
+  /** 有部分接口没有返回这个pageSize,所以注释掉 */
+  // pageSize: number;
 }
 
 export interface BaseProps {
