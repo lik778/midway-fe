@@ -18,6 +18,7 @@ import {
 } from '@/models/shop';
 import { ShopInfo } from '@/interfaces/shop';
 import './index.less';
+import { ConnectState } from '@/models/connect';
 
 // 空状态基本配置
 const emptyMsg = {
@@ -304,7 +305,7 @@ function ShopPage(props: any) {
   )
 }
 
-export default connect((state: any): { [key: string]: ShopInfo[] | number } => {
+export default connect((state: ConnectState) => {
   const { shopList, shopTotal, shopStatus } = state[SHOP_NAMESPACE]
   return { shopList, shopTotal, shopStatus }
 })(ShopPage)
