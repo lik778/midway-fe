@@ -5,7 +5,6 @@ import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
-//import CateSelect from '@/components/wildcat-form/components/cate-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 
@@ -16,7 +15,7 @@ const FormItem = Form.Item;
 interface Props {
   config: FormConfig;
   onInit?(form: any): void;
-  //原始接口返回数据
+  //父传的表单数据
   editDataSource?: any;
   submit?(values: any): void;
   formChange?(changeValue: any, allValues: any): void;
@@ -48,8 +47,9 @@ const WildcatForm = (props: Props) => {
   }, [])
 
   const onChange = (newValue: any, name: string) => {
+    console.log("newValue",newValue)
     const configItem = props.config.children.find(item=>item.name === name)
-    //if(configItem?.onChange)configItem.onChange(newValue)
+    if(configItem?.onChange)configItem.onChange(newValue)
 
     const values = form.getFieldsValue()
     values[name] = newValue
@@ -80,7 +80,10 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           } else if (item.type === FormType.Select) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+              <Select
+                onChange={(newValue) => onChange(newValue, item.name || '')}
+                placeholder={item.placeholder} size='large'
+                style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </FormItem>)
@@ -140,28 +143,8 @@ const WildcatForm = (props: Props) => {
                  minLength={item.minLength || 1}
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
-            </FormItem>)}
-
-          //else if (item.type === FormType.categorySelect){
-            //企业资料增加类目选择。这里先mock数据
-            //item.options = [{"key":"1","value":"工装服务"},{"key":"2","value":"家庭装修"}];
-            //返回{zhuangxiu: "工装服务", jiatingzhuangxiu: "家庭装修"}
-            //const value = getEditData(item.name || '');
-            //useEffect(()=>{
-            //  if (value){const options = Object.keys(value)}
-            //}
-
-          //  return (
-          //    <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-          //      <Select
-          //        defaultValue={item.defaultValue}
-          //        >
-          //        {/*{ options && options.map(k => <Option key={k} value={k}>{value[k]}</Option>)}*/}
-          //      </Select>
-          //    </FormItem>
-          //  )
-          //}
-          else if(item.type === FormType.metaChecbox){
+            </FormItem>)
+            }else if(item.type === FormType.metaChecbox && item.display){
             const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
             const initialCheckedMetas = ["m35988"];
             return (

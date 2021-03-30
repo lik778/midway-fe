@@ -9,11 +9,12 @@ import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import { UserEnterpriseInfo } from '@/interfaces/user';
+import { UserEnterpriseInfo, ThirdMetas } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
 import './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
+import { objToTargetObj } from '@/utils';
 
 
 const { Step } = Steps;
@@ -26,58 +27,62 @@ function CompanyInfoBase(props: any) {
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
   const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
-  const steps = ['基础信息', '联系方式']
+  const steps = [ '基础信息', '联系方式']
+  const [thirdMetas, setThirdMetas] = useState<ThirdMetas[] | null>(null)
 
-
+  useEffect(() => {``
+    props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
+  },[])
 
   //获取三级类目meta
-  const getThirdCategoryMetasFn = async (catogoryName: any) => {
-    console.log("catogoryName:", catogoryName)
+  const getThirdCategoryMetasFn = async (catogoryName: any) =>{
     const res = await getThirdCategoryMetas(catogoryName);
-    console.log(33)
     if (res?.success) {
-      console.log(res.data)
+      const metas=objToTargetObj(res.data,"label")
+      setThirdMetas(metas)
     }
   }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
   const initComponent = async () => {
-    console.log("companyInfo:", companyInfo)
     if (!companyInfo) {
       setFormLoading(true)
       return
     }
 
+    const { secondCategories, selectedSecondCategory } = companyInfo
+    //secondCategories的值是对象，要转换为select组件value定义的类型
+    const defaultCategory = objToTargetObj(selectedSecondCategory)
+    //const defaultMetas = objToTargetObj()
     setEnterpriseInfo({
       ...companyInfo,
-      secondCategories: companyInfo.selectedSecondCategory
+      secondCategories: defaultCategory
     })
+
     const { companyNameLock } = companyInfo
     const newChildren = config.children.map(item => {
       if (companyNameLock && item.name === 'companyName') {
         item.disabled = true
       }
+      //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.name === 'secondCategories') {
-        item.defaultValue = companyInfo.selectedSecondCategory
+        item.defaultValue = defaultCategory
         item.onChange = getThirdCategoryMetasFn
-        const { secondCategories } = companyInfo
-        const optionlist = Object.keys(secondCategories).map(k => ({ key: k, value: secondCategories[k] }))
-        item.options = optionlist
+        item.options = objToTargetObj(secondCategories)
       }
+
+
+      if (item.name === 'metaChecbox'){
+        item.options = thirdMetas!
+      }
+
       return item
     })
     setConfig({ ...config, children: newChildren })
     setFormLoading(false)
   }
 
-  //useEffect( ()=>{
-  //  initComponent()
-  //},[companyInfo])
-
-  const AAAOnChange = () => {
-    //...
-  }
-
+  //会根据企业信息变更，重新渲染大表单
   useEffect(() => {
     initComponent()
   }, [companyInfo])
@@ -117,9 +122,8 @@ function CompanyInfoBase(props: any) {
         ))}
       </Steps>
       <div className="container">
-        {formLoading && <Loading />}
-
-        {!formLoading && currentStep == 0 &&
+        { formLoading && <Loading />}
+        { !formLoading && currentStep == 0 &&
           <WildcatForm
             formChange={() => setHasEditFofrm(true)}
             useLabelCol={true} submit={nextStep}

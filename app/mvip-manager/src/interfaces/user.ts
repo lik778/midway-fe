@@ -61,3 +61,8 @@ export interface QQItem {
   name: string;
   qq: string;
 }
+
+export interface ThirdMetas {
+  label: string;
+  value: string
+}

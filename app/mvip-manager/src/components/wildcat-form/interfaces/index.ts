@@ -12,9 +12,16 @@ export interface FormConfig {
   buttonConfig?: ButtonItem;
 }
 
+//这样定义，与实际的select反过来了，后期优化下
 export interface OptionItem {
   key: string;
   value: any;
+}
+
+export interface OptionCheckBox {
+  label: string;
+  value: any;
+  disabled?: boolean;
 }
 
 export interface FormItem {
@@ -27,7 +34,7 @@ export interface FormItem {
   placeholder?: string; // 提示
   defaultValue?: any; // 默认值
   validator?: any; // 校验
-  options?: OptionItem[];
+  options?: OptionItem[] | OptionCheckBox[];
   maxLength?: number
   minLength?: number,
   inputWidth?: number,
@@ -39,7 +46,8 @@ export interface FormItem {
   images?: ImagesItem[],// 图片多种情况
   disabled?: boolean;
   showCount?:boolean;
-  onChange?:(...args:any)=>void;
+  onChange?:(...args:any)=>void; //给配置文件项，增加了onChange属性
+  display?:boolean;
 }
 
 export interface ImagesItem {
