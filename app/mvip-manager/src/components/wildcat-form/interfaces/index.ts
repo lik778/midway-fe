@@ -18,6 +18,12 @@ export interface OptionItem {
   value: any;
 }
 
+export interface OptionCheckBox {
+  label: string;
+  value: any;
+  disabled?: boolean;
+}
+
 export interface FormItem {
   width?: number; //长度
   label: string; // 页面标签
@@ -28,7 +34,7 @@ export interface FormItem {
   placeholder?: string; // 提示
   defaultValue?: any; // 默认值
   validator?: any; // 校验
-  options?: OptionItem[];
+  options?: OptionItem[] | OptionCheckBox[];
   maxLength?: number
   minLength?: number,
   inputWidth?: number,
@@ -40,7 +46,8 @@ export interface FormItem {
   images?: ImagesItem[],// 图片多种情况
   disabled?: boolean;
   showCount?:boolean;
-  onChange?:(...args:any)=>void
+  onChange?:(...args:any)=>void; //给配置文件项，增加了onChange属性
+  display?:boolean;
 }
 
 export interface ImagesItem {

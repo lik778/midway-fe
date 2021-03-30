@@ -9,7 +9,7 @@ import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import { UserEnterpriseInfo } from '@/interfaces/user';
+import { UserEnterpriseInfo, ThirdMetas } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
 import './index.less';
@@ -28,10 +28,9 @@ function CompanyInfoBase (props: any) {
   const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
   const steps = [ '基础信息', '联系方式']
+  const [thirdMetas, setThirdMetas] = useState<ThirdMetas[] | null>(null)
 
-
-
-  useEffect(() => {
+  useEffect(() => {``
     props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
   },[])
 
@@ -39,7 +38,8 @@ function CompanyInfoBase (props: any) {
   const getThirdCategoryMetasFn = async (catogoryName: any) =>{
     const res = await getThirdCategoryMetas(catogoryName);
     if (res?.success) {
-      console.log(res.data)
+      const metas=objToTargetObj(res.data,"label")
+      setThirdMetas(metas)
     }
   }
 
@@ -53,6 +53,7 @@ function CompanyInfoBase (props: any) {
     const { secondCategories, selectedSecondCategory } = companyInfo
     //secondCategories的值是对象，要转换为select组件value定义的类型
     const defaultCategory = objToTargetObj(selectedSecondCategory)
+    //const defaultMetas = objToTargetObj()
     setEnterpriseInfo({
       ...companyInfo,
       secondCategories: defaultCategory
@@ -63,21 +64,25 @@ function CompanyInfoBase (props: any) {
       if (companyNameLock && item.name === 'companyName') {
         item.disabled = true
       }
-      //修改config里类目选择组件的配置信息
+      //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.name === 'secondCategories') {
         item.defaultValue = defaultCategory
         item.onChange = getThirdCategoryMetasFn
         item.options = objToTargetObj(secondCategories)
       }
+
+
+      if (item.name === 'metaChecbox'){
+        item.options = thirdMetas!
+      }
+
       return item
     })
     setConfig({ ...config, children: newChildren })
     setFormLoading(false)
   }
-  const OnChangeCate = () => {
-    getThirdCategoryMetasFn
-  }
 
+  //会根据企业信息变更，重新渲染大表单
   useEffect(() => {
     initComponent()
   }, [companyInfo])

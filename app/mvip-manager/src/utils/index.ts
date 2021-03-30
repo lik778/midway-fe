@@ -133,13 +133,12 @@ export const isNotLocalEnv = (): boolean => {
 }
 /**
 *【用于】select组件value要求的string | string[]|number | number[]类型等。
-把类目的对象格式{"..":"..",..}，转换为[{key:..,value:..},..]格式。且判断初始为null情况。
+把类目的对象格式{"..":"..",..}，转换为[{key:..,value:..},..]格式。且判断初始为null直接返回。
 */
-export const objToTargetObj = <T,K extends keyof T>(obj:T) =>{
-  if(!obj)return
-  return Object.keys(obj).map((k) => ({ key: obj[k as K], value: k }))
+export const objToTargetObj = <T,K extends keyof T>(obj:T,key='key'):any[] =>{
+  if(!obj)return []
+  return Object.keys(obj).map((k) => ({ [key]: obj[k as K], value: k }))
   }
-
 
 /**
  * 用于mock数据使用

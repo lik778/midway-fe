@@ -143,28 +143,8 @@ const WildcatForm = (props: Props) => {
                  minLength={item.minLength || 1}
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
-            </FormItem>)}
-
-          //else if (item.type === FormType.categorySelect){
-            //企业资料增加类目选择。这里先mock数据
-            //item.options = [{"key":"1","value":"工装服务"},{"key":"2","value":"家庭装修"}];
-            //返回{zhuangxiu: "工装服务", jiatingzhuangxiu: "家庭装修"}
-            //const value = getEditData(item.name || '');
-            //useEffect(()=>{
-            //  if (value){const options = Object.keys(value)}
-            //}
-
-          //  return (
-          //    <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-          //      <Select
-          //        defaultValue={item.defaultValue}
-          //        >
-          //        {/*{ options && options.map(k => <Option key={k} value={k}>{value[k]}</Option>)}*/}
-          //      </Select>
-          //    </FormItem>
-          //  )
-          //}
-          else if(item.type === FormType.metaChecbox){
+            </FormItem>)
+            }else if(item.type === FormType.metaChecbox && item.display){
             const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
             const initialCheckedMetas = ["m35988"];
             return (
