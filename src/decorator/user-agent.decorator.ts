@@ -1,4 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { DeviceType } from '../enums/base';
 
 export const UserAgent = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
@@ -10,7 +11,7 @@ export const UserAgent = createParamDecorator(
         return isWap;
         break;
       case 'device':
-        return isWap ? 'wap' : 'pc'
+        return isWap ? DeviceType.WAP : DeviceType.PC
         break;
       case 'isAndroid':
         return /android/i.test(userAgent);

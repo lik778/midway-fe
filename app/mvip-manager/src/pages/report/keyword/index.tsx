@@ -61,7 +61,7 @@ function KeyWordPage(props: any) {
   const genMainTitle = (key: string) => {
     const tooltipsMap: any = {
       total: { name: '总关键词数', tips: '总关键词数包括快照（SEO）关键词数与广告（SEM）关键词数总和' },
-      mainTotal: { name: '快照关键词数', tips: '快照（SEO）关键词数包括店铺、帖子等关键词总和。' },
+      mainTotal: { name: '快照关键词数', tips: '快照（SEO）关键词数包括店铺、帖子等关键词总和。店铺仅2-180天内有创建过AI发文的才会统计关键词数。' },
       searchTotal: { name: '广告关键词数', tips: '广告（SEM）关键词总数包括凤鸣广告、标王广告、易慧推广告（SEM）关键词数总和。'  },
       yihuitui: { name: '易慧推广告关键词数', tips: '易慧推广告（SEM）关键词数仅含广告关键词，易慧推广告（SEM）总关键词请结合快照（SEO）关键词数一起分析。' }
     }
@@ -97,7 +97,7 @@ function KeyWordPage(props: any) {
         { !loading && <div>
           <div className="segment">
             <h2>概览<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
-              （说明：关键词数据每周更新一次；快照数据包含店铺、帖子、问答；广告数据包含标王广告、凤鸣广告、易慧推广告。）</span></h2>
+              （说明：关键词数据为7天内最新一次查询数据；快照数据包含店铺、帖子、问答；广告数据包含标王广告、凤鸣广告、易慧推广告。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
                 <CountTo title={genMainTitle('total')}
