@@ -18,7 +18,7 @@ import { getThirdCategoryMetas } from '@/api/user';
 
 const { Step } = Steps;
 
-function CompanyInfoBase (props: any) {
+function CompanyInfoBase(props: any) {
   const { companyInfo } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -26,17 +26,13 @@ function CompanyInfoBase (props: any) {
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
   const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
-  const steps = [ '基础信息', '联系方式']
+  const steps = ['基础信息', '联系方式']
 
 
 
-  useEffect(() => {
-    props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
-  },[])
-
-//获取三级类目meta
-  const getThirdCategoryMetasFn = async (catogoryName: any) =>{
-    console.log("catogoryName:",catogoryName)
+  //获取三级类目meta
+  const getThirdCategoryMetasFn = async (catogoryName: any) => {
+    console.log("catogoryName:", catogoryName)
     const res = await getThirdCategoryMetas(catogoryName);
     console.log(33)
     if (res?.success) {
@@ -45,46 +41,46 @@ function CompanyInfoBase (props: any) {
   }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
-  const initComponent = async()=>{
-    console.log("companyInfo:",companyInfo)
-    if (!companyInfo) return
-    const newChildren = config.children.map(item=>{
-      if(item.name === 'secondCategories'){
+  const initComponent = async () => {
+    console.log("companyInfo:", companyInfo)
+    if (!companyInfo) {
+      setFormLoading(true)
+      return
+    }
+
+    setEnterpriseInfo({
+      ...companyInfo,
+      secondCategories: companyInfo.selectedSecondCategory
+    })
+    const { companyNameLock } = companyInfo
+    const newChildren = config.children.map(item => {
+      if (companyNameLock && item.name === 'companyName') {
+        item.disabled = true
+      }
+      if (item.name === 'secondCategories') {
         item.defaultValue = companyInfo.selectedSecondCategory
         item.onChange = getThirdCategoryMetasFn
-        const {secondCategories} = companyInfo
-        const optionlist = Object.keys(secondCategories).map(k =>({key:k,value:secondCategories[k]}))
+        const { secondCategories } = companyInfo
+        const optionlist = Object.keys(secondCategories).map(k => ({ key: k, value: secondCategories[k] }))
         item.options = optionlist
       }
       return item
     })
-    console.log(11)
-  setConfig({...config,children:newChildren})
-  console.log({...config,children:newChildren})
- }
+    setConfig({ ...config, children: newChildren })
+    setFormLoading(false)
+  }
 
   //useEffect( ()=>{
   //  initComponent()
   //},[companyInfo])
 
-  const AAAOnChange=()=>{
+  const AAAOnChange = () => {
     //...
   }
+
   useEffect(() => {
     initComponent()
-    if (companyInfo) {
-      setEnterpriseInfo(companyInfo)
-      setFormLoading(false)
-      const { companyNameLock } = companyInfo
-      if (companyNameLock) {
-        const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
-        companyFiled.disabled = true
-        setConfig({...config})
-      }
-    } else {
-      setFormLoading(true)
-    }
-  }, [ companyInfo ])
+  }, [companyInfo])
 
   const next = () => {
     setHasEditFofrm(false)
@@ -100,7 +96,7 @@ function CompanyInfoBase (props: any) {
     }
     setLoading(true)
     //保存企业资料
-    console.log("企业资料入参values：",values)
+    console.log("企业资料入参values：", values)
     const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (success) {
@@ -114,30 +110,30 @@ function CompanyInfoBase (props: any) {
 
   return (
     <div>
-      <MainTitle title="基础资料"/>
+      <MainTitle title="基础资料" />
       <Steps current={currentStep} className="step-container">
         {steps.map(name => (
           <Step key={name} title={name} />
         ))}
       </Steps>
       <div className="container">
-        { formLoading && <Loading />}
+        {formLoading && <Loading />}
 
-        { !formLoading && currentStep == 0 &&
+        {!formLoading && currentStep == 0 &&
           <WildcatForm
-           formChange={() => setHasEditFofrm(true)}
-           useLabelCol={true} submit={nextStep}
-           editDataSource={enterpriseInfo} config={config} loading={loading}
+            formChange={() => setHasEditFofrm(true)}
+            useLabelCol={true} submit={nextStep}
+            editDataSource={enterpriseInfo} config={config} loading={loading}
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
                 <Col><Button loading={loading} className="btn"
-                      type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
+                  type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
               </Row>
-            }/>
+            } />
         }
-        { !formLoading && currentStep == 1 &&
-        <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
+        {!formLoading && currentStep == 1 &&
+          <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );

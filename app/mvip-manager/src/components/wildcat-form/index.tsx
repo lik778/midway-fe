@@ -65,7 +65,7 @@ const WildcatForm = (props: Props) => {
   return (
     <div>
       <Form form={form} name={props.config && props.config.name} labelCol={useLabelCol ? { span: 6 } : {}}
-        onFinish={props.submit} onValuesChange={props.formChange} className={props.className}>
+        onFinish={props.submit} onValuesChange={props.formChange} className={`form-styles ${props.className}`}>
         { props.config && props.config.children.map(item => {
           const patternList = item.patternList ? item.patternList : [];
           if (item.type === FormType.Input) {
@@ -79,7 +79,6 @@ const WildcatForm = (props: Props) => {
               <TextArea showCount style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Select) {
-            console.log("item.options:",item.options)
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
               <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}

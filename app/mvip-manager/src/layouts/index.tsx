@@ -8,17 +8,21 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
+import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION, GET_USER_INFO_ACTION } from '@/models/user';
+import { SHOP_NAMESPACE, GET_SHOP_STATUS_ACTION } from '@/models/shop'
+import { ConnectState } from '@/models/connect';
+
 import './index.less';
-// import config from '@/config/env';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const Layouts = (props: any) => {
+  const { userInfo } = props
   if (inIframe()) {
     return <Layout className="site-layout">
       <Content>
-        { React.cloneElement(props.children) }
+        {React.cloneElement(props.children)}
       </Content>
     </Layout>
   }
@@ -26,36 +30,29 @@ const Layouts = (props: any) => {
   if (!isLogin() && isNotLocalEnv()) {
     // const haojingHost = config().env;
     const haojingHost = '//www.baixing.com'
-    location.href = `${ haojingHost }/oz/login?redirect=${encodeURIComponent(location.href)}`
-    return <div></div>;
+    location.href = `${haojingHost}/oz/login?redirect=${encodeURIComponent(location.href)}`
+    return <></>;
   }
 
-  const [userInfo, setUserInfo] = useState<UserInfo | any>({})
-  const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
+
   // 处理overflow: hidden问题
   useEffect(() => removeOverflowY());
   useEffect(() => {
-    (async () => {
-      const res = await getUserBaseInfoApi();
-      if (res?.success) {
-        setUserInfo({...res.data})
-      }
-    })();
-    (async () => {
-      const res = await getCreateShopStatusApi()
-      if (res?.success) {
-        setShopStatus(res.data)
-      }
-    })()
+    /** 获取用户基础信息 */
+    props.dispatch({ type: `${USER_NAMESPACE}/${GET_USER_INFO_ACTION}` });
+    /** 获取用户企业信息 */
+    props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` });
+    /** 获取用户企业信息 */
+    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_STATUS_ACTION}` });
   }, [])
 
   useEffect(() => {
     const routeList = props.location.pathname.split('/')
     const isShopRoute = (routeList[1] === 'shop')
     setOpenKeys([routeList[1]])
-    setSelectedKeys([ isShopRoute ? 'list' : routeList[2]])
+    setSelectedKeys([isShopRoute ? 'list' : routeList[2]])
   }, [props.location.pathname])
 
   return (
@@ -66,7 +63,7 @@ const Layouts = (props: any) => {
             <div className="logo"></div>
           </Header>
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
-                onOpenChange={(openKeys: any) => {setOpenKeys(openKeys) }} id="base-menu">
+            onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
             <SubMenu style={{ marginBottom: '10px' }} key="company-info" title="企业资料" className="company-info">
               <Menu.Item key="base">
                 <Link to="/company-info/base">基础资料</Link>
@@ -100,7 +97,7 @@ const Layouts = (props: any) => {
                 <Link to="/ai-content/base-information">基础资料填写</Link>
               </Menu.Item>*/}
             </SubMenu>
-            { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">
+            {hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">
               {/*<Menu.Item key="dashboard">*/}
               {/*  <Link to="/report/dashboard">总览</Link>*/}
               {/*</Menu.Item>*/}
@@ -119,15 +116,17 @@ const Layouts = (props: any) => {
               {/*<Menu.Item key="remain">*/}
               {/*  <Link to="/report/remain">留资</Link>*/}
               {/*</Menu.Item>*/}
-            </SubMenu> }
+            </SubMenu>}
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1240 : '' }}>
           <Header className="layoutHeader">
-            <div>{userInfo.userName}</div>
+
+            <div>{userInfo && userInfo.userName}</div>
           </Header>
           <Content>
-            { React.cloneElement(props.children, { userInfo, shopStatus }) }
+            {props.children}
+            {/* {React.cloneElement(props.children, { userInfo, shopStatus })} */}
           </Content>
         </Layout>
       </Layout>
@@ -135,4 +134,9 @@ const Layouts = (props: any) => {
   );
 }
 
-export default connect()(Layouts)
+export default connect((state: ConnectState) => {
+  return {
+    companyInfo: state[USER_NAMESPACE].companyInfo,
+    userInfo: state[USER_NAMESPACE].userInfo,
+  }
+})(Layouts)
