@@ -39,6 +39,7 @@ export interface FormItem {
   images?: ImagesItem[],// 图片多种情况
   disabled?: boolean;
   showCount?:boolean;
+  onChange?:(...args:any)=>void;
 }
 
 export interface ImagesItem {

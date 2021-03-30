@@ -39,4 +39,6 @@ export const getUserVerifyListApi = (): Promise<ServiceResponse<VerifyItem[]>> =
 }
 
 //获取三级meta信息
-//export const getThirdCategoryMetas =():Promise
+export const getThirdCategoryMetas =(params: any):Promise<ServiceResponse<any>> => {
+  return postApiData('midway/backend/user/getThirdCategoryMetas', params)
+}

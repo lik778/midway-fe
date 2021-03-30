@@ -13,6 +13,9 @@ import { UserEnterpriseInfo } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
 import './index.less';
+import { getThirdCategoryMetas } from '@/api/user';
+
+
 const { Step } = Steps;
 
 function CompanyInfoBase (props: any) {
@@ -25,11 +28,50 @@ function CompanyInfoBase (props: any) {
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
   const steps = [ '基础信息', '联系方式']
 
+
+
   useEffect(() => {
     props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
   },[])
 
+//获取三级类目meta
+  const getThirdCategoryMetasFn = async (catogoryName: any) =>{
+    console.log("catogoryName:",catogoryName)
+    const res = await getThirdCategoryMetas(catogoryName);
+    console.log(33)
+    if (res?.success) {
+      console.log(res.data)
+    }
+  }
+
+  //wildcat-form公共组件搞不定的交互，这里去处理config
+  const initComponent = async()=>{
+    console.log("companyInfo:",companyInfo)
+    if (!companyInfo) return
+    const newChildren = config.children.map(item=>{
+      if(item.name === 'secondCategories'){
+        item.defaultValue = companyInfo.selectedSecondCategory
+        item.onChange = getThirdCategoryMetasFn
+        const {secondCategories} = companyInfo
+        const optionlist = Object.keys(secondCategories).map(k =>({key:k,value:secondCategories[k]}))
+        item.options = optionlist
+      }
+      return item
+    })
+    console.log(11)
+  setConfig({...config,children:newChildren})
+  console.log({...config,children:newChildren})
+ }
+
+  //useEffect( ()=>{
+  //  initComponent()
+  //},[companyInfo])
+
+  const AAAOnChange=()=>{
+    //...
+  }
   useEffect(() => {
+    initComponent()
     if (companyInfo) {
       setEnterpriseInfo(companyInfo)
       setFormLoading(false)
@@ -80,6 +122,7 @@ function CompanyInfoBase (props: any) {
       </Steps>
       <div className="container">
         { formLoading && <Loading />}
+
         { !formLoading && currentStep == 0 &&
           <WildcatForm
            formChange={() => setHasEditFofrm(true)}
