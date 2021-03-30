@@ -87,7 +87,7 @@ function BaxFlowPage(props: any) {
   // }
   return (
     <div className='page-report page-report-bax-flow'>
-      <MainTitle title="竞价流量报表"/>
+      <MainTitle title="广告流量报表"/>
       <div className="container">
         { loading && <Loading/> }
         { !loading && <div>
