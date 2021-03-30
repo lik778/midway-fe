@@ -12,6 +12,7 @@ export interface FormConfig {
   buttonConfig?: ButtonItem;
 }
 
+//这样定义，与实际的select反过来了，后期优化下
 export interface OptionItem {
   key: string;
   value: any;
@@ -39,7 +40,7 @@ export interface FormItem {
   images?: ImagesItem[],// 图片多种情况
   disabled?: boolean;
   showCount?:boolean;
-  onChange?:(...args:any)=>void;
+  onChange?:(...args:any)=>void
 }
 
 export interface ImagesItem {

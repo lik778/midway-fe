@@ -5,7 +5,6 @@ import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
-//import CateSelect from '@/components/wildcat-form/components/cate-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 
@@ -16,7 +15,7 @@ const FormItem = Form.Item;
 interface Props {
   config: FormConfig;
   onInit?(form: any): void;
-  //原始接口返回数据
+  //父传的表单数据
   editDataSource?: any;
   submit?(values: any): void;
   formChange?(changeValue: any, allValues: any): void;
@@ -48,8 +47,9 @@ const WildcatForm = (props: Props) => {
   }, [])
 
   const onChange = (newValue: any, name: string) => {
+    console.log("newValue",newValue)
     const configItem = props.config.children.find(item=>item.name === name)
-    //if(configItem?.onChange)configItem.onChange(newValue)
+    if(configItem?.onChange)configItem.onChange(newValue)
 
     const values = form.getFieldsValue()
     values[name] = newValue
@@ -79,9 +79,11 @@ const WildcatForm = (props: Props) => {
               <TextArea showCount style={{ width: item.inputWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength}/>
             </FormItem>)
           } else if (item.type === FormType.Select) {
-            console.log("item.options:",item.options)
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+              <Select
+                onChange={(newValue) => onChange(newValue, item.name || '')}
+                placeholder={item.placeholder} size='large'
+                style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </FormItem>)

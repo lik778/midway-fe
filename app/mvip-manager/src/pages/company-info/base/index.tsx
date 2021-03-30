@@ -14,6 +14,7 @@ import { errorMessage, successMessage } from '@/components/message';
 import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
 import './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
+import { objToTargetObj } from '@/utils';
 
 
 const { Step } = Steps;
@@ -34,57 +35,52 @@ function CompanyInfoBase (props: any) {
     props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })
   },[])
 
-//获取三级类目meta
+  //获取三级类目meta
   const getThirdCategoryMetasFn = async (catogoryName: any) =>{
-    console.log("catogoryName:",catogoryName)
     const res = await getThirdCategoryMetas(catogoryName);
-    console.log(33)
     if (res?.success) {
       console.log(res.data)
     }
   }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
-  const initComponent = async()=>{
-    console.log("companyInfo:",companyInfo)
-    if (!companyInfo) return
-    const newChildren = config.children.map(item=>{
-      if(item.name === 'secondCategories'){
-        item.defaultValue = companyInfo.selectedSecondCategory
+  const initComponent = async () => {
+    if (!companyInfo) {
+      setFormLoading(true)
+      return
+    }
+
+    const { secondCategories, selectedSecondCategory } = companyInfo
+    //secondCategories的值是对象，要转换为select组件value定义的类型
+    const defaultCategory = objToTargetObj(selectedSecondCategory)
+    setEnterpriseInfo({
+      ...companyInfo,
+      secondCategories: defaultCategory
+    })
+
+    const { companyNameLock } = companyInfo
+    const newChildren = config.children.map(item => {
+      if (companyNameLock && item.name === 'companyName') {
+        item.disabled = true
+      }
+      //修改config里类目选择组件的配置信息
+      if (item.name === 'secondCategories') {
+        item.defaultValue = defaultCategory
         item.onChange = getThirdCategoryMetasFn
-        const {secondCategories} = companyInfo
-        const optionlist = Object.keys(secondCategories).map(k =>({key:k,value:secondCategories[k]}))
-        item.options = optionlist
+        item.options = objToTargetObj(secondCategories)
       }
       return item
     })
-    console.log(11)
-  setConfig({...config,children:newChildren})
-  console.log({...config,children:newChildren})
- }
-
-  //useEffect( ()=>{
-  //  initComponent()
-  //},[companyInfo])
-
-  const AAAOnChange=()=>{
-    //...
+    setConfig({ ...config, children: newChildren })
+    setFormLoading(false)
   }
+  const OnChangeCate = () => {
+    getThirdCategoryMetasFn
+  }
+
   useEffect(() => {
     initComponent()
-    if (companyInfo) {
-      setEnterpriseInfo(companyInfo)
-      setFormLoading(false)
-      const { companyNameLock } = companyInfo
-      if (companyNameLock) {
-        const  companyFiled: any = config.children.find((x: any) => x.name === 'companyName')
-        companyFiled.disabled = true
-        setConfig({...config})
-      }
-    } else {
-      setFormLoading(true)
-    }
-  }, [ companyInfo ])
+  }, [companyInfo])
 
   const next = () => {
     setHasEditFofrm(false)
@@ -122,7 +118,6 @@ function CompanyInfoBase (props: any) {
       </Steps>
       <div className="container">
         { formLoading && <Loading />}
-
         { !formLoading && currentStep == 0 &&
           <WildcatForm
            formChange={() => setHasEditFofrm(true)}
