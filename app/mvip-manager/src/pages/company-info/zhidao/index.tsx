@@ -6,68 +6,84 @@ import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
-import { UserEnterpriseInfo } from '@/interfaces/user';
-import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
-import { saveEnterpriseForShopApi, getZhidaoMaterial } from '@/api/user'
+import { UserEnterpriseInfo, ZhidaoMaterial } from '@/interfaces/user';
+import { USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import { setZhidaoMaterial, getZhidaoMaterial } from '@/api/user'
 import Loading from '@/components/loading';
 import { errorMessage, successMessage } from '@/components/message';
+import { ConnectState } from '@/models/connect';
 import './index.less';
+import { objToTargetObj } from '@/utils';
 
-function CompanyInfoBase(props: any) {
+function CompanyInfoZhudao(props: any) {
   const { companyInfo } = props
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
-  const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
+  const [enterpriseInfo, setEnterpriseInfo] = useState<ZhidaoMaterial | null>(null)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(zhidaoInfoForm));
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (companyInfo) {
-      setEnterpriseInfo(companyInfo)
-      setFormLoading(false)
-      setConfig({ ...config })
-    } else {
-      setFormLoading(true)
-    }
-  }, [companyInfo])
-
-  const getFomeData = async () => {
+  const getFormData = async () => {
+    setFormLoading(true)
     const res = await getZhidaoMaterial()
+    setEnterpriseInfo(res.data)
+    const siteUrls = {
+      "https://www.baixing.com/": "测试site1",
+      "https://www.baixing.com/chibi/": "测试site2"
+    }
     console.log(res);
+    const newChildren = config.children.map(item => {
+      if (item.name === 'siteUrl') {
+        item.options = objToTargetObj(siteUrls)
+      }
+      return item
+    })
+    setConfig({ ...config, children: newChildren })
+    setFormLoading(false)
   }
 
   useEffect(() => {
-    getFomeData()
+    getFormData()
   }, [])
 
-  const sumbit = async (values: any) => {
+  const sumbit = async (values: ZhidaoMaterial) => {
+    console.log(values)
     setLoading(true)
-    const { success, message, data } = await saveEnterpriseForShopApi(values)
-    setLoading(false)
+    const { success, message, data } = await setZhidaoMaterial(values)
     if (success) {
       successMessage('保存成功')
     } else {
       errorMessage(message || '出错了')
     }
+    setLoading(false)
   }
+
+  const formChange = (...arg: any) => {
+    console.log(arg)
+  }
+
   return (
     <div>
       <MainTitle title="问答素材" />
       <div className="container">
-        {/*{ formLoading && <Loading />}*/}
-        <WildcatForm
-          editDataSource={enterpriseInfo}
-          useLabelCol={true}
-          submit={sumbit}
-          config={config}
-          submitBtn={
-            <Row className="save-base-info-box">
-              <Col span={3}></Col>
-              <Col><Button loading={loading} className="btn"
-                type="primary" size="large" htmlType="submit">保存</Button></Col>
-            </Row>
-          }
-        />
+        {formLoading && <Loading />}
+        {!formLoading &&
+          <WildcatForm
+            editDataSource={enterpriseInfo}
+            useLabelCol={true}
+            submit={sumbit}
+            config={config}
+            formChange={formChange}
+            submitBtn={
+              <Row className="save-base-info-box">
+                <Col span={3}></Col>
+                <Col><Button loading={loading} className="btn"
+                  type="primary" size="large" htmlType="submit">保存</Button></Col>
+              </Row>
+            }
+          />
+        }
       </div>
     </div>)
 }
-export default connect(companyInfoStateToProps)(CompanyInfoBase)
+
+export default CompanyInfoZhudao

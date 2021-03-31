@@ -11,7 +11,7 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
 import { UserEnterpriseInfo, ThirdMetas } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
-import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import {  USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
 import './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
 import { objToTargetObj } from '@/utils';
@@ -51,10 +51,10 @@ function CompanyInfoBase(props: any) {
     //secondCategories的值是对象，要转换为select组件value定义的类型
     const defaultCategory = objToTargetObj(selectedSecondCategory)
     //const defaultMetas = objToTargetObj()
-    setEnterpriseInfo({
-      ...companyInfo,
-      secondCategories: defaultCategory
-    })
+    // setEnterpriseInfo({
+    //   ...companyInfo,
+    //   secondCategories: defaultCategory
+    // })
 
     const { companyNameLock } = companyInfo
     const newChildren = config.children.map(item => {

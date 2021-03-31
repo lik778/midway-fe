@@ -5,6 +5,8 @@ import {
   UserEnterpriseInfo,
   SaveEnterpriseContactInfoApiParams,
   SaveEnterpriseForShopParams,
+  ZhidaoMaterialData,
+  ZhidaoMaterial
 } from '@/interfaces/user';
 import { ServiceResponse } from '@/interfaces/api';
 
@@ -40,16 +42,18 @@ export const getUserVerifyListApi = (): Promise<ServiceResponse<VerifyItem[]>> =
 
 //获取三级meta信息
 //postApiData至少要有2个参数，只有一个时要加个{}
-export const getThirdCategoryMetas =(params: any):Promise<ServiceResponse<any>> => {
+export const getThirdCategoryMetas = (params: any): Promise<ServiceResponse<any>> => {
   return postApiData(`midway/backend/user/getThirdCategoryMetas?categoryId=${params}`, {})
 }
 
 
 /** 获取问答素材库 */
-export const getZhidaoMaterial = (): Promise<ServiceResponse<{
-  banner1: string,
-  banner2: string,
-  siteUrl: any
-}>> => {
+export const getZhidaoMaterial = (): Promise<ServiceResponse<ZhidaoMaterialData>> => {
   return postApiData('midway/backend/user/getZhidaoMaterial', {})
+}
+
+
+/** 获取问答素材库 */
+export const setZhidaoMaterial = (params: ZhidaoMaterial): Promise<ServiceResponse<null>> => {
+  return postApiData('midway/backend/user/saveZhidaoMaterial', params)
 }

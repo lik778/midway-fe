@@ -8,7 +8,7 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION, GET_USER_INFO_ACTION } from '@/models/user';
+import {  USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION, GET_USER_INFO_ACTION } from '@/models/user';
 import { SHOP_NAMESPACE, GET_SHOP_STATUS_ACTION } from '@/models/shop'
 import { ConnectState } from '@/models/connect';
 

@@ -66,3 +66,14 @@ export interface ThirdMetas {
   label: string;
   value: string
 }
+
+export interface ZhidaoMaterial{
+  banner1: string,
+  banner2: string,
+  siteUrl: any
+}
+
+export interface ZhidaoMaterialData extends ZhidaoMaterial{
+  siteUrls: any
+}
+

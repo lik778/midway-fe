@@ -14,9 +14,9 @@ import { QQCustomService } from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { isNewUserApi } from '@/api/shop';
-import { companyInfoStateToProps, SET_COMPANY_INFO_ACTION, USER_NAMESPACE } from '@/models/user';
+import {  SET_COMPANY_INFO_ACTION, USER_NAMESPACE } from '@/models/user';
 import './index.less';
-
+import { ConnectState } from '@/models/connect';
 
 function ContactForm (props: any) {
   const { companyInfo } = props
@@ -106,4 +106,9 @@ function ContactForm (props: any) {
     </div>
   )
 }
-export default connect(companyInfoStateToProps)(ContactForm)
+
+export default connect((state: ConnectState) => {
+  return {
+    companyInfo: state[USER_NAMESPACE].companyInfo
+  }
+})(ContactForm)

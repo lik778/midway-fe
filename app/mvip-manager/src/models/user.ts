@@ -23,13 +23,6 @@ const defaultState: UserModelState = {
   userInfo: null
 }
 
-export const companyInfoStateToProps = (state: any): { [key: string]: UserEnterpriseInfo } => {
-  const { companyInfo } = state[USER_NAMESPACE]
-  return { companyInfo }
-}
-
-
-
 export default <Model>{
   namespace: USER_NAMESPACE,
   state: cloneDeepWith(defaultState),
