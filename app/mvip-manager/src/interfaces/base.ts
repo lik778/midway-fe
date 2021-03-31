@@ -23,3 +23,10 @@ export interface BaseProps {
   dispacth?: Dispatch<any>;
   history?: History;
 }
+
+export interface MidMenuItem {
+  menuName: string;
+  key: string;
+  path?: string;
+  menuList?: MidMenuItem[];
+}

@@ -19,7 +19,7 @@ import { objToTargetObj } from '@/utils';
 
 const { Step } = Steps;
 
-function CompanyInfoBase (props: any) {
+function CompanyInfoBasePage (props: any) {
   const { companyInfo } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -143,4 +143,7 @@ function CompanyInfoBase (props: any) {
   );
 }
 
-export default connect(companyInfoStateToProps)(CompanyInfoBase)
+const WrapperCompanyInfoBasePage: any = connect(companyInfoStateToProps)(CompanyInfoBasePage)
+WrapperCompanyInfoBasePage.wrappers = ['@/wrappers/path-auth']
+
+export default WrapperCompanyInfoBasePage
