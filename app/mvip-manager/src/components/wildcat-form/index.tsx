@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { Button, Form, Input, Select, Checkbox } from 'antd';
-import { FormConfig, OptionCheckBox } from '@/components/wildcat-form/interfaces';
+import { FormConfig, OptionCheckBox , OptionItem } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';

@@ -125,7 +125,7 @@ export default (props: ZhidaoCreateJobProp) => {
     rules: [{
       required: true,
       // message: `请选择地区！(3-5个类型)`,
-      validator: (rule: Rule, value: any) => validateItem('suffix', 3, 5, rule, interrogativeWord),
+      validator: (rule: Rule, value: any) => validateItem('suffix', 3, 5, rule, interrogativeWord),/** 这里用了state里的interrogativeWord */
     }],
   }, {
     label: '辅助词',

@@ -42,7 +42,6 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
         dataIndex: 'question',
         title: '问题标题',
         upDataLoading,
-        // TODO;
         handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
       }),
     },

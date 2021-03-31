@@ -16,7 +16,7 @@ const defaultState: ShopModelState = {
   curShopInfo: null,
   shopTotal: 0,
   shopList: null,
-  shopStatus: null
+  shopStatus: {} as ShopStatus
 }
 
 export const SHOP_NAMESPACE = 'shop'
