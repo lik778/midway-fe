@@ -3,6 +3,7 @@ import { Layout, Menu, ConfigProvider } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import { getUserBaseInfoApi } from '@/api/user'
+import { getMenuApi } from '@/api/common'
 import { UserInfo } from '@/interfaces/user';
 import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
@@ -48,6 +49,13 @@ const Layouts = (props: any) => {
       if (res?.success) {
         setShopStatus(res.data)
       }
+    })()
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      const res = await getMenuApi()
+      console.log(res)
     })()
   }, [])
 
