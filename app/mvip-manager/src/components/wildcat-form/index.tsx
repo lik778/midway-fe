@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { Button, Form, Input, Select, Checkbox } from 'antd';
-import { FormConfig, OptionItem } from '@/components/wildcat-form/interfaces';
+import { FormConfig, OptionCheckBox } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
@@ -33,6 +33,8 @@ const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
   useEffect(() => {
+    console.log("大表单开始数据：",editDataSource)
+
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
     } if (isEmptyObject(editDataSource)) {
@@ -48,8 +50,10 @@ const WildcatForm = (props: Props) => {
   }, [])
 
   const onChange = (newValue: any, name: string) => {
+    console.log("表单选择项",newValue)
     const configItem = props.config.children.find(item=>item.name === name)
-    if(configItem?.onChange)configItem.onChange(newValue)
+    //如果配置项里有onChange
+    if(configItem?.onChange){configItem.onChange(newValue,form)}
 
     const values = form.getFieldsValue()
     values[name] = newValue
@@ -143,14 +147,15 @@ const WildcatForm = (props: Props) => {
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
             </FormItem>)
-            }else if(item.type === FormType.metaChecbox && item.display){
-            const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
-            const initialCheckedMetas = ["m35988"];
+            }else if(item.type === FormType.MetaChecbox && item.display){
+            //const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
+            //const initialCheckedMetas = ["m35988"];
             return (
               <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <CheckboxGroup options={metas}
+                <CheckboxGroup
+                options={item.options as OptionCheckBox[]}
                 //这个defaultValue提示报可能不能用，待查
-                defaultValue={initialCheckedMetas}
+                //defaultValue={initialCheckedMetas}
                 />
               </FormItem>
             )
