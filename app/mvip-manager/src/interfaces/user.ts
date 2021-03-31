@@ -12,6 +12,11 @@ export interface SaveEnterpriseForShopParams {
   companyDescription: string;
   companyName: string;
   promoteImg: string;
+  //知道企业资料合并新加入参字段
+  thirdMetas: string[];
+  secondCategory: string[];
+  employeeCount: number;
+  companyYears: number;
 }
 
 export interface SaveEnterpriseContactInfoApiParams {
@@ -55,4 +60,9 @@ export interface KF53Info {
 export interface QQItem {
   name: string;
   qq: string;
+}
+
+export interface ThirdMetas {
+  label: string;
+  value: string
 }

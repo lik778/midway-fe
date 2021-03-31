@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Select, Checkbox } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
@@ -15,6 +15,7 @@ const FormItem = Form.Item;
 interface Props {
   config: FormConfig;
   onInit?(form: any): void;
+  //父传的表单数据
   editDataSource?: any;
   submit?(values: any): void;
   formChange?(changeValue: any, allValues: any): void;
@@ -27,6 +28,7 @@ interface Props {
 
 
 const WildcatForm = (props: Props) => {
+  //通过 Form.useForm 对表单数据域进行交互
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
   useEffect(() => {
@@ -45,14 +47,20 @@ const WildcatForm = (props: Props) => {
   }, [])
 
   const onChange = (newValue: any, name: string) => {
+    console.log("newValue",newValue)
+    const configItem = props.config.children.find(item=>item.name === name)
+    if(configItem?.onChange)configItem.onChange(newValue)
+
     const values = form.getFieldsValue()
     values[name] = newValue
+    //给表格数据加选择后的数据
     form.setFieldsValue(values)
   }
 
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
+  const CheckboxGroup = Checkbox.Group;
 
   return (
     <div>
@@ -72,7 +80,10 @@ const WildcatForm = (props: Props) => {
             </FormItem>)
           } else if (item.type === FormType.Select) {
             return (<FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-              <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }}>
+              <Select
+                onChange={(newValue) => onChange(newValue, item.name || '')}
+                placeholder={item.placeholder} size='large'
+                style={{ width: item.inputWidth }}>
                 { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </FormItem>)
@@ -133,6 +144,27 @@ const WildcatForm = (props: Props) => {
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
             </FormItem>)
+            }else if(item.type === FormType.metaChecbox && item.display){
+            const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
+            const initialCheckedMetas = ["m35988"];
+            return (
+              <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
+                <CheckboxGroup options={metas}
+                //这个defaultValue提示报可能不能用，待查
+                defaultValue={initialCheckedMetas}
+                />
+              </FormItem>
+            )
+          //引用原先的
+          //  {
+          //    this.state.fuwuMeta.length > 0 ?
+          //        <FormItem {...formItemLayout} label="服务内容" required>
+          //            {/* 这里有个坑： defaultValue要想再次渲染，给其添加一个Key，值为defaultValue才可以 */}
+          //            <CheckboxGroup options={this.state.fuwuMeta} onChange={this.onChangeCheckedMeta}
+          //                            defaultValue={this.state.initialCheckedMetas}
+          //                            key={this.state.initialCheckedMetas}/>
+          //        </FormItem> : ''
+          //}
           }
         }) }
         {

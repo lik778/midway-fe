@@ -4,6 +4,6 @@ import { ListRes } from '@/interfaces/base';
 
 // 获取左侧菜单
 export const getMenuApi = (): Promise<ServiceResponse<ListRes<any>>> => {
-  return postApiData('menu/getMenuList')
+  return postApiData('midway/menu/getMenuList')
 }
 
