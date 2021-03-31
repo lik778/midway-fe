@@ -6,17 +6,17 @@ export interface VerifyItem {
 }
 
 export interface SaveEnterpriseForShopParams {
-  area: string[];
+  area: any;
   companyAddress: string;
   companyAlias: string;
   companyDescription: string;
   companyName: string;
-  promoteImg: string;
-  //知道企业资料合并新加入参字段
-  thirdMetas: string[];
-  secondCategory: string[];
-  employeeCount: number;
   companyYears: number;
+  employeeCount: number;
+  firstCategory?: string;
+  promoteImg: string;
+  secondCategory: string;
+  thirdMetas: string[];
 }
 
 export interface SaveEnterpriseContactInfoApiParams {
@@ -33,20 +33,28 @@ export interface UserInfo {
 }
 
 export interface UserEnterpriseInfo {
-  areaMap: any;
-  companyAddress: string;
-  companyAlias: string;
-  companyDescription: string;
   companyName: string;
-  contactMobile: string;
-  contactName: string;
+  companyAlias: string;
+  area: {[key:string]:string};
+  companyAddress: string;
+  companyDescription: string;
   promoteImg: string;
-  qqMap: any;
+  employeeCount: number;
+  companyYears: number;
+  firstCategory: {[key:string]:string};
+  selectedSecondCategory: {[key:string]:string};
+  secondCategories: {[key:string]:string};
+  selectedThirdMetas: {[key:string]:string};
+  thirdMetas: {[key:string]:string};
+  contactName: string;
+  contactMobile: string;
   wechat: string;
+  qqMap: {[key:string]:string};
   companyNameLock: boolean;
-  kf53Info: KF53Info;
   kefuStatus: KFStatus;
+  kf53Info: KF53Info;
 }
+
 
 export interface KF53Info {
   userId: string;
@@ -55,6 +63,7 @@ export interface KF53Info {
   bname: string;
   style: string;
   password: string;
+  styleUrl: any;
 }
 
 export interface QQItem {
