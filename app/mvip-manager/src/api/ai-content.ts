@@ -38,16 +38,6 @@ export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceRespo
   return postApiData('midway/backend/ai/create', params)
 }
 
-/** 获得文章对应选词列表 **/
-export const getAiChooseWordListApi = (params: { taskId: number | null }): Promise<ServiceResponse<ChooseWord>> => {
-  return postApiData('midway/backend/ai/hotword', params)
-}
-
-/** 提交选词列表 **/
-export const submitAiChooseWordListApi = (params: { taskId: number | null, notSelectWordIds: number[] }): Promise<ServiceResponse<null>> => {
-  return postApiData('midway/backend/ai/select', params)
-}
-
 /** 判断显示页面 */
 export const getCreateQuestionTaskPageStatus = (): Promise<ServiceResponse<CreateQuestionTaskPageStatus>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/checkCreateAiTask', {})
