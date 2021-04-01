@@ -11,7 +11,7 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
 import { UserEnterpriseInfo, ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
-import {  USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import { USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
 import './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
 import { objToTargetObj } from '@/utils';
@@ -20,7 +20,7 @@ import { ConnectState } from '@/models/connect';
 
 const { Step } = Steps;
 
-function CompanyInfoBase(props: {companyInfo:UserEnterpriseInfo}) {
+function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispatch: any }) {
   const { companyInfo } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<SaveEnterpriseForShopParams | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -36,19 +36,23 @@ function CompanyInfoBase(props: {companyInfo:UserEnterpriseInfo}) {
     const res = await getThirdCategoryMetas(catogoryName);
     if (res?.success) {
       const metas = objToTargetObj(res.data, "label")
-      console.log("metas:",metas)
+      console.log("metas:", metas)
       setThirdMetas(metas)
     }
   }
 
-  const onChangeCategory = (catogoryName:any, form: any)=>{
+  const onChangeCategory = (catogoryName: any, form: any) => {
     //切换类目后，清空thirdMetas数据
-    form.setFieldsValue({thirdMetas:[]})
+    form.setFieldsValue({ thirdMetas: [] })
     getThirdCategoryMetasFn(catogoryName)
   }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
   const initComponent = async () => {
+    if (!companyInfo) {
+      setFormLoading(true)
+      return
+    }
     const { companyAddress, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, secondCategories, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
     //secondCategories的值是对象，要转换为select组件value定义的类型
     //const defaultCategory = objToTargetObj(selectedSecondCategory)
@@ -68,25 +72,26 @@ function CompanyInfoBase(props: {companyInfo:UserEnterpriseInfo}) {
     })
     setFormLoading(false)
 
-    if (selectedSecondCategory && Object.keys(selectedSecondCategory).length > 0 ){
+    if (selectedSecondCategory && Object.keys(selectedSecondCategory).length > 0) {
       getThirdCategoryMetasFn(Object.keys(selectedSecondCategory)[0])
       return
       //备注：getThirdCategoryMetasFn里获得thirdMetas后，会触发执行updateConfigData
     }
 
-    console.log("selectedThirdMetas",Object.keys(selectedThirdMetas))
+    console.log("selectedThirdMetas", Object.keys(selectedThirdMetas))
     updateConfigData()
   }
   useEffect(() => {
-    if (!companyInfo) {
-      setFormLoading(true)
-      return
-    }
+
     updateConfigData()
   }, [thirdMetas])
 
 
-  const updateConfigData = ()=>{
+  const updateConfigData = () => {
+    if (!companyInfo) {
+      setFormLoading(true)
+      return
+    }
     const { companyNameLock, secondCategories, selectedSecondCategory } = companyInfo
     const newChildren = config.children.map(item => {
       //目的：禁止企业名称改写
@@ -109,15 +114,10 @@ function CompanyInfoBase(props: {companyInfo:UserEnterpriseInfo}) {
       }
       return item
     })
-    setConfig({ ...config, children: newChildren})
-}
+    setConfig({ ...config, children: newChildren })
+  }
   //会根据企业信息变更，重新渲染大表单
   useEffect(() => {
-    if (!companyInfo) {
-      setFormLoading(true)
-      return
-    }
-
     initComponent()
   }, [companyInfo])
 
@@ -151,9 +151,9 @@ function CompanyInfoBase(props: {companyInfo:UserEnterpriseInfo}) {
       errorMessage(message || '出错啦')
     }
   }
-  const formChangeFn = (value: any, values: any)=>{
+  const formChangeFn = (value: any, values: any) => {
     setHasEditFofrm(true)
-    console.log("表单实时数据",values)
+    console.log("表单实时数据", values)
   }
 
   return (
@@ -189,6 +189,6 @@ function CompanyInfoBase(props: {companyInfo:UserEnterpriseInfo}) {
 
 export default connect((state: ConnectState) => {
   return {
-    companyInfo: state[USER_NAMESPACE].companyInfo
+    companyInfo: state[USER_NAMESPACE].companyInfo,
   }
 })(CompanyInfoBase)

@@ -29,6 +29,7 @@ interface FormItemListItem {
   auto?: number
   tip: string,
   rules: Rule[],
+  readOnly?: boolean
   placeholder: string,
 }
 
@@ -118,24 +119,27 @@ export default (props: ZhidaoCreateJobProp) => {
   }, {
     label: '疑问词',
     key: 'suffix',
-    placeholder: '',
+    placeholder: '请点击疑问词类型选择',
     min: 30,
     max: 50,
     tip: '3-5个类型',
     rules: [{
       required: true,
       // message: `请选择地区！(3-5个类型)`,
-      validator: (rule: Rule, value: any) => validateItem('suffix', 3, 5, rule, interrogativeWord),
+      validator: (rule: Rule, value: any) => validateItem('suffix', 3, 5, rule, interrogativeWord),/** 这里用了state里的interrogativeWord */
     }],
+    readOnly: true
   }, {
     label: '辅助词',
     key: 'modal',
-    placeholder: '举例：\n在线等！\n有大佬知道的吗？\n求高手帮助',
-    min: 0,
-    max: 10000,
-    auto: 10000,
+    placeholder: '请点击通用辅助词按钮获取',
+    // placeholder: '举例：\n在线等！\n有大佬知道的吗？\n求高手帮助',
+    min: 20,
+    max: 20,
+    auto: 20,
     tip: '',
     rules: [],
+    readOnly: true
   }], [interrogativeWord])
 
   /** 当页面处于进行中状态时 需要禁止操作 */
@@ -180,16 +184,6 @@ export default (props: ZhidaoCreateJobProp) => {
       total[item] = childObj
       return total
     }, {} as InterrogativeDataVo)
-
-
-    // return ['品牌宣传', '价格决策', '品质决策', '联系方式', '注意事项'].map((item, index) => ({
-    //   id: index + 1,
-    //   name: item,
-    //   child: childList.map(cItem => ({
-    //     id: index * 10 + cItem.id,
-    //     content: `${item}-${cItem.content}`
-    //   }))
-    // }))
   }
 
   const getCreateQuestionTaskBasicDataFn = async () => {
@@ -242,8 +236,8 @@ export default (props: ZhidaoCreateJobProp) => {
   const getComponentStatus = async () => {
     // TODO;
     setComponentBasicData(null)
-    const res = await getCreateQuestionTaskPageStatus()
-    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'create')
+    // const res = await getCreateQuestionTaskPageStatus()
+    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'SHOW_CREATE')
     // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
     // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'showQuestionList')
     if (res.success) {
@@ -367,11 +361,15 @@ export default (props: ZhidaoCreateJobProp) => {
     setUpdataLoading(true)
     // TODO;
     const res = await submitCoreWords(requestData)
+    setUpdataLoading(false)
+    if (res.success) {
+      setModalVisible(false)
+      initCompoment()
+    } else {
+      errorMessage(res.message || '提交失败')
+    }
     // const res = await mockData('data', {})
     // 提交之后 重新请求用户状态
-    setUpdataLoading(false)
-    setModalVisible(false)
-    initCompoment()
   }
 
   const taskBuildSuccess = () => {
@@ -413,7 +411,7 @@ export default (props: ZhidaoCreateJobProp) => {
                 } validateTrigger={item.key === 'suffix' ? 'onChange' : 'onChange'}>
                   <TextArea rows={15}
                     placeholder={item.placeholder}
-                    readOnly={item.key === 'suffix'}
+                    readOnly={item.readOnly}
                     disabled={componentBasicData ? !componentBasicData.canCreateTask : true}
                   />
                 </FormItem>
@@ -428,9 +426,9 @@ export default (props: ZhidaoCreateJobProp) => {
           }
         </Row>
       </Form>
-      <Button className={styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问题</Button>
+      <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问题</Button>
       {
-        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>您当前没有资源创建问答ai任务</div>
+        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>您当前没有足够资源创建问答ai任务</div>
       }
     </div>
 

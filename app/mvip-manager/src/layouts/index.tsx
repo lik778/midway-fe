@@ -8,7 +8,7 @@ import { getCreateShopStatusApi } from '@/api/shop';
 import { ShopStatus } from '@/interfaces/shop';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import {  USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION, GET_USER_INFO_ACTION } from '@/models/user';
+import { USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION, GET_USER_INFO_ACTION } from '@/models/user';
 import { SHOP_NAMESPACE, GET_SHOP_STATUS_ACTION } from '@/models/shop'
 import { ConnectState } from '@/models/connect';
 
@@ -39,13 +39,18 @@ const Layouts = (props: any) => {
 
   // 处理overflow: hidden问题
   useEffect(() => removeOverflowY());
+
+  const getCommonData = async () => {
+    await Promise.all([ /** 获取用户基础信息 */
+      props.dispatch({ type: `${USER_NAMESPACE}/${GET_USER_INFO_ACTION}` }),
+      /** 获取用户企业信息 */
+      props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` }),
+      /** 获取用户企业信息 */
+      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_STATUS_ACTION}` })])
+  }
+
   useEffect(() => {
-    /** 获取用户基础信息 */
-    props.dispatch({ type: `${USER_NAMESPACE}/${GET_USER_INFO_ACTION}` });
-    /** 获取用户企业信息 */
-    props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` });
-    /** 获取用户企业信息 */
-    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_STATUS_ACTION}` });
+    getCommonData()
   }, [])
 
   useEffect(() => {

@@ -82,6 +82,7 @@ function ShopPage(props: any) {
   }
 
   const notInterceptCreateShop = (): boolean => {
+    console.log(shopStatus.isUserPerfect)
     setEditVisible(!shopStatus.isUserPerfect)
     return shopStatus.isUserPerfect || false
   }
@@ -157,7 +158,7 @@ function ShopPage(props: any) {
   )
 
   useEffect(() => {
-    if (notEmptyObject(shopStatus)) {
+    if (shopStatus && notEmptyObject(shopStatus)) {
       setEditVisible(!shopStatus.isUserPerfect)
       setIsSuffix(shopStatus.domainType === 'SUFFIX')
       setIsNewShopDisabled(!(shopStatus?.isTicketAvailable))
