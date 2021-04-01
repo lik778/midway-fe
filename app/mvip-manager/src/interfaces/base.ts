@@ -13,9 +13,9 @@ export interface PageParams {
 }
 
 export interface ListRes<T> {
-  result: T;
+  result: T | null;
   totalPage: number;
-  totalRecord: number;
+  totalRecord: number | null;
   /** 有部分接口没有返回这个pageSize,所以注释掉 */
   // pageSize: number;
 }

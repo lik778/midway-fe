@@ -15,7 +15,6 @@ export default (props: any) => {
   const [activeKey, setActiveKey] = useState<ActiveKey>()
 
   useEffect(() => {
-    console.log(history)
     // @ts-ignore
     // 这里是history.location的类型定义里没有query字段
     const { activeKey } = history.location.query

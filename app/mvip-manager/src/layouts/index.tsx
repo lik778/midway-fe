@@ -44,9 +44,7 @@ const Layouts = (props: any) => {
     await Promise.all([ /** 获取用户基础信息 */
       props.dispatch({ type: `${USER_NAMESPACE}/${GET_USER_INFO_ACTION}` }),
       /** 获取用户企业信息 */
-      props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` }),
-      /** 获取用户企业信息 */
-      props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_STATUS_ACTION}` })])
+      props.dispatch({ type: `${USER_NAMESPACE}/${GET_COMPANY_INFO_ACTION}` })])
   }
 
   useEffect(() => {

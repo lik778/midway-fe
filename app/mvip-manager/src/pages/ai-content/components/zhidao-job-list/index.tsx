@@ -65,7 +65,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     // }, 'taskId', page, 10)
     if (res.success) {
       setAiList(addKeyForListData(res.data.result || [], page))
-      setTotal(res.data.totalRecord)
+      setTotal(res.data.totalRecord || 0)
     } else {
       errorMessage(res.message || '暂无进行的任务，你可以去新建任务')
     }
