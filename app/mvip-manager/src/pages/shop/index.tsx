@@ -158,7 +158,7 @@ function ShopPage(props: any) {
 
   console.log(props)
   useEffect(() => {
-    if (shopStatus !== null && notEmptyObject(shopStatus)) {
+    if (shopStatus && notEmptyObject(shopStatus)) {
       setEditVisible(!shopStatus.isUserPerfect)
       setIsSuffix(shopStatus.domainType === 'SUFFIX')
       setIsNewShopDisabled(!(shopStatus?.isTicketAvailable))

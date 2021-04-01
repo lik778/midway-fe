@@ -9,7 +9,7 @@ import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/
 import { AxiosResponse } from 'axios';
 
 @Injectable()
-export class ManagementService {
+export class ZhidaoService {
   host: string;
   haojingHost: string;
   constructor(
@@ -17,7 +17,7 @@ export class ManagementService {
     private readonly requestService: RequestService,
     private readonly logService: LogService,
     private readonly configService: ConfigService) {
-    this.host = configService.get('services.midway-service.host');
+    this.host = configService.get('services.zhidao-service.host');
     this.haojingHost = configService.get('haojing');
   }
 
@@ -35,7 +35,7 @@ export class ManagementService {
     return headers;
   }
 
-  public managementRedirectTo(code: number, res: Response, callback: any) {
+  public zhidaoRedirectTo(code: number, res: Response, callback: any) {
     if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
       res.redirect(`${this.haojingHost}/oz/login`)
       return
@@ -47,12 +47,12 @@ export class ManagementService {
     }
   }
 
-  public async canEnterManagement(req: Request, res: Response): Promise<any> {
+  public async canEnterZhidao(req: Request, res: Response): Promise<any> {
     return this.httpService.post(`${this.host}/api/midway/backend/shop/init`, {},
       { headers: this.setApiAHeaders(req.cookies) }).toPromise()
   }
 
-  public getManagementData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
+  public getZhidaoData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']

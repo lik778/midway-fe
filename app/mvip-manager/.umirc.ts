@@ -22,6 +22,10 @@ export default defineConfig({
       "target": "http://localhost:7001",
       "changeOrigin": true
     },
+    "/zhidao/api": {
+      "target": "http://localhost:7001",
+      "changeOrigin": true
+    },
     "/haojing/*": {
       "target": "http://localhost:7001",
       "changeOrigin": true

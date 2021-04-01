@@ -13,11 +13,12 @@ import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
+import { ShopStatus } from '@/interfaces/shop';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const ShopCreateJob = (props: any) => {
+const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
   const [form] = Form.useForm();
   const defaultCounters: any = {};
   Object.keys(wordsItemConfig).forEach((k: string) => defaultCounters[k] = 0)
@@ -141,8 +142,8 @@ const ShopCreateJob = (props: any) => {
                       <div>已输入:  {counters[x.name]} / {wordsItemConfig[k].max}</div>
                       <div className="ai-content-actions">
                         {x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button>}
-                        {x.name === 'wordD' && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
-                          {translateProductText('aiRecommond', shopStatus.domainType)}</Button>}
+                        {x.name === 'wordD' && shopStatus && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
+                          {translateProductText('aiRecommond', shopStatus && shopStatus.domainType)}</Button>}
                         <Button onClick={() => clearAll(x.name)}>清空</Button>
                       </div>
                     </Col>
