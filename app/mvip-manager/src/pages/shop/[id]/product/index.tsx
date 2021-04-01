@@ -13,7 +13,7 @@ import { CateItem, RouteParams } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
 
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
-export default (props: any) => {
+const ShopProductPage = (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [productFormVisible, setProductFormVisible] = useState<boolean>(false);
   const [productList, setProductList] = useState<any>([]);
@@ -90,3 +90,7 @@ export default (props: any) => {
       </div>
   </div>)
 }
+
+ShopProductPage.wrappers = ['@/wrappers/path-auth']
+
+export default ShopProductPage

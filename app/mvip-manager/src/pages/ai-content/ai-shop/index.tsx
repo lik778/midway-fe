@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import MainTitle from '@/components/main-title';
 import { Tabs } from 'antd';
 import CreateJob from '../components/shop-create-job';
@@ -6,7 +6,7 @@ import JobList from '../components/shop-job-list';
 
 const { TabPane } = Tabs;
 
-export default (props: any) => {
+const AIShopPage = (props: any) => {
     return (<div>
         <MainTitle title="店铺AI"/>
         <Tabs defaultActiveKey="job-list">
@@ -19,3 +19,7 @@ export default (props: any) => {
         </Tabs>
     </div>)
 }
+
+AIShopPage.wrappers = ['@/wrappers/path-auth']
+
+export default AIShopPage

@@ -5,13 +5,11 @@ import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
-import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
-import { UserEnterpriseInfo, ZhidaoMaterial } from '@/interfaces/user';
-import { USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import { FormConfig } from '@/components/wildcat-form/interfaces';
+import { ZhidaoMaterial } from '@/interfaces/user';
 import { setZhidaoMaterial, getZhidaoMaterial } from '@/api/user'
 import Loading from '@/components/loading';
 import { errorMessage, successMessage } from '@/components/message';
-import { ConnectState } from '@/models/connect';
 import './index.less';
 import { objToTargetObj } from '@/utils';
 
@@ -85,5 +83,7 @@ function CompanyInfoZhudao(props: any) {
       </div>
     </div>)
 }
+
+CompanyInfoZhudao.wrappers = ['@/wrappers/path-auth']
 
 export default CompanyInfoZhudao

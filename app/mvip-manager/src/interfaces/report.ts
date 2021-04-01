@@ -131,4 +131,6 @@ export interface KeywordDetailListData {
   platform: PlatformType;
   product: BaxProductType | CateProductType;
   ranking: number;
+  url: string;
+  isExcellentWord: boolean;
 }

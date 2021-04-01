@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'antd';
 import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
@@ -26,20 +26,10 @@ function ContactForm (props: any) {
   const [formData, setFormData] = useState<any>(null);
   const [formInstance, setFormInstance] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
-
-  useEffect(() => {
-    if (companyInfo) {
-      const { qqMap } = companyInfo
-      const list = (qqMap && Object.keys(qqMap).map(k => {
-        return { qq: k, name: qqMap[k] }
-      })) || []
-      setQQList(list)
-    }
-  }, [ companyInfo ])
+  const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
   const formChange = (changeValue: any, allValues: any) => {
-    setHasEditFofrm(true)
+    setHasEditForm(true)
     setFormData(allValues)
   }
 
@@ -91,13 +81,13 @@ function ContactForm (props: any) {
       </Form.Item>
       <Form.Item label="智能接待系统">
         <KF53 editDataSource={companyInfo} onChange={(values) => {
-          setHasEditFofrm(true)
+          setHasEditForm(true)
           setKf53Data(values) }}/>
       </Form.Item>
       <Form.Item label="QQ客服">
-        <QQCustomService values={qqList}  onChange={(list: QQItem[]) => {
-          setHasEditFofrm(true)
-          setQQList(list) }}/>
+        <QQCustomService companyInfo={companyInfo}  onChange={(list: QQItem[]) => {
+          setHasEditForm(true)
+          setQQList(list)}} />
         <div className="contact-form-box" >
           <Button disabled={!hasEditForm} loading={loading} className="btn" type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
