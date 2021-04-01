@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, ConfigProvider } from 'antd';
-import { Link } from 'umi';
-import { connect } from 'dva';
+import React, { useState, useEffect } from 'react'
+import { Layout, Menu, ConfigProvider } from 'antd'
+import { Link } from 'umi'
+import { connect } from 'dva'
 import { getUserBaseInfoApi } from '@/api/user'
-import { getMenuApi } from '@/api/common'
-import { UserInfo } from '@/interfaces/user';
-import { getCreateShopStatusApi } from '@/api/shop';
-import { ShopStatus } from '@/interfaces/shop';
-import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
-import './index.less';
-import { errorMessage } from '@/components/message';
-import { MidMenuItem } from '@/interfaces/base';
+import { UserInfo } from '@/interfaces/user'
+import { getCreateShopStatusApi } from '@/api/shop'
+import { ShopStatus } from '@/interfaces/shop'
+import zhCN from 'antd/lib/locale/zh_CN'
+import { removeOverflowY, inIframe, notInIframe,
+  hasReportAuth, isLogin, isNotLocalEnv } from '@/utils'
+import { MidMenuItem } from '@/interfaces/base'
+import { baseMapStateToProps, baseMapDispatchToProps } from '@/models/base'
+import './index.less'
 // import config from '@/config/env';
 
 const { SubMenu } = Menu;
@@ -25,7 +25,6 @@ const Layouts = (props: any) => {
       </Content>
     </Layout>
   }
-  console.log('321')
   // 用户未登录
   if (!isLogin() && isNotLocalEnv()) {
     // const haojingHost = config().env;
@@ -33,13 +32,13 @@ const Layouts = (props: any) => {
     location.href = `${ haojingHost }/oz/login?redirect=${encodeURIComponent(location.href)}`
     return <div></div>;
   }
-  const [menuList, setMenuList] = useState<MidMenuItem[]>([])
+  const { menuList, getMenuList } = props
   const [userInfo, setUserInfo] = useState<UserInfo | any>({})
   const [shopStatus, setShopStatus] = useState<ShopStatus | any>({})
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   // 处理overflow: hidden问题
-  useEffect(() => removeOverflowY());
+  useEffect(() => removeOverflowY())
   useEffect(() => {
     (async () => {
       const res = await getUserBaseInfoApi();
@@ -53,13 +52,7 @@ const Layouts = (props: any) => {
         setShopStatus(res.data)
       }
     })()
-  }, [])
-
-  useEffect(() => {
-    (async () => {
-      const { success, data, message } = await getMenuApi()
-      success ? setMenuList(data.menuList) : errorMessage(message)
-    })()
+    getMenuList()
   }, [])
 
   useEffect(() => {
@@ -79,11 +72,11 @@ const Layouts = (props: any) => {
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
                 onOpenChange={(openKeys: any) => {setOpenKeys(openKeys) }} id="base-menu">
             {
-              menuList && menuList.map(subMenu => {
+              menuList && menuList.map((subMenu: MidMenuItem) => {
                   return (
                     <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
                              className={subMenu.key}>
-                      { subMenu.menuList && subMenu.menuList.map(menu => {
+                      { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
                         return (
                           <Menu.Item key={menu.key}>
                             <Link to={menu.path || ''}>{ menu.menuName }</Link>
@@ -129,4 +122,4 @@ const Layouts = (props: any) => {
   );
 }
 
-export default connect()(Layouts)
+export default connect(baseMapStateToProps, baseMapDispatchToProps)(Layouts)

@@ -5,15 +5,14 @@ import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
-import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
+import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { UserEnterpriseInfo } from '@/interfaces/user';
-import { companyInfoStateToProps, USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import { companyInfoStateToProps } from '@/models/user';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import Loading from '@/components/loading';
 import { errorMessage, successMessage } from '@/components/message';
 import './index.less';
 
-function CompanyInfoBase (props: any){
+function ZhidaoBase (props: any){
     const { companyInfo } = props
     const [formLoading, setFormLoading] = React.useState<boolean>(false);
     const [enterpriseInfo, setEnterpriseInfo] = useState<UserEnterpriseInfo | null>(null)
@@ -60,4 +59,9 @@ function CompanyInfoBase (props: any){
             </div>
         </div>)
 }
-export default connect(companyInfoStateToProps)(CompanyInfoBase)
+
+const WrapperZhidaoBasePage: any = connect(companyInfoStateToProps)(ZhidaoBase)
+
+WrapperZhidaoBasePage.wrappers = ['@/wrappers/path-auth']
+
+export default WrapperZhidaoBasePage

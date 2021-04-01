@@ -304,8 +304,11 @@ function ShopPage(props: any) {
   )
 }
 
-export default connect((state: any): { [key: string]: ShopInfo[] | number } => {
+const WrapperShopPage: any = connect((state: any): { [key: string]: ShopInfo[] | number } => {
   const { shopList, shopTotal } = state[SHOP_NAMESPACE]
   return { shopList, shopTotal }
 })(ShopPage)
 
+WrapperShopPage.wrappers = ['@/wrappers/path-auth']
+
+export default WrapperShopPage
