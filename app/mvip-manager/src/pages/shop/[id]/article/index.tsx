@@ -13,7 +13,7 @@ import './index.less';
 import { errorMessage } from '@/components/message';
 import Recharge from '@/components/recharge';
 
-export default (props: any) => {
+const ShopArticlePage = (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [articleFormVisible, setArticleFormVisible] = useState<boolean>(false);
   const [articleList, setArticleList] = useState<any>([]);
@@ -97,3 +97,8 @@ export default (props: any) => {
     </div>
   </div>)
 }
+
+
+ShopArticlePage.wrappers = ['@/wrappers/path-auth']
+
+export default ShopArticlePage

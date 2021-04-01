@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from "umi";
+import { useHistory } from "umi";
 import MainTitle from '@/components/main-title';
 import { Tabs } from 'antd';
 import CreateJob from '../components/zhidao-create-job';
@@ -10,7 +10,7 @@ const { TabPane } = Tabs;
 
 export type ActiveKey = 'job-list' | 'create-job' | 'basic-material'
 
-export default (props: any) => {
+const AiZhidaoPage = (props: any) => {
   const history = useHistory<{ query: { activeKey?: string, page?: string } }>()
   const [activeKey, setActiveKey] = useState<ActiveKey>()
 
@@ -46,3 +46,7 @@ export default (props: any) => {
     </Tabs>
   </>)
 }
+
+AiZhidaoPage.wrappers = ['@/wrappers/path-auth']
+
+export default AiZhidaoPage

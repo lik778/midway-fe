@@ -1,9 +1,10 @@
-import { AnyAction } from 'redux';
-import { EffectsCommandMap, Model } from 'dva';
-import { cloneDeepWith } from 'lodash';
-import { errorMessage } from '@/components/message';
-import { getEnterpriseForShopApi, getUserBaseInfoApi } from '@/api/user';
-import { UserEnterpriseInfo, UserInfo } from '@/interfaces/user';
+import { AnyAction } from 'redux'
+import { Dispatch, EffectsCommandMap, Model } from 'dva'
+import { cloneDeepWith } from 'lodash'
+import { errorMessage } from '@/components/message'
+import { getEnterpriseForShopApi, getUserBaseInfoApi } from '@/api/user'
+import { UserEnterpriseInfo, UserInfo } from '@/interfaces/user'
+import { getFullAction } from '@/utils/model'
 
 export interface UserModelState {
   companyInfo: UserEnterpriseInfo | null;
@@ -21,6 +22,13 @@ export const SET_COMPANY_INFO_ACTION = 'setCompanyInfoAction'
 const defaultState: UserModelState = {
   companyInfo: null,
   userInfo: null
+}
+
+export const userMapDispatchToProps = (dispatch: Dispatch): any => {
+  return {
+    getCompanyInfo: () => dispatch({ type: getFullAction(USER_NAMESPACE, GET_COMPANY_INFO_ACTION) }),
+    getUserInfo: () => dispatch({ type: getFullAction(USER_NAMESPACE, GET_USER_INFO_ACTION) })
+  }
 }
 
 export default <Model>{

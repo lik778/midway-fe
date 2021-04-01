@@ -78,7 +78,6 @@ function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispat
       //备注：getThirdCategoryMetasFn里获得thirdMetas后，会触发执行updateConfigData
     }
 
-    console.log("selectedThirdMetas", Object.keys(selectedThirdMetas))
     updateConfigData()
   }
   useEffect(() => {
@@ -187,8 +186,12 @@ function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispat
   );
 }
 
-export default connect((state: ConnectState) => {
+const WrapperCompanyInfoBase: any = connect((state: ConnectState) => {
   return {
     companyInfo: state[USER_NAMESPACE].companyInfo,
   }
 })(CompanyInfoBase)
+
+WrapperCompanyInfoBase.wrappers = ['@/wrappers/path-auth']
+
+export default WrapperCompanyInfoBase

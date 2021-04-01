@@ -1,9 +1,10 @@
 import { getShopInfoApi, getShopListApi, getCreateShopStatusApi } from '@/api/shop';
 import { AnyAction } from 'redux';
-import { EffectsCommandMap, Model } from 'dva';
+import { Dispatch, EffectsCommandMap, Model } from 'dva';
 import { cloneDeepWith, isNull, isNumber, isObject } from 'lodash'
 import { ShopInfo, ShopStatus } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
+import { getFullAction } from '@/utils/model'
 
 export interface ShopModelState {
   curShopInfo: ShopInfo | null;
@@ -30,6 +31,13 @@ export const GET_SHOP_TOTAL_ACTION = 'getShopTotalAction'
 export const SET_SHOP_TOTAL_ACTION = 'setShopTotalAction'
 export const GET_SHOP_STATUS_ACTION = 'getShopStatusAction'
 export const SET_SHOP_STATUS_ACTION = 'setShopStatusAction'
+
+
+export const shopMapDispatchToProps = (dispatch: Dispatch): any => {
+  return {
+    getShopStatus: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_STATUS_ACTION) }),
+  }
+}
 
 export default <Model>{
   namespace: SHOP_NAMESPACE,

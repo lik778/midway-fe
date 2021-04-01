@@ -4,7 +4,7 @@ import ShopNav from './components/shop-nav'
 import { ShopBasisType } from '@/enums'
 import './index.less'
 
-export default (props: any) => {
+const ShopNavPage = (props: any) => {
   return (
       <div>
        <BasisHeader {...props} type={ShopBasisType.NAV}/>
@@ -15,4 +15,7 @@ export default (props: any) => {
     );
 }
 
+ShopNavPage.wrappers = ['@/wrappers/path-auth']
+
+export default ShopNavPage
 
