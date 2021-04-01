@@ -13,16 +13,16 @@ export const request = axios.create({
   responseType: "json",
   withCredentials: true,
   headers: {
-  "Content-Type": "application/json;charset=utf-8"
+    "Content-Type": "application/json;charset=utf-8"
   }
 })
 
 const apiPrefix = '/management/api'
-const bePrefix = '/api/midway/backend/'
+// const bePrefix = '/api/midway/backend/'
 
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res?.data)
-  }, (err: AxiosError) => {
+}, (err: AxiosError) => {
   return Promise.resolve(err.response && err.response.data)
 })
 
@@ -33,15 +33,26 @@ export const postApi = (url: string, data: ApiReqParams, headers?: any): Promise
 
 // tips: 这边传输数据返回格式还是太随意了，需要修改
 export const getApi = (url: string, params: any): Promise<any> => {
-  return request.get(url, {  params });
+  return request.get(url, { params });
 }
 
-export const postApiData = (path: string, params:any, headers?: any): Promise<any> => {
+
+export const postApiData = (path: string, params: any, headers?: any): Promise<any> => {
   const p = JSON.stringify(params)
-  return postApi(apiPrefix, { method: 'post', path: `${bePrefix}${path}`,
-  params: p,
+  return postApi(apiPrefix, {
+    method: 'post', path:`/api/${path}`,
+    params: p,
   }, headers)
 }
+
+export const postZhidaoApiData = (path: string, params: any, headers?: any): Promise<any> => {
+  const p = JSON.stringify(params)
+  return postApi('/zhidao/api', {
+    method: 'post', path:`/api/${path}`,
+    params: p,
+  }, headers)
+}
+
 
 export const setShopHeader = (shopId: number) => {
   // 通过header来传递shopId

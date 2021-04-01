@@ -1,20 +1,22 @@
-import { getShopInfoApi, getShopListApi } from '@/api/shop';
+import { getShopInfoApi, getShopListApi, getCreateShopStatusApi } from '@/api/shop';
 import { AnyAction } from 'redux';
 import { EffectsCommandMap, Model } from 'dva';
 import { cloneDeepWith, isNull, isNumber, isObject } from 'lodash'
-import { ShopInfo } from '@/interfaces/shop';
+import { ShopInfo, ShopStatus } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
 
-interface ShopModelState {
+export interface ShopModelState {
   curShopInfo: ShopInfo | null;
   shopTotal: number | undefined;
   shopList: ShopInfo[] | null;
+  shopStatus: ShopStatus | null
 }
 
 const defaultState: ShopModelState = {
   curShopInfo: null,
   shopTotal: 0,
-  shopList: null
+  shopList: null,
+  shopStatus: {} as ShopStatus
 }
 
 export const SHOP_NAMESPACE = 'shop'
@@ -26,12 +28,14 @@ export const GET_CUR_SHOP_INFO_ACTION = 'getCurShopInfoAction'
 export const SET_CUR_SHOP_INFO_ACTION = 'setCurShopInfoAction'
 export const GET_SHOP_TOTAL_ACTION = 'getShopTotalAction'
 export const SET_SHOP_TOTAL_ACTION = 'setShopTotalAction'
+export const GET_SHOP_STATUS_ACTION = 'getShopStatusAction'
+export const SET_SHOP_STATUS_ACTION = 'setShopStatusAction'
 
 export default <Model>{
   namespace: SHOP_NAMESPACE,
   state: cloneDeepWith(defaultState),
   effects: {
-    [GET_CUR_SHOP_INFO_ACTION]: function * (action: AnyAction, effects: EffectsCommandMap) {
+    [GET_CUR_SHOP_INFO_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
       const { put, select } = effects
       const shopList: ShopInfo[] | null = yield select((state: any) => state[SHOP_NAMESPACE].shopList)
       if (isNull(shopList)) {
@@ -43,12 +47,12 @@ export default <Model>{
         }
       }
     },
-    [GET_SHOP_LIST_ACTION]: function * (action: AnyAction, effects: EffectsCommandMap) {
+    [GET_SHOP_LIST_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
       const { put, select } = effects
       const shopModelState: ShopModelState = yield select((state: any) => state[SHOP_NAMESPACE])
       const { shopList, shopTotal } = shopModelState
       if (isNull(shopList)) {
-        const { success, message, data} = yield getShopListApi()
+        const { success, message, data } = yield getShopListApi()
         if (success) {
           yield put({ type: SET_SHOP_LIST_ACTION, payload: data.result })
           yield put({ type: SET_SHOP_TOTAL_ACTION, payload: data.totalRecord })
@@ -59,7 +63,16 @@ export default <Model>{
         yield put({ type: SET_SHOP_LIST_ACTION, payload: shopList })
         yield put({ type: SET_SHOP_TOTAL_ACTION, payload: shopTotal })
       }
-    }
+    },
+    [GET_SHOP_STATUS_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
+      const { put } = effects
+      const { success, message, data } = yield getCreateShopStatusApi()
+      if (success) {
+        yield put({ type: SET_SHOP_STATUS_ACTION, payload: data })
+      } else {
+        errorMessage(message)
+      }
+    },
   },
   reducers: {
     [SET_CUR_SHOP_INFO_ACTION](state: ShopModelState, action: AnyAction) {
@@ -73,10 +86,13 @@ export default <Model>{
       return { ...state, curShopInfo: cloneDeepWith(curShopInfo) };
     },
     [SET_SHOP_LIST_ACTION](state: ShopModelState, action: AnyAction) {
-      return { ...state, shopList: [ ...action.payload ] };
+      return { ...state, shopList: [...action.payload] };
     },
     [SET_SHOP_TOTAL_ACTION](state: ShopModelState, action: AnyAction) {
       return { ...state, shopTotal: action.payload };
+    },
+    [SET_SHOP_STATUS_ACTION](state: ShopModelState, action: AnyAction) {
+      return { ...state, shopStatus: action.payload };
     }
   }
 }

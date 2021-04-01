@@ -2,10 +2,10 @@ import { AnyAction } from 'redux';
 import { EffectsCommandMap, Model } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import { errorMessage } from '@/components/message';
-import { getEnterpriseForShopApi } from '@/api/user';
+import { getEnterpriseForShopApi, getUserBaseInfoApi } from '@/api/user';
 import { UserEnterpriseInfo, UserInfo } from '@/interfaces/user';
 
-interface UserModelState {
+export interface UserModelState {
   companyInfo: UserEnterpriseInfo | null;
   userInfo: UserInfo | null;
 }
@@ -14,7 +14,7 @@ export const USER_NAMESPACE = 'user'
 export const GET_USER_INFO_ACTION = 'getUserInfoAction'
 export const SET_USER_INFO_ACTION = 'setUserInfoAction'
 
-// 公司信息
+// 企业资料信息companyInfo
 export const GET_COMPANY_INFO_ACTION = 'getCompanyInfoAction'
 export const SET_COMPANY_INFO_ACTION = 'setCompanyInfoAction'
 
@@ -23,24 +23,34 @@ const defaultState: UserModelState = {
   userInfo: null
 }
 
-export const companyInfoStateToProps = (state: any): { [key: string]: UserEnterpriseInfo } => {
-  const { companyInfo } = state[USER_NAMESPACE]
-  return { companyInfo }
-}
-
 export default <Model>{
   namespace: USER_NAMESPACE,
   state: cloneDeepWith(defaultState),
   effects: {
-    [GET_COMPANY_INFO_ACTION]: function *(action: AnyAction, effects: EffectsCommandMap) {
+    [GET_COMPANY_INFO_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
       const { select, put } = effects
       let companyInfo: UserEnterpriseInfo = yield select((state: any) => state[USER_NAMESPACE].companyInfo)
       if (companyInfo) {
         yield put({ type: SET_COMPANY_INFO_ACTION, payload: companyInfo });
       } else {
-        const { success, message, data } =  yield getEnterpriseForShopApi()
+        const { success, message, data } = yield getEnterpriseForShopApi()
         if (success) {
           yield put({ type: SET_COMPANY_INFO_ACTION, payload: data });
+        } else {
+          errorMessage(message)
+          return
+        }
+      }
+    },
+    [GET_USER_INFO_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
+      const { select, put } = effects
+      let userInfo: UserInfo = yield select((state: any) => state[USER_NAMESPACE].userInfo)
+      if (userInfo) {
+        yield put({ type: SET_USER_INFO_ACTION, payload: userInfo });
+      } else {
+        const { success, message, data } = yield getUserBaseInfoApi()
+        if (success) {
+          yield put({ type: SET_USER_INFO_ACTION, payload: data });
         } else {
           errorMessage(message)
           return
@@ -51,7 +61,11 @@ export default <Model>{
   reducers: {
     [SET_COMPANY_INFO_ACTION]: (state: UserModelState, action: AnyAction) => {
       const companyInfo = action.payload
-      return { ...state, companyInfo  };
+      return { ...state, companyInfo };
+    },
+    [SET_USER_INFO_ACTION]: (state: UserModelState, action: AnyAction) => {
+      const userInfo = action.payload
+      return { ...state, userInfo };
     }
   }
 }
