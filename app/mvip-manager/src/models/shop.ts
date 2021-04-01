@@ -28,8 +28,8 @@ export const GET_CUR_SHOP_INFO_ACTION = 'getCurShopInfoAction'
 export const SET_CUR_SHOP_INFO_ACTION = 'setCurShopInfoAction'
 export const GET_SHOP_TOTAL_ACTION = 'getShopTotalAction'
 export const SET_SHOP_TOTAL_ACTION = 'setShopTotalAction'
-export const GET_SHOP_STATUS_ACTION = 'getShopTotalAction'
-export const SET_SHOP_STATUS_ACTION = 'setShopTotalAction'
+export const GET_SHOP_STATUS_ACTION = 'getShopStatusAction'
+export const SET_SHOP_STATUS_ACTION = 'setShopStatusAction'
 
 export default <Model>{
   namespace: SHOP_NAMESPACE,

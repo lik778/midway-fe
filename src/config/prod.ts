@@ -5,7 +5,7 @@ export default {
       host: 'http://midway-service'
     },
     'zhidao-service': {
-      host: 'http://midway-service'
+      host: 'http://zhidao-service'
     },
     'reporting-service': {
       host: 'http://api.baixing.com.cn'
