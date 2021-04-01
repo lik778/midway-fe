@@ -68,7 +68,7 @@ export default <Model>{
       const { put } = effects
       const { success, message, data } = yield getCreateShopStatusApi()
       if (success) {
-        yield put({ type: SET_CUR_SHOP_INFO_ACTION, payload: data })
+        yield put({ type: SET_SHOP_STATUS_ACTION, payload: data })
       } else {
         errorMessage(message)
       }
@@ -90,6 +90,9 @@ export default <Model>{
     },
     [SET_SHOP_TOTAL_ACTION](state: ShopModelState, action: AnyAction) {
       return { ...state, shopTotal: action.payload };
+    },
+    [SET_SHOP_STATUS_ACTION](state: ShopModelState, action: AnyAction) {
+      return { ...state, shopStatus: action.payload };
     }
   }
 }

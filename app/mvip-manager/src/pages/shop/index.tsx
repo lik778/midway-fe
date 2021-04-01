@@ -82,6 +82,7 @@ function ShopPage(props: any) {
   }
 
   const notInterceptCreateShop = (): boolean => {
+    console.log(shopStatus.isUserPerfect)
     setEditVisible(!shopStatus.isUserPerfect)
     return shopStatus.isUserPerfect || false
   }
@@ -156,7 +157,6 @@ function ShopPage(props: any) {
     [shopSiteRes]
   )
 
-  console.log(props)
   useEffect(() => {
     if (shopStatus && notEmptyObject(shopStatus)) {
       setEditVisible(!shopStatus.isUserPerfect)
