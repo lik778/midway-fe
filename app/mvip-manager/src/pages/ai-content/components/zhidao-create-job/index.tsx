@@ -35,7 +35,7 @@ interface FormItemListItem {
 
 
 const validateItem: (key: string, min: number, max: number, rule: Rule, value: string | InterrogativeListItem[]) => Promise<any> = (key, min, max, rule, value) => {
-  if (key === 'area' || key === 'prefix' || key === 'coreWords') {
+  if (key === 'area' || key === 'prefix' || key === 'coreWords' || key === 'modal') {
     const dataList = value && typeof value === 'string' ? value.split('\n').filter((item: string) => item !== '') : []
     if (dataList.length < min) {
       return Promise.reject(new Error(`词语数不得少于${min}个`));
@@ -137,8 +137,11 @@ export default (props: ZhidaoCreateJobProp) => {
     min: 20,
     max: 20,
     auto: 20,
-    tip: '',
-    rules: [],
+    tip: '20个',
+    rules: [{
+      required: true,
+      validator: (rule: Rule, value: any) => validateItem('modal', 20, 20, rule, value),
+    }],
     readOnly: true
   }], [interrogativeWord])
 
@@ -236,8 +239,8 @@ export default (props: ZhidaoCreateJobProp) => {
   const getComponentStatus = async () => {
     // TODO;
     setComponentBasicData(null)
-    // const res = await getCreateQuestionTaskPageStatus()
-    const res = await mockData<CreateQuestionTaskPageStatus>('data', 'SHOW_CREATE')
+    const res = await getCreateQuestionTaskPageStatus()
+    // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'SHOW_CREATE')
     // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
     // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'showQuestionList')
     if (res.success) {
