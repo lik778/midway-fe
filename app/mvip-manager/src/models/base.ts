@@ -3,7 +3,8 @@ import { cloneDeepWith, isNull } from 'lodash'
 import { MidMenuItem } from '@/interfaces/base'
 import { getMenuApi } from '@/api/common'
 import { errorMessage } from '@/components/message'
-import { AnyAction } from 'redux';
+import { AnyAction } from 'redux'
+import { getFullAction } from '@/utils/model'
 
 
 interface BaseModelState {
@@ -20,9 +21,6 @@ const BASE_NAMESPACE = 'base'
 export const GET_MENU_LIST_ACTION = 'getMenuListAction'
 export const SET_MENU_LIST_ACTION = 'setMenuListAction'
 export const SET_MENU_AUTH_LIST_ACTION = 'setMenuAuthListAction'
-
-
-const getFullAction = (action: string) => { return `${BASE_NAMESPACE}/${action}` }
 
 
 const traverseMenuList = (menuList: MidMenuItem[]): string[] => {
@@ -45,7 +43,7 @@ export const baseMapStateToProps = (state: any): any => {
 
 export const baseMapDispatchToProps = (dispatch: Dispatch): any => {
   return {
-    getMenuList: () => dispatch({ type: getFullAction(GET_MENU_LIST_ACTION) })
+    getMenuList: () => dispatch({ type: getFullAction(BASE_NAMESPACE, GET_MENU_LIST_ACTION) })
   }
 }
 

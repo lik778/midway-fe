@@ -45,6 +45,15 @@ export const postApiData = (path: string, params: any = {}, headers?: any): Prom
   }, headers)
 }
 
+export const postZhidaoApiData = (path: string, params: any, headers?: any): Promise<any> => {
+  const p = JSON.stringify(params)
+  return postApi('/zhidao/api', {
+    method: 'post', path:`/api/${path}`,
+    params: p,
+  }, headers)
+}
+
+
 export const setShopHeader = (shopId: number) => {
   // 通过header来传递shopId
   const headers: any = {}

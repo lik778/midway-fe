@@ -28,7 +28,6 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   // 给页面挂上page
   useEffect(() => {
     if (activeKey === 'job-list') {
-      console.log(history)
       // @ts-ignore
       // 这里是history.location的类型定义里没有query字段
       const query = history.location.query
@@ -36,6 +35,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
       // 当url上不存在page 则取组件内的
       if (!query.page || isNaN(Number(query.page))) {
         replaceUrl(page)
+        getList()
       } else {
         setPage(Number(query.page))
       }
@@ -49,6 +49,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   }
 
   const getList = useDebounce(async () => {
+    if (activeKey !== 'job-list') return
     setListLoading(true)
     // TODO;
     const res = await getQuestionTaskListApi({ page, size: 10 })
@@ -83,7 +84,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
         return formatTime(text)
       }
     },
-    { title: '预计发布数量', dataIndex: 'expectNum', align: 'center' },
+    { title: '预计发布数量', dataIndex: 'expectPublishedNum', align: 'center' },
     {
       title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
     },

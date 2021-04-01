@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { Button, Form, Input, Select, Checkbox } from 'antd';
-import { FormConfig } from '@/components/wildcat-form/interfaces';
+import { FormConfig, OptionCheckBox , OptionItem } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
@@ -8,6 +8,7 @@ import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 
+const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
@@ -32,6 +33,8 @@ const WildcatForm = (props: Props) => {
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
   useEffect(() => {
+    console.log("大表单开始数据：",editDataSource)
+
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
     } if (isEmptyObject(editDataSource)) {
@@ -47,9 +50,10 @@ const WildcatForm = (props: Props) => {
   }, [])
 
   const onChange = (newValue: any, name: string) => {
-    console.log("newValue",newValue)
+    console.log("表单选择项",newValue)
     const configItem = props.config.children.find(item=>item.name === name)
-    if(configItem?.onChange)configItem.onChange(newValue)
+    //如果配置项里有onChange
+    if(configItem?.onChange){configItem.onChange(newValue,form)}
 
     const values = form.getFieldsValue()
     values[name] = newValue
@@ -60,12 +64,11 @@ const WildcatForm = (props: Props) => {
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
-  const CheckboxGroup = Checkbox.Group;
 
   return (
     <div>
       <Form form={form} name={props.config && props.config.name} labelCol={useLabelCol ? { span: 6 } : {}}
-        onFinish={props.submit} onValuesChange={props.formChange} className={props.className}>
+        onFinish={props.submit} onValuesChange={props.formChange} className={`form-styles ${props.className}`}>
         { props.config && props.config.children.map(item => {
           const patternList = item.patternList ? item.patternList : [];
           if (item.type === FormType.Input) {
@@ -84,7 +87,7 @@ const WildcatForm = (props: Props) => {
                 onChange={(newValue) => onChange(newValue, item.name || '')}
                 placeholder={item.placeholder} size='large'
                 style={{ width: item.inputWidth }}>
-                { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+                { item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </FormItem>)
           } else if (item.type === FormType.ImgUpload) {
@@ -127,7 +130,7 @@ const WildcatForm = (props: Props) => {
             return (<FormItem key={item.label}>
               <FormItem className={item.className} label={item.label} name={item.name}  style={{ width: item.width }} rules={[{ required: item.required }]}>
                 <Select placeholder={item.placeholder} size='large' style={{ width: item.inputWidth }} getPopupContainer={triggerNode => triggerNode.parentNode}>
-                  { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+                  { item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
                 </Select>
               </FormItem>
               <FormItem >
@@ -144,14 +147,15 @@ const WildcatForm = (props: Props) => {
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
             </FormItem>)
-            }else if(item.type === FormType.metaChecbox && item.display){
-            const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
-            const initialCheckedMetas = ["m35988"];
+            }else if(item.type === FormType.MetaChecbox && item.display){
+            //const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
+            //const initialCheckedMetas = ["m35988"];
             return (
               <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <CheckboxGroup options={metas}
+                <CheckboxGroup
+                options={item.options as OptionCheckBox[]}
                 //这个defaultValue提示报可能不能用，待查
-                defaultValue={initialCheckedMetas}
+                //defaultValue={initialCheckedMetas}
                 />
               </FormItem>
             )

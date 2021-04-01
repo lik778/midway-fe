@@ -1,4 +1,4 @@
-import { postApiData } from './base';
+import { postApiData ,postZhidaoApiData} from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
 import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams } from '@/interfaces/ai-content';
@@ -50,53 +50,53 @@ export const submitAiChooseWordListApi = (params: { taskId: number | null, notSe
 
 /** 判断显示页面 */
 export const getCreateQuestionTaskPageStatus = (): Promise<ServiceResponse<CreateQuestionTaskPageStatus>> => {
-  return postApiData('zhidao/v1/backend/ai/checkCreateAiTask', {})
+  return postZhidaoApiData('zhidao/v1/backend/ai/checkCreateAiTask', {})
 }
 
 /** 获取问答任务列表 */
 export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceResponse<ListRes<QuestionTaskListItem[]>>> => {
-  return postApiData('zhidao/v1/backend/ai/getAiTaskList', params)
+  return postZhidaoApiData('zhidao/v1/backend/ai/getAiTaskList', params)
 }
 
 /** 生成问答进度 */
 export const getQuestionBuildStatus = (): Promise<ServiceResponse<'success' | 'start build'>> => {
-  return postApiData('zhidao/v1/backend/ai/getQaBuildStatus', {})
+  return postZhidaoApiData('zhidao/v1/backend/ai/getQaBuildStatus', {})
 }
 
 
 /** 基础素材库提交 */
 export const submitBasicMaterial = (requestData: BasicMaterialApiParams): Promise<ServiceResponse<never>> => {
-  return postApiData('zhidao/v1/backend/ai/saveUserRepository', requestData)
+  return postZhidaoApiData('zhidao/v1/backend/ai/saveUserRepository', requestData)
 }
 
 /** 获取问答任务详情（问答包列表） */
 export const getQuestionTaskDetailApi = (id: number): Promise<ServiceResponse<QuestionListItem[]>> => {
-  return postApiData('zhidao/v1/backend/ai/showAiTask', { taskId: id })
+  return postZhidaoApiData('zhidao/v1/backend/ai/showAiTask', id)
 }
 
 /** 获取新建任务基础数据 */
 export const getCreateQuestionTaskBasicData = (): Promise<ServiceResponse<CreateQuestionTaskBasicData>> => {
-  return postApiData('zhidao/v1/backend/ai/showCreateAiTask', {})
+  return postZhidaoApiData('zhidao/v1/backend/ai/showCreateAiTask', {})
 }
 
 /** 更新生成的问题内容 该接口的返回数据时未提交到发布的*/
 export const getQuestionList = (): Promise<ServiceResponse<QuestionListItem[]>> => {
-  return postApiData('zhidao/v1/backend/ai/showQaList', {})
+  return postZhidaoApiData('zhidao/v1/backend/ai/showQaList', {})
 }
 
 /** 提交关键字 */
 export const submitCoreWords = (requestData: QuestionTaskApiParams): Promise<ServiceResponse<never>> => {
-  return postApiData('zhidao/v1/backend/ai/submitSeoWords', requestData)
+  return postZhidaoApiData('zhidao/v1/backend/ai/submitSeoWords', requestData)
 }
 
 /** 提交发布 */
 export const submitTask = (): Promise<ServiceResponse<never>> => {
-  return postApiData('zhidao/v1/backend/ai/submitTask', {})
+  return postZhidaoApiData('zhidao/v1/backend/ai/submitTask', {})
 }
 
 
 /** 更新生成的问题内容 */
 export const editQuestion = (requestData: EditQuestion): Promise<ServiceResponse<never>> => {
-  return postApiData('zhidao/v1/backend/ai/updateQuestionAnswer', requestData)
+  return postZhidaoApiData('zhidao/v1/backend/ai/updateQuestionAnswer', requestData)
 }
 

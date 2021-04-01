@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
 import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
 import { getQuestionTaskDetailApi, getQuestionList, editQuestion, submitTask } from '@/api/ai-content'
-import { mockData } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
@@ -38,7 +37,6 @@ const AiZhidaoDetail = (props: any) => {
         dataIndex: 'question',
         title: '问题标题',
         upDataLoading,
-        // TODO;
         handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
       }),
     },
