@@ -34,7 +34,31 @@ export interface AiContentItem {
   wordD: string[];
 }
 
-
+/** 优选词列表 **/
+export interface ChooseWord {
+  wordsGrouped: {
+    AC: {
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
+    ABC: {
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
+    ACD: {
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
+    ABCD: {
+      id: number,
+      seoWord: string,
+      type: string
+    }[],
+  }
+}
 /** 疑问词具体字符列表 */
 export interface InterrogativeChildListItem {
   id: number,
@@ -111,6 +135,27 @@ export interface EditQuestion {
   /** 修改答案需传（答案的序号） */
   answerId?: number,
   content: string,
+}
+
+export interface BasicMaterialForm {
+  wordA: string;
+  wordB: string;
+  wordC: string;
+  wordD: string;
+  wordE: string;
+}
+
+
+/** 接口获取基础素材库内容 */
+export interface BasicMaterialDataItem {
+  id: number,
+  usrId: number,
+  content: string,
+  type: number,
+  questionTypes: number,
+  useNum: number,
+  created_time: number,
+  modified_time: number
 }
 
 /** 基础素材库提交 */

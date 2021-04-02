@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState, useMemo } from 'react';
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { history } from 'umi'
 import styles from './index.less';
-import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords } from '@/api/ai-content';
+import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords, clearCatch } from '@/api/ai-content';
 import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo } from '@/interfaces/ai-content'
 import { mockData, randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
@@ -10,7 +10,7 @@ import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
-import pages from '@/pages';
+
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
@@ -260,7 +260,7 @@ export default (props: ZhidaoCreateJobProp) => {
     setGetDataLoading(true)
     const pageStatus = await getComponentStatus()
     if (pageStatus === 'SHOW_QA_LIST') {
-      history.push(`/ai-content/edit/ai-zhidao-detail?pageType=edit`)
+      history.push(`/ai-content/ai-zhidao/edit/ai-zhidao-detail?pageType=edit`)
     } else if (pageStatus === 'SHOW_CREATE') {
       await getCreateQuestionTaskBasicDataFn()
     }
@@ -324,6 +324,7 @@ export default (props: ZhidaoCreateJobProp) => {
     form.setFieldsValue({
       [key]: concatWords.join('\n')
     })
+    form.validateFields([key])
   }
 
   const handleClickClearItem = (key: string) => {
@@ -331,6 +332,9 @@ export default (props: ZhidaoCreateJobProp) => {
       [key]: ''
     })
   }
+
+  const filterSuffixSelect = (input: string, option: any) =>
+    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 
   const handleClickValidate = async () => {
     try {
@@ -380,6 +384,7 @@ export default (props: ZhidaoCreateJobProp) => {
     initCompoment()
   }
 
+
   return (<Spin spinning={getDataLoading || upDataLoading}>
     <div className={styles["ai-create-task-box"]} onClick={() => closeTipModal(false)}>
       <ul className={styles["ai-handle-tips"]}>
@@ -399,7 +404,7 @@ export default (props: ZhidaoCreateJobProp) => {
                   {item.key === 'suffix' &&
                     <Select mode="multiple" className={styles["suffix-container-dropdown"]}
                       showArrow={true} maxTagCount={'responsive'}
-                      // allowClear={true}
+                      filterOption={filterSuffixSelect}
                       onSelect={(value: number) => selectInterrogativeWord(value)}
                       onDeselect={(value: number) => selectInterrogativeWord(value)} placeholder='疑问词' disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>
                       {
