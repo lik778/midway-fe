@@ -158,19 +158,6 @@ export default (props: Props) => {
         })
       })
       setSeoWord(newSeoWord)
-      
-      // let changeIdIndex :number[] = []
-      // changeRows.forEach(item=>{
-      //   changeIdIndex.push(seoWord.findIndex((value, index) => {
-      //     return value.id === item.id
-      //   }))
-      // })
-      // changeIdIndex.forEach((item,index)=>{
-      //   seoWord.splice(item,1,{
-      //     ...changeRows[index],
-      //     isCheck:selected
-      //   })
-      // })
     },
   };
 

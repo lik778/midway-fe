@@ -71,7 +71,7 @@ export default (props: Props) => {
       visible={visible}
       footer={null}
       onCancel={() => { close(); }}>
-      <span style={{ color: '#999', fontSize: 10, position:'absolute', top: 42, left:110 }}>（已有关键词：<span style={{ color: 'orange' }}>{wordIds ? wordIds.length : 0}</span> 个）</span>
+      <span style={{ color: '#999', fontSize: 13, position:'absolute', top: 40, left:110 }}>（已有关键词：<span style={{ color: 'orange' }}>{wordIds ? wordIds.length : 0}</span> 个）</span>
       <Table
         columns={columns} rowKey="id" dataSource={showWord}
         loading={listLoading} scroll={{ y: 380 }}
