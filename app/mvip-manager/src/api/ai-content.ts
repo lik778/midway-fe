@@ -73,7 +73,7 @@ export const getCreateQuestionTaskBasicData = (): Promise<ServiceResponse<Create
   return postZhidaoApiData('zhidao/v1/backend/ai/showCreateAiTask', {})
 }
 
-/** 更新生成的问题内容 该接口的返回数据时未提交到发布的*/
+/** 更新生成的问答内容 该接口的返回数据时未提交到发布的*/
 export const getQuestionList = (): Promise<ServiceResponse<QuestionListItem[]>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/showQaList', {})
 }
@@ -86,12 +86,12 @@ export const submitCoreWords = (requestData: QuestionTaskApiParams): Promise<Ser
 /** 提交发布 
  * 
 */
-export const submitTask = (u_id: string): Promise<ServiceResponse<never>> => {
-  return postZhidaoApiData('zhidao/v1/backend/ai/submitTask', u_id)
+export const submitTask = (): Promise<ServiceResponse<never>> => {
+  return postZhidaoApiData('zhidao/v1/backend/ai/submitTask', {})
 }
 
 
-/** 更新生成的问题内容 */
+/** 更新生成的问答内容 */
 export const editQuestion = (requestData: EditQuestion): Promise<ServiceResponse<never>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/updateQuestionAnswer', requestData)
 }

@@ -308,7 +308,8 @@ export default (props: ZhidaoCreateJobProp) => {
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
   const outgoingControl = (value: string) => {
-    const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '')
+    console.log(value)
+    const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '').replace(/\s{1,}\n/g, '\n')
     if (newValue[newValue.length - 1] === '\n') {
       return `${[...new Set(newValue.split('\n').filter(item => item !== ''))].join('\n')}\n`
     }
@@ -434,7 +435,7 @@ export default (props: ZhidaoCreateJobProp) => {
           }
         </Row>
       </Form>
-      <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问题</Button>
+      <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问答</Button>
       {
         pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>您当前没有足够资源创建问答ai任务</div>
       }

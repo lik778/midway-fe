@@ -83,7 +83,7 @@ export interface InterrogativeListItem {
   isSelect?: boolean
 }
 
-/** 问答任务生成问题请求参数 */
+/** 问答任务生成问答请求参数 */
 export interface QuestionTaskApiParams {
   /** 地区 */
   area: string[];
@@ -123,13 +123,13 @@ export interface QuestionListItem {
   status: 0 | 1 | 2 | 3 | 4,// 缺少
 
   // 自用字段
-  /** 判断当前问题是否修改 */
+  /** 判断当前问答是否修改 */
   isEdit?: boolean
   index?: number
 }
 
 
-/** 修改问题内容发送请求 */
+/** 修改问答内容发送请求 */
 export interface EditQuestion {
   questionId: number
   /** 修改答案需传（答案的序号） */
