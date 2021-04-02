@@ -152,10 +152,6 @@ export default (props: ZhidaoCreateJobProp) => {
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [showTipModal, setShowTipModal] = useState<boolean>(false)
 
-  // useEffect(() => {
-  //   clearCatch()
-  // }, [])
-
   useEffect(() => {
     if (pageStatus) {
       // 只有正常的时候才不用显示弹窗
@@ -264,7 +260,7 @@ export default (props: ZhidaoCreateJobProp) => {
     setGetDataLoading(true)
     const pageStatus = await getComponentStatus()
     if (pageStatus === 'SHOW_QA_LIST') {
-      history.push(`/ai-content/edit/ai-zhidao-detail?pageType=edit`)
+      history.push(`/ai-content/ai-zhidao/edit/ai-zhidao-detail?pageType=edit`)
     } else if (pageStatus === 'SHOW_CREATE') {
       await getCreateQuestionTaskBasicDataFn()
     }
@@ -328,6 +324,7 @@ export default (props: ZhidaoCreateJobProp) => {
     form.setFieldsValue({
       [key]: concatWords.join('\n')
     })
+    form.validateFields([key])
   }
 
   const handleClickClearItem = (key: string) => {

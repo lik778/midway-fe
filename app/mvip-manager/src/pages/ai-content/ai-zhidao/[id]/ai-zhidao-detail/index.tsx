@@ -117,6 +117,7 @@ const AiZhidaoDetail = (props: any) => {
   }
 
   const handleClickBack = () => {
+    if (pageType === 'edit') return
     history.goBack()
   }
 
@@ -163,7 +164,7 @@ const AiZhidaoDetail = (props: any) => {
       if (history.length > 1) {
         history.goBack()
       } else {
-        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+        history.replace('/ai-content/ai-zhidao')
       }
     } else {
       errorMessage(res.message || '发布失败')
@@ -173,9 +174,9 @@ const AiZhidaoDetail = (props: any) => {
 
   return (
     <>
-      <div className={styles['go-back']} onClick={handleClickBack}>
+      <div className={pageType === 'see' ? styles['go-back'] : ''} onClick={handleClickBack}>
         <MainTitle title={
-          `< 返回${pageType === 'see' ? '查看任务列表' : '生成问答列表'}`
+          `${pageType === 'see' ? '< 返回查看任务列表' : '生成问答列表'}`
         }></MainTitle>
       </div>
       <Spin spinning={getDataLoading}>

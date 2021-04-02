@@ -6,7 +6,6 @@ import zhCN from 'antd/lib/locale/zh_CN';
 import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
 import { baseMapStateToProps, baseMapDispatchToProps } from '@/models/base'
 import { USER_NAMESPACE, userMapDispatchToProps } from '@/models/user'
-import { shopMapDispatchToProps } from '@/models/shop'
 import { ConnectState } from '@/models/connect'
 import { MidMenuItem } from '@/interfaces/base'
 
@@ -42,7 +41,6 @@ const Layouts = (props: any) => {
   useEffect(() => {
     getUserInfo()
     getCompanyInfo()
-    getShopStatus()
     getMenuList()
   }, [])
 
@@ -106,6 +104,5 @@ export default connect((state: ConnectState) => {
   return {
     ...baseMapDispatchToProps(dispatch),
     ...userMapDispatchToProps(dispatch),
-    ...shopMapDispatchToProps(dispatch)
   }
 })(Layouts)
