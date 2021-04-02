@@ -140,6 +140,8 @@ function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispat
 
     //保存企业资料
     console.log("企业资料入参values：", values)
+    // 一级类目
+    values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
     const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (success) {

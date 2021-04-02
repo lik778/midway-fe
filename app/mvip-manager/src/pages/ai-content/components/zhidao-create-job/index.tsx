@@ -389,7 +389,7 @@ export default (props: ZhidaoCreateJobProp) => {
     <div className={styles["ai-create-task-box"]} onClick={() => closeTipModal(false)}>
       <ul className={styles["ai-handle-tips"]}>
         <h3>组合规则说明：</h3>
-        <li>1、请填写<span className={styles['tip']}>「地区+前缀+核心词+疑问词+辅助词」</span>，该信息将用于生成文章及站点SEO元素</li>
+        <li>1、请填写<span className={styles['tip']}>「地区+前缀+核心词+疑问词+辅助词」</span>，该信息将用于生成问答内容及站点SEO元素</li>
         <li>2、每个词语之间请换行</li>
         <li>3、避免填写标点符号、错别字、以及有违规风险的词</li>
         <li>4、提交并通过审核后，不可修改</li>
