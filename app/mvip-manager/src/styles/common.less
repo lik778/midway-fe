@@ -60,6 +60,13 @@
   }
 }
 
+/** 解决火狐下，table表格展开的按钮内 横线不出现的问题 */
+.ant-table-row-expand-icon-collapsed::before{
+  transform: scale(1,0.5) rotate(-180deg)!important;
+}
+.ant-table-row-expand-icon::before{
+  height: 2px!important;
+}
 
 .ant-drawer-header{
   padding: 25px 32px;

@@ -9,7 +9,8 @@ import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
-import { AiTaskStatusText } from '@/constants/index'
+import { ZhidaoAiTaskStatusText } from '@/constants/index'
+import { ZhidaoAiTaskStatus } from '@/enums'
 import { getCookie } from '@/utils';
 import { COOKIE_USER_KEY } from '@/constants'
 
@@ -32,13 +33,13 @@ const AiZhidaoDetail = (props: any) => {
       width: 100
     },
     {
-      title: '问题标题',
+      title: '问答标题',
       dataIndex: 'question',
       onCell: (record: QuestionListItem) => ({
         record,
         editable: pageType === 'edit',
         dataIndex: 'question',
-        title: '问题标题',
+        title: '问答标题',
         upDataLoading,
         handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
       }),
@@ -51,24 +52,24 @@ const AiZhidaoDetail = (props: any) => {
     dataIndex: 'status',
     width: 200,
     render: (text: number, record: QuestionListItem, index: number) => {
-      if (text === 2) {
+      if (text === ZhidaoAiTaskStatus.DONE) {
         // 已发出
         return <div className={styles['question-status-1']}>{
-          AiTaskStatusText[text]
+          ZhidaoAiTaskStatusText[text]
         }</div>
-      } else if (text === 3) {
+      } else if (text === ZhidaoAiTaskStatus.REJECT) {
         // 审核驳回
         return (
           <Tooltip title={record.tip}>
             <div className={styles['question-status-2']}>{
-              AiTaskStatusText[text]
+              ZhidaoAiTaskStatusText[text]
             }</div>
             <div className={styles['question-status-2-tip']}>{record.tip}</div>
           </Tooltip>
         )
       } else {
         return <div className={styles['question-status-0']}>{
-          AiTaskStatusText[text]
+          ZhidaoAiTaskStatusText[text]
         }</div>
       }
     }
@@ -160,17 +161,12 @@ const AiZhidaoDetail = (props: any) => {
   const submit = async () => {
     setUpDataLoading(true)
     // TODO;
-    const u_id = getCookie(COOKIE_USER_KEY)
 
-    const res = await submitTask(u_id)
+    const res = await submitTask()
     // const res = await mockData('data', {})
     if (res.success) {
       successMessage(res.message || '发布成功')
-      if (history.length > 1) {
-        history.goBack()
-      } else {
-        history.replace('/ai-content/ai-zhidao')
-      }
+      history.replace('/ai-content/ai-zhidao')
     } else {
       errorMessage(res.message || '发布失败')
     }
@@ -202,7 +198,7 @@ const AiZhidaoDetail = (props: any) => {
             }}
           ></Table>
           {
-            pageType === 'edit' && <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问题</Button>
+            pageType === 'edit' && <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问答</Button>
           }
 
         </div>

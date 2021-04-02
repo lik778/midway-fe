@@ -55,7 +55,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
       const values = await form.validateFields();
       if (values[dataIndex] !== record[dataIndex]) {
         if (!values[dataIndex] || values[dataIndex].length === 0) {
-          errorMessage('问题内容不得为空！')
+          errorMessage('问答内容不得为空！')
         } else {
           await handleSave({ ...record, ...values });
         }
