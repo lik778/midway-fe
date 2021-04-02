@@ -12,6 +12,7 @@ import { notEmptyObject } from '@/utils';
 import {
   GET_SHOP_LIST_ACTION,
   GET_SHOP_TOTAL_ACTION,
+  GET_SHOP_STATUS_ACTION,
   SET_SHOP_LIST_ACTION,
   SET_SHOP_TOTAL_ACTION,
   SHOP_NAMESPACE,
@@ -127,12 +128,14 @@ function ShopPage(props: any) {
     }
   };
 
-  const obtainShopList = () => {
-    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_LIST_ACTION}` })
-    props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_TOTAL_ACTION}` })
+  const obtainShopList = async () => {
+    /** 获取店铺初始化信息 */
+    Promise.all([props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_STATUS_ACTION}` }), props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_SHOP_LIST_ACTION}` })])
   }
 
-  useEffect(() => obtainShopList(), [])
+  useEffect(() => {
+    obtainShopList()
+  }, [])
 
   useEffect(() => {
     if (shopList) setIsLoading(false)
@@ -306,8 +309,11 @@ function ShopPage(props: any) {
   )
 }
 
-export default connect((state: ConnectState) => {
+const WrapperShopPage: any = connect((state: ConnectState) => {
   const { shopList, shopTotal, shopStatus } = state[SHOP_NAMESPACE]
   return { shopList, shopTotal, shopStatus }
 })(ShopPage)
 
+WrapperShopPage.wrappers = ['@/wrappers/path-auth']
+
+export default WrapperShopPage

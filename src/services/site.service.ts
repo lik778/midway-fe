@@ -33,10 +33,22 @@ export class SiteService {
   }
 
   private setPageHeaders(shopName: string, device: string, domain: string): PageHeaderParams {
-    // 本地开发时，测试环境会出现localhost的情况，给一个默认值，加了名字是跳转到B2B模板
-    if (domain === 'localhost' || domain ==='dianpu.baixing.cn') {
-      domain = 'shop-test.baixing.cn'
-    }
+    /**切换domain.根据后端分支和模板类型选择 */
+
+    //if (domain === 'localhost' || domain ==='dianpu.baixing.cn') {
+      /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
+      //domain = 'agui.shop-test.baixing.cn'
+
+      /*后端在test分支，且店铺类型是是模板1，B2c模板，使用这个domain*/
+      //domain = 'shop-test.baixing.cn'
+
+      /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
+      domain = 'agui.shop.baixing.cn'
+
+      /*后端在dev分支，且店铺类型是是模板1，B2B模板，使用这个domain*/
+      //domain = 'shop.baixing.cn'
+
+    //}
     return {
       'x-api-shop-name': shopName || '',
       'x-api-device': device || '',

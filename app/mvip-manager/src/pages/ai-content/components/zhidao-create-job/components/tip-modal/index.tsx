@@ -55,7 +55,6 @@ const TipModal: FC<TipModalProp> = (props) => {
     if (getProgressTimer) {
       clearInterval(getProgressTimer)
     };
-    getCreateTaskProgress.current!()
     const timer = setInterval(() => {
       getCreateTaskProgress.current!()
     }, 1000)

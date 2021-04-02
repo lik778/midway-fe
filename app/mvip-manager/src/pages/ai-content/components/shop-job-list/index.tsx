@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Table, Tooltip } from 'antd';
 import { Link } from 'umi';
-import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
 import AiEditModal from '@/pages/ai-content/components/shop-job-list/components/ai-edit-modal';
-import AiChooseModal from '@/pages/ai-content/components/shop-job-list/components/ai-choose-modal';
 import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
@@ -15,13 +13,11 @@ import { AiTaskStatusText } from '@/constants';
 
 export default (props: any) => {
   const [aiEditModalVisible, setAiEditModalVisible] = useState<boolean>(false);
-  const [aiChooseModalVisible, setAiChooseModalVisible] = useState<boolean>(false);
   const [editAiTask, setEditAiTask] = useState<AiContentItem | null>(null);
   const [page, setPage] = useState<number>(1);
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
-  const [wordId, setWordId] = useState<number | null>(null)
 
   useEffect(() => {
     getList()
@@ -71,11 +67,6 @@ export default (props: any) => {
 
   }
 
-  const chooseWords = (record: number) => {
-    setWordId(record)
-    setAiChooseModalVisible(true)
-  }
-
   const viewWordsBtn = (record: AiContentItem, text = '查看词组') => {
     return <span onClick={() => viewWords(record)}>{text}</span>
   }
@@ -98,12 +89,6 @@ export default (props: any) => {
         </Tooltip>
         {viewWordsBtn(record)}
       </div>
-    } else if (status === AiTaskStatus.ON_SELECT) {
-      return <div className="ai-action-box">
-        <Tooltip placement="top" title="去选词">
-          <span onClick={() => chooseWords(record.id)} className="ai-action ai-choose-action" />
-        </Tooltip>
-        {viewWordsBtn(record)}</div>
     } else {
       return <div className="ai-action-box">{viewWordsBtn(record)}</div>
     }
@@ -154,7 +139,6 @@ export default (props: any) => {
 
   return (
     <div>
-      {/*<MainTitle title="任务列表"/>*/}
       <div className="ai-list-container">
         {isLoding && listLoading && <Loading />}
         {total === 0 && <div className="empty-info">
@@ -167,7 +151,6 @@ export default (props: any) => {
         }} />}
       </div>
       <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} />
-      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} wordId={wordId}/>
     </div>
   )
 }

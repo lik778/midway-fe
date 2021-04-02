@@ -1,7 +1,7 @@
-import { postApiData ,postZhidaoApiData} from './base';
+import { postApiData, postZhidaoApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -38,16 +38,6 @@ export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceRespo
   return postApiData('midway/backend/ai/create', params)
 }
 
-/** 获得文章对应选词列表 **/
-export const getAiChooseWordListApi = (params: { taskId: number | null }): Promise<ServiceResponse<ChooseWord>> => {
-  return postApiData('midway/backend/ai/hotword', params)
-}
-
-/** 提交选词列表 **/
-export const submitAiChooseWordListApi = (params: { taskId: number | null, notSelectWordIds: number[] }): Promise<ServiceResponse<null>> => {
-  return postApiData('midway/backend/ai/select', params)
-}
-
 /** 判断显示页面 */
 export const getCreateQuestionTaskPageStatus = (): Promise<ServiceResponse<CreateQuestionTaskPageStatus>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/checkCreateAiTask', {})
@@ -63,6 +53,10 @@ export const getQuestionBuildStatus = (): Promise<ServiceResponse<'success' | 's
   return postZhidaoApiData('zhidao/v1/backend/ai/getQaBuildStatus', {})
 }
 
+/** 获取基础素材库 */
+export const getBasicMaterial = (): Promise<ServiceResponse<{ [key: string]: BasicMaterialDataItem[] }>> => {
+  return postZhidaoApiData('zhidao/v1/backend/ai/getUserRepository', {})
+}
 
 /** 基础素材库提交 */
 export const submitBasicMaterial = (requestData: BasicMaterialApiParams): Promise<ServiceResponse<never>> => {
@@ -100,3 +94,6 @@ export const editQuestion = (requestData: EditQuestion): Promise<ServiceResponse
   return postZhidaoApiData('zhidao/v1/backend/ai/updateQuestionAnswer', requestData)
 }
 
+export const clearCatch = () => {
+  postZhidaoApiData('zhidao/v1/backend/ai/evictAiTaskCache', '226337262')
+}

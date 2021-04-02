@@ -1,22 +1,17 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
 import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
 import { getQuestionTaskDetailApi, getQuestionList, editQuestion, submitTask } from '@/api/ai-content'
-import { mockData } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
-import { AiTaskStatus } from '@/enums/index'
 import { AiTaskStatusText } from '@/constants/index'
-interface JobListDetailProp {
 
-}
-
-const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
+const AiZhidaoDetail = (props: any) => {
   const history = useHistory<{ query: { pageType: 'see' | 'edit' } }>()
   const params = useParams<{ id: string }>()
   // @ts-ignore
@@ -59,7 +54,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
           AiTaskStatusText[text]
         }</div>
       } else if (text === 3) {
-        // 审核驳回 
+        // 审核驳回
         return (
           <Tooltip title={record.tip}>
             <div className={styles['question-status-2']}>{
@@ -122,6 +117,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
   }
 
   const handleClickBack = () => {
+    if (pageType === 'edit') return
     history.goBack()
   }
 
@@ -168,7 +164,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
       if (history.length > 1) {
         history.goBack()
       } else {
-        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+        history.replace('/ai-content/ai-zhidao')
       }
     } else {
       errorMessage(res.message || '发布失败')
@@ -178,9 +174,9 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
 
   return (
     <>
-      <div className={styles['go-back']} onClick={handleClickBack}>
+      <div className={pageType === 'see' ? styles['go-back'] : ''} onClick={handleClickBack}>
         <MainTitle title={
-          `< 返回${pageType === 'see' ? '查看任务列表' : '生成问答列表'}`
+          `${pageType === 'see' ? '< 返回查看任务列表' : '生成问答列表'}`
         }></MainTitle>
       </div>
       <Spin spinning={getDataLoading}>
@@ -209,5 +205,7 @@ const AiZhidaoDetail: FC<JobListDetailProp> = (props) => {
     </>
   )
 }
+
+AiZhidaoDetail.wrappers = ['@/wrappers/path-auth']
 
 export default AiZhidaoDetail

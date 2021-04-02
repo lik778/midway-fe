@@ -37,7 +37,7 @@ export const getApi = (url: string, params: any): Promise<any> => {
 }
 
 
-export const postApiData = (path: string, params: any, headers?: any): Promise<any> => {
+export const postApiData = (path: string, params: any = {}, headers?: any): Promise<any> => {
   const p = JSON.stringify(params)
   return postApi(apiPrefix, {
     method: 'post', path:`/api/${path}`,
