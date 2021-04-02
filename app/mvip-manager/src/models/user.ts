@@ -24,9 +24,15 @@ const defaultState: UserModelState = {
   userInfo: null
 }
 
+export const userMapStateToProps = (state: any): any => {
+  const { companyInfo, userInfo } = state[USER_NAMESPACE];
+  return { companyInfo, userInfo }
+}
+
 export const userMapDispatchToProps = (dispatch: Dispatch): any => {
   return {
     getCompanyInfo: () => dispatch({ type: getFullAction(USER_NAMESPACE, GET_COMPANY_INFO_ACTION) }),
+    setCompanyInfo: (payload: UserEnterpriseInfo) => dispatch({ type: getFullAction(USER_NAMESPACE, SET_COMPANY_INFO_ACTION), payload }),
     getUserInfo: () => dispatch({ type: getFullAction(USER_NAMESPACE, GET_USER_INFO_ACTION) })
   }
 }
