@@ -1,10 +1,5 @@
 import { AuditStatus, ArticleSource, AiTaskStatus, DomainStatus } from '@/enums';
 
-export const COOKIE_TOKEN_KEY = '__t'
-export const COOKIE_USER_KEY = '__u'
-export const COOKIE_HASH_KEY = '__c'
-
-
 export const auditStatusText: any = {
   [AuditStatus.DEFAULT]: '初始化',
   [AuditStatus.APPROVE]: '审核通过',
@@ -24,7 +19,7 @@ export const AiTaskStatusText: any = {
   [AiTaskStatus.ON_PAUSE]: '已暂停',
   [AiTaskStatus.DONE]: '已发完',
   [AiTaskStatus.REJECT]: '审核驳回',
-  [AiTaskStatus.DEFAULT]: '待审核',
+  [AiTaskStatus.DEFAULT]: '待审核'
 }
 
 export const productText = (): any => {
