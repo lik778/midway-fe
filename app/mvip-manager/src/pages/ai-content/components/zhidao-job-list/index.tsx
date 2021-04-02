@@ -65,7 +65,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     // }, 'taskId', page, 10)
     if (res.success) {
       setAiList(addKeyForListData(res.data.result || [], page))
-      setTotal(res.data.totalRecord)
+      setTotal(res.data.totalRecord || 0)
     } else {
       errorMessage(res.message || '暂无进行的任务，你可以去新建任务')
     }
@@ -88,7 +88,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     {
       title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
     },
-    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <Link to={`/ai-content/${record.taskId}/ai-zhidao-detail?pageType=see`}>查看详情</Link> },
+    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <Link to={`/ai-content/ai-zhidao/${record.taskId}/ai-zhidao-detail?pageType=see`}>查看详情</Link> },
   ];
 
   // 修改分页后也修改url

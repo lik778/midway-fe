@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Form, Col, Row, Button } from 'antd';
 import styles from './index.less';
 import MyModal, { ModalType } from '@/components/modal';
-import { BasicMaterialApiParams } from '@/interfaces/ai-content'
-import { submitBasicMaterial } from '@/api/ai-content'
+import { BasicMaterialApiParams, BasicMaterialForm } from '@/interfaces/ai-content'
+import { submitBasicMaterial, getBasicMaterial } from '@/api/ai-content'
 import { errorMessage, successMessage } from '@/components/message';
 import { mockData } from '@/utils';
-import { castArray } from 'lodash';
+
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
@@ -59,6 +59,41 @@ export default () => {
     }
   }
 
+  const getBasicMaterialFc = async () => {
+    const res = await getBasicMaterial()
+    if (res.success && res.data) {
+      const formData: BasicMaterialForm = {} as BasicMaterialForm
+      Object.keys(res.data).forEach(item => {
+        const str = res.data[item].reduce((total, item) => `${total}\n${item.content}`, '').slice(1)
+        switch (item) {
+          case '1':
+            formData.wordA = str
+            break
+          case '2':
+            formData.wordB = str
+            break
+          case '3':
+            formData.wordC = str
+            break
+          case '4':
+            formData.wordD = str
+            break
+          case '5':
+            formData.wordE = str
+            break
+          default:
+            break
+        }
+      })
+      console.log(form.getFieldsValue())
+      form.setFieldsValue(formData)
+    }
+  }
+
+  useEffect(() => {
+    getBasicMaterialFc()
+  }, [])
+
   // 提交单词
   const submit = async () => {
     const values = form.getFieldsValue()
@@ -76,7 +111,6 @@ export default () => {
     // const res = await mockData('data', null)
     if (res.success) {
       successMessage(res.message || '添加成功')
-      form.resetFields()
     } else {
       errorMessage(res.message || '添加失败')
     }
@@ -105,7 +139,7 @@ export default () => {
       </div>
       <MyModal
         title="确认提交"
-        content="提交后不可修改，确认提交吗？"
+        content=""
         type={ModalType.info}
         onCancel={() => setModalVisible(false)}
         onOk={() => setModalVisible(false)}
