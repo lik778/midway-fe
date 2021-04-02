@@ -10,6 +10,9 @@ import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
 import { AiTaskStatusText } from '@/constants/index'
+import { getCookie } from '@/utils';
+import { COOKIE_USER_KEY } from '@/constants'
+
 
 const AiZhidaoDetail = (props: any) => {
   const history = useHistory<{ query: { pageType: 'see' | 'edit' } }>()
@@ -157,7 +160,9 @@ const AiZhidaoDetail = (props: any) => {
   const submit = async () => {
     setUpDataLoading(true)
     // TODO;
-    const res = await submitTask()
+    const u_id = getCookie(COOKIE_USER_KEY)
+
+    const res = await submitTask(u_id)
     // const res = await mockData('data', {})
     if (res.success) {
       successMessage(res.message || '发布成功')
