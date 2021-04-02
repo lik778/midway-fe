@@ -5,7 +5,6 @@ export enum FormType {
   AreaSelect,
   ImgUpload,
   GroupSelect,
-  Tag,
-  MetaChecbox
+  Tag
 }
 

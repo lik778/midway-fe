@@ -13,7 +13,7 @@ import './index.less';
 import { errorMessage } from '@/components/message';
 import Recharge from '@/components/recharge';
 
-const ShopArticlePage = (props: any) => {
+export default (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [articleFormVisible, setArticleFormVisible] = useState<boolean>(false);
   const [articleList, setArticleList] = useState<any>([]);
@@ -37,7 +37,6 @@ const ShopArticlePage = (props: any) => {
         setArticleList(addKeyForListData(res.data.articleList.result, page, size) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res?.data?.articleList?.totalRecord)
-        console.log(addKeyForListData(res.data.cateList) || [])
       } else {
         errorMessage(res?.message || '出错了');
       }
@@ -97,8 +96,3 @@ const ShopArticlePage = (props: any) => {
     </div>
   </div>)
 }
-
-
-ShopArticlePage.wrappers = ['@/wrappers/path-auth']
-
-export default ShopArticlePage
