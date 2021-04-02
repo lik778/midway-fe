@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Table, Menu, Dropdown } from 'antd';
 import { errorMessage, successMessage } from '@/components/message';
-import MyModal, { ModalType } from '@/components/modal';
 import { history } from 'umi';
 import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-content';
 import { ChooseWord, ChooseWordList } from '@/interfaces/ai-content';
 import { mockData } from '@/utils';
 import { DownOutlined } from '@ant-design/icons';
-import Item from 'antd/lib/list/Item';
+import './index.less';
 
 interface DataType {
   id: number;
@@ -137,7 +136,6 @@ export default (props: Props) => {
       setWordIds(selectedRowKeys)
     },
     onSelect: (record: DataType, selected: boolean) => {
-      console.log(record)
       const index = seoWord.findIndex((value,index)=>{
         return value.id === record.id
       })
@@ -149,7 +147,6 @@ export default (props: Props) => {
     },
 
     onSelectAll:(selected:boolean, selectedRows:DataType[], changeRows:DataType[])=> {
-      console.log(changeRows)
       const newSeoWord = [...seoWord]
       changeRows.forEach(item=>{
         const index = newSeoWord.findIndex((value,index)=>{
@@ -185,38 +182,43 @@ export default (props: Props) => {
       className="my-modal-box"
       visible={visible}
       confirmLoading={submitLoading}
+      footer={null}
       onOk={submitData}
-      footer={ 
-        dataLoading && <span style={{ color: '#333', fontSize: 16, position: 'relative', right: 35, bottom: (Object.getOwnPropertyNames(showWord).length === 0) ? 110 : 60 }}>
-        当前已选关键词：<span style={{ color: 'orange', fontSize: 16 }}>{wordIds ? wordIds.length : 0}个</span>
-        <span style={{ color: '#999', fontSize: 10 }}>（至少选择200个词）</span>
-        <Button key="submit" type="primary" 
-        style={{ position: 'absolute', right: 4, bottom: -50, width: 120, height: 35 }} 
-        onClick={() => setModalVisible(true)}>提 交</Button>
-      </span>}
       onCancel={() => { close(); }}>
-      <Table
-        columns={columns} rowKey="id" dataSource={showWord} 
-        rowSelection={rowSelection}
-        loading={listLoading} scroll={{ y: 380 }}
-        pagination={{
-          showSizeChanger: true,
-          onShowSizeChange: (page, size) => setSize(size),
-          current: page, onChange: (page) => setPage(page),
-          pageSize: size, position: ['bottomLeft']
-        }}
-      />
-      <MyModal
+      <div className="ai-body">
+        <Table
+          columns={columns} rowKey="id" dataSource={showWord}
+          rowSelection={rowSelection}
+          loading={listLoading} scroll={{ y: 380 }}
+          pagination={{
+            showSizeChanger: true,
+            onShowSizeChange: (page, size) => setSize(size),
+            current: page, onChange: (page) => setPage(page),
+            pageSize: size, position: ['bottomLeft']
+          }}
+        />
+        { dataLoading && 
+          <div className="ai-footer">
+            当前已选关键词：
+            <span style={{ color: 'orange', fontSize: 16 }}>{wordIds ? wordIds.length : 0}个</span>
+            <span style={{ color: '#999', fontSize: 10 }}>（至少选择200个词）</span>
+            <Button key="submit" type="primary"
+              style={{ position: 'absolute', right: 4, bottom: -50, width: 120, height: 35 }}
+              onClick={() => setModalVisible(true)}>提 交</Button>
+          </div>}
+      </div>
+      
+      {modalVisible && <Modal
+        className="my-modal-box"
         title="确认提交"
-        content="提交后不可修改，确认提交吗？"
-        type={ModalType.info}
-        onCancel={() => setModalVisible(false)}
-        onOk={() => history.push('/company-info/base')}
         footer={<div>
           <Button onClick={() => setModalVisible(false)}>取消</Button>
           <Button type="primary" loading={submitLoading} onClick={() => submitData()}>确认</Button>
         </div>}
-        visible={modalVisible} />
-      
+        onCancel={() => setModalVisible(false)}
+        onOk={() => history.push('/company-info/base')}
+        visible={visible}>
+        <div>提交后不可修改，确认提交吗？（ 当前已选关键词：<span style={{ color: 'orange', fontSize: 14 }}>{wordIds ? wordIds.length : 0}</span> 个 ）</div>
+      </Modal>}
     </Modal>)
 }

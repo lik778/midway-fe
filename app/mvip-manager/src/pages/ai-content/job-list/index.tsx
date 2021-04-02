@@ -5,6 +5,7 @@ import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
 import AiEditModal from '@/pages/ai-content/job-list/components/ai-edit-modal';
 import AiChooseModal from '@/pages/ai-content/job-list/components/ai-choose-modal';
+import AiPackageModal from '@/pages/ai-content/job-list/components/ai-package-modal';
 import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
@@ -16,6 +17,7 @@ import { AiTaskStatusText } from '@/constants';
 export default (props: any) => {
   const [aiEditModalVisible, setAiEditModalVisible] = useState<boolean>(false);
   const [aiChooseModalVisible, setAiChooseModalVisible] = useState<boolean>(false);
+  const [aiPackageModalVisible, setAiPackageModalVisible] = useState<boolean>(false);
   const [editAiTask, setEditAiTask] = useState<AiContentItem | null>(null);
   const [page, setPage] = useState<number>(1);
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
@@ -77,14 +79,14 @@ export default (props: any) => {
 
   const viewPackage = (record: number) => {
     setTaskId(record)
-    setAiEditModalVisible(true)
+    setAiPackageModalVisible(true)
   }
 
   const viewWordsBtn = (record: AiContentItem, text = '词组') => {
-    return <span onClick={() => viewWords(record)}>{text}</span>
+    return <span onClick={() => viewWords(record)} style={{marginLeft: 40}}>{text}</span>
   }
 
-  const viewPackageBtn = (record: number, text = '查包') => {
+  const viewPackageBtn = (record: number, text = '词包') => {
     return <span onClick={() => viewPackage(record)}>{text}</span>
   }
 
@@ -96,6 +98,8 @@ export default (props: any) => {
           <span onClick={() => changeAiTaskStatus(AiTaskAction.PAUSE, record)} className="ai-action ai-pause-action"></span>
         </Tooltip>
         {viewWordsBtn(record)}
+        <span style={{color:'black'}}> | </span>
+        {viewPackageBtn(record.id)}
       </div>
     } else if (status === AiTaskStatus.REJECT) {
       return <div className="ai-action-box">{viewWordsBtn(record, '修改')}</div>
@@ -105,6 +109,8 @@ export default (props: any) => {
           <span onClick={() => changeAiTaskStatus(AiTaskAction.START, record)} className="ai-action ai-start-action" />
         </Tooltip>
         {viewWordsBtn(record)}
+        <span style={{color:'black'}}> | </span>
+        {viewPackageBtn(record.id)}
       </div>
     } else if (status === AiTaskStatus.ON_SELECT) {
       return <div className="ai-action-box">
@@ -112,8 +118,6 @@ export default (props: any) => {
           <span onClick={() => chooseWords(record.id)} className="ai-action ai-choose-action" />
         </Tooltip>
         {viewWordsBtn(record)}
-        <span> | </span>
-        {viewPackageBtn(record.id)}
         </div>
     } else {
       return <div className="ai-action-box">{viewWordsBtn(record)}</div>
@@ -145,7 +149,8 @@ export default (props: any) => {
       }
     },
     {
-      title: '累计发文', dataIndex: 'articleNum', key: 'articleNum', render: (text: string, record: AiContentItem) => {
+      title: '累计发文', dataIndex: 'articleNum', key: 'articleNum',
+      render: (text: string, record: AiContentItem) => {
         return <div>
           <label>已发文<span style={{ color: '#096DD9' }}>{text}</span>篇</label>
           <span> | </span>
@@ -179,6 +184,7 @@ export default (props: any) => {
       </div>
       <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} />
       <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} taskId={taskId}/>
+      <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} taskId={taskId}/>
     </div>
   )
 }
