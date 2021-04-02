@@ -33,8 +33,6 @@ export default (props: Props) => {
   const [wordIds, setWordIds] = useState<number[]>([])
   const [seoWord, setSeoWord] = useState<DataType[]>([])
   const [showWord, setShowWord] = useState<DataType[]>([])
-  // const [selectIds, setSelectIds] = useState<number[]>([])
-
 
   useEffect(()=>{
     if(taskId){
@@ -47,7 +45,6 @@ export default (props: Props) => {
     setWordIds([])
     setSeoWord([])
     setShowWord([])
-    // setSelectIds([])
     setDataLoading(false)
     const res = await getAiChooseWordListApi({ "taskId": id })
     if (res.success) {
@@ -61,7 +58,6 @@ export default (props: Props) => {
         setSeoWord(newSeoWord)
         setWordIds(newSeoWord.map(item => item.id))
         setShowWord(newSeoWord)
-        // setSelectIds(newSeoWord.map(item => item.id))
       }
     } else {
       errorMessage(res.message)
@@ -104,6 +100,7 @@ export default (props: Props) => {
               <Menu onClick={ key => {
                 if(key.key === "all"){
                   setShowWord(seoWord)
+
                 } else {
                   const newShowWord = seoWord.filter(item=>item.type===key.key)
                   setShowWord(newShowWord)
@@ -130,27 +127,17 @@ export default (props: Props) => {
 
   const rowSelection: any = {
     selectedRowKeys: wordIds,
+    preserveSelectedRowKeys:true,
     selections: [
       Table.SELECTION_ALL,
       Table.SELECTION_INVERT,
       Table.SELECTION_NONE,
     ],
     onChange: (selectedRowKeys: number[], selectedRows: DataType[]) => {
-      // const notSelectWord = showWord.filter(item=>!selectedRowKeys.includes(item.id)).map(item=>item.id)
-      // console.log(notSelectWord);
-      
-      // notSelectWord.forEach(item=>{
-      //   const index = wordIds.indexOf(item)
-      //   if(index != -1){
-      //     wordIds.splice(index,1)
-      //   } 
-      //   console.log(wordIds);
-        // setWordIds(wordIds)
-      // })
       setWordIds(selectedRowKeys)
-
     },
     onSelect: (record: DataType, selected: boolean) => {
+      console.log(record)
       const index = seoWord.findIndex((value,index)=>{
         return value.id === record.id
       })
@@ -162,16 +149,31 @@ export default (props: Props) => {
     },
 
     onSelectAll:(selected:boolean, selectedRows:DataType[], changeRows:DataType[])=> {
-      const changeIdIndex = changeRows.forEach(item=>{
-        seoWord.findIndex((value, index) => {
+      console.log(changeRows)
+      const newSeoWord = [...seoWord]
+      changeRows.forEach(item=>{
+        const index = newSeoWord.findIndex((value,index)=>{
           return value.id === item.id
         })
+        newSeoWord.splice(index, 1, { 
+          ...item,
+          isCheck: selected
+        })
       })
-      seoWord.splice(index, changeRows.length, ...changeRows.map(item=>({ 
-        ...item,
-        isCheck: selected
-      })))
-      setSeoWord(seoWord)
+      setSeoWord(newSeoWord)
+      
+      // let changeIdIndex :number[] = []
+      // changeRows.forEach(item=>{
+      //   changeIdIndex.push(seoWord.findIndex((value, index) => {
+      //     return value.id === item.id
+      //   }))
+      // })
+      // changeIdIndex.forEach((item,index)=>{
+      //   seoWord.splice(item,1,{
+      //     ...changeRows[index],
+      //     isCheck:selected
+      //   })
+      // })
     },
   };
 
@@ -184,11 +186,14 @@ export default (props: Props) => {
       visible={visible}
       confirmLoading={submitLoading}
       onOk={submitData}
-      footer={ dataLoading && <div style={{ color: '#333', fontSize: 16, position: 'absolute', right: 35, bottom: 110 }}>
-      当前已选关键词：<span style={{ color: 'orange', fontSize: 16 }}>{wordIds ? wordIds.length : 0}个</span>
-      <span style={{ color: '#999', fontSize: 10 }}>（至少选择200个词）</span>
-      <Button key="submit" type="primary" style={{ position: 'absolute', right: 4, bottom: -50, width: 120, height: 35 }} onClick={() => setModalVisible(true)}>提 交</Button>
-    </div>}
+      footer={ 
+        dataLoading && <span style={{ color: '#333', fontSize: 16, position: 'relative', right: 35, bottom: (Object.getOwnPropertyNames(showWord).length === 0) ? 110 : 60 }}>
+        当前已选关键词：<span style={{ color: 'orange', fontSize: 16 }}>{wordIds ? wordIds.length : 0}个</span>
+        <span style={{ color: '#999', fontSize: 10 }}>（至少选择200个词）</span>
+        <Button key="submit" type="primary" 
+        style={{ position: 'absolute', right: 4, bottom: -50, width: 120, height: 35 }} 
+        onClick={() => setModalVisible(true)}>提 交</Button>
+      </span>}
       onCancel={() => { close(); }}>
       <Table
         columns={columns} rowKey="id" dataSource={showWord} 
