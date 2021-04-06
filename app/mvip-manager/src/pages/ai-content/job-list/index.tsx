@@ -9,7 +9,7 @@ import AiPackageModal from '@/pages/ai-content/job-list/components/ai-package-mo
 import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
-import { addKeyForListData, formatTime, mockData } from '@/utils';
+import { addKeyForListData, formatTime } from '@/utils';
 import { errorMessage } from '@/components/message';
 import { AiTaskAction, AiTaskStatus } from '@/enums';
 import { AiTaskStatusText } from '@/constants';
