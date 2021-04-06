@@ -186,7 +186,7 @@ export interface CreateQuestionTaskBasicData {
    * @type USER_PROFILE 提示用户是否需要跳转企业基础信息信息（强制）
    * @type USER_MATERIAL 提示用户是否需要跳转补充素材（强制）
    */
-  nextAction: 'SHOW_CREATE' | 'SHOW_QA_LIST' | 'CREATE_WAITING' | 'USER_PROFILE' | 'USER_MATERIAL' | null
+  nextAction: 'SHOW_CREATE' | 'SHOW_QA_LIST' | 'CREATE_WAITING' | 'USER_PROFILE' | 'USER_MATERIAL' | 'USER_QA_MATERIAL' | null
   /** 弹窗提示文本 */
   notice: string | null
   /** 疑问词列表 */

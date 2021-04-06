@@ -48,6 +48,11 @@ export const getQuestionTaskListApi = (params: PageParams): Promise<ServiceRespo
   return postZhidaoApiData('zhidao/v1/backend/ai/getAiTaskList', params)
 }
 
+/** 点击查看详情 检查当前任务是否完全入库 */
+export const getQuestionTaskStatusApi = (id: number): Promise<ServiceResponse<'true' | 'false'>> => {
+  return postZhidaoApiData('zhidao/v1/backend/ai/checkShowQaList', { id })
+}
+
 /** 生成问答进度 */
 export const getQuestionBuildStatus = (): Promise<ServiceResponse<'success' | 'start build'>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/getQaBuildStatus', {})

@@ -2,7 +2,7 @@ import React, { forwardRef, Ref, useEffect, useState, useImperativeHandle } from
 import { Table } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
-import { getQuestionTaskListApi } from '@/api/ai-content';
+import { getQuestionTaskListApi, getQuestionTaskStatusApi } from '@/api/ai-content';
 import './index.less';
 import { QuestionTaskListItem } from '@/interfaces/ai-content';
 import { useDebounce } from '@/hooks/debounce'
@@ -76,6 +76,18 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     getList()
   }, [page])
 
+  // 点击检查任务是否完成
+  const getQuestionTaskStatus = async (id: number) => {
+    if (listLoading) return
+    setListLoading(true)
+    const res = await getQuestionTaskStatusApi(id)
+    if (res.success && res.data === 'true') {
+      history.push(`/ai-content/ai-zhidao/${id}/ai-zhidao-detail?pageType=see`)
+    } else {
+      errorMessage('数据处理中，请稍后再试~')
+    }
+    setListLoading(false)
+  }
 
   const columns: TableColumnProps<QuestionTaskListItem>[] = [
     { title: '编号', dataIndex: 'taskId', align: 'center' },
@@ -88,7 +100,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     {
       title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
     },
-    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <Link to={`/ai-content/ai-zhidao/${record.taskId}/ai-zhidao-detail?pageType=see`}>查看详情</Link> },
+    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <div style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</div> },
   ];
 
   // 修改分页后也修改url
