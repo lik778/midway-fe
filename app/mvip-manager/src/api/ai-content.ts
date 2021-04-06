@@ -40,7 +40,7 @@ export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceRespo
 
 /** 获得文章对应选词列表 **/
 export const getAiChooseWordListApi = ( params : { taskId : number | null} ): Promise<ServiceResponse<ChooseWordList>> =>{
-  return postApiData('seoword/hotword', params, {"shop-id" : 432})
+  return postApiData('ai/hotword', params)
 }
 
 /** 提交选词列表 **/
