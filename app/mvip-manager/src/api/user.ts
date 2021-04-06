@@ -53,7 +53,7 @@ export const getZhidaoMaterial = (): Promise<ServiceResponse<ZhidaoMaterialData>
 }
 
 
-/** 获取问答素材库 */
+/** 保存问答素材库 */
 export const setZhidaoMaterial = (params: ZhidaoMaterial): Promise<ServiceResponse<null>> => {
   return postApiData('midway/backend/user/saveZhidaoMaterial', params)
 }

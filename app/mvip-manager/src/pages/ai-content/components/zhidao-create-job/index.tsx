@@ -122,7 +122,7 @@ export default (props: ZhidaoCreateJobProp) => {
     placeholder: '请点击疑问词类型选择',
     min: 30,
     max: 50,
-    tip: '3-5个类型',
+    tip: '3-4个类型',
     rules: [{
       required: true,
       // message: `请选择地区！(3-5个类型)`,
@@ -193,7 +193,12 @@ export default (props: ZhidaoCreateJobProp) => {
     // TODO;
     const res = await getCreateQuestionTaskBasicData()
     // const res = await mockData<CreateQuestionTaskBasicData>('data', {
-    //   // canCreateTask: false,
+    //   canCreateTask: false,
+    //   forceNotice: true,
+    //   nextAction: 'USER_QA_MATERIAL',
+    //   notice: '填充问答素材',
+    //   suggestSuffix: null
+
     //   // forceNotice: true,
     //   // nextAction: 'USER_PROFILE',
     //   // notice: '填充用户基础信息',
@@ -205,11 +210,11 @@ export default (props: ZhidaoCreateJobProp) => {
     //   // notice: '补充基础素材库',
     //   // suggestSuffix: mockInterrogativeWord()
 
-    //   canCreateTask: true,
-    //   forceNotice: false,
-    //   nextAction: 'SHOW_CREATE',
-    //   notice: '可以创建',
-    //   suggestSuffix: mockInterrogativeWord()
+    //   // canCreateTask: true,
+    //   // forceNotice: false,
+    //   // nextAction: 'SHOW_CREATE',
+    //   // notice: '可以创建',
+    //   // suggestSuffix: mockInterrogativeWord()
     // })
     if (res.success) {
       const { canCreateTask, suggestSuffix } = res.data

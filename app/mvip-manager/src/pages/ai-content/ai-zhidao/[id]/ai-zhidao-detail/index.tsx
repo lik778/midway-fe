@@ -164,7 +164,7 @@ const AiZhidaoDetail = (props: any) => {
 
     const res = await submitTask()
     // const res = await mockData('data', {})
-    if (res.success) {
+    if (res.success && res.data === 'true') {
       successMessage(res.message || '发布成功')
       history.replace('/ai-content/ai-zhidao')
     } else {
