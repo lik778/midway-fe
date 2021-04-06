@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState, useMemo } from 'react';
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { history } from 'umi'
 import styles from './index.less';
-import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords, clearCatch } from '@/api/ai-content';
+import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords } from '@/api/ai-content';
 import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo } from '@/interfaces/ai-content'
 import { mockData, randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
@@ -313,7 +313,6 @@ export default (props: ZhidaoCreateJobProp) => {
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
   const outgoingControl = (value: string) => {
-    console.log(value)
     const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '').replace(/\s{1,}\n/g, '\n')
     if (newValue[newValue.length - 1] === '\n') {
       return `${[...new Set(newValue.split('\n').filter(item => item !== ''))].join('\n')}\n`
@@ -325,10 +324,13 @@ export default (props: ZhidaoCreateJobProp) => {
    * 获取通用数据
    *  */
   const obtainData = (key: string) => {
+    const value = form.getFieldValue(key)
     const formItem = formItemList.find(item => item.key === key)
     const concatWords: string[] = randomList(aiDefaultWord[key], formItem!.auto || formItem!.max)
+    // 当是前缀时，不要删除过去的
+    const str = `${(key === 'prefix' && value) ? value + '\n' : ''}${concatWords.join('\n')}`
     form.setFieldsValue({
-      [key]: concatWords.join('\n')
+      [key]: str
     })
     form.validateFields([key])
   }
@@ -372,13 +374,13 @@ export default (props: ZhidaoCreateJobProp) => {
     }
     console.log(requestData)
     setUpdataLoading(true)
-    // TODO;
     const res = await submitCoreWords(requestData)
     setUpdataLoading(false)
     if (res.success) {
       setModalVisible(false)
       initCompoment()
     } else {
+      console.log(res)
       errorMessage(res.message || '提交失败')
     }
     // const res = await mockData('data', {})

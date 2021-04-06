@@ -51,18 +51,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   const getList = useDebounce(async () => {
     if (activeKey !== 'job-list') return
     setListLoading(true)
-    // TODO;
     const res = await getQuestionTaskListApi({ page, size: 10 })
-    /** 模拟数据，正式数据则解开上面的注释 */
-    // const res = await mockData<QuestionTaskListItem>('list', {
-    //   /** 任务id 同时也是编号 */
-    //   taskId: 1,
-    //   /** 已发布数量 */
-    //   publishedNum: 2,
-    //   /** 预期发布数量 */
-    //   expectNum: 4,
-    //   createdTime: 1616054198,
-    // }, 'taskId', page, 10)
     if (res.success) {
       setAiList(addKeyForListData(res.data.result || [], page))
       setTotal(res.data.totalRecord || 0)

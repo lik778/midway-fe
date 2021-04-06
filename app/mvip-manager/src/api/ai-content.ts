@@ -88,11 +88,14 @@ export const submitCoreWords = (requestData: QuestionTaskApiParams): Promise<Ser
   return postZhidaoApiData('zhidao/v1/backend/ai/submitSeoWords', requestData)
 }
 
-/** 提交发布 
- * 
-*/
-export const submitTask = (): Promise<ServiceResponse<never>> => {
+/** 提交发布 */
+export const submitTask = (): Promise<ServiceResponse<'true' | 'false'>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/submitTask', {})
+}
+
+/** 取消发布 */
+export const cancalTaskApi = (): Promise<ServiceResponse<never>> => {
+  return postZhidaoApiData('zhidao/v1/backend/ai/evictAiTaskCache', {})
 }
 
 

@@ -76,7 +76,8 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
           </div>
         ) : (
           <span style={{
-            cursor: editable ? 'pointer' : 'null'
+            cursor: editable ? 'pointer' : 'null',
+            wordBreak: 'break-all'
           }} onClick={() => toggleEdit()}>
             {localAnswer}
           </span>

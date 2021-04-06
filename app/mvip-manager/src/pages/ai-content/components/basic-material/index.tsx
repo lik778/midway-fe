@@ -106,9 +106,7 @@ export default () => {
     })
     console.log(requestData)
     setUpdataLoading(true)
-    // TODO;
     const res = await submitBasicMaterial(requestData)
-    // const res = await mockData('data', null)
     if (res.success) {
       successMessage(res.message || '添加成功')
     } else {
