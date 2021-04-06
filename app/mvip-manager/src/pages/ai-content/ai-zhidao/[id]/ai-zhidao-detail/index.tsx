@@ -60,7 +60,7 @@ const AiZhidaoDetail = (props: any) => {
       } else if (text === ZhidaoAiTaskStatus.REJECT) {
         // 审核驳回
         return (
-          <Tooltip title={record.tip}>
+          <Tooltip title={record.tip} overlayStyle={{ width: '150px' }}>
             <div className={styles['question-status-2']}>{
               ZhidaoAiTaskStatusText[text]
             }</div>
@@ -165,7 +165,7 @@ const AiZhidaoDetail = (props: any) => {
     const res = await submitTask()
     // const res = await mockData('data', {})
     if (res.success && res.data === 'true') {
-      successMessage(res.message || '发布成功')
+      successMessage('新建任务成功')
       history.replace('/ai-content/ai-zhidao')
     } else {
       errorMessage(res.message || '发布失败')
@@ -198,7 +198,7 @@ const AiZhidaoDetail = (props: any) => {
             }}
           ></Table>
           {
-            pageType === 'edit' && <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问答</Button>
+            pageType === 'edit' && <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>提交发布</Button>
           }
 
         </div>
