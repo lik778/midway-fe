@@ -3,8 +3,7 @@ import { Modal, Button, Table, Menu, Dropdown } from 'antd';
 import { errorMessage, successMessage } from '@/components/message';
 import { history } from 'umi';
 import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-content';
-import { ChooseWord, ChooseWordList } from '@/interfaces/ai-content';
-import { mockData } from '@/utils';
+import { ChooseWord } from '@/interfaces/ai-content';
 import { DownOutlined } from '@ant-design/icons';
 import './index.less';
 

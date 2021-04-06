@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Table, Menu, Dropdown } from 'antd';
+import { Modal, Table } from 'antd';
 import { errorMessage, successMessage } from '@/components/message';
-import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-content';
-import { ChooseWord, ChooseWordList } from '@/interfaces/ai-content';
+import { getAiChooseWordListApi } from '@/api/ai-content';
+import { ChooseWord } from '@/interfaces/ai-content';
 
 interface DataType {
   id: number;
