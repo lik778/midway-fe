@@ -122,7 +122,7 @@ export default (props: ZhidaoCreateJobProp) => {
     placeholder: '请点击疑问词类型选择',
     min: 30,
     max: 50,
-    tip: '3-5个类型',
+    tip: '3-4个类型',
     rules: [{
       required: true,
       // message: `请选择地区！(3-5个类型)`,
