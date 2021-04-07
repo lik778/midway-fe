@@ -32,7 +32,7 @@ function ContactForm (props: any) {
     setFormData(allValues)
   }
 
-  const saveInfo = async() => {
+  const saveInfo = async () => {
     if (formUnvalid(formInstance)) return
     let qqMap: any = null
     if (qqList.length > 0) {
@@ -40,20 +40,21 @@ function ContactForm (props: any) {
       qqList.forEach(x => qqMap[x.qq] = x.name)
     }
     const clonedCompanyInfo = cloneDeepWith(companyInfo)
-    const info:UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
+    const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
     info.qqMap = qqMap
-    // 处理53客服数据
-    if (!isEmptyObject(kf53Data)) {
+    // TODO;
+    // 处理53客服数据  刚创建用户 kf53Info可以为空
+    if (kf53Data && !isEmptyObject(kf53Data)) {
       if (kf53Data.kefuStatus) {
         if (kf53Data.companyName && kf53Data.companyName.length < 2) return
         info.kefuStatus = KFStatus.OPEN;
-        info.kf53Info.companyName = kf53Data.companyName
-        info.kf53Info.bname = kf53Data.bname
+        info.kf53Info!.companyName = kf53Data.companyName
+        info.kf53Info!.bname = kf53Data.bname
       } else {
         info.kefuStatus = KFStatus.CLOSE
       }
     } else {
-      if(info.kf53Info.companyName && info.kf53Info.companyName.length < 2) return
+      if (info.kf53Info && info.kf53Info.companyName && info.kf53Info.companyName.length < 2) return
     }
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
@@ -75,18 +76,20 @@ function ContactForm (props: any) {
     <div>
       <Form.Item label="电话/微信">
         <WildcatForm useLabelCol={true} editDataSource={companyInfo}
-           onInit={(form) => setFormInstance(form)}
-           config={config} formChange={formChange}/>
+          onInit={(form) => setFormInstance(form)}
+          config={config} formChange={formChange} />
       </Form.Item>
       <Form.Item label="智能接待系统">
         <KF53 editDataSource={companyInfo} onChange={(values) => {
           setHasEditForm(true)
-          setKf53Data(values) }}/>
+          setKf53Data(values)
+        }} />
       </Form.Item>
       <Form.Item label="QQ客服">
-        <QQCustomService companyInfo={companyInfo}  onChange={(list: QQItem[]) => {
+        <QQCustomService companyInfo={companyInfo} onChange={(list: QQItem[]) => {
           setHasEditForm(true)
-          setQQList(list)}} />
+          setQQList(list)
+        }} />
         <div className="contact-form-box" >
           <Button disabled={!hasEditForm} loading={loading} className="btn" type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>

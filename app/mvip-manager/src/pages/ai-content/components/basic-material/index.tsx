@@ -14,7 +14,7 @@ interface FormItemListItem {
   key: string,
   label: string,
   placeholder: string,
-  required: boolean
+  rules: any[]
 }
 
 export default () => {
@@ -22,31 +22,52 @@ export default () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
 
+  const validateItem = (key: string, value: string | undefined, label: string) => {
+    if (key === 'wordE') {
+      return Promise.resolve()
+    } else {
+      if (!!value) {
+        if (key === 'wordA') {
+          const data = value.split('\n').filter(item => !!item)
+          if (data.length < 5) {
+            return Promise.reject(new Error(`公司产品/服务请至少填写5个（以回车换行区分）`));
+          } else {
+            return Promise.resolve()
+          }
+        } else {
+          return Promise.resolve()
+        }
+      } else {
+        return Promise.reject(new Error(`请输入${label}`));
+      }
+    }
+  }
+
   const formItemList: FormItemListItem[] = [{
     key: 'wordA',
     label: '公司产品/服务',
     placeholder: `例如：\n本公司从事家电维修行业，主营业务有空调维修、电视机维修、冰箱维修等。\n一行一个素材，至少填写5个，多个素材以回车换行区分。`,
-    required: true
+    rules: [{ required: true, validator: (rule: any, value: any) => validateItem('wordA', value, '公司产品/服务'), }]
   }, {
     key: 'wordB',
-    label: '公司优势 ',
+    label: '公司优势',
     placeholder: `例如：\n1.我们有专业的技术团队\n2.我们有高质量的服务标准\n3.我们的产品质量行业TOP100`,
-    required: true
+    rules: [{ required: true, validator: (rule: any, value: any) => validateItem('wordB', value, '公司优势'), }]
   }, {
     key: 'wordC',
-    label: '公司好评 ',
+    label: '公司好评',
     placeholder: `例如：\nXX搬家公司，获得全国驰名商标荣耀\nXX开锁公司，获取洛阳锁王称号，XXX小区开锁王`,
-    required: true
+    rules: [{ required: true, validator: (rule: any, value: any) => validateItem('wordC', value, '公司好评'), }]
   }, {
     key: 'wordD',
     label: '服务承诺',
     placeholder: `例如：\n1.提供24小时一条龙服务\n2.无额外收费， 统一标价`,
-    required: true
+    rules: [{ required: true, validator: (rule: any, value: any) => validateItem('wordD', value, '服务承诺'), }]
   }, {
     key: 'wordE',
     label: '行业小知识',
     placeholder: `请填写行业小知识等信息。\n一行一句回答素材，多个以回车换行区分。`,
-    required: false
+    rules: [{ required: false, validator: (rule: any, value: any) => validateItem('wordE', value, '行业小知识'), }]
   },]
 
   // 点击提交按钮弹出弹窗
@@ -122,7 +143,7 @@ export default () => {
       <div className={styles['ai-content-container']} >
         <Form className={styles['base-information-box']} form={form} labelCol={{ span: 4 }} >
           {
-            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={[{ required: item.required, message: `请输入${item.label}！` }]} >
+            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={item.rules} >
               <TextArea rows={5}
                 placeholder={item.placeholder}
               />

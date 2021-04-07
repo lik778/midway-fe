@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState, useMemo } from 'react';
+import React, { ChangeEvent, useEffect, useState, useMemo, useCallback } from 'react';
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { history } from 'umi'
 import styles from './index.less';
@@ -10,6 +10,7 @@ import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
+import { debounce, throttle } from 'lodash'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -330,17 +331,18 @@ export default (props: ZhidaoCreateJobProp) => {
   }
 
   /** 失焦时去重 */
-  const textAreaBlur = (key: string) => {
+  const textAreaBlur = useCallback(debounce((key: string) => {
     const value: string | undefined = form.getFieldValue(key)
     form.setFieldsValue({
       [key]: value ? `${[...new Set(value.split('\n').filter(item => item !== ''))].join('\n')}\n` : ''
     })
     form.validateFields([key])
-  }
+  }, 200, { leading: false, trailing: true }), []);
 
   /**
    * 获取通用数据
    *  */
+
   const obtainData = (key: string) => {
     const value: string | undefined = form.getFieldValue(key)
     const formItem = formItemList.find(item => item.key === key)
@@ -356,6 +358,7 @@ export default (props: ZhidaoCreateJobProp) => {
     })
     form.validateFields([key])
   }
+
 
   const handleClickClearItem = (key: string) => {
     form.setFieldsValue({
