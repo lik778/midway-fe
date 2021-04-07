@@ -52,7 +52,7 @@ export interface UserEnterpriseInfo {
   qqMap: {[key:string]:string};
   companyNameLock: boolean;
   kefuStatus: KFStatus;
-  kf53Info: KF53Info;
+  kf53Info: KF53Info|null;
 }
 
 
