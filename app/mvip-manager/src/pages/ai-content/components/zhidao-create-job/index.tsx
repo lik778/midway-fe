@@ -365,7 +365,7 @@ export default (props: ZhidaoCreateJobProp) => {
     }
     for (let i in values) {
       if (i !== 'suffix') {
-        requestData[i as keyof QuestionTaskApiParams] = (values[i] as string).split('\n')
+        requestData[i as keyof QuestionTaskApiParams] = (values[i] as string).split('\n').filter(item => item)
       } else {
         requestData.suffix = interrogativeWord.filter(item => item.isSelect).reduce((total, item) => {
           return total.concat(item.child.map(cItem => `${cItem.id}|||${cItem.content}|||${item.name}`))
