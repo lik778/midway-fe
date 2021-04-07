@@ -111,7 +111,7 @@ export default (props: any) => {
 
 
   return (<div>
-    {/*<MainTitle title="新建任务"/>*/}
+    <MainTitle title="新建任务"/>
     <div className="ai-create-job-box">
       <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)}/>
       { visiblePanel && (
