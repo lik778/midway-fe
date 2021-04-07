@@ -9,7 +9,7 @@ import AiPackageModal from '@/pages/ai-content/job-list/components/ai-package-mo
 import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
 import './index.less';
 import { AiContentItem } from '@/interfaces/ai-content';
-import { addKeyForListData, formatTime } from '@/utils';
+import { addKeyForListData, formatTime, mockData } from '@/utils';
 import { errorMessage } from '@/components/message';
 import { AiTaskAction, AiTaskStatus } from '@/enums';
 import { AiTaskStatusText } from '@/constants';
@@ -70,6 +70,7 @@ export default (props: any) => {
   const viewWords = (record: AiContentItem) => {
     setEditAiTask(record)
     setAiEditModalVisible(true)
+
   }
 
   const chooseWords = (record: number) => {
@@ -149,8 +150,7 @@ export default (props: any) => {
       }
     },
     {
-      title: '累计发文', dataIndex: 'articleNum', key: 'articleNum',
-      render: (text: string, record: AiContentItem) => {
+      title: '累计发文', dataIndex: 'articleNum', key: 'articleNum', render: (text: string, record: AiContentItem) => {
         return <div>
           <label>已发文<span style={{ color: '#096DD9' }}>{text}</span>篇</label>
           <span> | </span>
