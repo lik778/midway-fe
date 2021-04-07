@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, ConfigProvider } from 'antd';
-import { Link } from 'umi';
-import { connect } from 'dva';
-import zhCN from 'antd/lib/locale/zh_CN';
-import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils';
+import React, { useState, useEffect } from 'react'
+import { Layout, Menu, ConfigProvider } from 'antd'
+import { Link } from 'umi'
+import { connect } from 'dva'
+import zhCN from 'antd/lib/locale/zh_CN'
+import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils'
 import { baseMapStateToProps, baseMapDispatchToProps } from '@/models/base'
-import { USER_NAMESPACE, userMapDispatchToProps } from '@/models/user'
+import { userMapStateToProps, userMapDispatchToProps } from '@/models/user'
 import { ConnectState } from '@/models/connect'
 import { MidMenuItem } from '@/interfaces/base'
-
 import './index.less'
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const Layouts = (props: any) => {
-  const { userInfo, menuList, getMenuList,
-    getCompanyInfo, getUserInfo, getShopStatus } = props
+  const { userInfo, menuList, getMenuList, getCompanyInfo, getUserInfo } = props
   if (inIframe()) {
     return <Layout className="site-layout">
       <Content>
@@ -97,12 +95,11 @@ const Layouts = (props: any) => {
 export default connect((state: ConnectState) => {
   return {
     ...baseMapStateToProps(state),
-    companyInfo: state[USER_NAMESPACE].companyInfo,
-    userInfo: state[USER_NAMESPACE].userInfo,
+    ...userMapStateToProps(state)
   }
 }, (dispatch) => {
   return {
     ...baseMapDispatchToProps(dispatch),
-    ...userMapDispatchToProps(dispatch),
+    ...userMapDispatchToProps(dispatch)
   }
 })(Layouts)

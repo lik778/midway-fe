@@ -14,12 +14,11 @@ import { QQCustomService } from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { isNewUserApi } from '@/api/shop';
-import { SET_COMPANY_INFO_ACTION, USER_NAMESPACE } from '@/models/user';
+import {  userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import './index.less';
-import { ConnectState } from '@/models/connect';
 
-function ContactForm(props: any) {
-  const { companyInfo } = props
+function ContactForm (props: any) {
+  const { companyInfo, setCompanyInfo } = props
   const [qqList, setQQList] = useState<QQItem[]>([]);
   const [kf53Data, setKf53Data] = useState<any>({});
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(contactForm));
@@ -61,7 +60,7 @@ function ContactForm(props: any) {
     const res = await saveEnterpriseContactInfoApi(info)
     setLoading(false)
     if (res?.success) {
-      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, payload: info })
+      setCompanyInfo(info)
       const newUserRes = await isNewUserApi()
       if (newUserRes.data) {
         genNewUserModal()
@@ -100,8 +99,4 @@ function ContactForm(props: any) {
   )
 }
 
-export default connect((state: ConnectState) => {
-  return {
-    companyInfo: state[USER_NAMESPACE].companyInfo
-  }
-})(ContactForm)
+export default connect(userMapStateToProps, userMapDispatchToProps)(ContactForm)

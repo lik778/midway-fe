@@ -9,19 +9,18 @@ import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import { UserEnterpriseInfo, ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
+import { ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
-import { USER_NAMESPACE, GET_COMPANY_INFO_ACTION, SET_COMPANY_INFO_ACTION } from '@/models/user';
+import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
 import { objToTargetObj } from '@/utils';
-import { ConnectState } from '@/models/connect';
 
 
 const { Step } = Steps;
 
-function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispatch: any }) {
-  const { companyInfo } = props
+function CompanyInfoBase(props: any) {
+  const { companyInfo, setCompanyInfo } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<SaveEnterpriseForShopParams | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,7 +35,6 @@ function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispat
     const res = await getThirdCategoryMetas(catogoryName);
     if (res?.success) {
       const metas = objToTargetObj(res.data, "label")
-      console.log("metas:", metas)
       setThirdMetas(metas)
     }
   }
@@ -146,7 +144,7 @@ function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispat
     setLoading(false)
     if (success) {
       successMessage('修改基础资料成功')
-      props.dispatch({ type: `${USER_NAMESPACE}/${SET_COMPANY_INFO_ACTION}`, payload: data })
+      setCompanyInfo(data)
       next()
     } else {
       errorMessage(message || '出错啦')
@@ -188,11 +186,7 @@ function CompanyInfoBase(props: { companyInfo: UserEnterpriseInfo | null, dispat
   );
 }
 
-const WrapperCompanyInfoBase: any = connect((state: ConnectState) => {
-  return {
-    companyInfo: state[USER_NAMESPACE].companyInfo,
-  }
-})(CompanyInfoBase)
+const WrapperCompanyInfoBase: any = connect(userMapStateToProps, userMapDispatchToProps)(CompanyInfoBase)
 
 WrapperCompanyInfoBase.wrappers = ['@/wrappers/path-auth']
 
