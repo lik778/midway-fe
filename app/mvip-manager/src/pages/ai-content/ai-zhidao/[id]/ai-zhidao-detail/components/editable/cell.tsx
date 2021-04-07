@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Table, Input, Button, Popconfirm, Form, Spin } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { EditableContext } from './context'
-import style from './style.less'
+import styles from './style.less'
 import { errorMessage } from '@/components/message';
 
 
@@ -67,7 +67,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     }
   };
 
-  let childNode = children;
+  let childNode = <span className={styles['text-value-wrap']}>{children}</span>;
 
   if (editable) {
     childNode = editing ? (
@@ -80,7 +80,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
         </Form.Item>
       </Spin>
     ) : (
-      <div className={style['editable-cell-value-wrap']} style={{ paddingRight: 24 }} onClick={toggleEdit}>
+      <div className={`${styles['editable-cell-value-wrap']} ${styles['text-value-wrap']}` } style={{ paddingRight: 24 }} onClick={toggleEdit}>
         {children}
       </div>
     );
