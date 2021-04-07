@@ -36,7 +36,7 @@ const groupConfig = [
     initLen: 0,
     err: '请输入大于9个字的SEO标题',
     errClass:'',
-    visible: false
+    visible: true
   },
   {
     label: 'SEO关键词',
@@ -49,7 +49,7 @@ const groupConfig = [
     maxLength: 100,
     err: '',
     errClass:'',
-    visible: false
+    visible: true
   },
   {
     label: 'SEO描述',
@@ -62,7 +62,7 @@ const groupConfig = [
     initLen: 0,
     err:'请输入大于40个字的SEO描述',
     errClass:'',
-    visible: false
+    visible: true
   },
 ]
 
