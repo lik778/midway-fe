@@ -152,6 +152,10 @@ export default (props: ZhidaoCreateJobProp) => {
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [showTipModal, setShowTipModal] = useState<boolean>(false)
 
+  const suffixValue = useMemo(() => {
+    return interrogativeWord.filter(item => item.isSelect).map(item => item.id)
+  }, [interrogativeWord])
+
   useEffect(() => {
     if (pageStatus) {
       // 只有正常的时候才不用显示弹窗
@@ -313,24 +317,42 @@ export default (props: ZhidaoCreateJobProp) => {
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
   const outgoingControl = (value: string) => {
+    console.log(value)
     const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '').replace(/\s{1,}\n/g, '\n')
     if (newValue[newValue.length - 1] === '\n') {
       return `${[...new Set(newValue.split('\n').filter(item => item !== ''))].join('\n')}\n`
+    } else if (newValue.indexOf('\n') !== -1) {
+      const words = newValue.split('\n')
+      const suffix = words.pop()
+      return `${[...new Set(words.filter(item => item !== ''))].join('\n')}\n${suffix || ''}`
     }
     return newValue
+  }
+
+  /** 失焦时去重 */
+  const textAreaBlur = (key: string) => {
+    const value: string | undefined = form.getFieldValue(key)
+    form.setFieldsValue({
+      [key]: value ? `${[...new Set(value.split('\n').filter(item => item !== ''))].join('\n')}\n` : ''
+    })
+    form.validateFields([key])
   }
 
   /**
    * 获取通用数据
    *  */
   const obtainData = (key: string) => {
-    const value = form.getFieldValue(key)
+    const value: string | undefined = form.getFieldValue(key)
     const formItem = formItemList.find(item => item.key === key)
     const concatWords: string[] = randomList(aiDefaultWord[key], formItem!.auto || formItem!.max)
-    // 当是前缀时，不要删除过去的
-    const str = `${(key === 'prefix' && value) ? value + '\n' : ''}${concatWords.join('\n')}`
+    let words: string[] = []
+    if (key === 'prefix' && !!value) {
+      words = [...new Set(value.split('\n').concat(concatWords))]
+    } else {
+      words = concatWords
+    }
     form.setFieldsValue({
-      [key]: str
+      [key]: words.join('\n')
     })
     form.validateFields([key])
   }
@@ -339,6 +361,14 @@ export default (props: ZhidaoCreateJobProp) => {
     form.setFieldsValue({
       [key]: ''
     })
+    if (key === 'suffix') {
+      setInterrogativeWord((value) => {
+        return value.map(item => {
+          item.isSelect = false
+          return item
+        })
+      })
+    }
   }
 
   const filterSuffixSelect = (input: string, option: any) =>
@@ -413,6 +443,7 @@ export default (props: ZhidaoCreateJobProp) => {
                     <Select mode="multiple" className={styles["suffix-container-dropdown"]}
                       showArrow={true} maxTagCount={'responsive'}
                       filterOption={filterSuffixSelect}
+                      value={suffixValue}
                       onSelect={(value: number) => selectInterrogativeWord(value)}
                       onDeselect={(value: number) => selectInterrogativeWord(value)} placeholder='疑问词' disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>
                       {
@@ -426,6 +457,7 @@ export default (props: ZhidaoCreateJobProp) => {
                 <FormItem name={item.key} style={{ marginBottom: 18 }} rules={item.rules} normalize={outgoingControl
                 } validateTrigger={item.key === 'suffix' ? 'onChange' : 'onChange'}>
                   <TextArea rows={15}
+                    onBlur={() => textAreaBlur(item.key)}
                     placeholder={item.placeholder}
                     readOnly={item.readOnly}
                     disabled={componentBasicData ? !componentBasicData.canCreateTask : true}
