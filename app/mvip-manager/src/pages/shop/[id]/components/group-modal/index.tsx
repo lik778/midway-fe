@@ -4,11 +4,12 @@ import './index.less';
 import { Modal, Input } from 'antd';
 import classNames from 'classnames';
 import { createContentCateApi, updateContentCateApi } from '@/api/shop'
-import { CateItem, RouteParams } from '@/interfaces/shop';
+import { CateItem, RouteParams, ShopInfo } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { ContentCateType } from '@/enums';
+import { ContentCateType, ProductType } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
-
+import { SHOP_NAMESPACE } from '@/models/shop';
+import { connect } from 'dva';
 
 // 分组tkd配置
 const groupConfig = [
@@ -36,7 +37,7 @@ const groupConfig = [
     initLen: 0,
     err: '请输入大于9个字的SEO标题',
     errClass:'',
-    visible: true
+    visible: false
   },
   {
     label: 'SEO关键词',
@@ -49,7 +50,7 @@ const groupConfig = [
     maxLength: 100,
     err: '',
     errClass:'',
-    visible: true
+    visible: false
   },
   {
     label: 'SEO描述',
@@ -62,7 +63,7 @@ const groupConfig = [
     initLen: 0,
     err:'请输入大于40个字的SEO描述',
     errClass:'',
-    visible: true
+    visible: false
   },
 ]
 
@@ -76,8 +77,10 @@ interface Props {
   groupCreate(item: CateItem): void;
   groupUpdate(item: CateItem): void;
   onClose(): void;
+  curShopInfo: ShopInfo | undefined;
 }
-export default (props: Props) => {
+const NewCate = (props: Props) => {
+  console.log(1,props)
   const params: RouteParams = useParams();
   const { editItem, type, onClose, groupCreate, groupUpdate } = props;
   const [config, setConfig] = useState(groupConfig)
@@ -196,6 +199,21 @@ export default (props: Props) => {
     }))
   }
 
+  //只有B2B的店铺，新建分组才会有SEO设置
+  const { curShopInfo } = props
+  useEffect(() => {
+    if (curShopInfo){
+      const { type } = curShopInfo
+      if (type == ProductType.B2B){
+        const newConfig = config.map(x => ({
+          ...x,
+          visible:true
+        }))
+        setConfig(newConfig)
+      }
+    }
+  }, [curShopInfo])
+
   return (
     <div className="group-modal">
       <Modal
@@ -223,3 +241,9 @@ export default (props: Props) => {
     </div>
   );
 }
+
+//取状态管理里的当前店铺信息，用于判断店铺类型，是否显示SEO设置
+export default connect((state: any): any => {
+  const { curShopInfo } = state[SHOP_NAMESPACE]
+  return { curShopInfo }
+})(NewCate)
