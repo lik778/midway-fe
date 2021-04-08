@@ -14,10 +14,10 @@ import { QQCustomService } from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { isNewUserApi } from '@/api/shop';
-import {  userMapStateToProps, userMapDispatchToProps } from '@/models/user';
+import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import './index.less';
 
-function ContactForm (props: any) {
+function ContactForm(props: any) {
   const { companyInfo, setCompanyInfo } = props
   const [qqList, setQQList] = useState<QQItem[]>([]);
   const [kf53Data, setKf53Data] = useState<any>({});
@@ -43,17 +43,25 @@ function ContactForm (props: any) {
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
     info.qqMap = qqMap
     // 处理53客服数据  刚创建用户 kf53Info可以为空
-    if (kf53Data && !isEmptyObject(kf53Data)) {
-      if (kf53Data.kefuStatus) {
-        if (kf53Data.companyName && kf53Data.companyName.length < 2) return
+    if (kf53Data.kefuStatus) {
+      if (kf53Data && !isEmptyObject(kf53Data)) {
+        if ((!kf53Data.companyName || (kf53Data.companyName.length < 2||kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2||kf53Data.bname.length > 20))) return
         info.kefuStatus = KFStatus.OPEN;
         info.kf53Info!.companyName = kf53Data.companyName
         info.kf53Info!.bname = kf53Data.bname
       } else {
-        info.kefuStatus = KFStatus.CLOSE
+        return
       }
     } else {
-      if (info.kf53Info && info.kf53Info.companyName && info.kf53Info.companyName.length < 2) return
+      info.kefuStatus = KFStatus.CLOSE
+    }
+
+    if (kf53Data && !isEmptyObject(kf53Data)) {
+
+    } else {
+      if (kf53Data.kefuStatus) {
+        return
+      }
     }
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)

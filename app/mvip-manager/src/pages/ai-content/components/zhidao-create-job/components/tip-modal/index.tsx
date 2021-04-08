@@ -84,8 +84,6 @@ const TipModal: FC<TipModalProp> = (props) => {
       onOk={() => {
         if (nextAction === 'USER_PROFILE') {
           history.push('/company-info/base')
-        } else if (nextAction === 'USER_QA_MATERIAL') {
-          history.push('/company-info/zhidao')
         } else if (nextAction === 'USER_MATERIAL') {
           changeActiveKey('basic-material')
         }

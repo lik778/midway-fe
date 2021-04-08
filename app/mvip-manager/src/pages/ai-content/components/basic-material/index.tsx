@@ -46,7 +46,7 @@ export default () => {
   const formItemList: FormItemListItem[] = [{
     key: 'wordA',
     label: '公司产品/服务',
-    placeholder: `例如：\n本公司从事家电维修行业，主营业务有空调维修、电视机维修、冰箱维修等。\n一行一个素材，至少填写5个，多个素材以回车换行区分。`,
+    placeholder: `例如：\n空调维修\n电视机维修\n冰箱维修等。\n一行一个素材，至少填写5个，多个素材以回车换行区分。`,
     rules: [{ required: true, validator: (rule: any, value: any) => validateItem('wordA', value, '公司产品/服务'), }]
   }, {
     key: 'wordB',
