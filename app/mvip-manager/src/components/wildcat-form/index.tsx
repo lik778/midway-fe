@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
-import { Button, Form, Input, Select, Checkbox } from 'antd';
+import { Button, Form, Input, Select, Checkbox, InputNumber } from 'antd';
 import { FormConfig, OptionCheckBox , OptionItem } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
@@ -75,6 +75,12 @@ const WildcatForm = (props: Props) => {
             return (
                 <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
                   <InputLen width={item.inputWidth} placeholder={item.placeholder}  maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount}/>
+                </FormItem>
+              )
+          } else if (item.type === FormType.InputNumber) {
+            return (
+                <FormItem className={item.className}  label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }, ...patternList]}>
+                 <InputNumber  style={{ width: item.inputWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder}  size='large' onChange={(newValue) => onChange(newValue, item.name || '')} />
                 </FormItem>
               )
           } else if (item.type === FormType.Textarea) {

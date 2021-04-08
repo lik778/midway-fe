@@ -1,5 +1,6 @@
 export enum FormType {
   Input,
+  InputNumber,
   Select,
   Textarea,
   AreaSelect,
