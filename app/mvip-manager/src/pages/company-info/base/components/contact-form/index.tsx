@@ -42,7 +42,6 @@ function ContactForm (props: any) {
     const clonedCompanyInfo = cloneDeepWith(companyInfo)
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
     info.qqMap = qqMap
-    // TODO;
     // 处理53客服数据  刚创建用户 kf53Info可以为空
     if (kf53Data && !isEmptyObject(kf53Data)) {
       if (kf53Data.kefuStatus) {
