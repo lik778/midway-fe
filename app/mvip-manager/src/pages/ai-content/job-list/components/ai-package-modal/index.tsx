@@ -29,7 +29,6 @@ export default (props: Props) => {
   useEffect(()=>{
     if(viewtaskId){
       getWord(viewtaskId)
-      console.log("package");
     }
   },[viewtaskId])
 

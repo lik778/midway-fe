@@ -35,7 +35,6 @@ export default (props: Props) => {
   useEffect(()=>{
     if(chooseTaskId){
       getWord(chooseTaskId)
-      console.log("choose");
     }
   },[chooseTaskId])
 
