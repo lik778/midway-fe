@@ -80,7 +80,6 @@ interface Props {
   curShopInfo: ShopInfo | undefined;
 }
 const NewCate = (props: Props) => {
-  console.log(1,props)
   const params: RouteParams = useParams();
   const { editItem, type, onClose, groupCreate, groupUpdate } = props;
   const [config, setConfig] = useState(groupConfig)
@@ -111,12 +110,9 @@ const NewCate = (props: Props) => {
     }
   }, [editItem]);
 
-
-
   const resetConfigValue = (config: any) => {
     setConfig(config.map((x: any) => { x.value = ''; x.initLen = 0;return x }))
   }
-
 
   const handleOk = async() => {
     if(confirmLoading) {
@@ -199,7 +195,7 @@ const NewCate = (props: Props) => {
     }))
   }
 
-  //只有B2B的店铺，新建分组才会有SEO设置
+  //只有B2B的店铺，新建分组才会有SEO设置输入框
   const { curShopInfo } = props
   useEffect(() => {
     if (curShopInfo){
