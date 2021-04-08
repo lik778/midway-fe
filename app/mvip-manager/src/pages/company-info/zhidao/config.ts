@@ -5,7 +5,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 export const zhidaoInfoForm: FormConfig = {
   name: 'zhidaoInfoForm',
   children: [
-    { width: 353, className: 'f-category-select', label: '官网', name: 'siteUrl', type: FormType.Select, required: true, placeholder: '请选择' },
+    { width: 353, className: 'f-category-select', label: '官网', name: 'siteUrl', type: FormType.Select, required: false, placeholder: '请选择' },
     {
       width: 690, label: '侧边广告', name: 'banner1', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '知道侧栏', name: 'banner1', maxSize: 1 }],
       required: false, tip: '图片格式：jpg、jpeg、png，大小不超过1M，建议尺寸为365px*304px'

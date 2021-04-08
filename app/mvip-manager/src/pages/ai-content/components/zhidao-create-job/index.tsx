@@ -10,7 +10,7 @@ import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
-import { debounce, throttle } from 'lodash'
+import { debounce } from 'lodash'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
