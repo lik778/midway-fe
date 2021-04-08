@@ -53,4 +53,6 @@ export interface FormItem {
 export interface ImagesItem {
   text: string;
   name: string;
+  rule?: any[];
+  maxSize?: number
 }

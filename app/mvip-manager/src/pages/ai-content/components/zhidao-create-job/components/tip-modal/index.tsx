@@ -7,7 +7,7 @@ import { CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData } from '@/int
 import styles from './index.less'
 import { getQuestionBuildStatus } from '@/api/ai-content'
 import MyModal, { ModalType } from '@/components/modal';
-
+import { delay } from '@/utils/index'
 interface TipModalProp {
   showModal: boolean
   pageStatus: CreateQuestionTaskPageStatus,
@@ -68,6 +68,7 @@ const TipModal: FC<TipModalProp> = (props) => {
 
   useEffect(() => {
     if (progress === 100) {
+      delay(1000)
       taskBuildSuccess()
       setProgress(0)
     }
@@ -84,8 +85,6 @@ const TipModal: FC<TipModalProp> = (props) => {
       onOk={() => {
         if (nextAction === 'USER_PROFILE') {
           history.push('/company-info/base')
-        } else if (nextAction === 'USER_QA_MATERIAL') {
-          history.push('/company-info/zhidao')
         } else if (nextAction === 'USER_MATERIAL') {
           changeActiveKey('basic-material')
         }
