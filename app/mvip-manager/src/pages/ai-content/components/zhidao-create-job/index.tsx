@@ -317,24 +317,24 @@ export default (props: ZhidaoCreateJobProp) => {
    * 去重 去特殊符号
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
-  const outgoingControl = (value: string) => {
-    console.log(value)
+  const outgoingControl = (value: string, type?: 'blur') => {
     const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '').replace(/\s{1,}\n/g, '\n')
-    if (newValue[newValue.length - 1] === '\n') {
-      return `${[...new Set(newValue.split('\n').filter(item => item !== ''))].join('\n')}\n`
-    } else if (newValue.indexOf('\n') !== -1) {
-      const words = newValue.split('\n')
-      const suffix = words.pop()
-      return `${[...new Set(words.filter(item => item !== ''))].join('\n')}\n${suffix || ''}`
+    const words = newValue.split('\n')
+    if (words.length <= 1) {
+      return newValue
+    } else {
+      // 当失焦校验时，最后一行也要加入去重
+      const endWord = type === 'blur' ? '' : words.pop()
+      const str = `${[...new Set(words.filter(item => !!item))].reduce((total, item) => `${total}${item}\n`, '')}${endWord}`
+      return str
     }
-    return newValue
   }
 
   /** 失焦时去重 */
   const textAreaBlur = useCallback(debounce((key: string) => {
     const value: string | undefined = form.getFieldValue(key)
     form.setFieldsValue({
-      [key]: value ? `${[...new Set(value.split('\n').filter(item => item !== ''))].join('\n')}\n` : ''
+      [key]: value ? outgoingControl(value, 'blur') : ''
     })
     form.validateFields([key])
   }, 200, { leading: false, trailing: true }), []);
@@ -349,12 +349,12 @@ export default (props: ZhidaoCreateJobProp) => {
     const concatWords: string[] = randomList(aiDefaultWord[key], formItem!.auto || formItem!.max)
     let words: string[] = []
     if (key === 'prefix' && !!value) {
-      words = [...new Set(value.split('\n').concat(concatWords))]
+      words = value.split('\n').concat(concatWords)
     } else {
       words = concatWords
     }
     form.setFieldsValue({
-      [key]: words.join('\n')
+      [key]: outgoingControl(words.join('\n'))
     })
     form.validateFields([key])
   }
