@@ -134,40 +134,6 @@ const WildcatForm = (props: Props) => {
                  maxNum={item.maxNum || 0}
                  onChange={(newValue) => onChange(newValue, item.name || '')}/>
             </FormItem>)
-          }else if (item.type === FormType.categorySelect){
-            //企业资料增加类目选择。这里先mock数据
-            item.options = [{"key":"1","value":"工装服务"},{"key":"2","value":"家庭装修"}];
-            return (
-              <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <Select
-                  showSearch
-                  placeholder={item.placeholder}
-                  size='large'
-                  //这里选择类目后，需要弹出对应的服务内容meta,onChange里需要打接口或先获取，到meta信息，进行状态重新setState
-                  //onChange={(newValue) => onChange(newValue, item.name || '')}
-                  >
-                  { item.options && item.options.map(option => <Option key={option.key} value={option.value}>{option.value}</Option>)}
-                </Select>
-              </FormItem>
-            )
-          }else if(item.type === FormType.metaChecbox){
-            const metas = [{"label":"办公室装修","value":"m35988"},{"label":"厂房装修","value":"m35989"}];
-            const initialCheckedMetas = ["m35988"];
-            return (
-              <FormItem className={item.className} label={item.label} name={item.name} key={item.label}  style={{ width: item.width }} rules={[{ required: item.required }]}>
-                <CheckboxGroup options={metas} defaultValue={initialCheckedMetas}/>
-              </FormItem>
-            )
-          //引用原先的
-          //  {
-          //    this.state.fuwuMeta.length > 0 ?
-          //        <FormItem {...formItemLayout} label="服务内容" required>
-          //            {/* 这里有个坑： defaultValue要想再次渲染，给其添加一个Key，值为defaultValue才可以 */}
-          //            <CheckboxGroup options={this.state.fuwuMeta} onChange={this.onChangeCheckedMeta}
-          //                            defaultValue={this.state.initialCheckedMetas}
-          //                            key={this.state.initialCheckedMetas}/>
-          //        </FormItem> : ''
-          //}
           }
         }) }
         {

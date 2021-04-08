@@ -17,11 +17,11 @@ interface DataType {
 interface Props {
   visible: boolean;
   close(): void;
-  taskId: number | null;
+  chooseTaskId: number | null;
 }
 
 export default (props: Props) => {
-  const { visible, close, taskId } = props
+  const { visible, close, chooseTaskId } = props
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
@@ -33,10 +33,11 @@ export default (props: Props) => {
   const [showWord, setShowWord] = useState<DataType[]>([])
 
   useEffect(()=>{
-    if(taskId){
-      getWord(taskId)
+    if(chooseTaskId){
+      getWord(chooseTaskId)
+      console.log("choose");
     }
-  },[taskId])
+  },[chooseTaskId])
 
   const getWord = async (id: number) => {
     setListLoading(true)
@@ -72,7 +73,7 @@ export default (props: Props) => {
       const notSelectWordIds: number[] = seoWord.filter(item=>!item.isCheck).map(item=>item.id)
       const value = {
         notSelectWordIds: notSelectWordIds,
-        taskId: taskId,
+        taskId: chooseTaskId,
       }
       const resData = await submitAiChooseWordListApi(value)
       if (resData.success) {

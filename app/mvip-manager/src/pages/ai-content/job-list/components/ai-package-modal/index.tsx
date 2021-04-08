@@ -14,11 +14,11 @@ interface DataType {
 interface Props {
   visible: boolean;
   close(): void;
-  taskId: number | null;
+  viewtaskId: number | null;
 }
 
 export default (props: Props) => {
-  const { visible, close, taskId } = props
+  const { visible, close, viewtaskId } = props
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
   const [listLoading, setListLoading] = useState<boolean>(false);
@@ -27,10 +27,11 @@ export default (props: Props) => {
   const [showWord, setShowWord] = useState<DataType[]>([])
 
   useEffect(()=>{
-    if(taskId){
-      getWord(taskId)
+    if(viewtaskId){
+      getWord(viewtaskId)
+      console.log("package");
     }
-  },[taskId])
+  },[viewtaskId])
 
   const getWord = async (id: number) => {
     setListLoading(true)

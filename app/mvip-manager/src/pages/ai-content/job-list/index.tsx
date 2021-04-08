@@ -23,7 +23,8 @@ export default (props: any) => {
   const [aiList, setAiList] = useState<AiContentItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
-  const [taskId, setTaskId] = useState<number | null>(null)
+  const [viewtaskId, setViewTaskId] = useState<number | null>(null)
+  const [chooseTaskId, setChooseTaskId] = useState<number | null>(null)
 
   useEffect(() => {
     getList()
@@ -74,12 +75,12 @@ export default (props: any) => {
   }
 
   const chooseWords = (record: number) => {
-    setTaskId(record)
+    setChooseTaskId(record)
     setAiChooseModalVisible(true)
   }
 
   const viewPackage = (record: number) => {
-    setTaskId(record)
+    setViewTaskId(record)
     setAiPackageModalVisible(true)
   }
 
@@ -183,8 +184,8 @@ export default (props: any) => {
         }} />}
       </div>
       <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} />
-      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} taskId={taskId}/>
-      <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} taskId={taskId}/>
+      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId}/>
+      <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} viewtaskId={viewtaskId}/>
     </div>
   )
 }
