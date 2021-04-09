@@ -447,7 +447,7 @@ export default (props: ZhidaoCreateJobProp) => {
       setModalVisible(false)
       initCompoment()
     } else {
-      console.log(res)
+      setModalVisible(false)
       errorMessage(res.message || '提交失败')
     }
     // const res = await mockData('data', {})
