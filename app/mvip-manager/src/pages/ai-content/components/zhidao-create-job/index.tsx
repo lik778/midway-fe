@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useEffect, useState, useMemo, useCallback } from 'react';
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
-import { history } from 'umi'
+import { useHistory } from 'umi'
 import styles from './index.less';
 import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords } from '@/api/ai-content';
 import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo } from '@/interfaces/ai-content'
-import { mockData, randomList, translateProductText } from '@/utils';
+import { getCookie, mockData, randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { errorMessage, successMessage } from '@/components/message';
@@ -68,7 +68,12 @@ interface ZhidaoCreateJobProp {
 }
 
 export default (props: ZhidaoCreateJobProp) => {
+  const history = useHistory()
+
   const { activeKey, changeActiveKey } = props
+
+  const [uid, setUid] = useState<string>(() => getCookie('__u'))
+
   const [form] = Form.useForm();
 
   /** 页面的一些参数 控制显示 */
@@ -386,6 +391,12 @@ export default (props: ZhidaoCreateJobProp) => {
     }
   }
 
+
+  const validateUserId = (): boolean => {
+    const nowUserId = getCookie('__u')
+    return uid === nowUserId
+  }
+
   const submit = async () => {
     const values = form.getFieldsValue()
     console.log(values)
@@ -407,6 +418,13 @@ export default (props: ZhidaoCreateJobProp) => {
     }
     console.log(requestData)
     setUpdataLoading(true)
+    if (!validateUserId()) {
+      errorMessage('当前用户已更换，在页面刷新后再试！')
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500)
+      return
+    }
     const res = await submitCoreWords(requestData)
     setUpdataLoading(false)
     if (res.success) {

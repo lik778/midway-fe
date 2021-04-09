@@ -56,13 +56,6 @@ function ContactForm(props: any) {
       info.kefuStatus = KFStatus.CLOSE
     }
 
-    if (kf53Data && !isEmptyObject(kf53Data)) {
-
-    } else {
-      if (kf53Data.kefuStatus) {
-        return
-      }
-    }
     setLoading(true)
     const res = await saveEnterpriseContactInfoApi(info)
     setLoading(false)
