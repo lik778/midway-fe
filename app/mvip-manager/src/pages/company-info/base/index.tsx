@@ -41,8 +41,9 @@ function CompanyInfoBase(props: any) {
 
   const onChangeCategory = (catogoryName: any, form: any) => {
     //切换类目后，清空thirdMetas数据
-    form.setFieldsValue({ thirdMetas: [] })
+    form.setFieldsValue({ thirdMetas: []})
     getThirdCategoryMetasFn(catogoryName)
+
   }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
@@ -51,13 +52,11 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { companyAddress, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, secondCategories, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
-    //secondCategories的值是对象，要转换为select组件value定义的类型
-    //const defaultCategory = objToTargetObj(selectedSecondCategory)
-
+    const { area, companyAddress, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
+    //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
       //...companyInfo,
-      area: companyInfo.area,
+      area,
       companyAddress,
       companyAlias,
       companyDescription,
@@ -73,13 +72,12 @@ function CompanyInfoBase(props: any) {
     if (selectedSecondCategory && Object.keys(selectedSecondCategory).length > 0) {
       getThirdCategoryMetasFn(Object.keys(selectedSecondCategory)[0])
       return
-      //备注：getThirdCategoryMetasFn里获得thirdMetas后，会触发执行updateConfigData
+      //备注：getThirdCategoryMetasFn里获得thirdMetas后，会effect触发执行updateConfigData,故return掉，防止重复更新
     }
-
     updateConfigData()
   }
-  useEffect(() => {
 
+  useEffect(() => {
     updateConfigData()
   }, [thirdMetas])
 
@@ -106,8 +104,8 @@ function CompanyInfoBase(props: any) {
       //这里options没获取到值
       if (item.name === 'thirdMetas') {
         item.options = thirdMetas!
-        //只要有类目，则显示thirdMetas数据
-        selectedSecondCategory ? item.display = true : ""
+        //只要thirdMetas数据，则显示
+        item.display = !!(thirdMetas && thirdMetas.length > 0)
       }
       return item
     })
