@@ -115,6 +115,24 @@ export default () => {
     getBasicMaterialFc()
   }, [])
 
+
+  /** 
+   * 去重 去特殊符号
+   * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
+   * */
+  const outgoingControl = (value: string) => value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\s\'\,\，\.\。\<\《\>\》\?\？\/\;\；\:\：\'\‘\’\"\“\”\[\【\]\】\|\~\~\!\！\@\@\#\$\￥\%\&\*\(\（\)\）\-\—\_\=\+\、\·]+/g, '')
+
+  /** 失焦时去重 */
+  const textAreaBlur = (key: string) => {
+    const value: string | undefined = form.getFieldValue(key)
+    form.setFieldsValue({
+      [key]: value ? outgoingControl(value || '').replace(/\s{0,}\n\s{0,}/g, '\n') : ''
+    })
+    form.validateFields([key])
+  }
+
+
+
   // 提交单词
   const submit = async () => {
     const values = form.getFieldsValue()
@@ -143,8 +161,10 @@ export default () => {
       <div className={styles['ai-content-container']} >
         <Form className={styles['base-information-box']} form={form} labelCol={{ span: 4 }} >
           {
-            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={item.rules} >
+            formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={item.rules} normalize={outgoingControl
+            } >
               <TextArea rows={5}
+                onBlur={() => textAreaBlur(item.key)}
                 placeholder={item.placeholder}
               />
             </FormItem>)
