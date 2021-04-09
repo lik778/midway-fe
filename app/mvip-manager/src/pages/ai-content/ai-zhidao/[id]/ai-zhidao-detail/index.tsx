@@ -95,7 +95,12 @@ const AiZhidaoDetail = (props: any) => {
 
   const handleClickBack = () => {
     if (pageType === 'edit') return
-    history.goBack()
+    // 复制到新页面 history长度是2
+    if (history.length <= 2) {
+      history.replace('/ai-content/ai-zhidao?activeKey=job-list')
+    } else {
+      history.goBack()
+    }
   }
 
 
@@ -106,8 +111,6 @@ const AiZhidaoDetail = (props: any) => {
   // 这里传row是为了知道修改的序号
   const handleSave = async (requestData: EditQuestion, row: QuestionListItem) => {
     try {
-      console.log(requestData)
-      console.log(row)
       setUpDataLoading(true)
       const res = await editQuestion(requestData)
       if (res.success) {

@@ -7,7 +7,7 @@ import './index.less';
 import { QuestionTaskListItem } from '@/interfaces/ai-content';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
-import { errorMessage } from '@/components/message';
+import { warnMessage, errorMessage } from '@/components/message';
 import { Link } from 'umi';
 import { TableColumnProps } from 'antd'
 import { mockData } from '@/utils'
@@ -73,7 +73,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     if (res.success && res.data === 'true') {
       history.push(`/ai-content/ai-zhidao/${id}/ai-zhidao-detail?pageType=see`)
     } else {
-      errorMessage('数据处理中，请稍后再试~')
+      warnMessage('数据处理中，请稍后再试~')
     }
     setListLoading(false)
   }
