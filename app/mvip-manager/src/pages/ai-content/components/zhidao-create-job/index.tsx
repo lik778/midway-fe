@@ -76,6 +76,14 @@ export default (props: ZhidaoCreateJobProp) => {
 
   const [form] = Form.useForm();
 
+  const [wordsNum, setWordsNum] = useState({
+    area: 0,
+    prefix: 0,
+    coreWords: 0,
+    suffix: 0,
+    modal: 0,
+  })
+
   /** 页面的一些参数 控制显示 */
   const [componentBasicData, setComponentBasicData] = useState<CreateQuestionTaskBasicData | null>(null)
 
@@ -127,7 +135,7 @@ export default (props: ZhidaoCreateJobProp) => {
     key: 'suffix',
     placeholder: '请点击疑问词类型选择',
     min: 30,
-    max: 50,
+    max: 40,
     tip: '3-4个类型',
     rules: [{
       required: true,
@@ -242,9 +250,7 @@ export default (props: ZhidaoCreateJobProp) => {
         if (data.length !== interrogativeWord.length) {
           setInterrogativeWord(data)
         }
-      } else {
-
-      }
+      } 
     } else {
       console.log(res)
     }
@@ -305,41 +311,51 @@ export default (props: ZhidaoCreateJobProp) => {
       }
     })
     setInterrogativeWord(newInterrogativeWord)
+    const str = newInterrogativeWord.reduce((total, item, index) => {
+      if (item.isSelect) {
+        return `${total}${item.child.map(item => item.content).join('\n')}${item.child && item.child.length > 1 ? '\n' : ''}`
+      } else {
+        return total
+      }
+    }, '')
     form.setFieldsValue({
-      suffix: newInterrogativeWord.reduce((total, item, index) => {
-        if (item.isSelect) {
-          return `${total}${item.child.map(item => item.content).join('\n')}${item.child && item.child.length > 1 ? '\n' : ''}`
-        } else {
-          return total
-        }
-      }, '')
+      suffix: str
     })
-    // form.setFieldsValue不会触发数据校验，需要手动触发一次
+    // 需要手动触发一次
     form.validateFields(['suffix'])
+    getWordNum('suffix', str)
+  }
+
+
+  const getWordNum = (key: string, value: string) => {
+    const words = value.split('\n').filter(item => !!item)
+    setWordsNum((wordsNum) => ({
+      ...wordsNum,
+      [key]: words.length
+    }))
   }
 
   /** 
    * 去重 去特殊符号
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
-  const outgoingControl = (value: string, type?: 'blur') => {
-    const newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '').replace(/\s{1,}\n/g, '\n')
+  const outgoingControl = (key: string, value: string, type?: 'blur') => {
+    let newValue = value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\']+/g, '').replace(/\s{1,}\n/g, '\n')
     const words = newValue.split('\n')
-    if (words.length <= 1) {
-      return newValue
-    } else {
+    if (words.length > 1) {
       // 当失焦校验时，最后一行也要加入去重
       const endWord = type === 'blur' ? '' : words.pop()
-      const str = `${[...new Set(words.filter(item => !!item))].reduce((total, item) => `${total}${item}\n`, '')}${endWord}`
-      return str
+      newValue = `${[...new Set(words.filter(item => !!item))].reduce((total, item) => `${total}${item}\n`, '')}${endWord}`
     }
+    getWordNum(key, newValue)
+    return newValue
   }
 
   /** 失焦时去重 */
   const textAreaBlur = useCallback(debounce((key: string) => {
     const value: string | undefined = form.getFieldValue(key)
     form.setFieldsValue({
-      [key]: value ? outgoingControl(value, 'blur') : ''
+      [key]: value ? outgoingControl(key, value, 'blur') : ''
     })
     form.validateFields([key])
   }, 200, { leading: false, trailing: true }), []);
@@ -347,7 +363,6 @@ export default (props: ZhidaoCreateJobProp) => {
   /**
    * 获取通用数据
    *  */
-
   const obtainData = (key: string) => {
     const value: string | undefined = form.getFieldValue(key)
     const formItem = formItemList.find(item => item.key === key)
@@ -359,7 +374,7 @@ export default (props: ZhidaoCreateJobProp) => {
       words = concatWords
     }
     form.setFieldsValue({
-      [key]: outgoingControl(words.join('\n'))
+      [key]: outgoingControl(key, words.join('\n'))
     })
     form.validateFields([key])
   }
@@ -369,6 +384,7 @@ export default (props: ZhidaoCreateJobProp) => {
     form.setFieldsValue({
       [key]: ''
     })
+    getWordNum('suffix', '')
     if (key === 'suffix') {
       setInterrogativeWord((value) => {
         return value.map(item => {
@@ -475,7 +491,7 @@ export default (props: ZhidaoCreateJobProp) => {
                       }
                     </Select>}
                 </div>
-                <FormItem name={item.key} style={{ marginBottom: 18 }} rules={item.rules} normalize={outgoingControl
+                <FormItem name={item.key} rules={item.rules} normalize={(val) => outgoingControl(item.key, val)
                 } validateTrigger={item.key === 'suffix' ? 'onChange' : 'onChange'}>
                   <TextArea rows={15}
                     onBlur={() => textAreaBlur(item.key)}
@@ -484,6 +500,7 @@ export default (props: ZhidaoCreateJobProp) => {
                     disabled={componentBasicData ? !componentBasicData.canCreateTask : true}
                   />
                 </FormItem>
+                <div className={styles['words-num']}>已{item.key === 'suffix' || item.key === 'modal' ? '选择' : '输入'}：{wordsNum[item.key]}/{item.max}</div>
                 <div className={styles["ai-content-actions"]}>
                   {item.key === 'prefix' && <Button onClick={() => obtainData(item.key)} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>通用前缀</Button>}
                   {item.key === 'modal' && <Button onClick={() => obtainData(item.key)} disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>通用辅助词</Button>}
