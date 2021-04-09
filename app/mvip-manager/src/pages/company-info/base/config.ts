@@ -23,8 +23,8 @@ export const baseInfoForm: FormConfig = {
       required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' },
     { width: 353, className:'f-category-select',label: '类目', name: 'secondCategory', type: FormType.Select, required: true,  placeholder: '请选择类目' },
     { width: 690, className:'f-meta',label: '服务内容', name: 'thirdMetas', type: FormType.MetaChecbox, required: true , display:false},
-    { inputWidth: 260, className:'f-middle',label: '公司人数', name: 'employeeCount', type: FormType.InputNumber, required: true, placeholder: '请输入公司人数' },
-    { inputWidth: 260, className:'f-middle',label: '公司年限', name: 'companyYears', type: FormType.InputNumber, required: true, placeholder: '请输入公司已经营年限' },
+    { inputWidth: 260, minNum:1, className:'f-middle',label: '公司人数', name: 'employeeCount', type: FormType.InputNumber, required: true, placeholder: '请输入公司人数' },
+    { inputWidth: 260, minNum:1, className:'f-middle',label: '公司年限', name: 'companyYears', type: FormType.InputNumber, required: true, placeholder: '请输入公司已经营年限' },
   ]
 }
 
