@@ -134,12 +134,12 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
                   Object.keys(wordsItemConfig).map((k) => {
                     const x = wordsItemConfig[k];
                     return (<Col key={k} className="gutter-row group-words-item" span={6}>
-                      <h4>{x.label}：<span>{x.rules}</span></h4>
+                      <div  className="form-item-header">{x.label}：<span>{x.rules}</span></div>
                       <FormItem name={x.name}>
                         <TextArea rows={15} placeholder={x.placeholder} onBlur={() => onFiledBlur(x.name)}
                           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => wordsChange(e.target.value, x.name)} />
                       </FormItem>
-                      <div>已输入:  {counters[x.name]} / {wordsItemConfig[k].max}</div>
+                      <div className="words-num">已输入：{counters[x.name]} / {wordsItemConfig[k].max}</div>
                       <div className="ai-content-actions">
                         {x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button>}
                         {x.name === 'wordD' && shopStatus && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
