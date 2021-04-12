@@ -120,7 +120,9 @@ export default () => {
    * 去重 去特殊符号
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */
-  const outgoingControl = (value: string) => value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\s\'\,\，\.\。\<\《\>\》\?\？\/\;\；\:\：\'\‘\’\"\“\”\[\【\]\】\|\~\~\!\！\@\@\#\$\￥\%\&\*\(\（\)\）\-\—\_\=\+\、\·]+/g, '')
+  const outgoingControl = (value: string) => {
+    return value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\n\s\'\,\，\.\。\<\《\>\》\?\？\/\;\；\:\：\'\‘\’\"\“\”\[\【\]\】\|\~\~\!\！\@\@\#\$\￥\%\&\*\(\（\)\）\-\—\_\=\+\、\·]+/g, '').replace(/[\\]+/g, '')
+  }
 
   /** 失焦时去重 */
   const textAreaBlur = (key: string) => {
