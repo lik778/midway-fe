@@ -1,7 +1,7 @@
 import { postApiData, postZhidaoApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -14,7 +14,7 @@ export const createAiJobApi = (params: AiTaskApiParams): Promise<ServiceResponse
 }
 
 // 获取店铺对应的文章分组
-export const getAiShopListApi = (): Promise<ServiceResponse<AiShopList[]>> => {
+export const getAiShopListApi = (): Promise<ServiceResponse<AiShopList[] | null>> => {
   return postApiData('midway/backend/shop/aiShopList', {})
 }
 
@@ -39,7 +39,7 @@ export const createAizhidaoApi = (params: AiTaskApiParams): Promise<ServiceRespo
 }
 
 /** 判断显示页面 */
-export const getCreateQuestionTaskPageStatus = (): Promise<ServiceResponse<CreateQuestionTaskPageStatus>> => {
+export const getCreateQuestionTaskPageStatusApi = (): Promise<ServiceResponse<CreateQuestionTaskPageStatus>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/checkCreateAiTask', {})
 }
 
@@ -54,17 +54,17 @@ export const getQuestionTaskStatusApi = (id: number): Promise<ServiceResponse<'t
 }
 
 /** 生成问答进度 */
-export const getQuestionBuildStatus = (): Promise<ServiceResponse<'success' | 'start build'>> => {
+export const getQuestionBuildStatusApi = (): Promise<ServiceResponse<'success' | 'start build'>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/getQaBuildStatus', {})
 }
 
 /** 获取基础素材库 */
-export const getBasicMaterial = (): Promise<ServiceResponse<{ [key: string]: BasicMaterialDataItem[] }>> => {
+export const getBasicMaterialApi = (): Promise<ServiceResponse<{ [key: string]: BasicMaterialDataItem[] }>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/getUserRepository', {})
 }
 
 /** 基础素材库提交 */
-export const submitBasicMaterial = (requestData: BasicMaterialApiParams): Promise<ServiceResponse<never>> => {
+export const submitBasicMaterialApi = (requestData: BasicMaterialApiParams): Promise<ServiceResponse<never>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/saveUserRepository', requestData)
 }
 
@@ -74,22 +74,22 @@ export const getQuestionTaskDetailApi = (id: number): Promise<ServiceResponse<Qu
 }
 
 /** 获取新建任务基础数据 */
-export const getCreateQuestionTaskBasicData = (): Promise<ServiceResponse<CreateQuestionTaskBasicData>> => {
+export const getCreateQuestionTaskBasicDataApi = (): Promise<ServiceResponse<CreateQuestionTaskBasicData>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/showCreateAiTask', {})
 }
 
 /** 更新生成的问答内容 该接口的返回数据时未提交到发布的*/
-export const getQuestionList = (): Promise<ServiceResponse<QuestionListItem[]>> => {
+export const getQuestionListApi = (): Promise<ServiceResponse<QuestionListItem[]>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/showQaList', {})
 }
 
 /** 提交关键字 */
-export const submitCoreWords = (requestData: QuestionTaskApiParams): Promise<ServiceResponse<never>> => {
+export const submitCoreWordsApi = (requestData: QuestionTaskApiParams): Promise<ServiceResponse<never>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/submitSeoWords', requestData)
 }
 
 /** 提交发布 */
-export const submitTask = (): Promise<ServiceResponse<'true' | 'false'>> => {
+export const submitTaskApi = (): Promise<ServiceResponse<'true' | 'false'>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/submitTask', {})
 }
 
@@ -100,6 +100,15 @@ export const cancalTaskApi = (): Promise<ServiceResponse<never>> => {
 
 
 /** 更新生成的问答内容 */
-export const editQuestion = (requestData: EditQuestion): Promise<ServiceResponse<never>> => {
+export const editQuestionApi = (requestData: EditQuestion): Promise<ServiceResponse<never>> => {
   return postZhidaoApiData('zhidao/v1/backend/ai/updateQuestionAnswer', requestData)
+}
+
+/** 获取当前免费数量 剩余信息发布点 */
+export const getQuotaNumApi = (): Promise<ServiceResponse<{
+  queryResultVo: GetQuotaNumRes,
+  consumeCount: number
+}>> => {
+  // TODO;
+  return postZhidaoApiData('zhidao/v1/backend/ai/getQaAiPostQuota', {})
 }

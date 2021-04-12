@@ -192,3 +192,12 @@ export interface CreateQuestionTaskBasicData {
   /** 疑问词列表 */
   suggestSuffix: InterrogativeDataVo | null
 }
+
+export interface GetQuotaNumRes {
+  limit: number,// quota总数
+  remain: number,// 
+  dailyLimit: number,// 每日使用次数上线
+  dailyRemain: number,// 
+  aiLimit: number,// AI发布上限
+  aiRemain: number,// AI剩余发布数
+}

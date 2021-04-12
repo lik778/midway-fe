@@ -3,7 +3,7 @@ import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
 import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
-import { getQuestionTaskDetailApi, getQuestionList, editQuestion, submitTask, cancalTaskApi } from '@/api/ai-content'
+import { getQuestionTaskDetailApi, getQuestionListApi, editQuestionApi, submitTaskApi, cancalTaskApi } from '@/api/ai-content'
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
@@ -78,11 +78,15 @@ const AiZhidaoDetail = (props: any) => {
   }]
 
 
-
   const getData = async () => {
     setGetDataLoading(true)
-    const res = await (pageType === 'edit' ? getQuestionList : getQuestionTaskDetailApi)(Number(id))
+    const res = await (pageType === 'edit' ? getQuestionListApi : getQuestionTaskDetailApi)(Number(id))
     if (res.success) {
+      // 这里是为了处理测试提出的bug
+      if (!res.data || res.data.length === 0) {
+        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+        return
+      }
       setDataList(res.data.map((item, index) => ({
         index: index + 1,
         ...item
@@ -112,7 +116,7 @@ const AiZhidaoDetail = (props: any) => {
   const handleSave = async (requestData: EditQuestion, row: QuestionListItem) => {
     try {
       setUpDataLoading(true)
-      const res = await editQuestion(requestData)
+      const res = await editQuestionApi(requestData)
       if (res.success) {
         const index = dataList.findIndex(item => row.index === item.index);
         const item = dataList[index];
@@ -134,7 +138,7 @@ const AiZhidaoDetail = (props: any) => {
 
   const submit = async () => {
     setUpDataLoading(true)
-    const res = await submitTask()
+    const res = await submitTaskApi()
     if (res.success && res.data === 'true') {
       successMessage('新建任务成功')
       history.replace('/ai-content/ai-zhidao')
@@ -190,8 +194,8 @@ const AiZhidaoDetail = (props: any) => {
         </div>
       </Spin>
       <MyModal
-        title="确认取消"
-        content="取消后本次生成的内容会全部删除，不会恢复，确认取消？"
+        title="确认放弃"
+        content="放弃后本次生成的内容会全部删除，不会恢复，确认放弃？"
         type={ModalType.info}
         onCancel={() => setModalVisible(false)}
         onOk={() => cancalSubmit()}

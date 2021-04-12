@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useState, useMemo, useCallback } from 'r
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { useHistory } from 'umi'
 import styles from './index.less';
-import { getCreateQuestionTaskPageStatus, getCreateQuestionTaskBasicData, submitCoreWords } from '@/api/ai-content';
-import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo } from '@/interfaces/ai-content'
+import { getCreateQuestionTaskPageStatusApi, getCreateQuestionTaskBasicDataApi, submitCoreWordsApi, getQuotaNumApi } from '@/api/ai-content';
+import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo, GetQuotaNumRes } from '@/interfaces/ai-content'
 import { getCookie, mockData, randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
@@ -69,13 +69,9 @@ interface ZhidaoCreateJobProp {
 
 export default (props: ZhidaoCreateJobProp) => {
   const history = useHistory()
-
   const { activeKey, changeActiveKey } = props
-
   const [uid, setUid] = useState<string>(() => getCookie('__u'))
-
   const [form] = Form.useForm();
-
   const [wordsNum, setWordsNum] = useState({
     area: 0,
     prefix: 0,
@@ -86,10 +82,8 @@ export default (props: ZhidaoCreateJobProp) => {
 
   /** 页面的一些参数 控制显示 */
   const [componentBasicData, setComponentBasicData] = useState<CreateQuestionTaskBasicData | null>(null)
-
   /** 疑问词 */
   const [interrogativeWord, setInterrogativeWord] = useState<InterrogativeListItem[]>([])
-
   /** 下面的表单
    * @description 这里是因为疑问词的校验依赖疑问词的选中，所以用useMemo
    */
@@ -159,6 +153,16 @@ export default (props: ZhidaoCreateJobProp) => {
     readOnly: true
   }], [interrogativeWord])
 
+  const [quotaNum, setQuotaNum] = useState<{
+    aiRemain: number,
+    remain: number,
+    consumeCount: number
+  }>({} as {
+    aiRemain: number,
+    remain: number,
+    consumeCount: number
+  })
+
   /** 当页面处于进行中状态时 需要禁止操作 */
   const [pageStatus, setPageStatus] = useState<CreateQuestionTaskPageStatus | null>(null)
   const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
@@ -190,6 +194,23 @@ export default (props: ZhidaoCreateJobProp) => {
     }
   }
 
+  const getQuotaNum = async () => {
+    const res = await getQuotaNumApi()
+    if (res.success) {
+      const { queryResultVo, consumeCount } = res.data
+      setQuotaNum({
+        aiRemain: queryResultVo.aiRemain,
+        remain: queryResultVo.remain,
+        consumeCount
+      })
+    }
+  }
+
+  useEffect(() => {
+    getQuotaNum()
+  }, [])
+
+
   const mockInterrogativeWord = (): InterrogativeDataVo => {
     const word = ['品牌宣传', '价格决策', '品质决策', '联系方式', '注意事项']
 
@@ -209,7 +230,7 @@ export default (props: ZhidaoCreateJobProp) => {
 
   const getCreateQuestionTaskBasicDataFn = async () => {
     // TODO;
-    const res = await getCreateQuestionTaskBasicData()
+    const res = await getCreateQuestionTaskBasicDataApi()
     // const res = await mockData<CreateQuestionTaskBasicData>('data', {
     //   canCreateTask: false,
     //   forceNotice: true,
@@ -250,7 +271,7 @@ export default (props: ZhidaoCreateJobProp) => {
         if (data.length !== interrogativeWord.length) {
           setInterrogativeWord(data)
         }
-      } 
+      }
     } else {
       console.log(res)
     }
@@ -260,7 +281,7 @@ export default (props: ZhidaoCreateJobProp) => {
   const getComponentStatus = async () => {
     // TODO;
     setComponentBasicData(null)
-    const res = await getCreateQuestionTaskPageStatus()
+    const res = await getCreateQuestionTaskPageStatusApi()
     // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'SHOW_CREATE')
     // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'loading')
     // // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'showQuestionList')
@@ -441,7 +462,7 @@ export default (props: ZhidaoCreateJobProp) => {
       }, 1500)
       return
     }
-    const res = await submitCoreWords(requestData)
+    const res = await submitCoreWordsApi(requestData)
     setUpdataLoading(false)
     if (res.success) {
       setModalVisible(false)
@@ -462,6 +483,7 @@ export default (props: ZhidaoCreateJobProp) => {
 
   return (<Spin spinning={getDataLoading || upDataLoading}>
     <div className={styles["ai-create-task-box"]} onClick={() => closeTipModal(false)}>
+      <div className={styles["ai-quota-tip"]}>当前AI剩余问答量：<span className={styles['num']}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles['num']}>{quotaNum.remain || 0}</span>，<a href="https://www.baixing.com/vippays/vip_show?type=151&portType=70&productLineId=12" target="_blank">去充值</a>）</div>
       <ul className={styles["ai-handle-tips"]}>
         <h3>组合规则说明：</h3>
         <li>1、请填写<span className={styles['tip']}>「地区+前缀+核心词+疑问词+辅助词」</span>，该信息将用于生成问答内容及站点SEO元素</li>

@@ -2,9 +2,9 @@ import React, { forwardRef, Ref, useEffect, useState, useImperativeHandle } from
 import { Table } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
-import { getQuestionTaskListApi, getQuestionTaskStatusApi } from '@/api/ai-content';
+import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi } from '@/api/ai-content';
 import './index.less';
-import { QuestionTaskListItem } from '@/interfaces/ai-content';
+import { QuestionTaskListItem, GetQuotaNumRes } from '@/interfaces/ai-content';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
 import { warnMessage, errorMessage } from '@/components/message';
@@ -24,6 +24,15 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   const [aiList, setAiList] = useState<QuestionTaskListItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
+  const [quotaNum, setQuotaNum] = useState<{
+    aiRemain: number,
+    remain: number,
+    consumeCount: number
+  }>({} as {
+    aiRemain: number,
+    remain: number,
+    consumeCount: number
+  })
 
   // 给页面挂上page
   useEffect(() => {
@@ -47,6 +56,23 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     currentUrlParams.set('page', `${page}`);
     history.replace(`${history.location.pathname}?${currentUrlParams.toString()}`)
   }
+
+  const getQuotaNum = async () => {
+    const res = await getQuotaNumApi()
+    if (res.success) {
+      const { queryResultVo, consumeCount } = res.data
+      setQuotaNum({
+        aiRemain: queryResultVo.aiRemain,
+        remain: queryResultVo.remain,
+        consumeCount
+      })
+    }
+  }
+
+  useEffect(() => {
+    getQuotaNum()
+  }, [])
+
 
   const getList = useDebounce(async () => {
     if (activeKey !== 'job-list') return
@@ -103,6 +129,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     <>
       <div className="ai-list-container">
         {isLoding && listLoading && <Loading />}
+        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>，<a href="https://www.baixing.com/vippays/vip_show?type=151&portType=70&productLineId=12" target="_blank">去充值</a>）</div>
         {total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>

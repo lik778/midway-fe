@@ -5,7 +5,7 @@ import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { ExclamationCircleOutlined, InfoCircleOutlined, CloseOutlined } from '@ant-design/icons'
 import { CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData } from '@/interfaces/ai-content'
 import styles from './index.less'
-import { getQuestionBuildStatus } from '@/api/ai-content'
+import { getQuestionBuildStatusApi } from '@/api/ai-content'
 import MyModal, { ModalType } from '@/components/modal';
 import { delay } from '@/utils/index'
 interface TipModalProp {
@@ -30,7 +30,7 @@ const TipModal: FC<TipModalProp> = (props) => {
   const getCreateTaskProgress = useRef<() => void>()
 
   const getCreateTaskProgressFn = async () => {
-    const res = await getQuestionBuildStatus()
+    const res = await getQuestionBuildStatusApi()
     // if (progress === 90) {
     //   setProgress(100)
     //   return
