@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Table, Menu, Dropdown } from 'antd';
+import { Modal, Button, Table, Menu, Dropdown, Select } from 'antd';
 import { errorMessage, successMessage } from '@/components/message';
 import { history } from 'umi';
 import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-content';
@@ -31,6 +31,7 @@ export default (props: Props) => {
   const [wordIds, setWordIds] = useState<number[]>([])
   const [seoWord, setSeoWord] = useState<DataType[]>([])
   const [showWord, setShowWord] = useState<DataType[]>([])
+  const [selectedType, setSelectedType] = useState<string>('all')
 
   useEffect(()=>{
     if(chooseTaskId){
@@ -92,23 +93,25 @@ export default (props: Props) => {
     { title: '关键词', dataIndex: 'seoWord', key: 'seoWord' },
     {
       title: () =>{
-        return(
+        return (
           <Dropdown overlay={() => {
             return (
-              <Menu onClick={ key => {
-                if(key.key === "all"){
-                  setShowWord(seoWord)
-
-                } else {
-                  const newShowWord = seoWord.filter(item=>item.type===key.key)
-                  setShowWord(newShowWord)
+              <Menu onClick={key => {
+                if (typeof (key.key) === 'string') {
+                  setSelectedType(key.key)
+                  if (key.key === "all") {
+                    setShowWord(seoWord)
+                  } else {
+                    const newShowWord = seoWord.filter(item => item.type === key.key)
+                    setShowWord(newShowWord)
+                  }
                 }
-              } }>
-                <Menu.Item key="all">全部</Menu.Item>
-                <Menu.Item key="AC">AC</Menu.Item>
-                <Menu.Item key="ABC">ABC</Menu.Item>
-                <Menu.Item key="ACD">ACD</Menu.Item>
-                <Menu.Item key="ABCD">ABCD</Menu.Item>
+              }}>
+                <Menu.Item key="all" style={{ backgroundColor: (selectedType === 'all') ? '#E6F7FF' : '' }}>全部</Menu.Item>
+                <Menu.Item key="AC" style={{ backgroundColor: (selectedType === 'AC') ? '#E6F7FF' : '' }}>AC</Menu.Item>
+                <Menu.Item key="ABC" style={{ backgroundColor: (selectedType === 'ABC') ? '#E6F7FF' : '' }}>ABC</Menu.Item>
+                <Menu.Item key="ACD" style={{ backgroundColor: (selectedType === 'ACD') ? '#E6F7FF' : '' }}>ACD</Menu.Item>
+                <Menu.Item key="ABCD" style={{ backgroundColor: (selectedType === 'ABCD') ? '#E6F7FF' : '' }}>ABCD</Menu.Item>
               </Menu>
             )
           }}>
