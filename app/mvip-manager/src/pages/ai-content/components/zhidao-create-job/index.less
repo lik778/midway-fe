@@ -1,20 +1,27 @@
 .ai-create-task-box {
   padding: 0 16px;
 
+  .ai-quota-tip {
+    padding-top: 15px;
+    .num {
+      color: rgb(255, 149, 17);
+    }
+  }
+
   .ai-handle-tips {
     background: #fff;
-    padding   : 27px 45px;
+    padding: 27px 45px;
     margin-top: 16px;
 
     li {
-      font-family   : PingFangSC-Regular;
-      font-size     : 14px;
+      font-family: PingFangSC-Regular;
+      font-size: 14px;
       letter-spacing: 0;
-      text-align    : justify;
-      line-height   : 35px;
+      text-align: justify;
+      line-height: 35px;
 
       .tip {
-        color: rgb(255, 149, 17)
+        color: rgb(255, 149, 17);
       }
     }
   }
@@ -25,15 +32,15 @@
     .group-words-item {
       .form-item-header {
         margin-bottom: 8px;
-        line-height  : 32px;
+        line-height: 32px;
         color: #333;
       }
-      :global{
-        .ant-form-item-with-help{
+      :global {
+        .ant-form-item-with-help {
           margin-bottom: 24px;
         }
       }
-      .words-num{
+      .words-num {
         margin-bottom: 5px;
         transform: translateY(-14px);
         font-size: 12px;
@@ -44,7 +51,7 @@
     }
 
     .form-item-header {
-      display        : flex;
+      display: flex;
       justify-content: space-between;
     }
 
@@ -53,14 +60,14 @@
     }
 
     textarea {
-      resize : none;
+      resize: none;
       padding: 10px 15px;
     }
   }
 
   .group-words-rules {
-    font-size : 14px;
-    color     : #999;
+    font-size: 14px;
+    color: #999;
     margin-top: 32px;
 
     span {
@@ -69,28 +76,27 @@
   }
 
   .create-question-btn {
-    width       : 120px;
-    height      : 40px;
-    background  : #096DD9;
-    border-color: #096DD9;
-    color       : #fff
+    width: 120px;
+    height: 40px;
+    background: #096dd9;
+    border-color: #096dd9;
+    color: #fff;
   }
 
   .not-auth-tip {
-    font-family   : PingFangSC-Regular;
-    font-size     : 14px;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
     letter-spacing: 0;
-    text-align    : justify;
-    line-height   : 35px;
-    color         : rgb(255, 149, 17)
+    text-align: justify;
+    line-height: 35px;
+    color: rgb(255, 149, 17);
   }
-
 
   :global {
     .ant-select-selection--multiple {
-      width     : 100px;
+      width: 100px;
       max-height: 32px;
-      overflow  : hidden;
+      overflow: hidden;
     }
   }
 }

@@ -3,7 +3,7 @@ import { Input, Form, Col, Row, Button } from 'antd';
 import styles from './index.less';
 import MyModal, { ModalType } from '@/components/modal';
 import { BasicMaterialApiParams, BasicMaterialForm } from '@/interfaces/ai-content'
-import { submitBasicMaterial, getBasicMaterial } from '@/api/ai-content'
+import { submitBasicMaterialApi, getBasicMaterialApi } from '@/api/ai-content'
 import { errorMessage, successMessage } from '@/components/message';
 import { mockData } from '@/utils';
 
@@ -81,7 +81,7 @@ export default () => {
   }
 
   const getBasicMaterialFc = async () => {
-    const res = await getBasicMaterial()
+    const res = await getBasicMaterialApi()
     if (res.success && res.data) {
       const formData: BasicMaterialForm = {} as BasicMaterialForm
       Object.keys(res.data).forEach(item => {
@@ -147,7 +147,7 @@ export default () => {
     })
     console.log(requestData)
     setUpdataLoading(true)
-    const res = await submitBasicMaterial(requestData)
+    const res = await submitBasicMaterialApi(requestData)
     if (res.success) {
       successMessage(res.message || '添加成功')
     } else {
