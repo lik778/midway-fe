@@ -107,7 +107,8 @@ export const editQuestionApi = (requestData: EditQuestion): Promise<ServiceRespo
 /** 获取当前免费数量 剩余信息发布点 */
 export const getQuotaNumApi = (): Promise<ServiceResponse<{
   queryResultVo: GetQuotaNumRes,
-  consumeCount: number
+  consumeCount: number,
+  buyUrl?: string
 }>> => {
   // TODO;
   return postZhidaoApiData('zhidao/v1/backend/ai/getQaAiPostQuota', {})
