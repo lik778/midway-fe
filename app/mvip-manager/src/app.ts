@@ -1,4 +1,5 @@
 import { getUpyunImgConfig } from './api/haojing'
+import { getUpyunImgConfigUpyun } from './api/upyun'
 import { UpyunImgConfig } from '@/interfaces/haojing';
 import { enableMapSet } from 'immer';
 import '@/styles/report.less';
@@ -36,7 +37,11 @@ declare global {
   }
   if (notInIframe()) {
     const upYunConfig = await getUpyunImgConfig()
+    const testUpyunConfig = await getUpyunImgConfigUpyun()
+    console.log(upYunConfig)
     window.__upyunImgConfig = upYunConfig
+    console.log(testUpyunConfig)
+    // window.__upyunImgConfig = testUpyunConfig
   }
 
 })()
