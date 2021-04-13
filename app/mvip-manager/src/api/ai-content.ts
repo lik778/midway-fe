@@ -32,3 +32,14 @@ export const pauseAiTaskApi = (id: number): Promise<ServiceResponse<any>> => {
 export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceResponse<any>> => {
   return postApiData('ai/update', params)
 }
+
+/** 获得文章对应选词列表 **/
+export const getAiChooseWordListApi = ( params : { taskId : number | null} ): Promise<ServiceResponse<ChooseWordList>> =>{
+  return postApiData('ai/hotword', params)
+}
+
+/** 提交选词列表 **/
+export const submitAiChooseWordListApi = ( params : { taskId:number | null, notSelectWordIds:number[]} ): Promise<ServiceResponse<null>> =>{
+  return postApiData('ai/select', params)
+}
+
