@@ -48,7 +48,26 @@ const AiZhidaoDetail = (props: any) => {
     },
   ]
 
-  const columsSee: TableColumnProps<QuestionListItem>[] = [...columsEdit,
+  const columsSee: TableColumnProps<QuestionListItem>[] = [{
+    title: '序号', dataIndex: 'index',
+    width: 100
+  },
+  {
+    title: '问答编号', dataIndex: 'id',
+    width: 100
+  },
+  {
+    title: '问答标题',
+    dataIndex: 'question',
+    onCell: (record: QuestionListItem) => ({
+      record,
+      editable: pageType === 'edit',
+      dataIndex: 'question',
+      title: '问答标题',
+      upDataLoading,
+      handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
+    }),
+  },
   {
     title: '状态',
     dataIndex: 'status',

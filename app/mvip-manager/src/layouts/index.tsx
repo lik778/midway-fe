@@ -46,7 +46,7 @@ const Layouts = (props: any) => {
     const routeList = props.location.pathname.split('/')
     const isShopRoute = (routeList[1] === 'shop')
     setOpenKeys([routeList[1]])
-    setSelectedKeys([isShopRoute ? 'list' : routeList[2]])
+    setSelectedKeys([isShopRoute ? 'shop-manage' : routeList[2]])
   }, [props.location.pathname])
 
   return (

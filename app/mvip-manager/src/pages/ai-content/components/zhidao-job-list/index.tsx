@@ -13,6 +13,13 @@ import { TableColumnProps } from 'antd'
 import { mockData } from '@/utils'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index';
 
+interface QuotaNumInterface {
+  aiRemain: number,
+  remain: number,
+  consumeCount: number,
+  buyUrl?: string
+}
+
 interface ZhidaoJobListProp {
   activeKey: ActiveKey
 }
@@ -24,15 +31,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   const [aiList, setAiList] = useState<QuestionTaskListItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
-  const [quotaNum, setQuotaNum] = useState<{
-    aiRemain: number,
-    remain: number,
-    consumeCount: number
-  }>({} as {
-    aiRemain: number,
-    remain: number,
-    consumeCount: number
-  })
+  const [quotaNum, setQuotaNum] = useState<QuotaNumInterface>({} as QuotaNumInterface)
 
   // 给页面挂上page
   useEffect(() => {
@@ -60,11 +59,12 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   const getQuotaNum = async () => {
     const res = await getQuotaNumApi()
     if (res.success) {
-      const { queryResultVo, consumeCount } = res.data
+      const { queryResultVo, consumeCount, buyUrl } = res.data
       setQuotaNum({
         aiRemain: queryResultVo.aiRemain,
         remain: queryResultVo.remain,
-        consumeCount
+        consumeCount,
+        buyUrl
       })
     }
   }
@@ -129,7 +129,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     <>
       <div className="ai-list-container">
         {isLoding && listLoading && <Loading />}
-        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>，<a href="https://www.baixing.com/vippays/vip_show?type=151&portType=70&productLineId=12" target="_blank">去充值</a>）</div>
+        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <a href={quotaNum.buyUrl} target="_blank">去充值</a> : ''}）</div>
         {total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
