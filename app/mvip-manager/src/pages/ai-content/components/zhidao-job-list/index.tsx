@@ -129,7 +129,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     <>
       <div className="ai-list-container">
         {isLoding && listLoading && <Loading />}
-        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <a href={quotaNum.buyUrl} target="_blank">去充值</a> : ''}）</div>
+        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</div>
         {total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
