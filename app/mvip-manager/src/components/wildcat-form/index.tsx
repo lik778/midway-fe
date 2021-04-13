@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
-import { Button, Form, Input, Select, Checkbox } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
@@ -53,7 +53,6 @@ const WildcatForm = (props: Props) => {
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
-  const CheckboxGroup = Checkbox.Group;
 
   return (
     <div>

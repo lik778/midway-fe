@@ -12,9 +12,6 @@ export interface SaveEnterpriseForShopParams {
   companyDescription: string;
   companyName: string;
   promoteImg: string;
-  category: string[];
-  employeesNum: number;
-  companyYears: number;
 }
 
 export interface SaveEnterpriseContactInfoApiParams {

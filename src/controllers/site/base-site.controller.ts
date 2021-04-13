@@ -36,7 +36,6 @@ export class BaseSiteController {
         pageType: 'view_home',
         _platform: device,
         tracktype: 'pageview',
-        refer: ''
       }
     })
 
@@ -68,7 +67,6 @@ export class BaseSiteController {
         category: '',
         _platform: device,
         tracktype: 'pageview',
-        refer: ''
       }
     })
     const { templateId } = data.basic.shop
@@ -98,7 +96,6 @@ export class BaseSiteController {
           _platform: device,
           contentType: 'article',
           category: '',
-          refer: ''
         }
       })
 
@@ -122,7 +119,6 @@ export class BaseSiteController {
           tracktype: 'pageview',
           contentType: 'article',
           category: '',
-          refer: ''
         }
       })
       const { templateId } = data.basic.shop
@@ -152,7 +148,6 @@ export class BaseSiteController {
         tracktype: 'pageview',
         contentType: 'product',
         category: '',
-        refer: ''
       }
     })
     const { templateId } = data.basic.shop
@@ -182,7 +177,6 @@ export class BaseSiteController {
           tracktype: 'pageview',
           contentType: 'product',
           category: '',
-          refer: ''
         }
       })
       const { templateId } = data.basic.shop
@@ -205,7 +199,6 @@ export class BaseSiteController {
           tracktype: 'pageview',
           contentType: 'product',
           category: '',
-          refer: ''
         }
       })
       const { templateId } = data.basic.shop

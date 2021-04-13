@@ -19,7 +19,7 @@ export const baseInfoForm: FormConfig = {
     { width: 690, label: '企业简介', className:'f-textarea', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [ { pattern: /^[\s\S]{50,300}$/, message: '50～300个字'}  ] },
     { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
-      required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' },
+      required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' }
   ]
 }
 

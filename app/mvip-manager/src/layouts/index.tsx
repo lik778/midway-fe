@@ -82,10 +82,10 @@ const Layouts = (props: any) => {
             </SubMenu>
             <SubMenu style={{ marginBottom: '10px' }} key="ai-content" title="AI内容生成" className="ai-content">
               <Menu.Item key="create-job">
-                  <Link to="/ai-content/create-job">新建任务</Link>
+                <Link to="/ai-content/create-job">新建任务</Link>
               </Menu.Item>
               <Menu.Item key="job-list">
-                  <Link to="/ai-content/job-list">管理任务</Link>
+                <Link to="/ai-content/job-list">管理任务</Link>
               </Menu.Item>
             </SubMenu>
             { hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">

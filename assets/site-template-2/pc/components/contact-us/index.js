@@ -39,10 +39,14 @@ export const leaveLeads = function() {
                 data: data,
                 async:true,
                 success:(res) =>{
-                    alert(res.message)
+                    if (res.success){
+                        alert("提交成功")
+                    }else{
+                        alert(res.message)
+                    }
                 },
                 error:(res)=>{
-                    alert(res)
+                    alert(res.message)
                 }
             });
         })
