@@ -537,7 +537,7 @@ export default (props: ZhidaoCreateJobProp) => {
       </Form>
       <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问答</Button>
       {
-        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>您当前没有足够资源创建问答ai任务</div>
+        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>{componentBasicData.notice ? componentBasicData.notice : '您当前没有足够资源创建问答ai任务'}</div>
       }
     </div>
 

@@ -63,7 +63,7 @@ function ContactForm(props: any) {
       setCompanyInfo(info)
       const newUserRes = await isNewUserApi()
       if (newUserRes.data) {
-        genNewUserModal()
+        // genNewUserModal()
       } else {
         successMessage('更新联系方式成功')
       }

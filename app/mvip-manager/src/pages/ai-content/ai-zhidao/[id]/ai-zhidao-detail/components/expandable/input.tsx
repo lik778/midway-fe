@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useRef } from 'react'
 import { Spin, Input } from 'antd'
 import styles from '../../index.less'
 import { errorMessage } from '@/components/message'
-
+const TextArea = Input.TextArea
 interface ExpandableItemProp {
   answers: string[],
   index: number
@@ -68,7 +68,7 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
         editable && editing ? (
           <div className={styles['answer-input']}>
             <Spin spinning={upDataLoading}>
-              <Input value={localAnswer} ref={inputRef} onPressEnter={save} onBlur={save} onChange={(e) => {
+              <TextArea value={localAnswer} ref={inputRef} autoSize={{ minRows: 1, maxRows: 6 }} onPressEnter={save} onBlur={save} onChange={(e) => {
                 e.persist()
                 changeAnswer(e)
               }} />
