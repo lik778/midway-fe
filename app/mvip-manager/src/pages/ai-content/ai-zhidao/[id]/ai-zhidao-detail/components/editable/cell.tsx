@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Spin } from 'antd';
-import { FormInstance } from 'antd/lib/form';
+import { Input, Form, Spin } from 'antd';
 import { EditableContext } from './context'
 import styles from './style.less'
 import { errorMessage } from '@/components/message';
 
+const TextArea = Input.TextArea
 
 interface Item {
   key: string;
@@ -76,11 +76,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
           style={{ margin: 0 }}
           name={dataIndex}
         >
-          <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+          <TextArea ref={inputRef}  autoSize={{ minRows: 1, maxRows: 6 }} onPressEnter={save} onBlur={save} />
         </Form.Item>
       </Spin>
     ) : (
-      <div className={`${styles['editable-cell-value-wrap']} ${styles['text-value-wrap']}` } style={{ paddingRight: 24 }} onClick={toggleEdit}>
+      <div className={`${styles['editable-cell-value-wrap']} ${styles['text-value-wrap']}`} style={{ paddingRight: 24 }} onClick={toggleEdit}>
         {children}
       </div>
     );
