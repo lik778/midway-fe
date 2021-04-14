@@ -3,15 +3,16 @@ import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
 import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
-import { getQuestionTaskDetailApi, getQuestionList, editQuestion, submitTask } from '@/api/ai-content'
+import { getQuestionTaskDetailApi, getQuestionListApi, editQuestionApi, submitTaskApi, cancalTaskApi } from '@/api/ai-content'
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
-import { AiTaskStatusText } from '@/constants/index'
-import { getCookie } from '@/utils';
-import { COOKIE_USER_KEY } from '@/constants'
+import { ZhidaoAiTaskStatusText } from '@/constants/index'
+import { ZhidaoAiTaskStatus } from '@/enums'
+import MyModal, { ModalType } from '@/components/modal';
+import { mockData } from '@/utils/index'
 
 
 const AiZhidaoDetail = (props: any) => {
@@ -26,89 +27,85 @@ const AiZhidaoDetail = (props: any) => {
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
 
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+
   const columsEdit: TableColumnProps<QuestionListItem>[] = [
     {
       title: '序号', dataIndex: 'index',
       width: 100
     },
     {
-      title: '问题标题',
+      title: '问答标题',
       dataIndex: 'question',
       onCell: (record: QuestionListItem) => ({
         record,
         editable: pageType === 'edit',
         dataIndex: 'question',
-        title: '问题标题',
+        title: '问答标题',
         upDataLoading,
         handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
       }),
     },
   ]
 
-  const columsSee: TableColumnProps<QuestionListItem>[] = [...columsEdit,
+  const columsSee: TableColumnProps<QuestionListItem>[] = [{
+    title: '序号', dataIndex: 'index',
+    width: 100
+  },
+  {
+    title: '问答编号', dataIndex: 'id',
+    width: 100
+  },
+  {
+    title: '问答标题',
+    dataIndex: 'question',
+    onCell: (record: QuestionListItem) => ({
+      record,
+      editable: pageType === 'edit',
+      dataIndex: 'question',
+      title: '问答标题',
+      upDataLoading,
+      handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
+    }),
+  },
   {
     title: '状态',
     dataIndex: 'status',
     width: 200,
     render: (text: number, record: QuestionListItem, index: number) => {
-      if (text === 2) {
+      if (text === ZhidaoAiTaskStatus.DONE) {
         // 已发出
         return <div className={styles['question-status-1']}>{
-          AiTaskStatusText[text]
+          ZhidaoAiTaskStatusText[text]
         }</div>
-      } else if (text === 3) {
+      } else if (text === ZhidaoAiTaskStatus.REJECT) {
         // 审核驳回
         return (
-          <Tooltip title={record.tip}>
+          <Tooltip title={record.tip} overlayStyle={{ width: '150px' }}>
             <div className={styles['question-status-2']}>{
-              AiTaskStatusText[text]
+              ZhidaoAiTaskStatusText[text]
             }</div>
             <div className={styles['question-status-2-tip']}>{record.tip}</div>
           </Tooltip>
         )
       } else {
         return <div className={styles['question-status-0']}>{
-          AiTaskStatusText[text]
+          ZhidaoAiTaskStatusText[text]
         }</div>
       }
     }
   }]
 
 
-
   const getData = async () => {
     setGetDataLoading(true)
-    // TODO;
-    const res = await (pageType === 'edit' ? getQuestionList : getQuestionTaskDetailApi)(Number(id))
-    // let i = 1
-    // const data = []
-    // while (i <= 200) {
-    //   data.push({
-    //     "id": i,
-    //     "question": "江西优质的冰箱维修怎么收费帮忙回答一下呗",
-    //     "answers": [
-    //       "这个价格问题很难说，不能照标准单纯执行有歧义的。反正在我们上海，北京这里，听到百姓网股份他家的名字都是认可的，毕竟也是做了5年年的了。他家的联系方式就是给出的那几个，你往旁边找找看。建议你从预算、质量、环保度、口碑等综合去比较。百姓网股份这家公司真是千载难逢的好企业，对员工的各种培训都很到位，客人结伴去。要找冰箱维修相关商家，要拥有一双火眼金睛，听到看到免费、赠送等字眼别入坑。",
-    //       "这家百姓网股份，是由{创始人}建立的。他们公司非常正规的，对用户有很多承诺，让我们很放心，给你看看他们的承诺：{服务承诺}。之前我还看过他们的简介：{公司介绍}，也发你了解下，他们提供的服务：我是公司产品我是公司产品，在上海，北京里都是数一数二的，基本上没有什么差评，售后都非常不错，你可以了解下。如果您对这行感兴趣，不妨了解下：",
-    //       "价格方面无法那么确切，得看你的具体情况而定。之前有个朋友想知道行业信息，我写了一些：鄙人特别支持这位老师写的重要建议，老铁你真牛呀!"
-    //     ],
-    //     "wordTypes": "ABCDE",
-    //     "questionType": "PRICE",
-    //     "words": [
-    //       "江西",
-    //       "优质的",
-    //       "冰箱维修",
-    //       "6|||怎么收费|||价格决策",
-    //       "帮忙回答一下呗"
-    //     ],
-    //     "coreWords": "冰箱维修",
-    //     status: 4 as 0,
-    //     tip: `这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示这是提示${i}`
-    //   })
-    //   i++
-    // }
-    // const res = await mockData<QuestionListItem[]>('data', data)
-
+    const res = await (pageType === 'edit' ? getQuestionListApi : getQuestionTaskDetailApi)(Number(id))
     if (res.success) {
+      // 这里是为了处理测试提出的bug
+      if (!res.data || res.data.length === 0) {
+        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+        return
+      }
       setDataList(res.data.map((item, index) => ({
         index: index + 1,
         ...item
@@ -121,7 +118,12 @@ const AiZhidaoDetail = (props: any) => {
 
   const handleClickBack = () => {
     if (pageType === 'edit') return
-    history.goBack()
+    // 复制到新页面 history长度是2
+    if (history.length <= 2) {
+      history.replace('/ai-content/ai-zhidao?activeKey=job-list')
+    } else {
+      history.goBack()
+    }
   }
 
 
@@ -132,12 +134,8 @@ const AiZhidaoDetail = (props: any) => {
   // 这里传row是为了知道修改的序号
   const handleSave = async (requestData: EditQuestion, row: QuestionListItem) => {
     try {
-      console.log(requestData)
-      console.log(row)
       setUpDataLoading(true)
-      // TODO;
-      const res = await editQuestion(requestData)
-      // const res = await mockData<boolean>('data', true)
+      const res = await editQuestionApi(requestData)
       if (res.success) {
         const index = dataList.findIndex(item => row.index === item.index);
         const item = dataList[index];
@@ -159,20 +157,25 @@ const AiZhidaoDetail = (props: any) => {
 
   const submit = async () => {
     setUpDataLoading(true)
-    // TODO;
-    const u_id = getCookie(COOKIE_USER_KEY)
-
-    const res = await submitTask(u_id)
-    // const res = await mockData('data', {})
-    if (res.success) {
-      successMessage(res.message || '发布成功')
-      if (history.length > 1) {
-        history.goBack()
-      } else {
-        history.replace('/ai-content/ai-zhidao')
-      }
+    const res = await submitTaskApi()
+    if (res.success && res.data === 'true') {
+      successMessage('新建任务成功')
+      history.replace('/ai-content/ai-zhidao')
     } else {
       errorMessage(res.message || '发布失败')
+    }
+    setUpDataLoading(false)
+  }
+
+  const cancalSubmit = async () => {
+    setUpDataLoading(true)
+    // TODO;
+    const res = await cancalTaskApi()
+    if (res.success) {
+      successMessage('撤销成功')
+      history.goBack()
+    } else {
+      errorMessage(res.message || '撤销失败')
     }
     setUpDataLoading(false)
   }
@@ -202,11 +205,24 @@ const AiZhidaoDetail = (props: any) => {
             }}
           ></Table>
           {
-            pageType === 'edit' && <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>生成问题</Button>
+            pageType === 'edit' && <>
+              <Button className={styles['create-question-btn']} onClick={submit} htmlType="submit" disabled={dataList.length === 0 || upDataLoading} loading={upDataLoading}>提交发布</Button>
+              <Button className={styles['cancal-btn']} onClick={() => setModalVisible(true)}>放弃</Button>
+            </>
           }
-
         </div>
       </Spin>
+      <MyModal
+        title="确认放弃"
+        content="放弃后本次生成的内容会全部删除，不会恢复，确认放弃？"
+        type={ModalType.info}
+        onCancel={() => setModalVisible(false)}
+        onOk={() => cancalSubmit()}
+        footer={<div>
+          <Button onClick={() => setModalVisible(false)}>取消</Button>
+          <Button type="primary" disabled={upDataLoading} loading={upDataLoading} onClick={() => cancalSubmit()}>确认</Button>
+        </div>}
+        visible={modalVisible} />
     </>
   )
 }
