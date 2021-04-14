@@ -37,11 +37,17 @@ export class TrackerService {
 
   //pv,event公共的打点
   public trackerBasicData(req: Request, res: Response): any {
-      return {
-        _trackId: this.getTrackId(req, res),
-        url: req.protocol + '://' + req.get('host') + req.originalUrl,
-        ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-        ua: req.headers['user-agent']
+    const refer = req.headers.referer
+    let nowRefer:string, referKey:string;
+    nowRefer = refer ? refer.substring(0,100) : ''
+    referKey = refer ? refer.split('/')[2] : ''
+    return {
+      _trackId: this.getTrackId(req, res),
+      url: req.protocol + '://' + req.get('host') + req.originalUrl,
+      ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+      ua: req.headers['user-agent'],
+      refer: nowRefer,
+      refer_keywords: referKey
       };
   }
 

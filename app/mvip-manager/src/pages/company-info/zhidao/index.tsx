@@ -14,12 +14,9 @@ import './index.less';
 import { objToTargetObj } from '@/utils';
 
 function CompanyInfoZhudao(props: any) {
+  const { companyInfo } = props
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
-  const [enterpriseInfo, setEnterpriseInfo] = useState<ZhidaoMaterial | null>({
-    banner1: '',
-    banner2: '',
-    siteUrl: ''
-  })
+  const [enterpriseInfo, setEnterpriseInfo] = useState<ZhidaoMaterial | null>(null)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(zhidaoInfoForm));
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -27,10 +24,13 @@ function CompanyInfoZhudao(props: any) {
     setFormLoading(true)
     const res = await getZhidaoMaterial()
     setEnterpriseInfo(res.data)
-    console.log(res);
+    const siteUrls = {
+      "https://www.baixing.com/": "测试site1",
+      "https://www.baixing.com/chibi/": "测试site2"
+    }
     const newChildren = config.children.map(item => {
       if (item.name === 'siteUrl') {
-        item.options = objToTargetObj(res.data.siteUrls)
+        item.options = objToTargetObj(siteUrls)
       }
       return item
     })

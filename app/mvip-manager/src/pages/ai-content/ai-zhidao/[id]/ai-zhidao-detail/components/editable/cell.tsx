@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Input, Form, Spin } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Spin } from 'antd';
+import { FormInstance } from 'antd/lib/form';
 import { EditableContext } from './context'
-import styles from './style.less'
+import style from './style.less'
 import { errorMessage } from '@/components/message';
 
-const TextArea = Input.TextArea
 
 interface Item {
   key: string;
@@ -55,7 +55,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
       const values = await form.validateFields();
       if (values[dataIndex] !== record[dataIndex]) {
         if (!values[dataIndex] || values[dataIndex].length === 0) {
-          errorMessage('问答内容不得为空！')
+          errorMessage('问题内容不得为空！')
         } else {
           await handleSave({ ...record, ...values });
         }
@@ -63,11 +63,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
       toggleEdit();
     } catch (errInfo) {
       form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-      console.log('保存失败', errInfo);
     }
   };
 
-  let childNode = <span className={styles['text-value-wrap']}>{children}</span>;
+  let childNode = children;
 
   if (editable) {
     childNode = editing ? (
@@ -76,11 +75,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
           style={{ margin: 0 }}
           name={dataIndex}
         >
-          <TextArea ref={inputRef}  autoSize={{ minRows: 1, maxRows: 6 }} onPressEnter={save} onBlur={save} />
+          <Input ref={inputRef} onPressEnter={save} onBlur={save} />
         </Form.Item>
       </Spin>
     ) : (
-      <div className={`${styles['editable-cell-value-wrap']} ${styles['text-value-wrap']}`} style={{ paddingRight: 24 }} onClick={toggleEdit}>
+      <div className={style['editable-cell-value-wrap']} style={{ paddingRight: 24 }} onClick={toggleEdit}>
         {children}
       </div>
     );

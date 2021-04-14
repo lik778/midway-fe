@@ -29,12 +29,10 @@ interface Props {
 
 
 const WildcatForm = (props: Props) => {
-  //通过 Form.useForm 对表单数据域进行交互
+  //通过 Form.useForm 对表单数据域进行交互,表单开始数据editDataSource
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
   useEffect(() => {
-    console.log("大表单开始数据：",editDataSource)
-
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
     } if (isEmptyObject(editDataSource)) {
@@ -50,7 +48,6 @@ const WildcatForm = (props: Props) => {
   }, [])
 
   const onChange = (newValue: any, name: string) => {
-    console.log("表单选择项",newValue)
     const configItem = props.config.children.find(item=>item.name === name)
     //如果配置项里有onChange
     if(configItem?.onChange){configItem.onChange(newValue,form)}

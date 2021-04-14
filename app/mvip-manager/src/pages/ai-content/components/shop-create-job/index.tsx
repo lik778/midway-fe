@@ -4,7 +4,6 @@ import { history } from 'umi'
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE } from '@/models/shop';
-import MainTitle from '@/components/main-title';
 import { wordsItemConfig } from '@/constants';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';

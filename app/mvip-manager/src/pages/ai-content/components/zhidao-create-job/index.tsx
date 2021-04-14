@@ -294,7 +294,7 @@ export default (props: ZhidaoCreateJobProp) => {
     return res.data
   }
 
-  /** 初始化组件 
+  /** 初始化组件
    * @description 先判断是否要跳页再请求具体参数
   */
   const initCompoment = async () => {
@@ -357,7 +357,7 @@ export default (props: ZhidaoCreateJobProp) => {
     }))
   }
 
-  /** 
+  /**
    * 去重 去特殊符号
    * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
    * */

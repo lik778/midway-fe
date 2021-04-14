@@ -25,6 +25,7 @@ export const AiTaskStatusText: any = {
   [AiTaskStatus.DONE]: '已发完',
   [AiTaskStatus.REJECT]: '审核驳回',
   [AiTaskStatus.DEFAULT]: '待审核',
+  [AiTaskStatus.ON_SELECT]: '审核通过'
 }
 
 // ZhidaoAiTaskStatus
