@@ -10,7 +10,7 @@ export interface GetContentApiParams {
   contentCateId: number;
 }
 
-export interface CreateProductApiParams extends CreateArticleApiParams {
+export interface CreateProductApiParams extends  CreateArticleApiParams {
   headImg?: string;
 }
 
@@ -39,7 +39,7 @@ export interface CateItem {
 }
 
 
-export interface NavItem {
+export interface NavItem{
   content: string;
   desc: string;
   display: number | undefined;
@@ -53,23 +53,23 @@ export interface NavItem {
   isError?: boolean;
 }
 
-export interface ModifyNavItem {
+export interface ModifyNavItem{
   name: string;
   display: number | undefined;
   id: number;
 }
 
 
-export interface ImgItemParam {
+export interface ImgItemParam{
   type: number;
   url: string;
 }
 
-export interface ImgDeleteParam {
+export interface ImgDeleteParam{
   id: number;
 }
 
-export interface ImgListParam {
+export interface ImgListParam{
   page: number;
   size: number;
   status: number;
@@ -100,7 +100,6 @@ export interface TdkDetailMeta {
 export interface ShopStatus {
   isUserPerfect: boolean;
   domainType: DomainStatus;
-  isTicketAvailable: boolean
 }
 
 export interface QuotaInfo {

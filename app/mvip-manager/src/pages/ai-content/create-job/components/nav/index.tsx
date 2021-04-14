@@ -43,15 +43,25 @@ export const CreateAiContentNav = (props: Props): any => {
       }
     }
 
-    const onShopChange = async (shopId: number) => {
-      setShopId(shopId)
+    const onShopChange = (shopId:number,prevValue:number|undefined) => {
       const item = shopList && shopList.find((x: AiShopList) => x.id === shopId)
-      const articleCates = (item && item.articleCates) || []
-      if (articleCates.length > 0) {
-        showPanel();
+
+      if(item?.isSupportAi){
+        setShopId(shopId)
+        const articleCates = (item && item.articleCates) || []
+        if (articleCates.length > 0) {
+          showPanel();
+        }
+        form.resetFields(['contentCateId'])
+        setArticleList((item && item.articleCates) || [])
+        return shopId
+      }else{
+        errorMessage('当前店铺无AI权限，请选择其他店铺')
+        if(!prevValue){
+          form.resetFields(['shopId'])
+        }
+        return prevValue
       }
-      form.resetFields(['contentCateId'])
-      setArticleList((item && item.articleCates) || [])
     }
 
     return (
@@ -59,8 +69,8 @@ export const CreateAiContentNav = (props: Props): any => {
         { checkHasShow<AiShopList>(shopList) === 'loading' && <Loading/> }
         { checkHasShow<AiShopList>(shopList) === 'show' &&
             <Form layout="inline" form={form}>
-              <FormItem label="所属店铺" name="shopId" key="shopId">
-                <Select  style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺" onChange={onShopChange}>
+              <FormItem label="所属店铺" name="shopId" key="shopId"  normalize={(value:number,prevValue:number|undefined)=>onShopChange(value,prevValue)}>
+                <Select  style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺">
                   {/* 待选项里，会先过滤掉，购买时套餐不含AI发文的店铺 */}
                   { shopList && shopList.length > 0 && shopList.map((shop: any) => {
                     return (<Option key={shop.id} value={shop.id}>{shop.name}</Option>)

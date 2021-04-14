@@ -85,7 +85,6 @@ function CompanyInfoBase(props: any) {
   const updateConfigData = () => {
     if (!companyInfo) {
       setFormLoading(true)
-      return
     }
     const { companyNameLock, secondCategories, selectedSecondCategory } = companyInfo
     const newChildren = config.children.map(item => {
@@ -122,22 +121,14 @@ function CompanyInfoBase(props: any) {
     setCurrentStep(currentStep + 1)
   }
 
-  const nextStep = async (values: SaveEnterpriseForShopParams) => {
+  const nextStep = async (values: any) => {
     if (!hasEditForm) {
       next(); return
     }
-
-    //对地区进行处理
     if (!Array.isArray(values.area)) {
       values.area = Object.keys(values.area).map(k => k)
     }
     setLoading(true)
-
-
-    //保存企业资料
-    console.log("企业资料入参values：", values)
-    // 一级类目
-    values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
     const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (success) {
@@ -148,37 +139,32 @@ function CompanyInfoBase(props: any) {
       errorMessage(message || '出错啦')
     }
   }
-  const formChangeFn = (value: any, values: any) => {
-    setHasEditFofrm(true)
-    console.log("表单实时数据", values)
-  }
 
   return (
     <div>
-      <MainTitle title="基础资料" />
+      <MainTitle title="基础资料"/>
       <Steps current={currentStep} className="step-container">
         {steps.map(name => (
           <Step key={name} title={name} />
         ))}
       </Steps>
       <div className="container">
-        {formLoading && <Loading />}
-        {!formLoading && currentStep == 0 &&
+        { formLoading && <Loading />}
+        { !formLoading && currentStep == 0 &&
           <WildcatForm
-            formChange={formChangeFn}
-            useLabelCol={true} submit={nextStep}
-            editDataSource={enterpriseInfo} config={config} loading={loading}
-
+           formChange={() => setHasEditFofrm(true)}
+           useLabelCol={true} submit={nextStep}
+           editDataSource={enterpriseInfo} config={config} loading={loading}
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
                 <Col><Button loading={loading} className="btn"
-                  type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
+                      type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
               </Row>
-            } />
+            }/>
         }
-        {!formLoading && currentStep == 1 &&
-          <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
+        { !formLoading && currentStep == 1 &&
+        <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );
