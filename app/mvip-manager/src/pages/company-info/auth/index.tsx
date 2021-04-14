@@ -9,7 +9,7 @@ import { errorMessage } from '@/components/message';
 // import config from '@/config/env';
 
 
-export default (props: any) => {
+const AuthPage = (props: any) => {
   const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -91,3 +91,7 @@ export default (props: any) => {
       </div>
     </div>
 }
+
+
+AuthPage.wrappers = ['@/wrappers/path-auth']
+export default AuthPage

@@ -9,6 +9,7 @@ const validatorArea =  (rule: any, val: any) => {
   return Promise.resolve()
 }
 
+//基础资料里的信息，增加了onchange,可被base父页面修改
 export const baseInfoForm: FormConfig = {
   name: 'baseInfoForm',
   children: [

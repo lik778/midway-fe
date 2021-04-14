@@ -1,20 +1,23 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
-import MainTitle from '@/components/main-title';
+import { connect } from 'dva';
+import { ConnectState } from '@/models/connect';
+import { SHOP_NAMESPACE } from '@/models/shop';
 import { wordsItemConfig } from '@/constants';
 import './index.less';
 import { createAiJobApi } from '@/api/ai-content';
-import { CreateAiContentNav } from  './components/nav';
+import { CreateAiContentNav } from './components/nav';
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
+import { ShopStatus } from '@/interfaces/shop';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-export default (props: any) => {
+const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
   const [form] = Form.useForm();
   const defaultCounters: any = {};
   Object.keys(wordsItemConfig).forEach((k: string) => defaultCounters[k] = 0)
@@ -27,7 +30,7 @@ export default (props: any) => {
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     const wordsList = words.split('\n')
-    const dedupWordsList =  Array.from(new Set(wordsList));
+    const dedupWordsList = Array.from(new Set(wordsList));
     const maxLength = wordsItemConfig[name].max;
     const data = dedupWordsList.length > maxLength ? dedupWordsList.splice(0, maxLength) : dedupWordsList;
     values[name] = data.join('\n')
@@ -63,11 +66,11 @@ export default (props: any) => {
     const concatWords: string[] = randomList(aiDefaultWord[dataName], maxLength)
     formValues[name] = concatWords.join('\n')
     counters[name] = concatWords.length
-    setCounters({ ...counters})
+    setCounters({ ...counters })
     form.setFieldsValue(formValues)
   }
 
-  const isValidForm =(): boolean => {
+  const isValidForm = (): boolean => {
     const errorList: string[] = []
     Object.keys(counters).forEach(x => {
       const min = wordsItemConfig[x].min
@@ -111,10 +114,10 @@ export default (props: any) => {
 
 
   return (<div>
-    <MainTitle title="新建任务"/>
+    {/*<MainTitle title="新建任务"/>*/}
     <div className="ai-create-job-box">
-      <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)}/>
-      { visiblePanel && (
+      <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)} />
+      {visiblePanel && (
         <div>
           <ul className="ai-handle-tips">
             <h3>说明：</h3>
@@ -166,7 +169,7 @@ export default (props: any) => {
             onOk={() => history.push('/company-info/base')}
             footer={<div>
               <Button onClick={() => setModalVisible(false)}>取消</Button>
-              <Button type="primary" loading={submitLoading} onClick={() =>submitData()}>确认</Button>
+              <Button type="primary" loading={submitLoading} onClick={() => submitData()}>确认</Button>
             </div>}
             visible={modalVisible} />
         </div>
@@ -175,3 +178,9 @@ export default (props: any) => {
     </div>
   </div>)
 }
+
+export default connect((state: ConnectState) => {
+  return {
+    shopStatus: state[SHOP_NAMESPACE].shopStatus,
+  }
+})(ShopCreateJob)

@@ -13,13 +13,21 @@ export interface PageParams {
 }
 
 export interface ListRes<T> {
-  result: T;
+  result: T | null;
   totalPage: number;
-  totalRecord: number;
-  pageSize: number;
+  totalRecord: number | null;
+  /** 有部分接口没有返回这个pageSize,所以注释掉 */
+  // pageSize: number;
 }
 
 export interface BaseProps {
   dispacth?: Dispatch<any>;
   history?: History;
+}
+
+export interface MidMenuItem {
+  menuName: string;
+  key: string;
+  path?: string;
+  menuList?: MidMenuItem[];
 }
