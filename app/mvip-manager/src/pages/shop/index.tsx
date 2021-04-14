@@ -83,7 +83,6 @@ function ShopPage(props: any) {
   }
 
   const notInterceptCreateShop = (): boolean => {
-    console.log(shopStatus.isUserPerfect)
     setEditVisible(!shopStatus.isUserPerfect)
     return shopStatus.isUserPerfect || false
   }

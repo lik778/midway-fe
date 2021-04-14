@@ -133,9 +133,6 @@ function CompanyInfoBase(props: any) {
     }
     setLoading(true)
 
-
-    //保存企业资料
-    console.log("企业资料入参values：", values)
     // 一级类目
     values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
     const { success, message, data } = await saveEnterpriseForShopApi(values)
@@ -150,7 +147,7 @@ function CompanyInfoBase(props: any) {
   }
   const formChangeFn = (value: any, values: any) => {
     setHasEditFofrm(true)
-    console.log("表单实时数据", values)
+    //console.log("表单实时数据", values)
   }
 
   return (

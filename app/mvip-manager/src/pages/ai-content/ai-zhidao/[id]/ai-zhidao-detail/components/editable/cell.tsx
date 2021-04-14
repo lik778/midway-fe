@@ -63,7 +63,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
       toggleEdit();
     } catch (errInfo) {
       form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-      console.log('保存失败', errInfo);
     }
   };
 

@@ -28,7 +28,6 @@ function CompanyInfoZhudao(props: any) {
       "https://www.baixing.com/": "测试site1",
       "https://www.baixing.com/chibi/": "测试site2"
     }
-    console.log(res);
     const newChildren = config.children.map(item => {
       if (item.name === 'siteUrl') {
         item.options = objToTargetObj(siteUrls)
