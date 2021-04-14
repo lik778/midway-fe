@@ -61,12 +61,13 @@ function ContactForm(props: any) {
     setLoading(false)
     if (res?.success) {
       setCompanyInfo(info)
-      const newUserRes = await isNewUserApi()
-      if (newUserRes.data) {
-        // genNewUserModal()
-      } else {
-        successMessage('更新联系方式成功')
-      }
+      successMessage('更新联系方式成功')
+      // const newUserRes = await isNewUserApi()
+      // if (newUserRes.data) {
+      //   genNewUserModal()
+      // } else {
+      //   successMessage('更新联系方式成功')
+      // }
     } else {
       errorMessage(res?.message || '出错了')
     }
