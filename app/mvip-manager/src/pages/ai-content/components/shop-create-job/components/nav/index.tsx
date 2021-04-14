@@ -29,7 +29,7 @@ export const CreateAiContentNav = (props: Props): any => {
         const res = await getAiShopListApi()
         if (res?.success) {
           showGroupWordPanel(res.data||[])
-          setShopList((res.data||[]).filter(x => x.isSupportAi))
+          setShopList(res.data||[])
         } else {
           errorMessage(res.message)
         }

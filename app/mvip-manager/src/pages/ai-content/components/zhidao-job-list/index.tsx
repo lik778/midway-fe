@@ -2,16 +2,23 @@ import React, { forwardRef, Ref, useEffect, useState, useImperativeHandle } from
 import { Table } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
-import { getQuestionTaskListApi } from '@/api/ai-content';
+import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi } from '@/api/ai-content';
 import './index.less';
-import { QuestionTaskListItem } from '@/interfaces/ai-content';
+import { QuestionTaskListItem, GetQuotaNumRes } from '@/interfaces/ai-content';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
-import { errorMessage } from '@/components/message';
+import { warnMessage, errorMessage } from '@/components/message';
 import { Link } from 'umi';
 import { TableColumnProps } from 'antd'
 import { mockData } from '@/utils'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index';
+
+interface QuotaNumInterface {
+  aiRemain: number,
+  remain: number,
+  consumeCount: number,
+  buyUrl?: string
+}
 
 interface ZhidaoJobListProp {
   activeKey: ActiveKey
@@ -24,6 +31,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   const [aiList, setAiList] = useState<QuestionTaskListItem[] | null>(null);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [total, setTotal] = useState<any>(null);
+  const [quotaNum, setQuotaNum] = useState<QuotaNumInterface>({} as QuotaNumInterface)
 
   // 给页面挂上page
   useEffect(() => {
@@ -48,21 +56,28 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     history.replace(`${history.location.pathname}?${currentUrlParams.toString()}`)
   }
 
+  const getQuotaNum = async () => {
+    const res = await getQuotaNumApi()
+    if (res.success) {
+      const { queryResultVo, consumeCount, buyUrl } = res.data
+      setQuotaNum({
+        aiRemain: queryResultVo.aiRemain,
+        remain: queryResultVo.remain,
+        consumeCount,
+        buyUrl
+      })
+    }
+  }
+
+  useEffect(() => {
+    getQuotaNum()
+  }, [])
+
+
   const getList = useDebounce(async () => {
     if (activeKey !== 'job-list') return
     setListLoading(true)
-    // TODO;
     const res = await getQuestionTaskListApi({ page, size: 10 })
-    /** 模拟数据，正式数据则解开上面的注释 */
-    // const res = await mockData<QuestionTaskListItem>('list', {
-    //   /** 任务id 同时也是编号 */
-    //   taskId: 1,
-    //   /** 已发布数量 */
-    //   publishedNum: 2,
-    //   /** 预期发布数量 */
-    //   expectNum: 4,
-    //   createdTime: 1616054198,
-    // }, 'taskId', page, 10)
     if (res.success) {
       setAiList(addKeyForListData(res.data.result || [], page))
       setTotal(res.data.totalRecord || 0)
@@ -76,6 +91,18 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     getList()
   }, [page])
 
+  // 点击检查任务是否完成
+  const getQuestionTaskStatus = async (id: number) => {
+    if (listLoading) return
+    setListLoading(true)
+    const res = await getQuestionTaskStatusApi(id)
+    if (res.success && res.data === 'true') {
+      history.push(`/ai-content/ai-zhidao/${id}/ai-zhidao-detail?pageType=see`)
+    } else {
+      warnMessage('数据处理中，请稍后再试~')
+    }
+    setListLoading(false)
+  }
 
   const columns: TableColumnProps<QuestionTaskListItem>[] = [
     { title: '编号', dataIndex: 'taskId', align: 'center' },
@@ -88,7 +115,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     {
       title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
     },
-    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <Link to={`/ai-content/ai-zhidao/${record.taskId}/ai-zhidao-detail?pageType=see`}>查看详情</Link> },
+    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <div style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</div> },
   ];
 
   // 修改分页后也修改url
@@ -102,6 +129,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     <>
       <div className="ai-list-container">
         {isLoding && listLoading && <Loading />}
+        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</div>
         {total === 0 && <div className="empty-info">
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>

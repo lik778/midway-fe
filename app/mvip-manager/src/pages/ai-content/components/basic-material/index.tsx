@@ -51,7 +51,7 @@ export default () => {
   }, {
     key: 'wordB',
     label: '公司优势',
-    placeholder: `例如：\n1.我们有专业的技术团队\n2.我们有高质量的服务标准\n3.我们的产品质量行业TOP100`,
+    placeholder: `例如：\n我们有专业的技术团队\n我们有高质量的服务标准\n我们的产品质量行业TOP100`,
     rules: [{ required: true, validator: (rule: any, value: any) => validateItem('wordB', value, '公司优势'), }]
   }, {
     key: 'wordC',

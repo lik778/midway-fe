@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '../../config';
-import { QQItem, UserEnterpriseInfo } from '@/interfaces/user';
+import { KF53Info, QQItem, UserEnterpriseInfo } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
@@ -45,10 +45,17 @@ function ContactForm(props: any) {
     // 处理53客服数据  刚创建用户 kf53Info可以为空
     if (kf53Data.kefuStatus) {
       if (kf53Data && !isEmptyObject(kf53Data)) {
-        if ((!kf53Data.companyName || (kf53Data.companyName.length < 2||kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2||kf53Data.bname.length > 20))) return
+        if ((!kf53Data.companyName || (kf53Data.companyName.length < 2 || kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2 || kf53Data.bname.length > 20))) return
         info.kefuStatus = KFStatus.OPEN;
-        info.kf53Info!.companyName = kf53Data.companyName
-        info.kf53Info!.bname = kf53Data.bname
+        if (!info.kf53Info) {
+          info.kf53Info = {
+            companyName: kf53Data.companyName,
+            bname: kf53Data.bname
+          } as KF53Info
+        } else {
+          info.kf53Info.companyName = kf53Data.companyName
+          info.kf53Info.bname = kf53Data.bname
+        }
       } else {
         return
       }
