@@ -29,7 +29,6 @@ interface Props {
 
 
 const WildcatForm = (props: Props) => {
-  //通过 Form.useForm 对表单数据域进行交互,表单开始数据editDataSource
   const [form] = Form.useForm();
   const { editDataSource, useLabelCol, onInit, loading } = props
   useEffect(() => {

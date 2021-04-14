@@ -49,7 +49,7 @@ export const KF53 =  (props: Prop) => {
         </FormItem>
         <FormItem>
           <p style={styles.p}>1.关注 <span style={styles.s}>“百姓商户”</span> 公众号，即可随时随地获取客户咨询线索。</p>
-          <p style={styles.p}>2.如需登陆智能客服系统进行个性化设置，可使用账号登陆 账号：{kf53Info?.userId}，密码：{kf53Info?.password}，
+          <p style={styles.p}>2.如需登录智能客服系统进行个性化设置，可使用账号登录 账号：{kf53Info?.userId}，密码：{kf53Info?.password}，
             <a style={styles.s} href="http://open.53kf.com" target="_blank">登录地址</a>
           </p>
         </FormItem>

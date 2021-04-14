@@ -147,7 +147,6 @@ function CompanyInfoBase(props: any) {
   }
   const formChangeFn = (value: any, values: any) => {
     setHasEditFofrm(true)
-    //console.log("表单实时数据", values)
   }
 
   return (
