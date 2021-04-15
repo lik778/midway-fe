@@ -32,7 +32,10 @@ const AiZhidaoDetail = (props: any) => {
   const columsEdit: TableColumnProps<QuestionListItem>[] = [
     {
       title: '序号', dataIndex: 'index',
-      width: 100
+      width: 100,
+      render: (text: number, record: QuestionListItem, index: number) => {
+        return <span data-id={record.id}>{text}</span>
+      }
     },
     {
       title: '问答标题',
@@ -50,11 +53,10 @@ const AiZhidaoDetail = (props: any) => {
 
   const columsSee: TableColumnProps<QuestionListItem>[] = [{
     title: '序号', dataIndex: 'index',
-    width: 100
-  },
-  {
-    title: '问答编号', dataIndex: 'id',
-    width: 100
+    width: 100,
+    render: (text: number, record: QuestionListItem, index: number) => {
+      return <span data-id={record.id}>{text}</span>
+    }
   },
   {
     title: '问答标题',
