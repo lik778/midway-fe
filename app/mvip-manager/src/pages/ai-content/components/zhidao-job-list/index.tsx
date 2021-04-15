@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref, useEffect, useState, useImperativeHandle } from 'react';
-import { Table } from 'antd';
+import { Table, Tooltip } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
 import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi } from '@/api/ai-content';
@@ -12,10 +12,10 @@ import { Link } from 'umi';
 import { TableColumnProps } from 'antd'
 import { mockData } from '@/utils'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index';
+import { InfoCircleOutlined } from '@ant-design/icons'
 
-interface QuotaNumInterface {
-  aiRemain: number,
-  remain: number,
+
+interface QuotaNumInterface extends GetQuotaNumRes {
   consumeCount: number,
   buyUrl?: string
 }
@@ -61,8 +61,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     if (res.success) {
       const { queryResultVo, consumeCount, buyUrl } = res.data
       setQuotaNum({
-        aiRemain: queryResultVo.aiRemain,
-        remain: queryResultVo.remain,
+        ...queryResultVo,
         consumeCount,
         buyUrl
       })
@@ -129,6 +128,9 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     <>
       <div className={styles["ai-list-container"]}>
         {isLoding && listLoading && <Loading />}
+        {/* <div className={styles["ai-quota-tip"]}>AI发问答总计<span className={styles["num"]}>{quotaNum.aiLimit || 0}&nbsp;</span>条，已使用<span className={styles["num"]}>{((quotaNum.aiLimit || 0) - (quotaNum.aiRemain || 0)).toFixed(0)}&nbsp;</span>条，剩余<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>条，每条消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余<span className={styles["num"]}>{quotaNum.remain || 0}</span>个信息发布点{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''} <Tooltip title="为达到最佳收录效果，AI发问答将在每天不同时段随机发布，每天最多30条，单城市用户每日50，全国100条问答（手工发布+AI发布），请合理规划">
+          <InfoCircleOutlined className={styles['info']} />
+        </Tooltip></div> */}
         <div className={styles["ai-quota-tip"]}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</div>
         {total === 0 && <div className={styles["empty-info"]}>
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />

@@ -484,7 +484,9 @@ export default (props: ZhidaoCreateJobProp) => {
 
   return (<Spin spinning={getDataLoading || upDataLoading}>
     <div className={styles["ai-create-task-box"]} onClick={() => closeTipModal(false)}>
-      <div className={styles["ai-quota-tip"]}>当前AI剩余问答量：<span className={styles['num']}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles['num']}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <>，<a href={quotaNum.buyUrl} target="_blank">去充值</a> </> : ''}）</div>
+      <div className={styles["ai-quota-tip"]}>当前AI剩余问答量：<span className={styles['num']}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles['num']}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <>，<a href={quotaNum.buyUrl} target="_blank">去充值</a> </> : ''}） {
+        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <span className={styles['not-auth-tip']}>{componentBasicData.notice ? componentBasicData.notice : '您当前没有足够资源创建问答ai任务'}</span>
+      }</div>
       <ul className={styles["ai-handle-tips"]}>
         <h3>组合规则说明：</h3>
         <li>1、请填写<span className={styles['tip']}>「地区+前缀+核心词+疑问词+辅助词」</span>，该信息将用于生成问答内容及站点SEO元素</li>
@@ -536,9 +538,6 @@ export default (props: ZhidaoCreateJobProp) => {
         </Row>
       </Form>
       <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问答</Button>
-      {
-        pageStatus === 'SHOW_CREATE' && (componentBasicData && !componentBasicData.canCreateTask && componentBasicData.forceNotice === null) && <div className={styles['not-auth-tip']}>{componentBasicData.notice ? componentBasicData.notice : '您当前没有足够资源创建问答ai任务'}</div>
-      }
     </div>
 
     <MyModal
