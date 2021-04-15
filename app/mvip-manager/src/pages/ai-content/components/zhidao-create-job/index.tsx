@@ -230,7 +230,6 @@ export default (props: ZhidaoCreateJobProp) => {
   }
 
   const getCreateQuestionTaskBasicDataFn = async () => {
-    // TODO;
     const res = await getCreateQuestionTaskBasicDataApi()
     // const res = await mockData<CreateQuestionTaskBasicData>('data', {
     //   canCreateTask: false,
@@ -273,8 +272,6 @@ export default (props: ZhidaoCreateJobProp) => {
           setInterrogativeWord(data)
         }
       }
-    } else {
-      console.log(res)
     }
   }
 
@@ -289,7 +286,7 @@ export default (props: ZhidaoCreateJobProp) => {
     if (res.success) {
       setPageStatus(res.data)
     } else {
-      console.log(res)
+      //console.log(res)
     }
     return res.data
   }
@@ -437,7 +434,6 @@ export default (props: ZhidaoCreateJobProp) => {
 
   const submit = async () => {
     const values = form.getFieldsValue()
-    console.log(values)
     const requestData: QuestionTaskApiParams = {
       area: [],
       prefix: [],
@@ -454,7 +450,6 @@ export default (props: ZhidaoCreateJobProp) => {
         }, [] as string[])
       }
     }
-    console.log(requestData)
     setUpdataLoading(true)
     if (!validateUserId()) {
       errorMessage('当前用户已更换，在页面刷新后再试！')

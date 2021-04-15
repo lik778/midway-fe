@@ -22,12 +22,21 @@ export const KF53 =  (props: Prop) => {
 
   useEffect(() => {
     if (editDataSource) {
+
       const kefuStatus = editDataSource.kefuStatus === KFStatus.OPEN
       setKf53Info(editDataSource.kf53Info)
       setIsOpenKFStatus(kefuStatus)
       form.setFieldsValue({...editDataSource.kf53Info, kefuStatus })
+      onChange(editDataSource.kf53Info)
     }
   }, [editDataSource])
+
+  useEffect(() => {
+    // 切换开关时，是先修改的开关后改的值，onChange事件只触发了一次
+    if(isOpenKFStatus&&editDataSource){
+      onChange({...editDataSource.kf53Info, kefuStatus:isOpenKFStatus })
+    }
+  }, [isOpenKFStatus])
 
   const formChange = (value: any, values: any) => {
     setIsOpenKFStatus(values['kefuStatus'])

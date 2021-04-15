@@ -106,7 +106,6 @@ export default () => {
             break
         }
       })
-      console.log(form.getFieldsValue())
       form.setFieldsValue(formData)
     }
   }
@@ -145,7 +144,6 @@ export default () => {
         content: values[item.key] ? values[item.key].split('\n').filter((item: string) => item !== '') : []
       })
     })
-    console.log(requestData)
     setUpdataLoading(true)
     const res = await submitBasicMaterialApi(requestData)
     if (res.success) {

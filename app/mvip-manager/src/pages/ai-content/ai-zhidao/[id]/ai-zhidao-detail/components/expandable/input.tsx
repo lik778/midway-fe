@@ -57,7 +57,6 @@ const ExpandableItem: FC<ExpandableItemProp> = (props) => {
       toggleEdit();
     } catch (errInfo) {
       setLocalAnswer(answers[index])
-      console.log('保存失败', errInfo);
     }
   };
 
