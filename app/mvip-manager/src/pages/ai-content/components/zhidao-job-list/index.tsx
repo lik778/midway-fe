@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
 import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi } from '@/api/ai-content';
-import './index.less';
+import styles from './index.less';
 import { QuestionTaskListItem, GetQuotaNumRes } from '@/interfaces/ai-content';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
@@ -127,10 +127,10 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   const isLoding = aiList === null
   return (
     <>
-      <div className="ai-list-container">
+      <div className={styles["ai-list-container"]}>
         {isLoding && listLoading && <Loading />}
-        <div className="ai-quota-tip">当前AI剩余问答量：<span className="num">{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className="num">{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</div>
-        {total === 0 && <div className="empty-info">
+        <div className={styles["ai-quota-tip"]}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</div>
+        {total === 0 && <div className={styles["empty-info"]}>
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>}

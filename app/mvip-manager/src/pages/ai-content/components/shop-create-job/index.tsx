@@ -105,7 +105,7 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
       setSubmitLoading(false)
       if (res.success) {
         successMessage('添加成功')
-        history.push(`/ai-content/ai-shop`);
+        window.location.reload()
       } else {
         errorMessage(res.message)
       }
