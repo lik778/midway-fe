@@ -9,6 +9,7 @@ const validatorArea =  (rule: any, val: any) => {
   return Promise.resolve()
 }
 
+//基础资料里的信息，增加了onchange,可被base父页面修改
 export const baseInfoForm: FormConfig = {
   name: 'baseInfoForm',
   children: [
@@ -18,8 +19,12 @@ export const baseInfoForm: FormConfig = {
     { inputWidth: 260, className:'f-middle',label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { width: 690, label: '企业简介', className:'f-textarea', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [ { pattern: /^[\s\S]{50,300}$/, message: '50～300个字'}  ] },
-    { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg'}],
-      required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' }
+    { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg', rule:[{required: true, message: `请上传企业logo` }]}],
+      required: true, tip:'图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100' },
+    { width: 353, className:'f-category-select',label: '类目', name: 'secondCategory', type: FormType.Select, required: true,  placeholder: '请选择类目' },
+    { width: 690, className:'f-meta',label: '服务内容', name: 'thirdMetas', type: FormType.MetaChecbox, required: true , display:false},
+    { inputWidth: 260, minNum:1, className:'f-middle',label: '公司人数', name: 'employeeCount', type: FormType.InputNumber, required: true, placeholder: '请输入公司人数' },
+    { inputWidth: 260, minNum:1, className:'f-middle',label: '公司年限', name: 'companyYears', type: FormType.InputNumber, required: true, placeholder: '请输入公司已经营年限' },
   ]
 }
 

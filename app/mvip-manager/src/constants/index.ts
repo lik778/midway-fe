@@ -1,4 +1,9 @@
-import { AuditStatus, ArticleSource, AiTaskStatus, DomainStatus } from '@/enums';
+import { AuditStatus, ArticleSource, AiTaskStatus, DomainStatus, ZhidaoAiTaskStatus } from '@/enums';
+
+export const COOKIE_TOKEN_KEY = '__t'
+export const COOKIE_USER_KEY = '__u'
+export const COOKIE_HASH_KEY = '__c'
+
 
 export const auditStatusText: any = {
   [AuditStatus.DEFAULT]: '初始化',
@@ -21,6 +26,13 @@ export const AiTaskStatusText: any = {
   [AiTaskStatus.REJECT]: '审核驳回',
   [AiTaskStatus.DEFAULT]: '待审核',
   [AiTaskStatus.ON_SELECT]: '审核通过'
+}
+
+// ZhidaoAiTaskStatus
+export const ZhidaoAiTaskStatusText: any = {
+  [ZhidaoAiTaskStatus.WIATING]: '待发布',
+  [ZhidaoAiTaskStatus.DONE]: '发布成功',
+  [ZhidaoAiTaskStatus.REJECT]: '发布失败',
 }
 
 export const productText = (): any => {

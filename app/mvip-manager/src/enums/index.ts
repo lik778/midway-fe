@@ -30,12 +30,12 @@ export enum ShopTDKPosition {
 export enum AuditStatus {
   DEFAULT, // 初始化
   APPROVE, // 审核通过
-  REJECT , // 审核驳回
+  REJECT, // 审核驳回
   DELETED, // 已删除
 }
 
 export enum ArticleSource {
-  DEFAULT , // 默认
+  DEFAULT, // 默认
   MAN_MADE, // 人工
   BATCH, // 批量
   AI, // AI
@@ -59,6 +59,12 @@ export enum VerifyStatus {
   REVOKE = 'REVOKE'
 }
 
+export enum ZhidaoAiTaskStatus {
+  WIATING = 0, // 待发送
+  DONE = 1, // 发送成功
+  REJECT = 2, // 发送失败
+}
+
 export enum AiTaskStatus {
   ON_TASK = 0, // 发文中
   ON_PAUSE = 1, // 已暂停
@@ -68,7 +74,7 @@ export enum AiTaskStatus {
   ON_SELECT = 5 //待用户选词
 }
 
-export enum  DeviceType{
+export enum DeviceType {
   PC = 1,
   WAP = 2,
 }
@@ -81,10 +87,12 @@ export enum DomainStatus {
 
 export enum KFStatus {
   CLOSE = 'CLOSE',
-  OPEN= 'OPEN'
+  OPEN = 'OPEN'
 }
 
 export enum AiTaskAction {
   START = 'start',
   PAUSE = 'pause'
 }
+
+

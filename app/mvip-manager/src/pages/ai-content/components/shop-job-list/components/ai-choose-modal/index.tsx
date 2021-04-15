@@ -131,7 +131,7 @@ export default (props: Props) => {
     preserveSelectedRowKeys:true,
     selections: [
       Table.SELECTION_ALL,
-      Table.SELECTION_INVERT,
+      // Table.SELECTION_INVERT,
       Table.SELECTION_NONE,
     ],
     onChange: (selectedRowKeys: number[], selectedRows: DataType[]) => {

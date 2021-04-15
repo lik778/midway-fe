@@ -40,20 +40,20 @@ export const KF53 =  (props: Prop) => {
       <Switch />
     </FormItem>
     {
-      isOpenKFStatus && <FormItem>
-        <FormItem label="公司名称" name="companyName" style={{ width: 346 }} rules={[{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字'}]}>
+      isOpenKFStatus && <>
+        <FormItem label="公司名称" name="companyName" style={{ width: 346 }} rules={[{required:true,message:'请输入公司名称'},{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字'}]}>
           <Input size="large" placeholder="请输入公司名称" minLength={2} maxLength={20} />
         </FormItem>
-        <FormItem label="客服昵称" name="bname" style={{ width: 346 }}>
+        <FormItem label="客服昵称" name="bname" style={{ width: 346 }} rules={[{required:true,message:'请输入客服昵称'},{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字'}]}>
           <Input size="large" placeholder="请输入客服昵称" maxLength={8} />
         </FormItem>
         <FormItem>
           <p style={styles.p}>1.关注 <span style={styles.s}>“百姓商户”</span> 公众号，即可随时随地获取客户咨询线索。</p>
-          <p style={styles.p}>2.如需登陆智能客服系统进行个性化设置，可使用账号登陆 账号：{kf53Info?.userId}，密码：{kf53Info?.password}，
+          <p style={styles.p}>2.如需登录智能客服系统进行个性化设置，可使用账号登录 账号：{kf53Info?.userId}，密码：{kf53Info?.password}，
             <a style={styles.s} href="http://open.53kf.com" target="_blank">登录地址</a>
           </p>
         </FormItem>
-      </FormItem>}
+      </>}
   </Form>
 
 }
