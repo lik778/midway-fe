@@ -43,8 +43,8 @@ const BasisTab = (props: Props) => {
   useEffect(() => {
     if (curShopInfo) {
       const {type} = curShopInfo
-      type == ProductType.B2B ? menuList[2].display = true : ""
-      setMenuList(menuList)
+      type === ProductType.B2B ? menuList[2].display = true : ""
+      setMenuList([...menuList])
     }
   }, [curShopInfo]);
 
@@ -52,11 +52,11 @@ const BasisTab = (props: Props) => {
   return (
     <div>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
-        {menuListNow.map(item => {if(item.display){
+        {menuListNow.filter(x => x.display).map(item =>{
           return  <Menu.Item key={item.key}>
             <Link to={item.link}>{item.label}</Link>
           </Menu.Item>
-        }})}
+        })}
       </Menu>
     </div>
   );
