@@ -52,7 +52,6 @@ const BasisTab = (props: Props) => {
   return (
     <div>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
-        {}
         {menuListNow.filter(x => x.display).map(item =>{
           return  <Menu.Item key={item.key}>
             <Link to={item.link}>{item.label}</Link>
