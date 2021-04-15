@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import { connect } from 'dva';
@@ -13,11 +13,14 @@ import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import { ShopStatus } from '@/interfaces/shop';
+import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
+const ShopCreateJob = (props: { shopStatus: ShopStatus | null, getShopStatus: any }) => {
+  // 店铺信息
+  const { shopStatus, getShopStatus } = props
   const [form] = Form.useForm();
   const defaultCounters: any = {};
   Object.keys(wordsItemConfig).forEach((k: string) => defaultCounters[k] = 0)
@@ -25,8 +28,6 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
   const [visiblePanel, setVisiblePanel] = useState<boolean>(false)
   const [counters, setCounters] = useState<any>(defaultCounters)
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
-  // 店铺信息
-  const { shopStatus } = props
   const wordsChange = (words: string, name: string) => {
     const values = form.getFieldsValue()
     const wordsList = words.split('\n')
@@ -105,13 +106,18 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
       setSubmitLoading(false)
       if (res.success) {
         successMessage('添加成功')
-        history.push(`/ai-content/job-list`);
+        window.location.reload()
       } else {
         errorMessage(res.message)
       }
     }
   }
 
+  useEffect(() => {
+    if (!shopStatus || Object.keys(shopStatus).length === 0) {
+      getShopStatus()
+    }
+  }, [shopStatus])
 
   return (<div>
     {/*<MainTitle title="新建任务"/>*/}
@@ -181,6 +187,10 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null }) => {
 
 export default connect((state: ConnectState) => {
   return {
-    shopStatus: state[SHOP_NAMESPACE].shopStatus,
+    ...shopMapStateToProps(state),
+  }
+}, (dispatch) => {
+  return {
+    ...shopMapDispatchToProps(dispatch),
   }
 })(ShopCreateJob)

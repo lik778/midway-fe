@@ -32,6 +32,10 @@ export const SET_SHOP_TOTAL_ACTION = 'setShopTotalAction'
 export const GET_SHOP_STATUS_ACTION = 'getShopStatusAction'
 export const SET_SHOP_STATUS_ACTION = 'setShopStatusAction'
 
+export const shopMapStateToProps = (state: any): any => {
+  const { curShopInfo, shopTotal, shopList, shopStatus } = state[SHOP_NAMESPACE];
+  return { curShopInfo, shopTotal, shopList, shopStatus }
+}
 
 export const shopMapDispatchToProps = (dispatch: Dispatch): any => {
   return {

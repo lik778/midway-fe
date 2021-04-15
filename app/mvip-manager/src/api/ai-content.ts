@@ -1,7 +1,7 @@
 import { postApiData, postZhidaoApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWord, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes } from '@/interfaces/ai-content';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes } from '@/interfaces/ai-content';
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams): Promise<ServiceResponse<ListRes<AiContentItem[]>>> => {
@@ -34,8 +34,8 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
 }
 
 /** 获得文章对应选词列表 **/
-export const getAiChooseWordListApi = ( params : { taskId : number | null} ): Promise<ServiceResponse<ChooseWordList>> =>{
-  return postApiData('ai/hotword', params)
+export const getAiChooseWordListApi = (params: { taskId: number | null }): Promise<ServiceResponse<ChooseWordList>> => {
+  return postApiData('midway/backend/ai/hotword', params)
 }
 
 /** 判断显示页面 */
@@ -114,7 +114,7 @@ export const getQuotaNumApi = (): Promise<ServiceResponse<{
   return postZhidaoApiData('zhidao/v1/backend/ai/getQaAiPostQuota', {})
 }
 /** 提交选词列表 **/
-export const submitAiChooseWordListApi = ( params : { taskId:number | null, notSelectWordIds:number[]} ): Promise<ServiceResponse<null>> =>{
-  return postApiData('ai/select', params)
+export const submitAiChooseWordListApi = (params: { taskId: number | null, notSelectWordIds: number[] }): Promise<ServiceResponse<null>> => {
+  return postApiData('midway/backend/ai/select', params)
 }
 
