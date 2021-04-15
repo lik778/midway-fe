@@ -296,9 +296,9 @@ function ShopPage(props: any) {
         title="去完善信息"
         content="您的企业资料还未填写，请完善您的企业资料"
         type={ModalType.info}
-        closable={false}
-        maskClosable={false}
-        onCancel={() => setEditVisible(true)}
+        closable={true}
+        maskClosable={true}
+        onCancel={() => setEditVisible(false)}
         onOk={() => history.push('/company-info/base')}
         visible={editVisible} />
       <div className="container">
