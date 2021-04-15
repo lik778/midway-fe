@@ -56,7 +56,6 @@ export class ManagementService {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']
-    console.log(`${this.host}${path}`)
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
