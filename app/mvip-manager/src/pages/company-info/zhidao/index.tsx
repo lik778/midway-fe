@@ -27,7 +27,6 @@ function CompanyInfoZhudao(props: any) {
     setFormLoading(true)
     const res = await getZhidaoMaterial()
     setEnterpriseInfo(res.data)
-    console.log(res);
     const newChildren = config.children.map(item => {
       if (item.name === 'siteUrl') {
         item.options = objToTargetObj(res.data.siteUrls)
@@ -43,7 +42,6 @@ function CompanyInfoZhudao(props: any) {
   }, [])
 
   const sumbit = async (values: ZhidaoMaterial) => {
-    console.log(values)
     setLoading(true)
     const { success, message, data } = await setZhidaoMaterial(values)
     if (success) {
@@ -55,7 +53,7 @@ function CompanyInfoZhudao(props: any) {
   }
 
   const formChange = (...arg: any) => {
-    console.log(arg)
+    //console.log(arg)
   }
 
   return (

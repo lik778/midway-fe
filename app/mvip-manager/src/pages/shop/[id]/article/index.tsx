@@ -37,7 +37,6 @@ const ShopArticlePage = (props: any) => {
         setArticleList(addKeyForListData(res.data.articleList.result, page, size) || [])
         setCateList(addKeyForListData(res.data.cateList) || [])
         setTotal(res?.data?.articleList?.totalRecord)
-        console.log(addKeyForListData(res.data.cateList) || [])
       } else {
         errorMessage(res?.message || '出错了');
       }

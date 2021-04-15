@@ -32,7 +32,6 @@ const Expandable: FC<ExpandableProp> = (props) => {
       })
     } catch (errInfo) {
       setAnswerList(record.answers)
-      console.log('保存失败', errInfo);
     }
   }
 

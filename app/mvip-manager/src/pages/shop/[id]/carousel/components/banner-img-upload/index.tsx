@@ -56,7 +56,6 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handleChange = async (e: any) => {
-    console.log(e)
     if(!!e.file.status){
       if (e.file.status === 'done') {
         const { url } = e.file.response
