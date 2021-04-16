@@ -36,12 +36,12 @@ declare global {
     `)
   }
   if (notInIframe()) {
-    const upYunConfig = await getUpyunImgConfig()
+    // const upYunConfig = await getUpyunImgConfig()
+    // console.log(upYunConfig)
+    // window.__upyunImgConfig = upYunConfig
     const testUpyunConfig = await getUpyunImgConfigUpyun()
-    console.log(upYunConfig)
-    window.__upyunImgConfig = upYunConfig
     console.log(testUpyunConfig)
-    // window.__upyunImgConfig = testUpyunConfig
+    window.__upyunImgConfig = testUpyunConfig
   }
 
 })()

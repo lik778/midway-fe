@@ -4,24 +4,22 @@ import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { HaojingService } from '../services/haojing.service';
 import { upyunConfig } from '../config/upyun'
-
+import { md5 } from '../util/common'
 import { LOCAL_ENV, DEVELOPMENT_ENV, TEST_ENV, PRODUCTION_ENV } from '../config/index'
 
 @Controller('/upyun')
 export class UpyunController {
-  constructor(private readonly haojingService: HaojingService) {
-  }
 
   @Get('/upyunImgConfig')
   async getUpyunImgConfig(@Req() req: Request, @Res() res: Response) {
-    console.log(123)
     const vendor = 'upyun'
     const customPolicy = []
     const imageSuffix = '#up'
     const imgConfig = upyunConfig
-    const uploadPolicy = [imgConfig['policy'], {
+    const uploadPolicy = {
+      ...imgConfig['policy'],
       "expiration": new Date().getTime() + 3600 * 1000, customPolicy
-    }]
+    }
 
     const { encodedUploadPolicy, uploadSignature } = this.genUpyunSignature(uploadPolicy, imgConfig['form_api_secret'])
 
@@ -40,12 +38,10 @@ export class UpyunController {
   }
 
   genUpyunSignature(uploadPolicy, formApiSecret) {
-    const encodedUploadPolicy = Buffer.from(JSON.stringify(uploadPolicy), 'utf-8').toString('base64');
-    const hash = crypto.createHash('md5')
-    hash.update(`${encodedUploadPolicy}&${formApiSecret}`)
+    const encodedUploadPolicy = Buffer.from(JSON.stringify(uploadPolicy)).toString('base64');
     return {
       encodedUploadPolicy,
-      uploadSignature: hash.digest('hex')
+      uploadSignature: md5(`${encodedUploadPolicy}&${formApiSecret}`)
     }
   }
 
