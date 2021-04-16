@@ -106,10 +106,6 @@ export const insertStyle = (cssText: string) => {
   head.appendChild(style);
 }
 
-export const hasReportAuth = (): boolean => {
-  return true
-}
-
 export const getCookie = (name: string): string => {
   let result: any = document.cookie.match("(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)")
   return result ? result.pop() : ''

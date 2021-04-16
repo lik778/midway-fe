@@ -123,6 +123,6 @@ function DashboardPage(props: any) {
     </div>
 }
 
-DashboardPage.wrappers = ['@/wrappers/report-auth']
+DashboardPage.wrappers = ['@/wrappers/path-auth']
 
 export default DashboardPage

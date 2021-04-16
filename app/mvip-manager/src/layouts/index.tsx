@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Menu, ConfigProvider } from 'antd'
+import { Layout, Menu, ConfigProvider, Skeleton } from 'antd'
 import { Link } from 'umi'
 import { connect } from 'dva'
+import { isNull } from 'lodash'
 import zhCN from 'antd/lib/locale/zh_CN'
-import { removeOverflowY, inIframe, notInIframe, hasReportAuth, isLogin, isNotLocalEnv } from '@/utils'
+import { removeOverflowY, inIframe, notInIframe, isLogin, isNotLocalEnv } from '@/utils'
 import { baseMapStateToProps, baseMapDispatchToProps } from '@/models/base'
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user'
 import { ConnectState } from '@/models/connect'
@@ -58,6 +59,7 @@ const Layouts = (props: any) => {
           </Header>
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
             onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
+            { isNull(menuList) && <div style={{ padding: 20 }}><Skeleton active title={false} paragraph={{ rows: 4 }} /></div> }
             {
               menuList && menuList.map((subMenu: MidMenuItem) => {
                 return (
@@ -74,11 +76,6 @@ const Layouts = (props: any) => {
                 )
               })
             }
-            {hasReportAuth() && <SubMenu style={{ marginBottom: '10px' }} key="report" title="营销报表" className="report">
-              <Menu.Item key="keyword">
-                <Link to="/report/keyword">关键词</Link>
-              </Menu.Item>
-            </SubMenu>}
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1240 : '' }}>
