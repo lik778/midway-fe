@@ -148,5 +148,5 @@ function KeyWordPage(props: any) {
   )
 }
 
-KeyWordPage.wrappers = ['@/wrappers/report-auth']
+KeyWordPage.wrappers = ['@/wrappers/path-auth']
 export default KeyWordPage

@@ -153,5 +153,5 @@ function BaxFlowPage(props: any) {
   )
 }
 
-BaxFlowPage.wrappers = ['@/wrappers/report-auth']
+BaxFlowPage.wrappers = ['@/wrappers/path-auth']
 export default BaxFlowPage
