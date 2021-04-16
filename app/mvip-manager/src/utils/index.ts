@@ -106,9 +106,8 @@ export const insertStyle = (cssText: string) => {
   head.appendChild(style);
 }
 
-// 灰度测试用, 让测试人员使用
 export const hasReportAuth = (): boolean => {
-  return !!(localStorage.getItem('shAgent'))
+  return true
 }
 
 export const getCookie = (name: string): string => {
