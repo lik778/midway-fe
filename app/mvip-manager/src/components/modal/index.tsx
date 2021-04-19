@@ -46,8 +46,8 @@ export default (props: Props) => {
   return <Modal
             className="my-modal-box"
             title={createTitle(type)}
-            closable={ closable || true }
-            maskClosable={ maskClosable || true }
+            closable={ closable ===false? false: true }
+            maskClosable={ maskClosable ===false? false: true }
             footer={footer}
             onCancel={onCancel}
             onOk={onOk}

@@ -10,6 +10,7 @@ import { LogService } from './services/log.service';
 import { TrackerService } from './services/tracker.service';
 import { ManagementService } from './services/management.service';
 import { ReportService } from './services/report.service';
+import { ZhidaoService } from './services/zhidao.service';
 
 // 引入controller
 import { ManagementController } from './controllers/management.controller';
@@ -22,6 +23,7 @@ import { B2bSiteController } from './controllers/site/b2b-site.controller';
 import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 import { TrackerController } from './controllers/tracker.controller';
 import { ReportController } from './controllers/report.controller';
+import { ZhidaoController } from './controllers/zhidao.controller';
 import { SiteCommonController } from './controllers/site/site-common.controller';
 
 /**
@@ -30,9 +32,9 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
 @Module({
   imports: [
     ConfigModule.forRoot({
-    isGlobal: true,
-    load: [config]
-  }), HttpModule ],
+      isGlobal: true,
+      load: [config]
+    }), HttpModule],
   controllers: [
     AppController,
     AdminController,
@@ -44,7 +46,8 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     HaojingController,
     UpyunController,
     TrackerController,
-    ReportController
+    ReportController,
+    ZhidaoController
   ],
   providers: [
     LogService,
@@ -54,7 +57,8 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     HaojingService,
     SitemapService,
     TrackerService,
-    ReportService
+    ReportService,
+    ZhidaoService
   ],
 })
-export class AppModule {}
+export class AppModule { }

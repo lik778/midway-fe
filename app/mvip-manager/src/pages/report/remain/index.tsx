@@ -60,5 +60,5 @@ function genChartOptions(all: number, filtered: number) {
   }
 }
 
-RemainPage.wrappers = ['@/wrappers/report-auth']
+RemainPage.wrappers = ['@/wrappers/path-auth']
 export default RemainPage

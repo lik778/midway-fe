@@ -56,11 +56,13 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handleChange = async (e: any) => {
-    if (e.file.status === 'done') {
-      const { url } = e.file.response
-      onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
+    if(!!e.file.status){
+      if (e.file.status === 'done') {
+        const { url } = e.file.response
+        onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
+      }
+      setFileList(e.fileList)
     }
-    setFileList(e.fileList)
   }
 
   const beforeUpload= (file: any) => {
@@ -68,9 +70,9 @@ export const BannerImgUpload = (props: Props) => {
     if (!isJpgOrPng) {
       errorMessage('请上传jpg、jpeg、png格式的图片');
     }
-    const isLt3M = file.size < 1024 * 1024 * 3;
+    const isLt3M = file.size < 1024 * 1024 * 1;
     if (!isLt3M && isJpgOrPng) {
-      errorMessage('请上传不超过3M的图片');
+      errorMessage('请上传不超过1M的图片');
     }
     return isJpgOrPng && isLt3M;
   }
