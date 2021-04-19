@@ -47,22 +47,24 @@ export class UpyunController {
 
 
   request_url_scheme(req: Request, with_colon = false) {
-    const env = process.env.NODE_ENV || DEVELOPMENT_ENV
-    let $return = 'http';
-    if (env === PRODUCTION_ENV) {
-      if (req.headers['X-eBay-Request-Proto'] == 'HTTPS') {
-        $return = 'https';
-      } else if (req.headers["HTTP_X_EBAY_REQUEST_PROTO"]
-        && req.headers["HTTP_X_EBAY_REQUEST_PROTO"] == 'HTTPS'
-      ) {
-        $return = 'https';
-      }
-    } else { // 线下
-      // TODO;
-      // if (isset($GLOBALS['_SERVER']['HTTPS']) && $GLOBALS['_SERVER']['HTTPS'] == 'on') {
-      // $return = 'https';
-      // }
-    }
+    let $return = 'https';
+    // let $return = req.protocol === 'https' ? 'https' : 'http';
+    // const env = process.env.NODE_ENV || DEVELOPMENT_ENV
+    // 下面的逻辑是镐京里的逻辑 但是这些字段在前端没有体现，所以现在改为直接判断当前请求的协议类型
+    // if (env === PRODUCTION_ENV) {
+    //   if (req.headers['X-eBay-Request-Proto'] == 'HTTPS') {
+    //     $return = 'https';
+    //   } else if (req.headers["HTTP_X_EBAY_REQUEST_PROTO"]
+    //     && req.headers["HTTP_X_EBAY_REQUEST_PROTO"] == 'HTTPS'
+    //   ) {
+    //     $return = 'https';
+    //   }
+    // } else { // 线下
+    // TODO;
+    // if (isset($GLOBALS['_SERVER']['HTTPS']) && $GLOBALS['_SERVER']['HTTPS'] == 'on') {
+    // $return = 'https';
+    // }
+    // }
     if (with_colon) $return += ':';
     return $return;
   }

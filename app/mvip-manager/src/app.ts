@@ -1,4 +1,4 @@
-import { getUpyunImgConfig } from './api/haojing'
+// import { getUpyunImgConfig } from './api/haojing'
 import { getUpyunImgConfigUpyun } from './api/upyun'
 import { UpyunImgConfig } from '@/interfaces/haojing';
 import { enableMapSet } from 'immer';
@@ -39,9 +39,10 @@ declare global {
     // const upYunConfig = await getUpyunImgConfig()
     // console.log(upYunConfig)
     // window.__upyunImgConfig = upYunConfig
-    const testUpyunConfig = await getUpyunImgConfigUpyun()
-    console.log(testUpyunConfig)
-    window.__upyunImgConfig = testUpyunConfig
+
+    // 配置从镐京里提出来到node层
+    const upyunConfig = await getUpyunImgConfigUpyun()
+    window.__upyunImgConfig = upyunConfig
   }
 
 })()
