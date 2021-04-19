@@ -97,7 +97,7 @@ function KeyWordPage(props: any) {
         { !loading && <div>
           <div className="segment">
             <h2>概览<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
-              （说明：关键词数据为7天内最新一次查询数据；快照数据包含店铺、帖子、问答；广告数据包含标王广告、凤鸣广告、易慧推广告。）</span></h2>
+              （说明：关键词数据为7天内最新一次查询数据；快照数据包含店铺、帖子、问答；广告数据包含标王广告、凤鸣广告、易慧推广告。因时间周期问题，关键词上词数据存在不稳定性，统计数字仅供参考。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
                 <CountTo title={genMainTitle('total')}
@@ -148,5 +148,5 @@ function KeyWordPage(props: any) {
   )
 }
 
-KeyWordPage.wrappers = ['@/wrappers/report-auth']
+KeyWordPage.wrappers = ['@/wrappers/path-auth']
 export default KeyWordPage

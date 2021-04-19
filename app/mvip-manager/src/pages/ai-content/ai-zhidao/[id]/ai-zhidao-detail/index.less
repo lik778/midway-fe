@@ -1,0 +1,85 @@
+.ai-list-container {
+  position: relative;
+  min-height: calc(100vh - 160px);
+  margin: 16px;
+  padding: 40px;
+  background: #fff;
+
+  .question-status-0 {
+    color: #000;
+  }
+
+  .question-status-1 {
+    color: rgb(155, 155, 155);
+  }
+
+  .question-status-2 {
+    color: rgb(241, 73, 44);
+  }
+
+  .question-status-2-tip {
+    width: 200px;
+    color: rgb(168, 168, 168);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .expanded-row {
+    padding: 0;
+
+    & > td {
+      padding: 0;
+    }
+
+    .answer-item {
+      padding: 16px;
+      font-size: 14px;
+      color: #333333;
+      background-color: #fff;
+
+      &.flex {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+
+      & + .answer-item {
+        border-top: 1px solid rgb(233, 233, 233);
+      }
+
+      &:hover {
+        background-color: #fafafa;
+      }
+
+      .answer-label {
+        color: #096dd9;
+      }
+
+      .answer-input {
+        flex: 1;
+      }
+    }
+  }
+
+  .create-question-btn {
+    width: 120px;
+    height: 40px;
+    margin-top: 30px;
+    background: #096dd9;
+    border-color: #096dd9;
+    color: #fff;
+  }
+
+  .cancal-btn {
+    width: 120px;
+    height: 40px;
+    margin: 30px 0 0 20px;
+  }
+}
+
+.go-back {
+  cursor: pointer;
+  display: inline-block;
+}

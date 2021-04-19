@@ -8,8 +8,9 @@ import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
 import Loading from '@/components/loading';
 import EmptyStatus from '@/pages/shop/components/empty-status';
+import WrapperShopPage from '@/pages/shop';
 
-export default (props: any) => {
+const ShopCarouselPage =  (props: any) => {
   const [wapBannerList, setWapBannerList] = useState<any[]>([])
   const [pcBannerList, setPCBannerList] = useState<any[]>([])
   // 获取店铺id
@@ -90,3 +91,6 @@ export default (props: any) => {
 }
 
 
+ShopCarouselPage.wrappers = ['@/wrappers/path-auth']
+
+export default ShopCarouselPage

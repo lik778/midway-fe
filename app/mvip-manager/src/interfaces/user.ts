@@ -6,12 +6,17 @@ export interface VerifyItem {
 }
 
 export interface SaveEnterpriseForShopParams {
-  area: string[];
+  area: any;
   companyAddress: string;
   companyAlias: string;
   companyDescription: string;
   companyName: string;
+  companyYears: number;
+  employeeCount: number;
+  firstCategory?: string;
   promoteImg: string;
+  secondCategory: string;
+  thirdMetas: string[];
 }
 
 export interface SaveEnterpriseContactInfoApiParams {
@@ -28,20 +33,28 @@ export interface UserInfo {
 }
 
 export interface UserEnterpriseInfo {
-  areaMap: any;
-  companyAddress: string;
-  companyAlias: string;
-  companyDescription: string;
   companyName: string;
-  contactMobile: string;
-  contactName: string;
+  companyAlias: string;
+  area: {[key:string]:string};
+  companyAddress: string;
+  companyDescription: string;
   promoteImg: string;
-  qqMap: any;
+  employeeCount: number;
+  companyYears: number;
+  firstCategory: {[key:string]:string};
+  selectedSecondCategory: {[key:string]:string};
+  secondCategories: {[key:string]:string};
+  selectedThirdMetas: {[key:string]:string};
+  thirdMetas: {[key:string]:string};
+  contactName: string;
+  contactMobile: string;
   wechat: string;
+  qqMap: {[key:string]:string};
   companyNameLock: boolean;
-  kf53Info: KF53Info;
   kefuStatus: KFStatus;
+  kf53Info: KF53Info|null;
 }
+
 
 export interface KF53Info {
   userId: string;
@@ -50,9 +63,26 @@ export interface KF53Info {
   bname: string;
   style: string;
   password: string;
+  styleUrl: any;
 }
 
 export interface QQItem {
   name: string;
   qq: string;
 }
+
+export interface ThirdMetas {
+  label: string;
+  value: string
+}
+
+export interface ZhidaoMaterial{
+  banner1: string,
+  banner2: string,
+  siteUrl: any
+}
+
+export interface ZhidaoMaterialData extends ZhidaoMaterial{
+  siteUrls: any
+}
+

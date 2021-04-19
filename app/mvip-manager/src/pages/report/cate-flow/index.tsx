@@ -111,5 +111,5 @@ function CateFlowPage(props: any) {
   );
 }
 
-CateFlowPage.wrappers = ['@/wrappers/report-auth']
+CateFlowPage.wrappers = ['@/wrappers/path-auth']
 export default CateFlowPage

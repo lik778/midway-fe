@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.less';
@@ -17,6 +17,7 @@ interface Props {
   name: string;
   editData: any;
   text: string;
+  maxSize?:number;
   imgType?: "text" | "picture-card" | "picture" | undefined;
   maxLength: number | undefined;
   disableBtn?: boolean | undefined;
@@ -24,10 +25,11 @@ interface Props {
   fileList?:any[];
 }
 export const ImgUpload = (props: Props) => {
-  const { editData, name, onChange } = props
+  const { editData, name, maxSize, onChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([])
+  const localMaxSize = useMemo(()=>maxSize||1 ,[maxSize])
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
     const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
@@ -60,11 +62,13 @@ export const ImgUpload = (props: Props) => {
   }
 
   const handleChange = async (e: any) => {
-    if (e.file.status === 'done') {
-      const { url } = e.file.response
-      onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
+    if(!!e.file.status){
+      if (e.file.status === 'done') {
+        const { url } = e.file.response
+        onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
+      }
+      setFileList([...e.fileList])
     }
-    setFileList([...e.fileList])
   }
 
   const handleRemove = (file: any) => {
@@ -80,9 +84,9 @@ export const ImgUpload = (props: Props) => {
     if (!isJpgOrPng) {
       errorMessage('请上传jpg、jpeg、png格式的图片');
     }
-    const isLt2M = file.size / 1024 / 1024 < 1;
+    const isLt2M = file.size / 1024 / 1024 < localMaxSize;
     if (!isLt2M && isJpgOrPng) {
-      errorMessage('请上传不超过1M的图片');
+      errorMessage(`请上传不超过${localMaxSize}M的图片`);
     }
     return isJpgOrPng && isLt2M;
   }

@@ -93,6 +93,6 @@ function CatePublishPage(props: any) {
   )
 }
 
-CatePublishPage.wrappers = ['@/wrappers/report-auth']
+CatePublishPage.wrappers = ['@/wrappers/path-auth']
 
 export default CatePublishPage

@@ -9,7 +9,7 @@ import { errorMessage } from '@/components/message';
 // import config from '@/config/env';
 
 
-export default (props: any) => {
+const AuthPage = (props: any) => {
   const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,11 +37,11 @@ export default (props: any) => {
   const actionButton = (status: VerifyStatus, type: number) => {
     const name = type === 1 ? '企业认证' : '个人认证';
     if (status === VerifyStatus.ACCEPT) {
-      return <Button type='primary' disabled className="auth-disabled">已完成{name}</Button>
+      return <Button type='primary' disabled className="auth-disabled" size='large'>已完成{name}</Button>
     } else if (status === VerifyStatus.PENDING) {
-      return <Button type='primary' disabled className="auth-disabled">审核中</Button>
+      return <Button type='primary' disabled className="auth-disabled" size='large'>审核中</Button>
     } else if (status === VerifyStatus.REFUSE || status === VerifyStatus.REVOKE || status === null) {
-      return <Button href={`${haojingHost}/bind/?type=${type === 1 ? 'licence' : 'idcard'}`} type='primary'>
+      return <Button href={`${haojingHost}/bind/?type=${type === 1 ? 'licence' : 'idcard'}`} type='primary' size='large'>
         去完成{name}</Button>
     } else if (status === VerifyStatus.DEFAULT) {
       return null
@@ -91,3 +91,7 @@ export default (props: any) => {
       </div>
     </div>
 }
+
+
+AuthPage.wrappers = ['@/wrappers/path-auth']
+export default AuthPage
