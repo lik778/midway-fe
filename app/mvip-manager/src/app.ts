@@ -1,4 +1,5 @@
-import { getUpyunImgConfig } from './api/haojing'
+// import { getUpyunImgConfig } from './api/haojing'
+import { getUpyunImgConfigUpyun } from './api/upyun'
 import { UpyunImgConfig } from '@/interfaces/haojing';
 import { enableMapSet } from 'immer';
 import '@/styles/report.less';
@@ -35,8 +36,13 @@ declare global {
     `)
   }
   if (notInIframe()) {
-    const upYunConfig = await getUpyunImgConfig()
-    window.__upyunImgConfig = upYunConfig
+    // const upYunConfig = await getUpyunImgConfig()
+    // console.log(upYunConfig)
+    // window.__upyunImgConfig = upYunConfig
+
+    // 配置从镐京里提出来到node层
+    const upyunConfig = await getUpyunImgConfigUpyun()
+    window.__upyunImgConfig = upyunConfig
   }
 
 })()

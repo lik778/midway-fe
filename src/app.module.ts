@@ -17,6 +17,7 @@ import { ManagementController } from './controllers/management.controller';
 import { AppController } from './controllers/app.controller';
 import { AdminController } from './controllers/admin.controller';
 import { HaojingController } from './controllers/haojing.controller';
+import { UpyunController } from './controllers/upyun.controller';
 import { SitemapController } from './controllers/sitemap.controller';
 import { B2bSiteController } from './controllers/site/b2b-site.controller';
 import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
@@ -43,6 +44,7 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     B2bSiteController,
     FuwuSiteController,
     HaojingController,
+    UpyunController,
     TrackerController,
     ReportController,
     ZhidaoController
