@@ -95,4 +95,9 @@ export enum AiTaskAction {
   PAUSE = 'pause'
 }
 
-
+/** 后端服务控制器path */
+export enum ServicePath {
+  SHOP = '/management/api',
+  ZHIDAO = '/zhidao/api',
+  REPORT = '/report/api'
+}

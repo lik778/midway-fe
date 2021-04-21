@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-
+import { ServicePath } from '@/enums/index'
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
@@ -16,9 +16,6 @@ export const request = axios.create({
     "Content-Type": "application/json;charset=utf-8"
   }
 })
-
-const apiPrefix = '/management/api'
-// const bePrefix = '/api/midway/backend/'
 
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res?.data)
@@ -37,22 +34,13 @@ export const getApi = (url: string, params: any): Promise<any> => {
 }
 
 
-export const postApiData = (path: string, params: any = {}, headers?: any): Promise<any> => {
+export const postApiData = (servicePath: string, path: string, params: any = {}, headers?: any): Promise<any> => {
   const p = JSON.stringify(params)
-  return postApi(apiPrefix, {
-    method: 'post', path:`/api/${path}`,
+  return postApi(servicePath, {
+    method: 'post', path: `/api/${path}`,
     params: p,
   }, headers)
 }
-
-export const postZhidaoApiData = (path: string, params: any, headers?: any): Promise<any> => {
-  const p = JSON.stringify(params)
-  return postApi('/zhidao/api', {
-    method: 'post', path:`/api/${path}`,
-    params: p,
-  }, headers)
-}
-
 
 export const setShopHeader = (shopId: number) => {
   // 通过header来传递shopId
