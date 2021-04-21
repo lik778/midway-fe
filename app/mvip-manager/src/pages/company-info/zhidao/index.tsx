@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Row, Col } from 'antd';
 import MainTitle from '@/components/main-title';
-import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
@@ -57,7 +56,7 @@ function CompanyInfoZhudao(props: any) {
   }
 
   return (
-    <div>
+    <>
       <MainTitle title="问答素材" />
       <div className="container">
         {formLoading && <Loading />}
@@ -78,7 +77,7 @@ function CompanyInfoZhudao(props: any) {
           />
         }
       </div>
-    </div>)
+    </>)
 }
 
 CompanyInfoZhudao.wrappers = ['@/wrappers/path-auth']
