@@ -1,5 +1,5 @@
 import { CateItem } from '@/interfaces/shop';
-import { AiTaskStatus } from '@/enums';
+import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus } from '@/enums';
 
 export interface AiTaskApiParams {
   contentCateId: number;
@@ -97,6 +97,8 @@ export interface QuestionTaskListItem {
   /** 预期发布数量 */
   expectNum: number,
   createdTime: number,
+  status: ZhidaoAiTaskStatus,
+  memo: string
 }
 
 /** 问答任务详情（问答包列表） */
@@ -111,8 +113,8 @@ export interface QuestionListItem {
   words: string[],
   coreWords: string,
   /** 问答题目状态 */
-  status: 0 | 1 | 2 | 3 | 4,// 缺少
-
+  status: ZhidaoAiTaskQuestionStatus,// 缺少
+  url: string // 字符串
   // 自用字段
   /** 判断当前问答是否修改 */
   isEdit?: boolean

@@ -34,6 +34,11 @@ export const updateAiTaskApi = (params: AiTaskApiParams): Promise<ServiceRespons
   return postApiData(ServicePath.SHOP, 'midway/backend/ai/update', params)
 }
 
+/** 提交选词列表 **/
+export const submitAiChooseWordListApi = (params: { taskId: number | null, notSelectWordIds: number[] }): Promise<ServiceResponse<null>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/ai/select', params)
+}
+
 /** 获得文章对应选词列表 **/
 export const getAiChooseWordListApi = (params: { taskId: number | null }): Promise<ServiceResponse<ChooseWordList>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/ai/hotword', params)
@@ -114,8 +119,8 @@ export const getQuotaNumApi = (): Promise<ServiceResponse<{
   // TODO;
   return postApiData(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/getQaAiPostQuota', {})
 }
-/** 提交选词列表 **/
-export const submitAiChooseWordListApi = (params: { taskId: number | null, notSelectWordIds: number[] }): Promise<ServiceResponse<null>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/ai/select', params)
-}
 
+/** 暂停启动任务 */
+export const setTaskStatusApi = (id: number): Promise<ServiceResponse<never>> => {
+  return postApiData(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/stateEvent', id)
+}

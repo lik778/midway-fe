@@ -2,18 +2,16 @@ import React, { forwardRef, Ref, useEffect, useState, useImperativeHandle } from
 import { Table, Tooltip } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
-import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi } from '@/api/ai-content';
+import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi, setTaskStatusApi } from '@/api/ai-content';
 import styles from './index.less';
 import { QuestionTaskListItem, GetQuotaNumRes } from '@/interfaces/ai-content';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
-import { warnMessage, errorMessage } from '@/components/message';
-import { Link } from 'umi';
+import { warnMessage, errorMessage, successMessage } from '@/components/message';
 import { TableColumnProps } from 'antd'
-import { mockData } from '@/utils'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index';
-import { InfoCircleOutlined } from '@ant-design/icons'
-
+import { ZhidaoAiTaskStatus } from '@/enums';
+import { ZhidaoAiTaskStatusText } from '@/constants';
 
 interface QuotaNumInterface extends GetQuotaNumRes {
   consumeCount: number,
@@ -103,6 +101,24 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     setListLoading(false)
   }
 
+  const setTaskStatus = useDebounce(async (id: number) => {
+    setListLoading(true)
+    const res = await setTaskStatusApi(id)
+    if (res.success) {
+      successMessage(res.message || '操作成功')
+      getList()
+    } else {
+      errorMessage(res.message || '操作失败')
+    }
+    setListLoading(false)
+  }, 500)
+
+  const getActionBtn = (record: QuestionTaskListItem) => {
+    return <Tooltip placement="top" title={ZhidaoAiTaskStatusText[record.status]}>
+      <img className={styles['action-btn']} src={record.status === ZhidaoAiTaskStatus.PAUSED ? 'http://file.baixing.net/202101/061832d76086d8f5844d98d495f1b992.png' : 'http://file.baixing.net/202101/409a5ac0d04377f8468872274863f539.png'} alt="" onClick={() => setTaskStatus(record.taskId)} />
+    </Tooltip>
+  }
+
   const columns: TableColumnProps<QuestionTaskListItem>[] = [
     { title: '编号', dataIndex: 'taskId', align: 'center' },
     {
@@ -112,9 +128,34 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
     },
     { title: '预计发布数量', dataIndex: 'expectPublishedNum', align: 'center' },
     {
-      title: '已发布数量', dataIndex: 'publishedNum', align: 'center'
+      title: '累计发布数量', dataIndex: 'publishedNum', align: 'center'
     },
-    { title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => <div style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</div> },
+    {
+      title: '状态', dataIndex: 'status', key: 'status', align: 'center', render: (text: string, record: QuestionTaskListItem) => {
+        if (record.status === ZhidaoAiTaskStatus.ABORTED || record.status === ZhidaoAiTaskStatus.PAUSED) {
+          return <div className={`${styles["ai-status-reject"]} ${styles[record.status === ZhidaoAiTaskStatus.ABORTED ? 'aborted' : 'pause']}`}>
+            <div className={styles["status"]}>{ZhidaoAiTaskStatusText[text]}</div>
+            {record.memo && <Tooltip placement="bottom" title={record.memo} >
+              <div className={styles["reason"]}>{`${record.memo.substring(0, 3)}...`}</div>
+            </Tooltip>}
+          </div>
+        } else {
+          return <span>{ZhidaoAiTaskStatusText[text]}</span>
+        }
+      }
+    },
+    {
+      title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => {
+        return <>
+          <div className={styles['list-action-btn-box']}>
+            {
+              (record.status === ZhidaoAiTaskStatus.ACTIVE || record.status === ZhidaoAiTaskStatus.PAUSED) && getActionBtn(record)
+            }
+          </div>
+          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</span>
+        </>
+      }
+    },
   ];
 
   // 修改分页后也修改url
@@ -132,7 +173,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
           <InfoCircleOutlined className={styles['info']} />
         </Tooltip></div> */}
         <div className={styles["ai-quota-tip"]}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</div>
-        {total === 0 && <div className={styles["empty-info"]}>
+        {total === 0 && !listLoading && <div className={styles["empty-info"]}>
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>}
