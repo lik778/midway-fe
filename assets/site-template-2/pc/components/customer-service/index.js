@@ -28,7 +28,9 @@ export const qqModule = function() {
 }
 
 const backToTop = $('#back-to-top');
+//窗口高度
 const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+//$(document).scrollTop()滚动条举例原始顶部高度，当大于窗口高度时，显示返回顶部箭头
 
 $(document).scroll(() => {
 	if ($(document).scrollTop() > windowHeight) {
