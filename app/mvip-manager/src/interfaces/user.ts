@@ -21,6 +21,7 @@ export interface SaveEnterpriseForShopParams {
 
 export interface SaveEnterpriseContactInfoApiParams {
   contactMobile: string;
+  contactMobile2?:string;
   contactName: string;
   qqMap: any;
   wechat: string;
@@ -48,6 +49,7 @@ export interface UserEnterpriseInfo {
   thirdMetas: {[key:string]:string};
   contactName: string;
   contactMobile: string;
+  contactMobile2?: string;
   wechat: string;
   qqMap: {[key:string]:string};
   companyNameLock: boolean;

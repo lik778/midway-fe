@@ -29,14 +29,17 @@ export const baseInfoForm: FormConfig = {
 }
 
 // 联系面表单
+const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/;
 export const contactForm: FormConfig = {
   name: 'contactForm',
   children: [
     { width: 346, label: '联系人', name: 'contactName', type: FormType.Input, required: true, placeholder: '请输入联系人' },
     { width: 346, label: '电话号码', name: 'contactMobile', type: FormType.Input, required: true, placeholder: '请输入电话号码',
-      patternList: [ {pattern: /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/,
-        message: '请输入正确的联系方式'} ]
+      patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]
     },
+    { width: 346, label: '电话2', name: 'contactMobile2', type: FormType.Input, required: false, placeholder: '请输入电话号码',
+      patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]
+  },
     { width: 346, label: '微信号码', name: 'wechat', type: FormType.Input, required: false, placeholder: '请输入微信号码',
       minLength: 6, maxLength: 20, patternList: [ { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{6,20}$/, message: '微信号码(6-20个字符)'} ] },
   ]
