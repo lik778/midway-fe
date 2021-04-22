@@ -2,10 +2,10 @@ export default {
   env: 'test',
   services: {
     'midway-service': {
-      host: 'http://172.30.2.14:31257'
+      host: 'http://172.30.2.14:30257'
     },
     'zhidao-service': {
-      host: 'http://172.30.2.14:31252'
+      host: 'http://172.30.2.14:30252'
     },
     'reporting-service': {
       host: 'http://dev-api.baixing.cn'
