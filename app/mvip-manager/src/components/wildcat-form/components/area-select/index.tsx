@@ -5,13 +5,14 @@ import { CascaderOption } from '@/interfaces/base';
 
 interface Props {
   //下面是返回area数据{m30: "上海", m7254: "闵行", m2212: "莘庄"}
+  width?: number,
   initialValues: string[];
   onChange(values: string[]): void;
 }
 export default (props: any) => {
   const [areas, setAreas] = useState<CascaderOption[]>([]);
   const [selectValue, setSelectValue] = useState<string[]>([]);
-  const { initialValues, onChange } = props
+  const { initialValues, onChange, width } = props
 
   const formatAreas = (data: any, isLeaf: boolean, level: number): any => {
     if (!data) return;
@@ -21,10 +22,10 @@ export default (props: any) => {
   }
 
   const getAreasInfo = async (areaId: string) => {
-      const res = await getAreasApi(areaId);
-      if (res?.success) {
-          setAreas(formatAreas(res.data, false, 1))
-      }
+    const res = await getAreasApi(areaId);
+    if (res?.success) {
+      setAreas(formatAreas(res.data, false, 1))
+    }
   }
 
 
@@ -58,7 +59,7 @@ export default (props: any) => {
     setAreas([...areas])
   };
 
-  return (<Cascader size='large' options={areas} value={selectValue}
-          onPopupVisibleChange={onPopupVisibleChange}
-          loadData={loadData} onChange={onSelectChange} changeOnSelect />)
+  return (<Cascader style={{ width: `${width}px` }} size='large' options={areas} value={selectValue}
+    onPopupVisibleChange={onPopupVisibleChange}
+    loadData={loadData} onChange={onSelectChange} changeOnSelect />)
 }

@@ -15,7 +15,7 @@ import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { isNewUserApi } from '@/api/shop';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
-import './index.less';
+import styles from './index.less';
 
 function ContactForm(props: any) {
   const { companyInfo, setCompanyInfo } = props
@@ -44,19 +44,19 @@ function ContactForm(props: any) {
     info.qqMap = qqMap
     // 处理53客服数据  刚创建用户 kf53Info可以为空
     if (kf53Data && kf53Data.kefuStatus) {
-        if ((!kf53Data.companyName || (kf53Data.companyName.length < 2 || kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2 || kf53Data.bname.length > 20))) {
-          return
-        }
-        info.kefuStatus = KFStatus.OPEN;
-        if (!info.kf53Info) {
-          info.kf53Info = {
-            companyName: kf53Data.companyName,
-            bname: kf53Data.bname
-          } as KF53Info
-        } else {
-          info.kf53Info.companyName = kf53Data.companyName
-          info.kf53Info.bname = kf53Data.bname
-        }
+      if ((!kf53Data.companyName || (kf53Data.companyName.length < 2 || kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2 || kf53Data.bname.length > 20))) {
+        return
+      }
+      info.kefuStatus = KFStatus.OPEN;
+      if (!info.kf53Info) {
+        info.kf53Info = {
+          companyName: kf53Data.companyName,
+          bname: kf53Data.bname
+        } as KF53Info
+      } else {
+        info.kf53Info.companyName = kf53Data.companyName
+        info.kf53Info.bname = kf53Data.bname
+      }
 
     } else {
       info.kefuStatus = KFStatus.CLOSE
@@ -67,37 +67,35 @@ function ContactForm(props: any) {
     if (res?.success) {
       setCompanyInfo(info)
       successMessage('更新联系方式成功')
-      // const newUserRes = await isNewUserApi()
-      // if (newUserRes.data) {
-      //   genNewUserModal()
-      // } else {
-      //   successMessage('更新联系方式成功')
-      // }
     } else {
       errorMessage(res?.message || '出错了')
     }
   }
 
+  const KF53Change = (values: any) => {
+    setHasEditForm(true)
+    setKf53Data(values)
+  }
+
+  const QQChange = (values: QQItem[]) => {
+    setHasEditForm(true)
+    setQQList(values)
+  }
+
   return (
-    <div>
-      <Form.Item label="电话/微信">
-        <WildcatForm useLabelCol={true} editDataSource={companyInfo}
+    <div className={styles['contact-form-box']}>
+      <Form.Item label="电话/微信" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
+        <WildcatForm editDataSource={companyInfo}
           onInit={(form) => setFormInstance(form)}
           config={config} formChange={formChange} />
       </Form.Item>
-      <Form.Item label="智能接待系统">
-        <KF53 editDataSource={companyInfo} onChange={(values) => {
-          setHasEditForm(true)
-          setKf53Data(values)
-        }} />
+      <Form.Item label="智能接待系统" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
+        <KF53 editDataSource={companyInfo} onChange={KF53Change} />
       </Form.Item>
-      <Form.Item label="QQ客服">
-        <QQCustomService companyInfo={companyInfo} onChange={(list: QQItem[]) => {
-          setHasEditForm(true)
-          setQQList(list)
-        }} />
-        <div className="contact-form-box" >
-          <Button disabled={!hasEditForm} loading={loading} className="btn" type="primary" size="large" onClick={saveInfo}>保存</Button>
+      <Form.Item label="QQ客服" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
+        <QQCustomService companyInfo={companyInfo} onChange={QQChange} />
+        <div className={styles['contact-form-btn-box']} >
+          <Button disabled={!hasEditForm} loading={loading} className={styles['btn']} type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
         </div>
       </Form.Item>
