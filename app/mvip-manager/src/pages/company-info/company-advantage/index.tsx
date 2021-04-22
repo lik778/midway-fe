@@ -1,19 +1,24 @@
-import React, { FC, useRef, useState } from 'react'
-import { FormInstance } from 'antd';
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { FormInstance, Spin } from 'antd';
 import MainTitle from '@/components/main-title';
-import { zhidaoInfoForm } from './config';
-import WildcatForm from '@/components/wildcat-form';
-import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { CompanyAdvantageListItem } from '@/interfaces/user';
 import { getCompanyAdvantageApi, setCompanyAdvantageApi } from '@/api/user'
+import styles from './index.less'
+import CompanyAdvantageForm from './components/form/index'
+import { mockData } from '@/utils';
+
+
 
 const CompanyAdvantage: FC = () => {
   const [dataList, setDataList] = useState<CompanyAdvantageListItem[]>([])
   const [keyCount, setKeyCount] = useState<number>(1)
   const [getDataLoading, setGetDataLoading] = useState<boolean>(true)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
+
   const getCompanyAdvantage = async () => {
-    const res = await getCompanyAdvantageApi()
+    setGetDataLoading(true)
+    // const res = await getCompanyAdvantageApi()
+    const res = await mockData<CompanyAdvantageListItem[]>('data', [])
     if (res.success) {
       let nowkey = keyCount
       if (res.data?.length > 0) {
@@ -39,10 +44,26 @@ const CompanyAdvantage: FC = () => {
     setGetDataLoading(false)
   }
 
-  const ref = useRef<{ form: FormInstance | undefined }>({ form: undefined })
+  const forms = useRef<{ forms: FormInstance | undefined }[]>([])
 
-  
-  return <div>123</div>
+  useEffect(() => {
+    getCompanyAdvantage()
+  }, [])
+
+  useEffect(() => {
+    console.log(forms)
+  }, [forms.current])
+
+  return <>
+    <MainTitle title="企业优势" />
+    <Spin spinning={getDataLoading}>
+      <div className={styles['container']}>
+        {
+          dataList.map((item, index) => <CompanyAdvantageForm item={item} ref={(ref) => forms.current[index] = ref} key={item.key} />)
+        }
+      </div>
+    </Spin>
+  </>
 }
 
 (CompanyAdvantage as any).wrappers = ['@/wrappers/path-auth']
