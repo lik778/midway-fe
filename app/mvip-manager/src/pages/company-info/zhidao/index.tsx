@@ -64,14 +64,13 @@ function CompanyInfoZhudao(props: any) {
         {!formLoading &&
           <WildcatForm
             editDataSource={enterpriseInfo}
-            useLabelCol={{ span: 6 }}
             submit={sumbit}
             config={config}
             formChange={formChange}
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
-                <Col><Button loading={loading} className="btn"
+                <Col style={{ paddingLeft: 16 }}><Button loading={loading} className="btn"
                   type="primary" size="large" htmlType="submit">保存</Button></Col>
               </Row>
             }

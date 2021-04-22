@@ -4,13 +4,15 @@ import SeoTab from '../components/seo-tab';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopBasisType, ShopTDKType, ShopTDKPosition } from '@/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-import { tdkForm } from '@/config/form';
+import { tdkForm } from '../config';
 import { Form } from 'antd';
 import { useParams } from 'umi';
 import { RouteParams, TdkSaveMeta } from '@/interfaces/shop';
 import { getMetaDetailApi, getMetaSaveApi } from '@/api/shop';
 import Loading from '@/components/loading';
 import { errorMessage, successMessage } from '@/components/message';
+import '../index.less'
+
 export default (props: any) => {
   const [formConfig, setformConfig] = useState<FormConfig>(tdkForm)
   const [editData, setEditData] = useState<any>(null)

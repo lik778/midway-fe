@@ -162,13 +162,12 @@ function CompanyInfoBase(props: any) {
         {!formLoading && currentStep == 0 &&
           <WildcatForm
             formChange={formChangeFn}
-            useLabelCol={{ span: 6 }} submit={nextStep}
+            submit={nextStep}
             editDataSource={enterpriseInfo} config={config} loading={loading}
-
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
-                <Col><Button loading={loading} className="btn"
+                <Col style={{ paddingLeft: 16 }}><Button loading={loading} className="btn"
                   type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
               </Row>
             } />

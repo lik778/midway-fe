@@ -1,4 +1,5 @@
 import { FormType } from '../enums'
+import { ColProps } from 'antd'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -22,7 +23,8 @@ export interface FormConfig {
   children: FormItem[];
   buttonConfig?: ButtonItem;
   width?: number;
-  labelAlign?: 'left' | 'right'
+  labelAlign?: 'left' | 'right',
+  useLabelCol?: ColProps;
 }
 export interface FormItem {
   label: string; // 页面标签
@@ -45,10 +47,9 @@ export interface FormItem {
   showCount?: boolean;
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
   display?: boolean;
+  formItemWidth?: number,
 
   // 下面三个属性必须重写
-  width?: number; //长度
-  inputWidth?: number,
   className?: string, // 自定义样式,
 }
 
