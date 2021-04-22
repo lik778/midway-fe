@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Tooltip, Form, Row, Col, Divider } from 'antd'
 import Loading from '@/components/loading'
 import MainTitle from '@/components/main-title'
@@ -6,13 +6,10 @@ import Query from '../components/search-list'
 import CountTo from '../components/count-to'
 import { PieChart } from '../components/charts'
 import { getKeywordOverview, getKeywordDetailList } from '@/api/report'
-import {
-  KeywordOverviewData,
-  KeywordDetailListParams,
-  KeywordDetailListData,
-} from "@/interfaces/report"
+import { KeywordOverviewData } from "@/interfaces/report"
 import { keywordRankListConfig } from './config'
 import { ReportProductType } from '@/enums/report'
+import { useApi } from '@/hooks/api'
 import './index.less'
 
 function genChartOptions(data: KeywordOverviewData) {
@@ -47,16 +44,10 @@ function genChartOptions(data: KeywordOverviewData) {
   return res
 }
 
-function KeyWordPage(props: any) {
-  const [loading, setLoading] = useState<boolean>(false)
-  const [overview, setOverview] = useState<KeywordOverviewData>()
-  const [chartOptions, setChartOptions] = useState({})
+function KeyWordPage() {
   const [queryKeywordDetailForm] = Form.useForm()
-  const [detailListData, setDetailListData] = useState<KeywordDetailListData[]>([])
-
-  useEffect(() => {
-    queryOverviewData()
-  }, [])
+  const [ detailListData, , queryDetailList ] = useApi({}, getKeywordDetailList)
+  const [ overview, loading ] = useApi({}, getKeywordOverview)
 
   const genMainTitle = (key: string) => {
     const tooltipsMap: any = {
@@ -72,21 +63,6 @@ function KeyWordPage(props: any) {
       <span className="tips">?</span>
       </p>
     </Tooltip>)
-  }
-
-  const queryOverviewData = async () => {
-    setLoading(true)
-    const { data } = await getKeywordOverview()
-    setLoading(false)
-    setOverview(data)
-    setChartOptions(genChartOptions(data))
-  }
-
-  const queryDetailList = async (query: KeywordDetailListParams) => {
-    const { data } = await getKeywordDetailList(query)
-    const { result } = data
-    setDetailListData(result)
-    return data
   }
 
   return (
@@ -130,7 +106,7 @@ function KeyWordPage(props: any) {
           </div>
           <div className="segment">
             <h2>关键词统计</h2>
-            <PieChart option={chartOptions} />
+            <PieChart option={ genChartOptions(overview) } />
           </div>
           <div className="segment">
             <h2>关键词排名明细</h2>
@@ -138,7 +114,7 @@ function KeyWordPage(props: any) {
               onQuery={queryDetailList}
               config={keywordRankListConfig({
                 form: queryKeywordDetailForm,
-                dataSource: detailListData
+                dataSource: detailListData.result
               })}
             />
           </div>
