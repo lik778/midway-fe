@@ -41,7 +41,7 @@ function CompanyInfoBase(props: any) {
 
   const onChangeCategory = (catogoryName: any, form: any) => {
     //切换类目后，清空thirdMetas数据
-    form.setFieldsValue({ thirdMetas: []})
+    form.setFieldsValue({ thirdMetas: [] })
     getThirdCategoryMetasFn(catogoryName)
 
   }
@@ -162,7 +162,7 @@ function CompanyInfoBase(props: any) {
         {!formLoading && currentStep == 0 &&
           <WildcatForm
             formChange={formChangeFn}
-            useLabelCol={true} submit={nextStep}
+            useLabelCol={{ span: 6 }} submit={nextStep}
             editDataSource={enterpriseInfo} config={config} loading={loading}
 
             submitBtn={

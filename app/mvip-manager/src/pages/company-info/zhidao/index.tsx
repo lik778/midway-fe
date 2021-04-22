@@ -64,7 +64,7 @@ function CompanyInfoZhudao(props: any) {
         {!formLoading &&
           <WildcatForm
             editDataSource={enterpriseInfo}
-            useLabelCol={true}
+            useLabelCol={{ span: 6 }}
             submit={sumbit}
             config={config}
             formChange={formChange}

@@ -44,19 +44,19 @@ function ContactForm(props: any) {
     info.qqMap = qqMap
     // 处理53客服数据  刚创建用户 kf53Info可以为空
     if (kf53Data && kf53Data.kefuStatus) {
-        if ((!kf53Data.companyName || (kf53Data.companyName.length < 2 || kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2 || kf53Data.bname.length > 20))) {
-          return
-        }
-        info.kefuStatus = KFStatus.OPEN;
-        if (!info.kf53Info) {
-          info.kf53Info = {
-            companyName: kf53Data.companyName,
-            bname: kf53Data.bname
-          } as KF53Info
-        } else {
-          info.kf53Info.companyName = kf53Data.companyName
-          info.kf53Info.bname = kf53Data.bname
-        }
+      if ((!kf53Data.companyName || (kf53Data.companyName.length < 2 || kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2 || kf53Data.bname.length > 20))) {
+        return
+      }
+      info.kefuStatus = KFStatus.OPEN;
+      if (!info.kf53Info) {
+        info.kf53Info = {
+          companyName: kf53Data.companyName,
+          bname: kf53Data.bname
+        } as KF53Info
+      } else {
+        info.kf53Info.companyName = kf53Data.companyName
+        info.kf53Info.bname = kf53Data.bname
+      }
 
     } else {
       info.kefuStatus = KFStatus.CLOSE
@@ -81,7 +81,7 @@ function ContactForm(props: any) {
   return (
     <div>
       <Form.Item label="电话/微信">
-        <WildcatForm useLabelCol={true} editDataSource={companyInfo}
+        <WildcatForm useLabelCol={{ span: 6 }} editDataSource={companyInfo}
           onInit={(form) => setFormInstance(form)}
           config={config} formChange={formChange} />
       </Form.Item>
