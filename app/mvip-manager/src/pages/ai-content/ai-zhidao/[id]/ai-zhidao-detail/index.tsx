@@ -9,8 +9,8 @@ import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
-import { ZhidaoAiTaskStatusText } from '@/constants/index'
-import { ZhidaoAiTaskStatus } from '@/enums'
+import { ZhidaoAiTaskQuestionStatusText } from '@/constants/index'
+import { ZhidaoAiTaskQuestionStatus } from '@/enums'
 import MyModal, { ModalType } from '@/components/modal';
 import { mockData } from '@/utils/index'
 
@@ -68,6 +68,7 @@ const AiZhidaoDetail = (props: any) => {
       title: '问答标题',
       upDataLoading,
       handleSave: (row: QuestionListItem) => handleSave({ questionId: row.id, content: row.question }, row),
+      detailUrl: record.status === ZhidaoAiTaskQuestionStatus.DONE ? record.url : ''
     }),
   },
   {
@@ -75,24 +76,24 @@ const AiZhidaoDetail = (props: any) => {
     dataIndex: 'status',
     width: 200,
     render: (text: number, record: QuestionListItem, index: number) => {
-      if (text === ZhidaoAiTaskStatus.DONE) {
+      if (text === ZhidaoAiTaskQuestionStatus.DONE) {
         // 已发出
         return <div className={styles['question-status-1']}>{
-          ZhidaoAiTaskStatusText[text]
+          ZhidaoAiTaskQuestionStatusText[text]
         }</div>
-      } else if (text === ZhidaoAiTaskStatus.REJECT) {
+      } else if (text === ZhidaoAiTaskQuestionStatus.REJECT) {
         // 审核驳回
         return (
           <Tooltip title={record.tip} overlayStyle={{ width: '150px' }}>
             <div className={styles['question-status-2']}>{
-              ZhidaoAiTaskStatusText[text]
+              ZhidaoAiTaskQuestionStatusText[text]
             }</div>
             <div className={styles['question-status-2-tip']}>{record.tip}</div>
           </Tooltip>
         )
       } else {
         return <div className={styles['question-status-0']}>{
-          ZhidaoAiTaskStatusText[text]
+          ZhidaoAiTaskQuestionStatusText[text]
         }</div>
       }
     }

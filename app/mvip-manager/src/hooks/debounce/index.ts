@@ -8,6 +8,6 @@ export const useDebounce = <T extends Func>(func: T, wait?: number, options?: De
   useEffect(() => {
     funcRef.current = func
   })
-  const debounceFn = useRef(debounce(() => funcRef.current(), wait, options))
+  const debounceFn = useRef(debounce((...arg) => funcRef.current(...arg), wait, options))
   return debounceFn.current
 };
