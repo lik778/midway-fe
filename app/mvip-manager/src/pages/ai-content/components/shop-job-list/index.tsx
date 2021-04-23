@@ -84,7 +84,7 @@ export default (props: any) => {
   }
 
   const viewWordsBtn = (record: AiContentItem, text = '词组') => {
-    return <span onClick={() => viewWords(record)} style={{marginLeft: 40}}>{text}</span>
+    return <span onClick={() => viewWords(record)} style={{ marginLeft: 40 }}>{text}</span>
   }
 
   const viewPackageBtn = (record: number, text = '词包') => {
@@ -95,31 +95,31 @@ export default (props: any) => {
     const status = record.status
     if (status === AiTaskStatus.ON_TASK) {
       return <div className="ai-action-box">
-        <Tooltip placement="top" title="开启中">
+        <Tooltip placement="top" title="开启中" overlayStyle={{ minWidth: '60px' }}>
           <span onClick={() => changeAiTaskStatus(AiTaskAction.PAUSE, record)} className="ai-action ai-pause-action"></span>
         </Tooltip>
         {viewWordsBtn(record)}
-        <span style={{color:'black'}}> | </span>
+        <span style={{ color: 'black' }}> | </span>
         {viewPackageBtn(record.id)}
       </div>
     } else if (status === AiTaskStatus.REJECT) {
       return <div className="ai-action-box">{viewWordsBtn(record, '修改')}</div>
     } else if (status === AiTaskStatus.ON_PAUSE) {
       return <div className="ai-action-box">
-        <Tooltip placement="top" title="已暂停">
+        <Tooltip placement="top" title="已暂停" overlayStyle={{ minWidth: '60px' }}>
           <span onClick={() => changeAiTaskStatus(AiTaskAction.START, record)} className="ai-action ai-start-action" />
         </Tooltip>
         {viewWordsBtn(record)}
-        <span style={{color:'black'}}> | </span>
+        <span style={{ color: 'black' }}> | </span>
         {viewPackageBtn(record.id)}
       </div>
     } else if (status === AiTaskStatus.ON_SELECT) {
       return <div className="ai-action-box">
-        <Tooltip placement="top" title="去选词">
+        <Tooltip placement="top" title="去选词" overlayStyle={{ minWidth: '60px' }}>
           <span onClick={() => chooseWords(record.id)} className="ai-action ai-choose-action" />
         </Tooltip>
         {viewWordsBtn(record)}
-        </div>
+      </div>
     } else {
       return <div className="ai-action-box">{viewWordsBtn(record)}</div>
     }
@@ -182,8 +182,8 @@ export default (props: any) => {
         }} />}
       </div>
       <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} />
-      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId}/>
-      <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} viewtaskId={viewtaskId}/>
+      <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId} />
+      <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} viewtaskId={viewtaskId} />
     </div>
   )
 }

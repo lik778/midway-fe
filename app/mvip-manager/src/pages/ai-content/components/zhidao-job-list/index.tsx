@@ -114,29 +114,29 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
   }, 500)
 
   const getActionBtn = (record: QuestionTaskListItem) => {
-    return <Tooltip placement="top" title={ZhidaoAiTaskStatusText[record.status]}>
+    return <Tooltip placement="top" title={ZhidaoAiTaskStatusText[record.status]} overlayStyle={{ minWidth: '60px' }}>
       <img className={styles['action-btn']} src={record.status === ZhidaoAiTaskStatus.PAUSED ? 'http://file.baixing.net/202101/061832d76086d8f5844d98d495f1b992.png' : 'http://file.baixing.net/202101/409a5ac0d04377f8468872274863f539.png'} alt="" onClick={() => setTaskStatus(record.taskId)} />
     </Tooltip>
   }
 
   const columns: TableColumnProps<QuestionTaskListItem>[] = [
-    { title: '编号', dataIndex: 'taskId', align: 'center' },
+    { title: '编号', dataIndex: 'taskId' },
     {
-      title: '创建时间', dataIndex: 'createdTime', align: 'center', render: (text: string) => {
+      title: '创建时间', dataIndex: 'createdTime', render: (text: string) => {
         return formatTime(text)
       }
     },
-    { title: '预计发布数量', dataIndex: 'expectPublishedNum', align: 'center' },
+    { title: '预计发布数量', dataIndex: 'expectPublishedNum' },
     {
-      title: '累计发布数量', dataIndex: 'publishedNum', align: 'center'
+      title: '累计发布数量', dataIndex: 'publishedNum'
     },
     {
-      title: '状态', dataIndex: 'status', key: 'status', align: 'center', render: (text: string, record: QuestionTaskListItem) => {
+      title: '状态', dataIndex: 'status', key: 'status', render: (text: string, record: QuestionTaskListItem) => {
         if (record.status === ZhidaoAiTaskStatus.ABORTED || record.status === ZhidaoAiTaskStatus.PAUSED) {
           return <div className={`${styles["ai-status-reject"]} ${styles[record.status === ZhidaoAiTaskStatus.ABORTED ? 'aborted' : 'pause']}`}>
             <div className={styles["status"]}>{ZhidaoAiTaskStatusText[text]}</div>
             {record.memo && <Tooltip placement="bottom" title={record.memo} >
-              <div className={styles["reason"]}>{`${record.memo.substring(0, 3)}...`}</div>
+              <div className={styles["reason"]}>{`${record.memo.substring(0, 6)}${record.memo.length > 6 ? '...' : ''} `}</div>
             </Tooltip>}
           </div>
         } else {
@@ -145,7 +145,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
       }
     },
     {
-      title: '操作', dataIndex: 'action', align: 'center', render: (text: any, record: QuestionTaskListItem) => {
+      title: '操作', dataIndex: 'action', render: (text: any, record: QuestionTaskListItem) => {
         return <>
           <div className={styles['list-action-btn-box']}>
             {
