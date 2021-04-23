@@ -1,4 +1,4 @@
-import { AuditStatus, ArticleSource, AiTaskStatus, DomainStatus, ZhidaoAiTaskStatus } from '@/enums';
+import { AuditStatus, ArticleSource, AiTaskStatus, DomainStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus } from '@/enums';
 
 export const COOKIE_TOKEN_KEY = '__t'
 export const COOKIE_USER_KEY = '__u'
@@ -28,11 +28,11 @@ export const AiTaskStatusText: any = {
   [AiTaskStatus.ON_SELECT]: '审核通过'
 }
 
-// ZhidaoAiTaskStatus
-export const ZhidaoAiTaskStatusText: any = {
-  [ZhidaoAiTaskStatus.WIATING]: '待发布',
-  [ZhidaoAiTaskStatus.DONE]: '发布成功',
-  [ZhidaoAiTaskStatus.REJECT]: '发布失败',
+// ZhidaoAiTaskQuestionStatus
+export const ZhidaoAiTaskQuestionStatusText: any = {
+  [ZhidaoAiTaskQuestionStatus.WIATING]: '待发布',
+  [ZhidaoAiTaskQuestionStatus.DONE]: '发布成功',
+  [ZhidaoAiTaskQuestionStatus.REJECT]: '发布失败',
 }
 
 export const productText = (): any => {
@@ -81,4 +81,11 @@ export const wordsItemConfig: any = {
     max: 15,
     rules: '10-15个'
   }
+}
+
+export const ZhidaoAiTaskStatusText: any = {
+  [ZhidaoAiTaskStatus.ACTIVE]: '发文中',
+  [ZhidaoAiTaskStatus.PAUSED]: '已暂停',
+  [ZhidaoAiTaskStatus.ABORTED]: '已停止',
+  [ZhidaoAiTaskStatus.DONE]: '已完成',
 }
