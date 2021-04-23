@@ -1,5 +1,6 @@
 import { FormType } from '../enums'
 import { ColProps } from 'antd'
+import { ReactNode } from 'react'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -25,6 +26,8 @@ export interface FormConfig {
   width?: number;
   labelAlign?: 'left' | 'right',
   useLabelCol?: ColProps;
+  // 有些组件确实不适合封装 但是也要放在表单里管理 则写自定义的组件进去
+  customerFormItemList?: ReactNode
 }
 export interface FormItem {
   label: string; // 页面标签
@@ -38,11 +41,12 @@ export interface FormItem {
   options?: OptionItem[] | OptionCheckBox[];
   maxLength?: number
   minLength?: number,
-  tip?: string, // 文案说明,
+  tip?: string | ReactNode, // 文案说明,
   btnConfig?: any, // 输入框需要增加额外标签
   maxNum?: number,
   minNum?: number,
   images?: ImagesItem[],// 图片多种情况
+  imagesTipPosition?: 'bottom' | 'right',// 图片下的请求的位置
   disabled?: boolean;
   showCount?: boolean;
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
