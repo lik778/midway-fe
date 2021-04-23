@@ -19,8 +19,17 @@
 
   .image-upload-box {
     .image-tip {
+      flex-grow: 1;
       color: #999;
       font-size: 12px;
+      &.tip-right{
+        transform: translateY(-15px);
+      }
+    }
+    .flex-box {
+      display: flex;
+      justify-content: start;
+      align-items: center;
     }
 
     &.image-upload-set-p {

@@ -101,16 +101,23 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
           } else if (item.type === FormType.ImgUpload) {
             return (<FormItem className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
               label={item.label} required={item.required}>
+              <div className={styles['flex-box']}>
+                {
+                  (item.images || []).map((img) => {
+                    return (<FormItem className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
+                      <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={item.maxLength || 0}
+                        onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} />
+                    </FormItem>
+                    )
+                  })
+                }
+                {
+                  item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ? <p className={`${styles['image-tip']} ${item.required ? styles['tip-right'] : ''}`}>{item.tip}</p> : item.tip)
+                }
+              </div>
               {
-                (item.images || []).map((img) => {
-                  return (<FormItem className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                    <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={item.maxLength || 0}
-                      onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} />
-                  </FormItem>
-                  )
-                })
+                item.imagesTipPosition !== 'right' && (typeof item.tip === 'string' ? <p className={styles['image-tip']}>{item.tip}</p> : item.tip)
               }
-              <p className={styles['image-tip']}>{item.tip}</p>
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
             const value = getEditData(item.name || '');
@@ -150,7 +157,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             )
           }
         })}
-
+        {config.customerFormItemList ? config.customerFormItemList : <></>}
         {
           props.submitBtn || config && config.buttonConfig &&
           (<Row>
