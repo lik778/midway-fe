@@ -4,9 +4,10 @@ import { FormType } from '@/components/wildcat-form/enums';
 
 export const companyAdvantageFormConfigFn: (key: string | number) => FormConfig = (key) => ({
   name: `companyAdvantageForm${key}`,
-  width: 860,
+  width: 690,
+  useLabelCol: { span: 4 },
   children: [
-    { label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
+    { label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）', formItemWidth: '100%' },
     {
       label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [{ pattern: /^[\s\S]{50,300}$/, message: '50～300个字' }]

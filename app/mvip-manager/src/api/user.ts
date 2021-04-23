@@ -62,10 +62,10 @@ export const setZhidaoMaterial = (params: ZhidaoMaterial): Promise<ServiceRespon
 
 /** 获取企业优势 */
 export const getCompanyAdvantageApi = (): Promise<ServiceResponse<CompanyAdvantageListItem[]>> => {
-  return postApiData(ServicePath.SHOP, '')
+  return postApiData(ServicePath.SHOP, 'midway/backend/user/getEnterpriseAdvantageList')
 }
 
 /** 获取企业优势 */
 export const setCompanyAdvantageApi = (requestData: CompanyAdvantageListItem[]): Promise<ServiceResponse<never>> => {
-  return postApiData(ServicePath.SHOP, '')
+  return postApiData(ServicePath.SHOP, 'midway/backend/user/saveEnterpriseAdvantageList')
 }
