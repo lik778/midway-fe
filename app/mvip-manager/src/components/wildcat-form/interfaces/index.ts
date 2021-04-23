@@ -51,7 +51,7 @@ export interface FormItem {
   showCount?: boolean;
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
   display?: boolean;
-  formItemWidth?: number,
+  formItemWidth?: number | string,
 
   // 下面三个属性必须重写
   className?: string, // 自定义样式,
