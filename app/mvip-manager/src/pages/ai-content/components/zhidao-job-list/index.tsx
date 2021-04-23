@@ -136,7 +136,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
           return <div className={`${styles["ai-status-reject"]} ${styles[record.status === ZhidaoAiTaskStatus.ABORTED ? 'aborted' : 'pause']}`}>
             <div className={styles["status"]}>{ZhidaoAiTaskStatusText[text]}</div>
             {record.memo && <Tooltip placement="bottom" title={record.memo} >
-              <div className={styles["reason"]}>{`${record.memo.substring(0, 6)}${record.memo.length > 6 ? '...' : ''} `}</div>
+              <span className={styles["reason"]}>{`${record.memo.substring(0, 6)}${record.memo.length > 6 ? '...' : ''} `}</span>
             </Tooltip>}
           </div>
         } else {
