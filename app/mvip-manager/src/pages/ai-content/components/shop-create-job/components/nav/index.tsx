@@ -9,7 +9,7 @@ import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import Loading from '@/components/loading';
 import Recharge from '@/components/recharge';
 import './index.less';
-import { errorMessage } from '@/components/message';
+import { errorMessage, warnMessage } from '@/components/message';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -56,7 +56,8 @@ export const CreateAiContentNav = (props: Props): any => {
         setArticleList((item && item.articleCates) || [])
         return shopId
       }else{
-        errorMessage('当前店铺无AI权限，请选择其他店铺')
+        warnMessage('您选择的店铺没有AI发文权限')
+        //然后选择框回退到上个状态
         if(!prevValue){
           form.resetFields(['shopId'])
         }
