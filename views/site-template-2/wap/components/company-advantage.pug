@@ -1,0 +1,23 @@
+mixin company-advantage(pageType,advantageList)
+  if advantageList
+    .company-advantage
+      h2.block-title 企业优势
+        span
+        span
+      - const isOdd = advantageList.length%2 === 0 ? false : true
+      .advantages
+        each item,index in advantageList
+          if index < 9
+            - var number = '0' + ( index+1 )
+          else 
+            - var number = index + 1
+          .advantage
+            span.number #{ number }
+            span.title #{ item.title }
+            .desc #{ item.desc }
+        if isOdd 
+          if pageType === 'about'
+            .advantage
+          else if pageType === 'home'
+            .advantage
+              a(href="/about" || "#") 查看更多详情

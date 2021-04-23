@@ -1,0 +1,27 @@
+mixin company-advantage(advantageList)
+	if advantageList
+		.block-title(style="margin-top:62px")
+			img(src='//file.baixing.net/202104/71f958db636d1f39957783d60f131091.png',style={ width :'395px'}, alt="企业优势")
+			h2 企业优势
+		- const isOdd = advantageList.length%2 === 0 ? false : true
+		.company-advantages
+			each item, index in advantageList
+				- const isWhite = item.fontColor === 'white' ? true : false
+				if index < 9
+					- var id = '0' + (index+1)
+				else 
+					- var id = index+1
+				.company-advantage( style = item.bgImg ? {background:'none'} : {} )
+					span.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
+					span
+						.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }
+						.advan-line( style = isWhite ? {background:'#FFF'} : {})
+						.desc( style = isWhite ? {color:'#FFF'} : {} ) #{ item.desc }
+					img( src = item.bgImg )
+			if isOdd 
+				.company-advantage
+					a(href="/about" || "#") 查看企业介绍详情
+
+
+
+

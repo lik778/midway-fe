@@ -1,0 +1,16 @@
+mixin advantage(advantageList)
+    if advantageList
+        .advantage
+            .advantage-subtitle 企业优势
+            .advantage-table
+                each item, index in advantageList
+                    if index < 9
+                        - var id = '0' + (index+1)
+                    else 
+                        - var id = index+1
+                    .advantage-item
+                        span.number #{ id }
+                        span
+                            .title #{ item.title }
+                            .advan-line
+                            .desc #{ item.desc }
