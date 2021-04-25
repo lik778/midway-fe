@@ -13,7 +13,7 @@ const PreviewItem: FC<Props> = (props) => {
  <div className={styles['preview-box']}>
       <div className={styles['triangle']}></div>
       <div className={`${styles['preview-content']}`}>
-        <img className={styles['image']} src={color === 'black' ? 'http://file.baixing.net/202104/b6b82316bcc5d1d30f79be07b7dca51f.png' : 'http://file.baixing.net/202104/e9c4492b667630d3b1d86f5659e13816.png'} alt="" />
+        <img className={styles['image']} src={color === 'black' ? '//file.baixing.net/202104/b6b82316bcc5d1d30f79be07b7dca51f.png' : '//file.baixing.net/202104/e9c4492b667630d3b1d86f5659e13816.png'} alt="" />
       </div>
     </div>
   </div>
