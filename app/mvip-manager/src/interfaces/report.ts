@@ -16,13 +16,13 @@ export interface BaseResponse<T> {
 
 export type Response<T> = Promise<BaseResponse<T>>
 
-export interface ListResData<T> {
+export interface ReportListResData<T> {
   totalElements: number;
   totalPages: number;
   result: T;
 }
 
-export type ListResponse<T> = Response<ListResData<T>>
+export type ReportListResponse<T> = Response<ReportListResData<T>>
 
 /* 业务数据类型约束 */
 

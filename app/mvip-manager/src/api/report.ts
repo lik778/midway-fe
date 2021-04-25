@@ -1,6 +1,6 @@
 import {
   Response,
-  ListResponse,
+  ReportListResponse,
   CateFlowOverviewData,
   CateFlowChartParams,
   CateFlowChartData,
@@ -96,7 +96,7 @@ export const getCateFlowChart:
 
 // 快照流量详情列表
 export const getCateFlowDetail:
-  (params: CateFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  (params: CateFlowDetailParams) => ReportListResponse<FlowDetailData[]> =
   (params) => post('/seo/network/visit-detail', params)
 
 // 广告流量概览
@@ -111,12 +111,12 @@ export const getBaxFlowCharts:
 
 // 广告流量访问明细
 export const getBaxFlowVisitDetail:
-  (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  (params: BaxFlowDetailParams) => ReportListResponse<FlowDetailData[]> =
   (params) => post('/sem/network/visit-detail', params)
 
 // 广告流量展现明细
 export const getBaxFlowShowDetail:
-  (params: BaxFlowDetailParams) => ListResponse<FlowDetailData[]> =
+  (params: BaxFlowDetailParams) => ReportListResponse<FlowDetailData[]> =
   (params) => post('/sem/network/show-detail', params)
 
 // 关键词概览数据
@@ -125,7 +125,7 @@ export const getKeywordOverview:
 
 // 关键词详情
 export const getKeywordDetailList:
-  (params: KeywordDetailListParams) => ListResponse<KeywordDetailListData[]> =
+  (params: KeywordDetailListParams) => ReportListResponse<KeywordDetailListData[]> =
   (params) => post('/keyword/detail', params)
 
 // TODO delete mock data

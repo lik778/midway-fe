@@ -6,13 +6,17 @@ import Query from '../components/search-list'
 import CountTo from '../components/count-to'
 import { PieChart } from '../components/charts'
 import { getKeywordOverview, getKeywordDetailList } from '@/api/report'
-import { KeywordOverviewData } from "@/interfaces/report"
+import {
+  KeywordDetailListData,
+  KeywordDetailListParams,
+  KeywordOverviewData,
+  ReportListResData
+} from '@/interfaces/report'
 import { keywordRankListConfig } from './config'
 import { ReportProductType } from '@/enums/report'
 import { useApi } from '@/hooks/api'
-import './index.less'
 
-function genChartOptions(data: KeywordOverviewData) {
+function genChartOptions(data: KeywordOverviewData | null) {
   const res = {
     color: [
       'rgba(9, 109, 217, .68)',
@@ -46,8 +50,8 @@ function genChartOptions(data: KeywordOverviewData) {
 
 function KeyWordPage() {
   const [queryKeywordDetailForm] = Form.useForm()
-  const [ detailListData, , queryDetailList ] = useApi({}, getKeywordDetailList)
-  const [ overview, loading ] = useApi({}, getKeywordOverview)
+  const [ detailListData, , queryDetailList ] = useApi<ReportListResData<KeywordDetailListData[]> | null, KeywordDetailListParams>(null, getKeywordDetailList)
+  const [ overview, loading ] = useApi<KeywordOverviewData | null>(null, getKeywordOverview)
 
   const genMainTitle = (key: string) => {
     const tooltipsMap: any = {
@@ -114,7 +118,7 @@ function KeyWordPage() {
               onQuery={queryDetailList}
               config={keywordRankListConfig({
                 form: queryKeywordDetailForm,
-                dataSource: detailListData.result
+                dataSource: detailListData?.result
               })}
             />
           </div>
