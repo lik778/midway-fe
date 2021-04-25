@@ -70,9 +70,9 @@ export const BannerImgUpload = (props: Props) => {
     if (!isJpgOrPng) {
       errorMessage('请上传jpg、jpeg、png格式的图片');
     }
-    const isLt3M = file.size < 1024 * 1024 * 1;
+    const isLt3M = file.size < 1024 * 1024 * 3;
     if (!isLt3M && isJpgOrPng) {
-      errorMessage('请上传不超过1M的图片');
+      errorMessage('请上传不超过3M的图片');
     }
     return isJpgOrPng && isLt3M;
   }
