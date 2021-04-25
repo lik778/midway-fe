@@ -21,6 +21,7 @@ interface EditableCellProps {
   record: Item;
   upDataLoading: boolean;
   handleSave: (record: Item) => void;
+  detailUrl: string
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -31,6 +32,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   record,
   upDataLoading,
   handleSave,
+  detailUrl,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -75,7 +77,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
           style={{ margin: 0 }}
           name={dataIndex}
         >
-          <TextArea ref={inputRef}  autoSize={{ minRows: 1, maxRows: 6 }} onPressEnter={save} onBlur={save} />
+          <TextArea ref={inputRef} autoSize={{ minRows: 1, maxRows: 6 }} onPressEnter={save} onBlur={save} />
         </Form.Item>
       </Spin>
     ) : (
@@ -83,6 +85,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
         {children}
       </div>
     );
+  }
+  if (detailUrl) {
+    childNode = <a href={detailUrl} target='_block' className={`${styles['text-value-wrap']} ${styles['editable-cell-a']}`}>{children}</a>;
   }
 
   return <td {...restProps}>{childNode}</td>;

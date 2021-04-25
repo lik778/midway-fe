@@ -7,7 +7,6 @@ import EmptyStatus from './components/empty-status'
 import MainTitle from '@/components/main-title';
 import ShopBox from './components/shop-box';
 import Loading from '@/components/loading';
-import { postApiData } from '@/api/base';
 import { notEmptyObject } from '@/utils';
 import {
   GET_SHOP_LIST_ACTION,
@@ -20,6 +19,7 @@ import {
 import { ShopInfo } from '@/interfaces/shop';
 import './index.less';
 import { ConnectState } from '@/models/connect';
+import { createShopApi, updateShopApi } from '@/api/shop'
 
 // 空状态基本配置
 const emptyMsg = {
@@ -72,13 +72,13 @@ function ShopPage(props: any) {
   // 接口列表
   // 创建店铺
   const createShop = async (params: any) => {
-    const data = await postApiData('midway/backend/shop/create', params)
+    const data = await createShopApi(params)
     setShopSiteRes(data)
   }
 
   // 修改店铺
   const updateShop = async (params: any) => {
-    const data = await postApiData('midway/backend/shop/update', params)
+    const data = await updateShopApi(params)
     setShopSiteRes(data)
   }
 
