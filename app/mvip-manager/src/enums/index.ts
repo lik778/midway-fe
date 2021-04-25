@@ -59,7 +59,7 @@ export enum VerifyStatus {
   REVOKE = 'REVOKE'
 }
 
-export enum ZhidaoAiTaskStatus {
+export enum ZhidaoAiTaskQuestionStatus {
   WIATING = 0, // 待发送
   DONE = 1, // 发送成功
   REJECT = 2, // 发送失败
@@ -95,4 +95,30 @@ export enum AiTaskAction {
   PAUSE = 'pause'
 }
 
+/** 后端服务控制器path */
+export enum ServicePath {
+  SHOP = '/management/api',
+  ZHIDAO = '/zhidao/api',
+  REPORT = '/report/api'
+}
 
+
+/** 问答AI任务状态 */
+export enum ZhidaoAiTaskStatus {
+  /**
+     * 任务启动中
+     */
+  ACTIVE = 'ACTIVE',
+  /**
+   * 任务暂停中
+   */
+  PAUSED = 'PAUSED',
+  /**
+   * 任务异常终止
+   */
+  ABORTED = 'ABORTED',
+  /**
+   * 任务已完成
+   */
+  DONE = 'DONE'
+}
