@@ -7,14 +7,14 @@ export const companyAdvantageFormConfigFn: (key: string | number) => FormConfig 
   width: 690,
   useLabelCol: { span: 4 },
   children: [
-    { label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）', formItemWidth: '100%' },
+    { label: '优势标题', name: 'title', type: FormType.Input, required: true, placeholder: '例如：品质优秀', formItemWidth: '100%', maxLength: 10, showCount: true },
     {
-      label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
-      minLength: 50, maxLength: 300, patternList: [{ pattern: /^[\s\S]{50,300}$/, message: '50～300个字' }]
+      label: '优势简介', name: 'desc', type: FormType.Textarea, required: true, placeholder: '请输入简介，30～50个字',
+      minLength: 30, maxLength: 50, patternList: [{ pattern: /^[\s\S]{30,50}$/, message: '30～50个字' }]
     },
     {
-      label: '侧边广告', name: 'banner2', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '知道侧栏', name: 'banner2', maxSize: 1 }],
-      required: false, tip: '图片格式：jpg、jpeg、png，大小不超过1M，建议尺寸为365px*304px'
+      label: '上传图片', name: 'img', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '知道侧栏', name: 'bgImg', maxSize: 3 }],
+      required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸590*222', imagesTipPosition: 'right'
     },
   ]
 }

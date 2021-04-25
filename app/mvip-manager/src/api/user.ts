@@ -67,5 +67,5 @@ export const getCompanyAdvantageApi = (): Promise<ServiceResponse<CompanyAdvanta
 
 /** 获取企业优势 */
 export const setCompanyAdvantageApi = (requestData: CompanyAdvantageListItem[]): Promise<ServiceResponse<never>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/user/saveEnterpriseAdvantageList')
+  return postApiData(ServicePath.SHOP, 'midway/backend/user/saveEnterpriseAdvantageList', requestData)
 }

@@ -112,7 +112,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
                   })
                 }
                 {
-                  item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ? <p className={`${styles['image-tip']} ${item.required ? styles['tip-right'] : ''}`}>{item.tip}</p> : item.tip)
+                  item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ? <p className={`${styles['image-tip']} ${styles['tip-right']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p> : item.tip)
                 }
               </div>
               {

@@ -92,5 +92,5 @@ export interface CompanyAdvantageListItem {
   bgImg: string,
   fontColor: 'black' | 'white',
   /** 自用字段 因为是数字 一定要保证唯一 */
-  key: number
+  key: string
 }
