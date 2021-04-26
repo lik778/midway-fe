@@ -4,7 +4,6 @@ import config from './config';
 // 引入的service
 import { SiteService } from './services/site.service';
 import { RequestService } from './services/request.service';
-import { HaojingService } from './services/haojing.service';
 import { SitemapService } from './services/sitemap.service';
 import { LogService } from './services/log.service';
 import { TrackerService } from './services/tracker.service';
@@ -16,7 +15,6 @@ import { ZhidaoService } from './services/zhidao.service';
 import { ManagementController } from './controllers/management.controller';
 import { AppController } from './controllers/app.controller';
 import { AdminController } from './controllers/admin.controller';
-import { HaojingController } from './controllers/haojing.controller';
 import { UpyunController } from './controllers/upyun.controller';
 import { SitemapController } from './controllers/sitemap.controller';
 import { B2bSiteController } from './controllers/site/b2b-site.controller';
@@ -43,7 +41,6 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     SiteCommonController,
     B2bSiteController,
     FuwuSiteController,
-    HaojingController,
     UpyunController,
     TrackerController,
     ReportController,
@@ -54,7 +51,6 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     RequestService,
     ManagementService,
     SiteService,
-    HaojingService,
     SitemapService,
     TrackerService,
     ReportService,
