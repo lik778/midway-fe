@@ -1,92 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Divider, Row } from 'antd';
-import MainTitle from '../../../components/main-title';
-import './index.less';
-import Loading from '@/components/loading';
-import { getUserVerifyListApi } from '@/api/user';
-import { VerifyStatus, VerifyType } from '@/enums';
-import { errorMessage } from '@/components/message';
-// import config from '@/config/env';
+import React, { useState, useEffect } from 'react'
+import { Button, Col, Divider, Row } from 'antd'
+import MainTitle from '../../../components/main-title'
+import Loading from '@/components/loading'
+import { getUserVerifyListApi } from '@/api/user'
+import { VerifyStatus } from '@/enums'
+import { VerifyItem } from '@/interfaces/user'
+import { useApi } from '@/hooks/api'
+import { AuthConfigItem, getAuthConfig } from './config'
+import './index.less'
+// import config from '@/config/env'
 
-
-const AuthPage = (props: any) => {
-  const [companyVerifyStatus, setCompanyVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
-  const [userVerifyStatus, setUserVerifyStatus] = useState<VerifyStatus>(VerifyStatus.DEFAULT);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const haojingHost = config().env;
+const AuthPage = () => {
+  const [ authConfig, setAuthConfig ] = useState<any>(getAuthConfig())
+  const [ verifyList, loading ] = useApi<VerifyItem[] | null>(null, getUserVerifyListApi)
   const haojingHost = '//www.baixing.com'
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true)
-      const res = await getUserVerifyListApi()
-      setIsLoading(false)
-      if (res.success) {
-        res.data.forEach(x => {
-          if (x.verifyRequestType === VerifyType.LICENCE) {
-            setCompanyVerifyStatus(x.status)
-          } else if (x.verifyRequestType === VerifyType.IDCARD) {
-            setUserVerifyStatus(x.status)
-          }
-        })
-      } else {
-        errorMessage(res.message)
-      }
-    })()
-  }, [])
+  // const haojingHost = config().env;
 
-  const actionButton = (status: VerifyStatus, type: number) => {
-    const name = type === 1 ? '企业认证' : '个人认证';
+  useEffect(() => {
+    if (verifyList) {
+      verifyList.forEach((x: VerifyItem) => authConfig[x.verifyRequestType]['status'] = x.status)
+      setAuthConfig({ ...authConfig })
+    }
+  }, [verifyList])
+
+  const actionButton = (item: AuthConfigItem) => {
+    const { name, status, type } = item
     if (status === VerifyStatus.ACCEPT) {
-      return <Button type='primary' disabled className="auth-disabled" size='large'>已完成{name}</Button>
+      return <Button type='primary' disabled className="auth-disabled" size='large'>已完成{ name }</Button>
     } else if (status === VerifyStatus.PENDING) {
       return <Button type='primary' disabled className="auth-disabled" size='large'>审核中</Button>
     } else if (status === VerifyStatus.REFUSE || status === VerifyStatus.REVOKE || status === null) {
-      return <Button href={`${haojingHost}/bind/?type=${type === 1 ? 'licence' : 'idcard'}`} type='primary' size='large'>
-        去完成{name}</Button>
+      return <Button href={`${haojingHost}/bind/?type=${ type.toLocaleLowerCase() }`} type='primary' size='large'>
+        去完成{ name }</Button>
     } else if (status === VerifyStatus.DEFAULT) {
       return null
     }
   }
+
   return <div>
       <MainTitle title="认证资料" />
       <div className="container">
-        { isLoading && <Loading /> }
+        { loading && <Loading /> }
         {
-          !isLoading && <div>
-                <Row className="auth-box">
+          !loading && verifyList && Object.keys(authConfig).map((key, i) => {
+            const item: AuthConfigItem = authConfig[key]
+            return (
+              <div  key={item.type}>
+              <Row className="auth-box" >
                 <Col span={10} className="auth-item">
-                  <img src="//file.baixing.net/202011/a86b2b4d6907336443bacfff1e924e99.png" />
+                  <img src={ item.imageSrc } />
                   <div style={{ marginLeft: 203 }}>
-                    <h4 style={{ fontSize: 18 }}>企业认证</h4>
+                    <h4 style={{ fontSize: 18 }}>{ item.name }</h4>
                     <ul style={{ paddingLeft: 0 }}>
-                      <li><span className="point"></span>适合公司（企业）或个体工商户</li>
-                      <li><span className="point"></span>需要认证营业执照</li>
-                      <li><span className="point"></span>特殊行业的经营许可证</li>
+                      { item.details.map(detail => <li key={detail}><span className="point"></span>{ detail }</li>) }
                     </ul>
-                    <p className="auth-example">例如：开锁行业需提供：公安备案； 搬家需提供：道路运输资质</p>
+                    { item.example }
                   </div>
                 </Col>
                 <Col offset={4} span={9} style={{ marginTop: 60 }}>
-                  {actionButton(companyVerifyStatus, 1)}
+                  { actionButton(item) }
                 </Col>
               </Row>
-              <Divider />
-              <Row className="auth-box">
-                <Col span={10} className="auth-item">
-                  <img src="//file.baixing.net/202011/9ef06d895702344481e49e5d5a11f9bf.png" />
-                  <div style={{ marginLeft: 203 }}>
-                    <h4 style={{ fontSize: 18 }}>个人认证</h4>
-                    <ul style={{ paddingLeft: 0 }}>
-                      <li><span className="point"></span>适合个人商家</li>
-                      <li><span className="point"></span>需要认证身份证</li>
-                    </ul>
-                  </div>
-                </Col>
-                <Col offset={4} span={9} style={{ marginTop: 60 }}>
-                  {actionButton(userVerifyStatus, 2)}
-                </Col>
-              </Row>
-          </div>
+              { i === 0 && <Divider /> }
+              </div>
+            )
+          })
         }
       </div>
     </div>
