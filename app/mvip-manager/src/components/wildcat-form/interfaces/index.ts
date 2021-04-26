@@ -23,7 +23,7 @@ export interface FormConfig {
   name: string;
   children: FormItem[];
   buttonConfig?: ButtonItem;
-  width?: number;
+  width?: number | string;
   labelAlign?: 'left' | 'right',
   useLabelCol?: ColProps;
   // 有些组件确实不适合封装 但是也要放在表单里管理 则写自定义的组件进去

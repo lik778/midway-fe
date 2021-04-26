@@ -5,6 +5,7 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 // 文章表单
 export const articleForm: FormConfig = {
   name: 'articleForm',
+  width: 650,
   children: [
     { formItemWidth: 260, className: 'f-middle', label: '文章分组', name: 'contentCateId', type: FormType.GroupSelect, options: [], required: true, placeholder: '暂无分组', btnConfig: { text: '新建分组' } },
     { formItemWidth: 395, className: 'f-middle', label: '文章标题', name: 'name', type: FormType.Input, required: true, maxLength: 50, placeholder: '请输入标题，2~50个字', minLength: 2, showCount: true },
