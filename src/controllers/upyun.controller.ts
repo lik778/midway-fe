@@ -2,7 +2,6 @@
 const crypto = require('crypto');
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { HaojingService } from '../services/haojing.service';
 import { upyunConfig } from '../config/upyun'
 import { md5 } from '../util/common'
 import { LOCAL_ENV, DEVELOPMENT_ENV, TEST_ENV, PRODUCTION_ENV } from '../config/index'

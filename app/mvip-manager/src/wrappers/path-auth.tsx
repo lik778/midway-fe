@@ -11,7 +11,7 @@ const PathAuth = (props: any) => {
   const { route: { path: urlPath }, menuAuthList } = props
 
   if (isNull(menuAuthList)) return <>
-    <MainTitle title="loading..."/>
+    <MainTitle title="加载中..."/>
     <div className="container"><Skeleton active paragraph={{ rows: 12 }} /></div>
   </>
 
