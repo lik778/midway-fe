@@ -32,17 +32,15 @@ export interface FormConfig {
 export interface FormItem {
   label: string; // 页面标签
   type: FormType; // 表单类型
-  name?: string; // 当前表单名字
+  name: string; // 字段名
   required: boolean; // 是否必填
   patternList?: any[]; // 正则
   placeholder?: string; // 提示
-  defaultValue?: any; // 默认值
-  validator?: any; // 校验
   options?: OptionItem[] | OptionCheckBox[];
   maxLength?: number
   minLength?: number,
   tip?: string | ReactNode, // 文案说明,
-  btnConfig?: any, // 输入框需要增加额外标签
+  btnConfig?: ReactNode, // 输入框需要增加额外标签
   maxNum?: number,
   minNum?: number,
   images?: ImagesItem[],// 图片多种情况
@@ -52,8 +50,6 @@ export interface FormItem {
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
   display?: boolean;
   formItemWidth?: number | string,
-
-  // 下面三个属性必须重写
   className?: string, // 自定义样式,
 }
 
