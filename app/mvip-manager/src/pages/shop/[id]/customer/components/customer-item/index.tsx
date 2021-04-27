@@ -111,10 +111,10 @@ const CustomerSet: FC<Props> = (props) => {
     setKeyCount(nowKey)
   }
 
-  const handleDeleteItem = (item: CustomerSetChildListItem) => {
-    const newDataList = dataList.filter(item => item.key !== item.key)
-    if (item.id) {
-      setDelKey([...delKey, item.id])
+  const handleDeleteItem = (delItem: CustomerSetChildListItem) => {
+    const newDataList = dataList.filter(item => item.key !== delItem.key)
+    if (delItem.id) {
+      setDelKey([...delKey, delItem.id])
     }
     setDataList(newDataList)
   }
@@ -160,6 +160,7 @@ const CustomerSet: FC<Props> = (props) => {
       }
       setUpDataLoading(false)
     } catch (e) {
+      errorMessage('必填项不能为空')
       console.log(e)
     }
   }
@@ -175,9 +176,14 @@ const CustomerSet: FC<Props> = (props) => {
       <div className={styles['container']}>
         <Form form={form} name={`form${id}`}>
           <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
-            模块标题
-        </span>} labelCol={{ span: 2 }} rules={[{ required: true, message: '请输入模块标题' }, { type: 'string', min: 2, max: 6, message: '模块标题须在2-6字符之间' }]} required={true} name='title'>
-            <InputLen className={styles['form-input']} maxLength={6} minLength={2} showCount={true} />
+            模块中文标题
+        </span>} labelCol={{ span: 3 }} rules={[{ required: true, message: '请输入模块中文标题' }, { type: 'string', min: 2, max: 6, message: '模块中文标题须在2-6字符之间' }]} required={true} name='title'>
+            <InputLen width={280} className={styles['form-input']} maxLength={6} minLength={2} showCount={true} placeholder="例如：企业优势、服务流程" />
+          </FormItem>
+          <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
+            模块英文标题
+        </span>} labelCol={{ span: 3 }} rules={[{ required: false, message: '请输入模块英文标题' }, { type: 'string', min: 2, max: 30, message: '模块英文标题须在2-30字符之间' }]} required={false} name='title_en'>
+            <InputLen width={280} className={styles['form-input']} maxLength={30} minLength={2} showCount={true} placeholder="例如：COMPANY ADVANTAGE" />
           </FormItem>
         </Form>
         {

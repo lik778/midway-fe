@@ -2,7 +2,7 @@
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 
-export const CustomerSetFormConfigFn: (key: string | number) => FormConfig = (key) => ({
+export const CustomerSetFormConfigFn: (key: string | number, imageChange: (...arg: any) => any) => FormConfig = (key, imageChange) => ({
   name: `CustomerSetForm${key}`,
   width: 690,
   useLabelCol: { span: 4 },
@@ -14,7 +14,7 @@ export const CustomerSetFormConfigFn: (key: string | number) => FormConfig = (ke
     },
     {
       label: '上传图片', name: 'img', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '知道侧栏', name: 'bgImg', maxSize: 3 }],
-      required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸590*222', imagesTipPosition: 'right'
+      required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸590*222', imagesTipPosition: 'right', onChange: imageChange
     },
   ]
 }

@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react'
 import CustomerItem from './components/customer-item'
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
 import { ShopBasisType } from '@/enums'
+import styles from './index.less'
 
 const CustomerSet: FC = () => {
   const [dataList, setDataList] = useState<{ id: number, title: string }[]>([])
@@ -23,7 +24,10 @@ const CustomerSet: FC = () => {
 
   return <>
     <BasisHeader type={ShopBasisType.CUSTOMER} />
-    <CustomerItem></CustomerItem>
+    <div className={styles['container']}>
+      <CustomerItem></CustomerItem>
+
+    </div>
   </>
 }
 
