@@ -1,4 +1,4 @@
-import { CompanyAdvantageListItem } from '@/interfaces/user'
+import { CustomerSetListItem } from '@/interfaces/user'
 import { Tooltip } from 'antd'
 import React, { FC, forwardRef, Ref, useEffect, useState } from 'react'
 import styles from './index.less'

@@ -1,28 +1,28 @@
 import React, { FC, forwardRef, Ref, useEffect, useMemo, useState } from 'react'
-import { CompanyAdvantageListItem } from '@/interfaces/user'
-import { Form, Radio } from 'antd'
-import { companyAdvantageFormConfigFn } from './config'
+import { Form, Input, Radio } from 'antd'
+import { CustomerSetFormConfigFn } from './config'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import WildcatForm from '@/components/wildcat-form';
 import styles from './index.less'
 import PreviewItem from '../preview/index'
+import { CustomerSetChildListItem } from '@/interfaces/shop';
 
 const FormItem = Form.Item
 
 interface Props {
   index: number,
-  item: CompanyAdvantageListItem,
-  onDel: (key: string) => void
+  item: CustomerSetChildListItem,
+  onDel: (item: CustomerSetChildListItem) => void
   key: string,
   total: number
 }
 
 const fontNumber = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 
-const CompanyAdvantageForm = (props: Props, parentRef: Ref<any>) => {
+const CustomerSetForm = (props: Props, parentRef: Ref<any>) => {
   const { item, index, onDel, total } = props
-  const [itemData, setItemData] = useState<CompanyAdvantageListItem>(item)
-  const [config, setConfig] = useState<FormConfig>(() => companyAdvantageFormConfigFn(item.key))
+  const [itemData, setItemData] = useState<CustomerSetChildListItem>(item)
+  const [config, setConfig] = useState<FormConfig>(() => CustomerSetFormConfigFn(item.key))
   const [editDataSource, setEditDataSource] = useState(() => ({
     ...item,
     fontColor: item.fontColor || 'black'
@@ -42,6 +42,7 @@ const CompanyAdvantageForm = (props: Props, parentRef: Ref<any>) => {
     })
   }, [])
 
+
   const formChange = (changeValue: any, allValues: any) => {
     setItemData({
       ...allValues
@@ -49,7 +50,9 @@ const CompanyAdvantageForm = (props: Props, parentRef: Ref<any>) => {
   }
 
   return <div className={styles['form-box']}>
-    <FormItem className={styles['form-item']} label={`优势${fontNumber[index]}`} required={true}>
+    <FormItem className={styles['form-item']} label={<span className={styles['form-label']}>
+      子模块{fontNumber[index]}
+    </span>} required={true} labelCol={{ span: 2 }}>
       <WildcatForm
         ref={parentRef}
         editDataSource={editDataSource}
@@ -58,9 +61,9 @@ const CompanyAdvantageForm = (props: Props, parentRef: Ref<any>) => {
       />
     </FormItem>
     {
-      total > 2 && <div className={styles['form-delete']} onClick={() => onDel(item.key)}>删除优势</div>
+      total > 2 && <div className={styles['form-delete']} onClick={() => onDel(item)}>删除优势</div>
     }
   </div>
 }
 
-export default forwardRef(CompanyAdvantageForm)
+export default forwardRef(CustomerSetForm)

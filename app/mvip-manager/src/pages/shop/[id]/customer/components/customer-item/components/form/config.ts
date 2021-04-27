@@ -2,14 +2,14 @@
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 
-export const companyAdvantageFormConfigFn: (key: string | number) => FormConfig = (key) => ({
-  name: `companyAdvantageForm${key}`,
+export const CustomerSetFormConfigFn: (key: string | number) => FormConfig = (key) => ({
+  name: `CustomerSetForm${key}`,
   width: 690,
   useLabelCol: { span: 4 },
   children: [
-    { label: '优势标题', name: 'title', type: FormType.Input, required: true, placeholder: '例如：品质优秀', formItemWidth: '100%', maxLength: 10, showCount: true },
+    { label: '子模块标题', name: 'title', type: FormType.Input, required: true, placeholder: '例如：品质优秀', formItemWidth: '100%', minLength: 2, maxLength: 8, showCount: true },
     {
-      label: '优势简介', name: 'desc', type: FormType.Textarea, required: true, placeholder: '请输入简介，30～50个字',
+      label: '子模块简介', name: 'desc', type: FormType.Textarea, required: true, placeholder: '请输入简介，30～50个字',
       minLength: 30, maxLength: 50, patternList: [{ pattern: /^[\s\S]{30,50}$/, message: '30～50个字' }]
     },
     {

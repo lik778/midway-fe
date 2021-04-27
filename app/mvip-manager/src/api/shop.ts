@@ -10,7 +10,7 @@ import {
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
-  TdkDetailMeta, ShopStatus, ShopInfo,
+  TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -139,4 +139,25 @@ export const getCateNumApi = (shopId: number, params: HandleApiParams) => {
 // api: 是否店铺新用户
 export const isNewUserApi = () => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/isNewUser', {})
+}
+
+
+/** 获取所有自定义模块列表 */
+export const getCustomerModuleListApi = (): Promise<ServiceResponse<{ id: number, title: string }[]>> => {
+  return postApiData(ServicePath.SHOP, '')
+}
+
+/** 获取某个自定义设置 */
+// TODO 
+// 当前版本不需要传id
+export const getCustomerSetApi = (id?: number): Promise<ServiceResponse<CustomerSetListItem>> => {
+  return postApiData(ServicePath.SHOP, '', id)
+}
+
+/** 保存某个自定义设置 */
+export const setCustomerSetApi = (requestData: {
+  detail: CustomerSetListItem,
+  del: { id: number, cid: number[] } | null
+}): Promise<ServiceResponse<never>> => {
+  return postApiData(ServicePath.SHOP, '', requestData)
 }

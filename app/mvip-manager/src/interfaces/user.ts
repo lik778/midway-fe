@@ -87,12 +87,3 @@ export interface ZhidaoMaterial {
 export interface ZhidaoMaterialData extends ZhidaoMaterial {
   siteUrls: any
 }
-
-export interface CompanyAdvantageListItem {
-  title: string,
-  desc: string,
-  bgImg: string,
-  fontColor: 'black' | 'white',
-  /** 自用字段 因为是数字 一定要保证唯一 */
-  key: string
-}
