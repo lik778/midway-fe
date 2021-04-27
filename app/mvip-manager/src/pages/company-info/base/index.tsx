@@ -52,7 +52,7 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { area, companyAddress, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
+    const { area, companyAddress, companyAlias, companyDescription, companyName, companyYears, employeeCount, fuwuArea, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
     //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
       //...companyInfo,
@@ -63,6 +63,7 @@ function CompanyInfoBase(props: any) {
       companyName,
       companyYears,
       employeeCount,
+      fuwuArea,
       promoteImg,
       secondCategory: selectedSecondCategory ? Object.keys(selectedSecondCategory)[0] : "",
       thirdMetas: selectedThirdMetas ? Object.keys(selectedThirdMetas) : []

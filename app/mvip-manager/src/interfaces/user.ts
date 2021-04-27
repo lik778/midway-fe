@@ -14,6 +14,7 @@ export interface SaveEnterpriseForShopParams {
   companyYears: number;
   employeeCount: number;
   firstCategory?: string;
+  fuwuArea: string;
   promoteImg: string;
   secondCategory: string;
   thirdMetas: string[];
