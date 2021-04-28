@@ -9,6 +9,6 @@ const genSiteTemplateEntry = (templateNum, templatePageNames, extraPaths = []) =
     })
     return preValue
   }, {})
-
+}
 
 module.exports = { genSiteTemplateEntry }
