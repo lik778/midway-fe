@@ -17,7 +17,7 @@ export const baseInfoForm: FormConfig = {
     { inputWidth: 260, className:'f-middle',label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2,placeholder: '请输入企业别称，2~20个字',showCount: true },
     { width: 353, className:'f-area-select',label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { inputWidth: 260, className:'f-middle',label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
-    { inputWidth: 260, className:'f-middle',label: '服务区域', name: 'fuwuArea', type: FormType.Input, required: true, placeholder: '请输入服务区域' },
+    { inputWidth: 260, className:'f-middle',label: '服务区域', name: 'serviceArea', type: FormType.Input, required: true, placeholder: '请输入服务区域' },
     { width: 690, label: '企业简介', className:'f-textarea', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [ { pattern: /^[\s\S]{50,300}$/, message: '50～300个字'}  ] },
     { width: 690, label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{text:'企业logo', name: 'promoteImg', rule:[{required: true, message: `请上传企业logo` }]}],
