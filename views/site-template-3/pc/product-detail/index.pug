@@ -1,0 +1,31 @@
+extends ../layout
+
+block styles
+    :combine(fileName="site-template-3-product-detail-pc.css")
+
+block content
+    include ../components/common/breadcrumbs.pug
+    .container.clearfix
+        include ../components/product-detail/company-top.pug
+        include ../components/product-detail/product-recom-title.pug
+        - productList = renderData.productRecommend.slice(0,5)
+        include ../components/product/product-list.pug
+
+        .main
+            include ../components/product-detail/product-content.pug
+            include ../components/common/contact-form-companyInfo.pug
+
+        .sidebar
+            - const { productCateList, articleCateList} = renderData
+            include ../components/sidebar/cateList.pug
+            +side-cateList('产品分类', productCateList)
+            +side-cateList('文章分类', articleCateList)
+
+
+
+block scripts
+    :combine(fileName="site-template-3-product-detail-pc.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.adId = #{renderData.productInfo.id};

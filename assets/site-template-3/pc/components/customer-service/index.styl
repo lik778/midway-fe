@@ -1,0 +1,167 @@
+.customer-service
+	position fixed
+	right 10px
+	bottom 50px
+	z-index 999
+
+	.customer-service__group
+		background-color #fff
+		box-shadow 0 4px 10px rgba(#000, 0.05)
+
+		.service
+			&-item
+				padding 15px 10px
+				cursor pointer
+				position relative
+
+				&:not(:last-child)::after
+					content ''
+					position absolute
+					width 70%
+					height 2px
+					background-color #F5F5F5
+					left 50%
+					bottom 0
+					transform translateX(-50%)
+				&::before // 过来过渡hover时候中间有个空隙
+					content ''
+					position absolute
+					width 50px
+					height 100%
+					left -50px
+					bottom 0
+					display none
+			&-name
+				font-size 14px
+				text-align center
+			&-logo
+				margin auto
+				width 30px
+				height 30px
+				margin-bottom 5px
+				&.qq
+					background url('http://file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png') no-repeat center center/100%
+				&.mobile
+					background url('http://file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png') no-repeat center center/100%
+				&.wechat
+					background url('http://file.baixing.net/202102/a278452bf26c6a6b4b870c69d2bcd615.png') no-repeat center center/100%
+
+			&-item:hover
+				&::before
+					display block
+				.service-modal
+					display block
+				.service-name
+					color #FF2D38
+				.qq
+					background url('http://file.baixing.net/202102/b35eae79d56d8081f3c029e3e06c5040.png') no-repeat center center/100%
+				.mobile
+					background url('http://file.baixing.net/202102/274fb15f6bf4bf0cb1567d1fead4be0b.png') no-repeat center center/100%
+				.wechat
+					background url('http://file.baixing.net/202102/ba8009496bfbdbe07f62ab855d1b9980.png') no-repeat center center/100%
+
+			&-modal
+				display none
+				position absolute
+				background-color #fff
+				right calc(100% + 20px)
+				top 50%
+				padding 20px 25px
+				transform translateY(-50%)
+				box-shadow 0 4px 10px rgba(#000, 0.05)
+				cursor initial
+
+				&::after
+					content ''
+					background-color #fff
+					width 15px
+					height 15px
+					position absolute
+					right -5px
+					top 50%
+					transform translateY(-50%) rotate(45deg)
+
+				&__qq
+					&:not(:last-child)
+						margin-bottom 20px
+					.qq-name
+						text-align center
+						font-size 14px
+						margin-bottom 5px
+						width 100px
+					.qq-link
+						width 100px
+						height 30px
+						box-sizing border-box
+						text-align center
+						line-height 30px
+						background #426CE8
+						color #fff
+						border-radius 15px
+						border-radius 15px
+						font-size 12px
+						display flex
+						align-items center
+						justify-content center
+						cursor pointer
+						> a
+							display flex
+							align-items center
+							color #fff
+							img
+								width 16px
+								margin-right 5px
+
+				&__mobile,
+				&__wechat
+					> div
+						white-space nowrap
+						font-size 14px
+						line-height 20px
+					.mobile
+						&-number
+							margin-bottom 20px
+							color #FF2D38
+							width 100px
+							text-overflow ellipsis
+							overflow hidden
+						&-info
+							color #999999
+							font-size 12px
+					.click-copy
+						color #426CE8
+						border 1px solid #426CE8
+						border-radius 15px
+						border-radius 15px
+						height 30px
+						line-height 30px
+						text-align center
+						cursor pointer
+
+	#back-to-top
+		margin-top 15px
+		background-color #fff
+		box-shadow 0 4px 10px rgba(#000, 0.05)
+		padding 20px 0
+		cursor pointer
+		text-align center
+
+		.back-to-top
+			&__icon
+				margin 0 auto 15px
+				width 22px
+				height 13px
+				background url('//file.baixing.net/202102/61b6675ce0021dd18cb8535faea76db8.png') no-repeat center center/100%
+			&__text
+				font-size 12px
+
+		&:hover
+			.back-to-top
+				&__icon
+					background url('//file.baixing.net/202102/50fa9c6777ba7338d6b03b337fb05af7.png') no-repeat center center/100%
+				&__text
+					color #FF444D
+
+#wechat-id-textarea
+	position absolute
+	left 99999px

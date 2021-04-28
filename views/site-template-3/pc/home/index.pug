@@ -1,0 +1,49 @@
+extends ../layout
+
+block styles
+    :combine(fileName="site-template-3-home-pc.css")
+
+//-使用了统一的header和nav
+block content
+    include ../components/common/base-swiper.pug
+
+    .container
+
+        //-自身优势
+
+        //-服务项目
+        - hotProductList = renderData.productRecommend
+        if hotProductList && hotProductList.length>0
+            .block-title
+                h2 服务项目
+            include ../components/home/product-list.pug
+            +product-list('hot', hotProductList)
+
+        //-关于我们
+        .block-title
+            h2 关于我们
+        include ../components/home/about-us.pug
+
+        //-查看完整电话
+
+        //-公司优势
+
+        //-新闻资讯
+        - articleList = renderData.articleList.result
+        - const { articleRecommend } = renderData
+        if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+            .block-title
+                h2 新闻资讯
+            include ../components/home/news-center.pug
+            .new-center.clearfix
+                +news-box('新闻资讯', articleList)
+
+        .block-title
+            h2 联系我们
+        include ../components/home/contact-us.pug
+
+block scripts
+    :combine(fileName="site-template-3-home-pc.js")
+block append scripts
+    script.
+        window.trackSrc = 'home';
