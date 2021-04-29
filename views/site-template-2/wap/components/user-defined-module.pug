@@ -1,10 +1,10 @@
 mixin user-defined-module(pageType,userDefinedModuleList)
   if userDefinedModuleList
     .user-defined-module
-      h2.block-title #{ userDefinedModuleList.title }
+      h2.block-title #{ userDefinedModuleList.mainModuleTitle }
         span
         span
-      - const userDefinedList = userDefinedModuleList.module
+      - const userDefinedList = userDefinedModuleList.subModuleBos
       - const isOdd = userDefinedList.length%2 === 0 ? false : true
       .user-defined-list
         each item,index in userDefinedList
@@ -15,7 +15,7 @@ mixin user-defined-module(pageType,userDefinedModuleList)
           .user-defined-item
             span.number #{ number }
             span.title #{ item.title }
-            .desc.only-fiveline #{ item.desc }
+            .content.only-fiveline #{ item.content }
         if isOdd
           if pageType === 'about'
             .user-defined-item
