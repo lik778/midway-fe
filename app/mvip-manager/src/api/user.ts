@@ -10,7 +10,6 @@ import {
 } from '@/interfaces/user';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
-import { CompanyAdvantageListItem } from '@/interfaces/user';
 
 // 获取用户基础信息
 export const getUserBaseInfoApi = (): Promise<ServiceResponse<UserInfo>> => {
@@ -58,14 +57,4 @@ export const getZhidaoMaterial = (): Promise<ServiceResponse<ZhidaoMaterialData>
 /** 保存问答素材库 */
 export const setZhidaoMaterial = (params: ZhidaoMaterial): Promise<ServiceResponse<null>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/user/saveZhidaoMaterial', params)
-}
-
-/** 获取企业优势 */
-export const getCompanyAdvantageApi = (): Promise<ServiceResponse<CompanyAdvantageListItem[]>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/user/getEnterpriseAdvantageList')
-}
-
-/** 获取企业优势 */
-export const setCompanyAdvantageApi = (requestData: CompanyAdvantageListItem[]): Promise<ServiceResponse<never>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/user/saveEnterpriseAdvantageList', requestData)
 }

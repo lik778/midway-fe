@@ -12,7 +12,8 @@ export enum ProductType {
 export enum ShopBasisType {
   NAV = 'nav',
   CAROUSEL = 'carousel',
-  SEO = 'seo'
+  CUSTOMER = 'customer',
+  SEO = 'seo',
 }
 
 export enum ShopTDKType {

@@ -74,7 +74,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
           const patternList = item.patternList ? item.patternList : [];
           if (item.type === FormType.Input) {
             return (
-              <FormItem className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
+              <FormItem className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList, { type: 'string', min: item.minLength, max: item.maxLength }]}>
                 <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount} />
               </FormItem>
             )
@@ -142,7 +142,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
                 maxNum={item.maxNum || 0}
                 onChange={(newValue) => onChange(newValue, item.name || '')} />
             </FormItem>)
-            }else if(item.type === FormType.MetaChecbox && item.display){
+          } else if (item.type === FormType.MetaChecbox && item.display) {
             return (
               <FormItem className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]}>
                 <CheckboxGroup

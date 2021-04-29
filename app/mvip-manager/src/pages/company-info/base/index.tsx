@@ -52,12 +52,13 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { area, companyAddress, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
+    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
     //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
       //...companyInfo,
       area,
       companyAddress,
+      serviceArea,
       companyAlias,
       companyDescription,
       companyName,

@@ -14,6 +14,7 @@ export interface SaveEnterpriseForShopParams {
   companyYears: number;
   employeeCount: number;
   firstCategory?: string;
+  serviceArea: string;
   promoteImg: string;
   secondCategory: string;
   thirdMetas: string[];
@@ -54,7 +55,8 @@ export interface UserEnterpriseInfo {
   qqMap: { [key: string]: string };
   companyNameLock: boolean;
   kefuStatus: KFStatus;
-  kf53Info: KF53Info | null;
+  kf53Info: KF53Info|null;
+  serviceArea: string;
 }
 
 
@@ -86,13 +88,4 @@ export interface ZhidaoMaterial {
 
 export interface ZhidaoMaterialData extends ZhidaoMaterial {
   siteUrls: any
-}
-
-export interface CompanyAdvantageListItem {
-  title: string,
-  desc: string,
-  bgImg: string,
-  fontColor: 'black' | 'white',
-  /** 自用字段 因为是数字 一定要保证唯一 */
-  key: string
 }
