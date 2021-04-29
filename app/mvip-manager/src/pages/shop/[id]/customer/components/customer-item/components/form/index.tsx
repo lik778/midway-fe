@@ -29,14 +29,15 @@ const CustomerSetForm = (props: Props, parentRef: Ref<any>) => {
   const ref = useRef<{ form: FormInstance | undefined }>({ form: undefined })
   // 将子组件的form给父组件
   useImperativeHandle(parentRef, () => ({
-    form: ref.current.form
+    form: ref.current.form,
+    item
   }))
 
   // 上传图片被删除后需要重置字体颜色为黑色
   const imageChange = (value: string | undefined) => {
     if (!value) {
       ref.current.form?.setFieldsValue({
-        fontColor: 'black'
+        fontColor: 0
       })
     }
   }
@@ -44,13 +45,13 @@ const CustomerSetForm = (props: Props, parentRef: Ref<any>) => {
   const [config, setConfig] = useState<FormConfig>(() => CustomerSetFormConfigFn(item.key, imageChange))
   const [editDataSource, setEditDataSource] = useState(() => ({
     ...item,
-    fontColor: item.fontColor || 'black'
+    fontColor: item.fontColor || 0
   }))
 
   const RadioFormItem = useMemo(() => <FormItem label="字体颜色" name='fontColor' key='fontColor'>
-    <Radio.Group disabled={nowItem.bgImg === ''}>
-      <Radio style={{ marginRight: 44 }} value={'black'}>黑色<PreviewItem color="black"></PreviewItem></Radio>
-      <Radio value={'white'}>白色 <PreviewItem color="white"></PreviewItem></Radio>
+    <Radio.Group disabled={nowItem.urlImg === ''}>
+      <Radio style={{ marginRight: 44 }} value={0}>黑色<PreviewItem color="black"></PreviewItem></Radio>
+      <Radio value={1}>白色 <PreviewItem color="white"></PreviewItem></Radio>
     </Radio.Group>
   </FormItem>, [nowItem])
 

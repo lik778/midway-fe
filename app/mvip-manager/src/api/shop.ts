@@ -10,7 +10,7 @@ import {
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
-  TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem
+  TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -143,21 +143,21 @@ export const isNewUserApi = () => {
 
 
 /** 获取所有自定义模块列表 */
-export const getCustomerModuleListApi = (): Promise<ServiceResponse<{ id: number, title: string }[]>> => {
-  return postApiData(ServicePath.SHOP, '')
+export const getCustomerModuleListApi = (shopId: number,): Promise<ServiceResponse<{ mainModuleBos: CustomerListItem[] }>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleList', {}, setShopHeader(shopId))
 }
 
 /** 获取某个自定义设置 */
-// TODO 
-// 当前版本不需要传id
-export const getCustomerSetApi = (id?: number): Promise<ServiceResponse<CustomerSetListItem>> => {
-  return postApiData(ServicePath.SHOP, '', id)
+export const getCustomerSetApi = (shopId: number, id: number): Promise<ServiceResponse<CustomerSetListItem>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id }, setShopHeader(shopId))
 }
 
 /** 保存某个自定义设置 */
-export const setCustomerSetApi = (requestData: {
-  detail: CustomerSetListItem,
-  del: { id: number, cid: number[] } | null
+export const setCustomerSetApi = (shopId: number, requestData: {
+  mainModuleId?: number,
+  mainModuleTitle: string,
+  subModuleVos: CustomerSetChildListItem[],
+  subModulesToDelete: number[]
 }): Promise<ServiceResponse<never>> => {
-  return postApiData(ServicePath.SHOP, '', requestData)
+  return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
 }

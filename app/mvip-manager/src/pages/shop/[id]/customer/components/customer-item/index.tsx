@@ -1,4 +1,5 @@
 import React, { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react'
+import { useParams } from 'umi'
 import { FormInstance, Spin, Form, Button, Input } from 'antd';
 import MainTitle from '@/components/main-title';
 import { CustomerSetChildListItem, CustomerSetListItem } from '@/interfaces/shop';
@@ -12,47 +13,44 @@ import InputLen from '@/components/input-len';
 const FormItem = Form.Item
 
 interface Props {
-  // id: number
+  mainModuleId: number
 }
 
 const CustomerSet: FC<Props> = (props) => {
-  // const { id } = props
-  const [id, setId] = useState<number>()
-  const [title, setTitle] = useState<string>('')
+  const { id } = useParams<{ id: string }>()
+  const { mainModuleId } = props
   const [dataList, setDataList] = useState<CustomerSetChildListItem[]>([])
   const [keyCount, setKeyCount] = useState<number>(0)
-  const [getDataLoading, setGetDataLoading] = useState<boolean>(true)
+  const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [delKey, setDelKey] = useState<number[]>([])
-  const forms = useRef<{ form: FormInstance }[]>([])
+  const forms = useRef<{ form: FormInstance, item: CustomerSetChildListItem }[]>([])
   const [form] = Form.useForm();
 
   const newItem = {
     title: '',
-    desc: '',
-    bgImg: '',
-    fontColor: 'black' as 'black',
+    content: '',
+    urlImg: '',
+    fontColor: 0 as 0,
   }
 
   const getCustomerSet = async () => {
     setGetDataLoading(true)
-    // const res = await getCustomerSetApi()
+    const res = await getCustomerSetApi(Number(id), mainModuleId)
     // const res = await mockData<CustomerSetListItem>('data', {
     //   id: 1,
     //   title: '企业优势',
     //   module: []
     // })
-    const res = await mockData<CustomerSetListItem | null>('data', null)
+    // const res = await mockData<CustomerSetListItem | null>('data', null)
     if (res.success) {
       if (res.data) {
-        const { id, title, module } = res.data
-        const newDataList = createChildList(module)
-        setId(id)
-        setTitle(title)
+        const { mainModuleTitle, subModuleBos } = res.data
+        const newDataList = createChildList(subModuleBos)
         setDataList(newDataList)
-      } else {
-        const newDataList = createChildList([])
-        setDataList(newDataList)
+        form.setFieldsValue({
+          title: mainModuleTitle,
+        })
       }
     }
     setGetDataLoading(false)
@@ -98,8 +96,13 @@ const CustomerSet: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    getCustomerSet()
-  }, [])
+    if (mainModuleId) {
+      getCustomerSet()
+    } else {
+      const newDataList = createChildList([])
+      setDataList(newDataList)
+    }
+  }, [mainModuleId])
 
   const handleClickAdd = () => {
     let nowKey = keyCount
@@ -126,49 +129,45 @@ const CustomerSet: FC<Props> = (props) => {
     try {
       await validateForm()
       const values = forms.current.filter(item => item).map(item => {
-        return item.form.getFieldsValue()
+        return {
+          ...item.form.getFieldsValue(),
+          id: item.item.id
+        }
       })
       const title = form.getFieldValue('title')
       setUpDataLoading(true)
+      console.log(JSON.stringify({
+        mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
+        mainModuleTitle: title,
+        subModuleVos: values,
+        subModulesToDelete: delKey
+      }))
       console.log({
-        detail: {
-          id: id,
-          title,
-          module: values
-        },
-        del: id ? {
-          id: id,
-          cid: []
-        } : null
+        mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
+        mainModuleTitle: title,
+        subModuleVos: values,
+        subModulesToDelete: delKey
       })
-      // const res = await setCustomerSetApi({
-      //   detail: {
-      //     id: id,
-      //     title,
-      //     module: values
-      //   },
-      //   del: id ? {
-      //     id: id,
-      //     cid: []
-      //   } : null
-      // })
-      const res = await mockData('data', null)
+
+      const res = await setCustomerSetApi(Number(id), {
+        mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
+        mainModuleTitle: title,
+        subModuleVos: values,
+        subModulesToDelete: delKey
+      })
+      // const res = await mockData('data', null)
       if (res.success) {
         successMessage(res.message || '保存成功')
+        setDelKey([])
       } else {
         errorMessage(res.message || '保存失败，请稍后再试！')
       }
       setUpDataLoading(false)
     } catch (e) {
       errorMessage('必填项不能为空')
+      setUpDataLoading(false)
       console.log(e)
     }
-  }
-
-
-  const handleChangeInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    e.persist()
-    setTitle(e.target.value)
   }
 
   return <>
@@ -176,14 +175,9 @@ const CustomerSet: FC<Props> = (props) => {
       <div className={styles['container']}>
         <Form form={form} name={`form${id}`}>
           <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
-            模块中文标题
-        </span>} labelCol={{ span: 3 }} rules={[{ required: true, message: '请输入模块中文标题' }, { type: 'string', min: 2, max: 6, message: '模块中文标题须在2-6字符之间' }]} required={true} name='title'>
+            模块标题
+        </span>} labelCol={{ span: 3 }} rules={[{ required: true, message: '请输入模块标题' }, { type: 'string', min: 2, max: 6, message: '模块标题须在2-6字符之间' }]} required={true} name='title'>
             <InputLen width={280} className={styles['form-input']} maxLength={6} minLength={2} showCount={true} placeholder="例如：企业优势、服务流程" />
-          </FormItem>
-          <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
-            模块英文标题
-        </span>} labelCol={{ span: 3 }} rules={[{ required: false, message: '请输入模块英文标题' }, { type: 'string', min: 2, max: 30, message: '模块英文标题须在2-30字符之间' }]} required={false} name='title_en'>
-            <InputLen width={280} className={styles['form-input']} maxLength={30} minLength={2} showCount={true} placeholder="例如：COMPANY ADVANTAGE" />
           </FormItem>
         </Form>
         {
