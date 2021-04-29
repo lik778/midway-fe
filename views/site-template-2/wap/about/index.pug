@@ -4,10 +4,8 @@ block styles
 
 block content
 
-    - userDefinedList = {mainModuleTitle:'企业优势',subModuleBos:[{title:'品质优秀',content:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理、生产管理。大的客户服务体系市场营服务体系市场',fontColor:'black',urlImg:'http://img4.baixing.net/cd7d20ca9365e174b60f7b2844938ffa.png_sm'},{title:'专注制造',content:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'white',urlImg:'http://img4.baixing.net/3ffa28460eea6271e2931578700e651e.png_sm'},{title:'诚信合作',content:'世纪方策现于全国建立了强大的客户服务体系，专注于市场营销、综合管理、生产管理、人力资源。',fontColor:'black',urlImg:''},{title:'贴心售后',content:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'black',urlImg:''},{title:'诚信合作',content:'世纪方策现于全国建立了大的客户服务体系市场营销、综合管理、生产管理。',fontColor:'black',urlImg:''},{title:'品质优秀',content:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理、生产管理。大的客户服务体系市场营服务体系市场',fontColor:'black',urlImg:'http://img4.baixing.net/cd7d20ca9365e174b60f7b2844938ffa.png_sm'},{title:'专注制造',content:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'white',urlImg:'http://img4.baixing.net/3ffa28460eea6271e2931578700e651e.png_sm'},{title:'诚信合作',content:'世纪方策现于全国建立了强大的客户服务体系，专注于市场营销、综合管理、生产管理、人力资源。',fontColor:'black',urlImg:''},{title:'贴心售后',content:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'black',urlImg:''}]}
-    if userDefinedList
-        //- TODO: userDefinedList的数据目前还没有，需要添加。
-        //- - userDefinedList = renderData.basic.autoConfig
+    - const userDefinedList = renderData.autoConfig
+    if userDefinedList && userDefinedList.length>0
         include ../components/user-defined-module.pug
         +user-defined-module('about',userDefinedList)
     include ../components/aboutus.pug

@@ -1,10 +1,10 @@
 mixin user-defined-module(pageType,userDefinedModuleList)
-  if userDefinedModuleList
+  each userDefinedModule in userDefinedModuleList
     .user-defined-module
-      h2.block-title #{ userDefinedModuleList.mainModuleTitle }
+      h2.block-title #{ userDefinedModule.mainModuleTitle }
         span
         span
-      - const userDefinedList = userDefinedModuleList.subModuleBos
+      - const userDefinedList = userDefinedModule.subModuleBos
       - const isOdd = userDefinedList.length%2 === 0 ? false : true
       .user-defined-list
         each item,index in userDefinedList

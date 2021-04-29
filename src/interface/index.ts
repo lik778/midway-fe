@@ -58,4 +58,5 @@ export interface ShopComponents {
   shopInfo?: any; // 店铺信息
   bread?: any; // 面包屑
   meta?: any; // seo tkd
+  autoConfig?: any;//自定义模块
 }

@@ -1,17 +1,17 @@
 mixin user-defined-module(userDefinedModuleList)
-	if userDefinedModuleList
+	each userDefinedModule in userDefinedModuleList
 		.block-title
 			.point
 				.littlePoint
 				.largePoint
-			h2 #{ userDefinedModuleList.mainModuleTitle }
+			h2 #{ userDefinedModule.mainModuleTitle }
 			.point
 				.largePoint
 				.littlePoint
 				
 				
 			//-是否为奇数个，奇数个展示查看更多
-		- const userDefinedList = userDefinedModuleList.subModuleBos
+		- const userDefinedList = userDefinedModule.subModuleBos
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
 		.user-defined-list
 			each item, index in userDefinedList
@@ -30,7 +30,3 @@ mixin user-defined-module(userDefinedModuleList)
 			if isOdd
 				.user-defined-item
 					a(href="/about" || "#") 查看企业介绍详情
-
-
-
-
