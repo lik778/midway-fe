@@ -1,8 +1,15 @@
 mixin user-defined-module(userDefinedModuleList)
 	if userDefinedModuleList
-		.block-title(style="margin-top:62px")
-			img(src='//file.baixing.net/202104/71f958db636d1f39957783d60f131091.png',style={ width :'395px'}, alt="企业优势")
+		.block-title
+			.point
+				.littlePoint
+				.largePoint
 			h2 #{ userDefinedModuleList.title }
+			.point
+				.largePoint
+				.littlePoint
+				
+				
 			//-是否为奇数个，奇数个展示查看更多
 		- const userDefinedList = userDefinedModuleList.module
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
