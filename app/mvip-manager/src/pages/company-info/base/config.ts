@@ -20,6 +20,7 @@ export const baseInfoForm: FormConfig = {
     { formItemWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2, placeholder: '请输入企业别称，2~20个字', showCount: true },
     { label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { formItemWidth: 260, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
+    { formItemWidth: 260, label: '服务区域', name: 'serviceArea', type: FormType.Input, required: true, placeholder: '请输入服务区域' },
     {
       label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
       minLength: 50, maxLength: 300, patternList: [{ pattern: /^[\s\S]{50,300}$/, message: '50～300个字' }]
