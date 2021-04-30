@@ -209,4 +209,34 @@ export class BaseSiteController {
       return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
     }
   }
+  //关于我们
+  @Get('/about')
+  async about(@Param() params, @HostParam('shopName') HostShopName: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const { data } = await this.midwayApiService.getAboutPageData(shopName, device, domain);
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        contentType: 'article',
+        category: '',
+        _platform: device,
+        tracktype: 'pageview',
+        refer: ''
+      }
+    })
+    //只有模板2,B2B有这个页面，因此不用根据模板id判断了
+    const templateUrl = `site-template-2/${device}/about/index`;
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
+  }
 }
+

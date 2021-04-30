@@ -1,0 +1,80 @@
+.aboutus
+    padding: 20px 15px
+    background-color: #fff
+    margin-top: 10px
+    .block-title
+        margin: 0
+    &-item
+        display: flex
+        align-items: center
+        margin: 15px 0
+    &-icon
+        margin-right: 12px
+        img
+            width: 40px
+            height: 40px
+    &-content
+    &-text
+        span
+        p
+        a
+            color: #333
+            font-size: 14px
+        p
+            line-height: 20px
+            text-align: left
+            display: none
+        span
+            width: 260px
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
+            display: block
+    .company-address
+        position: relative
+        border-top 1px solid #e2e2e2
+        padding-top 15px
+        &::after
+            content: ''
+            width: 8px
+            height: 8px
+            border: 1px solid #999
+            border-left: none
+            border-bottom: none
+            position: absolute
+            right: 5px
+            top: calc(50% + 6px)
+            transform: translateY(-50%) rotate(45deg)
+
+    &-content
+        text-align: center
+        p.active
+            display: block
+
+    .click-to-expand
+        border-radius: 16px
+        height: 32px
+        line-height: 32px
+        border: 1px solid #DDDDDD
+        color: #999
+        font-size: 12px
+        display: inline-block
+        width: 122px
+        text-align: center
+        margin-top: 15px
+        position: relative
+        &::after
+            content: ''
+            width: 5px
+            height: 5px
+            border: 1px solid #999
+            border-left: none
+            border-bottom: none
+            position: absolute
+            right: 25px
+            top: calc(50% + 2px)
+            transform: translateY(-50%) rotate(-45deg)
+        &.active
+            &::after
+                top: calc(50% - 2px)
+                transform: translateY(-50%) rotate(135deg)

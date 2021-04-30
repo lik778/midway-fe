@@ -1,0 +1,17 @@
+//-这里要改成B2B模板的新样式
+.tab-header
+    .sample
+        each item,index in cateList
+            a(href=item.urlSuffix)
+                p #{item.name}
+    if cateList.length > 2
+        img(src="//file.baixing.net/202102/a3ff55e3142c133ab3d984fed7132bf7.png", alt="")
+
+.all
+    each item,index in cateList
+        a(href=item.urlSuffix)
+            p #{item.name}
+    .btn
+        button 取消
+
+.mask

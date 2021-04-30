@@ -1,0 +1,9 @@
+//-这里前后设计矛盾，后台导航可人工设置显示隐藏，但前台要求全部显示且按照设计，所以导航名写死
+if nav && nav.length > 0
+  .nav
+    .nav-item
+      a(href=nav[0].content)  首页产品
+    .nav-item
+      a(href=productLink || "#")  全部产品
+    .nav-item
+      a(href=newsLink || "#")  新闻资讯
