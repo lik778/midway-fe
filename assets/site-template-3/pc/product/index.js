@@ -1,11 +1,13 @@
 import './index.styl'
-import $ from 'jquery';
-import { qqModule } from '../components/customer-service/index';
-import { initializeSidebarProductSwiper } from '../components/sidebar';
-import { navModule } from '../components/nav'
+import '../layout/index';
 
-qqModule()
-navModule()
+import $ from 'jquery';
+//import { qqModule } from '../../../common/pc/customer-service/index';
+import { initializeSidebarProductSwiper } from '../components/sidebar';
+//import { navModule } from '../components/nav'
+
+//qqModule()
+//navModule()
 initializeSidebarProductSwiper()
 
 // 清除过滤

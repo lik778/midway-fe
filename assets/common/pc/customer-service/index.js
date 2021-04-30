@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { eventTracker } from '../../../../common/tracker'
+import { eventTracker } from '../../../common/tracker'
 
 export const qqModule = function() {
 	$(document).ready(function(){

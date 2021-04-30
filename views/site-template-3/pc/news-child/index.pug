@@ -10,7 +10,8 @@ block content
       include ../components/news/news-list.pug
       +news-list(renderData.articleList.result)
 
-      include ../components/common/pagination.pug
+      include ../../../common/pc/pagination.pug
+      //-include ../components/common/pagination.pug
       - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
       +pagination(totalPage, currentPage, `${currentPathname}`)
 

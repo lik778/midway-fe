@@ -1,12 +1,13 @@
 import './index.styl';
+import '../layout/index';
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { qqModule } from '../components/customer-service/index';
-import { navModule } from '../components/nav';
+//import { qqModule } from '../../../common/pc/customer-service/index';
+//import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
 
-qqModule()
-navModule()
+//qqModule()
+//navModule()
 leaveLeads()
 
 // 轮播图
