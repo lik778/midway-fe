@@ -11,28 +11,44 @@ block content
         - hotProductList = renderData.productRecommend
         if hotProductList && hotProductList.length>0
             .block-title
-                img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
+                //- img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
+                .point 
+                    .littlePoint 
+                    .largePoint
                 h2 热门产品
+                .point 
+                    .largePoint 
+                    .littlePoint
             include ../components/home/product-list.pug
             +product-list('hot', hotProductList)
 
         .block-title
-            img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
+            //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
+            .point 
+                .littlePoint 
+                .largePoint
             h2 关于我们
+            .point 
+                .largePoint  
+                .littlePoint
         include ../components/home/about-us.pug
 
-        - advantageList = [{title:'品质优秀',desc:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理、生产管理。大的客户服务体系市场营服务体系市场',fontColor:'black',bgImg:'http://img4.baixing.net/cd7d20ca9365e174b60f7b2844938ffa.png_sm'},{title:'专注制造',desc:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'white',bgImg:'http://img4.baixing.net/3ffa28460eea6271e2931578700e651e.png_sm'},{title:'诚信合作',desc:'世纪方策现于全国建立了强大的客户服务体系，专注于市场营销、综合管理、生产管理、人力资源。',fontColor:'black',bgImg:''},{title:'贴心售后',desc:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'black',bgImg:''},{title:'诚信合作',desc:'世纪方策现于全国建立了大的客户服务体系市场营销、综合管理、生产管理。',fontColor:'black',bgImg:''},{title:'品质优秀',desc:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理、生产管理。大的客户服务体系市场营服务体系市场',fontColor:'black',bgImg:'http://img4.baixing.net/cd7d20ca9365e174b60f7b2844938ffa.png_sm'},{title:'专注制造',desc:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'white',bgImg:'http://img4.baixing.net/3ffa28460eea6271e2931578700e651e.png_sm'},{title:'诚信合作',desc:'世纪方策现于全国建立了强大的客户服务体系，专注于市场营销、综合管理、生产管理、人力资源。',fontColor:'black',bgImg:''},{title:'贴心售后',desc:'世纪方策现于全国建立了强大的客户服务体系市场营销、综合管理。',fontColor:'black',bgImg:''}]
-        if advantageList
-            //- TODO: advantageList的数据目前还没有，需要添加。
-            //- - advantageList = renderData.basic.advantageList
-            include ../components/home/company-advantage.pug
-            +company-advantage(advantageList)
+        - const userDefinedList = renderData.autoConfig
+        if userDefinedList && userDefinedList.length>0
+            include ../components/home/user-defined-module.pug
+            +user-defined-module(userDefinedList)
 
         - productList = renderData.productList.result
         if productList && productList.length>0
             .block-title
-                img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",style="width:283px",alt="产品分类")
+                //- img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",style="width:283px",alt="产品分类")
+                .point 
+                    .littlePoint
+                    .largePoint
                 h2 产品分类
+                .point 
+                    .largePoint
+                    .littlePoint
             include ../components/home/product-catogeries.pug
             include ../components/home/product-list.pug
             +product-list('nothot', productList)
@@ -41,16 +57,28 @@ block content
         - const { articleRecommend } = renderData
         if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
             .block-title
-                img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
+                //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
+                .point 
+                    .littlePoint
+                    .largePoint
                 h2 新闻中心
+                .point
+                    .largePoint
+                    .littlePoint
             include ../components/home/news-center.pug
             .new-center.clearfix
                 +news-box('新闻资讯', articleList)
                 +news-box('推荐文章', articleRecommend)
 
         .block-title
-            img(src="//file.baixing.net/202102/4be12cae4c491b647a8a2f69eafab548.png",alt="关于我们")
+            //- img(src="//file.baixing.net/202102/4be12cae4c491b647a8a2f69eafab548.png",alt="关于我们")
+            .point 
+                .littlePoint
+                .largePoint
             h2 联系我们
+            .point
+                .largePoint
+                .littlePoint
         include ../components/home/contact-us.pug
 
 block scripts

@@ -136,19 +136,6 @@ const CustomerSet: FC<Props> = (props) => {
       })
       const title = form.getFieldValue('title')
       setUpDataLoading(true)
-      console.log(JSON.stringify({
-        mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
-        mainModuleTitle: title,
-        subModuleVos: values,
-        subModulesToDelete: delKey
-      }))
-      console.log({
-        mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
-        mainModuleTitle: title,
-        subModuleVos: values,
-        subModulesToDelete: delKey
-      })
-
       const res = await setCustomerSetApi(Number(id), {
         mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
         mainModuleTitle: title,
