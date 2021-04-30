@@ -1,0 +1,10 @@
+.contact-box
+    .bx-logo
+    if kf53StyleUrl && kf53StyleUrl.length > 0
+        - telWidth = '120px'
+        .online-box
+            a(href=kf53StyleUrl) 在线咨询
+    else
+        - telWidth = '75%'
+    .phone-box(style=`width: ${telWidth}`)
+        a(href="tel:" + phone.content) 拨打电话

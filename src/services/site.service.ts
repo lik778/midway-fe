@@ -11,7 +11,8 @@ export class SiteService {
   //定义：后端传的模板id对应的前端模板类型
   static templateMapping = {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
-    "5fb387d2f2db3f6b8e7080e6": "site-template-2"
+    //"5fb387d2f2db3f6b8e7080e6": "site-template-2",
+    "5fb387d2f2db3f6b8e7080e6": "site-template-3",
   }
   constructor(
     private readonly httpService: HttpService,
@@ -45,7 +46,7 @@ export class SiteService {
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       domain = 'agui.shop.baixing.cn'
 
-      /*后端在dev分支，且店铺类型是是模板1，B2B模板，使用这个domain*/
+      /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
       //domain = 'shop.baixing.cn'
 
     }

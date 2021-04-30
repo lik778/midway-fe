@@ -1,0 +1,23 @@
+.about-us-bgc
+	.about-us-text
+		.top.clearfix
+			h3 #{ companyName }
+		.center
+			.center-left
+				p 公司简介
+				.dash1
+				.intro
+					| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+			.center-right
+				dl
+					dt 所在地区
+					dd #{ company.address }
+				dl
+					dt 联系人
+					dd #{ contactName.content }
+	.view-all
+		a(href="/about") 查看更多
+
+
+
+

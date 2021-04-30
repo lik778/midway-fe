@@ -1,0 +1,34 @@
+extends ../layout
+
+block styles
+    :combine(fileName="site-template-3-product-pc.css")
+
+block content
+    include ../components/common/breadcrumbs.pug
+
+    .container
+        .main
+            include ../components/product/cateList.pug
+
+            //-产品列表@明龙，修改下product-list文件及其样式
+            - productList = renderData.productList.result
+            include ../components/product/product-list.pug
+
+            //-分页模块
+            include ../components/common/pagination.pug
+            - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
+            +pagination(totalPage, currentPage, `${currentPathname}`)
+
+        //-侧边栏
+        .sidebar
+            - const { articleList } = renderData
+            include ../components/sidebar/cateList.pug
+            +side-cateList('新闻资讯', articleList.result)
+            include ../components/sidebar/products.pug
+
+block scripts
+    :combine(fileName="site-template-3-product-pc.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.trackSrc = 'listing';

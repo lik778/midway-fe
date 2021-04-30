@@ -1,0 +1,28 @@
+extends ../layout.pug
+
+block styles
+    :combine(fileName="site-template-2-news-detail-wap.css")
+
+block header
+    include ../components/header
+    include ../components/swiper
+
+block content
+    include ../components/company-info.pug
+    - const cateList = renderData.articleCateList
+    include ../components/news-detail.pug
+    include ../components/product-recommend.pug
+    include ../components/contact-form.pug
+
+block footer
+    include ../components/footer.pug
+
+
+
+block scripts
+    :combine(fileName="site-template-2-news-detail-wap.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'viewad';
+        window.adId = #{renderData.articleInfo.id};
