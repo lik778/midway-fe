@@ -18,7 +18,7 @@ export const baseInfoForm: FormConfig = {
   children: [
     { formItemWidth: 260, label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 20, minLength: 2, placeholder: '请输入企业名称，2~20个字', disabled: false, showCount: true },
     { formItemWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2, placeholder: '请输入企业别称，2~20个字', showCount: true },
-    { label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
+    { formItemWidth: 260, label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { formItemWidth: 260, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { formItemWidth: 260, label: '服务区域', name: 'serviceArea', type: FormType.Input, required: true, placeholder: '请输入服务区域' },
     {
@@ -52,9 +52,10 @@ export const contactForm: FormConfig = {
         message: '请输入正确的联系方式'
       }]
     },
-    { label: '电话2', name: 'contactMobile2', type: FormType.Input, required: false, placeholder: '请输入电话号码',
-    patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]
-},
+    {
+      label: '电话2', name: 'contactMobile2', type: FormType.Input, required: false, placeholder: '请输入电话号码',
+      patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]
+    },
     {
       label: '微信号码', name: 'wechat', type: FormType.Input, required: false, placeholder: '请输入微信号码',
       minLength: 6, maxLength: 20, patternList: [{ pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{6,20}$/, message: '微信号码(6-20个字符)' }]
