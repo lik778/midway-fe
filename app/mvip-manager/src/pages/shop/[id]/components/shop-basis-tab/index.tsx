@@ -48,8 +48,14 @@ const BasisTab = (props: Props) => {
   useEffect(() => {
     if (curShopInfo) {
       const { type } = curShopInfo
-      type === ProductType.B2B ? menuList[2].display = true : ""
-      setMenuList([...menuList])
+      if (type === ProductType.B2B) {
+        setMenuList([...menuList.map(item => {
+          if (item.key === ShopBasisType.SEO) {
+            item.display = true
+          }
+          return item
+        })])
+      }
     }
   }, [curShopInfo]);
 
