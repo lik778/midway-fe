@@ -10,6 +10,14 @@
     padding 24px 0
     justify-content space-between
     align-items center
+    &:hover
+      .left
+        .text-content
+          .title
+            color: #FF6536;
+      .right
+        border: 1px solid #FF6536;
+        color: #FF6536;
     .left
       display flex
       justify-content flex-start
@@ -49,9 +57,9 @@
       line-height 40px
       text-align: center
       border-radius: 2px;
-      border: 1px solid #FF6536;
       font-size: 14px;
-      color: #FF6536;
+      border 1px solid #CCCCCC
+      color #CCCCCC
     &+.item
       border-top 1px solid #eee
 
