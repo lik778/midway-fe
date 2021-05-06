@@ -16,8 +16,8 @@ export const baseInfoForm: FormConfig = {
   width: 680,
   useLabelCol: { span: 3 },
   children: [
-    { formItemWidth: 260, label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 20, minLength: 2, placeholder: '请输入企业名称，2~20个字', disabled: false, showCount: true },
-    { formItemWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2, placeholder: '请输入企业别称，2~20个字', showCount: true },
+    { formItemWidth: 260, label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 20, minLength: 2, patternList: [{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }], placeholder: '请输入企业名称，2~20个字', disabled: false, showCount: true },
+    { formItemWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2, patternList: [{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }],  placeholder: '请输入企业别称，2~20个字', showCount: true },
     { formItemWidth: 260, label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { formItemWidth: 260, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { formItemWidth: 260, label: '服务区域', name: 'serviceArea', type: FormType.Input, required: true, placeholder: '请输入服务区域' },

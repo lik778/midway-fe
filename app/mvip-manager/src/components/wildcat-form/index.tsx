@@ -74,7 +74,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
           const patternList = item.patternList ? item.patternList : [];
           if (item.type === FormType.Input) {
             return (
-              <FormItem className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList, { type: 'string', min: item.minLength, max: item.maxLength }]}>
+              <FormItem className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
                 <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount} />
               </FormItem>
             )
