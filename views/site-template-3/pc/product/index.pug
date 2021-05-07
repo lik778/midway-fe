@@ -15,7 +15,8 @@ block content
             include ../components/product/product-list.pug
 
             //-分页模块
-            include ../components/common/pagination.pug
+            include ../../../common/pc/pagination.pug
+            //-include ../components/common/pagination.pug
             - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
 
