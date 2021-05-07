@@ -1,7 +1,15 @@
 mixin news-box(title,newsList)
 	if newsList && newsList.length > 0
-		.news-box
-			.content
+		.news-data-box
+			if newsList.length >= 4
+				.image-box
+					img.big-image(src="", alt="这是图片")
+					- newItem = newsList[3]
+					a.item-card(href=newItem.urlSuffix)
+						.item-title.only-oneline #{ newItem.name }
+						.item-content.only-twoline.
+							#{ newItem.limitText }
+			.news-box
 				each item in newsList.length > 3 ? newsList.slice(0, 3) : newsList
 					//-这里需要后端给文章的图片和内容
 					a(href=item.urlSuffix)
@@ -17,4 +25,5 @@ mixin news-box(title,newsList)
 							.item-title.only-oneline #{ item.name }
 							.item-content.only-twoline.
 								#{ item.limitText }
-
+		a.show-more-btn(href= newsLink || "#") 
+			apan.set-color 查看更多

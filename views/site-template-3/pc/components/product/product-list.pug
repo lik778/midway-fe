@@ -1,3 +1,16 @@
 //-此处写产品列表html,
 //-其样式文件在assets/site-template-3/pc/components/product/product-list.styl
 .product-list
+  if productList && productList.length >0
+    each item in productList
+      a.item(href=item.urlSuffix target="_blank")
+        .left
+          img.img(src=item.headImg || defaultImg)
+          .text-content
+            //- TODO;
+            .title #{item.title || '这是标题超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的'}
+            .addr #{item.addr || '这是地址超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的'}
+            .name #{item.name}
+        .right 查看详情
+  else
+    p.no-content 当前页面暂无内容，敬请期待...
