@@ -145,6 +145,7 @@ const CustomerSet: FC<Props> = (props) => {
       // const res = await mockData('data', null)
       if (res.success) {
         successMessage(res.message || '保存成功')
+        getCustomerSet()
         setDelKey([])
       } else {
         errorMessage(res.message || '保存失败，请稍后再试！')
