@@ -163,7 +163,7 @@ const CustomerSet: FC<Props> = (props) => {
         <Form form={form} name={`form${id}`}>
           <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
             模块标题
-        </span>} labelCol={{ span: 3 }} rules={[{ required: true, message: '请输入模块标题' }, { type: 'string', min: 2, max: 6, message: '模块标题须在2-6字符之间' }]} required={true} name='title'>
+        </span>} labelCol={{ span: 3 }} rules={[{ required: true, message: '请输入模块标题' }, { type: 'string', min: 2, max: 6, message: '2~6个字' }]} required={true} name='title'>
             <InputLen width={280} className={styles['form-input']} maxLength={6} minLength={2} showCount={true} placeholder="例如：企业优势、服务流程" />
           </FormItem>
         </Form>
