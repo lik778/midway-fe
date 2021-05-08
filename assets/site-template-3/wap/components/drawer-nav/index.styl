@@ -1,0 +1,38 @@
+.drawer-nav-box
+  width 0
+  height 100vh
+  padding-right 10px
+  position fixed
+  top 0
+  left 0
+  z-index 10
+  opacity 0.5
+  transition all .5s
+  overflow hidden
+  &.active
+    width 180px
+    opacity 1
+  .nav-item
+    display flex
+    justify-content flex-start
+    align-items center
+    height 64px
+    font-size 16px
+    color #666666
+    .nav-icon
+      width 13px
+      height 13px
+    .nav-title
+      font-size 16px
+      color #666666
+    &+&
+      border-top 1px solid #f2f2f2
+    &.active
+      .nav-title
+        color #FF6536
+.select-icon
+  width 22px
+  height 22px
+  background-color red
+  &.active
+    transform rotate(180deg)
