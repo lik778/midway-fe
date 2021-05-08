@@ -7,7 +7,10 @@ if proR && proR.length>0
           .products.swiper-slide
             a.product(href=item.urlSuffix)
               .product-img
-                img(src= item.headImg , alt="productImg")
+                img(src= item.headImg)
               .product-desc
                 p #{ item.name }
+    //-.swiper-pagination
+    .swiper-button-next
+    .swiper-button-prev
 

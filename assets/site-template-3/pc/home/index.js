@@ -5,10 +5,13 @@ import Swiper from 'swiper';
 //import { qqModule } from '../../../common/pc/customer-service/index';
 //import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
+import { productSwiper } from '../components/home/product-swiper';
+
 
 //qqModule()
 //navModule()
 leaveLeads()
+productSwiper()
 
 // 轮播图
 //new Swiper('#banner-container .swiper-container', {
@@ -52,7 +55,7 @@ leaveLeads()
 //		}
 //	}
 //});
-new Swiper('.swiper-container', {
+new Swiper('#banner-list .swiper-container', {
   //spaceBetween: 30,
   speed:1500,
   centeredSlides: true,

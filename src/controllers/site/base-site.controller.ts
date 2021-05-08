@@ -41,8 +41,13 @@ export class BaseSiteController {
 
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
-    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
-    //const templateUrl = `site-template-2/${device}/home/index`;
+    let templateUrl;
+    templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
+    //if(templateId === '5fb387d2f2db3f6b8e7080e5'){
+    //  templateUrl = `site-template-3/${device}/home/index`;
+    //}else {
+    //  templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
+    //}
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -232,7 +237,8 @@ export class BaseSiteController {
       }
     })
     //只有模板2,B2B有这个页面，因此不用根据模板id判断了
-    const templateUrl = `site-template-2/${device}/about/index`;
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/about/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
