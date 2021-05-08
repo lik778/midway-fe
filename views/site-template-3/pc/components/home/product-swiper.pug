@@ -1,0 +1,13 @@
+- const { productRecommend : proR} = renderData
+if proR && proR.length>0
+  #product-swiper-box
+    .swiper-container
+      .swiper-wrapper
+        each item in proR
+          .products.swiper-slide
+            a.product(href=item.urlSuffix)
+              .product-img
+                img(src= item.headImg , alt="productImg")
+              .product-desc
+                p #{ item.name }
+
