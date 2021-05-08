@@ -14,6 +14,7 @@ export interface SaveEnterpriseForShopParams {
   companyYears: number;
   employeeCount: number;
   firstCategory?: string;
+  serviceArea: string;
   promoteImg: string;
   secondCategory: string;
   thirdMetas: string[];
@@ -53,6 +54,7 @@ export interface UserEnterpriseInfo {
   companyNameLock: boolean;
   kefuStatus: KFStatus;
   kf53Info: KF53Info|null;
+  serviceArea: string;
 }
 
 
