@@ -1,4 +1,4 @@
-mixin product-list(type, productList)
+mixin product-list(productList)
 	- hotIcon = "//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png"
 	if productList && productList.length >0
 		.products
@@ -6,8 +6,6 @@ mixin product-list(type, productList)
 				a.product(href=item.urlSuffix)
 					.product__img
 						img(src=item.headImg || defaultImg)
-						if type === 'hot'
-							img.hot-icon(src=hotIcon)
 					p.only-twoline #{ item.name }
 	else
 		include ./default-content.pug

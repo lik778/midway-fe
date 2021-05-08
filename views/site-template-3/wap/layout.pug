@@ -23,8 +23,8 @@ html
             - newsLink = newsLinkListTab[0].content
         block header
             include ./components/header
-            include ./components/swiper
-            include ./components/nav
+            //-TODO:header里需要加顶部的nav
+
         //-为了提供给留咨参数
         if shopName
             p#shop-name(style="display:none") #{shopName}
@@ -42,4 +42,5 @@ html
             window.shopId = #{ shopId };
 
         include ../../vendor/baidutongji.pug
-        include ../../vendor/53kf.pug
+        //-TODO:53客服线下开发先注释掉
+        //-include ../../vendor/53kf.pug
