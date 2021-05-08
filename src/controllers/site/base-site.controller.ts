@@ -232,7 +232,8 @@ export class BaseSiteController {
       }
     })
     //只有模板2,B2B有这个页面，因此不用根据模板id判断了
-    const templateUrl = `site-template-2/${device}/about/index`;
+    const { templateId } = data.basic.shop
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/about/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
