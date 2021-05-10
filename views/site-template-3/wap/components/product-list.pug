@@ -1,12 +1,20 @@
 mixin product-list(productList)
-	- hotIcon = "//file.baixing.net/202102/976434a28b9338d0efb0ad9e451c59d4.png"
 	if productList && productList.length >0
 		.products
-			each item in productList
+			each item,index in productList
 				a.product(href=item.urlSuffix)
-					.product__img
-						img(src=item.headImg || defaultImg)
-					p.only-twoline #{ item.name }
+					if index%2 === 0
+						img.product-img(src=item.headImg || defaultImg)
+						.product-content.right
+							.taigger
+							.product-title.only-oneline #{ item.name }
+							.product-see-btn 查看详情
+					else 
+						.product-content.left
+							.taigger
+							.product-title.only-oneline #{ item.name }
+							.product-see-btn 查看详情
+						img.product-img(src=item.headImg || defaultImg)
 	else
 		include ./default-content.pug
 		+default-content("product")

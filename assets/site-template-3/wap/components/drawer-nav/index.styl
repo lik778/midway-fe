@@ -1,38 +1,51 @@
 .drawer-nav-box
-  width 0
+  box-sizing: border-box
+  width 180px
   height 100vh
   padding-right 10px
   position fixed
   top 0
-  left 0
+  left -180px
   z-index 10
   opacity 0.5
   transition all .5s
   overflow hidden
+  background-color #fff
+  box-shadow: 4px 2px 15px 0px rgba(0,0,0,0.1);
   &.active
-    width 180px
+    left 0
     opacity 1
+    overflow auto
   .nav-item
     display flex
     justify-content flex-start
     align-items center
     height 64px
+    padding-left 26px
     font-size 16px
     color #666666
-    .nav-icon
-      width 13px
-      height 13px
-    .nav-title
-      font-size 16px
-      color #666666
-    &+&
+    & + .nav-item
       border-top 1px solid #f2f2f2
     &.active
       .nav-title
         color #FF6536
-.select-icon
+    .nav-icon
+      width 13px
+      height 13px
+      margin-right 7px
+    .nav-title
+      font-size 16px
+      color #666666
+.nav-select-icon
+  display flex
+  flex-direction column
+  justify-content: space-around
+  align-items stretch
   width 22px
   height 22px
-  background-color red
+  transition: all .3s
   &.active
-    transform rotate(180deg)
+    transform rotate(90deg)
+  .icon-line
+    height 2px
+    background-color: #999
