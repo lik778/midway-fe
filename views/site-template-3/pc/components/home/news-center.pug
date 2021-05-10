@@ -2,7 +2,7 @@ mixin news-box(title,newsList)
 	if newsList && newsList.length > 0
 		.news-data-box
 			.image-box
-				img.big-image(src="", alt="这是图片")
+				img.big-image(src="//file.baixing.net/202105/d0b11158bc3243d88e702968c78444c7.png", alt="这是图片")
 				- newItem = newsList[0]
 				a.item-card(href=newItem.urlSuffix)
 					.item-title.only-oneline #{ newItem.name }
@@ -23,6 +23,6 @@ mixin news-box(title,newsList)
 						.item-card
 							.item-title.only-oneline #{ item.name }
 							.item-content.only-twoline.
-							#{ item.limitText }
-		a.show-more-btn(href= newsLink || "#") 
+								#{ item.limitText }
+		a.show-more-btn(href= newsLink || "#")
 			apan.set-color 查看更多

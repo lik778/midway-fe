@@ -1,13 +1,26 @@
-- const { productRecommend : proR} = renderData
-if proR && proR.length>0
-  #product-swiper-box
-    .swiper-container
-      .swiper-wrapper
-        each item in proR
-          .products.swiper-slide
-            a.product(href=item.urlSuffix)
-              .product-img
-                img(src= item.headImg , alt="productImg")
-              .product-desc
-                p #{ item.name }
+//-单个产品结构
+mixin item(item)
+  a.product(href=item.urlSuffix)
+    .product-img
+      img(src= item.headImg)
+    .product-desc
+      p.only-oneline #{ item.name }
+      .vad-btn 查看详情
+
+#product-swiper-box
+  .swiper-container
+    .swiper-wrapper
+      .products.swiper-slide
+        each p in proR.slice(0,4)
+          +item(p)
+
+      if proR.length > 4
+        .products.swiper-slide
+          each p in proR.slice(4,8)
+            +item(p)
+
+  if proR.length >= 4
+    .swiper-button-next
+    .swiper-button-prev
+
 

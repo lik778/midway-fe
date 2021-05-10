@@ -1,44 +1,88 @@
 #product-swiper-box
-  padding-top 30px
+  width 1220px
+  margin auto
   position relative
   .swiper-wrapper
     height auto
-  .swiper-pagination
-    position absolute
-    left 50%
-    bottom 10px
-    transform translateX(-50%)
-    .swiper-pagination-bullet
-      width 16px
-      height 3px
-      border-radius 0
-      margin 0 5px
-      &-active
-        background #FF2D38
-.products
-  //width 145px
-  a.product
-    display block
-    width 192px
-    border 1px solid transparent
-    &:hover
-      border-color #f7f7f7
-    img
-      width 145px
-      height 128px
-    .product-desc
-      width 100%
-      background-color #F7F7F7
-      padding 15px 0
-      p
-        font-size 12px
-        margin 0 13px
-        width calc(100% - 26px)
-        color #666
-        overflow hidden
-        text-overflow ellipsis
-        display -webkit-box
-        -webkit-box-orient vertical
-        -webkit-line-clamp 2
-        word-break break-all
+  .products
+    height 319px
+    a.product
+      display block
+      width 290px
+      float left
+      margin-right 20px
+      &:nth-child(4n)
+        margin-right 0
+      img
+        width 100%
+        height 193px !important
+      .product-desc
+        height 126px !important
+        width 100%
+        height 110px
+        background-color #F7F7F7
+        text-align center
+        position relative
+        p
+          font-size 16px
+          padding 22px 10px
+          color #666
+        .vad-btn
+          width 116px
+          height 40px
+          border 1px solid #FF6536
+          border-radius 20px
+          text-align center
+          line-height 40px
+          position absolute
+          left 50%
+          margin-left -58px
+          bottom 25px
+          color #FF6536
+      &:hover
+        .product-desc
+          background-color #FF6536
+          p
+            color #fff
+          .vad-btn
+            background-color #fff
 
+  //.swiper-button-prev,
+  //.swiper-button-next
+  //  right -5%
+  //  width 40px
+  //  height 40px
+  //  background url(//file.baixing.net/202105/04ef00a4b9f03c87ee34d04bc371da4c.png) no-repeat center center/100%
+  //  outline none
+
+  //.swiper-button-prev
+  //  left -5%
+  //  background url(//file.baixing.net/202105/04ef00a4b9f03c87ee34d04bc371da4c.png) no-repeat center center/100%
+  //  transform rotate(180deg)
+
+  //.swiper-button-prev.swiper-button-disabled
+  //  background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
+  //  transform rotate(0)
+
+  //.swiper-button-next.swiper-button-disabled
+  //  background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
+  //  transform rotate(180deg)
+
+  .swiper-button-prev
+    left -5%
+    width 40px
+    height 40px
+    background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
+    &:hover
+      background url(//file.baixing.net/202105/04ef00a4b9f03c87ee34d04bc371da4c.png) no-repeat center center/100%
+      transform rotate(180deg)
+
+  .swiper-button-next
+    right -5%
+    width 40px
+    height 40px
+    background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
+    transform rotate(180deg)
+    &:hover
+      background url(//file.baixing.net/202105/04ef00a4b9f03c87ee34d04bc371da4c.png) no-repeat center center/100%
+      transform rotate(0)
