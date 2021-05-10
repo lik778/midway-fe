@@ -4,12 +4,13 @@ block styles
 
 block content
 
+    include ../components/aboutus.pug
+    +aboutus('about')
+    
     - const userDefinedList = renderData.autoConfig
     if userDefinedList && userDefinedList.length>0
         include ../components/user-defined-module.pug
         +user-defined-module('about',userDefinedList)
-    include ../components/aboutus.pug
-    +aboutus('about')
     include ../components/contact-form.pug
 
 block footer
