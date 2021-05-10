@@ -3,9 +3,12 @@ import '../layout/index';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { productSwiper } from '../components/home/product-swiper';
+import { viewPhone } from '../components/home/viewPhone';
+
 
 leaveLeads()
 productSwiper()
+viewPhone()
 
 
 new Swiper('#banner-list .swiper-container', {
