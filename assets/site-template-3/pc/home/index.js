@@ -4,10 +4,13 @@ import Swiper from 'swiper';
 import { qqModule } from '../components/customer-service/index';
 import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
+import { viewPhone } from '../components/home/viewPhone'
+
 
 qqModule()
 navModule()
 leaveLeads()
+viewPhone()
 
 // 轮播图
 //new Swiper('#banner-container .swiper-container', {
@@ -71,5 +74,4 @@ new Swiper('.swiper-container', {
     prevEl: '.swiper-button-prev',
   },
 });
-
 

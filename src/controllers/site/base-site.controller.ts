@@ -26,7 +26,7 @@ export class BaseSiteController {
     }
 
     const { data } = await this.midwayApiService.getHomePageData(shopName, device, domain);
-
+		
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
@@ -42,7 +42,7 @@ export class BaseSiteController {
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
     const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
-    //const templateUrl = `site-template-2/${device}/home/index`;
+    // const templateUrl = `site-template-3/${device}/home/index`;
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
