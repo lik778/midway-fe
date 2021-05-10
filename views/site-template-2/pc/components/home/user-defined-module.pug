@@ -15,7 +15,7 @@ mixin user-defined-module(userDefinedModuleList)
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
 		.user-defined-list
 			each item, index in userDefinedList
-				- const isWhite = item.fontColor === 'white' ? true : false
+				- const isWhite = item.fontColor === 1 ? true : false
 				if index < 9
 					- var id = '0' + (index+1)
 				else
