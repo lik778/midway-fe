@@ -14,11 +14,12 @@ const FormItem = Form.Item
 
 interface Props {
   mainModuleId: number
+  onSave: () => void
 }
 
 const CustomerSet: FC<Props> = (props) => {
   const { id } = useParams<{ id: string }>()
-  const { mainModuleId } = props
+  const { mainModuleId, onSave } = props
   const [dataList, setDataList] = useState<CustomerSetChildListItem[]>([])
   const [keyCount, setKeyCount] = useState<number>(0)
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
@@ -142,10 +143,12 @@ const CustomerSet: FC<Props> = (props) => {
         subModuleVos: values,
         subModulesToDelete: delKey
       })
-      // const res = await mockData('data', null)
       if (res.success) {
         successMessage(res.message || '保存成功')
-        getCustomerSet()
+        onSave()
+        if (mainModuleId) {
+          getCustomerSet()
+        }
         setDelKey([])
       } else {
         errorMessage(res.message || '保存失败，请稍后再试！')
@@ -161,7 +164,7 @@ const CustomerSet: FC<Props> = (props) => {
   return <>
     <Spin spinning={getDataLoading}>
       <div className={styles['container']}>
-        <Form form={form} name={`form${id}`}>
+        <Form form={form} name={`form${id}`} className={styles['title-form-container']}>
           <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
             模块标题
         </span>} labelCol={{ span: 3 }} rules={[{ required: true, message: '请输入模块标题' }, { type: 'string', min: 2, max: 6, message: '2~6个字' }]} required={true} name='title'>

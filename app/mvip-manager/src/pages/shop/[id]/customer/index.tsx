@@ -31,7 +31,7 @@ const CustomerSet: FC = () => {
     <Spin spinning={getDataLoading}>
       <div className={styles['container']}>
         {
-          dataList.length > 0 && <CustomerItem mainModuleId={dataList[0].mainModuleId}></CustomerItem>
+          dataList.length > 0 && <CustomerItem mainModuleId={dataList[0].mainModuleId} onSave={getCustomerModuleList}></CustomerItem>
         }
       </div>
     </Spin>
