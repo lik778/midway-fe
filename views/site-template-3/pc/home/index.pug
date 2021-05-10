@@ -14,8 +14,8 @@ block content
         include ../components/home/self-advantage.pug
 
         //-服务项目
-        //- - hotProductList = renderData.productRecommend
-        if hotProductList && hotProductList.length>0
+        - const { productRecommend : proR} = renderData
+        if proR && proR.length > 0
             .block-title
                 h2 服务项目
             include ../components/home/product-swiper.pug

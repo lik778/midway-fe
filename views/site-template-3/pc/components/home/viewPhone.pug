@@ -1,13 +1,14 @@
 .viewPhone
 	.viewPhone-left
 		.context
-			.question 如果有任何问题，可以随时联系我们
-			.icon
-			.contactName #{contactName.content}:
-			.phone
-				p.phoneNumber-slice.active #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) }
-				p.phoneNumber-full.no-active #{ phone.content }
-			.view-all-phone 查看完整电话
+			.tip 如果有任何问题，可以随时联系我们
+			.phone-box
+				.icon
+				.contactName #{contactName.content}:
+				.phone
+					p.phoneNumber-slice.active #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) }
+					p.phoneNumber-full.no-active #{ phone.content }
+				.view-all-phone 查看电话
 		.title 服务热线
 	.viewPhone-right
 		.linian-left

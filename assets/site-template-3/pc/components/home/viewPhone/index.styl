@@ -1,50 +1,47 @@
 .viewPhone
 	width 960px
 	height 120px
-	margin 0 auto 0
-	position relative
-	top -40px
+	margin 0 auto
+	margin-top -40px
 	display flex
-	flex-direction row
 	.viewPhone-left
 		width 480px
 		background-color #FF6536
-		padding 20px 30px 20px 36px
+		padding 20px 30px
 		display flex
-		flex-direction row
 		justify-content space-between
+		align-items center
 		.context
-			padding-left 3px
-			.icon
-				display inline-block
-				width 32px
-				height 26px
-				background url("//file.baixing.net/202105/67d77f3dcc1c27ddcb2e135ebddcf746.png")
-				background-size cover
-				position relative
-				top 4px
-			.contactName
-				display inline-block
-				color #fff
-				font-size 18px
-				margin-left 5px
-			.question
+			//padding 20px 30px
+			.tip
 				color #FFFFFF
 				font-size 14px
-			.phone
-				display inline-block
-				.active
-					color #FFFFFF
-					font-size 20px
-					margin 20px 13px 0
-				.no-active
-					display none
+			.phone-box
+				display flex
+				align-items center
+				margin-top 22px
+				.icon
+					width 32px
+					height 26px
+					background url("//file.baixing.net/202105/67d77f3dcc1c27ddcb2e135ebddcf746.png") no-repeat center center/100%
+					background-size cover
+				.contactName
+					color #fff
+					font-size 18px
+					margin-left 5px
+				.phone
+					margin 0 16px
+					.active
+						color #FFFFFF
+						font-size 20px
+					.no-active
+						display none
 
-			.view-all-phone
-				color #FFFFFF
-				font-size 16px
-				display inline-block
-				margin-top 20px
+				.view-all-phone
+					color #FFFFFF
+					font-size 16px
+					&:hover
+						cursor pointer
 		.title
 			color #FFFFFF
 			border 1px solid #FFFFFF
@@ -54,8 +51,8 @@
 			font-size 12px
 			padding 10px 12px
 			line-height 18px
-			position relative
-			bottom 5px
+			margin-bottom 2px
+
 	.viewPhone-right
 		width 460px
 		background-color #FFFFFF
