@@ -37,16 +37,16 @@ export class SiteService {
 
     if (domain === 'localhost' || domain ==='dianpu.baixing.cn') {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      //domain = 'agui.shop-test.baixing.cn'
+      domain = 'zmlc2b.shop-test.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2c模板，使用这个domain*/
       //domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      domain = 'agui.shop.baixing.cn'
+      // domain = 'zmlc2b.shop.baixing.cn'
 
-      /*后端在dev分支，且店铺类型是是模板1，B2B模板，使用这个domain*/
-      //domain = 'shop.baixing.cn'
+      /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
+      // domain = 'shop.baixing.cn'
 
     }
     return {

@@ -1,15 +1,10 @@
 import { FormType } from '../enums'
-
+import { ColProps } from 'antd'
+import { ReactNode } from 'react'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
   className?: any;
-}
-
-export interface FormConfig {
-  name: string;
-  children: FormItem[];
-  buttonConfig?: ButtonItem;
 }
 
 //这样定义，与实际的select反过来了，后期优化下
@@ -24,30 +19,38 @@ export interface OptionCheckBox {
   disabled?: boolean;
 }
 
+export interface FormConfig {
+  name: string;
+  children: FormItem[];
+  buttonConfig?: ButtonItem;
+  width?: number | string;
+  labelAlign?: 'left' | 'right',
+  useLabelCol?: ColProps;
+  // 有些组件确实不适合封装 但是也要放在表单里管理 则写自定义的组件进去
+  customerFormItemList?: ReactNode
+}
 export interface FormItem {
-  width?: number; //长度
   label: string; // 页面标签
   type: FormType; // 表单类型
-  name?: string; // 当前表单名字
+  name: string; // 字段名
   required: boolean; // 是否必填
   patternList?: any[]; // 正则
   placeholder?: string; // 提示
-  defaultValue?: any; // 默认值
-  validator?: any; // 校验
   options?: OptionItem[] | OptionCheckBox[];
   maxLength?: number
   minLength?: number,
-  inputWidth?: number,
-  tip?: string, // 文案说明,
-  className?: string, // 自定义样式,
-  btnConfig?: any, // 输入框需要增加额外标签
+  tip?: string | ReactNode, // 文案说明,
+  btnConfig?: ReactNode, // 输入框需要增加额外标签
   maxNum?: number,
   minNum?: number,
   images?: ImagesItem[],// 图片多种情况
+  imagesTipPosition?: 'bottom' | 'right',// 图片下的请求的位置
   disabled?: boolean;
-  showCount?:boolean;
-  onChange?:(...args:any)=>void; //给配置文件项，增加了onChange属性
-  display?:boolean;
+  showCount?: boolean;
+  onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
+  display?: boolean;
+  formItemWidth?: number | string,
+  className?: string, // 自定义样式,
 }
 
 export interface ImagesItem {

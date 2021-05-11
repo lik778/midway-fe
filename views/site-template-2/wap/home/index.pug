@@ -9,7 +9,14 @@ block content
     include ../components/product-list.pug
     - hotProductList = renderData.productRecommend.slice(0,8)
     +product-list('hot', hotProductList)
+
+    - const userDefinedList = renderData.autoConfig
+    if userDefinedList && userDefinedList.length>0
+        include ../components/user-defined-module.pug
+        +user-defined-module('home',userDefinedList)
+    
     include ../components/aboutus.pug
+    +aboutus('home')
 
     h2.block-title 最新产品
         span
