@@ -4,8 +4,8 @@ export const leaveLeads = function() {
         $(".form-item > button").click((e) => {
             e.preventDefault();
             const data = {};
-            data.name = $('#name').val();
-            data.contact = $('#tel').val();
+            data.name = $('#contactName').val();
+            data.contact = $('#contactTel').val();
             data.content = $('#content').val();
             data.shopName = $('#shop-name').text();
             if(data.name === '') {
