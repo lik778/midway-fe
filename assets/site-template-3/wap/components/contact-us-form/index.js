@@ -30,7 +30,7 @@ export const leaveLeads = function() {
             // TODO;
             $('#upContactUsForm').attr('disabled','true')
             $.ajax({
-                url:"",
+                url:"/site-api/leads",
                 type:'POST',
                 dataType: 'json',
                 data: data,
