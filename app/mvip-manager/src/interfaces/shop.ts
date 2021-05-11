@@ -128,3 +128,26 @@ export interface ShopInfo {
   type: string;
   usrId: number;
 }
+
+export interface CustomerListItem {
+  mainModuleId: number,
+  title: string
+}
+
+export interface CustomerSetChildListItem {
+  id?: number,
+  title: string,
+  content: string,
+  urlImg: string,
+  /** 0 :黑色   1 ：白色 */
+  fontColor: 0 | 1,
+  /** 自用字段 因为是数字 一定要保证唯一 */
+  key: string
+}
+
+// 自定义设置
+export interface CustomerSetListItem {
+  mainModuleId?: number,
+  mainModuleTitle: string,
+  subModuleBos: CustomerSetChildListItem[]
+}

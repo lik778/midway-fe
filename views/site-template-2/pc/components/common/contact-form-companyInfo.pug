@@ -10,7 +10,11 @@ section.news-detail__section
                 span #{ contactName.content }
             .info-item
                 span 联系电话
-                span #{ phone.content || "暂未添加电话"}
+                span #{ phone.content }
+            if phone2.content
+                .info-item
+                    span 联系电话2
+                    span #{ phone2.content }
             .info-item
                 span 微信号码
                 span #{ weChat.content || "暂未添加微信号"}

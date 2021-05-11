@@ -16,16 +16,20 @@ interface Props {
 
 const BasicHeader = (props: Props) => {
   const { type, curShopInfo } = props
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   useEffect(() => {
     props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_CUR_SHOP_INFO_ACTION}`, id: Number(id) })
   }, [])
   return (
     <div className="basis-header">
-      { curShopInfo?.name && <Link className="arrow" to="/shop"></Link> }
-      { curShopInfo?.name && <MainTitle title={curShopInfo?.name}/> }
-      { curShopInfo?.name && <a className="visit-online"href={curShopInfo?.shopDomain} target="_blank">访问线上</a> }
-      <ShopBasisTab type={type}/>
+      {
+        curShopInfo?.name && <>
+          <Link className="arrow" to="/shop"></Link>
+          <MainTitle title={curShopInfo?.name} />
+          <a className="visit-online" href={curShopInfo?.shopDomain} target="_blank">访问线上</a>
+        </>
+      }
+      <ShopBasisTab type={type} />
     </div>
   );
 }
@@ -35,4 +39,4 @@ const mapStateToProps = (state: any): any => {
   return { curShopInfo }
 }
 
-export default connect(mapStateToProps)(BasicHeader)
+export default connect<{ curShopInfo: ShopInfo }>(mapStateToProps)(BasicHeader)

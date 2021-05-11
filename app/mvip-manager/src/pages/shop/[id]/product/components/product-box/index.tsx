@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
-import { productForm } from '@/config/form';
+import { productForm } from './config';
 import { Drawer, Form } from 'antd';
 import { CateItem, RouteParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
@@ -11,7 +11,8 @@ import { ContentCateType } from '@/enums';
 import MyModal from '@/components/modal';
 import { isEmptyObject } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
-
+import GroupSelectBtn from './components/group-select-btn'
+import './index.less'
 interface Props {
   cateList: CateItem[];
   editData?: any;
@@ -34,9 +35,21 @@ export default (props: Props) => {
 
   useEffect(() => {
     // 初始化表单----> value
-    const item: any = formConfig.children.find((x: FormItem) => x.name === 'contentCateId')
-    item.options = cateList.map(x => { return { key: x.name, value: x.id } })
-    setformConfig(formConfig)
+    const newArticleFormChildren = productForm.children.map(item => {
+      if (item.name === 'contentCateId') {
+        return {
+          ...item,
+          options: cateList.map(x => { return { key: x.name, value: x.id } }),
+          btnConfig: <GroupSelectBtn item={item} onClick={onModalClick}></GroupSelectBtn>
+        }
+      }
+      return item
+    })
+
+    setformConfig({
+      ...productForm,
+      children: newArticleFormChildren
+    })
   }, [cateList])
 
   const sumbit = async (values: any) => {
@@ -56,7 +69,7 @@ export default (props: Props) => {
     setFormLoading(false)
     if (resData.success) {
       successMessage(resData.message)
-      setTimeout(() =>  location.reload(), 500)
+      setTimeout(() => location.reload(), 500)
     } else {
       errorMessage(resData.message)
     }
@@ -68,37 +81,38 @@ export default (props: Props) => {
 
   return (
     <Drawer
-          title="新建服务"
-          placement={placement}
-          closable={true}
-          onClose={() => setQuitModalVisible(true)}
-          visible={visible}
-          key={placement}
-          width="700"
-        >
-          <Form.Item>
-           <WildcatForm
-             editDataSource={editData}
-             config={formConfig}
-             submit={sumbit}
-             onClick={onModalClick}
-             loading={formLoading}
-             className="default-form"/>
-         </Form.Item>
-         <GroupModal
-           type={ContentCateType.PRODUCT}
-           editItem={null}
-           visible={modalVisible}
-           groupUpdate={(item: CateItem) => { console.log(null) }}
-           groupCreate={(item: CateItem) => updateCateList(item)}
-           onClose={() => setModalVisible(false)} />
-        <MyModal
-          title="确认关闭"
-          content="您还没有提交，退出后当前页面的内容不会保存，确认退出？"
-          visible={quitModalVisible} onOk={() => {
+      title="新建服务"
+      placement={placement}
+      closable={true}
+      onClose={() => setQuitModalVisible(true)}
+      visible={visible}
+      key={placement}
+      width="700"
+    >
+      <Form.Item>
+        <WildcatForm
+          editDataSource={editData}
+          config={formConfig}
+          submit={sumbit}
+          onClick={onModalClick}
+          loading={formLoading}
+          className="product-form"/>
+      </Form.Item>
+      <GroupModal
+        type={ContentCateType.PRODUCT}
+        editItem={null}
+        visible={modalVisible}
+        groupUpdate={(item: CateItem) => { console.log(null) }}
+        groupCreate={(item: CateItem) => updateCateList(item)}
+        onClose={() => setModalVisible(false)} />
+      <MyModal
+        title="确认关闭"
+        content="您还没有提交，退出后当前页面的内容不会保存，确认退出？"
+        visible={quitModalVisible} onOk={() => {
           setQuitModalVisible(false)
-          onClose() }}
-          onCancel={() => setQuitModalVisible(false)}/>
+          onClose()
+        }}
+        onCancel={() => setQuitModalVisible(false)} />
     </Drawer>
   );
 }

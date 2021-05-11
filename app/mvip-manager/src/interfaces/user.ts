@@ -22,6 +22,7 @@ export interface SaveEnterpriseForShopParams {
 
 export interface SaveEnterpriseContactInfoApiParams {
   contactMobile: string;
+  contactMobile2?:string;
   contactName: string;
   qqMap: any;
   wechat: string;
@@ -36,21 +37,22 @@ export interface UserInfo {
 export interface UserEnterpriseInfo {
   companyName: string;
   companyAlias: string;
-  area: {[key:string]:string};
+  area: { [key: string]: string };
   companyAddress: string;
   companyDescription: string;
   promoteImg: string;
   employeeCount: number;
   companyYears: number;
-  firstCategory: {[key:string]:string};
-  selectedSecondCategory: {[key:string]:string};
-  secondCategories: {[key:string]:string};
-  selectedThirdMetas: {[key:string]:string};
-  thirdMetas: {[key:string]:string};
+  firstCategory: { [key: string]: string };
+  selectedSecondCategory: { [key: string]: string };
+  secondCategories: { [key: string]: string };
+  selectedThirdMetas: { [key: string]: string };
+  thirdMetas: { [key: string]: string };
   contactName: string;
   contactMobile: string;
+  contactMobile2?: string;
   wechat: string;
-  qqMap: {[key:string]:string};
+  qqMap: { [key: string]: string };
   companyNameLock: boolean;
   kefuStatus: KFStatus;
   kf53Info: KF53Info|null;
@@ -78,13 +80,12 @@ export interface ThirdMetas {
   value: string
 }
 
-export interface ZhidaoMaterial{
+export interface ZhidaoMaterial {
   banner1: string,
   banner2: string,
   siteUrl: any
 }
 
-export interface ZhidaoMaterialData extends ZhidaoMaterial{
+export interface ZhidaoMaterialData extends ZhidaoMaterial {
   siteUrls: any
 }
-
