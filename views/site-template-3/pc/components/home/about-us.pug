@@ -1,11 +1,12 @@
 .about-us-bgc
-	.about-us-text
-		.title 关于我们
-		.title-line
-		.content
-			| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-		//-.view-more
-		//-	a(href="/about") 查看更多
-	.about-us-picture
-		.pic-border
-		.picture
+	.about-us-content 
+		.about-us-text
+			.title 关于我们
+			.title-line
+			.content
+				| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+			//-.view-more
+			//-	a(href="/about") 查看更多
+		.about-us-picture
+			.pic-border
+			.picture

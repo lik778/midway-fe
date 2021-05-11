@@ -1,18 +1,17 @@
 .contact-form
-  h4.block-title 留言咨询
-    span
-    span
-  .form-item.required
-    label(for="") 姓名
-    .form-input
-      input#name(type="text", placeholder="请输入您的称呼")
-  .form-item.required
-    label(for="") 联系方式
-    .form-input
-      input#tel(type="text", placeholder="请输入电话号码")
-  .form-item
-    label(for="") 您的留言
-    .form-input
-      textarea#content(placeholder="请输入")
-  .form-item
-    button 马上提交
+	h4.block-title 留言咨询
+	.contact-form-list
+		.form-item.required
+			label(for="") 姓名
+			.form-input
+				input#name(type="text", placeholder="请输入您的称呼")
+		.form-item.required
+			label(for="") 联系方式
+			.form-input
+				input#tel(type="text", placeholder="请输入电话号码")
+		.form-item.required
+			label(for="") 您的留言
+			.form-input
+				textarea#content(rows="3", placeholder="请输入您的咨询留言")
+		.form-item
+			button 马上提交
