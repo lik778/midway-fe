@@ -41,7 +41,7 @@ function CompanyInfoBase(props: any) {
 
   const onChangeCategory = (catogoryName: any, form: any) => {
     //切换类目后，清空thirdMetas数据
-    form.setFieldsValue({ thirdMetas: []})
+    form.setFieldsValue({ thirdMetas: [] })
     getThirdCategoryMetasFn(catogoryName)
 
   }
@@ -136,6 +136,7 @@ function CompanyInfoBase(props: any) {
 
     // 一级类目
     values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
+    console.log("提交表单数据",values)
     const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (success) {
@@ -163,13 +164,12 @@ function CompanyInfoBase(props: any) {
         {!formLoading && currentStep == 0 &&
           <WildcatForm
             formChange={formChangeFn}
-            useLabelCol={true} submit={nextStep}
+            submit={nextStep}
             editDataSource={enterpriseInfo} config={config} loading={loading}
-
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
-                <Col><Button loading={loading} className="btn"
+                <Col style={{ paddingLeft: 16 }}><Button loading={loading} className="btn"
                   type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
               </Row>
             } />

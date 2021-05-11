@@ -31,7 +31,7 @@ export const ImgUpload = (props: Props) => {
   const [fileList, setFileList] = useState<any[]>([])
   const localMaxSize = useMemo(()=>maxSize||1 ,[maxSize])
   const uploadButton = (isDisable?:boolean | undefined) =>{
-    const txt = props.text || '上传'
+    const txt = props.text || ''
     const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
     return (
       <div className={cls}>
