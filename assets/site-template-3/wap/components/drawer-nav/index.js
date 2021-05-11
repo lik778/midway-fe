@@ -2,6 +2,7 @@ import $ from 'jquery'
 
 export const initNav = function () {
   const navSelectIcon = $('.nav-select-icon')
+  const drawerNavBox = $('.drawer-nav-box')
   const body = $('body')
   const html = $('html')
   body.css({ transition: "all 0.5s" });
@@ -10,12 +11,12 @@ export const initNav = function () {
     var selectIconClassName = navSelectIcon.attr('class')
     if (selectIconClassName.indexOf('active') !== -1) {
       navSelectIcon.removeClass('active')
-      // drawerNavBox.removeClass('active')
+      drawerNavBox.removeClass('active')
       body.css({ transform: 'translate(0)' });
       html.css({ width: 'auto', height: 'auto', overflow: 'visible' })
     } else {
       navSelectIcon.addClass('active')
-      // drawerNavBox.addClass('active')
+      drawerNavBox.addClass('active')
       body.css({ transform: 'translate(180px)' });
       html.css({ width: '100vw', height: '100vh', overflow: 'hidden' })
     }

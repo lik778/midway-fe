@@ -1,24 +1,23 @@
 import $ from 'jquery'
 
-export const aboutModule = function(){
-	//等待DOM 结构加载完成，然后再执行操作
-	$(document).ready(function(){
-		const expandBtn = $('#aboutus-click-to-expand');
-		const expandContentSlice = $('.aboutus-content .aboutus-content-slice');
-		const expandContentFull = $('.aboutus-content .aboutus-content-full');
-		expandBtn.click(() => {
-			if (expandContentSlice.hasClass('active')) {
-				expandContentSlice.removeClass('active')
-				expandContentFull.addClass('active')
-				expandBtn.removeClass('active')
-				expandBtn.html('点击收起')
-			} else {
-				expandContentSlice.addClass('active')
-				expandContentFull.removeClass('active')
-				expandBtn.addClass('active')
-				expandBtn.html('点击展开')
-			}
-		})
-	})
+function copyToClip(content, message) {
+  var aux = document.createElement("input");
+  aux.setAttribute("value", content);
+  document.body.appendChild(aux);
+  aux.select();
+  document.execCommand("copy");
+  document.body.removeChild(aux);
+  alert(message || "复制成功");
+}
+
+export const initAboutus = function () {
+  //等待DOM 结构加载完成，然后再执行操作
+  $(document).on('ready', function () {
+    const copyItems = $('.copy-data')
+    copyItems.on('click', function () {
+      const data = $(this).data('value')
+      copyToClip(data)
+    })
+  })
 }
 

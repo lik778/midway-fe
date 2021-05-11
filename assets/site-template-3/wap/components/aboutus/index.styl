@@ -1,8 +1,6 @@
 .aboutus
-  background-color: #fff
-  margin-top: 10px
   .top-box 
-    padding: 0  20px
+    padding: 0  20px 73px
     background-image: url(//file.baixing.net/202105/8145322c9bd060bbddd3b5cde2aa46d4.png)
     background-size cover
     .desc 
@@ -10,18 +8,49 @@
       color: #FFFFFF;
       line-height: 14px;
       overflow hidden
-      text-overflow ellipsis
-      display -webkit-box
-      -webkit-box-orient vertical
-      -webkit-line-clamp 5
       word-break break-all
-  .bottom-box 
+      // text-overflow ellipsis
+      // display -webkit-box
+      // -webkit-box-orient vertical
+      // -webkit-line-clamp 5
+  .bottom-box
+    margin-bottom: -18px
+    padding 20px 15px
+    border-radius: 16px 16px 0 0
+    transform translateY(-33px)
+    overflow hidden
+    background-color: #fff
     .aboutus-item
+      display flex
+      justify-content: start
+      align-items: center
+      position relative
+      &+.aboutus-item
+        margin-top: 15px
       .aboutus-icon
         width 40px
         height 40px
         margin-right 12px
       .aboutus-text
+        margin-right 20px
         font-size: 14px;
         color: #333333;
         line-height: 14px;
+        max-width: 260px;
+      .copy-data
+        font-size: 14px;
+        line-height: 14px;
+        color #FF6536
+      .more
+        width: 12px
+        height: 12px
+        position: absolute
+        top: 50% 
+        right: 17px
+        transform: rotate(45deg) translateY(-50%)
+        border-top: 2px solid #999999
+        border-right: 2px solid #999999
+
+
+
+  
