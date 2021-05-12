@@ -1,49 +1,50 @@
 extends ../layout
 
 block styles
-    :combine(fileName="site-template-3-home-pc.css")
+		:combine(fileName="site-template-3-home-pc.css")
 
 //-使用了统一的header和nav
 block content
-    include ../components/common/base-swiper.pug
+		include ../components/common/base-swiper.pug
 
-    .container
+		.container
 
-        //-自身优势
-        - selfAdvantage = [{title:'品质优秀',content:'技术人员皆有着多年的相关行业经验，技术高效有保证',icon:'//file.baixing.net/202105/86ebd7b9759cf8a8ec05c09606aa91b8.png'},{title:'资质正规',content:'产品都经过严格的检测，质量安全放心 ',icon:'//file.baixing.net/202105/eedf3bdf35da8897d917ba2f40604603.png'},{title:'贴心服务',content:'汽车用品及配件款式众多，满足您的产品需求',icon:'//file.baixing.net/202105/3345c9fc4e9f376d071ea590785bc079.png'},{title:'售后保障',content:'技术人员皆有着多年的相关行业经验，技术高效有保证',icon:'//file.baixing.net/202105/604a6659fa9a9fea562c2e076ad85332.png'}]
-        include ../components/home/self-advantage.pug
+				//-自身优势
+				- selfAdvantage = [{title:'品质优秀',content:'技术人员皆有着多年的相关行业经验，技术高效有保证',icon:'//file.baixing.net/202105/86ebd7b9759cf8a8ec05c09606aa91b8.png'},{title:'资质正规',content:'产品都经过严格的检测，质量安全放心 ',icon:'//file.baixing.net/202105/eedf3bdf35da8897d917ba2f40604603.png'},{title:'贴心服务',content:'汽车用品及配件款式众多，满足您的产品需求',icon:'//file.baixing.net/202105/3345c9fc4e9f376d071ea590785bc079.png'},{title:'售后保障',content:'技术人员皆有着多年的相关行业经验，技术高效有保证',icon:'//file.baixing.net/202105/604a6659fa9a9fea562c2e076ad85332.png'}]
+				include ../components/home/self-advantage.pug
 
-        //-服务项目
-        - const { productRecommend : proR} = renderData
-        if proR && proR.length > 0
-            .block-title
-                h2 服务项目
-            include ../components/home/product-swiper.pug
+				//-服务项目
+				- const { productRecommend : proR} = renderData
+				if proR && proR.length > 0
+						.block-title
+								h2 服务项目
+						include ../components/home/product-swiper.pug
 
-        .block-title
-            h2 关于我们
-        include ../components/home/about-us.pug
+				include ../components/home/about-us.pug
 
-        //-查看完整电话
-        include ../components/home/viewPhone.pug
-        //-公司优势
+				//-查看完整电话
+				include ../components/home/viewPhone.pug
+				//-自定义模块
+				- const userDefinedList = renderData.autoConfig
+				if userDefinedList && userDefinedList.length>0
+						include ../components/home/user-defined-module.pug
+						+user-defined-module(userDefinedList)
+				//-新闻资讯
+				- articleList = renderData.articleList.result
+				- const { articleRecommend } = renderData
+				if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+						.block-title
+								h2 新闻资讯
+						include ../components/home/news-center.pug
+						.new-center.clearfix
+								+news-box('新闻资讯', articleList)
 
-        //-新闻资讯
-        - articleList = renderData.articleList.result
-        - const { articleRecommend } = renderData
-        if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
-            .block-title
-                h2 新闻资讯
-            include ../components/home/news-center.pug
-            .new-center.clearfix
-                +news-box('新闻资讯', articleList)
-
-        .block-title
-            h2 联系我们
-        include ../components/home/contact-us.pug
+				.block-title
+						h2 联系我们
+				include ../components/home/contact-us.pug
 
 block scripts
-    :combine(fileName="site-template-3-home-pc.js")
+		:combine(fileName="site-template-3-home-pc.js")
 block append scripts
-    script.
-        window.trackSrc = 'home';
+		script.
+				window.trackSrc = 'home';

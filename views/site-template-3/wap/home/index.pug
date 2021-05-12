@@ -20,7 +20,10 @@ block content
     a.product-more-btn(href=productLink) 查看更多
 
     //-TODO：自定义模块
-    +home-title('公司优势')
+    - const userDefinedList = renderData.autoConfig
+    if userDefinedList && userDefinedList.length>0
+        include ../components/user-defined-module.pug
+        +user-defined-module('home',userDefinedList)
 
     //-关于我们
     include ../components/aboutus.pug

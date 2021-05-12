@@ -67,7 +67,7 @@ const ShopCarouselPage = (props: any) => {
             <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸1920*360'} txt={'PC端轮播图'} type={DeviceType.PC} fileList={pcBannerList} onChange={onChange} />
           </div>
           <div className="c-wap">
-            <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸375*152'} txt={'WAP端轮播图'} type={DeviceType.WAP} fileList={wapBannerList} onChange={onChange} />
+            <CarouselImg tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸750*304'} txt={'WAP端轮播图'} type={DeviceType.WAP} fileList={wapBannerList} onChange={onChange} />
           </div>
           {emptyImgs()}
         </div>
