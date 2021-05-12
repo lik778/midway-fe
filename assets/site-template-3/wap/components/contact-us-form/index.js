@@ -1,11 +1,12 @@
 import $ from 'jquery';
-export const leaveLeads = function() {
+export const leaveLeads1 = function() {
     $(document).ready(function() {
-        $(".form-item > button").click((e) => {
+        $("#upContactUsForm").click((e) => {
             e.preventDefault();
             const data = {};
-            data.name = $('#name').val();
-            data.contact = $('#tel').val();
+            data.name = $('#contactUsName').val();
+            data.contact = $('#contactUsTel').val();
+            data.content = '';
             data.shopName = $('#shop-name').text();
             if(data.name === '') {
                 alert('请留下您的称呼')
