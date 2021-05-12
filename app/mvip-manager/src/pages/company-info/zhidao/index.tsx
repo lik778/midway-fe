@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Row, Col } from 'antd';
 import MainTitle from '@/components/main-title';
-import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
@@ -57,28 +56,27 @@ function CompanyInfoZhudao(props: any) {
   }
 
   return (
-    <div>
+    <>
       <MainTitle title="问答素材" />
       <div className="container">
         {formLoading && <Loading />}
         {!formLoading &&
           <WildcatForm
             editDataSource={enterpriseInfo}
-            useLabelCol={true}
             submit={sumbit}
             config={config}
             formChange={formChange}
             submitBtn={
               <Row className="save-base-info-box">
                 <Col span={3}></Col>
-                <Col><Button loading={loading} className="btn"
+                <Col style={{ paddingLeft: 16 }}><Button loading={loading} className="btn"
                   type="primary" size="large" htmlType="submit">保存</Button></Col>
               </Row>
             }
           />
         }
       </div>
-    </div>)
+    </>)
 }
 
 CompanyInfoZhudao.wrappers = ['@/wrappers/path-auth']

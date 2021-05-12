@@ -1,0 +1,58 @@
+.form-styles {
+  width: 680px;
+  :global {
+    .ant-form-item-control {
+      padding-left: 16px;
+      .ant-form-item-control {
+        padding-left: 0;
+      }
+    }
+  }
+  input {
+    font-size: 14px;
+    height: 40px;
+  }
+  textarea {
+    // margin-left: 7px;
+    font-size: 14px;
+  }
+
+  .image-upload-box {
+    .image-tip {
+      flex-grow: 1;
+      color: #999;
+      font-size: 12px;
+      &.tip-right {
+        padding-left: 8px;
+      }
+      &.tip-right-transform {
+        transform: translateY(-15px);
+      }
+    }
+    .flex-box {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+    }
+
+    &.image-upload-set-p {
+      .image-upload-list {
+        margin-bottom: 0;
+      }
+    }
+    :global {
+      .anticon {
+        color: #999999;
+        // font-size: 25px;
+      }
+      .upload-img {
+        font-size: 14px;
+        color: #999999;
+      }
+    }
+  }
+  .sumbit-btn {
+    border-color: #096dd9;
+    background: #096dd9;
+  }
+}

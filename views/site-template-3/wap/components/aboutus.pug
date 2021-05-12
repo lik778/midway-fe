@@ -1,24 +1,22 @@
+include ../components/home-title.pug
 .aboutus
-    h2.block-title 关于我们
-        span
-        span
-    .aboutus-content
-        p.aboutus-content-slice.active !{ company.about.slice(0, 130).replace(/\n/g, '<br/>') }...
-        p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-        #aboutus-click-to-expand.click-to-expand.active 点击展开
-    a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-        .aboutus-icon
-            img(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
-        .aboutus-text
-            span 公司地址：
-                | #{ company.address }
-    .aboutus-item
-        .aboutus-icon
-            img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
-        .aboutus-text
-            span 联系电话：#{ phone.content }
-    .aboutus-item
-        .aboutus-icon
-            img(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
-        .aboutus-text
-            span 微信号码：#{ weChat.content }
+    .top-box
+      +home-title('联系我们', '#fff')
+      - desc = company.about.replace(/\n/g, '<br/>')
+      .desc #{  desc  }
+         
+    .bottom-box
+      a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
+        img.aboutus-icon(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
+        span.aboutus-text.only-oneline 公司地址： #{ company.address } 公司地址：
+        .more
+
+      .aboutus-item
+        img.aboutus-icon(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
+        span.aboutus-text.only-oneline 联系电话：#{ phone.content }
+        span.copy-data(data-value=phone.content) 点击复制
+          
+      .aboutus-item
+        img.aboutus-icon(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
+        span.aboutus-text.only-oneline 微信号码：#{ weChat.content }
+        span.copy-data(data-value=weChat.content) 点击复制

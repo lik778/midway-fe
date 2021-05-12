@@ -59,7 +59,7 @@ export class ManagementService {
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
+        break; 
       case 'post':
         return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
         break;

@@ -8,8 +8,8 @@ import { TrackerType } from '../../enums/tracker';
 
 export class BaseSiteController {
   constructor(protected readonly midwayApiService: SiteService,
-              protected readonly trackerService: TrackerService,
-              protected domainType: DomainTypeEnum) {}
+    protected readonly trackerService: TrackerService,
+    protected domainType: DomainTypeEnum) { }
 
   @Get('/')
   public async home(@Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
@@ -29,7 +29,8 @@ export class BaseSiteController {
 
     // 打点
     const shopId = data.basic.shop.id
-    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
         site_id: 'dianpu',
         shop_id: shopId,
@@ -56,14 +57,15 @@ export class BaseSiteController {
 
   @Get('/n')
   async listing(@Param() params, @HostParam('shopName') HostShopName: string,
-      @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const currentPage = query.page || 1;
     const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage }, domain);
     // 打点
     const shopId = data.basic.shop.id
-    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
         site_id: 'dianpu',
         shop_id: shopId,
@@ -92,7 +94,8 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId }, domain);
       // 打点
       const shopId = data.basic.shop.id
-      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res, {
+        eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopId,
@@ -115,7 +118,8 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
       // 打点
       const shopId = data.basic.shop.id
-      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res, {
+        eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopId,
@@ -137,14 +141,15 @@ export class BaseSiteController {
 
   @Get('/p')
   async product(@Param() params, @HostParam('shopName') HostShopName: string,
-      @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const currentPage = query.page || 1
     const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 }, domain);
     // 打点
     const shopId = data.basic.shop.id
-    this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
         site_id: 'dianpu',
         shop_id: shopId,
@@ -165,7 +170,7 @@ export class BaseSiteController {
 
   @Get('/p-:id')
   async productchild(@Param() params, @HostParam('shopName') HostShopName: string,
-           @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     if (/.html$/.test(req.url)) {
@@ -173,7 +178,8 @@ export class BaseSiteController {
       const { data } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId }, domain);
       // 打点
       const shopId = data.basic.shop.id
-      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res, {
+        eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopId,
@@ -189,13 +195,14 @@ export class BaseSiteController {
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isDetail: true  });
+      return res.render(templateUrl, { title: '产品详情页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isDetail: true });
     } else {
       const currentPage = query.page || 1;
       const { data } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
       // 打点
       const shopId = data.basic.shop.id
-      this.trackerService.point(req, res,{ eventType: TrackerType.BXMAINSITE, data: {
+      this.trackerService.point(req, res, {
+        eventType: TrackerType.BXMAINSITE, data: {
           event_type: TrackerType.BXMAINSITE,
           site_id: 'dianpu',
           shop_id: shopId,
@@ -214,6 +221,7 @@ export class BaseSiteController {
       return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
     }
   }
+
   //关于我们
   @Get('/about')
   async about(@Param() params, @HostParam('shopName') HostShopName: string,

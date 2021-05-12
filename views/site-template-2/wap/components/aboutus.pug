@@ -1,24 +1,37 @@
-.aboutus
-    h2.block-title 关于公司
-        span
-        span
-    a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-        .aboutus-icon
-            img(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
-        .aboutus-text
-            span 公司地址：
-                | #{ company.address }
-    .aboutus-item
-        .aboutus-icon
-            img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
-        .aboutus-text
-            span 联系电话：#{ phone.content }
-    .aboutus-item
-        .aboutus-icon
-            img(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
-        .aboutus-text
-            span 微信号码：#{ weChat.content }
-    .aboutus-content
-        p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
-        p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-        #aboutus-click-to-expand.click-to-expand.active 点击展开
+mixin aboutus(pageType)
+    .aboutus
+        h2.block-title 企业介绍
+            span
+            span
+        a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
+            .aboutus-icon
+                img(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
+            .aboutus-text
+                span 公司地址：
+                    | #{ company.address }
+        .aboutus-item
+            .aboutus-icon
+                img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
+            .aboutus-text
+                span 联系电话：#{ phone.content }
+        .aboutus-item
+            .aboutus-icon
+                img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
+            .aboutus-text
+                span 联系电话2：#{ phone2.content }
+        .aboutus-item
+            .aboutus-icon
+                img(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
+            .aboutus-text
+                span 微信号码：#{ weChat.content }
+        .aboutus-content
+            //- p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+            //- p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
+            //- #aboutus-click-to-expand.click-to-expand.active 点击展开
+
+            if pageType === 'about'
+                p.aboutus-content.active !{ company.about }
+            else
+                p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+                p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
+                #aboutus-click-to-expand.click-to-expand.active 点击展开

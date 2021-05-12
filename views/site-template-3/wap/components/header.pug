@@ -1,8 +1,18 @@
 header.header
   if !isDetail
-    .header-logo(style=`background-image:url(${company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"})`)
-    h1.header-name.only-oneline #{ company.name }
-    .header-certificate(style=`background-image:url("//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png")`)
+    .nav-select-box
+      block drawer-nav
+        include ../components/drawer-nav
+    .content-box
+      .header-logo(style=`background-image:url(${company.logo || "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"})`)
+      if company.name && company.name.length>10
+        .header-name-box.animate
+          h1.header-name #{ company.name }
+      else
+        .header-name-box
+          h1.header-name #{ company.name }
+      .header-certificate(style=`background-image:url("//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png")`)
+    img.header-logo(src="//file.baixing.net/202105/73e736e2ce88bce598d95c60dd81c3bd.png")
   else
     .back-icon
     .title #{ title }

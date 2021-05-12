@@ -1,10 +1,22 @@
 .contact-box
-    .bx-logo
-    if kf53StyleUrl && kf53StyleUrl.length > 0
-        - telWidth = '120px'
-        .online-box
-            a(href=kf53StyleUrl) 在线咨询
-    else
-        - telWidth = '75%'
-    .phone-box(style=`width: ${telWidth}`)
-        a(href="tel:" + phone.content) 拨打电话
+	if weChat.content && weChat.content.length > 0
+		- wechatIcon = '//file.baixing.net/202105/c8f23ab27c9fc0c5f326b4ee413e63e2.png'
+		- wechatColor = '#FF6536'
+	else
+		- wechatIcon = '//file.baixing.net/202105/ab94f0b173db8fcf4dfeee3cb8bc5919.png'
+		- wechatColor = '#AAAAAA'
+	if kf53StyleUrl && kf53StyleUrl.length > 0
+		- kf53Icon = '//file.baixing.net/202105/30cd243ff662bcf2b93fce723a0f7432.png'
+		- kf53Color = '#FF6536'
+	else 
+		- kf53Icon = '//file.baixing.net/202105/343752505490e172c0ffc7567c858784.png'
+		- kf53Color = '#AAAAAA'
+
+	.wechat-box( data-value = weChat.content, style=`border-color:${wechatColor}` )
+		.wechat-icon(style=`background: url(${wechatIcon}) no-repeat center/100%`)
+		p(style=`color:${wechatColor}`) 加微信
+	a(href=kf53StyleUrl || '#', style=`border-color:${kf53Color}`).online-box
+		.online-icon(style=`background: url(${kf53Icon}) no-repeat center/100%`)
+		p(style=`color:${kf53Color}`) 在线咨询
+	a(href="tel:" + phone.content).phone-box
+		p 拨打电话

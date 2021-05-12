@@ -1,0 +1,24 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-about-wap.css")
+
+block content
+
+    include ../components/aboutus.pug
+    +aboutus('about')
+    
+    - const userDefinedList = renderData.autoConfig
+    if userDefinedList && userDefinedList.length>0
+        include ../components/user-defined-module.pug
+        +user-defined-module('about',userDefinedList)
+    include ../components/contact-form.pug
+
+block footer
+    include ../components/footer.pug
+
+
+block scripts
+    :combine(fileName="site-template-2-about-wap.js")
+block append scripts
+    script.
+        window.contentType = 'about';
