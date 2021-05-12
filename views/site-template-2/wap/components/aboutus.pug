@@ -14,16 +14,17 @@ mixin aboutus(pageType)
                 img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
             .aboutus-text
                 span 联系电话：#{ phone.content }
-        .aboutus-item
-            .aboutus-icon
-                img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
-            .aboutus-text
-                span 联系电话2：#{ phone2.content }
+        if phone2.content
+            .aboutus-item
+                .aboutus-icon
+                    img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
+                .aboutus-text
+                    span 联系电话2：#{ phone2.content }
         .aboutus-item
             .aboutus-icon
                 img(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
             .aboutus-text
-                span 微信号码：#{ weChat.content }
+                span 微信号码：#{ weChat.content || "暂未添加微信号" }
         .aboutus-content
             //- p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
             //- p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }

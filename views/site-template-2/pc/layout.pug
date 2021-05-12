@@ -25,13 +25,14 @@ html
         - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
         - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
         block header
-            include ./components/common/topbar.pug
+            include ../../common/pc/topbar.pug
             include ./components/common/header.pug
+
         block content
         include ./components/common/customer-service.pug
 
         block footer
-            include ./components/common/footer.pug
+            include ../../common/pc/footer.pug
 
     :combine(fileName=["tb-vendors.js", "tb-commons.js"])
     block scripts
