@@ -9,11 +9,18 @@
     //-                if nav.length > 2
     //-                  a(href=nav[2].content) #{ nav[2].name }
     //-          a(href="/about") 关于我们
+    //- .footer-container.copyright
+    //-     .footer-info
+    //-       .footer-info__item #{ companyName }
+    //-       .footer-info__item 地址：#{ company.address }
+    //-     .footer-info
+    //-       .footer-info__item #{ copyRight || "©版权所有本站由百姓网™匠心搭建"} 客服服务热线：400-036-3650（周一至周五，9：00-18：00）热线：021-61300238（周一至周日，9：00 -18：00）
+    //-     .footer-info
+    //-       .footer-info__item 沪ICP备06019413号| 沪ICP证B2-20080088 | 沪公网安备31011202007947号
     .footer-container.copyright
-        .footer-info
-          .footer-info__item #{ companyName }
-          .footer-info__item 地址：#{ company.address }
-        .footer-info
-          .footer-info__item #{ copyRight || "©版权所有本站由百姓网™匠心搭建"} 客服服务热线：400-036-3650（周一至周五，9：00-18：00）热线：021-61300238（周一至周日，9：00 -18：00）
-        .footer-info
-          .footer-info__item 沪ICP备06019413号| 沪ICP证B2-20080088 | 沪公网安备31011202007947号
+      .footer-info 
+        .footer-info__item ©2020版权所有本站由百姓网匠心搭建
+      .footer-info 
+        .footer-info__item 沪ICP备06019413号| 沪ICP证B2-20080088 | 沪公网安备31011202007947号
+
+        

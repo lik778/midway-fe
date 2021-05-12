@@ -12,7 +12,7 @@ export const initNav = function () {
     if (selectIconClassName.indexOf('active') !== -1) {
       navSelectIcon.removeClass('active')
       drawerNavBox.removeClass('active')
-      body.css({ transform: 'translate(0)' });
+      body.css({ transform: '' });
       html.css({ width: 'auto', height: 'auto', overflow: 'visible' })
     } else {
       navSelectIcon.addClass('active')

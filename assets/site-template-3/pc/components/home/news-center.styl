@@ -20,10 +20,19 @@
 				&:hover
 					.item-title
 						color #FF2D38
-				.item-title
-					margin-bottom 10px
-					color #333333
-					font-weight 600
+				.item-title-line 
+					display: flex
+					justify-content: space-between
+					align-items: center
+					.item-title
+						width: 400px 
+						margin-bottom 10px
+						color #333333
+						font-weight 600
+					.item-time
+						font-size: 14px;
+						color: #999999;
+						line-height: 14px;
 				.item-content
 					color #999
 					line-height 24px
@@ -59,6 +68,7 @@
 				.item-card
 					width 418px
 					.item-title
+						width: 400px 
 						margin-bottom 10px
 						color #333333
 						font-weight 600
