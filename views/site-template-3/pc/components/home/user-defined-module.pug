@@ -13,7 +13,7 @@ mixin user-defined-module(userDefinedModuleList)
 					- var id = '0' + (index+1)
 				else
 					- var id = index+1
-				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) ` : {} )
+				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) no-repeat center/100%` : {} )
 					.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
 					div
 						.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }

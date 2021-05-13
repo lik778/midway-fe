@@ -20,13 +20,13 @@ mixin user-defined-module(userDefinedModuleList)
 					- var id = '0' + (index+1)
 				else
 					- var id = index+1
-				.user-defined-item( style = item.urlImg ? {background:'none'} : {} )
-					span.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
-					span
+				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) no-repeat center/100%` : {} )
+					.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
+					div
 						.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }
 						.user-defined-line( style = isWhite ? {background:'#FFF'} : {})
 						.content.only-twoline( style = isWhite ? {color:'#FFF'} : {} ) #{ item.content }
-					img( src = item.urlImg )
 			if isOdd
-				.user-defined-item
-					a(href="/about" || "#") 查看企业介绍详情
+				.user-defined-item.viewMore
+					a(href="/about" || "#") 
+						span 查看企业介绍详情
