@@ -11,10 +11,10 @@ import { DeviceType } from '../../enums/base';
 
 @Controller({ host: config().hostType.prefix })
 export class B2bSiteController extends BaseSiteController {
-  //constructor(protected readonly midwayApiService: SiteService,
-  //            protected readonly trackerService: TrackerService) {
-  //  super(midwayApiService, trackerService, DomainTypeEnum.B2B)
-  //}
+  constructor(protected readonly midwayApiService: SiteService,
+             protected readonly trackerService: TrackerService) {
+   super(midwayApiService, trackerService, DomainTypeEnum.B2B)
+  }
 
   ////关于我们(只有b2b模板pc有)
   //@Get('/about')
