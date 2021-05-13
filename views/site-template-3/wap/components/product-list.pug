@@ -15,6 +15,9 @@ mixin product-list(productList)
 							.product-title.only-oneline #{ item.name }
 							.product-see-btn 查看详情
 						img.product-img(src=item.headImg || defaultImg)
+
+		if productList && productList.length >= 4
+			a.product-more-btn(href=productLink) 查看更多
 	else
 		include ./default-content.pug
 		+default-content("product")
