@@ -1,7 +1,7 @@
 mixin user-defined-module(pageType,userDefinedModuleList)
 	each userDefinedModule in userDefinedModuleList
 		.user-defined-module
-			+home-title('公司优势')
+			+home-title( userDefinedModule.mainModuleTitle )
 			- const userDefinedList = userDefinedModule.subModuleBos
 			- const isOdd = userDefinedList.length%2 === 0 ? false : true
 			.user-defined-list

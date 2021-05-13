@@ -1,23 +1,17 @@
 mixin product-list(productList)
-	if productList && productList.length >0
-		.products
-			each item,index in productList
-				a.product(href=item.urlSuffix)
-					if index%2 === 0
-						img.product-img(src=item.headImg || defaultImg)
-						.product-content.right
-							.taigger
-							.product-title.only-oneline #{ item.name }
-							.product-see-btn 查看详情
-					else
-						.product-content.left
-							.taigger
-							.product-title.only-oneline #{ item.name }
-							.product-see-btn 查看详情
-						img.product-img(src=item.headImg || defaultImg)
+	.products
+		each item,index in productList
+			a.product(href=item.urlSuffix)
+				if index%2 === 0
+					img.product-img(src=item.headImg || defaultImg)
+					.product-content.right
+						.taigger
+						.product-title.only-oneline #{ item.name }
+						.product-see-btn 查看详情
+				else
+					.product-content.left
+						.taigger
+						.product-title.only-oneline #{ item.name }
+						.product-see-btn 查看详情
+					img.product-img(src=item.headImg || defaultImg)
 
-		if productList && productList.length >= 4
-			a.product-more-btn(href=productLink) 查看更多
-	else
-		include ./default-content.pug
-		+default-content("product")
