@@ -2,7 +2,7 @@
 mixin item(item)
   a.product(href=item.urlSuffix)
     .product-img
-      img(src= item.headImg)
+      img(src= item.headImg || defaultImg)
     .product-desc
       p.only-oneline #{ item.name }
       .vad-btn 查看详情
@@ -11,15 +11,15 @@ mixin item(item)
   .swiper-container
     .swiper-wrapper
       .products.swiper-slide
-        each p in proR.slice(0,4)
+        each p in proList.slice(0,4)
           +item(p)
 
-      if proR.length > 4
+      if proList.length > 4
         .products.swiper-slide
-          each p in proR.slice(4,8)
+          each p in proList.slice(4,8)
             +item(p)
 
-  if proR.length >= 4
+  if proList.length >= 4
     .swiper-button-next
     .swiper-button-prev
 
