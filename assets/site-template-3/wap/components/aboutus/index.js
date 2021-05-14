@@ -3,6 +3,8 @@ import $ from 'jquery'
 function copyToClip(content, dom) {
   var aux = document.createElement("input");
   aux.setAttribute("value", content);
+  //添加的input需要只读，否则会弹出键盘导致页面闪动。
+  aux.setAttribute("readonly", "readonly");
   dom.append(aux);
   aux.select();
   document.execCommand("copy");

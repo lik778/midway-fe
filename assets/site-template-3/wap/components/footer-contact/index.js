@@ -4,6 +4,7 @@ import { eventTracker } from '../../../../common/tracker';
 function copyToClip(content, dom) {
   var aux = document.createElement("input");
   aux.setAttribute("value", content);
+	aux.setAttribute("readonly", "readonly");
   dom.append(aux);
   aux.select();
   document.execCommand("copy");
