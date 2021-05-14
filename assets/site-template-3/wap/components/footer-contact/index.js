@@ -2,14 +2,14 @@ import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker';
 
 function copyToClip(content, dom) {
-  var aux = document.createElement("input");
-  aux.setAttribute("value", content);
+	var aux = document.createElement("input");
+	aux.setAttribute("value", content);
 	aux.setAttribute("readonly", "readonly");
-  dom.append(aux);
-  aux.select();
-  document.execCommand("copy");
-  aux.remove();
-  alert( "微信号已复制成功,请打开微信添加");
+	dom.append(aux);
+	aux.select();
+	document.execCommand("copy");
+	aux.remove();
+	alert( "微信号已复制成功,请打开微信添加");
 }
 
 export const footerContactModule = function(){
