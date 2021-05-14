@@ -1,0 +1,73 @@
+.company-info
+  margin-bottom 15px
+  padding: 20px
+  background-color: #fff
+  .info
+    display: flex
+    justify-content: flex-start
+    align-items: flex-start
+    margin-bottom 20px
+    .info-logo
+      width: 50px;
+      height: 50px
+      margin-right 12px
+      border-radius: 5px
+    .info-text
+      max-width: calc(100% - 62px)
+      flex-grow:  1
+      .info-name
+        margin-bottom 10px
+        font-size: 18px;
+        font-weight: bold;
+        color: #333333;
+        line-height: 26px;
+      .info-tag-list
+        display:  flex
+        justify-content: flex-start
+        align-items:  center
+        .info-tag 
+          height: 18px;
+          padding: 0 4px
+          line-height: 18px
+          background: #EAF0FF;
+          text-align: center
+          border-radius: 2px;
+          font-size: 10px;
+          color: #6483DB;
+          &+.info-tag
+            margin-left 10px
+  .desc
+    padding: 14px 22px 
+    position relative
+    background: #F6F6F6;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #666666;
+    line-height: 20px;
+    .desc-text
+      margin-bottom 8px
+      overflow hidden
+      &.hide
+        height: 40px
+    .top-left,.bottom-right
+      width: 13px
+      height: 12px
+      position: absolute
+    .top-left
+      top:  -6px
+      left: 10px
+    .bottom-right
+      right: 10px
+      bottom -6px 
+    .action-btn-box
+      display: flex
+      justify-content: flex-end
+      .action-btn
+        box-sizing: border-box
+        height: 18px;
+        padding: 0 6px
+        line-height: 16px
+        border-radius: 2px;
+        border: 1px solid #FF6536;
+        font-size: 12px;
+        color: #FF6536;
