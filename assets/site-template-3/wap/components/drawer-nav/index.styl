@@ -1,3 +1,16 @@
+.drawer-nav-mask
+  width 100vw
+  height 100vh
+  position fixed
+  top 0
+  left -100vw
+  z-index 10
+  background-color: rgba(0,0,0,.2)
+  opacity .5
+  transition opacity .2s
+  &.active
+    left 0
+    opacity 1
 .drawer-nav-box
   box-sizing border-box
   width 180px
@@ -6,7 +19,7 @@
   position fixed
   top 0
   left -180px
-  z-index 10
+  z-index 100
   opacity 0.5
   transition all .5s
   overflow hidden

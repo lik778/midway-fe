@@ -2,43 +2,37 @@
 
 @keyframes navTitleAnimate {
   0% {
-    transform translateX(100%)
+    left 100%
+    transform: translateX(0)
   }
 
   100% {
-    transform translateX(-100%)
+    left 0
+    transform: translateX(-100%)
   }
 }
 
 .header
-  padding 0 17px 0 12px
+  padding 0 18px
   display flex
   align-items center
   justify-content space-between
   box-sizing content-box
   position relative
   height 56px
-  .nav-select-box
-    margin-right 20px
-  &-name
-    font-weight bold
-    color #333
-    font-size 16px
-    white-space nowrap; 
-    margin  0 4px 0 10px
-  &-logo
-    width 34px
-    height 34px
-    background-size contain
-    background-repeat no-repeat;
-    background-position center center
-    flex-shrink 0
-  &-certificate
-    height 19px
-    width 19px
-    background-size cover
-    position relative
-    flex-shrink 0
+  .header-left 
+    display flex
+    justify-content: flex-start
+    align-items: center
+    .baixing-logo
+      width 54px
+      height 26px
+      transform:  translateY(-3px)
+    .header-tip-text
+      font-size: 16px
+      font-weight: bold
+      color #333
+
   .back-icon
     display inline-block
     width 11px
@@ -53,28 +47,6 @@
     width 180px
     margin 0 auto
     text-align center
-  .baixing-logo
-    width 37px
-    height 18px
-   .content-box
-      max-width calc(100% - 112px)
-      flex-grow 1
-      height 100%
-      display flex
-      justify-content center
-      align-items center
-      .header-name-box
-        display flex
-        justify-content center
-        align-items center
-        flex-wrap nowrap
-        overflow hidden
-        &.animate
-          width calc(100% - 70px)
-          justify-content start
-          .header-name
-            display inline-block
-            animation navTitleAnimate 5s linear 0s infinite
 
 
 
