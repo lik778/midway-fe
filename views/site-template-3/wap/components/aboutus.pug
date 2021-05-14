@@ -1,16 +1,12 @@
 include ../components/home-title.pug
 .aboutus
-    .top-box
-      +home-title('关于我们', '#fff')
-      - desc = company.about.replace(/\n/g, '<br/>')
-      .desc #{  desc  }
-
+    .aboutus-title-box 
+      .title 联系公司
     .bottom-box
       a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
         img.aboutus-icon(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
         span.aboutus-text.only-oneline 公司地址： #{ company.address } 公司地址：
         .more
-
       a.aboutus-item(href="tel:" + phone.content)
         img.aboutus-icon(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
         span.aboutus-text.only-oneline 联系电话：#{ phone.content }
