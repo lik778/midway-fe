@@ -1,19 +1,38 @@
 .company-info
-    .info-logo
-        img(src=company.logo, alt="logo")
-    .info-right
-        h3 #{ company.name }
-        .company-medals
-            .medal-shop
-            .shop-name 实力商家
-            .medal-bx
-            .bx-name 百姓认证
-        .company-certificate
-            .certificate-label 商家信用：
-            img(src="//file.baixing.net/202102/1ae768b8ba9d84c0ff833af4f9ede499.png", alt="")
-            img(src="//file.baixing.net/202102/46ee7a8de81ad6d4daa858eed6f587c3.png", alt="")
-            img(src="//file.baixing.net/202102/9020e841194f73dbe2830aa3428c4f35.png", alt="")
-            img(src="//file.baixing.net/202102/5350beb96395416163c69494494acf3e.png", alt="")
+    .info
+        img.info-logo(src=company.logo, alt="logo")
+        .info-text 
+            h3.info-name  #{ company.name } 
+            .info-tag-list 
+                .info-tag 百姓认证
+                .info-tag 实力商家
+                .info-tag 品质保障
+                .info-tag 贴心服务
+    - desc = company.about.replace(/\n/g, '<br/>')
+    .desc
+        p.desc-text.hide.only-twoline  #{  desc  }
+        img.top-left(src="//file.baixing.net/202105/c13cf5f1df072ead963012489e050499.png", alt="")
+        img.bottom-right(src="//file.baixing.net/202105/2427f22e0a874b4b79b83dc2a0a0c30f.png", alt="")
+        .action-btn-box
+            .action-btn 展开
+            
+    
+//- .company-info
+//-     .info-logo
+//-         img(src=company.logo, alt="logo")
+//-     .info-right
+//-         h3 #{ company.name }
+//-         .company-medals
+//-             .medal-shop
+//-             .shop-name 实力商家
+//-             .medal-bx
+//-             .bx-name 百姓认证
+//-         .company-certificate
+//-             .certificate-label 商家信用：
+//-             img(src="//file.baixing.net/202102/1ae768b8ba9d84c0ff833af4f9ede499.png", alt="")
+//-             img(src="//file.baixing.net/202102/46ee7a8de81ad6d4daa858eed6f587c3.png", alt="")
+//-             img(src="//file.baixing.net/202102/9020e841194f73dbe2830aa3428c4f35.png", alt="")
+//-             img(src="//file.baixing.net/202102/5350beb96395416163c69494494acf3e.png", alt="")
 
 
 

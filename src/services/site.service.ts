@@ -36,7 +36,7 @@ export class SiteService {
   private setPageHeaders(shopName: string, device: string, domain: string): PageHeaderParams {
     /**切换domain.根据后端分支和模板类型选择 */
 
-    if (domain === 'localhost' || domain ==='dianpu.baixing.cn') {
+    if (domain === 'localhost' || domain ==='dianpu.baixing.cn' || domain.indexOf('172.17')!==-1) {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       //domain = 'zmlc2b.shop-test.baixing.cn'
       //domain = 'agui.shop-test.baixing.cn'
