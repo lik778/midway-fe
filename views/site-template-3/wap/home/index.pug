@@ -18,7 +18,7 @@ block content
         +home-title('服务项目')
         include ../components/product-list.pug
         +product-list(productList.slice(0,4))
-    if productList && productList.length >= 4
+    if productList && productList.length >= 4 && productLink
         a.product-more-btn(href=productLink) 查看更多
 
 
