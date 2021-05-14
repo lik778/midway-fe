@@ -1,37 +1,28 @@
 import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker';
 
-function copyToClip(content, message) {
+function copyToClip(content, dom) {
   var aux = document.createElement("input");
   aux.setAttribute("value", content);
-  document.body.appendChild(aux);
+  dom.append(aux);
   aux.select();
   document.execCommand("copy");
-  document.body.removeChild(aux);
-  alert(message || "复制成功");
+  aux.remove();
+  alert( "微信号已复制成功,请打开微信添加");
 }
 
 export const footerContactModule = function(){
-	//等待DOM 结构加载完成，然后再执行操作
-	$(document).ready(function(){
-		// $(".wechat-box").click(function(){
-		// 	$(".dialog").css("display","block");
-		// 	$(".mask").show()
-		// });
-		// $(".dialog > .cancel").click(function(){
-		// 	$(".dialog").css("display","none");
-		// 	$(".mask").hide()
-		// });
-
-		$(".wechat-box").on('click',function(){
+	$(document).on('ready',function(){
+		const copyAddWechat = $('.wechat-box');
+		copyAddWechat.on('click',function(){
 			const data = $(this).data('value')
 			if ( data != '' )
-				copyToClip(data)
+				copyToClip(data, copyAddWechat)
 		})
 
 		//点击底部浮层打点
-		$(".sms-box").click(()=>{
-			eventTracker("message-wap", "bottom-wap")
+		$(".online-box").click(()=>{
+			eventTracker("53kf-wap", "bottom-wap")
 		});
 		$(".wechat-box").click(()=>{
 			eventTracker("wechat-wap", "bottom-wap")

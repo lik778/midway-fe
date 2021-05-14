@@ -1,18 +1,18 @@
 import $ from 'jquery'
 
-function copyToClip(content, name) {
+function copyToClip(content, dom) {
   var aux = document.createElement("input");
   aux.setAttribute("value", content);
-  document.body.appendChild(aux);
+  dom.append(aux);
   aux.select();
   document.execCommand("copy");
-  document.body.removeChild(aux);
+  aux.remove();
 }
 
 const clickAction = ((dom)=>{
   dom.on('click', function () {
     const data = $(this).data('value');
-    copyToClip(data);
+    copyToClip(data, dom);
     dom.text('复制成功！');
     setTimeout(()=>{
       dom.text('点击复制');
@@ -21,11 +21,12 @@ const clickAction = ((dom)=>{
  })
 
 export const initAboutus = function () {
-  //等待DOM 结构加载完成，然后再执行操作
   $(document).on('ready', function () {
-    const copyWechat = $('.wechat');
+    //复制微信号码
+    const copyWechat = $('#wechat');
     clickAction(copyWechat);
   })
 }
+
 
 
