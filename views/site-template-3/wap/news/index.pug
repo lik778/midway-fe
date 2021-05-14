@@ -15,6 +15,9 @@ block content
     include ../components/pagination
     +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
+block footer
+    include ../components/footer.pug
+
 block scripts
     :combine(fileName="site-template-3-news-wap.js")
 block append scripts
