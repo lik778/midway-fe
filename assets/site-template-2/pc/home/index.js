@@ -1,12 +1,9 @@
 import './index.styl';
+import '../layout';
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { qqModule } from '../components/customer-service/index';
-import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
 
-qqModule()
-navModule()
 leaveLeads()
 
 // 轮播图

@@ -1,7 +1,7 @@
 mixin user-defined-module(pageType,userDefinedModuleList)
 	each userDefinedModule in userDefinedModuleList
 		.user-defined-module
-			+home-title('公司优势')
+			+home-title( userDefinedModule.mainModuleTitle )
 			- const userDefinedList = userDefinedModule.subModuleBos
 			- const isOdd = userDefinedList.length%2 === 0 ? false : true
 			.user-defined-list
@@ -19,4 +19,4 @@ mixin user-defined-module(pageType,userDefinedModuleList)
 						.user-defined-item
 					else if pageType === 'home'
 						.user-defined-item.viewMore
-							a(href="/about" || "#") 查看更多详情
+							a(href="#") 查看更多详情

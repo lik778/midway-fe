@@ -11,8 +11,8 @@ export class SiteService {
   //定义：后端传的模板id对应的前端模板类型
   static templateMapping = {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
-    // "5fb387d2f2db3f6b8e7080e6": "site-template-2",
-    "5fb387d2f2db3f6b8e7080e6": "site-template-3",
+    "5fb387d2f2db3f6b8e7080e6": "site-template-2",
+    "7397650bdc5446a36d6d643e": "site-template-3"
   }
   constructor(
     private readonly httpService: HttpService,
@@ -38,11 +38,16 @@ export class SiteService {
 
     if (domain === 'localhost' || domain ==='dianpu.baixing.cn') {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
+<<<<<<< HEAD
       domain = 'agui.shop-test.baixing.cn'
       // domain = 'zmlc2b.shop-test.baixing.cn'
+=======
+      //domain = 'zmlc2b.shop-test.baixing.cn'
+      //domain = 'agui.shop-test.baixing.cn'
+>>>>>>> 04e627e27d6d88251e7d370b87e43875ffb57b57
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      //domain = 'shop-test.baixing.cn'
+       domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       // domain = 'zmlc2b.shop.baixing.cn'

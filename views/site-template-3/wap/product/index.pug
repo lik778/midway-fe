@@ -6,9 +6,11 @@ block content
     - const cateList = renderData.productCateList
     include ../components/toptab
 
-    include ../components/product-list
     - productList = renderData.productList.result
-    +product-list(productList)
+    if productList && productList.length > 0
+        include ../components/product-list
+        - productList = renderData.productList.result
+        +product-list(productList)
 
     //-留言资讯
     include ../components/contact-form.pug

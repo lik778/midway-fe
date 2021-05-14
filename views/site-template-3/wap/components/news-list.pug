@@ -1,8 +1,8 @@
-.news-list-title-box 
-  .title 新闻资讯
-  a.more(href=newsLink) 查看全部
 - const newsList= renderData.articleList.result
 if newsList && newsList.length >0
+  .news-list-title-box
+    .title 新闻资讯
+    a.more(href=newsLink) 查看全部
   .news-list
     each item in newsList
       a.item(href=item.urlSuffix)
@@ -10,13 +10,10 @@ if newsList && newsList.length >0
         - date = dateObj.getDate()
         - year = dateObj.getFullYear()
         - month = dateObj.getMonth() + 1
-        .left 
+        .left
           .day #{date > 9 ? date : `0${date}`}
           .year-month #{year}/#{month > 9 ? month : `0${month}`}
-        .right 
+        .right
           h3.title.only-oneline #{ item.name }
           p.desc.only-twoline  #{ item.limitText }
           //-  #{ dateFormat2(item.modifiedTime) }
-else
-  include ./default-content.pug
-  +default-content("")

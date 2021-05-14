@@ -4,9 +4,10 @@ export const viewPhone = function() {
 	$(document).ready(function() {
 		$(".view-all-phone").click(() => {
 			$(".phone .phoneNumber-full").addClass('active')
-			$(".phone .phoneNumber-full").removeClass('no-active')
-			$(".phone .phoneNumber-slice").addClass('no-active')
+			$(".phone .phoneNumber-full").removeClass('none')
+			$(".phone .phoneNumber-slice").addClass('none')
 			$(".phone .phoneNumber-slice").removeClass('active')
+			$(".view-all-phone").hide()
 		})
 	})
 }

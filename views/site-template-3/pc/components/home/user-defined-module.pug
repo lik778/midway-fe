@@ -2,7 +2,7 @@ mixin user-defined-module(userDefinedModuleList)
 	each userDefinedModule in userDefinedModuleList
 		.block-title
 			h2 #{ userDefinedModule.mainModuleTitle }
-				
+
 			//-是否为奇数个，奇数个展示查看更多
 		- const userDefinedList = userDefinedModule.subModuleBos
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
@@ -19,8 +19,8 @@ mixin user-defined-module(userDefinedModuleList)
 						.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }
 						.user-defined-line( style = isWhite ? {background:'#FFF'} : {})
 						.content.only-twoline( style = isWhite ? {color:'#FFF'} : {} ) #{ item.content }
-					
+
 			if isOdd
 				.user-defined-item.viewMore
-					a(href="/about" || "#") 
+					a(href="#")
 						span 查看企业介绍详情
