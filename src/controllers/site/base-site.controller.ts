@@ -71,13 +71,13 @@ export class BaseSiteController {
       }
     })
     const { templateId } = data.basic.shop
-    //const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
-    let templateUrl
-    if(templateId === '7397650bdc5446a36d6d643e'){
-      templateUrl = `site-template-1/${device}/news/index`;
-    }else {
-      templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
-    }
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
+    // let templateUrl
+    // if(templateId === '7397650bdc5446a36d6d643e'){
+    //   templateUrl = `site-template-1/${device}/news/index`;
+    // }else {
+    //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
+    // }
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -138,13 +138,13 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      //const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
-      let templateUrl
-      if(templateId === '7397650bdc5446a36d6d643e'){
-        templateUrl = `site-template-1/${device}/news/index`;
-      }else {
-        templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
-      }
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
+      // let templateUrl
+      // if(templateId === '7397650bdc5446a36d6d643e'){
+      //   templateUrl = `site-template-1/${device}/news/index`;
+      // }else {
+      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
+      // }
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -174,13 +174,13 @@ export class BaseSiteController {
       }
     })
     const { templateId } = data.basic.shop
-    //const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
-    let templateUrl
-    if(templateId === '7397650bdc5446a36d6d643e'){
-      templateUrl = `site-template-1/${device}/product/index`;
-    }else {
-      templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`
-    }
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
+    // let templateUrl
+    // if(templateId === '7397650bdc5446a36d6d643e'){
+    //   templateUrl = `site-template-1/${device}/product/index`;
+    // }else {
+    //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`
+    // }
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -210,14 +210,13 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      //const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
-      let templateUrl
-      if(templateId === '7397650bdc5446a36d6d643e'){
-        templateUrl = `site-template-1/${device}/product-detail/index`;
-      }else {
-        templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
-      }
-      // console.log(data)
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
+      // let templateUrl
+      // if(templateId === '7397650bdc5446a36d6d643e'){
+      //   templateUrl = `site-template-1/${device}/product-detail/index`;
+      // }else {
+      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
+      // }
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -240,13 +239,13 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      //const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`;
-      let templateUrl
-      if(templateId === '7397650bdc5446a36d6d643e'){
-        templateUrl = `site-template-1/${device}/product-child/index`;
-      }else {
-        templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`
-      }
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`;
+      // let templateUrl
+      // if(templateId === '7397650bdc5446a36d6d643e'){
+      //   templateUrl = `site-template-1/${device}/product-child/index`;
+      // }else {
+      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`
+      // }
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -276,7 +275,6 @@ export class BaseSiteController {
         refer: ''
       }
     })
-    //只有模板2,B2B有这个页面，因此不用根据模板id判断了
     const { templateId } = data.basic.shop
     const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/about/index`;
     const currentPathname = req.originalUrl;
