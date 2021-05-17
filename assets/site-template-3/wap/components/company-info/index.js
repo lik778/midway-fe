@@ -1,9 +1,15 @@
 import $ from 'jquery';
 
 export const initCompanyInfo = () => {
+  const companyDescText = $('.company-info .desc-text')
+  const companyActionBtn = $('.company-info .action-btn ')
+
+  if(companyDescText.outerHeight()>40){
+    companyDescText.addClass('only-twoline hide')
+    companyActionBtn.removeClass('hide')
+  }
+  
   $(document).on('ready', function () {
-    const companyDescText = $('.company-info .desc-text')
-    const companyActionBtn = $('.company-info .action-btn ')
     companyActionBtn.on('click', function () {
       if (companyDescText.hasClass('hide')) {
         companyDescText.removeClass('only-twoline hide')
@@ -14,4 +20,4 @@ export const initCompanyInfo = () => {
       }
     })
   })
-}
+} 
