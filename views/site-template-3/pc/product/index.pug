@@ -22,10 +22,11 @@ block content
 
         //-侧边栏
         .sidebar
-            - const { articleList } = renderData
-            include ../components/sidebar/cateList.pug
-            +side-cateList('新闻资讯', articleList.result)
-            include ../components/sidebar/products.pug
+            //-TODO:这里缺少新闻资讯和产品推荐字段@成磊
+            //-- const { articleList } = renderData
+            //-include ../components/sidebar/cateList.pug
+            //-+side-cateList('新闻资讯', articleList.result)
+            //-include ../components/sidebar/products.pug
 
 block scripts
     :combine(fileName="site-template-3-product-pc.js")
