@@ -64,50 +64,50 @@ export class SiteService {
       this.setPageHeaders(shopName, device, domain));
   }
 //服务内容列表
-  public getProductPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/product/list`, params,
-      this.setPageHeaders(shopName, device, domain));
-  }
+	public getProductPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+		return this.requestService.post(`${this.prefixPath}/product/list`, params,
+			this.setPageHeaders(shopName, device, domain));
+	}
 
 //服务内容子分类
-  public getProductCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/product/cateList`, params,
-      this.setPageHeaders(shopName, device, domain));
-  }
+	public getProductCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+		return this.requestService.post(`${this.prefixPath}/product/cateList`, params,
+			this.setPageHeaders(shopName, device, domain));
+	}
 
 //服务内容详情页
 public getProductDetailData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-  return this.requestService.post(`${this.prefixPath}/product/detail`, params,
-    this.setPageHeaders(shopName, device, domain));
+	return this.requestService.post(`${this.prefixPath}/product/detail`, params,
+		this.setPageHeaders(shopName, device, domain));
 }
 
 //新闻列表
-  public getNewsPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/article/list`, params,
-      this.setPageHeaders(shopName, device, domain));
-  }
+	public getNewsPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+		return this.requestService.post(`${this.prefixPath}/article/list`, params,
+			this.setPageHeaders(shopName, device, domain));
+	}
 
 //新闻列表子分类
 public getNewsCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-  return this.requestService.post(`${this.prefixPath}/article/cateList`, params,
-    this.setPageHeaders(shopName, device, domain));
+	return this.requestService.post(`${this.prefixPath}/article/cateList`, params,
+		this.setPageHeaders(shopName, device, domain));
 }
 
 //新闻详情页
 public getNewsDetailData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-  return this.requestService.post(`${this.prefixPath}/article/detail`, params,
-    this.setPageHeaders(shopName, device, domain));
+	return this.requestService.post(`${this.prefixPath}/article/detail`, params,
+		this.setPageHeaders(shopName, device, domain));
 }
 
 //关于我们页面
 public getAboutPageData(shopName: string, device: string, domain: string): Promise<ServiceResponse<ShopComponents>> {
-  return this.requestService.post(`${this.prefixPath}/about/`, {},
-    this.setPageHeaders(shopName, device, domain));
+	return this.requestService.post(`${this.prefixPath}/about/`, {},
+		this.setPageHeaders(shopName, device, domain));
 }
 
 //留言资讯
 public leaveLeads(shopName: string, device: string, params: any, domain: string): Promise<any> {
-  return this.requestService.post(`${this.prefixPath}/home/message`, params,
-  this.setPageHeaders(shopName, device, domain));
+	return this.requestService.post(`${this.prefixPath}/home/message`, params,
+	this.setPageHeaders(shopName, device, domain));
 }
 }

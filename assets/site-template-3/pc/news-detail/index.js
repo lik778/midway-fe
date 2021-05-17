@@ -6,11 +6,13 @@ import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
 //import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
+import { viewPhone } from '../components/contact-form-companyInfo';
 
 //navModule()
 //qqModule()
 initializeSidebarProductSwiper()
 leaveLeads()
+viewPhone()
 
 new Swiper('#news-detail-swiper .swiper-container', {
   //spaceBetween: 30,

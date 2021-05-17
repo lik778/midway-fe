@@ -1,8 +1,5 @@
 - const newsList= renderData.articleList.result
 if newsList && newsList.length >0
-  .news-list-title-box
-    .title 新闻资讯
-    a.more(href=newsLink) 查看全部
   .news-list
     each item in newsList
       a.item(href=item.urlSuffix)

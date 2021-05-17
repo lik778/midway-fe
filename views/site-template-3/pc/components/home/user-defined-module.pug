@@ -1,8 +1,6 @@
 mixin user-defined-module(userDefinedModuleList)
 	each userDefinedModule in userDefinedModuleList
-		.block-title
-			h2 #{ userDefinedModule.mainModuleTitle }
-
+		+home-title( userDefinedModule.mainModuleTitle )
 			//-是否为奇数个，奇数个展示查看更多
 		- const userDefinedList = userDefinedModule.subModuleBos
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
@@ -13,7 +11,7 @@ mixin user-defined-module(userDefinedModuleList)
 					- var id = '0' + (index+1)
 				else
 					- var id = index+1
-				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) ` : {} )
+				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) no-repeat center/100%` : {} )
 					.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
 					div
 						.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }

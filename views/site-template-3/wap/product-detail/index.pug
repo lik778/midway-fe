@@ -1,6 +1,6 @@
 extends ../layout.pug
 block styles
-    :combine(fileName="site-template-2-product-detail-wap.css")
+    :combine(fileName="site-template-3-product-detail-wap.css")
 
 block header
     include ../components/header
@@ -12,8 +12,11 @@ block content
     include ../components/product-recommend.pug
     include ../components/contact-form.pug
 
+block footer
+    include ../components/footer.pug
+
 block scripts
-    :combine(fileName="site-template-2-product-detail-wap.js")
+    :combine(fileName="site-template-3-product-detail-wap.js")
 block append scripts
     script.
         window.contentType = 'product';
