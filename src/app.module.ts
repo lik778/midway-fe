@@ -17,6 +17,7 @@ import { AppController } from './controllers/app.controller';
 import { AdminController } from './controllers/admin.controller';
 import { UpyunController } from './controllers/upyun.controller';
 import { SitemapController } from './controllers/sitemap.controller';
+
 import { B2bSiteController } from './controllers/site/b2b-site.controller';
 import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
 import { TrackerController } from './controllers/tracker.controller';

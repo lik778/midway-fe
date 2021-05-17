@@ -1,0 +1,21 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-product-detail-wap.css")
+
+block header
+    include ../components/header
+
+block content
+    - const cateList = renderData.productCateList
+    //-TODO：把这个页面除了标题，其余作为组件都抽离出来，和模板2共用
+    include ../components/product-detail.pug
+    include ../components/product-recommend.pug
+    include ../components/contact-form.pug
+
+block scripts
+    :combine(fileName="site-template-2-product-detail-wap.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.trackSrc = 'viewad';
+        window.adId = #{renderData.productInfo.id};

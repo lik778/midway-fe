@@ -1,0 +1,49 @@
+extends ../layout
+
+block styles
+		:combine(fileName="site-template-3-home-pc.css")
+
+//-使用了统一的header和nav
+block content
+		include ../components/common/base-swiper.pug
+
+		.container
+				//-自身优势
+				- selfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',icon:'//file.baixing.net/202105/86ebd7b9759cf8a8ec05c09606aa91b8.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',icon:'//file.baixing.net/202105/eedf3bdf35da8897d917ba2f40604603.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',icon:'//file.baixing.net/202105/3345c9fc4e9f376d071ea590785bc079.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',icon:'//file.baixing.net/202105/604a6659fa9a9fea562c2e076ad85332.png'}]
+				include ../components/home/self-advantage.pug
+
+				//-服务项目
+				- const { result : proList} = renderData.productList
+				if proList && proList.length > 0
+						.block-title
+								h2 服务项目
+						include ../components/home/product-swiper.pug
+
+				include ../components/home/about-us.pug
+				include ../components/home/viewPhone.pug
+
+				//-自定义模块
+				- const userDefinedList = renderData.autoConfig
+				if userDefinedList && userDefinedList.length>0
+						include ../components/home/user-defined-module.pug
+						+user-defined-module(userDefinedList)
+
+				//-新闻资讯
+				- articleList = renderData.articleList.result
+				- const { articleRecommend } = renderData
+				if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+						.block-title
+								h2 新闻资讯
+						include ../components/home/news-center.pug
+						.new-center.clearfix
+								+news-box('新闻资讯', articleList)
+
+				.block-title
+						h2 联系我们
+				include ../components/home/contact-us.pug
+
+block scripts
+		:combine(fileName="site-template-3-home-pc.js")
+block append scripts
+		script.
+				window.trackSrc = 'home';

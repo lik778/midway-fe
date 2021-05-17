@@ -1,0 +1,48 @@
+extends ../layout.pug
+include ../components/home-title.pug
+
+block styles
+    :combine(fileName="site-template-3-home-wap.css")
+
+block append header
+    include ../components/swiper
+
+block content
+    //-公司信息
+    include ../components/company-info
+
+    .contact-us-block
+      +home-title('联系我们')
+      include ../components/contact-us-form
+
+    - productList = renderData.productList.result
+    if productList && productList.length > 0
+        +home-title('服务项目')
+        include ../components/product-list.pug
+        +product-list(productList.slice(0,4))
+    if productList && productList.length >= 4 && productLink
+        a.product-more-btn(href=productLink) 查看更多
+
+    //-TODO：自定义模块
+    - const userDefinedList = renderData.autoConfig
+    if userDefinedList && userDefinedList.length>0
+        include ../components/user-defined-module.pug
+        +user-defined-module('home',userDefinedList)
+
+    //-TODO:新闻资讯模块
+    include ../components/news-list.pug
+
+    //-关于我们
+    include ../components/aboutus.pug
+
+    //-留言资讯模块
+    include ../components/contact-form.pug
+
+block footer
+    include ../components/footer.pug
+
+block scripts
+    :combine(fileName="site-template-3-home-wap.js")
+block append scripts
+    script.
+        window.trackSrc = 'home';

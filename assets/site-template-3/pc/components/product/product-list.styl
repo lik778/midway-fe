@@ -1,0 +1,70 @@
+.product-list
+  width 100%
+  padding 0 26px
+  box-sizing border-box
+  background-color #fff
+  div 
+    box-sizing border-box
+  .item
+    display flex
+    padding 24px 0
+    justify-content space-between
+    align-items center
+    &:hover
+      .left
+        .text-content
+          .title
+            color: #FF6536;
+      .right
+        border: 1px solid #FF6536;
+        color: #FF6536;
+    .left
+      display flex
+      justify-content flex-start
+      align-items center
+      .img
+        width 225px
+        height 150px
+      .text-content
+        width 450px
+        height 150px 
+        padding 10px 16px
+        .title
+          margin-bottom 20px
+          font-weight bold
+          font-size 18px
+          color #333
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+        .addr
+          margin-bottom 50px
+          font-size 14px
+          color #999999
+          line-height 18px
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+        .name
+          font-size 14px
+          line-height 14px
+          color #333333
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+    .right
+      width 160px
+      line-height 40px
+      text-align: center
+      border-radius: 2px;
+      font-size: 14px;
+      border 1px solid #CCCCCC
+      color #CCCCCC
+    &+.item
+      border-top 1px solid #eee
+
+
+
+
+
+ 

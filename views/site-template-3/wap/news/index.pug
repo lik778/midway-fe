@@ -1,0 +1,23 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-3-news-wap.css")
+
+block content
+    - const cateList = renderData.articleCateList
+    include ../components/toptab
+    include ../components/news-list
+
+    //-留言资讯
+    include ../components/contact-form.pug
+
+    //-TODO:分页尽量改成下拉加载
+    - const { totalPage } = renderData.articleList
+    include ../components/pagination
+    +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+
+block scripts
+    :combine(fileName="site-template-3-news-wap.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'listing';

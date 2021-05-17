@@ -1,0 +1,10 @@
+//-侧边栏分类列表，后端已限制详情页10个，列表页不限。公共组件前端无需判断限制
+mixin side-cateList(type,list)
+  if list && list.length > 0
+    .sidebar-item
+      .sidebar-item__title
+        span #{ type }
+      .sidebar-item__content
+        .articles
+          each item in list
+            a.article(href=item.urlSuffix) #{ item.name }

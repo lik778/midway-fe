@@ -53,7 +53,7 @@ export const contactForm: FormConfig = {
       }]
     },
     {
-      label: '电话2', name: 'contactMobile2', type: FormType.Input, required: false, placeholder: '请输入电话号码',
+      label: '电话号码2', name: 'contactMobile2', type: FormType.Input, required: false, placeholder: '请输入电话号码',
       patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]
     },
     {

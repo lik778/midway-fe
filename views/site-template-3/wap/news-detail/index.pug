@@ -1,0 +1,33 @@
+extends ../layout.pug
+
+block styles
+    :combine(fileName="site-template-3-news-detail-wap.css")
+
+block header
+    include ../components/header
+    include ../components/swiper
+
+block content
+
+    include ../components/company-info.pug
+    //-TODO：把这个页面除了标题，其余作为组件都抽离出来，和模板2共用
+    - const cateList = renderData.articleCateList
+    include ../components/news-detail.pug
+
+    //-TODO:这个产品推荐要加的吧？设计稿给忘了？待对齐
+    //-include ../components/product-recommend.pug
+
+    include ../components/contact-form.pug
+
+block footer
+    include ../components/footer.pug
+
+
+
+block scripts
+    :combine(fileName="site-template-3-news-detail-wap.js")
+block append scripts
+    script.
+        window.contentType = 'article';
+        window.trackSrc = 'viewad';
+        window.adId = #{renderData.articleInfo.id};
