@@ -5,7 +5,7 @@ include ../components/home-title.pug
     .bottom-box
       a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
         img.aboutus-icon(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
-        span.aboutus-text.only-oneline 公司地址： #{ company.address } 公司地址：
+        span.aboutus-text.only-oneline 公司地址： #{ company.address }
         .more
       a.aboutus-item(href="tel:" + phone.content)
         img.aboutus-icon(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")

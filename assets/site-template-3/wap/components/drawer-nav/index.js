@@ -12,7 +12,7 @@ export const initNav = function () {
     navSelectIcon.addClass('active')
     drawerNavBox.addClass('active')
     drawerNavMask.addClass('active')
-    body.css({ transform: 'translate(180px)' });
+    body.css({ transform: 'translateX(-180px)' });
     html.css({ width: '100vw', height: '100vh', overflow: 'hidden' })
   })
   drawerNavMask.on('click', function () {
