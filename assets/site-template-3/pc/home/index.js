@@ -10,7 +10,6 @@ leaveLeads()
 productSwiper()
 viewPhone()
 
-
 new Swiper('#banner-list .swiper-container', {
   loop: true,
   speed:1000,

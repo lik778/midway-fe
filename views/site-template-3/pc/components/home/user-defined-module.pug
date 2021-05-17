@@ -1,8 +1,6 @@
 mixin user-defined-module(userDefinedModuleList)
 	each userDefinedModule in userDefinedModuleList
-		.block-title
-			h2 #{ userDefinedModule.mainModuleTitle }
-
+		+home-title( userDefinedModule.mainModuleTitle )
 			//-是否为奇数个，奇数个展示查看更多
 		- const userDefinedList = userDefinedModule.subModuleBos
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
