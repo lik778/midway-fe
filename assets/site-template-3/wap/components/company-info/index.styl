@@ -1,3 +1,15 @@
+  @keyframes navTitleAnimate {
+  0% {
+    left 100%
+    transform: translateX(0)
+  }
+
+  100% {
+    left 0
+    transform: translateX(-100%)
+  }
+}
+
 .company-info
   margin-bottom 15px
   padding 20px
@@ -15,12 +27,26 @@
     .info-text
       max-width calc(100% - 62px)
       flex-grow  1
+
+      .animate
+          position relative
+          overflow hidden
+          white-space nowrap
+          text-align center
+          height 30px
+        .animate-title
+          position absolute
+          display inline-block
+          margin-bottom 7px
+          font-size 18px
+          font-weight bold
+          color #333333
+          //line-height 26px
+          animation navTitleAnimate 5s linear 0s infinite
       .info-name
-        margin-bottom 7px
-        font-size 18px
-        font-weight bold
-        color #333333
-        line-height 26px
+          margin-bottom 7px
+          font-size 18px
+
       .info-tag-list
         display  flex
         justify-content flex-start
@@ -47,6 +73,7 @@
     .desc-text
       margin-bottom 8px
       overflow hidden
+      word-break break-all
       &.hide
         height 40px
     .top-left,.bottom-right
