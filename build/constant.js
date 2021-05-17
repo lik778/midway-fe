@@ -11,8 +11,8 @@ const TB_B2C_TYPE = 3
 // 模板页面名
 const TB_BASE_PAGE_NAMES = ['home', 'news', 'news-detail', 'product', 'product-detail']
 const TB_FUWU_PAGE_NAMES = [...TB_BASE_PAGE_NAMES, 'news-child', 'product-child']
-const TB_B2B_PAGE_NAMES = [...TB_BASE_PAGE_NAMES]
-const TB_B2C_PAGE_NAMES = [...TB_BASE_PAGE_NAMES]
+const TB_B2B_PAGE_NAMES = [...TB_BASE_PAGE_NAMES, 'about']
+const TB_B2C_PAGE_NAMES = [...TB_BASE_PAGE_NAMES, 'about']
 
 module.exports = {
   DEVICE_TYPE,
