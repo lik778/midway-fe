@@ -20,6 +20,9 @@ block content
     include ../components/pagination
     +pagination(totalPage, currentPage, `${currentPathname}`)
 
+block footer
+    include ../components/footer.pug
+
 block scripts
     :combine(fileName="site-template-3-product-wap.js")
 block append scripts

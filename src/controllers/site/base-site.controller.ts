@@ -217,7 +217,7 @@ export class BaseSiteController {
       }else {
         templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
       }
-      console.log(data)
+      // console.log(data)
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
