@@ -19,7 +19,7 @@ import { UpyunController } from './controllers/upyun.controller';
 import { SitemapController } from './controllers/sitemap.controller';
 
 import { B2bSiteController } from './controllers/site/b2b-site.controller';
-import { FuwuSiteController } from './controllers/site/fuwu-site.controller';
+import { B2cSiteController } from './controllers/site/b2c-site.controller';
 import { TrackerController } from './controllers/tracker.controller';
 import { ReportController } from './controllers/report.controller';
 import { ZhidaoController } from './controllers/zhidao.controller';
@@ -41,7 +41,7 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
     SitemapController,
     SiteCommonController,
     B2bSiteController,
-    FuwuSiteController,
+    B2cSiteController,
     UpyunController,
     TrackerController,
     ReportController,

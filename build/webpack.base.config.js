@@ -1,17 +1,18 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { genSiteTemplateEntry } = require('./util');
-const { TB_FUWU_PAGE_NAMES, TB_B2B_PAGE_NAMES, TB_B2C_PAGE_NAMES, TB_FUWU_TYPE, TB_B2B_TYPE, TB_B2C_TYPE } = require('./constant');
+const { TB_PAGE_NAMES_B2C_1, TB_PAGE_NAMES_B2B_2, TB_PAGE_NAMES_B2C_3, TB_TYPE_B2C_1, TB_TYPE_B2B_2, TB_TYPE_B2C_3 } = require('./constant');
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: Object.assign({
     'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
+    //特殊要额外加的打包示例
     //'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js')
   },
-    genSiteTemplateEntry(TB_FUWU_TYPE, TB_FUWU_PAGE_NAMES),
-    genSiteTemplateEntry(TB_B2B_TYPE, TB_B2B_PAGE_NAMES),
-    genSiteTemplateEntry(TB_B2C_TYPE, TB_B2C_PAGE_NAMES),
+    genSiteTemplateEntry(TB_TYPE_B2C_1, TB_PAGE_NAMES_B2C_1),
+    genSiteTemplateEntry(TB_TYPE_B2B_2, TB_PAGE_NAMES_B2B_2),
+    genSiteTemplateEntry(TB_TYPE_B2C_3, TB_PAGE_NAMES_B2C_3),
   ),
   output: {
     path: path.resolve(__dirname, "../dist/public"),

@@ -6,6 +6,7 @@ import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { TrackerType } from '../../enums/tracker';
 
+//模板页面基础控制器，进行数据请求和打点
 export class BaseSiteController {
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
@@ -15,7 +16,8 @@ export class BaseSiteController {
   public async home(@Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     let shopName = ''
     const domain = req.hostname
-    if (this.domainType === DomainTypeEnum.FUWU) {
+    console.log(this.domainType)
+    if (this.domainType === DomainTypeEnum.B2C) {
       shopName = this.midwayApiService.getShopName(params.shopName)
       if (!/\/$/.test(req.path)) {
         res.redirect(`/${shopName}/`)

@@ -3,23 +3,23 @@ const PC = 'pc'
 const WAP = 'wap'
 const DEVICE_TYPE = [PC, WAP]
 
-// 模板名称
-const TB_FUWU_TYPE = 1
-const TB_B2B_TYPE = 2
-const TB_B2C_TYPE = 3
+// 模板_类型_B2C/B2B_序号
+const TB_TYPE_B2C_1 = 1
+const TB_TYPE_B2B_2 = 2
+const TB_TYPE_B2C_3 = 3
 
-// 模板页面名
+// 模板_页面名称_B2C/B2B_序号
 const TB_BASE_PAGE_NAMES = ['home', 'news', 'news-detail', 'product', 'product-detail']
-const TB_FUWU_PAGE_NAMES = [...TB_BASE_PAGE_NAMES, 'news-child', 'product-child']
-const TB_B2B_PAGE_NAMES = [...TB_BASE_PAGE_NAMES, 'about']
-const TB_B2C_PAGE_NAMES = [...TB_BASE_PAGE_NAMES,'about']
+const TB_PAGE_NAMES_B2C_1 = [...TB_BASE_PAGE_NAMES, 'news-child', 'product-child']
+const TB_PAGE_NAMES_B2B_2 = [...TB_BASE_PAGE_NAMES, 'about']
+const TB_PAGE_NAMES_B2C_3 = [...TB_BASE_PAGE_NAMES,'about']
 
 module.exports = {
   DEVICE_TYPE,
-  TB_FUWU_PAGE_NAMES,
-  TB_B2B_PAGE_NAMES,
-  TB_B2C_PAGE_NAMES,
-  TB_FUWU_TYPE,
-  TB_B2B_TYPE,
-  TB_B2C_TYPE
+  TB_PAGE_NAMES_B2C_1,
+  TB_PAGE_NAMES_B2B_2,
+  TB_PAGE_NAMES_B2C_3,
+  TB_TYPE_B2C_1,
+  TB_TYPE_B2B_2,
+  TB_TYPE_B2C_3
 }
