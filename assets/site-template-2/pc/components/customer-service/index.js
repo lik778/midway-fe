@@ -2,7 +2,7 @@ import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker'
 
 export const qqModule = function() {
-	$(document).ready(function(){
+	$(document).on('ready',function(){
 		//点击QQ客服event打点
 		$(".qq").hover(()=>{
 			eventTracker("qq-pc", "float-pc")
@@ -31,13 +31,13 @@ $(document).scroll(() => {
 	}
 });
 
-backToTop.click(() => {
+backToTop.on('click',() => {
 	document.body.scrollIntoView({ block: 'start', behavior: 'smooth' });
 });
 
 const weChatCopyBtn = $('.service-modal__wechat .click-copy');
 
-weChatCopyBtn.click(() => {
+weChatCopyBtn.on('click',() => {
 	$('#wechat-id-textarea').select();
 	document.execCommand('copy');
 	weChatCopyBtn.text('复制成功！');

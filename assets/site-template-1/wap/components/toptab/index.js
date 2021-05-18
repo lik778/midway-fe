@@ -5,14 +5,14 @@ const sample = $(".tab-header .sample")
 const open = $(".s-open")
 const off = $(".s-off")
 export const tabModule = function(){
-	$(document).ready(function(){
-		open.click(function(){
+	$(document).on('ready',function(){
+		open.on('click',function(){
 			all.show();
 			sample.hide();
 			open.hide()
 			off.show()
 		})
-		off.click(function(){
+		off.on('click',function(){
 			sample.show();
 			all.hide();
 			open.show()

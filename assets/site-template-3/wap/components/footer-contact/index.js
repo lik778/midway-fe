@@ -31,7 +31,7 @@ const copyText = (text, dom) => {
   if (document.execCommand('copy')) {
     document.execCommand('copy');
   }
-  document.activeElement.blur() 
+  document.activeElement.blur()
   input.remove();
   alert( "微信号已复制成功,请打开微信添加");
 };
@@ -47,13 +47,13 @@ export const footerContactModule = function(){
 		})
 
 		//点击底部浮层打点
-		$(".online-box").click(()=>{
+		$(".online-box").on('click',()=>{
 			eventTracker("53kf-wap", "bottom-wap")
 		});
-		$(".wechat-box").click(()=>{
+		$(".wechat-box").on('click',()=>{
 			eventTracker("wechat-wap", "bottom-wap")
 		});
-		$(".phone-box").click(()=>{
+		$(".phone-box").on('click',()=>{
 			eventTracker("phone-wap", "bottom-wap")
 		})
 	})

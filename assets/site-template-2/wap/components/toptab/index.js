@@ -1,7 +1,7 @@
 import $ from 'jquery'
 
 export const tabModule = function(){
-	$(document).ready(function(){
+	$(document).on('ready',function(){
 		const all = $(".all")
 		const img = $(".tab-header img")
 		const mask = $(".mask")

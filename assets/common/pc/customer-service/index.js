@@ -2,26 +2,26 @@ import $ from 'jquery'
 import { eventTracker } from '../../../common/tracker'
 
 export const qqModule = function() {
-	$(document).ready(function(){
-		$(".qq-title").click(function(){
+	$(document).on('ready',function(){
+		$(".qq-title").on('click',function(){
 			$(".customer-box").hide();
 			$(".customer-hide").show();
 		})
-		$(".customer-hide").click(function(){
+		$(".customer-hide").on('click',function(){
 			$(".customer-box").show();
 			$(".customer-hide").hide();
 		})
 
 		//点击QQ客服event打点
-		$(".customer-box>dl a").click(()=>{
+		$(".service-item .qq").on('click',()=>{
 			eventTracker("qq-pc", "float-pc")
 		})
 		//电话打点
-		$(".customer-box .center").click(()=>{
+		$(".mobile").on('click',()=>{
 			eventTracker("phone-pc", "float-pc")
 		})
 		//微信打点
-		$(".customer-box .footer").click(()=>{
+		$(".wechat").on('click',()=>{
 			eventTracker("wechat-pc", "float-pc")
 		})
 	})
@@ -38,13 +38,13 @@ $(document).scroll(() => {
 	}
 });
 
-backToTop.click(() => {
+backToTop.on('click',() => {
 	document.body.scrollIntoView({ block: 'start', behavior: 'smooth' });
 });
 
 const weChatCopyBtn = $('.service-modal__wechat .click-copy');
 
-weChatCopyBtn.click(() => {
+weChatCopyBtn.on('click',() => {
 	$('#wechat-id-textarea').select();
 	document.execCommand('copy');
 	weChatCopyBtn.text('复制成功！');

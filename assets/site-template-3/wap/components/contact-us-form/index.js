@@ -1,7 +1,7 @@
 import $ from 'jquery';
 export const leaveLeads1 = function() {
-    $(document).ready(function() {
-        $("#upContactUsForm").click((e) => {
+    $(document).on('ready',function() {
+        $("#upContactUsForm").on('click',(e) => {
             e.preventDefault();
             const data = {};
             data.name = $('#contactUsName').val();
