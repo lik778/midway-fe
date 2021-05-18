@@ -210,13 +210,13 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      //const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
-      let templateUrl
-      if(templateId === '7397650bdc5446a36d6d643e'){
-        templateUrl = `site-template-1/${device}/product-detail/index`;
-      }else {
-        templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
-      }
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
+      // let templateUrl
+      // if(templateId === '7397650bdc5446a36d6d643e'){
+      //   templateUrl = `site-template-1/${device}/product-detail/index`;
+      // }else {
+      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
+      // }
       // console.log(data)
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;

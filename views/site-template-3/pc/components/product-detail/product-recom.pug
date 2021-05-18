@@ -1,0 +1,11 @@
+.product-recom
+	.product-recom-title 产品推荐
+	.product-recom-list
+		if productRecommendList && productRecommendList.length >0
+			each item in productRecommendList
+				a.recommend-item(href=item.urlSuffix target="_blank")
+					img.img(src=item.headImg || defaultImg)
+					p.only-twoline #{ item.name }
+					.show-desc 查看详情
+		else
+			p.no-content 当前页面暂无内容，敬请期待...
