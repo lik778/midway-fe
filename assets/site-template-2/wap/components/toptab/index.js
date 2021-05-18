@@ -1,23 +1,27 @@
 import $ from 'jquery'
 
-const all = $(".all")
-const img = $(".tab-header img")
-const mask = $(".mask")
-const btn = $(".all .btn")
-
 export const tabModule = function(){
 	$(document).ready(function(){
-		img.click(function(){
+		const all = $(".all")
+		const img = $(".tab-header img")
+		const mask = $(".mask")
+		const btn = $(".all .btn")
+		const html = $('html')
+
+		img.on('click', function(){
 			mask.show()
 			all.show()
+			html.css({'height':'100vh', 'overflow': 'hidden'})
 		})
-		mask.click(function(){
+		mask.on('click', function(){
 			all.hide()
 			mask.hide()
+			html.css({'height':'auto', 'overflow': 'auto'})
 		})
-		btn.click(function () {
+		btn.on('click', function () {
 			all.hide()
 			mask.hide()
+			html.css({'height':'auto', 'overflow': 'auto'})
 		})
 
 		//wapd端顶部的tab导航，与当前链接匹配时高亮
