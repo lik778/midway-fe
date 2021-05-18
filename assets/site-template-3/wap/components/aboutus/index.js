@@ -30,7 +30,7 @@ const copyText = (text, dom) => {
   if (document.execCommand('copy')) {
     document.execCommand('copy');
   }
-  document.activeElement.blur() 
+  document.activeElement.blur()
   input.remove();
 };
 
@@ -39,9 +39,11 @@ const clickAction = ((dom) => {
   dom.on('click', function () {
     const data = $(this).data('value');
     copyText(data, dom);
+    dom.css("color","#008000");
     dom.text('复制成功！');
     setTimeout(() => {
       dom.text('点击复制');
+      dom.css("color","#ff6536")
     }, 2000)
   })
 })
