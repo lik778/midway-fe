@@ -9,10 +9,11 @@ mixin user-defined-module(autoConfig)
 		.user-defined-list
 			each item, index in subModuleBos
 				- let isWhite = item.fontColor === 1 ? true : false
+				- let id
 				if index < 9
-					- let id = '0' + (index+1)
+					- id = '0' + (index+1)
 				else
-					- let id = index+1
+					- id = index+1
 				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) ` : {} )
 					.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
 					div
