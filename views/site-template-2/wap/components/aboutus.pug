@@ -25,14 +25,17 @@ mixin aboutus(pageType)
                 img(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
             .aboutus-text
                 span 微信号码：#{ weChat.content || "暂未添加微信号" }
-        .aboutus-content
-            //- p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
-            //- p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-            //- #aboutus-click-to-expand.click-to-expand.active 点击展开
 
-            if pageType === 'about'
-                p.aboutus-content.active !{ company.about }
-            else
-                p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
-                p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-                #aboutus-click-to-expand.click-to-expand.active 点击展开
+        //-TODO：这里不知道未来还改吗？目前首页特殊要求，不加
+        if pageType != 'home'
+            .aboutus-content
+                //- p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+                //- p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
+                //- #aboutus-click-to-expand.click-to-expand.active 点击展开
+
+                if pageType === 'about'
+                    p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
+                else
+                    p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+                    p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
+                    #aboutus-click-to-expand.click-to-expand.active 点击展开
