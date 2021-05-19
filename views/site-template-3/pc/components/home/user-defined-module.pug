@@ -1,17 +1,19 @@
-mixin user-defined-module(userDefinedModuleList)
-	each userDefinedModule in userDefinedModuleList
-		+home-title( userDefinedModule.mainModuleTitle )
+mixin user-defined-module(autoConfig)
+	each configItem in autoConfig
+		.block-title
+			h2 #{ configItem.mainModuleTitle }
+
 			//-是否为奇数个，奇数个展示查看更多
-		- const userDefinedList = userDefinedModule.subModuleBos
-		- const isOdd = userDefinedList.length%2 === 0 ? false : true
+		- let { subModuleBos } = configItem
+		- let isOdd = subModuleBos.length % 2 === 0 ? false : true
 		.user-defined-list
-			each item, index in userDefinedList
-				- const isWhite = item.fontColor === 1 ? true : false
+			each item, index in subModuleBos
+				- let isWhite = item.fontColor === 1 ? true : false
 				if index < 9
-					- var id = '0' + (index+1)
+					- let id = '0' + (index+1)
 				else
-					- var id = index+1
-				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) no-repeat center/100%` : {} )
+					- let id = index+1
+				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) ` : {} )
 					.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
 					div
 						.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }
