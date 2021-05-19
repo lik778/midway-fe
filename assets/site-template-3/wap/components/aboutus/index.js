@@ -43,7 +43,7 @@ const clickAction = ((dom) => {
     dom.text('复制成功！');
     setTimeout(() => {
       dom.text('点击复制');
-      dom.css("color","#ff6536")
+      dom.css("color","#FF4466")
     }, 2000)
   })
 })
