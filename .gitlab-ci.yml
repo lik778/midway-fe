@@ -19,7 +19,7 @@ stages:
 release-dev:
   stage: release-dev
   only:
-    - b2c@fenlei/midway-fe
+    - dev@fenlei/midway-fe
   tags:
     - k8s-dev-build
   script:
@@ -31,7 +31,7 @@ dev-deploy:
   stage: dev-deploy
   when: manual
   only:
-    - b2c@fenlei/midway-fe
+    - dev@fenlei/midway-fe
   tags:
     - aliyun-k8s-dev
   script:
