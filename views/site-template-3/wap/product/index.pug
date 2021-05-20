@@ -11,6 +11,8 @@ block content
         include ../components/product-list
         - productList = renderData.productList.result
         +product-list(productList)
+    else
+        include ../components/no-data
 
     //-留言资讯
     include ../components/contact-form.pug

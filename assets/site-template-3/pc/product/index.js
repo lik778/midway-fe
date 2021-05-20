@@ -1,16 +1,14 @@
+import $ from 'jquery';
 import './index.styl'
 import '../layout/index';
 
-import $ from 'jquery';
-//import { qqModule } from '../../../common/pc/customer-service/index';
+import { initCateList } from '../components/product/cateList'
 import { initializeSidebarProductSwiper } from '../components/sidebar';
-//import { navModule } from '../components/nav'
 
-//qqModule()
-//navModule()
 initializeSidebarProductSwiper()
+initCateList()
 
 // 清除过滤
-$('.product-child-page .search-crumbs ul li:last-child span').on('click',() => {
+$('.product-child-page .search-crumbs ul li:last-child span').on('click', () => {
   window.location.href = window.location.href.replace(/\/p-.*$/, '/p/')
 })
