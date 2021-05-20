@@ -55,6 +55,7 @@ export default (props: Props) => {
     <div className="all-img">
       <span className="title">{txt}: </span>
       <div className="img-list">
+        <p className="red-tip tip">严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
         <p className="tip">{tip}</p>
         <BannerImgUpload imgType={'text'} text={'上传图片'} maxLength={5} disableBtn={true} onChange={onImgChange} fileList={fileList}/>
       </div>
