@@ -16,7 +16,6 @@ block content
 				//-服务项目
 				- const { result : proList} = renderData.productList
 				if proList && proList.length > 0
-
 						+home-title('服务项目')
 						include ../components/home/product-swiper.pug
 
@@ -24,7 +23,6 @@ block content
 				include ../components/home/viewPhone.pug
 
 				//-自定义模块
-				//-- const userDefinedList = renderData.autoConfig
 				- const { autoConfig } = renderData
 				if autoConfig && autoConfig.length > 0
 					include ../components/home/user-defined-module.pug
