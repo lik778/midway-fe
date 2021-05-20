@@ -161,7 +161,8 @@ export class BaseSiteController {
     const currentPage = query.page || 1
     const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 }, domain);
     // 打点
-    const shopId = data.basic.shop.id
+    //const shopId = data.basic.shop.id
+    const shopId = 23456
     this.trackerService.point(req, res, {
       eventType: TrackerType.BXMAINSITE, data: {
         event_type: TrackerType.BXMAINSITE,
