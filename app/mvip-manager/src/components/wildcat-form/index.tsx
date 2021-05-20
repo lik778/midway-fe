@@ -111,12 +111,24 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
                   })
                 }
                 {
-                  item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ? <p className={`${styles['image-tip']} ${styles['tip-right']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p> : item.tip)
+                  item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ?
+                  <div className={styles['tip-right']}>
+                    <p className={`${styles['image-tip']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p>
+                    <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+                  </div>
+                  : item.tip)
                 }
+
               </div>
               {
-                item.imagesTipPosition !== 'right' && (typeof item.tip === 'string' ? <p className={styles['image-tip']}>{item.tip}</p> : item.tip)
+                item.imagesTipPosition !== 'right' && (typeof item.tip === 'string' ?
+                <>
+                  <p className={styles['image-tip']}>{item.tip}</p>
+                  <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+                </>
+                : item.tip)
               }
+
             </FormItem>)
           } else if (item.type === FormType.AreaSelect) {
             const value = getEditData(item.name || '');
