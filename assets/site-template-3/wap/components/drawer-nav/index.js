@@ -30,12 +30,11 @@ export const initNav = function () {
     3: '//file.baixing.net/202105/dac0b607fef01e3a1ebd03a440a1922a.png',
   }
   $(document).on('ready', function () {
-    const windowHref = window.location.href.indexOf('-') !== -1 ? window.location.href.split('-')[0] : window.location.href
-		const windowPath = window.location.pathname.indexOf('-') !== -1 ? window.location.pathname.split('-')[0] : window.location.pathname
+    const windowPath = window.location.pathname.indexOf('-') !== -1 ? window.location.pathname.split('-')[0] : window.location.pathname
+    const windowHref = window.location.origin + windowPath
     $(".nav-item").each((index, tab) => {
       const tabHref = $(tab).attr('href');
-			console.log(tabHref, windowHref, windowPath)
-			if (tabHref === windowHref || tabHref.indexOf(windowHref) !== -1 || tabHref.indexOf(windowPath) !== -1) {
+      if (tabHref === windowHref || tabHref.indexOf(windowHref) !== -1 || tabHref.indexOf(windowPath) !== -1) {
         $(tab).addClass('active')
         const imgList = $(tab).find('img')
         if (imgList && imgList.length > 0) {
