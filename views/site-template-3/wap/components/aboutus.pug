@@ -4,20 +4,20 @@ include ../components/home-title.pug
       .title 联系公司
     .bottom-box
       a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-        img.aboutus-icon(src="//file.baixing.net/202105/7c03c7490f80264bc3cbb2b0170743b6.png", alt="address logo")
+        img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
         span.aboutus-text.only-oneline 公司地址： #{ company.address }
         .more
       a.aboutus-item(href="tel:" + phone.content)
-        img.aboutus-icon(src="//file.baixing.net/202105/082a41ea8f6be0ee21169107bb587f32.png", alt="phone logo")
+        img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
         span.aboutus-text.only-oneline 联系电话：#{ phone.content }
         span.copy-data.phone1(data-value=phone.content) 点击拨打
       if phone2.content
         a.aboutus-item(href="tel:" + phone2.content)
-          img.aboutus-icon(src="//file.baixing.net/202105/082a41ea8f6be0ee21169107bb587f32.png", alt="phone logo")
+          img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
           span.aboutus-text.only-oneline 联系电话2：#{ phone2.content }
           span.copy-data.phone2(data-value=phone2.content) 点击拨打
       if weChat.content
         .aboutus-item
-          img.aboutus-icon(src="//file.baixing.net/202105/f9cc98f357d524cc86352255afe186f0.png", alt="wechat logo")
+          img.aboutus-icon(src="//file.baixing.net/202105/436dfb09de131dedfe9ebaaee31474a5.png", alt="wechat logo")
           span.aboutus-text.only-oneline 微信号码：#{ weChat.content }
           span.copy-data#wechat(data-value=weChat.content) 点击复制

@@ -22,6 +22,7 @@ html
             - productLink = productListTab[0].content
         if newsLinkListTab.length >0
             - newsLink = newsLinkListTab[0].content
+        - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
         block header
             include ./components/header
             //-TODO:header里需要加顶部的nav
@@ -44,4 +45,4 @@ html
 
         include ../../vendor/baidutongji.pug
         //-TODO:53客服线下开发先注释掉
-        //-include ../../vendor/53kf.pug
+        include ../../vendor/53kf.pug

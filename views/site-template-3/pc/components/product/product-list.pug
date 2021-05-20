@@ -1,6 +1,7 @@
 //-此处写产品列表html,
 //-其样式文件在assets/site-template-3/pc/components/product/product-list.styl
 .product-list
+  - console.log(productList)
   if productList && productList.length >0
     each item in productList
       a.item(href=item.urlSuffix target="_blank")

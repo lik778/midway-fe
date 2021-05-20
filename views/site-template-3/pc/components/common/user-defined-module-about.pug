@@ -9,8 +9,8 @@ mixin user-defined-module-about(userDefinedModuleList)
                     else
                         - var id = index+1
                     .user-defined-about-item
-                        span.number #{ id }
-                        span
+                        .number #{ id }
+                        div
                             .title #{ item.title }
                             .user-defined-line
                             .content #{ item.content }
