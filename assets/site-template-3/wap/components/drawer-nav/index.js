@@ -32,9 +32,12 @@ export const initNav = function () {
   $(document).on('ready', function () {
     const windowPath = window.location.pathname.indexOf('-') !== -1 ? window.location.pathname.split('-')[0] : window.location.pathname
     const windowHref = window.location.origin + windowPath
+    let flag = 0
     $(".nav-item").each((index, tab) => {
+      if (flag === 1) return
       const tabHref = $(tab).attr('href');
       if (tabHref === windowHref || tabHref.indexOf(windowHref) !== -1 || tabHref.indexOf(windowPath) !== -1) {
+        flag = 1
         $(tab).addClass('active')
         const imgList = $(tab).find('img')
         if (imgList && imgList.length > 0) {
