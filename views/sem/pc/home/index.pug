@@ -2,7 +2,13 @@ extends ../layout
 block styles
 	:combine(fileName="sem-home-pc.css")
 
-
+//-使用了统一的header和nav
+block content
+	.container 
+		.company-info
+			include ../components/home/company-info/index.pug
+		.contact-us
+			include ../components/home/company-info/index.pug
 block scripts
 	:combine(fileName="sem-home-pc.js")
 block append scripts
