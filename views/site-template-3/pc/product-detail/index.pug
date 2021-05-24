@@ -8,6 +8,7 @@ block content
 		.container.clearfix
 				include ../components/product-detail/company-top.pug
 				- productRecommendList = renderData.productRecommend.slice(0,5)
+				- console.log(productRecommendList)
 				include ../components/product-detail/product-recom.pug
 
 				.main

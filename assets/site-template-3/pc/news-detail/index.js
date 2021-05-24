@@ -1,20 +1,16 @@
 import './index.styl';
 import '../layout/index';
 
-//import { qqModule } from '../../../common/pc/customer-service/index';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
-//import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
 import { viewPhone } from '../components/contact-form-companyInfo';
 
-//navModule()
-//qqModule()
 initializeSidebarProductSwiper()
 leaveLeads()
 viewPhone()
 
-new Swiper('#news-detail-swiper .swiper-container', {
+new Swiper('.swiper-container', {
   //spaceBetween: 30,
   speed:1500,
   centeredSlides: true,

@@ -20,6 +20,5 @@
 									a.only-oneline(href=i.urlSuffix) #{ i.name }
 
 			.nav-item(style="margin-right: 0")
-				- let aboutUrl = currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about'
-				a(href=aboutUrl) 关于我们
+				a(href=aboutLink) 关于我们
 

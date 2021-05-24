@@ -11,7 +11,7 @@ mixin news-box(title,newsList)
 					- month = dateObj.getMonth() + 1
 					.item-title-line
 						.item-title.only-oneline #{ newItem.name }
-						.item-time  #{year}/#{month > 9 ? month : `0${month}`}/ #{date > 9 ? date : `0${date}`}
+						.item-time  #{year}/#{month > 9 ? month : `0${month}`}/#{date > 9 ? date : `0${date}`}
 					.item-content.only-twoline.
 						#{ newItem.limitText }
 			.news-box
