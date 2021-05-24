@@ -1,0 +1,49 @@
+@import '../block-title/index.styl'
+.user-defined-list
+	display flex
+	flex-wrap wrap
+	justify-content space-between
+	margin 0 auto 8px
+	&:last-child
+		margin-bottom 24px
+	.viewMore
+		display flex
+		align-items center
+		justify-content center
+	.user-defined-item
+		display flex
+		width 585px
+		padding 50px
+		margin-bottom 16px
+		background #F9F9F9
+		box-sizing border-box
+		.number
+			color #FF4466
+			min-width 70px
+			font-size 60px
+			font-weight 100;
+			padding-right 25px
+			transform translateY(-10px)
+		.title
+			font-size 28px
+			font-weight bold
+		.user-defined-line
+			width 35px
+			height 4px
+			background-color #D8D8D8
+			margin 14px 0 30px
+		.content
+			width 375px
+			color #666666
+			font-size 14px
+		a
+			display inline-block
+			color #333
+			width 240px
+			height 45px
+			line-height 45px
+			border 1px solid #ccc
+			text-align center
+			&:hover
+				span
+					color #333

@@ -1,0 +1,73 @@
+.contact-us__form
+  position relative
+  .form-group
+    display flex
+    padding 15px 0
+
+    &last-child
+      padding-bottom 0
+
+    .form-item
+      flex 1
+      &+.form-item
+        margin-left 30px
+
+      &__label
+        margin-bottom 20px
+        line-height 14px
+        font-size 14px
+        color #333333
+        font-weight bold
+        position relative
+        display inline-block
+
+        &.required
+          &::before
+            content '*'
+            color #FF4466
+            padding 10px
+      input,
+      textarea
+        background #F9F9F9
+        border none
+        font-size 16px
+        color #999999
+        width 100%
+        padding 15px
+      textarea
+        resize vertical
+        min-height 200px
+
+      button
+        width: 160px;
+        height: 44px;
+        background: #FF4466;
+        border-radius: 22px;
+        font-size 18px
+        color #FFFFFF
+        border none
+        cursor pointer
+        outline none
+
+  .result-msg
+    display none
+    width 160px
+    height 100px
+    box-shadow 0 0 10px 0 rgba(0,0,0,0.14)
+    border-radius 4px
+    position absolute
+    left 200px
+    bottom -13px
+    text-align center
+    align-items center
+    justify-content center
+    color #6ACE2D
+    img
+      width 30px
+      margin-right 10px
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+- const bannerList= renderData.banner
+  #banner-list
+    .swiper-container
+      .swiper-wrapper
+        if bannerList && bannerList.length > 0
+          each item in bannerList
+            .swiper-slide
+                img(src=item.displayImgUrl)
+        else
+          .swiper-slide
+            img(src="//file.baixing.net/202103/cffd7713b3858170c2a1ae855ee26513.png")
+          .swiper-slide
+            img(src="//file.baixing.net/202103/1ae6440e16ffe7ec601da2c2468f7fba.png")
+
+      .swiper-pagination
+      .swiper-button-next
+      .swiper-button-prev
