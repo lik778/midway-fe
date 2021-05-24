@@ -1,0 +1,25 @@
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title #{ renderData.meta.title || "" }
+        meta(name='keywords' content=renderData.meta.keywords || "")
+        meta(name='description' content=renderData.meta.description || "")
+        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+        block styles
+    body
+        //-初始化公共数据
+        - const { company, person } = renderData.basic
+        - const { currentPage, currentPathname, categoryId, shopId } = renderData
+        - companyName = renderData.basic.company.name
+        block header
+            //- include ./components/header.pug
+        block content
+
+    block scripts
+    //-把打点值赋给window，便于传给node层和其他js层
+    block append scripts
+        script.
+            window.shopId = #{shopId};
+

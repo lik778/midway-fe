@@ -1,0 +1,11 @@
+extends ../layout
+block styles
+	:combine(fileName="sem-home-pc.css")
+
+
+block scripts
+	:combine(fileName="sem-home-pc.js")
+block append scripts
+	script.
+		// 预备打点
+		window.trackSrc = 'home';
