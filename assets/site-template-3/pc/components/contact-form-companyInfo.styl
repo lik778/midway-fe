@@ -1,0 +1,84 @@
+.news-detail
+    &__subtitle
+        font-size 16px
+        color #333333
+        margin 30px 30px
+        font-weight bold
+
+    &__contact-us
+        padding 30px
+        display flex
+        .contact-form
+            width 530px
+            .form-item
+                font-size 14px
+                input,
+                textarea
+                    font-size 14px
+                textarea
+                    min-height 90px
+
+                &__label
+                    font-weight 600
+        .company
+            &-info
+                padding 15px 15px 0 70px
+                font-size 14px
+                color #333333
+                .info-label
+                  font-weight 600
+        .info-item
+            margin 20px 0
+            display flex
+            span:first-child
+                color #999999
+                margin-right 15px
+                min-width 70px
+                display inline-block
+.contact-us__form
+    .form-group
+      display flex
+      padding 15px 0
+
+      &:last-child
+        padding-bottom 0
+
+      .form-item
+        flex 1
+
+        &:not(&:last-child)
+          margin-right 30px
+
+        &__label
+          margin-bottom 8px
+          color #333333
+          font-weight bold
+          position relative
+          display inline-block
+
+          &.required
+            &::after
+              content '*'
+              position absolute
+              color #FF4466
+              right -10px
+              top 0
+
+        input,
+        textarea
+          background #F7F7F7
+          border none
+          font-size 16px
+          color #999999
+          width 100%
+          padding 15px
+        textarea
+          resize vertical
+
+        button
+          background #FF4466
+          font-size 16px
+          color #FFFFFF
+          border none
+          padding 10px 50px
+          cursor pointer
