@@ -5,10 +5,11 @@ block styles
 //-使用了统一的header和nav
 block content
 	.container 
-		.company-info
-			include ../components/home/company-info/index.pug
-		.contact-us
-			include ../components/home/company-info/index.pug
+		.line 
+			.company-info-block
+				include ../components/home/company-info.pug
+			.contact-us-block
+				include ../components/home/contact-us.pug
 block scripts
 	:combine(fileName="sem-home-pc.js")
 block append scripts
