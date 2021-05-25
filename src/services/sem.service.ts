@@ -92,7 +92,7 @@ export class SemApiService {
 
   public getHomePageData(uid: string, device: string, domain: string): Promise<ServiceResponse<ShopComponents>> {
     const uuid = this.getUid(uid)
-    return this.requestService.post(`${this.prefixPath}/home/group`, {},
+    return this.requestService.post(`${this.prefixPath}/home/single`, {},
       this.setPageHeaders(uuid, device, domain));
   }
 
