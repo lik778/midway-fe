@@ -1,0 +1,34 @@
+@import 'swiper/dist/css/swiper.min.css'
+
+#banner-list
+  .swiper-container
+    height 225px
+    width 100%
+    .swiper-wrapper
+      .swiper-slide
+        img
+          height 225px
+          width 100%
+
+    .swiper-pagination-bullet-active
+        background #FF4466
+
+    .swiper-button-prev
+      left 4%
+      width 50px
+      height 50px
+      background url(//file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png) no-repeat center center/100%
+      &:hover
+        background url(//file.baixing.net/202105/4ec4c9301b4dfdddcabc6f00c51d541d.png) no-repeat center center/100%
+        transform rotate(180deg)
+
+    .swiper-button-next
+      right 4%
+      width 50px
+      height 50px
+      background url(//file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png) no-repeat center center/100%
+      transform rotate(180deg)
+      &:hover
+        background url(//file.baixing.net/202105/4ec4c9301b4dfdddcabc6f00c51d541d.png) no-repeat center center/100%
+        transform rotate(0)
+

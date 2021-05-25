@@ -10,6 +10,9 @@ export class SiteExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Response>();
     sentryCaptureException(exception);
-    res.render('common/500', { title: '出错了', exceptionRes: exception, haojingHost: config().haojing  })
+    const code = exception.getCode()
+    const errorUrl = code === 404 ? 'common/404' : 'common/500'
+    const errorTitle = code === 404 ? '页面不存在' : '出错了'
+    res.render(errorUrl, { title: errorTitle, exceptionRes: exception, haojingHost: config().haojing })
   }
 }

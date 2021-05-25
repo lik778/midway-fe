@@ -1,0 +1,27 @@
+//-单个产品结构
+mixin item(item)
+  .product
+    .product-img
+      img(src= item.headImg || defaultImg)
+      .img-mask
+    .product-desc
+      p.only-oneline #{ item.name }
+      .vad-btn(data-phone= phone.content) 电话咨询
+
+include ./block-title.pug
+.product-swiper-box
+  +block-title('服务项目')
+  .swiper-container
+    .swiper-wrapper
+      .swiper-slide
+        .products
+          each p in proList.slice(0,4)
+            +item(p)
+      if proList.length > 4
+        .swiper-slide
+          .products
+            each p in proList.slice(4,8)
+              +item(p)
+  .swiper-pagination
+
+
