@@ -14,8 +14,8 @@ export const footerContactModule = function(){
 		});
 
 		//点击底部浮层打点
-		$(".sms-box").on('click',()=>{
-			eventTracker("message-wap", "bottom-wap")
+		$(".online-box").on('click',()=>{
+			eventTracker("53kf-wap", "bottom-wap")
 		});
 		$(".wechat-box").on('click',()=>{
 			eventTracker("wechat-wap", "bottom-wap")

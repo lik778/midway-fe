@@ -139,7 +139,7 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-child/index`;
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
       // let templateUrl
       // if(templateId === '7397650bdc5446a36d6d643e'){
       //   templateUrl = `site-template-1/${device}/news/index`;
@@ -241,7 +241,7 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`;
+      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
       // let templateUrl
       // if(templateId === '7397650bdc5446a36d6d643e'){
       //   templateUrl = `site-template-1/${device}/product-child/index`;
