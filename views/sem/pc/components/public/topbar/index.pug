@@ -5,9 +5,8 @@
 			span 合作商家
 		.right 
 			if userInfo
-				a#topbarPersenCenter.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") 个人中心
-				a#topbarShopPromote.link-right(href="//www.baixing.com/a/pro/?src=topmenu", target="_blank", rel="nofollow") 商户推广
-			else 
-				a#topbarRegister.link-right(href="//www.baixing.com/oz/verify/reg", rel="nofollow", data-toggle="userAuth", data-type="reg") 注册
-				a#topbarLogin.link-right(href="//www.baixing.com/oz/login", rel="nofollow", data-toggle="userAuth", data-type="login") 登录
+				.link-right #{ userInfo.userName }
+				//- a#topbarPersenCenter.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") VIP管理后台
+			a#topbarPersenCenter.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") 个人中心
+			a#topbarShopPromote.link-right(href="//www.baixing.com/a/pro/?src=topmenu", target="_blank", rel="nofollow") 商户推广
 			a#topbarHelp.link-right(href="//www.baixing.com/help/", target="_blank", rel="nofollow") 帮助
