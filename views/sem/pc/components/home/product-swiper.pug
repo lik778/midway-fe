@@ -1,12 +1,12 @@
 //-单个产品结构
 mixin item(item)
-  a.product(href=item.urlSuffix)
+  .product
     .product-img
       img(src= item.headImg || defaultImg)
       .img-mask
     .product-desc
       p.only-oneline #{ item.name }
-      .vad-btn 电话咨询
+      .vad-btn(data-phone= phone.content) 电话咨询
 
 include ./block-title.pug
 .product-swiper-box
