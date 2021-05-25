@@ -27,6 +27,7 @@ export interface PageHeaderParams {
   'x-api-shop-name': string;
   'x-api-device': string;
   'x-api-domain': string;
+  'x-api-user'?: string;
 }
 
 // 店铺落地页请求返回

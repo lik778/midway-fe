@@ -5,6 +5,7 @@ import { SemApiService } from '../services/sem.service';
 import { TrackerService } from '../services/tracker.service';
 import { TrackerType } from '../enums/tracker';
 import config from '../config';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
 
 @Controller({ host: config().hostType.base })
 export class SemController {
@@ -14,9 +15,25 @@ export class SemController {
   public async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     let uid = params.uid
     const domain = req.hostname
+    const cookies = req.cookies
+    let userInfo = null
+    if (cookies && cookies[COOKIE_HASH_KEY] && cookies[COOKIE_USER_KEY] && cookies[COOKIE_TOKEN_KEY]) {
+      try {
+        const { data } = await this.SemApiService.getUserInfo(req, domain);
+        userInfo = data
+        console.log(data)
+
+      } catch (e) { }
+    }
     const { data } = await this.SemApiService.getHomePageData(uid, device, domain);
     // 打点
-    const shopId = data.basic.shop.id
+    let shopId = ''
+    let shopName = ''
+    // 有可能没有shop字段 ，是微店用户
+    if (data.basic.shop) {
+      shopId = data.basic.shop.id
+      shopName = data.basic.shop.name
+    }
     // this.trackerService.point(req, res, {
     //   eventType: TrackerType.BXMAINSITE, data: {
     //     event_type: TrackerType.BXMAINSITE,
@@ -27,11 +44,8 @@ export class SemController {
     //     tracktype: 'pageview',
     //   }
     // })
-
-    //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const templateUrl = `sem/pc/home/index`
     const currentPathname = req.originalUrl;
-    const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, uid, currentPathname, shopId, trackId }, isHome: true });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, uid, currentPathname, shopId, shopName, userInfo }, isHome: true });
   }
 }

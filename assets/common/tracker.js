@@ -35,11 +35,42 @@ export const eventTracker = (clickType, clickPosition) => {
         clickType,
         clickPosition,
         src: window.trackSrc,
-        _platform: isWap? 'wap' : 'pc',
+        _platform: isWap ? 'wap' : 'pc',
         contentType: window.contentType,
         _ad: window.adId,
         category: '',
         refer: ''
+      }
+    })
+  }).catch(err => { throw err })
+}
+
+export const semEventTracker = (clickType, clickPosition, remarks) => {
+  const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgent);
+  return new Promise((resolve, reject) => {
+    $.post('/tracker', {
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        site_id: 'dianpu-sem',
+        shop_id: window.shopId,
+        tracktype: 'event',
+        action: 'click',
+        clickType,
+        clickPosition,
+        message: remarks,
+        src: window.trackSrc,
+        _platform: isWap ? 'wap' : 'pc',
+        contentType: window.contentType,
+        _ad: window.adId,
+        category: '',
+        refer: ''
+      },
+      success: (res) => {
+        resolve(res)
+      },
+      error: (res) => {
+        reject(res)
       }
     })
   }).catch(err => { throw err })

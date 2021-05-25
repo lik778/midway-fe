@@ -9,24 +9,36 @@
 		height 44px
 		line-height 44px
 		margin 0 auto
-		img
-			vertical-align middle
-			width 45px
-			height 22px
-		span
-			display inline-block
-			vertical-align middle
-			margin-left 20px
-			margin-top 3px
-			font-size 14px
-			color #333333
-			position  relative
-			&::before
-				content "·"
-				position absolute
-				left -10px
-				font-size 20px
-				color #999999
-		.link-right
-			font-size 14px
-			color rgba(124,124,124,1)
+		.left
+			img
+				vertical-align middle
+				width 45px
+				height 22px
+			span
+				display inline-block
+				vertical-align middle
+				margin-left 20px
+				margin-top 3px
+				font-size 14px
+				color #333333
+				position  relative
+				&::before
+					content "·"
+					position absolute
+					left -10px
+					font-size 20px
+					color #999999
+		.right
+			display: flex
+			justify-content: end
+			align-items: center
+			.link-right
+				line-height: 18px
+				padding: 0 18px
+				font-size 14px
+				color rgba(124,124,124,1)
+				&:hover
+					color #f46
+				&+.link-right
+					border-left: 2px solid rgb(228,228,228)
+

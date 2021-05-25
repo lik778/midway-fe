@@ -13,8 +13,10 @@ block content
 			.contact-us-block
 				//- 联系我们
 				include ../components/home/contact-us.pug
+				
 		//- 服务项目
-		- const { result : proList} = renderData.productList
+		- const { productList } = renderData
+		- const { result : proList} = productList || {}
 		if proList && proList.length > 0
 			include ../components/home/product-swiper.pug
 
@@ -26,8 +28,6 @@ block content
 		
 		//- 联系我们
 		include ../components/home/contact-us-bottom.pug
-
-
 
 block scripts
 	:combine(fileName="sem-home-pc.js")

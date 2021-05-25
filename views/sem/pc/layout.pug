@@ -3,17 +3,17 @@ html
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
     meta(http-equiv='X-UA-Compatible', content='ie=edge')
-    title #{ renderData.meta.title || "" }
-    meta(name='keywords' content=renderData.meta.keywords || "")
-    meta(name='description' content=renderData.meta.description || "")
+    - companyName = renderData.basic.company?renderData.basic.company.name:''
+    title #{ companyName || "" }
+    //- meta(name='keywords' content=renderData.meta.keywords || "")
+    //- meta(name='description' content=renderData.meta.description || "")
     link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
     block styles
   body
     //-初始化公共数据
-    - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
+    - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = (renderData.basic.contact||{})
     - const { company, person } = renderData.basic
-    - const { currentPage, currentPathname, categoryId, shopId } = renderData
-    - companyName = renderData.basic.company.name
+    - const { uid, currentPathname, shopId, shopName, userInfo } = renderData
     - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
     block header
@@ -28,4 +28,5 @@ html
   block append scripts
     script.
       window.shopId = #{shopId};
+      window.uid = #{uid}
 
