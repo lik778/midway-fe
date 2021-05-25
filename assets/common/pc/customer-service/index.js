@@ -12,17 +12,27 @@ export const qqModule = function() {
 			$(".customer-hide").hide();
 		})
 
-		//点击QQ客服event打点
-		$(".service-item .qq").on('click',()=>{
+		//hoverQQ图标event打点
+		$("#qq").on('mouseenter',()=>{
 			eventTracker("qq-pc", "float-pc")
 		})
-		//电话打点
-		$(".mobile").on('click',()=>{
+		//hover电话打点
+		$("#mobile").on('mouseenter',()=>{
 			eventTracker("phone-pc", "float-pc")
 		})
-		//微信打点
-		$(".wechat").on('click',()=>{
+		//hover微信打点
+		$("#wechat").on('mouseenter',()=>{
 			eventTracker("wechat-pc", "float-pc")
+		})
+
+		//点击QQ客服event打点
+		$("#qq .qq-link").on('click',()=>{
+			eventTracker("qq-click-pc", "float-pc")
+		})
+
+		//微信打点
+		$("#wechat .click-copy").on('click',()=>{
+			eventTracker("wechat-copy-pc", "float-pc")
 		})
 	})
 }

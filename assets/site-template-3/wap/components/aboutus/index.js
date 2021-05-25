@@ -26,7 +26,7 @@ const copyText = (text, dom) => {
   input.value = textString;
   // ios必须先选中文字且不支持 input.select();
   selectText(input, 0, textString.length);
-  console.log(document.execCommand('copy'), 'execCommand');
+  //console.log(document.execCommand('copy'), 'execCommand');
   if (document.execCommand('copy')) {
     document.execCommand('copy');
   }
