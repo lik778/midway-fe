@@ -73,12 +73,6 @@ export class BaseSiteController {
     })
     const { templateId } = data.basic.shop
     const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
-    // let templateUrl
-    // if(templateId === '7397650bdc5446a36d6d643e'){
-    //   templateUrl = `site-template-1/${device}/news/index`;
-    // }else {
-    //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
-    // }
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -110,16 +104,9 @@ export class BaseSiteController {
 
       const { templateId } = data.basic.shop
       const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-detail/index`
-      // let templateUrl
-      // if(templateId === '7397650bdc5446a36d6d643e'){
-      //   templateUrl = `site-template-1/${device}/news-detail/index`;
-      // }else {
-      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-detail/index`
-      // }
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      //console.log(data.articleInfo.content)
       return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isDetail: true });
     } else {
       const currentPage = query.page || 1;
@@ -140,12 +127,6 @@ export class BaseSiteController {
       })
       const { templateId } = data.basic.shop
       const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
-      // let templateUrl
-      // if(templateId === '7397650bdc5446a36d6d643e'){
-      //   templateUrl = `site-template-1/${device}/news/index`;
-      // }else {
-      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-child/index`
-      // }
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -177,12 +158,6 @@ export class BaseSiteController {
     })
     const { templateId } = data.basic.shop
     const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
-    // let templateUrl
-    // if(templateId === '7397650bdc5446a36d6d643e'){
-    //   templateUrl = `site-template-1/${device}/product/index`;
-    // }else {
-    //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`
-    // }
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
@@ -213,12 +188,6 @@ export class BaseSiteController {
       })
       const { templateId } = data.basic.shop
       const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
-      // let templateUrl
-      // if(templateId === '7397650bdc5446a36d6d643e'){
-      //   templateUrl = `site-template-1/${device}/product-detail/index`;
-      // }else {
-      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
-      // }
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -242,12 +211,6 @@ export class BaseSiteController {
       })
       const { templateId } = data.basic.shop
       const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
-      // let templateUrl
-      // if(templateId === '7397650bdc5446a36d6d643e'){
-      //   templateUrl = `site-template-1/${device}/product-child/index`;
-      // }else {
-      //   templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-child/index`
-      // }
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -285,4 +248,3 @@ export class BaseSiteController {
     return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
   }
 }
-
