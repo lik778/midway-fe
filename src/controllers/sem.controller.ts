@@ -21,11 +21,15 @@ export class SemController {
       try {
         const { data } = await this.SemApiService.getUserInfo(req, domain);
         userInfo = data
-        console.log(data)
-
-      } catch (e) { }
+      } catch (e) {
+        console.log(e)
+      }
     }
-    const { data } = await this.SemApiService.getHomePageData(uid, device, domain);
+    const response = await this.SemApiService.getHomePageData(uid, device, domain);
+    if (response.code === 404) {
+      return res.render('common/404', { title: '页面找不到', haojingHost: config().haojing });
+    }
+    const { data } = response
     // 打点
     let shopId = ''
     let shopName = ''
