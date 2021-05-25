@@ -2,7 +2,8 @@ export default {
   env: 'local',
   services: {
     'midway-service': {
-      host: 'http://172.30.2.14:31257'
+      //这里30257是test环境，31257是dev环境
+      host: 'http://172.30.2.14:30257'
       // host: 'http://172.17.12.245:8080'
     },
     'zhidao-service': {

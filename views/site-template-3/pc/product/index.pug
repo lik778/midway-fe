@@ -22,7 +22,6 @@ block content
 
         //-侧边栏
         .sidebar
-            //-TODO:这里缺少新闻资讯和产品推荐字段@成磊
             - const { articleList } = renderData
             include ../components/sidebar/cateList.pug
             +side-cateList('新闻资讯', articleList.result)
