@@ -58,7 +58,11 @@ const CustomerSetForm = (props: Props, parentRef: Ref<any>) => {
   useEffect(() => {
     setConfig({
       ...config,
-      customerFormItemList: RadioFormItem
+      customerFormItemList: [{
+        index: 3,
+        key: 'fontColor',
+        node: RadioFormItem
+      }]
     })
   }, [RadioFormItem])
 
