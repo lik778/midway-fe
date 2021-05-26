@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import { eventTracker } from '../../../../common/tracker'
 
 // input自带的select()方法在苹果端无法进行选择，所以需要自己去写一个类似的方法
 // 选择文本。createTextRange(setSelectionRange)是input方法
@@ -53,8 +54,14 @@ export const initAboutus = function () {
     //复制微信号码
     const copyWechat = $('#wechat');
     clickAction(copyWechat);
+    copyWechat.on('click',()=>{
+      eventTracker('wechat-wap', 'company-info-wap')
+    })
+
+    $('.phone').on('click', ()=>{
+      eventTracker('phone-wap', 'company-info-wap')
+    })
   })
 }
-
 
 

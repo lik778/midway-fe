@@ -32,12 +32,14 @@ export default (props: Props) => {
     })
     if(res?.success){
       successMessage('上传成功');
+      getBannerList();
     }else{
       errorMessage(`上传失败:${res?.message}`);
     }
   }
 
   const getBannerList = async () => {
+    console.log("执行getBannerList");
     const res = await getBannerListApi(Number(params.id), {
       page: 1,
       size: 5,
@@ -70,10 +72,14 @@ export default (props: Props) => {
   }
 
   const onImgChange = (url: string, status: number)=> {
+    console.log("url::",url);
+    console.log("status:",status);
     if(status === 1) { // 创建
       createBannerImg(url)
     }else if(status === 2){ // 删除
       const id = parseInt(url)
+      console.log("id:",id);
+
       deleteBannerImg(id)
     }
   }
