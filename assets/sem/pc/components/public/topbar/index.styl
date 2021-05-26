@@ -10,24 +10,23 @@
 		line-height 44px
 		margin 0 auto
 		.left
+			display flex
+			justify-content flex-start
+			align-items flex-end
 			img
-				vertical-align middle
 				width 90px
 				height 44px
-			span
-				display inline-block
-				vertical-align middle
-				margin-left 20px
-				margin-top 16px
+			.dian
+				padding  0 3px 0 8px
+				line-height 24px
+				transform: translateY(-1px)
+				font-size 40px
+				color #999999 
+			.text
+				line-height 24px
+				transform: translateY(-2px)
 				font-size 24px
 				color #333333
-				position  relative
-				&::before
-					content "·"
-					position absolute
-					left -13px
-					font-size 40px
-					color #999999
 		.right
 			display: flex
 			justify-content: end
