@@ -47,7 +47,6 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handlePreview = async (file: any) => {
-    console.log("file:",file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -60,8 +59,6 @@ export const BannerImgUpload = (props: Props) => {
     if(!!e.file.status){
       if (e.file.status === 'done') {
         const { url } = e.file.response
-        console.log("url:", url);
-        console.log(11,`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`);
         onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
       }
       setFileList(e.fileList)
@@ -81,7 +78,6 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handleRemove = (file: any) => {
-    console.log("handleRemove:",file);
     onChange(`${file.id}`, 2);
   }
 
