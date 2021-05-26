@@ -1,5 +1,4 @@
 import $ from 'jquery'
-//import { debug } from 'node:console';
 import { eventTracker } from '../../../../../common/tracker';
 
 export const viewTel = function () {
