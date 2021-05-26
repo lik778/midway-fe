@@ -5,7 +5,7 @@
 			span 合作商家
 		.right 
 			if userInfo
-				.link-right #{ userInfo.userName }
+				a#topbarUserInfo.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") #{ userInfo.userName }
 				//- a#topbarPersenCenter.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") VIP管理后台
 			a#topbarPersenCenter.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") 个人中心
 			a#topbarShopPromote.link-right(href="//www.baixing.com/a/pro/?src=topmenu", target="_blank", rel="nofollow") 商户推广
