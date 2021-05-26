@@ -1,0 +1,79 @@
+@import '../block-title/index.styl'
+.contact-us
+  background-color #fff
+  padding-bottom 40px
+  .info-line,.info-avatar
+    display flex
+    justify-content flex-start
+    align-items center
+    margin 0 40px 16px
+    color #999
+    font-size 14px
+    .text
+      font-size 14px
+      color #666666
+      line-height 14px
+  .info-avatar
+    margin-bottom 22px
+    .avatar,.default-avatar
+      width 56px
+      height 56px
+      margin-right 12px
+      &.hide
+        display none
+    .default-avatar
+      display flex
+      flex-direction column
+      justify-content center
+      align-items center
+      line-height 56px
+      text-align center
+      background-color rgb(223,223,223)
+      .text
+        font-size 12px
+        font-weight bold
+        color #fff
+        &+.text
+          margin-top 2px
+    .name 
+      max-width 180px
+      font-size 20px
+      font-weight bold
+      color #333333
+      line-height 28px
+      word-break break-all
+  #baidu-map
+    display flex
+    justify-content center
+    align-items center
+    flex-direction column
+    height 180px 
+    margin 22px 40px 0 30px
+    cursor pointer
+    color #3A50CB
+    background url('//file.baixing.net/202102/f64b84ae7bdb0c3a576f855624b7d186.png') no-repeat center center/cover
+    &:hover
+      .marker
+        opacity 1
+      .address
+        color #FF2D38
+    .marker
+      width 100px
+      height 100px
+      opacity 0.7
+      transition 0.3s ease
+      background url('//file.baixing.net/202102/19545902294734e177f9ddb4c3f40491.png') no-repeat center center/100%
+    .address
+      width 220px
+      height 50px
+      padding 0 20px
+      line-height 50px
+      transform translateY(15px)
+      background-color #fff
+      box-sizing border-box
+      text-align center
+      border-radius 3px
+      box-shadow 0 4px 10px rgba(#000, 0.2)
+      font-size 16px
+      transition 0.3s ease
+      color rgba(#5062C8, 0.7)

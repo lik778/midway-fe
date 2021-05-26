@@ -7,7 +7,7 @@ const isProd = process.env.NODE_ENV === 'production'
 module.exports = {
   entry: Object.assign({
     'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
-    //特殊要额外加的打包示例
+    'sem-home-pc': path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js')
     //'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js')
   },
     genSiteTemplateEntry(TB_TYPE_B2C_1, TB_PAGE_NAMES_B2C_1),

@@ -1,0 +1,37 @@
+extends ../layout
+block styles
+	:combine(fileName="sem-home-pc.css")
+
+//-使用了统一的header和nav
+block content
+	.container 
+		include ../components/home/banner-swiper.pug
+		.line 
+			.company-info-block
+				//- 商家简介
+				include ../components/home/company-info.pug
+			.contact-us-block
+				//- 联系我们
+				include ../components/home/contact-us.pug
+				
+		//- 服务项目
+		- const { productList } = renderData
+		- const { result : proList} = productList || {}
+		if proList && proList.length > 0
+			include ../components/home/product-swiper.pug
+
+		//- 商家优势
+		- const { autoConfig } = renderData
+		if autoConfig && autoConfig.length > 0
+			include ../components/home/user-defined-module.pug
+			+user-defined-module(autoConfig)
+		
+		//- 联系我们
+		include ../components/home/contact-us-bottom.pug
+
+block scripts
+	:combine(fileName="sem-home-pc.js")
+block append scripts
+	script.
+		// 预备打点
+		window.trackSrc = 'home';
