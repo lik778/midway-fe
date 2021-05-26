@@ -14,15 +14,15 @@ export const qqModule = function() {
 
 		//hoverQQ图标event打点
 		$("#qq").on('mouseenter',()=>{
-			eventTracker("qq-pc", "float-pc")
+			eventTracker("qq-pc", "float-pc", "hover")
 		})
 		//hover电话打点
 		$("#mobile").on('mouseenter',()=>{
-			eventTracker("phone-pc", "float-pc")
+			eventTracker("phone-pc", "float-pc", "hover")
 		})
 		//hover微信打点
 		$("#wechat").on('mouseenter',()=>{
-			eventTracker("wechat-pc", "float-pc")
+			eventTracker("wechat-pc", "float-pc", "hover")
 		})
 
 		//点击QQ客服event打点

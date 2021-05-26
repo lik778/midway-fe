@@ -21,7 +21,7 @@ const isPro = host.indexOf('baixing.com') !== -1
 const BASE_URL = isPro ? '//cloud.baixing.com.cn' : '//dev-api.baixing.cn'
 
 
-export const eventTracker = (clickType, clickPosition) => {
+export const eventTracker = (clickType, clickPosition, action='click') => {
   const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgent);
   return new Promise((resolve, reject) => {
     $.post('/tracker', {
@@ -31,7 +31,7 @@ export const eventTracker = (clickType, clickPosition) => {
         site_id: 'dianpu',
         shop_id: window.shopId,
         tracktype: 'event',
-        action: 'click',
+        action,
         clickType,
         clickPosition,
         src: window.trackSrc,
