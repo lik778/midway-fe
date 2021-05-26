@@ -2,7 +2,7 @@ include ./block-title.pug
 
 mixin user-defined-module(autoConfig)
 	each configItem in autoConfig
-		+block-title('联系我们')
+		+block-title(configItem.mainModuleTitle)
 		- let { subModuleBos } = configItem
 		.user-defined-list
 			each item, index in subModuleBos

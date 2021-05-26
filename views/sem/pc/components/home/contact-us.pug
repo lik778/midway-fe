@@ -2,7 +2,10 @@ include ./block-title.pug
 .contact-us
   +block-title('联系我们')
   .info-avatar
-    img.avatar(src=company.logo || defaultLogo, alt="")
+    img#contactUsAvatar.avatar(src=company.logo, alt="")
+    #defaultContactUsAvatar.default-avatar.hide
+      .text 百姓网
+      .text 用户
     .name #{ companyName }
   .info-line 
     .text.only-oneline 联系人：#{contactName.content}
