@@ -66,10 +66,6 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
     }
   }, [config])
 
-  useEffect(() => {
-    console.log(FormItemList)
-  }, [FormItemList])
-
   /** 暴露变量、方法给父组件 */
   useImperativeHandle(parentRef, () => ({
     form
@@ -127,19 +123,19 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
           } else if (item.type === FormType.InputNumber) {
             return (
               <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
-                <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} />
+                <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled} />
               </Form.Item>
             )
           } else if (item.type === FormType.Textarea) {
             return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
-              <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} />
+              <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} />
             </Form.Item>)
           } else if (item.type === FormType.Select) {
             return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]}>
               <Select
                 onChange={(newValue) => onChange(newValue, item.name || '')}
                 placeholder={item.placeholder} size='large'
-                style={{ width: item.formItemWidth }}>
+                style={{ width: item.formItemWidth }} disabled={item.disabled}>
                 {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
               </Select>
             </Form.Item>)
@@ -184,7 +180,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
           } else if (item.type === FormType.GroupSelect) {
             return (<div key={item.label}>
               <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]}>
-                <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode}>
+                <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled}>
                   {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
                 </Select>
               </Form.Item>

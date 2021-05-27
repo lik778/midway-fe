@@ -5,11 +5,6 @@ import { connect } from 'dva';
 import { Dispatch, AnyAction } from 'redux';
 import { ConnectState } from '@/models/connect';
 import {
-  GET_SHOP_LIST_ACTION,
-  GET_SHOP_TOTAL_ACTION,
-  GET_SHOP_STATUS_ACTION,
-  SET_SHOP_LIST_ACTION,
-  SET_SHOP_TOTAL_ACTION,
   SHOP_NAMESPACE,
 } from '@/models/shop';
 import { CreateShopParams, ShopInfo, ShopStatus } from '@/interfaces/shop';
@@ -21,6 +16,7 @@ import EmptyStatus from './components/empty-status'
 import { shopMapDispatchToProps } from '@/models/shop'
 import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form'
+import { ShopIndustryType } from '@/enums';
 interface Props {
   dispatch: Dispatch<AnyAction>;
   shopTotal: number | undefined;
@@ -29,12 +25,11 @@ interface Props {
   loadingShop: boolean,
   getShopStatus: () => Promise<any>
   getShopList: () => Promise<any>
+  setCurShopInfo: (ShopInfo: ShopInfo) => Promise<any>
 }
 
-
-
 const ShopPage: FC<Props> = (props) => {
-  const { shopStatus, shopList, shopTotal, loadingShop, getShopStatus, getShopList } = props
+  const { shopStatus, shopList, shopTotal, loadingShop, getShopStatus, getShopList, setCurShopInfo } = props
 
   // 创建按钮禁用
   const [createShopDisabled, setCreateShopDisabled] = useState<boolean>(true)
@@ -52,8 +47,7 @@ const ShopPage: FC<Props> = (props) => {
     btn: '新建店铺',
     msg: '暂无店铺',
     img: "//file.baixing.net/202012/ead8b543db23259dc9838e753f865732.png",
-    // TODO;
-    // disabled: createShopDisabled
+    disabled: createShopDisabled
   }), [createShopDisabled])
 
   const initPage = () => {
@@ -73,21 +67,46 @@ const ShopPage: FC<Props> = (props) => {
 
   const handleCloseModal = () => {
     setModalInfoVisible(false)
+    setModalActionType('')
+  }
+
+  // 表单信息更新后需要操作
+  const handleChangeData = () => {
+    setModalInfoVisible(false)
+    // 因为model里做了店铺数据的缓存 无法重新请求 所以 下次再改
+    // initPage()
+    window.location.reload()
   }
 
   const handleCreateShop = () => {
-    setModalActionType('add')
     setModalInfoVisible(true)
+    setModalActionType('add')
+  }
+
+  const handleEditShop = (shopInfo: ShopInfo) => {
+    setModalInitData({
+      id: shopInfo.id,
+      name: shopInfo.name,
+      /** 行业属性 */
+      shopType: shopInfo.type as ShopIndustryType,
+      /** 域名类型 */
+      domainType: shopInfo.domainType,
+      /** 店铺域名 */
+      domain: shopInfo.domain,
+    })
+    setModalInfoVisible(true)
+    setModalActionType('edit')
   }
 
   return <>
     <MainTitle title="我的店铺" />
     <div className="container">
       {
-        loadingShop ? <Loading /> : shopTotal && shopTotal > 1000 ? <div className="my-shop-list">
-          <Button type="primary" className="primary-btn p-btn btn" disabled={createShopDisabled}>+新建店铺</Button>
+        loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <div className="my-shop-list">
+          <Button type="primary" className="primary-btn p-btn btn" disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
           <div className="shop-list">
-
+            {
+              shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) => <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo} />)}
           </div>
         </div>
           : <div className="shop-create">
@@ -100,8 +119,12 @@ const ShopPage: FC<Props> = (props) => {
       visible={modalInfoVisible}
       onCancel={handleCloseModal}
       width={532}
+      footer={null}
+      destroyOnClose={true}
     >
-      <ShopInfoForm shopInfoData={modalInitData} actionType={modalActionType}></ShopInfoForm>
+      {
+        (modalActionType === 'edit' || modalActionType === 'add') && <ShopInfoForm shopInfoData={modalInitData} actionType={modalActionType} onCancal={handleCloseModal} handleChangeData={handleChangeData}></ShopInfoForm>
+      }
     </Modal>
     <MyModal
       title="去完善信息"
@@ -114,7 +137,6 @@ const ShopPage: FC<Props> = (props) => {
       visible={modalGotoVisible} />
   </>
 }
-
 
 const WrapperShopPage: any = connect((state: ConnectState) => {
   const { shopList, shopTotal, shopStatus, } = state[SHOP_NAMESPACE]

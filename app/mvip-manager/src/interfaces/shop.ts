@@ -110,6 +110,7 @@ export interface QuotaInfo {
 }
 
 export interface CreateShopParams {
+  id?: number,
   name: string,
   /** 行业属性 */
   shopType: ShopIndustryType,
@@ -118,6 +119,8 @@ export interface CreateShopParams {
   /** 店铺域名 */
   domain: string,
 }
+
+
 
 export interface ShopInfo {
   about: string;
