@@ -1,9 +1,10 @@
-header.header
-  if !isDetail
-    .header-left
-      img.baixing-logo(src="//file.baixing.net/202102/f4cc4e3a39f50595a2560b5376152ee0.png")
-      span.header-tip-text &nbsp;·&nbsp;合作商家
-  else
+if !isDetail
+  //-header.header
+  //-  .header-left
+  //-    img.baixing-logo(src="//file.baixing.net/202102/f4cc4e3a39f50595a2560b5376152ee0.png")
+  //-    span.header-tip-text &nbsp;·&nbsp;合作商家
+else
+  header.header
     .back-icon
     .title #{ title }
     a(href=nav[0].content)
