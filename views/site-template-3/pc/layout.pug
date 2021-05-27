@@ -12,7 +12,7 @@ html
         //-初始化公共数据
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
         - const { company, person, copyRight } = renderData.basic
-        - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName } = renderData
+        - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo } = renderData
         - companyName = renderData.basic.company.name
         //-导航因为后台可设置是否显示，因此要如下处理
         - nav = renderData.navigation
@@ -28,6 +28,7 @@ html
         block header
             //- include ../../common/pc/topbar.pug
             include ../../common/pc/official-topbar.pug
+            include ../../common/pc/official-search.pug
             include ./components/common/header.pug
 
         block content
@@ -35,7 +36,8 @@ html
         include ../../common/pc/customer-service.pug
 
         block footer
-            include ../../common/pc/footer.pug
+            //- include ../../common/pc/footer.pug
+            include ../../common/pc/official-footer.pug
 
     :combine(fileName=["tb-vendors.js", "tb-commons.js"])
     block scripts
