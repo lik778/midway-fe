@@ -12,12 +12,21 @@ html
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company, person } = renderData.basic
-        - const { currentPage, currentPathname, categoryId, domainType, shopId } = renderData
+        - const { currentPage, currentPathname, categoryId, domainType, shopId, userInfo } = renderData
         block header
+            include ../../common/pc/official-topbar.pug
+            include ../../common/pc/official-search.pug
             include ./components/header.pug
         block nav
             include ./components/nav.pug
         block content
+
+        //-在线客服
+        include ./components/customer-service.pug  
+
+        block footer
+            //- include ./components/footer.pug
+            include ../../common/pc/official-footer.pug
 
     :combine(fileName=["tb-vendors.js", "tb-commons.js"])
     block scripts
