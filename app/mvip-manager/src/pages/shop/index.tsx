@@ -17,6 +17,8 @@ import { shopMapDispatchToProps } from '@/models/shop'
 import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form'
 import { ShopIndustryType } from '@/enums';
+import styles from './index.less'
+
 interface Props {
   dispatch: Dispatch<AnyAction>;
   shopTotal: number | undefined;
@@ -100,11 +102,11 @@ const ShopPage: FC<Props> = (props) => {
 
   return <>
     <MainTitle title="我的店铺" />
-    <div className="container">
+    <div className={styles['shop-container']}>
       {
-        loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <div className="my-shop-list">
+        loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <div >
           <Button type="primary" className="primary-btn p-btn btn" disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
-          <div className="shop-list">
+          <div className={styles["shop-list"]}>
             {
               shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) => <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo} />)}
           </div>

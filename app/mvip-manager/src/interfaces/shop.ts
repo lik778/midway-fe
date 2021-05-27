@@ -99,7 +99,6 @@ export interface TdkDetailMeta {
 
 export interface ShopStatus {
   isUserPerfect: boolean;
-  domainType: DomainStatus;
   isTicketAvailable: boolean
 }
 
