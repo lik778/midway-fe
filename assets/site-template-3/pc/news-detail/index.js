@@ -10,8 +10,9 @@ initializeSidebarProductSwiper()
 leaveLeads()
 viewPhone()
 
-new Swiper('.swiper-container', {
+new Swiper('#banner-list .swiper-container', {
   //spaceBetween: 30,
+  loop: true,
   speed:1500,
   centeredSlides: true,
   autoplay: {
@@ -21,12 +22,12 @@ new Swiper('.swiper-container', {
   },
   //分页器
   pagination: {
-    el: '.swiper-pagination',
+    el: '#banner-list .swiper-pagination',
     clickable: true,
   },
   //前进后退按钮
   navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
+    nextEl: '#banner-list .swiper-button-next',
+    prevEl: '#banner-list .swiper-button-prev',
   },
 });
