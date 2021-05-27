@@ -1,0 +1,75 @@
+
+.bx-header
+  .cm-nav-bar
+    background #f2f2f2
+    height 56px
+    line-height 1.4
+    overflow hidden
+    //position relative
+    background linear-gradient(90deg,#FF4466, #FF8450)
+    color #fff
+    display flex
+    align-items center
+    justify-content space-between
+    div
+      box-sizing border-box
+      //position absolute
+      //top 0
+
+    .bx-nav-logo
+      margin-right 2vw
+      padding 12px 7px
+      .bx-logo
+        width  50px
+        height 26px
+  .bx-nav-search
+    width 60vw
+    input
+      color #fff
+      box-sizing border-box
+      -webkit-appearance none
+      border-radius 0
+      width 100%
+      border 0
+      height 36px
+      line-height 36px
+      padding-left 30px
+      padding-right 18px
+      outline none
+      font-size 14px
+      opacity 0.8
+      background rgba(255, 255, 255, 0.3)
+      &::-webkit-input-placeholder
+        color #fff
+    i.baicon
+      color #fff
+      position absolute
+      left 10px
+      top 12px
+      opacity 0.8
+
+  .cm-nav-bar-right
+    width 30vw
+    .bx-nav-btnlast-of-type
+      padding-right 0
+    a.bx-nav-btn
+      color #fff
+      margin-top 8px
+      padding 0 10px
+      text-decoration none
+      font-size 14px
+      height 28px
+      line-height 28px
+      display block
+      float left
+      position relative
+
+      & + a.bx-nav-btn
+        &::before
+          content ''
+          height 12px
+          border-left 1px solid rgba(255,255,255,0.8)
+          position absolute
+          left 0
+          top 8px
+
