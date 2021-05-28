@@ -70,6 +70,7 @@ const ShopPage: FC<Props> = (props) => {
   const handleCloseModal = () => {
     setModalInfoVisible(false)
     setModalActionType('')
+    setModalInitData(null)
   }
 
   // 表单信息更新后需要操作
