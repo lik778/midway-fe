@@ -25,6 +25,7 @@ html
         - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
 
         include ../../common/wap/official-topbar
+        block official-breadcrumbs
         block header
             include ./components/header
             //-TODO:header里需要加顶部的nav
