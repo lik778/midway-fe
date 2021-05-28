@@ -17,10 +17,19 @@ html
     - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
     block header
-      include ./components/public/topbar/index.pug
+      //- include ./components/public/topbar.pug
+      //- include ./components/public/white-block.pug
+      include ../../common/pc/official-topbar.pug
+      include ../../common/pc/official-search.pug
+
+      include ./components/public/breadcrumb.pug
+      - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
+      +breadcrumb(breadcrumbList)
     block content
     block footer
-        include ../../common/pc/footer.pug
+        //- include ./components/public/footer.pug
+        include ../../common/pc/official-footer.pug
+
 
   :combine(fileName=["tb-vendors.js", "tb-commons.js"])
   block scripts

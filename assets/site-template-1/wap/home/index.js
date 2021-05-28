@@ -1,4 +1,5 @@
 import './index.styl'
+import '../components/common/index'
 import Swiper from 'swiper'
 import { menusModule } from '../components/header/index'
 import { aboutModule } from '../components/aboutus/index'

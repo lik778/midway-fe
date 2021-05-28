@@ -5,12 +5,27 @@ import { UserAgent } from '../../decorator/user-agent.decorator';
 import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { TrackerType } from '../../enums/tracker';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../constant/cookie';
 
 //模板页面基础控制器，进行数据请求和打点
 export class BaseSiteController {
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
     protected domainType: DomainTypeEnum) { }
+
+  private async getUserInfo(req: Request, domain: string): Promise<any> {
+    const cookies = req.cookies
+    let userInfo = null
+    if (cookies && cookies[COOKIE_HASH_KEY] && cookies[COOKIE_USER_KEY] && cookies[COOKIE_TOKEN_KEY]) {
+      try {
+        const { data } = await this.midwayApiService.getUserInfo(req, domain);
+        userInfo = data
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    return userInfo
+  }
 
   @Get('/')
   public async home(@Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
@@ -25,7 +40,7 @@ export class BaseSiteController {
     } else if (this.domainType === DomainTypeEnum.B2B) {
       shopName = HostShopName
     }
-
+    const userInfo = await this.getUserInfo(req, domain)
     const { data } = await this.midwayApiService.getHomePageData(shopName, device, domain);
 
     // 打点
@@ -47,7 +62,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId }, isHome: true });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true });
   }
 
   @Get('/n')
@@ -55,6 +70,7 @@ export class BaseSiteController {
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1;
     const { data } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage }, domain);
     // 打点
@@ -76,7 +92,7 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
   }
 
   @Get('/n-:id')
@@ -84,6 +100,7 @@ export class BaseSiteController {
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
     if (/.html$/.test(req.url)) {
       const newsId = params.id.split(".")[0]
       const { data } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId }, domain);
@@ -130,7 +147,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
+      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
     }
   }
 
@@ -139,6 +156,7 @@ export class BaseSiteController {
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1
     const { data } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 }, domain);
     // 打点
@@ -161,7 +179,7 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
   }
 
   @Get('/p-:id')
@@ -169,6 +187,7 @@ export class BaseSiteController {
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
     if (/.html$/.test(req.url)) {
       const productId = params.id.split(".")[0]
       const { data } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId }, domain);
@@ -214,7 +233,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId } });
+      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
     }
   }
 
@@ -224,6 +243,7 @@ export class BaseSiteController {
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
     const { data } = await this.midwayApiService.getAboutPageData(shopName, device, domain);
     // 打点
     const shopId = data.basic.shop.id
@@ -245,6 +265,6 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId } });
+    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo } });
   }
 }

@@ -13,10 +13,14 @@ html
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
         - const { currentPage, currentPathname, domainType, shopId } = renderData
+        include ../../common/wap/official-topbar
         block header
         block content
-        block footer
+        //-block footer
             include ./components/footer
+        //-加主站footer
+        include ../../common/wap/official-footer
+
         block contact
             //-div(style="padding-bottom:60px")
             include ./components/contact

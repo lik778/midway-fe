@@ -27,7 +27,11 @@ export interface PageHeaderParams {
   'x-api-shop-name': string;
   'x-api-device': string;
   'x-api-domain': string;
-  'x-api-user'?: string;
+}
+
+export interface SemPageHeaderParams extends PageHeaderParams {
+  'x-api-user': string;
+  'x-api-single-domain': string;
 }
 
 // 店铺落地页请求返回

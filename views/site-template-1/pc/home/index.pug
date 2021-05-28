@@ -27,12 +27,9 @@ block content
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
-    include ../components/footer.pug
-    //-在线客服
-    include ../components/customer-service.pug
 
 block scripts
     :combine(fileName="site-template-1-home-pc.js")
 block append scripts
     script.
-        window.trackSrc = 'home';
+        window.trackSrc = 'home'; 
