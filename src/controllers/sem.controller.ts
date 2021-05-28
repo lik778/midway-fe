@@ -11,9 +11,8 @@ import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/
 export class SemController {
   constructor(private SemApiService: SemApiService, private trackerService: TrackerService) { }
 
-  @Get('/sem/:uid')
-  public async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
-    let uid = params.uid
+  // 因为要兼容两种url 所以要把页面的逻辑抽出来 写两个路由
+  private async getHome(req: Request, res: Response, @UserAgent('device') device, uid: string, singleDomain?: string): Promise<any> {
     const domain = req.hostname
     const cookies = req.cookies
     let userInfo = null
@@ -25,7 +24,7 @@ export class SemController {
         console.log(e)
       }
     }
-    const response = await this.SemApiService.getHomePageData(uid, device, domain);
+    const response = await this.SemApiService.getHomePageData(uid, device, domain, singleDomain);
     if (response.code === 404) {
       return res.render('common/404', { title: '页面找不到', haojingHost: config().haojing });
     }
@@ -51,5 +50,18 @@ export class SemController {
     const templateUrl = `sem/pc/home/index`
     const currentPathname = req.originalUrl;
     return res.render(templateUrl, { title: '首页', renderData: { ...data, uid, currentPathname, shopId, shopName, userInfo }, isHome: true });
+  }
+
+  @Get('/sem/:uid')
+  public async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    let uid = params.uid
+    return this.getHome(req, res, device, uid)
+  }
+
+  @Get('/sem/:uid/:singleDomain')
+  public async home1(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    let uid = params.uid
+    let singleDomain = params.singleDomain
+    return this.getHome(req, res, device, uid, singleDomain)
   }
 }
