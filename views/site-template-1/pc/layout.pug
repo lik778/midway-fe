@@ -16,6 +16,9 @@ html
         block header
             include ../../common/pc/official-topbar.pug
             include ../../common/pc/official-search.pug
+            include ../../common/pc/official-breadcrumb.pug
+            - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+            +breadcrumb(breadcrumbList)
             include ./components/header.pug
         block nav
             include ./components/nav.pug
