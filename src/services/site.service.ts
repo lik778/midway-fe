@@ -51,7 +51,7 @@ export class SiteService {
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-       return 'agui.shop.baixing.cn'
+       return 'shop.baixing.cn'
 
     }
     return domain
