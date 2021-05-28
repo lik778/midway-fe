@@ -1,0 +1,21 @@
+.breadcrumb
+  display flex
+  align-items center
+  margin 8px 0
+  font-size 14px
+  flex-wrap wrap
+  a
+    color #666
+    &:last-child
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+
+  .and
+    margin 0 10px
+    display inline-block
+    width 6px
+    height 6px
+    border-top 1px solid #666
+    border-right 1px solid #666
+    transform rotate(45deg)

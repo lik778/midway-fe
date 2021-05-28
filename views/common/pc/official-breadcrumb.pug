@@ -1,8 +1,7 @@
 mixin breadcrumb(list)
-  ul.breadcrumb 
+  ul.breadcrumb
     each item, index in list
       li.item
         a.url(href=item.url) #{ item.text }
         if index < list.length-1
-          .and 
-  
+          .and
