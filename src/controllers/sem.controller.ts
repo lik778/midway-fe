@@ -47,7 +47,12 @@ export class SemController {
     //     tracktype: 'pageview',
     //   }
     // })
-    const templateUrl = `sem/pc/home/index`
+
+    let templateUrl;
+    if (device === 'pc'){
+      templateUrl = `sem/pc/home/index`
+    }else{
+      templateUrl = `sem/wap/home/index`}
     const currentPathname = req.originalUrl;
     return res.render(templateUrl, { title: '首页', renderData: { ...data, uid, currentPathname, shopId, shopName, userInfo }, isHome: true });
   }

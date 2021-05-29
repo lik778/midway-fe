@@ -1,0 +1,51 @@
+extends ../layout.pug
+include ../components/home-title.pug
+
+block styles
+    :combine(fileName="sem-home-wap.css")
+
+block official-breadcrumbs
+    include ../../../common/pc/official-breadcrumb.pug
+    - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+    +breadcrumb(breadcrumbList)
+
+block append header
+    include ../components/swiper
+
+block content
+    //-公司信息
+    include ../components/company-info
+
+    .contact-us-block
+      +home-title('联系我们')
+      include ../components/contact-us-form
+
+    - productList = renderData.productList.result
+    if productList && productList.length > 0
+        +home-title('服务项目')
+        include ../components/product-list.pug
+        +product-list(productList.slice(0,4))
+    if productList && productList.length >= 4 && productLink
+        a.product-more-btn(href=productLink) 查看更多
+
+    //-TODO：自定义模块
+    //-- const userDefinedList = renderData.autoConfig
+    - const userDefinedList = [{"mainModuleTitle": "公司优势","subModuleBos": [{"title": "口碑载道","content": "重视信誉和口碑，客户忠实度高"},{"title": "资质正规","content": "相关资质均有工商备案，资质可查，公司正规"},{"title": "贴心服务","content": "全方位的售前售后服务，提高客户满意度"},{"title": "售后保障","content": "完善的售后服务体系和严格的管理制度，客户至上"}]}]
+    if userDefinedList && userDefinedList.length>0
+        include ../components/user-defined-module.pug
+        +user-defined-module('home',userDefinedList)
+
+    //-关于我们
+    include ../components/aboutus.pug
+
+    //-留言资讯模块
+    include ../components/contact-form.pug
+
+//-block footer
+    include ../components/footer.pug
+
+block scripts
+    :combine(fileName="sem-home-wap.js")
+block append scripts
+    script.
+        window.trackSrc = 'home';

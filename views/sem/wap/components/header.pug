@@ -1,0 +1,17 @@
+header.header
+  if !isDetail
+    .header-left
+      a(href="https://www.baixing.com")
+        //-img.baixing-logo(src="//file.baixing.net/202102/f4cc4e3a39f50595a2560b5376152ee0.png")
+        //-span.header-tip-text &nbsp;·&nbsp;合作商家
+        span.header-tip-text 合作商家
+    //-.nav-select-box
+    //-      block drawer-nav
+    //-        include ../components/drawer-nav
+  else
+    .back-icon
+    .title #{ title }
+    a(href=nav[0].content)
+      img(src="//file.baixing.net/202103/dc5a0b707eae90e79377306e94eed51f.png", alt="icon")
+
+
