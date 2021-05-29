@@ -1,0 +1,18 @@
+mixin product-list(productList)
+	.products
+		each item,index in productList
+			//-a.product(href=item.urlSuffix)
+			div.product(href=item.urlSuffix)
+				if index%2 === 0
+					img.product-img(src=item.headImg || defaultImg)
+					.product-content.right
+						.taigger
+						.product-title.only-oneline #{ item.name }
+						a.product-see-btn(href="tel:" + phone.content ) 电话咨询
+				else
+					.product-content.left
+						.taigger
+						.product-title.only-oneline #{ item.name }
+						a.product-see-btn(href="tel:" + phone.content ) 电话咨询
+					img.product-img(src=item.headImg || defaultImg)
+

@@ -7,7 +7,8 @@ const isProd = process.env.NODE_ENV === 'production'
 module.exports = {
   entry: Object.assign({
     'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
-    'sem-home-pc': path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js')
+    'sem-home-pc': path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
+    'sem-home-wap': path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js')
     //'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js')
   },
     genSiteTemplateEntry(TB_FUWU_TYPE, TB_FUWU_PAGE_NAMES),
