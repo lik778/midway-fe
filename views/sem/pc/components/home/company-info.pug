@@ -3,20 +3,18 @@ include ./good-item.pug
 .company-info
   +block-title('商家简介')
   .desc
-    if company.about
+     - company.about = company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
       - sliceAbout = company.about.slice(0,120)
-      p.desc-text.desc-text-1 
+      p.desc-text.desc-text-1
         | !{ sliceAbout.replace(/\n/g, '<br/>') }
         if company.about.length > 120
           span ......
-          span.action-btn 更多 
+          span.action-btn 更多
       p.desc-text.desc-text-2.hide
         | !{ company.about.replace(/\n/g, '<br/>') }
         if company.about.length> 120
           span.action-btn 收起
-    else 
-      p.desc-text '暂时还未上传店铺简介哦...'
-        
+
   .goods-list
       //-自身优势
       - selfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',icon:'//file.baixing.net/202105/aaedf53c520671423510032ab71d0543.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',icon:'//file.baixing.net/202105/71de7e78dcdb5e2507930e5ba058efbc.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',icon:'//file.baixing.net/202105/4470c65829104edbf4f4a91d0e4247e2.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',icon:'//file.baixing.net/202105/8cbf7af86d038f8de79fc619924152bc.png'}]

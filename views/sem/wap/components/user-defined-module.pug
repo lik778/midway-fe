@@ -1,0 +1,15 @@
+mixin user-defined-module(autoConfig)
+	each configItem in autoConfig
+		.user-defined-module
+			+home-title( configItem.mainModuleTitle )
+			- let { subModuleBos } = configItem
+			.user-defined-list
+				each item,index in subModuleBos
+					if index < 9
+						- var number = '0' + ( index+1 )
+					else
+						- var number = index + 1
+					.user-defined-item
+						.number #{ number }
+						.title #{ item.title }
+						.content.only-fiveline #{ item.content }

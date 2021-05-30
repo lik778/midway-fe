@@ -8,7 +8,7 @@ import { PageException } from '../exceptions/page.exception';
 @Controller({ host: config().hostType.base, path: '/report' })
 export class ReportController {
   constructor(private reportService: ReportService) {}
-  // 报表分享
+  // 报表分享 
   @Get('/keyword')
   overviewReport(@Req() req: Request, @Res() res: Response, @Query() query) {
     if (!query.userId) {
