@@ -7,12 +7,15 @@ include ./block-title.pug
       .text 百姓网
       .text 用户
     .name #{ companyName }
-  .info-line 
-    .text.only-oneline 联系人：#{contactName.content}
-  .info-line 
-    .text.only-oneline 联系电话： #{ phone.content }
-  .info-line
-    .text.only-oneline 地址：#{ company.address }
+  if contactName.content
+    .info-line
+      .text.only-oneline 联系人：#{contactName.content}
+  if phone.content
+    .info-line
+      .text.only-oneline 联系电话： #{ phone.content }
+  if company.address
+    .info-line
+      .text.only-oneline 地址：#{ company.address }
   a#baidu-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
     .address.only-oneline #{ company.address }
     .marker
