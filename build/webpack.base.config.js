@@ -4,16 +4,29 @@ const { genSiteTemplateEntry } = require('./util');
 const { TB_FUWU_PAGE_NAMES, TB_B2B_PAGE_NAMES, TB_B2C_PAGE_NAMES, TB_FUWU_TYPE, TB_B2B_TYPE, TB_B2C_TYPE } = require('./constant');
 const isProd = process.env.NODE_ENV === 'production'
 
+// tips: path.resolve(__dirname, '..', 'assets/common/index.js') 这里面的代码是搜索通打点的，
+// 每次更新一个模板，都需要添加
 module.exports = {
   entry: Object.assign({
-    'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
-    'sem-home-pc': path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
-    'sem-home-wap': path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js')
-    //'site-template-2-about-pc': path.resolve(__dirname, '..', 'assets/site-template-2/pc/about/index.js')
-  },
-    genSiteTemplateEntry(TB_FUWU_TYPE, TB_FUWU_PAGE_NAMES),
-    genSiteTemplateEntry(TB_B2B_TYPE, TB_B2B_PAGE_NAMES),
-    genSiteTemplateEntry(TB_B2C_TYPE, TB_B2C_PAGE_NAMES),
+      'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
+      'sem-home-pc': [
+        path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
+        path.resolve(__dirname, '..', 'assets/common/index.js')
+      ],
+      'sem-home-wap': [
+        path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js'),
+        path.resolve(__dirname, '..', 'assets/common/index.js')
+      ]
+    },
+    genSiteTemplateEntry(TB_FUWU_TYPE, TB_FUWU_PAGE_NAMES, [
+      path.resolve(__dirname, '..', 'assets/common/index.js')
+    ]),
+    genSiteTemplateEntry(TB_B2B_TYPE, TB_B2B_PAGE_NAMES, [
+      path.resolve(__dirname, '..', 'assets/common/index.js')
+    ]),
+    genSiteTemplateEntry(TB_B2C_TYPE, TB_B2C_PAGE_NAMES, [
+      path.resolve(__dirname, '..', 'assets/common/index.js')
+    ]),
   ),
   output: {
     path: path.resolve(__dirname, "../dist/public"),
