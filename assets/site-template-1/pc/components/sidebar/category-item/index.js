@@ -1,7 +1,7 @@
 import $ from 'jquery'
 
 export const categoryModule = function(){
-	$(document).ready(function(){
+	$(document).on('ready',function(){
 		const windowPath=window.location.pathname;
 		$(".category-btn").each((index, tab) => {
 			const h = $(tab).attr('href')

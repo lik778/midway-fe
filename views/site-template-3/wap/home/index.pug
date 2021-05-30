@@ -11,6 +11,8 @@ block official-breadcrumbs
 
 block append header
     include ../components/swiper
+    - const { banner }= renderData
+    +swiper(banner, 'home')
 
 block content
     //-公司信息
@@ -35,7 +37,7 @@ block content
         +user-defined-module('home',userDefinedList)
 
     //-TODO:新闻资讯模块
-    include ../components/news-list.pug
+    include ../components/news-list-module.pug
 
     //-关于我们
     include ../components/aboutus.pug

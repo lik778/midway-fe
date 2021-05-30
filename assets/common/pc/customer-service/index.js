@@ -1,43 +1,57 @@
 import $ from 'jquery'
 import { eventTracker, semEventTracker } from '../../../common/tracker'
 
-/**
- * 
- * @param {*} type 有类型时取类型 没有说明是店铺
- */
 export const qqModule = function (type) {
-	$(document).ready(function () {
-		$(".qq-title").click(function () {
+	$(document).on('ready', function () {
+		$(".qq-title").on('click', function () {
 			$(".customer-box").hide();
 			$(".customer-hide").show();
 		})
-		$(".customer-hide").click(function () {
+		$(".customer-hide").on('click', function () {
 			$(".customer-box").show();
 			$(".customer-hide").hide();
 		})
 
+		//hoverQQ图标event打点
+		$("#qq").on('mouseenter', () => {
+			if (type === 'sem') {
+				semEventTracker("qq-pc", "float-pc", "hover")
+			} else {
+				eventTracker("qq-pc", "float-pc", "hover")
+			}
+		})
+		//hover电话打点
+		$("#mobile").on('mouseenter', () => {
+			if (type === 'sem') {
+				semEventTracker("phone-pc", "float-pc", "hover")
+			} else {
+				eventTracker("phone-pc", "float-pc", "hover")
+			}
+		})
+		//hover微信打点
+		$("#wechat").on('mouseenter', () => {
+			if (type === 'sem') {
+				semEventTracker("wechat-pc", "float-pc", "hover")
+			} else {
+				eventTracker("wechat-pc", "float-pc", "hover")
+			}
+		})
+
 		//点击QQ客服event打点
-		$(".customer-box>dl a").click(() => {
-			if (type==='sem') {
-				semEventTracker("qq-pc", "float-pc")
+		$("#qq .qq-link").on('click', () => {
+			if (type === 'sem') {
+				semEventTracker("qq-click-pc", "float-pc")
 			} else {
-				eventTracker("qq-pc", "float-pc")
+				eventTracker("qq-click-pc", "float-pc")
 			}
 		})
-		//电话打点
-		$(".customer-box .center").click(() => {
-			if (type==='sem') {
-				semEventTracker("qq-pc", "float-pc")
-			} else {
-				eventTracker("phone-pc", "float-pc")
-			}
-		})
+
 		//微信打点
-		$(".customer-box .footer").click(() => {
-			if (type==='sem') {
-				semEventTracker("qq-pc", "float-pc")
+		$("#wechat .click-copy").on('click', () => {
+			if (type === 'sem') {
+				semEventTracker("wechat-copy-pc", "float-pc")
 			} else {
-				eventTracker("wechat-pc", "float-pc")
+				eventTracker("wechat-copy-pc", "float-pc")
 			}
 		})
 	})
@@ -54,13 +68,13 @@ $(document).scroll(() => {
 	}
 });
 
-backToTop.click(() => {
+backToTop.on('click', () => {
 	document.body.scrollIntoView({ block: 'start', behavior: 'smooth' });
 });
 
 const weChatCopyBtn = $('.service-modal__wechat .click-copy');
 
-weChatCopyBtn.click(() => {
+weChatCopyBtn.on('click', () => {
 	$('#wechat-id-textarea').select();
 	document.execCommand('copy');
 	weChatCopyBtn.text('复制成功！');

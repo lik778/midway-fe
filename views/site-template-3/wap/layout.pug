@@ -22,6 +22,7 @@ html
             - productLink = productListTab[0].content
         if newsLinkListTab.length >0
             - newsLink = newsLinkListTab[0].content
+        - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
 
         include ../../common/wap/official-topbar
         block official-breadcrumbs
@@ -38,7 +39,7 @@ html
         include ../../common/wap/official-footer.pug
 
         block footer-contact
-            div(style="padding-bottom:75px")
+            div(style="padding-bottom:65px")
             include ./components/footer-contact
 
     :combine(fileName=["tb-vendors.js", "tb-commons.js"])

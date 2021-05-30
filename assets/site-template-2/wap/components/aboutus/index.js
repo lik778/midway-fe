@@ -2,11 +2,11 @@ import $ from 'jquery'
 
 export const aboutModule = function(){
 	//等待DOM 结构加载完成，然后再执行操作
-	$(document).ready(function(){
+	$(document).on('ready',function(){
 		const expandBtn = $('#aboutus-click-to-expand');
 		const expandContentSlice = $('.aboutus-content .aboutus-content-slice');
 		const expandContentFull = $('.aboutus-content .aboutus-content-full');
-		expandBtn.click(() => {
+		expandBtn.on('click',() => {
 			if (expandContentSlice.hasClass('active')) {
 				expandContentSlice.removeClass('active')
 				expandContentFull.addClass('active')

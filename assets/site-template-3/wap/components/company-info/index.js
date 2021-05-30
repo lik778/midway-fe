@@ -1,8 +1,6 @@
 import $ from 'jquery';
 
 export const initCompanyInfo = () => {
-
-
   $(document).on('ready', function () {
     const companyDescText = $('.company-info .desc-text')
     const companyActionBtn = $('.company-info .action-btn ')

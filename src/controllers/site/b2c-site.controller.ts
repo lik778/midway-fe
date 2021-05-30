@@ -5,10 +5,11 @@ import config from '../../config'
 import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 
+//继承自base-site.controller,用于b2c路由
 @Controller({ host: config().hostType.base, path: '/:shopName' })
-export class FuwuSiteController extends BaseSiteController{
+export class B2cSiteController extends BaseSiteController{
   constructor(protected readonly midwayApiService: SiteService,
               protected readonly trackerService: TrackerService) {
-    super(midwayApiService, trackerService, DomainTypeEnum.FUWU)
+    super(midwayApiService, trackerService, DomainTypeEnum.B2C)
   }
 }

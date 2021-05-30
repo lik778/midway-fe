@@ -1,9 +1,6 @@
 - const newsList= renderData.articleList.result
-if newsList && newsList.length >0
-  .news-list-title-box
-    .title 新闻资讯
-    a.more(href=newsLink) 查看全部
-  .news-list
+.news-list
+  if newsList && newsList.length >0
     each item in newsList
       a.item(href=item.urlSuffix)
         - dateObj = new Date(item.modifiedTime * 1000)
@@ -17,3 +14,5 @@ if newsList && newsList.length >0
           h3.title.only-oneline #{ item.name }
           p.desc.only-twoline  #{ item.limitText }
           //-  #{ dateFormat2(item.modifiedTime) }
+  else
+    include ./no-data

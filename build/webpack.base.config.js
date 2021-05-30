@@ -1,23 +1,23 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { genSiteTemplateEntry } = require('./util');
-const { TB_FUWU_PAGE_NAMES, TB_B2B_PAGE_NAMES, TB_B2C_PAGE_NAMES, TB_FUWU_TYPE, TB_B2B_TYPE, TB_B2C_TYPE } = require('./constant');
+const { TB_PAGE_NAMES_B2C_1, TB_PAGE_NAMES_B2B_2, TB_PAGE_NAMES_B2C_3, TB_TYPE_B2C_1, TB_TYPE_B2B_2, TB_TYPE_B2C_3 } = require('./constant');
 const isProd = process.env.NODE_ENV === 'production'
 
 // tips: path.resolve(__dirname, '..', 'assets/common/index.js') 这里面的代码是搜索通打点的，
 // 每次更新一个模板，都需要添加
 module.exports = {
   entry: Object.assign({
-      'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
-      'sem-home-pc': [
-        path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
-        path.resolve(__dirname, '..', 'assets/common/index.js')
-      ],
-      'sem-home-wap': [
-        path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js'),
-        path.resolve(__dirname, '..', 'assets/common/index.js')
-      ]
-    },
+    'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
+    'sem-home-pc': [
+      path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
+      path.resolve(__dirname, '..', 'assets/common/index.js')
+    ],
+    'sem-home-wap': [
+      path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js'),
+      path.resolve(__dirname, '..', 'assets/common/index.js')
+    ]
+  },
     genSiteTemplateEntry(TB_FUWU_TYPE, TB_FUWU_PAGE_NAMES, [
       path.resolve(__dirname, '..', 'assets/common/index.js')
     ]),
@@ -30,7 +30,7 @@ module.exports = {
   ),
   output: {
     path: path.resolve(__dirname, "../dist/public"),
-    filename: isProd? '[name].[contenthash].js' : '[name].js'
+    filename: isProd ? '[name].[contenthash].js' : '[name].js'
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.less', '.js', '.json'],

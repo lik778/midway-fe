@@ -10,10 +10,12 @@ block content
     //-留言资讯
     include ../components/contact-form.pug
 
-    //-TODO:分页尽量改成下拉加载
     - const { totalPage } = renderData.articleList
     include ../components/pagination
     +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+
+//-block footer
+//-    include ../components/footer.pug
 
 block scripts
     :combine(fileName="site-template-3-news-wap.js")

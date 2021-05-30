@@ -1,0 +1,27 @@
+extends ../layout.pug
+include ../components/home-title.pug
+
+block styles
+		:combine(fileName="site-template-3-about-wap.css")
+
+block append header
+		include ../components/swiper
+		include ../components/company-info
+
+block content
+		- const userDefinedList = renderData.autoConfig
+		if userDefinedList && userDefinedList.length>0
+				include ../components/user-defined-module.pug
+				+user-defined-module('about',userDefinedList)
+		include ../components/aboutus.pug
+		include ../components/contact-form.pug
+
+//-block footer
+//-		include ../components/footer.pug
+
+
+block scripts
+		:combine(fileName="site-template-3-about-wap.js")
+block append scripts
+		script.
+				window.contentType = 'about';

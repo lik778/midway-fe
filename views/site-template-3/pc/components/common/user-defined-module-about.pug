@@ -1,0 +1,16 @@
+mixin user-defined-module-about(userDefinedModuleList)
+    each userDefinedModule in userDefinedModuleList
+        .user-defined-about
+            .user-defined-about-subtitle #{ userDefinedModule.mainModuleTitle }
+            .user-defined-about-list
+                each item, index in userDefinedModule.subModuleBos
+                    if index < 9
+                        - var id = '0' + (index+1)
+                    else
+                        - var id = index+1
+                    .user-defined-about-item
+                        .number #{ id }
+                        div
+                            .title #{ item.title }
+                            .user-defined-line
+                            .content #{ item.content }
