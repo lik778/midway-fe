@@ -20,19 +20,18 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'dist/public'), {
     prefix: '/assets',
-    setHeaders: (res: any, path: string, stat: any) => {
-      if(path.indexOf('sem-home-pc') >-1){
-        log.errorLog(`获取静态资源 sem-home-pc ${path}`)
-      }
-      const pathArr = path.split('.')
-      const suffix = pathArr[pathArr.length - 1]
-      if (suffix === 'css') {
-        console.log(suffix)
-        res.type === 'text/css; charset=UTF-8'
-        res['Content-Type'] = 'text/css; charset=UTF-8'
-      }
-      return res
-    }
+    // setHeaders: (res: any, path: string, stat: any) => {
+    //   if(path.indexOf('sem-home-pc') >-1){
+    //     log.errorLog(`获取静态资源 sem-home-pc ${path}`)
+    //   }
+    //   const pathArr = path.split('.')
+    //   const suffix = pathArr[pathArr.length - 1]
+    //   if (suffix === 'css') {
+    //     res.type === 'text/css; charset=UTF-8'
+    //     res['Content-Type'] = 'text/css; charset=UTF-8'
+    //   }
+    //   return res
+    // }
   });
   // 处理关于渲染引擎问题
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
