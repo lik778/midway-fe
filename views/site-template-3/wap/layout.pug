@@ -23,9 +23,10 @@ html
         if newsLinkListTab.length >0
             - newsLink = newsLinkListTab[0].content
         - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
+        - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
 
         include ../../common/wap/official-topbar
-        block official-breadcrumbs
+        //-block official-breadcrumbs
         block header
             include ./components/header
             //-TODO:header里需要加顶部的nav

@@ -2,7 +2,8 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-2-home-wap.css")
 
-block official-breadcrumbs
+//-改版又不要了
+//-block official-breadcrumbs
     include ../../../common/pc/official-breadcrumb.pug
     - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
     +breadcrumb(breadcrumbList)
