@@ -47,13 +47,13 @@ export class SemController {
     //     tracktype: 'pageview',
     //   }
     // })
-    console.log(111)
     let templateUrl;
     if (device === 'pc') {
       templateUrl = `sem/pc/home/index`
     } else {
       templateUrl = `sem/wap/home/index`
     }
+    console.log(data.basic)
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
