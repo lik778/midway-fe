@@ -9,16 +9,10 @@
 			p#shop-name(style="display:none") #{shopName}
 		.nav-right
 			if nav.length > 0
-				each item in nav.slice(0,10)
-					.nav-item
-						a(href=item.content) #{ item.name }
-							if item.position === 'productListPage' || item.position === 'articleListPage'
-								.down-arrow
-						if item.contentCateBos && item.contentCateBos.length > 0
-							.nav-dropdown
-								each i in item.contentCateBos.slice(0,10)
-									a.only-oneline(href=i.urlSuffix) #{ i.name }
-
-			.nav-item(style="margin-right: 0")
-				a(href="/about") 关于我们
-
+				.nav-item
+					.text 商户导航
+					.down-arrow
+					.nav-dropdown
+						each item in nav.slice(0,10)
+							a.only-oneline(href=item.content) #{ item.name }
+						a.only-oneline(href=aboutLink) 关于我们

@@ -14,7 +14,7 @@ export const navModule = function() {
 
 		const windowHref = window.location.href;
 		const windowPath = window.location.pathname
-		$(".nav-item >a").each((index, tab) => {
+		$(".nav-dropdown >a").each((index, tab) => {
 			const h = $(tab).attr('href');
 			const n = h.slice(-2,-1); //提取导航里的尾部，展示n,p
 			const t = windowPath.slice(1, 2); //提取当前url的尾部，展示n,p
