@@ -17,12 +17,11 @@ export default {
         const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
         const cdnPath = config().cdnPath;
         const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-        
         if(assetsName.indexOf('sem-home-pc') >-1){
           if (suffix === 'css') {
-            retAssets += `<link rel="stylesheet" href="//shop.baixing.com/assets/${assetsName}"/>`
+            retAssets += `<link rel="stylesheet" href="${cdnPath?'//shop.baixing.com':''}/assets/${assetsName}"/>`
           } else if (suffix === 'js') {
-            retAssets += `<script src="//shop.baixing.com/assets/${assetsName}"></script>`
+            retAssets += `<script src="${cdnPath?'//shop.baixing.com':''}/assets/${assetsName}"></script>`
           }
         }else{
           if (suffix === 'css') {

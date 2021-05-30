@@ -115,7 +115,7 @@ const ZhidaoJobList = (props: ZhidaoJobListProp) => {
 
   const getActionBtn = (record: QuestionTaskListItem) => {
     return <Tooltip placement="top" title={ZhidaoAiTaskStatusText[record.status]} overlayStyle={{ minWidth: '60px' }}>
-      <img className={styles['action-btn']} src={record.status === ZhidaoAiTaskStatus.PAUSED ? 'http://file.baixing.net/202101/061832d76086d8f5844d98d495f1b992.png' : 'http://file.baixing.net/202101/409a5ac0d04377f8468872274863f539.png'} alt="" onClick={() => setTaskStatus(record.taskId)} />
+      <img className={styles['action-btn']} src={record.status === ZhidaoAiTaskStatus.PAUSED ? '//file.baixing.net/202101/061832d76086d8f5844d98d495f1b992.png' : '//file.baixing.net/202101/409a5ac0d04377f8468872274863f539.png'} alt="" onClick={() => setTaskStatus(record.taskId)} />
     </Tooltip>
   }
 
