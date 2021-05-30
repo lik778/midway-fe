@@ -47,7 +47,6 @@ export class SemController {
     //     tracktype: 'pageview',
     //   }
     // })
-
     let templateUrl;
     if (device === 'pc') {
       templateUrl = `sem/pc/home/index`
