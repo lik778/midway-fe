@@ -53,7 +53,6 @@ export class SemController {
     } else {
       templateUrl = `sem/wap/home/index`
     }
-    console.log(data.basic)
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
