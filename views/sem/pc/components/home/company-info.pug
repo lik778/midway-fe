@@ -3,7 +3,7 @@ include ./good-item.pug
 .company-info
   +block-title('商家简介')
   .desc
-    if company.about
+     - company.about = company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
       - sliceAbout = company.about.slice(0,120)
       p.desc-text.desc-text-1
         | !{ sliceAbout.replace(/\n/g, '<br/>') }
@@ -14,8 +14,6 @@ include ./good-item.pug
         | !{ company.about.replace(/\n/g, '<br/>') }
         if company.about.length> 120
           span.action-btn 收起
-    else
-      p.desc-text '暂时还未上传店铺简介哦...'
 
   .goods-list
       //-自身优势

@@ -33,7 +33,6 @@ export const leaveLeads = function () {
                 return false
             }
             // TODO;  这里使用打点暂时替代留资
-             console.log()
             semEventTracker('contact-us-bottom-pc','home-pc',JSON.stringify(data)).then(()=>{
                 alert("提交成功")
             }).catch(()=>{

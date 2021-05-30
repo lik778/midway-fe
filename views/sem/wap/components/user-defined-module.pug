@@ -1,11 +1,10 @@
-mixin user-defined-module(pageType,userDefinedModuleList)
-	each userDefinedModule in userDefinedModuleList
+mixin user-defined-module(autoConfig)
+	each configItem in autoConfig
 		.user-defined-module
-			+home-title( userDefinedModule.mainModuleTitle )
-			- const userDefinedList = userDefinedModule.subModuleBos
-			- const isOdd = userDefinedList.length%2 === 0 ? false : true
+			+home-title( configItem.mainModuleTitle )
+			- let { subModuleBos } = configItem
 			.user-defined-list
-				each item,index in userDefinedList
+				each item,index in subModuleBos
 					if index < 9
 						- var number = '0' + ( index+1 )
 					else
@@ -14,9 +13,3 @@ mixin user-defined-module(pageType,userDefinedModuleList)
 						.number #{ number }
 						.title #{ item.title }
 						.content.only-fiveline #{ item.content }
-				if isOdd
-					if pageType === 'about'
-						.user-defined-item
-					else if pageType === 'home'
-						.user-defined-item.viewMore
-							a(href="#") 查看更多详情

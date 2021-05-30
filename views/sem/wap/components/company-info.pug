@@ -15,7 +15,8 @@
                 .info-tag 品质保障
                 //-.info-tag 贴心服务
     .desc
-        p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦，敬请期待...' }
+        - company.about = company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
+        p.desc-text !{ company.about.replace(/\n/g, '<br/>') }
         img.top-left(src="//file.baixing.net/202105/c13cf5f1df072ead963012489e050499.png", alt="")
         img.bottom-right(src="//file.baixing.net/202105/2427f22e0a874b4b79b83dc2a0a0c30f.png", alt="")
         .action-btn-box

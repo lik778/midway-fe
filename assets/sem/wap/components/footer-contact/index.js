@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { eventTracker } from '../../../../common/tracker';
+import { semEventTracker } from '../../../../common/tracker';
 
 // input自带的select()方法在苹果端无法进行选择，所以需要自己去写一个类似的方法
 // 选择文本。createTextRange(setSelectionRange)是input方法
@@ -48,13 +48,13 @@ export const footerContactModule = function(){
 
 		//点击底部浮层打点
 		$(".online-box").click(()=>{
-			eventTracker("53kf-wap", "bottom-wap")
+			semEventTracker("53kf-wap", "bottom-wap")
 		});
 		$(".wechat-box").click(()=>{
-			eventTracker("wechat-wap", "bottom-wap")
+			semEventTracker("wechat-wap", "bottom-wap")
 		});
 		$(".phone-box").click(()=>{
-			eventTracker("phone-wap", "bottom-wap")
+			semEventTracker("phone-wap", "bottom-wap")
 		})
 	})
 }
