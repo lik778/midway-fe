@@ -49,12 +49,15 @@ export class SemController {
     // })
 
     let templateUrl;
-    if (device === 'pc'){
+    if (device === 'pc') {
       templateUrl = `sem/pc/home/index`
-    }else{
-      templateUrl = `sem/wap/home/index`}
+    } else {
+      templateUrl = `sem/wap/home/index`
+    }
+    const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, uid, currentPathname, shopId, shopName, userInfo }, isHome: true });
+    const trackId = this.trackerService.getTrackId(req, res)
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, uid, currentPathname, shopId, shopName, userInfo, kf53, trackId }, isHome: true });
   }
 
   @Get('/sem/:uid')

@@ -4,4 +4,4 @@ import { qqModule } from '../../../common/pc/customer-service';
 
 initTopbar()
 initWhiteBlock()
-qqModule()
+qqModule('sem')

@@ -34,7 +34,7 @@ export const leaveLeads = function() {
             //    alert('请填写正确的手机号码')
             //    return false
             //}
-            semEventTracker('contact-us-bottom-pc','home-pc',JSON.stringify(data)).then(()=>{
+            semEventTracker('contact-us-bottom-wap','home-wap',JSON.stringify(data)).then(()=>{
                 alert("提交成功")
             }).catch(()=>{
                 alert("提交失败")
