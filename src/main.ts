@@ -27,8 +27,9 @@ async function bootstrap() {
       const pathArr = path.split('.')
       const suffix = pathArr[pathArr.length - 1]
       if (suffix === 'css') {
+        console.log(suffix)
         res.type === 'text/css; charset=UTF-8'
-        res['content-type'] = 'text/css; charset=UTF-8'
+        res['Content-Type'] = 'text/css; charset=UTF-8'
       }
       return res
     }
