@@ -20,10 +20,6 @@ html
       //- include ./components/public/topbar.pug
       //- include ./components/public/white-block.pug
       include ../../common/pc/official-topbar.pug
-      include ../../common/pc/official-search.pug
-      include ../../common/pc/official-breadcrumb.pug
-      - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
-      +breadcrumb(breadcrumbList)
     block content
 
     //-QQ联系等开发时先注释掉
