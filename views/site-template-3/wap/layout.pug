@@ -37,8 +37,13 @@ html
         block content
 
         block footer
-        include ../../common/wap/official-footer.pug
 
+        //-面包屑放底部
+        include ../../common/pc/official-breadcrumb.pug
+        - breadcrumbList = [{text:'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+        +breadcrumb(breadcrumbList)
+
+        include ../../common/wap/official-footer.pug
         block footer-contact
             div(style="padding-bottom:65px")
             include ./components/footer-contact

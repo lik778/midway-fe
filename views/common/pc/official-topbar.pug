@@ -3,12 +3,14 @@
 		.left
 			a.left(href="https://www.baixing.com" target="_blank")
 				img(src="//file.baixing.net/202105/3252caa19b257e704b3e63ce31c5216f.png", alt="logo")
-
 			include ./official-breadcrumb.pug
-			- breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name,url:'#'}]
+			- breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name,url:'#'}]
 			+breadcrumb(breadcrumbList)
-			
 		.right 
+			.search 
+				input#inputValue.input(onfocus="this.select();return false;" placeholder="输入关键词" data-category="root" value="" x-webkit-speech="" name="query" autocomplete="off")
+				button#SearchBtn.search-btn( title="搜索") 
+					img.search-icon(src="//file.baixing.net/202105/b52876a539647c636eef53f60f91b291.png", alt="")
 			a#topbarFabu.link-right(href="https://www.baixing.com/fabu/", target="_blank", rel="nofollow") 发布
 			if userInfo
 				a#topbarUserInfo.link-right(href="//www.baixing.com/w/posts?src=topbar", target="_blank", rel="nofollow") #{ userInfo.userName }
