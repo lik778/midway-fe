@@ -7,7 +7,7 @@ block styles
 
 block official-breadcrumb
     include ../../../common/pc/official-breadcrumb.pug
-    - breadcrumbList = [{text:'首页',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+    - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
     +breadcrumb(breadcrumbList)
 
 block content
