@@ -43,9 +43,11 @@ export const shopMapDispatchToProps = (dispatch: Dispatch): any => {
     setShopStatus: (payload: ShopStatus) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_STATUS_ACTION), payload }),
     getShopList: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_LIST_ACTION) }),
     setShopList: (payload: ShopInfo[]) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_LIST_ACTION), payload }),
+    setCurShopInfo: (shopInfo: ShopInfo) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_CUR_SHOP_INFO_ACTION), payload: shopInfo }),
     getCurShopInfo: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_CUR_SHOP_INFO_ACTION) }),
     getShopTotal: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_TOTAL_ACTION) }),
     setShopTotal: (payload: number) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_TOTAL_ACTION), payload })
+
   }
 }
 

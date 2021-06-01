@@ -12,8 +12,10 @@ import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
-import { ShopStatus } from '@/interfaces/shop';
+import { ShopStatus, } from '@/interfaces/shop';
+import { DomainStatus } from '@/enums'
 import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
+import { AiShopList } from '@/interfaces/ai-content';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -22,6 +24,7 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null, getShopStatus: an
   // 店铺信息
   const { shopStatus, getShopStatus } = props
   const [form] = Form.useForm();
+  const [nowShopInfo, setNowShopInfo] = useState<AiShopList>()
   const defaultCounters: any = {};
   Object.keys(wordsItemConfig).forEach((k: string) => defaultCounters[k] = 0)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -119,10 +122,14 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null, getShopStatus: an
     }
   }, [shopStatus])
 
+  const handleChangeShop = (shopInfo: AiShopList) => {
+    setNowShopInfo(shopInfo)
+  }
+
   return (<div>
     {/*<MainTitle title="新建任务"/>*/}
     <div className="ai-create-job-box">
-      <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)} />
+      <CreateAiContentNav form={form} showPanel={() => setVisiblePanel(true)} handleChangeShop={handleChangeShop} />
       {visiblePanel && (
         <div>
           <ul className="ai-handle-tips">
@@ -147,14 +154,26 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null, getShopStatus: an
                       <div className="words-num">已输入：{counters[x.name]} / {wordsItemConfig[k].max}</div>
                       <div className="ai-content-actions">
                         {x.name === 'wordB' && <Button onClick={() => obtainData(x.name)}>通用前缀</Button>}
-                        {x.name === 'wordD' && shopStatus && shopStatus.domainType && <Button onClick={() => obtainData(x.name, shopStatus.domainType)}>
-                          {translateProductText('aiRecommond', shopStatus && shopStatus.domainType)}</Button>}
+                        {x.name === 'wordD' && nowShopInfo && nowShopInfo.type && <Button onClick={() => obtainData(x.name, nowShopInfo.type === 1 ? DomainStatus.SUFFIX : DomainStatus.PREFIX)}>
+                          {translateProductText('aiRecommond', nowShopInfo.type === 1 ? DomainStatus.SUFFIX : DomainStatus.PREFIX)}</Button>}
                         <Button onClick={() => clearAll(x.name)}>清空</Button>
                       </div>
                     </Col>
                     )
                   })
                 }
+                {/* "wordD-PREFIX": suffixServiceDefaultData,
+                  "wordD-SUFFIX": suffixB2BDefaultData */}
+                {/* [DomainStatus.PREFIX]: {
+                    main: '产品',
+                    aiRecommond: '产品通用后缀'
+                    2
+                  },
+                  [DomainStatus.SUFFIX]: {
+                    main: '服务',
+                    aiRecommond: '服务通用后缀'
+                    1
+                  } */}
               </Row>
             </Form>
             <p className="group-words-rules">组合规则：<span>地区+前缀+核心词+后缀</span>
