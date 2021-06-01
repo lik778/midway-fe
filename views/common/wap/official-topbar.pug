@@ -2,17 +2,15 @@ header.bx-header
    nav.cm-nav-bar
     .cm-nav-bar-left
       a.bx-nav-logo(href="//www.baixing.com/m/")
-        //-img.cm-icon.bx-logo(src="//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
-        img.cm-icon.bx-logo(src="//file.baixing.net/202105/3252caa19b257e704b3e63ce31c5216f.png" || defaultLogo)
+        // white logo
+        img.cm-icon.bx-logo(src="//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
+        // colored logo
+        //- img.cm-icon.bx-logo(src="//file.baixing.net/202105/3252caa19b257e704b3e63ce31c5216f.png" || defaultLogo)
 
-    //-.bx-nav-search
-      //-input.search-query(type="search" name="query" placeholder="")
-      //-img.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt="")
+    .bx-nav-search
+     input.search-query(type="search" name="query" placeholder="")
+     img.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt="")
 
     .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line
-      //由于度娘要把搜索图标放右边，所以把搜索DOM挪下来了，回车搜索
-      .bx-nav-search
-        input.search-query(type="search" name="query" placeholder="")
-        img.baicon(src="//file.baixing.net/202105/346a4db066327d3723e75c79897a7bc4.png", alt="")
       a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/fabu/fuwu#nav") 发布
       a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/wo/") 我的
