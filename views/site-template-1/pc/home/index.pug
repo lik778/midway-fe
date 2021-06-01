@@ -3,12 +3,7 @@ extends ../layout
 block styles
     :combine(fileName="site-template-1-home-pc.css")
 
-//-使用了统一的header和nav
 
-block official-breadcrumb
-    include ../../../common/pc/official-breadcrumb.pug
-    - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
-    +breadcrumb(breadcrumbList)
 
 block content
     include ../components/swiper.pug
