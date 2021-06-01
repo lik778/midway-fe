@@ -1,4 +1,4 @@
-import { ContentCateType, DomainStatus } from '@/enums';
+import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 
 export interface RouteParams {
   id: string;
@@ -101,7 +101,6 @@ export interface TdkDetailMeta {
 
 export interface ShopStatus {
   isUserPerfect: boolean;
-  domainType: DomainStatus;
   isTicketAvailable: boolean
 }
 
@@ -111,12 +110,26 @@ export interface QuotaInfo {
   buyUrl: string;
 }
 
+export interface CreateShopParams {
+  id?: number,
+  name: string,
+  /** 行业属性 */
+  shopType: ShopIndustryType,
+  /** 域名类型 */
+  domainType: DomainStatus,
+  /** 店铺域名 */
+  domain: string,
+}
+
+
+
 export interface ShopInfo {
   about: string;
   copyRight: string;
   createdTime: number;
   domain: string;
   domainType: DomainStatus;
+  shopType: ShopIndustryType,
   expiredTime: number;
   id: number;
   modifiedTime: number;

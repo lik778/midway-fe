@@ -91,6 +91,12 @@ export enum DomainStatus {
   CUSTOM = "CUSTOM" // 自定义
 }
 
+/** 店铺的行业属性 */
+export enum ShopIndustryType {
+  SERVICE = "SERVICE", // 服务
+  SALE = "SALE", // 产品
+}
+
 export enum KFStatus {
   CLOSE = 'CLOSE',
   OPEN = 'OPEN'

@@ -16,7 +16,7 @@
 | width                | 配置表单宽度                                               | number,string    | 680      | false    |
 | labelAlign           | label 对齐方式                                             | 'left' , 'right' | 'right'  | false    |
 | useLabelCol          | 设置 lable 占比                                            | ColProps         | {span:3} | false    |
-| customerFormItemList | 有些组件不适合封装，但是要放在表单管理，传自定义的组件进去 | ReactNode        |          | false    |
+| customerFormItemList | 有些组件不适合封装，但是要放在表单管理，传自定义的组件进去(index:// 决定当前这个自定义组件放在第几位 不填就是最后) | {index?: number,node: ReactNode}[]      |          | false    |
 
 ---
 

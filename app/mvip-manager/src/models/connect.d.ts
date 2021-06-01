@@ -12,8 +12,8 @@ export interface Loading {
   global: boolean;
   effects: { [key: string]: boolean | undefined };
   models: {
-    user?: boolean;
-    shop?: boolean;
+    user: boolean;
+    shop: boolean;
   };
 }
 
