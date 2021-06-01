@@ -14,9 +14,8 @@ html
         - const { company, person } = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId, userInfo } = renderData
         block header
-            include ../../common/pc/official-topbar.pug
-            include ../../common/pc/official-search.pug
-        block official-breadcrumb
+            include ../../common/pc/official-old-header.pug
+            //- include ../../common/pc/official-topbar.pug
  
         block nav
             include ./components/nav.pug
