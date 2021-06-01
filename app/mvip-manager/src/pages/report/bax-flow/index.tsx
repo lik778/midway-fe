@@ -54,8 +54,6 @@ function BaxFlowPage(props: any) {
   const [chartsOptions, setChartsOptions] = useState([{},{}])
   const [queryVisitListForm] = Form.useForm()
   const [visitListData, setVisitListData] = useState<FlowDetailData[]>([])
-  // const [queryShowListForm] = Form.useForm()
-  // const [showListData, setShowListData] = useState<FlowDetailData[]>([])
 
   useEffect(() => {
     queryOverviewData()
@@ -77,14 +75,7 @@ function BaxFlowPage(props: any) {
     setVisitListData(result)
     return data
   }
-  // const queryShowList = async (query: BaxFlowDetailParams) => {
-  //   const { code, data } = await getBaxFlowShowDetail(query)
-  //   if (code === SUCCESS) {
-  //     const { result } = data
-  //     setShowListData(result)
-  //     return data
-  //   }
-  // }
+
   return (
     <div className='page-report page-report-bax-flow'>
       <MainTitle title="广告流量报表"/>

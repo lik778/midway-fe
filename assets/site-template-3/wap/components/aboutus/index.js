@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import { eventTracker } from '../../../../common/tracker'
 
 // input自带的select()方法在苹果端无法进行选择，所以需要自己去写一个类似的方法
 // 选择文本。createTextRange(setSelectionRange)是input方法
@@ -26,7 +27,7 @@ const copyText = (text, dom) => {
   input.value = textString;
   // ios必须先选中文字且不支持 input.select();
   selectText(input, 0, textString.length);
-  console.log(document.execCommand('copy'), 'execCommand');
+  //console.log(document.execCommand('copy'), 'execCommand');
   if (document.execCommand('copy')) {
     document.execCommand('copy');
   }
@@ -43,7 +44,7 @@ const clickAction = ((dom) => {
     dom.text('复制成功！');
     setTimeout(() => {
       dom.text('点击复制');
-      dom.css("color","#FF4466")
+      dom.css("color","")
     }, 2000)
   })
 })
@@ -53,8 +54,14 @@ export const initAboutus = function () {
     //复制微信号码
     const copyWechat = $('#wechat');
     clickAction(copyWechat);
+    copyWechat.on('click',()=>{
+      eventTracker('wechat-wap', 'company-info-wap')
+    })
+
+    $('.phone').on('click', ()=>{
+      eventTracker('phone-wap', 'company-info-wap')
+    })
   })
 }
-
 
 

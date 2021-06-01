@@ -1,9 +1,10 @@
 .product-list
   width 100%
+  min-height: 100px
   padding 0 26px
   box-sizing border-box
   background-color #fff
-  div 
+  div
     box-sizing border-box
   .item
     display flex
@@ -13,11 +14,11 @@
     &:hover
       .left
         .text-content
-          .title
-            color: #FF4466;
+          .name
+            color: $color-main;
       .right
-        border: 1px solid #FF4466;
-        color: #FF4466;
+        border: 1px solid $color-main;
+        color: $color-main;
     .left
       display flex
       justify-content flex-start
@@ -27,9 +28,9 @@
         height 150px
       .text-content
         width 450px
-        height 150px 
+        height 150px
         padding 10px 16px
-        .title
+        .name
           margin-bottom 20px
           font-weight bold
           font-size 18px
@@ -37,15 +38,12 @@
           overflow hidden
           text-overflow ellipsis
           white-space nowrap
-        .addr
-          margin-bottom 50px
+        .content
+          margin-bottom 45px
           font-size 14px
           color #999999
           line-height 18px
-          overflow hidden
-          text-overflow ellipsis
-          white-space nowrap
-        .name
+        .price
           font-size 14px
           line-height 14px
           color #333333
@@ -63,8 +61,10 @@
     &+.item
       border-top 1px solid #eee
 
+  .no-content
+    line-height: 100px
 
 
 
 
- 
+

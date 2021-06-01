@@ -136,7 +136,7 @@ function CompanyInfoBase(props: any) {
 
     // 一级类目
     values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
-    console.log("提交表单数据",values)
+    //console.log("提交表单数据",values)
     const { success, message, data } = await saveEnterpriseForShopApi(values)
     setLoading(false)
     if (success) {

@@ -3,7 +3,7 @@ import { eventTracker } from '../../../../common/tracker';
 
 //本页目的：只要页面归属某个导航栏，则该导航区块高亮
 export const navModule = function() {
-	$(document).ready(function(){
+	$(document).on('ready',function(){
 		const windowHref = window.location.href;
 		const windowPath = window.location.pathname
 
@@ -29,7 +29,7 @@ export const navModule = function() {
 		})
 	});
 	//点击顶部右上角电话event打点
-	$(".tel-desc").click(()=>{
+	$(".tel-desc").on('click',()=>{
 		eventTracker("phone-top", "top-pc")
 	});
 }

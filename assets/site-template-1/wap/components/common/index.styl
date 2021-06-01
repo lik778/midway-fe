@@ -1,0 +1,28 @@
+//加主站样式
+@import "../../../../common/wap/official-footer"
+@import "../../../../common/wap/offical-topbar"
+@import "../../../../common/wap/official-breadcrumb"
+
+*
+  padding 0
+  margin 0
+
+body
+  max-width 750px
+  margin 0 auto
+  position relative
+  min-height 100vh
+  //设置一个最小高度,主要使他在内容很少（或没有内容）情况下，能保持100％的高度
+a
+  text-decoration none
+
+//解决浮动问题
+.clearfix::after
+	content ""
+	display block
+	height 0
+	clear both
+	visibility hidden
+//解决IE6,7不识别伪元素
+.clearfix
+	zoom  1

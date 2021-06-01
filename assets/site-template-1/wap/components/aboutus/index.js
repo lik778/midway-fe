@@ -8,25 +8,25 @@ const off = $(".s-off")
 
 export const aboutModule = function(){
 	//等待DOM 结构加载完成，然后再执行操作
-	$(document).ready(function(){
-		//$(".s-open").click(function(){
+	$(document).on('ready',function(){
+		//$(".s-open").on('click',function(){
 		//	$(".aboutus-content>p").removeClass("about-hidden");
 		//	$(".s-open").hide()
 		//	$(".s-off").show()
 		//});
-		//$(".s-off").click(function(){
+		//$(".s-off").on('click',function(){
 		//	$(".aboutus-content>p").addClass("about-hidden");
 		//	$(".s-open").show()
 		//	$(".s-off").hide()
 		//});
 
-		open.click(function(){
+		open.on('click',function(){
 			all.show();
 			sample.hide();
 			open.hide()
 			off.show()
 		})
-		off.click(function(){
+		off.on('click',function(){
 			sample.show();
 			all.hide();
 			open.show()
@@ -34,7 +34,7 @@ export const aboutModule = function(){
 		})
 
 		//对拨打电话打点
-		$(".introduction a").click(()=>{
+		$(".introduction a").on('click',()=>{
 			eventTracker("phone-wap", "home-wap")
 		})
 	})

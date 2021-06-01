@@ -63,6 +63,7 @@ export interface ModifyNavItem {
 export interface ImgItemParam {
   type: number;
   url: string;
+  position: number;
 }
 
 export interface ImgDeleteParam {
@@ -74,6 +75,7 @@ export interface ImgListParam {
   size: number;
   status: number;
   type: number;
+  position: number;
 }
 
 export interface CreateContentCateApiParams {

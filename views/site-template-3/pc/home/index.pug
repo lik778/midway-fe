@@ -1,4 +1,5 @@
 extends ../layout
+include ../components/home/home-title.pug
 
 block styles
 		:combine(fileName="site-template-3-home-pc.css")
@@ -15,15 +16,13 @@ block content
 				//-服务项目
 				- const { result : proList} = renderData.productList
 				if proList && proList.length > 0
-						.block-title
-								h2 服务项目
+						+home-title('服务项目')
 						include ../components/home/product-swiper.pug
 
 				include ../components/home/about-us.pug
 				include ../components/home/viewPhone.pug
 
 				//-自定义模块
-				//-- const userDefinedList = renderData.autoConfig
 				- const { autoConfig } = renderData
 				if autoConfig && autoConfig.length > 0
 					include ../components/home/user-defined-module.pug
@@ -33,14 +32,12 @@ block content
 				- articleList = renderData.articleList.result
 				- const { articleRecommend } = renderData
 				if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
-						.block-title
-								h2 新闻资讯
+						+home-title('新闻资讯')
 						include ../components/home/news-center.pug
 						.new-center.clearfix
 								+news-box('新闻资讯', articleList)
 
-				.block-title
-						h2 联系我们
+				+home-title('联系我们')
 				include ../components/home/contact-us.pug
 
 block scripts

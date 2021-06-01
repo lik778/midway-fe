@@ -40,11 +40,11 @@
 				height 30px
 				margin-bottom 5px
 				&.qq
-					background url('http://file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png') no-repeat center center/100%
 				&.mobile
-					background url('http://file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png') no-repeat center center/100%
 				&.wechat
-					background url('http://file.baixing.net/202102/a278452bf26c6a6b4b870c69d2bcd615.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/a278452bf26c6a6b4b870c69d2bcd615.png') no-repeat center center/100%
 
 			&-item:hover
 				&::before
@@ -54,11 +54,11 @@
 				.service-name
 					color #FF2D38
 				.qq
-					background url('http://file.baixing.net/202102/b35eae79d56d8081f3c029e3e06c5040.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/b35eae79d56d8081f3c029e3e06c5040.png') no-repeat center center/100%
 				.mobile
-					background url('http://file.baixing.net/202102/274fb15f6bf4bf0cb1567d1fead4be0b.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/274fb15f6bf4bf0cb1567d1fead4be0b.png') no-repeat center center/100%
 				.wechat
-					background url('http://file.baixing.net/202102/ba8009496bfbdbe07f62ab855d1b9980.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/ba8009496bfbdbe07f62ab855d1b9980.png') no-repeat center center/100%
 
 			&-modal
 				display none
@@ -66,7 +66,7 @@
 				background-color #fff
 				right calc(100% + 20px)
 				top 50%
-				padding 20px 25px
+				padding 27px 25px
 				transform translateY(-50%)
 				box-shadow 0 4px 10px rgba(#000, 0.05)
 				cursor initial
@@ -119,16 +119,28 @@
 						font-size 14px
 						line-height 20px
 					.mobile
+						&-title
+							margin-bottom 7px
+							font-size 14px
+							line-height 14px
+							color: #666666
 						&-number
 							margin-top 5px
 							color #FF2D38
 							width 100px
 							text-overflow ellipsis
 							overflow hidden
-						&-info
+						&-info-time,&-info-people
 							color #999999
 							font-size 12px
+							line-height 12px
+						&-info-people
+							margin-top 20px
+						&-info-time
+							margin-top 10px
+
 					.click-copy
+						margin-top 20px
 						color #426CE8
 						border 1px solid #426CE8
 						border-radius 15px

@@ -1,7 +1,7 @@
 //-在线客服
 .customer-service
 	.customer-service__group
-		.service-item
+		.service-item#qq
 			.service-logo.qq
 			.service-name QQ交谈
 			.service-modal
@@ -16,7 +16,7 @@
 				else
 					.service-modal__qq
 						.qq-name 暂未添加QQ
-		.service-item
+		.service-item#mobile
 			.service-logo.mobile
 			.service-name 联系电话
 			.service-modal
@@ -25,9 +25,9 @@
 					.mobile-number #{ phone.content }
 					if phone2.content
 						.mobile-number #{ phone2.content }
-					.mobile-info 联系人：#{ contactName.content }
-					.mobile-info 工作时间：7*24
-		.service-item
+					.mobile-info-people 联系人：#{ contactName.content }
+					.mobile-info-time 工作时间：7*24
+		.service-item#wechat
 			.service-logo.wechat
 			.service-name 联系微信
 			if weChat.content

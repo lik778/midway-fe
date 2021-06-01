@@ -1,11 +1,8 @@
 import './index.styl';
+import '../layout/index';
 import Swiper from 'swiper';
-import { qqModule } from '../components/customer-service/index';
-import { navModule } from '../components/nav/index';
 import { contactUsModule } from '../components/sidebar/contact-us/index';
 
-navModule()
-qqModule()
 contactUsModule()
 
 var swiper = new Swiper('.swiper-container', {

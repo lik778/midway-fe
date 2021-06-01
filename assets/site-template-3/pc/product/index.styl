@@ -6,6 +6,8 @@
 @import "../components/sidebar/index"
 @import "../components/base-swiper"
 
+html
+    background-color: #F7F7F7
 .container
     width 1220px
     margin 0 auto 72px
@@ -23,8 +25,8 @@
             li:last-child
                 span
                     background: #FFFFFF
-                    color: #FF4466
-                    border: 1px solid #FF4466
+                    color: $color-main
+                    border: 1px solid $color-main
                     display: inline-block
                     height: 34px
                     line-height: 34px
@@ -36,7 +38,7 @@
                         content: ''
                         width: 15px
                         height: 1px
-                        background: #FF4466
+                        background: $color-main
                         position: absolute
                         right: 15px
                         top: 17px

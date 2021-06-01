@@ -1,19 +1,18 @@
 import './index.styl';
 import '../layout/index';
 
-//import { qqModule } from '../../../common/pc/customer-service/index';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
-//import { navModule } from '../components/nav';
 import { leaveLeads } from '../components/contact-us';
+import { viewPhone } from '../components/contact-form-companyInfo';
 
-//navModule()
-//qqModule()
 initializeSidebarProductSwiper()
 leaveLeads()
+viewPhone()
 
-new Swiper('#news-detail-swiper .swiper-container', {
+new Swiper('#banner-list .swiper-container', {
   //spaceBetween: 30,
+  loop: true,
   speed:1500,
   centeredSlides: true,
   autoplay: {
@@ -23,12 +22,12 @@ new Swiper('#news-detail-swiper .swiper-container', {
   },
   //分页器
   pagination: {
-    el: '.swiper-pagination',
+    el: '#banner-list .swiper-pagination',
     clickable: true,
   },
   //前进后退按钮
   navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
+    nextEl: '#banner-list .swiper-button-next',
+    prevEl: '#banner-list .swiper-button-prev',
   },
 });

@@ -1,8 +1,7 @@
 mixin user-defined-module(autoConfig)
+	include ./home-title.pug
 	each configItem in autoConfig
-		.block-title
-			h2 #{ configItem.mainModuleTitle }
-
+		+home-title(configItem.mainModuleTitle)
 			//-是否为奇数个，奇数个展示查看更多
 		- let { subModuleBos } = configItem
 		- let isOdd = subModuleBos.length % 2 === 0 ? false : true
@@ -23,5 +22,5 @@ mixin user-defined-module(autoConfig)
 
 			if isOdd
 				.user-defined-item.viewMore
-					a(href="#")
+					a(href=aboutLink)
 						span 查看企业介绍详情

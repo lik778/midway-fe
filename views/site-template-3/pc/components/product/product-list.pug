@@ -8,9 +8,9 @@
           img.img(src=item.headImg || defaultImg)
           .text-content
             //- TODO;
-            .title #{item.title || '这是标题超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的'}
-            .addr #{item.addr || '这是地址超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的超长的'}
             .name #{item.name}
+            .content.only-twoline #{item.content} 
+            .price #{item.price}
         .right 查看详情
   else
     p.no-content 当前页面暂无内容，敬请期待...

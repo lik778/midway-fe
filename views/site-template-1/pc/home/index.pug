@@ -4,6 +4,12 @@ block styles
     :combine(fileName="site-template-1-home-pc.css")
 
 //-使用了统一的header和nav
+
+block official-breadcrumb
+    include ../../../common/pc/official-breadcrumb.pug
+    - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+    +breadcrumb(breadcrumbList)
+
 block content
     include ../components/swiper.pug
     .container.clearfix
@@ -27,12 +33,9 @@ block content
             - const cateList = renderData.productCateList
             include ../components/sidebar/category-item.pug
 
-    include ../components/footer.pug
-    //-在线客服
-    include ../components/customer-service.pug
 
 block scripts
     :combine(fileName="site-template-1-home-pc.js")
 block append scripts
     script.
-        window.trackSrc = 'home';
+        window.trackSrc = 'home'; 

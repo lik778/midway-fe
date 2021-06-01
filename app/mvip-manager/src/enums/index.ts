@@ -80,6 +80,11 @@ export enum DeviceType {
   WAP = 2,
 }
 
+export enum PositionType {
+  HOME = 1,
+  CONTENT = 3,
+}
+
 export enum DomainStatus {
   PREFIX = "PREFIX", // 前缀
   SUFFIX = "SUFFIX", // 后缀
