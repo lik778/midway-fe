@@ -27,7 +27,13 @@ export interface FormConfig {
   labelAlign?: 'left' | 'right',
   useLabelCol?: ColProps;
   // 有些组件确实不适合封装 但是也要放在表单里管理 则写自定义的组件进去
-  customerFormItemList?: ReactNode
+  customerFormItemList?: CustomerFormItem[]
+}
+
+export interface CustomerFormItem {
+  key: string,
+  index: number,// 决定当前这个自定义组件放在第几位 不填就是最后
+  node: ReactNode
 }
 export interface FormItem {
   label: string; // 页面标签

@@ -1,7 +1,7 @@
 
 import $ from 'jquery';
 
-export const initWhiteBlock = () => {
+export const initSearch = () => {
   $(document).on('ready', function () {
     $('#SearchBtn').on('click', function () {
       const value = $('#inputValue').val()

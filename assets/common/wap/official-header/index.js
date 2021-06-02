@@ -1,3 +1,9 @@
-import { initWhiteBlock } from '../white-topbar/index'
+import { initWhiteTopbar } from '../white-topbar/index'
+import { initRedTopbar } from '../red-topbar/index'
 
-initWhiteBlock()
+console.log(111,window.isRedTopbar);
+if(window.isRedTopbar){
+  initRedTopbar()
+} else {
+  initWhiteTopbar()
+}

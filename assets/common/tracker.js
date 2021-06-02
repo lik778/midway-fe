@@ -110,9 +110,10 @@ export const trackVisitor = (opts = {}) => {
   const query = parseQuery(window.location.search)
   const profiles = (query.profile || '').split('_')
   const keyword = query.keyword || ''
-  const [campaignId, oKeyword] = profiles
+  const [campaignId, group, oKeyword] = profiles
   opts.campaignId = campaignId
   opts.keyword = keyword || oKeyword
+  opts.groupId = group || ''
   if (!opts.campaignId) return
   const bannerId = query.bannerId
   if (!isValidBannerID(bannerId)) return

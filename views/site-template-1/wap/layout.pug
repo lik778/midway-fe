@@ -12,9 +12,13 @@ html
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company } = renderData.basic
-        - const { currentPage, currentPathname, domainType, shopId } = renderData
+        - const { currentPage, currentPathname, domainType, shopId, isRedTopbar } = renderData
         include ../../common/wap/official-header
         block official-breadcrumbs
+            include ../../common/pc/official-breadcrumb.pug
+            - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+            +breadcrumb(breadcrumbList)
+
         block header
         block content
         //-block footer
@@ -34,11 +38,16 @@ html
             p #{weChat.content || "微信号暂未填写"}
         .mask
 
-    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
-    block scripts
     block append scripts
         script.
             window.shopId = #{ shopId };
-
+            let isRedTopbar = '#{ isRedTopbar }';
+            if(isRedTopbar){
+                window.isRedTopbar = isRedTopbar
+            } else {
+                window.isRedTopbar = '';
+            }
         include ../../vendor/baidutongji.pug
         include ../../vendor/53kf.pug
+    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
+    block scripts

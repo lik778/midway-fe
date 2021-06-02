@@ -12,7 +12,7 @@ html
         //-初始化公共数据
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
         - const { company, person, copyRight } = renderData.basic
-        - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo } = renderData
+        - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo, isRedTopbar } = renderData
         - companyName = renderData.basic.company.name
         //-导航因为后台可设置是否显示，因此要如下处理
         - nav = renderData.navigation
@@ -27,9 +27,7 @@ html
         - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
         - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
         block header
-            //- include ../../common/pc/topbar.pug
-            include ../../common/pc/official-topbar.pug
-               
+            include ../../common/pc/official-header.pug
             include ./components/common/header.pug
 
         block content
@@ -38,16 +36,23 @@ html
         block footer
             //- include ../../common/pc/footer.pug
             include ../../common/pc/official-footer.pug
+            
+    block append scripts
+        script.
+            window.shopId = #{shopId};
+            let isRedTopbar = '#{ isRedTopbar }';
+            if(isRedTopbar){
+                window.isRedTopbar = isRedTopbar
+            } else {
+                window.isRedTopbar = '';
+            }
+        include ../../vendor/baidutongji.pug
+        include ../../vendor/53kf.pug
 
     :combine(fileName=["tb-vendors.js", "tb-commons.js"])
     block scripts
     //-把打点值赋给window，便于传给node层和其他js层
-    block append scripts
-        script.
-            window.shopId = #{shopId};
-
-        include ../../vendor/baidutongji.pug
-        include ../../vendor/53kf.pug
+    
 
 
 

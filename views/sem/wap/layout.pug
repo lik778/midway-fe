@@ -15,7 +15,7 @@ html
         //-初始化公共数据
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = (renderData.basic.contact||{})
         - const { company, copyRight } = renderData.basic
-        - const {uid, currentPathname, shopId, shopName, userInfo } = renderData
+        - const {uid, currentPathname, shopId, shopName, userInfo ,isRedTopbar} = renderData
         - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
         - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
 
@@ -36,8 +36,7 @@ html
             div(style="padding-bottom:75px")
             include ./components/footer-contact
 
-    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
-    block scripts
+
     block append scripts
         script.
             let shopId = '#{ shopId }';
@@ -47,5 +46,13 @@ html
                 window.shopId = '';
             }
             window.uid = #{ uid };
-        include ../../vendor/53kf.pug
 
+            let isRedTopbar = '#{ isRedTopbar }';
+            if(isRedTopbar){
+                window.isRedTopbar = isRedTopbar
+            } else {
+                window.isRedTopbar = '';
+            }
+        include ../../vendor/53kf.pug
+    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
+    block scripts

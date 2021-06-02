@@ -10,7 +10,8 @@ import {
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
-  TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem
+  TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
+  CreateShopParams
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -21,7 +22,7 @@ export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> =
 }
 
 // 创建店铺
-export const createShopApi = (params: any): Promise<ServiceResponse<any>> => {
+export const createShopApi = (params: CreateShopParams): Promise<ServiceResponse<any>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/create', params)
 }
 

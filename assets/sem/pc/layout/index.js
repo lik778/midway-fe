@@ -1,5 +1,4 @@
-import { initTopbar } from '../../../common/pc/official-topbar'
+import  '../../../common/pc/official-header'
 import { qqModule } from '../../../common/pc/customer-service';
 
-initTopbar()
 qqModule('sem')
