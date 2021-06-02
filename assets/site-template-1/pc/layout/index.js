@@ -1,4 +1,4 @@
-import '../../../common/pc/official-old-header'
+import '../../../common/pc/official-header'
 // import { initTopbar } from '../../../common/pc/official-topbar'
 import { navModule } from '../components/nav/index';
 import { qqModule } from '../components/customer-service/index';

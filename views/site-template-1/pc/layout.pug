@@ -12,10 +12,9 @@ html
         //-初始化公共数据
         - const { qq, phone, weChat } = renderData.basic.contact
         - const { company, person } = renderData.basic
-        - const { currentPage, currentPathname, categoryId, domainType, shopId, userInfo } = renderData
+        - const { currentPage, currentPathname, categoryId, domainType, shopId, userInfo,isRedTopbar } = renderData
         block header
-            include ../../common/pc/official-old-header.pug
-            //- include ../../common/pc/official-topbar.pug
+            include ../../common/pc/official-header.pug
  
         block nav
             include ./components/nav.pug
@@ -34,6 +33,12 @@ html
     block append scripts
         script.
             window.shopId = #{shopId};
+            let isRedTopbar = '#{ isRedTopbar }';
+            if(isRedTopbar){
+                window.isRedTopbar = isRedTopbar
+            } else {
+                window.isRedTopbar = '';
+            }
 
         include ../../vendor/baidutongji.pug
         include ../../vendor/53kf.pug

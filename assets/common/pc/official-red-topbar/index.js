@@ -12,3 +12,5 @@ export const initTopbar = () => {
     topbarLogin.attr('href', `//www.baixing.com/oz/login?redirect=${url}`)
   })
 }
+
+initTopbar()
