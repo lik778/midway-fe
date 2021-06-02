@@ -26,9 +26,6 @@ html
         block footer
             //- include ./components/footer.pug
             include ../../common/pc/official-footer.pug
-
-    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
-    block scripts
     //-把打点值赋给window，便于传给node层和其他js层
     block append scripts
         script.
@@ -39,7 +36,9 @@ html
             } else {
                 window.isRedTopbar = '';
             }
-
         include ../../vendor/baidutongji.pug
         include ../../vendor/53kf.pug
+    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
+    block scripts
+
 

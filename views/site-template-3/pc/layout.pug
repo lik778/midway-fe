@@ -37,9 +37,6 @@ html
         block footer
             //- include ../../common/pc/footer.pug
             include ../../common/pc/official-footer.pug
-
-    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
-    block scripts
     //-把打点值赋给window，便于传给node层和其他js层
     block append scripts
         script.
@@ -53,6 +50,9 @@ html
         include ../../vendor/baidutongji.pug
         //-TODO:开发阶段先注释掉
         include ../../vendor/53kf.pug
+    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
+    block scripts
+  
 
 
 

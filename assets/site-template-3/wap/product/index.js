@@ -6,4 +6,3 @@ import { tabModule } from '../components/toptab/index';
 
 leaveLeads()
 tabModule()
- 
