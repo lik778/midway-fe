@@ -16,7 +16,7 @@ html
         include ../../common/wap/official-header
         block official-breadcrumbs
             include ../../common/pc/official-breadcrumb.pug
-            - breadcrumbList = [{text:'中国百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+            - breadcrumbList = [{text:'首页',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
             +breadcrumb(breadcrumbList)
 
         block header

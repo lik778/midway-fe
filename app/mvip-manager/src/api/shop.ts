@@ -33,8 +33,8 @@ export const updateShopApi = (params: ShopInfo): Promise<ServiceResponse<any>> =
 
 // 获取店铺列表
 export const getShopListApi = (): Promise<ServiceResponse<ShopInfo>> => {
-  // tips: // 这里的params写死，因为用户店铺不会超过10个
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/listing', { page: 1, size: 10 })
+  // tips: // 这里的params写死，因为用户店铺不会超过1000个
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/listing', { page: 1, size: 1000 })
 }
 
 
