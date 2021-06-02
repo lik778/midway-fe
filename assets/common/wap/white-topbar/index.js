@@ -1,7 +1,7 @@
 
 import $ from 'jquery';
 
-export const initWhiteBlock = () => {
+export const initWhiteTopbar = () => {
   $(document).on('ready', function () {
     $(".search-query").on("keypress", function(e) {
       var value = $.trim($(this).val());

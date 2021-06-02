@@ -1,5 +1,5 @@
 
-.bx-header
+.bx-header-red
   .cm-nav-bar
     background #f2f2f2
     height 56px
@@ -13,7 +13,8 @@
     justify-content space-between
     div
       box-sizing border-box
-      position relative
+      //position absolute
+      //top 0
 
     .bx-nav-logo
       margin-right 2vw
@@ -21,8 +22,10 @@
       .bx-logo
         width  50px
         height 26px
+        //background url('//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png') no-repeat center center/100%
   .bx-nav-search
     width 50vw
+    position relative
     input
       color #fff
       box-sizing border-box
@@ -40,16 +43,16 @@
       background rgba(255, 255, 255, 0.3)
       &::-webkit-input-placeholder
         color #fff
-    .baicon
+    img.baicon
+      width 14px
       color #fff
       position absolute
       left 10px
       top 12px
-      width 1em
-      height 1em
       opacity 0.8
 
   .cm-nav-bar-right
+    width 35vw
     display flex
     justify-content flex-end
     .bx-nav-btnlast-of-type
