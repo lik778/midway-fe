@@ -1,6 +1,6 @@
 extends ../layout.pug
 block styles
-    :combine(fileName="site-template-2-product-wap.css")
+    :combine(fileName="site-template-2-search-wap.css")
 
 block content
     - const cateList = renderData.productCateList
@@ -15,8 +15,8 @@ block content
     +pagination(totalPage, currentPage, `${currentPathname}`)
 
 block scripts
-    :combine(fileName="site-template-2-product-wap.js")
+    :combine(fileName="site-template-2-search-wap.js")
 block append scripts
     script.
-        window.contentType = 'product';
+        window.contentType = 'search';
         window.trackSrc = 'listing';
