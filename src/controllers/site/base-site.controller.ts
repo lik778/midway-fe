@@ -8,8 +8,8 @@ import { TrackerType } from '../../enums/tracker';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../constant/cookie';
 
 //模板页面基础控制器，进行数据请求和打点
-export class BaseSiteController { 
-  private whiteList: string[] = ['baomuyuesao','zhongheruijia','jikang','weichai','ndjx','hnfjhbsb']
+export class BaseSiteController {
+  private whiteList: string[] = ['baomuyuesao', 'zhongheruijia', 'jikang', 'weichai', 'ndjx', 'hnfjhbsb']
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
     protected domainType: DomainTypeEnum) { }
@@ -45,9 +45,10 @@ export class BaseSiteController {
 
     data.autoConfig = data.autoConfig && data.autoConfig.length > 0 ? data.autoConfig : [{ mainModuleTitle: '企业优势', subModuleBos: [{ fontColor: 0, title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' }, { fontColor: 0, title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' }, { fontColor: 0, title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' }, { fontColor: 0, title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }] }]
     //红白头开关
-    if(this.whiteList.indexOf(data.basic.shop.domain)!==-1){
+    if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
       data.isRedTopbar = true
     }
+    console.log(data)
     return data
   }
 
@@ -303,5 +304,38 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
     return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo } });
+  }
+
+  // 搜索聚合页
+  @Get('/search')
+  async search(@Param() params, @HostParam('shopName') HostShopName: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
+    const currentPage = query.page || 1
+    const searchKey = query.key || ''
+    const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, { page: currentPage, size: 5, searchKey }, domain);
+    const data = this.setData(originData)
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        _platform: device,
+        tracktype: 'pageview',
+        contentType: 'search',
+        category: '',
+      }
+    })
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/search/index`;
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+    return res.render(templateUrl, { title: '搜索', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
   }
 }

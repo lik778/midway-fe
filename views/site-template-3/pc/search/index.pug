@@ -1,7 +1,7 @@
 extends ../layout
 
 block styles
-    :combine(fileName="site-template-3-product-pc.css")
+    :combine(fileName="site-template-3-search-pc.css")
 
 block content
     include ../components/common/breadcrumbs.pug
@@ -27,8 +27,8 @@ block content
             include ../components/sidebar/products.pug
 
 block scripts
-    :combine(fileName="site-template-3-product-pc.js")
+    :combine(fileName="site-template-3-search-pc.js")
 block append scripts
     script.
-        window.contentType = 'product';
+        window.contentType = 'search';
         window.trackSrc = 'listing';
