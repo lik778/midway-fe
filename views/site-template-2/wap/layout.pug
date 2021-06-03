@@ -17,6 +17,7 @@ html
         - nav = renderData.navigation
         - productListTab = nav.filter(x => x.position == "productListPage")
         - newsLinkListTab = nav.filter(x => x.position == "articleListPage")
+        - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
         if productListTab.length >0
             - productLink = productListTab[0].content
         if newsLinkListTab.length >0
