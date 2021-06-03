@@ -28,5 +28,5 @@ mixin user-defined-module(userDefinedModuleList)
 						.content.only-twoline( style = isWhite ? {color:'#FFF'} : {} ) #{ item.content }
 			if isOdd
 				.user-defined-item.viewMore
-					a(href="/about" || "#") 
+					a(href=aboutLink) 
 						span 查看企业介绍详情
