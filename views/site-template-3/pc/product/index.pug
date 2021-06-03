@@ -18,12 +18,12 @@ block content
             include ../../../common/pc/pagination.pug
             - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
-
+            - console.log(currentPathname) 
         //-侧边栏
         .sidebar
             - const { articleList } = renderData
             include ../components/sidebar/cateList.pug
-            +side-cateList('新闻资讯', articleList.result)
+            +side-cateList('新闻资讯123456', articleList.result)
             include ../components/sidebar/products.pug
 
 block scripts

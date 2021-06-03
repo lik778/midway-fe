@@ -1,13 +1,11 @@
-mixin pagination(total, current, pathname)
-    - link = pathname.indexOf("?")== -1 ? pathname : pathname.substring(0, pathname.indexOf("?"))
+mixin pagination(total, current)
     - n = parseInt(total)
     - p = parseInt(current)
     - prevPage = p - 1
     if n > 1
         .page-normal
             if prevPage >0
-                - preHref = `${link}?page=${prevPage}`
-                a(href=preHref) 上一页
+               .page-item(data-page=prevPage) 上一页
                 //-最大展示15页，超过的话，到第9页后面...
             if (n < 16)
                 - start = 1
@@ -17,9 +15,8 @@ mixin pagination(total, current, pathname)
                 if (p >= 9)
                     - for (i = 1; i <=3; i++)
                         - pageNum = i
-                        - href = `${link}?page=${pageNum}`
-                        a(href=href)=i
-                    a ...
+                        .page-item(data-page=pageNum) #{i}
+                    .page-item ...
                     - start = p - 3
                 else
                     - start = 1
@@ -32,16 +29,14 @@ mixin pagination(total, current, pathname)
             - for (i = start; i <= end; i++)
                 - pageNum = i
                 if i == p
-                    a.page-current= i
+                    .page-item.page-current= i
                 else
-                    - href = `${link}?page=${pageNum}`
-                    a(href=href)=i
+                    .page-item(data-page=pageNum) #{i}
             if end < n - 2
-                a ...
+                .page-item ...
                 - for (i = n - 1; i <= n; i++)
                     - url = `${link}?page=${i}`
-                    a(href=url)=i
+                    .page-item(data-page #{i}) #{i}
             if p < n
                 - prevPage = p + 1
-                - nextHref = `${link}?page=${prevPage}`
-                a(href=nextHref) 下一页
+                .page-item(data-page=prevPage) 下一页

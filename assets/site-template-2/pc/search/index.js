@@ -1,6 +1,7 @@
+import $ from 'jquery';
 import './index.styl';
 import '../layout';
-import $ from 'jquery';
+import '../../../common/pc/pagination/index'
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 
 initializeSidebarProductSwiper()
