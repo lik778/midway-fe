@@ -2,20 +2,16 @@ import $ from 'jquery';
 
 export const initTopbar = () => {
   $(document).on('ready', function () {
-    // const topbarPersenCenter = $('#topbarPersenCenter')
-    // const topbarShopPromote = $('#topbarShopPromote')
-    const topbarRegister = $('#topbarRegister')
-    const topbarLogin = $('#topbarLogin')
-    // const topbarHelp = $('#topbarHelp')
-    const url = encodeURIComponent(window.location.href)
-    topbarRegister.attr('href', `//www.baixing.com/oz/verify/reg?redirect=${url}`)
-    topbarLogin.attr('href', `//www.baixing.com/oz/login?redirect=${url}`)
-
+    const input = $('#inputValue')
+    // 清除输入
+    $('#searchClear').on('click', function () {
+      input.val('')
+    })
 
     $('#SearchBtn').on('click', function () {
       const shopDomain = $(this).data('shopdomain')
-      const value = $('#inputValue').val()
-      window.location.href = `${shopDomain}search?key=${value.toString()}`
+      const value = $.trim(input.val())
+      window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
     })
   })
 }

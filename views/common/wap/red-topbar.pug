@@ -6,7 +6,8 @@ header.bx-header-red
         img.cm-icon.bx-logo(src="//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
 
      .bx-nav-search
-      input.search-query(type="search" name="query" placeholder="搜索")
+      - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
+      input.search-query(type="search" name="query" placeholder="搜索", data-shopdomain=shopDomain.toString())
       img.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt="")
 
      .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line

@@ -41,6 +41,21 @@
         outline: none;
         &:focus
           box-shadow: 0 0 5px rgb(255 68 102 / 80%);
+        &::-ms-clear
+          display none
+        &:valid + .clear
+          display inline
+      .clear
+        display none 
+        width 16px  
+        height 16px 
+        position absolute 
+        top: 50%
+        right 100px
+        transform: translateY(-50%)
+        background url(//file.baixing.net/202105/b52876a539647c636eef53f60f91b291.png) no-repeat 
+        outline none
+        cursor pointer
       .search-btn
         border: 0;
         padding: 0;

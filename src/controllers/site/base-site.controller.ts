@@ -48,7 +48,7 @@ export class BaseSiteController {
     if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
       data.isRedTopbar = true
     }
-    console.log(data)
+
     return data
   }
 

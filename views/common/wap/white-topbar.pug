@@ -12,7 +12,8 @@ header.bx-header-white
     .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line
       //由于度娘要把搜索图标放右边，所以把搜索DOM挪下来了，回车搜索
       .bx-nav-search
-        input.search-query(type="search" name="query" placeholder="")
+        - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
+        input.search-query(type="search" name="query" placeholder="", data-shopdomain=shopDomain.toString())
         img.baicon(src="//file.baixing.net/202105/346a4db066327d3723e75c79897a7bc4.png", alt="")
       a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/fabu/fuwu#nav") 发布
       a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/wo/") 我的

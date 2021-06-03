@@ -1,0 +1,33 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-3-product-wap.css")
+
+block content
+    - const cateList = renderData.productCateList
+    include ../components/toptab
+
+    - productList = renderData.productList.result
+    if productList && productList.length > 0
+        include ../components/product-list
+        - productList = renderData.productList.result
+        +product-list(productList)
+    else
+        include ../components/no-data
+
+    //-留言资讯
+    include ../components/contact-form.pug
+
+    //-TODO:分页尽量改成下拉加载
+    - const { totalPage } = renderData.productList
+    include ../components/pagination
+    +pagination(totalPage, currentPage, `${currentPathname}`)
+
+//-block footer
+//-    include ../components/footer.pug
+
+block scripts
+    :combine(fileName="site-template-3-product-wap.js")
+block append scripts
+    script.
+        window.contentType = 'product';
+        window.trackSrc = 'listing';
