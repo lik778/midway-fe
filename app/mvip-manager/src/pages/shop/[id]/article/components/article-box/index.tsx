@@ -37,17 +37,25 @@ export default (props: Props) => {
   const params: RouteParams = useParams();
   const [modal, contextHolder] = Modal.useModal();
   let formValues: any = null;
-  const rechargeTxt = (url: string) => { return `您的免费发文额度已用完，信息发布点不足。<a href=${url} target='_blank'><i style='color:rgb(255, 134, 0)'>去充值&gt;</i></a>` }
-  const consumeTxt = `您剩余1个免费发文额度，免费额度用完继续发文会消耗套餐内的信息发布点`
+  const rechargeTxt = (url: string) => {
+    if (url) {
+      return <>您的免费发文额度已用完，信息发布点不足。<a href={url} target='_blank' style={{ color: 'rgb(255, 134, 0)' }}>去充值&gt;</a></>
+    } else {
+      return <>您的免费发文额度已用完。</>
+    }
+  }
+
+  const consumeTxt = <>您剩余1个免费发文额度，免费额度用完继续发文会消耗套餐内的信息发布点</>
 
   const consumeText = () => {
-    if (quota?.freeNum === 0 && quota?.postRemain < 6) {
-      return rechargeTxt(quota?.buyUrl)
-    } else if (quota?.freeNum === 1) {
-      return consumeTxt
-    }
-
-    return ''
+    return <div className="quota-text">
+      {
+        quota?.freeNum === 0 && quota?.postRemain < 6 && rechargeTxt(quota?.buyUrl)
+      }
+      {
+        quota?.freeNum === 1 && consumeTxt
+      }
+    </div>
   }
 
   useEffect(() => {
@@ -139,8 +147,7 @@ export default (props: Props) => {
         onCancel={() => setQuitModalVisible(false)} />
       <MyModal
         title="温馨提示"
-        content={<div className="quota-text" dangerouslySetInnerHTML={{ __html: consumeText() }} >
-        </div>}
+        content={consumeText()}
         type={ModalType.warning}
         visible={quotaModalVisible}
         confirmLoading={modalLoading}
