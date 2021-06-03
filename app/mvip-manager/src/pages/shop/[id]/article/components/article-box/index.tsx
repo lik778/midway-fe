@@ -37,7 +37,14 @@ export default (props: Props) => {
   const params: RouteParams = useParams();
   const [modal, contextHolder] = Modal.useModal();
   let formValues: any = null;
-  const rechargeTxt = (url: string) => { return `您的免费发文额度已用完，信息发布点不足。<a href=${url} target='_blank'><i style='color:rgb(255, 134, 0)'>去充值&gt;</i></a>` }
+  const rechargeTxt = (url: string) => {
+    if (url) {
+      return `您的免费发文额度已用完，信息发布点不足。<a href=${url} target='_blank'><i style='color:rgb(255, 134, 0)'>去充值&gt;</i></a>`
+    } else {
+      return `您的免费发文额度已用完。`
+    }
+  }
+
   const consumeTxt = `您剩余1个免费发文额度，免费额度用完继续发文会消耗套餐内的信息发布点`
 
   const consumeText = () => {
