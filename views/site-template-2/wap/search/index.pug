@@ -7,27 +7,30 @@ block header
 
 block content
     - $ = renderData
-    - tabProduct = $.searchType === 'product'
-    - tabNews = $.searchType === 'news'
-    - tabName = (tabProduct && '服务') || (tabName && '新闻资讯') || '未知类型'
+    - isTabProduct = $.searchType === 'product'
+    - isTabNews = $.searchType === 'news'
+    - tabs = [{ type: 'product', active: isTabProduct, name: '服务' },{ type: 'news', active: isTabNews, name: '新闻资讯' }]
+    - tabName = (tabs.find(x => x.active) || {}).name || '未知类型'
     - productList = $.productList.result
 
     .search-type-tabs
-        .item(class={active: tabProduct}) 服务
-        .item(class={active: tabNews}) 新闻资讯
+        each tab in tabs
+            .item(class={active: tab.active}, data-tab=tab.type) #{tab.name}
 
     .search-results
-        span 匹配到和#{$.searchKey}相关的#{tabName} #{productList.length} 条。
+        if productList.length === 0
+            span 未找到和#{$.searchKey}相关的信息
+        else
+            span 匹配到和#{$.searchKey}相关的#{tabName} #{productList.length} 条
 
-    if tabProduct
+    if isTabProduct
         include ../components/product-list
         +product-list('', productList)
-    if tabNews
+    if isTabNews
         include ../components/news-list
 
-    - const { totalPage } = $.productList
     include ../components/pagination
-    +pagination(totalPage, currentPage, `${currentPathname}`)
+    +pagination($.productList.totalPage, currentPage, `${currentPathname}`)
 
 block scripts
     :combine(fileName="site-template-2-search-wap.js")
