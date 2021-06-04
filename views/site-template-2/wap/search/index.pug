@@ -2,12 +2,19 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-2-search-wap.css")
 
+block header
+    include ../components/header
+
 block content
-    - const cateList = renderData.productCateList
-    include ../components/toptab
+    - productList = renderData.productList.result
+
+    .search-type-tabs
+        .item 服务
+        .item 新闻资讯
+
+    .search-results 匹配到和口罩相关的新闻资讯 #{productList.length} 条。
 
     include ../components/product-list
-    - productList = renderData.productList.result
     +product-list('', productList)
 
     - const { totalPage } = renderData.productList
