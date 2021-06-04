@@ -331,7 +331,7 @@ export class BaseSiteController {
     const currentPage = query.page || 1
     const searchKey = query.key || ''
     const searchType = query.type || 'product'
-    const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, { page: currentPage, size: 5, searchKey }, domain);
+    const { data: originData } = await this.midwayApiService[searchType === 'news' ? 'getNewsPageData' : 'getSearchPageData'](shopName, device, { page: currentPage, size: 100, searchKey }, domain);
 
     // 这里做统一处理
     const data = this.setSearchData(this.setData(originData), device, currentPage, searchType)
