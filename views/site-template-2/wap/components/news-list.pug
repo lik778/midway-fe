@@ -1,11 +1,12 @@
-- const newsList= renderData.articleList.result
-if newsList && newsList.length >0
-    .news-list
-        each item in newsList
-            a.item(href=item.urlSuffix)
-                h3 #{ item.name }
-                p #{ dateFormat2(item.modifiedTime) }
-                .text.only-oneline #{ item.limitText }
-else
+mixin news-list(lists)
+  if lists.length === 0
     include ./default-content.pug
     +default-content("")
+  else
+    .news-list
+      each item in lists
+        a.item(href=item.urlSuffix)
+          h3 #{ item.name }
+          p #{ dateFormat2(item.modifiedTime) }
+          .text.only-oneline #{ item.limitText }
+

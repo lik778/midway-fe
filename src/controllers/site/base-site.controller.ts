@@ -317,6 +317,7 @@ export class BaseSiteController {
     data.contentList.result = (type === 'news' ? data.articleList.result : data.productList.result).slice(start, start + pageNum)
     data.contentList.totalPage = type === 'news' ? data.articleList.totalPage : data.productList.totalPage
     data.contentList.totalRecord = type === 'news' ? data.articleList.totalPage : data.productList.totalPage
+
     if (type === 'news') {
       data.contentList.result = data.articleList.result.slice(start, start + pageNum)
       data.contentList.totalPage = data.articleList.totalPage
@@ -328,6 +329,7 @@ export class BaseSiteController {
     }
     data.contentType = type
     data.contentKey = key
+
     return data
   }
 
@@ -346,6 +348,7 @@ export class BaseSiteController {
 
     // 这里做统一处理
     const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
+
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -365,12 +368,12 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
+
     return res.render(templateUrl, {
       title: '搜索',
       renderData: {
         ...data,
         searchKey,
-        searchType,
         shopName,
         kf53,
         shopId,

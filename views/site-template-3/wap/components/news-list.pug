@@ -1,18 +1,17 @@
-- const newsList= renderData.articleList.result
-.news-list
-  if newsList && newsList.length >0
-    each item in newsList
-      a.item(href=item.urlSuffix)
-        - dateObj = new Date(item.modifiedTime * 1000)
-        - date = dateObj.getDate()
-        - year = dateObj.getFullYear()
-        - month = dateObj.getMonth() + 1
-        .left
-          .day #{date > 9 ? date : `0${date}`}
-          .year-month #{year}/#{month > 9 ? month : `0${month}`}
-        .right
-          h3.title.only-oneline #{ item.name }
-          p.desc.only-twoline  #{ item.limitText }
-          //-  #{ dateFormat2(item.modifiedTime) }
-  else
+mixin news-list(lists)
+  if lists.length === 0
     include ./no-data.pug
+  else
+    .news-list
+      each item in lists
+        a.item(href=item.urlSuffix)
+          - dateObj = new Date(item.modifiedTime * 1000)
+          - date = dateObj.getDate()
+          - year = dateObj.getFullYear()
+          - month = dateObj.getMonth() + 1
+          .left
+            .day #{date > 9 ? date : `0${date}`}
+            .year-month #{year}/#{month > 9 ? month : `0${month}`}
+          .right
+            h3.title.only-oneline #{ item.name }
+            p.desc.only-twoline  #{ item.limitText }
