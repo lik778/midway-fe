@@ -2,11 +2,26 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-3-search-wap.css")
 
-block content
-    - const cateList = renderData.productCateList
-    include ../components/toptab
+block header
 
-    - productList = renderData.productList.result
+block content
+    - $ = renderData
+    - isTabProduct = $.searchType === 'product'
+    - isTabNews = $.searchType === 'news'
+    - tabs = [{ type: 'product', active: isTabProduct, name: '服务' },{ type: 'news', active: isTabNews, name: '新闻资讯' }]
+    - tabName = (tabs.find(x => x.active) || {}).name || '未知类型'
+    - productList = $.productList.result
+
+    .search-type-tabs
+        each tab in tabs
+            .item(class={active: tab.active}, data-tab=tab.type) #{tab.name}
+
+    .search-results
+        if productList.length === 0
+            span 未找到和#{$.searchKey}相关的信息
+        else
+            span 匹配到和#{$.searchKey}相关的#{tabName} #{productList.length} 条
+
     if productList && productList.length > 0
         include ../components/product-list
         - productList = renderData.productList.result
@@ -14,16 +29,13 @@ block content
     else
         include ../components/no-data
 
-    //-留言资讯
-    include ../components/contact-form.pug
-
     //-TODO:分页尽量改成下拉加载
     - const { totalPage } = renderData.productList
     include ../components/pagination
     +pagination(totalPage, currentPage, `${currentPathname}`)
 
-//-block footer
-//-    include ../components/footer.pug
+block footer
+   include ../components/footer.pug
 
 block scripts
     :combine(fileName="site-template-3-search-wap.js")
