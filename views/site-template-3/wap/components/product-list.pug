@@ -1,10 +1,12 @@
 mixin product-list(productList)
-	.products-con
-		each item in productList
-			a.product(href=item.urlSuffix)
-				img.product-img(src=item.headImg || defaultImg)
-				.product-content.right
-					.taigger
-					.product-title.only-oneline #{ item.name }
-					.product-see-btn 查看详情
-
+	if productList.length === 0
+		include ./no-data.pug
+	else
+		.products-con
+			each item in productList
+				a.product(href=item.urlSuffix)
+					img.product-img(src=item.headImg || defaultImg)
+					.product-content.right
+						.taigger
+						.product-title.only-oneline #{ item.name }
+						.product-see-btn 查看详情
