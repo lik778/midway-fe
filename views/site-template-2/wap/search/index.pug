@@ -6,18 +6,23 @@ block header
     include ../components/header
 
 block content
-    - productList = renderData.productList.result
+    - $ = renderData
+    - productList = $.productList.result
 
     .search-type-tabs
-        .item 服务
-        .item 新闻资讯
+        .item(class={active: $.searchType === 'product'}) 服务
+        .item(class={active: $.searchType === 'news'}) 新闻资讯
 
-    .search-results 匹配到和口罩相关的新闻资讯 #{productList.length} 条。
+    .search-results
+        span 匹配到和口罩相关的新闻资讯 #{productList.length} 条。
 
     include ../components/product-list
     +product-list('', productList)
 
-    - const { totalPage } = renderData.productList
+    //- include ../components/product-list
+    //- +product-list('', productList)
+
+    - const { totalPage } = $.productList
     include ../components/pagination
     +pagination(totalPage, currentPage, `${currentPathname}`)
 

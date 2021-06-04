@@ -6,7 +6,6 @@ if newsList && newsList.length >0
                 h3 #{ item.name }
                 p #{ dateFormat2(item.modifiedTime) }
                 .text.only-oneline #{ item.limitText }
-
 else
     include ./default-content.pug
     +default-content("")

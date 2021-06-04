@@ -355,6 +355,20 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '搜索', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
+    return res.render(templateUrl, {
+      title: '搜索',
+      renderData: {
+        ...data,
+        searchKey,
+        searchType,
+        shopName,
+        kf53,
+        shopId,
+        trackId,
+        userInfo,
+        domainType: this.domainType,
+        currentPage, currentPathname,
+      }
+    })
   }
 }
