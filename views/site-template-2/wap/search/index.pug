@@ -7,20 +7,23 @@ block header
 
 block content
     - $ = renderData
+    - tabProduct = $.searchType === 'product'
+    - tabNews = $.searchType === 'news'
+    - tabName = (tabProduct && '服务') || (tabName && '新闻资讯') || '未知类型'
     - productList = $.productList.result
 
     .search-type-tabs
-        .item(class={active: $.searchType === 'product'}) 服务
-        .item(class={active: $.searchType === 'news'}) 新闻资讯
+        .item(class={active: tabProduct}) 服务
+        .item(class={active: tabNews}) 新闻资讯
 
     .search-results
-        span 匹配到和口罩相关的新闻资讯 #{productList.length} 条。
+        span 匹配到和#{$.searchKey}相关的#{tabName} #{productList.length} 条。
 
-    include ../components/product-list
-    +product-list('', productList)
-
-    //- include ../components/product-list
-    //- +product-list('', productList)
+    if tabProduct
+        include ../components/product-list
+        +product-list('', productList)
+    if tabNews
+        include ../components/news-list
 
     - const { totalPage } = $.productList
     include ../components/pagination
