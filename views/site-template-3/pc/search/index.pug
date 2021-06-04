@@ -4,20 +4,23 @@ block styles
     :combine(fileName="site-template-3-search-pc.css")
 
 block content
-    include ../components/common/breadcrumbs.pug
-
     .container
         .main
-            include ../components/product/cateList.pug
-
-            //-产品列表
-            - productList = renderData.productList.result
-            include ../components/product/product-list.pug
+            
+            if renderData.contentType === 'news'
+                include ../components/news/news-list.pug
+                +news-list(renderData.contentList.result)
+            else
+                //-产品列表
+                - productList = renderData.contentList.result
+                include ../components/product/product-list.pug
 
             //-分页模块
             include ../../../common/pc/pagination.pug
-            - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
+            - var totalPage = (renderData.contentList && renderData.contentList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
+
+ 
 
         //-侧边栏
         .sidebar
