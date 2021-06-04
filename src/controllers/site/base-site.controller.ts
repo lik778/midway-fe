@@ -307,7 +307,7 @@ export class BaseSiteController {
 
 
   // 处理搜索来的数据 因为页面需要切换分类，pc端还需要人工分页，而js与pug又很难交互，通过jq去拷贝节点循环渲染感觉很绕，所以选择点击分页重新渲染页面，这种胶水层统一处理数据，通过contentList 来输出页面需要的list。
-  private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news') {
+  private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
     const pageNum = 2
     data.contentList = {
       result: [],
@@ -316,7 +316,18 @@ export class BaseSiteController {
     const start = (currentPage - 1) * pageNum
     data.contentList.result = (type === 'news' ? data.articleList.result : data.productList.result).slice(start, start + pageNum)
     data.contentList.totalPage = type === 'news' ? data.articleList.totalPage : data.productList.totalPage
+    data.contentList.totalRecord = type === 'news' ? data.articleList.totalPage : data.productList.totalPage
+    if (type === 'news') {
+      data.contentList.result = data.articleList.result.slice(start, start + pageNum)
+      data.contentList.totalPage = data.articleList.totalPage
+      data.contentList.totalRecord = data.articleList.totalRecord
+    } else {
+      data.contentList.result = data.productList.result.slice(start, start + pageNum)
+      data.contentList.totalPage = data.productList.totalPage
+      data.contentList.totalRecord = data.productList.totalRecord
+    }
     data.contentType = type
+    data.contentKey = key
     return data
   }
 
@@ -334,8 +345,7 @@ export class BaseSiteController {
     const { data: originData } = await this.midwayApiService[searchType === 'news' ? 'getNewsPageData' : 'getSearchPageData'](shopName, device, { page: currentPage, size: 100, searchKey }, domain);
 
     // 这里做统一处理
-    const data = this.setSearchData(this.setData(originData), device, currentPage, searchType)
-    console.log(data.contentList)
+    const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {

@@ -6,27 +6,32 @@ block styles
 block content
     .container
         .main
-            
-            if renderData.contentType === 'news'
+            - contentType = renderData.contentType
+            - contentList = renderData.contentList
+            - contentKey = renderData.contentKey
+            include ../components/search/tabs.pug
+            +tabs(contentType, contentKey, contentList.totalRecord)
+
+            if contentType === 'news'
                 include ../components/news/news-list.pug
-                +news-list(renderData.contentList.result)
+                +news-list(contentList.result)
             else
                 //-产品列表
-                - productList = renderData.contentList.result
+                - productList = contentList.result
                 include ../components/product/product-list.pug
 
             //-分页模块
             include ../../../common/pc/pagination.pug
-            - var totalPage = (renderData.contentList && renderData.contentList.totalPage) || 1
+            - var totalPage = (contentList && contentList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
-
- 
 
         //-侧边栏
         .sidebar
+            //- TODO; 未确认到底用哪个字段
             - const { articleList } = renderData
             include ../components/sidebar/cateList.pug
             +side-cateList('新闻资讯', articleList.result)
+            //- include ../components/sidebar/news-list.pug
             include ../components/sidebar/products.pug
 
 block scripts
