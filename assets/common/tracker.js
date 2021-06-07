@@ -109,13 +109,17 @@ export const trackVisitor = (opts = {}) => {
   opts.device = isMobile ? 1 : 0
   const query = parseQuery(window.location.search)
   const profiles = (query.profile || '').split('_')
+  const groupId = query.group
   const keyword = query.keyword || ''
-  const [campaignId, group, oKeyword] = profiles
+  const [campaignId, oKeyword] = profiles
   opts.campaignId = campaignId
   opts.keyword = keyword || oKeyword
-  opts.groupId = group || ''
+  opts.groupId = groupId
   if (!opts.campaignId) return
   const bannerId = query.bannerId
+  if (BANNER_ID_FM.indexOf(+bannerId) > -1 && groupId === undefined) {
+    return
+  }
   if (!isValidBannerID(bannerId)) return
   else opts.bannerId = bannerId
   const img = new Image()
