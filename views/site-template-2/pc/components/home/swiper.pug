@@ -1,4 +1,5 @@
-.banner-content
+- bg = renderData.banner&&renderData.banner.length>0?renderData.banner[0].displayImgUrl:"//file.baixing.net/202103/a6354faab0bc153c2cfe6e30c64c6463.png"
+.banner-content(style="background: url("+bg+") no-repeat center center/100% 100%")
   - const bannerList= renderData.productList.result
   #banner-container
     .swiper-container

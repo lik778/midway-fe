@@ -68,6 +68,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, domain);
     const data = this.setData(originData)
+    console.log(data)
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
