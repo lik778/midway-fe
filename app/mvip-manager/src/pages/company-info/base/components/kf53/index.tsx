@@ -28,7 +28,6 @@ const KF53 = (props: Props, parentRef: Ref<any>) => {
       setKf53Info(editDataSource.kf53Info)
       setIsOpenKFStatus(kefuStatus)
       form.setFieldsValue({ ...editDataSource.kf53Info, kefuStatus })
-      console.log(editDataSource)
       onChange({ ...editDataSource.kf53Info, kefuStatus })
     }
   }, [editDataSource])
