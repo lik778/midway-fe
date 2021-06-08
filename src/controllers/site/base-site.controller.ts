@@ -356,6 +356,7 @@ export class BaseSiteController {
     }, domain);
     // 这里做统一处理
     const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
+
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -375,6 +376,20 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '搜索', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo } });
+
+    return res.render(templateUrl, {
+      title: '搜索',
+      renderData: {
+        ...data,
+        searchKey,
+        shopName,
+        kf53,
+        shopId,
+        trackId,
+        userInfo,
+        domainType: this.domainType,
+        currentPage, currentPathname,
+      }
+    })
   }
 }

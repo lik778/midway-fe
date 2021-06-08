@@ -1,17 +1,12 @@
-mixin product-list(productList)
-	.products
-		each item,index in productList
-			a.product(href=item.urlSuffix)
-				if index%2 === 0
+mixin product-list(lists)
+	if lists.length === 0
+		include ./no-data.pug
+	else
+		.products-con
+			each item in lists
+				a.product(href=item.urlSuffix)
 					img.product-img(src=item.headImg || defaultImg)
 					.product-content.right
 						.taigger
 						.product-title.only-oneline #{ item.name }
 						.product-see-btn 查看详情
-				else
-					.product-content.left
-						.taigger
-						.product-title.only-oneline #{ item.name }
-						.product-see-btn 查看详情
-					img.product-img(src=item.headImg || defaultImg)
-

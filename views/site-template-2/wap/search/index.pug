@@ -2,17 +2,43 @@ extends ../layout.pug
 block styles
     :combine(fileName="site-template-2-search-wap.css")
 
+block header
+    include ../components/header
+
 block content
-    - const cateList = renderData.productCateList
-    include ../components/toptab
+    //- 变量初始化
+    - $ = renderData
+    - const { contentType, contentList, contentKey } = $
+    - lists = contentList.result || []
+    - isTabProduct = contentType === 'product'
+    - isTabNews = contentType === 'news'
+    - tabs = [{ type: 'product', active: isTabProduct, name: '服务' },{ type: 'news', active: isTabNews, name: '新闻资讯' }]
 
-    include ../components/product-list
-    - productList = renderData.productList.result
-    +product-list('', productList)
+    //- 标签页
+    .search-type-tabs
+        each tab in tabs
+            .item(class={active: tab.active}, data-tab=tab.type) #{tab.name}
 
-    - const { totalPage } = renderData.productList
+    //- 搜索结果
+    .search-results
+        - total = contentList.totalRecord
+        - tabName = (tabs.find(x => x.active) || {}).name || '未知类型'
+        if total === 0
+            span 未找到和#{$.searchKey}相关的信息
+        else
+            span 匹配到和#{$.searchKey}相关的#{tabName} #{total} 条
+
+    //- 搜索列表
+    if isTabProduct
+        include ../components/product-list
+        +product-list(lists)
+    if isTabNews
+        include ../components/news-list
+        +news-list(lists)
+
+    //- 翻页
     include ../components/pagination
-    +pagination(totalPage, currentPage, `${currentPathname}`)
+    +pagination(total, currentPage, `${currentPathname}`)
 
 block scripts
     :combine(fileName="site-template-2-search-wap.js")
