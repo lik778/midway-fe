@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Form } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Button, Form, FormInstance } from 'antd';
 import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import WildcatForm from '@/components/wildcat-form';
@@ -9,7 +9,7 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
 import genNewUserModal from '../new-user-modal';
-import { KF53 } from '../kf53';
+import KF53 from '../kf53';
 import { QQCustomService } from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
@@ -23,17 +23,34 @@ function ContactForm(props: any) {
   const [kf53Data, setKf53Data] = useState<any>({});
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(contactForm));
   const [formData, setFormData] = useState<any>(null);
-  const [formInstance, setFormInstance] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  // 是否修改过表单 阈值  
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
+
+  // 客户信息表单的form
+  const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
+  // 53客服表单的form
+  const kf53Ref = useRef<{ form: FormInstance<any> }>()
 
   const formChange = (changeValue: any, allValues: any) => {
     setHasEditForm(true)
     setFormData(allValues)
   }
 
+  const KF53Change = (values: any) => {
+    setHasEditForm(true)
+    setKf53Data(values)
+  }
+
+  const QQChange = (values: QQItem[]) => {
+    setHasEditForm(true)
+    setQQList(values)
+  }
+
   const saveInfo = async () => {
-    if (formUnvalid(formInstance)) return
+    // 这里的校验是分两段校验的  微笑
+    // 校验电话联系人  , 校验53客服
+    await Promise.all([formInstance?.validateFields(),kf53Ref.current?.form.validateFields()])
     let qqMap: any = null
     if (qqList.length > 0) {
       qqMap = {}
@@ -42,11 +59,10 @@ function ContactForm(props: any) {
     const clonedCompanyInfo = cloneDeepWith(companyInfo)
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
     info.qqMap = qqMap
-    // 处理53客服数据  刚创建用户 kf53Info可以为空
+    // 校验53客服
+    // 刚创建用户 kf53Info可以为空
     if (kf53Data && kf53Data.kefuStatus) {
-      if ((!kf53Data.companyName || (kf53Data.companyName.length < 2 || kf53Data.companyName.length > 20)) || (!kf53Data.bname || (kf53Data.bname.length < 2 || kf53Data.bname.length > 20))) {
-        return
-      }
+      // 校验字数是否正确
       info.kefuStatus = KFStatus.OPEN;
       if (!info.kf53Info) {
         info.kf53Info = {
@@ -57,7 +73,6 @@ function ContactForm(props: any) {
         info.kf53Info.companyName = kf53Data.companyName
         info.kf53Info.bname = kf53Data.bname
       }
-
     } else {
       info.kefuStatus = KFStatus.CLOSE
     }
@@ -72,16 +87,6 @@ function ContactForm(props: any) {
     }
   }
 
-  const KF53Change = (values: any) => {
-    setHasEditForm(true)
-    setKf53Data(values)
-  }
-
-  const QQChange = (values: QQItem[]) => {
-    setHasEditForm(true)
-    setQQList(values)
-  }
-
   return (
     <div className={styles['contact-form-box']}>
       <Form.Item label="电话/微信" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
@@ -90,7 +95,7 @@ function ContactForm(props: any) {
           config={config} formChange={formChange} />
       </Form.Item>
       <Form.Item label="智能接待系统" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
-        <KF53 editDataSource={companyInfo} onChange={KF53Change} />
+        <KF53 editDataSource={companyInfo} onChange={KF53Change} ref={kf53Ref} />
       </Form.Item>
       <Form.Item label="QQ客服" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
         <QQCustomService companyInfo={companyInfo} onChange={QQChange} />

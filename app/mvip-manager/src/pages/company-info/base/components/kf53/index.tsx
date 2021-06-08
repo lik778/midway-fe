@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Switch, Form, Input } from 'antd';
+import React, { forwardRef, useEffect, useState, Ref, useImperativeHandle } from 'react';
+import { Switch, Form, Input, FormInstance } from 'antd';
 import { KF53Info, UserEnterpriseInfo } from '@/interfaces/user';
 import { KFStatus } from '@/enums';
 import styles from './index.less'
 const FormItem = Form.Item;
 
-interface Prop {
+interface Props {
   editDataSource: UserEnterpriseInfo | null;
   onChange(values: any): void;
 }
-export const KF53 = (props: Prop) => {
+
+// kf53Ref
+const KF53 = (props: Props, parentRef: Ref<any>) => {
   const { editDataSource, onChange } = props
   const [isOpenKFStatus, setIsOpenKFStatus] = useState<boolean | null>(null)
   const [kf53Info, setKf53Info] = useState<KF53Info | null>(null)
   const [form] = Form.useForm();
+
+  // 将子组件的form给父组件
+  useImperativeHandle(parentRef, () => ({
+    form: form
+  }))
 
   useEffect(() => {
     if (editDataSource) {
@@ -61,3 +68,6 @@ export const KF53 = (props: Prop) => {
   </Form>
 
 }
+
+
+export default forwardRef(KF53)
