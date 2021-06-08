@@ -10,7 +10,7 @@ header.bx-header-white
       //-img.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt="")
 
     .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line
-      //由于度娘要把搜索图标放右边，所以把搜索DOM挪下来了，回车搜索
+      //- //由于度娘要把搜索图标放右边，所以把搜索DOM挪下来了，回车搜索
       .bx-nav-search
         - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
         input.search-query(type="search" name="query" placeholder="", data-shopdomain=shopDomain.toString())

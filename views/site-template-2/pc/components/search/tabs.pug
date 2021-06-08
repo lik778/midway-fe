@@ -1,7 +1,7 @@
 mixin tabs (type, key, total)
   .search-tabs 
     .tabs 
-      div(class=type !== 'news'?'tab active':'tab',data-type='project') 服务
+      div(class=type !== 'news'?'tab active':'tab',data-type='product') 服务
       div(class=type === 'news'?'tab active':'tab',data-type='news') 新闻资讯
     .tip 匹配到和“#{ key }”
       if type === 'news'

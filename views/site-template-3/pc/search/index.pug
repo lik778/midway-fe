@@ -6,9 +6,7 @@ block styles
 block content
     .container
         .main
-            - contentType = renderData.contentType
-            - contentList = renderData.contentList
-            - contentKey = renderData.contentKey
+            - const { contentType, contentList, contentKey } = renderData 
 
             include ../components/search/tabs.pug
             +tabs(contentType, contentKey, contentList.totalRecord)

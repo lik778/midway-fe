@@ -7,38 +7,28 @@ block header
 
 block content
     //- 变量初始化
-    - $ = renderData
-    - const { contentType, contentList, contentKey } = $
+    - const { contentList, contentType, contentPage, contentKey } = renderData
     - lists = contentList.result || []
-    - isTabProduct = contentType === 'product'
-    - isTabNews = contentType === 'news'
-    - tabs = [{ type: 'product', active: isTabProduct, name: '服务' },{ type: 'news', active: isTabNews, name: '新闻资讯' }]
 
-    //- 标签页
-    .search-type-tabs
-        each tab in tabs
-            .item(class={active: tab.active}, data-tab=tab.type) #{tab.name}
-
-    //- 搜索结果
-    .search-results
-        - total = contentList.totalRecord
-        - tabName = (tabs.find(x => x.active) || {}).name || '未知类型'
-        if total === 0
-            span 未找到和#{$.searchKey}相关的信息
-        else
-            span 匹配到和#{$.searchKey}相关的#{tabName} #{total} 条
+    include ../components/search-tabs.pug
+    +tabs(contentType, contentKey, contentList.totalRecord)
 
     //- 搜索列表
     if isTabProduct
         include ../components/product-list
-        +product-list(lists)
+        +product-list('', lists)
     if isTabNews
         include ../components/news-list
         +news-list(lists)
 
     //- 翻页
-    include ../components/pagination
-    +pagination(total, currentPage, `${currentPathname}`)
+    include ../../../common/wap/pagination.pug
+    - var totalPage = (contentList && contentList.totalPage) || 1
+    +pagination(totalPage, contentPage)
+
+
+block footer
+   include ../components/footer.pug
 
 block scripts
     :combine(fileName="site-template-2-search-wap.js")

@@ -1,34 +1,9 @@
 @import "../layout";
+@import "../../../common/wap/pagination"
 @import "../components/header";
-@import "../components/swiper";
 @import "../components/toptab";
+@import "../components/search-tabs";
 @import "../components/product-list";
 @import "../components/news-list";
-@import "../components/pagination";
 @import "../components/footer";
 @import "../components/no-data";
-
-.search-type-tabs
-  box-sizing: border-box
-  display: flex;
-  justify-content: center;
-  gap: 90px;
-  width: 100%
-  height: 58px
-  padding: 20px 10px
-  background: white
-
-  .item
-    width: 94px;
-    height: 36px;
-    text-align: center;
-    &.active 
-      font-weight: bold
-      color: #EC2525
-      border-bottom: solid 2px currentColor;
-
-.search-results
-  padding: 0 10px;
-  height: 52px;
-  line-height: 52px;
-  font-size: 14px;

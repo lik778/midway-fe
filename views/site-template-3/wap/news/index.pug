@@ -11,8 +11,8 @@ block content
     //-留言资讯
     include ../components/contact-form.pug
 
+    include ../../../common/wap/pagination.pug
     - const { totalPage } = renderData.articleList
-    include ../components/pagination
     +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
 //-block footer

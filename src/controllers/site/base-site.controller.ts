@@ -306,40 +306,14 @@ export class BaseSiteController {
   }
 
 
-  // 处理搜索来的数据 因为页面需要切换分类，pc端还需要人工分页，而js与pug又很难交互，通过jq去拷贝节点循环渲染感觉很绕，所以选择点击分页重新渲染页面，这种胶水层统一处理数据，通过contentList 来输出页面需要的list。
-  // 产品列表页 单页数量  b2b:24    b2c:6
-  // 文章列表页 单页数量  b2b:8    b2c:8
+  // 处理搜索来的数据 
   private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
-    let pageNum = 8
-    data.contentList = {
-      result: [],
-      totalPage: 0
-    }
-    const start = (currentPage - 1) * pageNum
-    const { articleResults, productResults, keyword } = data.searchResult
-    if (type === 'news') {
-      data.contentList.result = articleResults.slice(start, start + pageNum)
-      data.contentList.totalPage = Math.ceil(articleResults.length / pageNum)
-      data.contentList.totalRecord = articleResults.length
-    } else {
-      // 模板二 
-      //  "5fb387d2f2db3f6b8e7080e5": "site-template-1",
-      // "5fb387d2f2db3f6b8e7080e6": "site-template-2",
-      // "7397650bdc5446a36d6d643e": "site-template-3"
-      if (data.basic.shop.templateId === '5fb387d2f2db3f6b8e7080e6') {
-        pageNum = 24
-      } else {
-        pageNum = 6
-      }
-      data.contentList.result = productResults.slice(start, start + pageNum)
-      data.contentList.totalPage = Math.ceil(productResults.length / pageNum)
-      data.contentList.totalRecord = productResults.length
-    }
+    data.contentList = type === 'news' ? data.articleList : data.productList
     data.contentType = type
-    data.contentKey = keyword
+    data.contentKey = key
+    data.contentPage = currentPage
     return data
   }
-
 
   // 搜索聚合页
   @Get('/search')
@@ -351,9 +325,15 @@ export class BaseSiteController {
     const currentPage = query.page || 1
     const searchKey = query.key || ''
     const searchType = query.type || 'product'
-    const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
-      keyword: searchKey
+    // const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
+    //   keyword: searchKey, page: currentPage, type: searchType
+    // }, domain);
+    // test start  
+    
+    const { data: originData } = await this.midwayApiService[searchType === 'product' ? 'getProductPageData' : 'getNewsPageData'](shopName, device, {
+      keyword: searchKey, page: currentPage, type: searchType
     }, domain);
+    // test end 
     // 这里做统一处理
     const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
 

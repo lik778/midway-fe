@@ -2,6 +2,7 @@ mixin pagination(total, current)
     - n = parseInt(total)
     - p = parseInt(current)
     - prevPage = p - 1
+    - nextPage = p + 1
     if n > 1
         .page-normal
             if prevPage >0
@@ -38,5 +39,4 @@ mixin pagination(total, current)
                     - url = `${link}?page=${i}`
                     .page-item(data-page #{i}) #{i}
             if p < n
-                - prevPage = p + 1
-                .page-item(data-page=prevPage) 下一页
+                .page-item(data-page=nextPage) 下一页
