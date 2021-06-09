@@ -13,7 +13,8 @@ html
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
         - const { company, person, copyRight } = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo, isRedTopbar } = renderData
-        - companyName = renderData.basic.company.name
+        //- 名称先取企业别称 后取企业名称
+        - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
         //-导航因为后台可设置是否显示，因此要如下处理
         - nav = renderData.navigation
         - productListTab = nav.filter(x => x.position == "productListPage")
