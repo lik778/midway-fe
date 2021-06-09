@@ -9,6 +9,7 @@ import { PORT } from './constant';
 import { exceptionFilters } from './filters';
 import './base/sentry';
 import { LogService } from './services/log.service'
+import { httpInterceptors } from './util/httpInterceptors'
 /**
  * 创建应用实例
  * 用来启动http服务器，它允许应用程序等待入站http请求
@@ -18,6 +19,7 @@ async function bootstrap() {
   // 默认情况下使用@nestjs/plateform-express 包。
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.use(cookieParser());
+  app.use(httpInterceptors())
   app.useStaticAssets(join(__dirname, '..', 'dist/public'), {
     prefix: '/assets',
     // setHeaders: (res: any, path: string, stat: any) => {
@@ -41,7 +43,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(...exceptionFilters);
 
-  await app.listen(PORT);
+  await app.listen(PORT, '0.0.0.0');
 }
 
 bootstrap();
