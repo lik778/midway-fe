@@ -11,6 +11,7 @@ export class SiteService {
   private haojingHost: string;
   private prefixPath: string;
   private midwayPrefixPath: string;
+  private analyticsPrefix: string;
   //定义：后端传的模板id对应的前端模板类型
   static templateMapping = {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
@@ -26,6 +27,14 @@ export class SiteService {
     const host = configService.get('services.midway-service.host');
     this.prefixPath = `${host}/api/midway/frontend`
     this.midwayPrefixPath = `${host}/api/midway/backend`
+    this.analyticsPrefix = `${host}/api/midway/internal`
+  }
+
+  public analytics(shopName: string, device: string, params, domain: string) : void {
+    this.requestService.post(`${this.analyticsPrefix}/waf/analytics`, {
+      ip: '172.17.3.223',
+      jumpUrl: 'http://www.baidu.com'
+    }, this.setPageHeaders(shopName, device, domain));
   }
 
   public getShopName(shopName: string): string {
