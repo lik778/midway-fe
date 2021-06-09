@@ -1,6 +1,6 @@
 import { Get, HostParam, Param, Query, Req, Res } from '@nestjs/common';
 import { SiteService } from '../../services/site.service';
-import { Request, Response } from 'express';
+import { query, Request, Response } from 'express';
 import { UserAgent } from '../../decorator/user-agent.decorator';
 import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
@@ -8,8 +8,8 @@ import { TrackerType } from '../../enums/tracker';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../constant/cookie';
 
 //模板页面基础控制器，进行数据请求和打点
-export class BaseSiteController { 
-  private whiteList: string[] = ['baomuyuesao','zhongheruijia','jikang','weichai','ndjx','hnfjhbsb']
+export class BaseSiteController {
+  private whiteList: string[] = ['baomuyuesao', 'zhongheruijia', 'jikang', 'weichai', 'ndjx', 'hnfjhbsb']
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
     protected domainType: DomainTypeEnum) { }
@@ -28,6 +28,7 @@ export class BaseSiteController {
     return userInfo
   }
 
+  // 对数据做兼容 ， 防止报错
   private setData(data) {
     if (!data.basic.company) {
       data.basic.company = {
@@ -45,7 +46,7 @@ export class BaseSiteController {
 
     data.autoConfig = data.autoConfig && data.autoConfig.length > 0 ? data.autoConfig : [{ mainModuleTitle: '企业优势', subModuleBos: [{ fontColor: 0, title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' }, { fontColor: 0, title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' }, { fontColor: 0, title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' }, { fontColor: 0, title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }] }]
     //红白头开关
-    if(this.whiteList.indexOf(data.basic.shop.domain)!==-1){
+    if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
       data.isRedTopbar = true
     }
     return data
@@ -53,7 +54,9 @@ export class BaseSiteController {
 
 
   @Get('/')
-  public async home(@Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+  public async home(@Query() query, @Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    // 当参数里添加sem 则说明要切换为sem页
+    const sem = query.sem
     let shopName = ''
     const domain = req.hostname
     if (this.domainType === DomainTypeEnum.B2C) {
@@ -87,8 +90,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
-
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem: Boolean(sem) });
   }
 
   @Get('/n')

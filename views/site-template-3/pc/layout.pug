@@ -32,7 +32,8 @@ html
 
         block content
         //-QQ联系等开发时先注释掉
-        include ../../common/pc/customer-service.pug
+        if !isSem
+            include ../../common/pc/customer-service.pug
 
         block footer
             //- include ../../common/pc/footer.pug

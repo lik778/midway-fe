@@ -1,6 +1,5 @@
 export const upyunConfig = {
   "policy": {
-    // TODO; 
     // bucket 回调的值
     "bucket": "bximg",
     "save-key": "/{filemd5}{.suffix}",
@@ -14,7 +13,6 @@ export const upyunConfig = {
     "x-gmkerl-rotate": "auto",
     // 2B的又拍改了代码导致不认boolean true了，先用字符串的"true"
     "x-gmkerl-exif-switch": "true",
-    // TODO; 
     // bucket 回调的值
     "notify-url": "http://callback.img.baixing.net/upyun.php?bucket=bximg"
   },
