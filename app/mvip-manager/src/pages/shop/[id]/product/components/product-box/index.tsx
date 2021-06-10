@@ -33,7 +33,8 @@ export default (props: Props) => {
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
-  useEffect(() => {
+
+  const initForm = () => {
     // 初始化表单----> value
     const newArticleFormChildren = productForm.children.map(item => {
       if (item.name === 'contentCateId') {
@@ -50,6 +51,10 @@ export default (props: Props) => {
       ...productForm,
       children: newArticleFormChildren
     })
+  }
+
+  useEffect(() => {
+    initForm()
   }, [cateList])
 
   const sumbit = async (values: any) => {
@@ -59,7 +64,9 @@ export default (props: Props) => {
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
+    values.contentImg = values.contentImg.join(',')
     let resData: any;
+    console.log(values)
     setFormLoading(true)
     if (isEdit) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
@@ -79,6 +86,10 @@ export default (props: Props) => {
     setModalVisible(true)
   }
 
+  const aa = (...arg: any) => {
+    console.log(arg)
+  }
+
   return (
     <Drawer
       title="新建服务"
@@ -89,15 +100,14 @@ export default (props: Props) => {
       key={placement}
       width="700"
     >
-      <Form.Item>
-        <WildcatForm
-          editDataSource={editData}
-          config={formConfig}
-          submit={sumbit}
-          onClick={onModalClick}
-          loading={formLoading}
-          className="product-form"/>
-      </Form.Item>
+      <WildcatForm
+        editDataSource={editData}
+        config={formConfig}
+        submit={sumbit}
+        onClick={onModalClick}
+        loading={formLoading}
+        formChange={aa}
+        className="product-form" />
       <GroupModal
         type={ContentCateType.PRODUCT}
         editItem={null}
