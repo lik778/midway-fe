@@ -58,7 +58,7 @@ const ShopCarouselPage = (props: any) => {
         </div>
         <div className="c-wap">
           <CarouselImg
-            tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸750*750'}
+            tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸750*304'}
             txt={'WAP端轮播图'}
             type={DeviceType.WAP}
             position={1}
