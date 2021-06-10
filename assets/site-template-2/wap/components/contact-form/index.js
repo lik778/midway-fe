@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import { eventTracker } from '../../../../common/tracker'
+
 export const leaveLeads = function() {
     $(document).on('ready',function() {
         $(".form-item > button").on('click',(e) => {
@@ -28,10 +30,9 @@ export const leaveLeads = function() {
                 alert('内容最多255个字符')
                 return false
             }
-            //if(!/[0-9]{11}/.test(data.contact)) {
-            //    alert('请填写正确的手机号码')
-            //    return false
-            //}
+            // 添加leeds打点
+            eventTracker('comment-wap', '', 'click',
+              { mobile: data.contact })
             $.ajax({
                 url:"/site-api/leads",
                 type:'POST',

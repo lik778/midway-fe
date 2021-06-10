@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Input } from 'antd';
-import './index.less';
+import styles from './index.less';
 interface inputItem {
   className?: string,
   value?: string;
@@ -22,9 +22,9 @@ export default (props: inputItem) => {
   const initLength = value?.length || 0
   const errorClass = isError ? 'input-error' : ''
   return (
-    <div className= {`il-module ${className}`} style={{ width: width }}>
-      <Input value={value} style={{ width: width }} onChange={onChange} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={errorClass} disabled={disabled} />
-      {showCount && <span className="f-num">{initLength}/{maxLength}</span>}
+    <div className={`${styles['il-module']} ${className}`} style={{ width: width }}>
+      <Input value={value} style={{ width: width }} onChange={onChange} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
+      {showCount && <span className={styles["f-num"]}>{initLength}/{maxLength}</span>}
     </div>
   );
 }
