@@ -31,7 +31,8 @@ export const leaveLeads = function() {
                 return false
             }
             // 添加leeds打点
-            eventTracker('comment-wap')
+            eventTracker('comment-wap', '', 'click',
+              { mobile: data.contact })
             $.ajax({
                 url:"/site-api/leads",
                 type:'POST',

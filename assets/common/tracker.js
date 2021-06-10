@@ -31,11 +31,12 @@ export const getBaxSemEventField = () => {
   const [campaignId, oKeyword] = profiles
   opts.campaignId = campaignId || ''
   opts.keyword = keyword || oKeyword || ''
-  opts.groupId = groupId || ''
+  opts.groupId = groupId
+  opts.bannerId = query.bannerId || ''
   return opts
 }
 
-export const eventTracker = (clickType, clickPosition, action = 'click') => {
+export const eventTracker = (clickType, clickPosition, action = 'click', extraData) => {
   const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgent);
   return new Promise((resolve, reject) => {
     $.post('/tracker', {
@@ -54,7 +55,8 @@ export const eventTracker = (clickType, clickPosition, action = 'click') => {
         _ad: window.adId,
         category: '',
         refer: '',
-        ...getBaxSemEventField()
+        ...getBaxSemEventField(),
+        ...extraData
       }
     })
   }).catch(err => { throw err })
