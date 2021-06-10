@@ -12,10 +12,13 @@ block content
     include ../components/search-tabs.pug
     +tabs(contentType, contentKey, contentList.totalRecord)
     
-    //- 搜索列表
+    //- 搜索列表 因为product-list 还用在首页  不需要空状态
     if isTabProduct
-        include ../components/product-list
-        +product-list(lists)
+        if lists && lists.length >0
+            include ../components/product-list
+            +product-list(lists)
+        else 
+            include ../components/no-data
     if isTabNews
         include ../components/news-list
         +news-list(lists)

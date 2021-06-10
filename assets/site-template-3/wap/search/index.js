@@ -9,4 +9,3 @@ import { initTabs } from '../components/search-tabs'
 leaveLeads()
 tabModule()  
 initTabs() 
- 
