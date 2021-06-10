@@ -21,7 +21,22 @@ const isPro = host.indexOf('baixing.com') !== -1
 const BASE_URL = isPro ? '//cloud.baixing.com.cn' : '//dev-api.baixing.cn'
 
 
-export const eventTracker = (clickType, clickPosition, action = 'click') => {
+// tips: 因为店铺也作为搜索通落地页，event事件需要兼容一下
+export const getBaxSemEventField = () => {
+  const opts = {}
+  const query = parseQuery(window.location.search)
+  const profiles = (query.profile || '').split('_')
+  const groupId = query.group || ''
+  const keyword = query.keyword || ''
+  const [campaignId, oKeyword] = profiles
+  opts.campaignId = campaignId || ''
+  opts.keyword = keyword || oKeyword || ''
+  opts.groupId = groupId
+  opts.bannerId = query.bannerId || ''
+  return opts
+}
+
+export const eventTracker = (clickType, clickPosition, action = 'click', extraData) => {
   const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgent);
   return new Promise((resolve, reject) => {
     $.post('/tracker', {
@@ -39,7 +54,9 @@ export const eventTracker = (clickType, clickPosition, action = 'click') => {
         contentType: window.contentType,
         _ad: window.adId,
         category: '',
-        refer: ''
+        refer: '',
+        ...getBaxSemEventField(),
+        ...extraData
       }
     })
   }).catch(err => { throw err })
@@ -64,7 +81,8 @@ export const semEventTracker = (clickType, clickPosition, action, remarks) => {
         contentType: window.contentType,
         _ad: window.adId,
         category: '',
-        refer: ''
+        refer: '',
+        ...getBaxSemEventField()
       },
       success: (res) => {
         resolve(res)
