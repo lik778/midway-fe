@@ -2,7 +2,7 @@ import { Get, HostParam, Param, Query, Req, Res } from '@nestjs/common';
 import { SiteService } from '../../services/site.service';
 import { Request, Response } from 'express';
 import { UserAgent } from '../../decorator/user-agent.decorator';
-import { DomainTypeEnum } from '../../enums';
+import { DomainTypeEnum, SearchTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { TrackerType } from '../../enums/tracker';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../constant/cookie';
@@ -308,10 +308,11 @@ export class BaseSiteController {
 
   // 处理搜索来的数据 
   private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
-    data.contentList = type === 'news' ? data.articleList : data.productList
+    data.contentList = data.searchResult.result
     data.contentType = type
     data.contentKey = key
     data.contentPage = currentPage
+    console.log(data)
     return data
   }
 
@@ -322,18 +323,23 @@ export class BaseSiteController {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
+    console.log(query)
     const currentPage = query.page || 1
     const searchKey = query.key || ''
     const searchType = query.type || 'product'
-    // const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
+    console.log({
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+    })
+    const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+    }, domain);
+
+    // // test start  
+    // const { data: originData } = await this.midwayApiService[searchType === 'product' ? 'getProductPageData' : 'getNewsPageData'](shopName, device, {
     //   keyword: searchKey, page: currentPage, type: searchType
     // }, domain);
-    // test start  
-    
-    const { data: originData } = await this.midwayApiService[searchType === 'product' ? 'getProductPageData' : 'getNewsPageData'](shopName, device, {
-      keyword: searchKey, page: currentPage, type: searchType
-    }, domain);
-    // test end 
+    // // test end 
+
     // 这里做统一处理
     const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
 

@@ -27,9 +27,9 @@ block content
         //-侧边栏
         .sidebar
             //- TODO; 未确认到底用哪个字段
-            - const { articleList } = renderData
+            - const { articleRecommend } = renderData
             include ../components/sidebar/cateList.pug
-            +side-cateList('新闻资讯', articleList.result)
+            +side-cateList('新闻资讯', articleRecommend)
             //- include ../components/sidebar/news-list.pug
             include ../components/sidebar/products.pug
 
