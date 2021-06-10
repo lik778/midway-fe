@@ -66,6 +66,11 @@ export interface ImgItemParam {
   position: number;
 }
 
+export interface ImgOrdersParam {
+  type: string;
+  ids: number[];
+}
+
 export interface ImgDeleteParam {
   id: number;
 }

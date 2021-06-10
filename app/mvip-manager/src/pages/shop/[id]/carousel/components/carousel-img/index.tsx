@@ -1,17 +1,18 @@
-
 import React, { useState, useEffect } from 'react';
-import './index.less';
 import { BannerImgUpload } from '../banner-img-upload';
-import { createBannerApi, getBannerListApi, deleteBannerApi } from '@/api/shop';
+import { changeBannerOrderApi, createBannerApi, getBannerListApi, deleteBannerApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
 import { DeviceType, PositionType} from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import Loading from '@/components/loading';
-import EmptyStatus from '@/pages/shop/components/empty-status';
+import _ from 'lodash'
+// import EmptyStatus from '@/pages/shop/components/empty-status';
+
+import "./index.less";
 
 interface Props {
-  type:DeviceType,
+  type: DeviceType,
   position: number,
   txt: string,
   tip: string,
@@ -23,6 +24,10 @@ export default (props: Props) => {
   const {type, txt, tip, position } = props
   // 获取店铺id
   const params: RouteParams = useParams();
+
+  useEffect(() => {
+    getBannerList();
+  }, []);
 
   const createBannerImg = async (url: string) => {
     const res = await createBannerApi(Number(params.id), {
@@ -78,9 +83,15 @@ export default (props: Props) => {
       deleteBannerImg(id)
     }
   }
-  useEffect(() => {
-    getBannerList()
-  }, [])
+
+  // 改变轮播图顺序
+  // 后端根据图片 ID 自动获取轮播图类型
+  const onOrdersChange = _.debounce(
+    async (ids: number[]) => {
+      console.log("ids: ", ids);
+    },
+    500
+  );
 
   //const emptyImgs = () => {
   //  if (bannerList.length === 0) {
@@ -99,11 +110,22 @@ export default (props: Props) => {
       <div className="all-img">
         <span className="title">{txt}: </span>
         <div className="img-list">
-          <p className="red-tip tip">严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+          <p className="red-tip tip">
+            严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担
+          </p>
           <p className="tip">{tip}</p>
-          <BannerImgUpload imgType={'text'} text={'上传图片'} maxLength={5} disableBtn={true} onChange={onImgChange} fileList={bannerList}/>
+          <BannerImgUpload
+            imgType={"text"}
+            text={"上传图片"}
+            maxLength={5}
+            disableBtn={true}
+            fileList={bannerList}
+            onChange={onImgChange}
+            onOrdersChange={onOrdersChange}
+          />
           {/*{emptyImgs()}*/}
         </div>
       </div>
     );
-    }}
+  }
+}
