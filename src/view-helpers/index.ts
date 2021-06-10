@@ -17,17 +17,17 @@ export default {
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
       const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-      if (suffix === 'css') {
-        retAssets += `<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}"/>`
-      } else if (suffix === 'js') {
-        retAssets += `<script src="${cdnPath}/assets/${assetsName}"></script>`
-      }
-
       // if (suffix === 'css') {
-      //   retAssets += `<link rel="stylesheet" href="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"/>`
+      //   retAssets += `<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}"/>`
       // } else if (suffix === 'js') {
-      //   retAssets += `<script src="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"></script>`
+      //   retAssets += `<script src="${cdnPath}/assets/${assetsName}"></script>`
       // }
+
+      if (suffix === 'css') {
+        retAssets += `<link rel="stylesheet" href="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"/>`
+      } else if (suffix === 'js') {
+        retAssets += `<script src="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"></script>`
+      }
     })
     return retAssets
   },
