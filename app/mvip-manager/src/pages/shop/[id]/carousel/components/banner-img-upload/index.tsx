@@ -98,6 +98,10 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handleRemove = (file: any) => {
+    const tempFileList = [...fileList];
+    const index = tempFileList.findIndex(x => x === file);
+    tempFileList.splice(index, 1);
+    setFileList(tempFileList);
     onChange(`${file.id}`, 2);
   }
 
@@ -125,21 +129,26 @@ export const BannerImgUpload = (props: Props) => {
     const isFirstOrder = file === fileList[0]
     const isLastOrder = file === fileList[fileList.length - 1]
     const isUploading = file?.status === "uploading";
+
+    let emptyPlaceholder = null
+    if (isUploading) {
+      emptyPlaceholder = <span>正在上传 ...</span>
+    }
+    if (!file.url) {
+      emptyPlaceholder = <span>正在上传 ...</span>
+    }
+
     return (
       <div className="upload-wrapper" key={file.url}>
-        {isUploading ? (
-          <span>正在上传 ...</span>
-        ) :
-          <>
-            <img src={file.url} className="image" />
-            <div className="mask">
-              <EyeOutlined onClick={() => handlePreview(file)} />
-              <DeleteOutlined onClick={() => handleRemove(file)} />
-              {!isLastOrder && <DownOutlined onClick={() => handleMove(file, 1)} />}
-              {!isFirstOrder && <UpOutlined onClick={() => handleMove(file, -1)} />}
-            </div>
-          </>
-        }
+        {emptyPlaceholder || (<>
+          <img src={file.url} className="image" />
+          <div className="mask">
+            <EyeOutlined onClick={() => handlePreview(file)} />
+            <DeleteOutlined onClick={() => handleRemove(file)} />
+            {!isLastOrder && <DownOutlined onClick={() => handleMove(file, 1)} />}
+            {!isFirstOrder && <UpOutlined onClick={() => handleMove(file, -1)} />}
+          </div>
+        </>)}
       </div>
     );
   }
