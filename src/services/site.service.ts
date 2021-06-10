@@ -5,7 +5,11 @@ import { RequestService } from './request.service';
 import { PageHeaderParams, HeaderAuthParams, ServiceResponse, ShopComponents } from '../interface';
 import { LogService } from './log.service';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
-
+import { apiSecret } from 'src/constant';
+export type analyticsParams = {
+  ip: string,
+  jumpUrl: string
+}
 @Injectable()
 export class SiteService {
   private haojingHost: string;
@@ -30,11 +34,19 @@ export class SiteService {
     this.analyticsPrefix = `${host}/api/midway/internal`
   }
 
-  public analytics(shopName: string, device: string, params, domain: string) : void {
-    this.requestService.post(`${this.analyticsPrefix}/waf/analytics`, {
-      ip: '172.17.3.223',
-      jumpUrl: 'http://www.baidu.com'
-    }, this.setPageHeaders(shopName, device, domain));
+  public analytics(params: analyticsParams): Promise<ServiceResponse<any>> {
+    return this.requestService.post(`${this.analyticsPrefix}/waf/analytics`, params, { 'content-type': 'application/json',
+    'x-api-secret': apiSecret });
+  }
+
+  public shieldCheck(params): Promise<ServiceResponse<any>> {
+    return this.requestService.post(`${this.analyticsPrefix}/waf/check`, params, { 'content-type': 'application/json',
+    'x-api-secret': apiSecret })
+  }
+  public async shieldGet(params): Promise<ServiceResponse<any>> {
+    console.log(params)
+    return this.requestService.post(`${this.analyticsPrefix}/waf/get`, params, { 'content-type': 'application/json',
+    'x-api-secret': apiSecret })
   }
 
   public getShopName(shopName: string): string {

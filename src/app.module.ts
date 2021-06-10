@@ -23,6 +23,7 @@ import { TrackerController } from './controllers/tracker.controller';
 import { ReportController } from './controllers/report.controller';
 import { ZhidaoController } from './controllers/zhidao.controller';
 import { SiteCommonController } from './controllers/site/site-common.controller';
+import { AnalyticsController } from './controllers/analytics.controller';
 import { SemController } from './controllers/sem.controller'
 
 /**
@@ -40,6 +41,7 @@ import { SemController } from './controllers/sem.controller'
     ManagementController,
     SitemapController,
     SiteCommonController,
+    AnalyticsController,
     B2bSiteController,
     B2cSiteController,
     UpyunController,

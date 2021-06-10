@@ -1,4 +1,5 @@
 import { Controller, Get, HttpException, HttpStatus, Req, Res } from '@nestjs/common';
+import { SiteService } from '../services/site.service';
 import { Request, Response } from 'express';
 import { join } from 'path';
 import * as fs  from 'fs';
@@ -9,10 +10,13 @@ const files = fs.readdirSync(staticFiles);
 
 @Controller({ host: config().hostType.base, path: '/' })
 export class AppController {
+  constructor(readonly midwayApiService: SiteService) {}
   @Get('/')
-  home (@Req() req: Request, @Res() res: Response) {
-    res.render('common/home')
+  async home (@Req() req: Request, @Res() res: Response) {
+    this.jumpUrl(req, res)
   }
+
+   
 
   @Get(files) // 处理静态资源
   haha (@Req() req: Request, @Res() res: Response) {
@@ -28,6 +32,13 @@ export class AppController {
   @Get('/midway/health')
   async managementView(@Req() req: Request, @Res() res: Response) {
     res.send(process.env.NODE_ENV + ': everything is ok!!!')
+  }
+
+  @Get('/midway/verify')
+  async jumpUrl(@Req() req: Request, @Res() res: Response) {
+    const data2 = await this.midwayApiService.analytics({ ip: req.ip, jumpUrl: 'https://www.baidu.com'})
+    res.setHeader('Content-Type', 'text/html');
+    return res.send(data2.data.captchaHtml);
   }
 
 }
