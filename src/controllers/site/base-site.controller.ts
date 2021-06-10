@@ -38,7 +38,7 @@ export class BaseSiteController {
     }
     if (!data.basic.contact) {
       data.basic.contact = {
-        qq: {}, phone: { content: '' }, phone2: { content: '' }, weChat: {}, contactName: {}, kf53StyleUrl: '', kf53: ''
+        qq: {}, phone: { content: '' }, phone2: { content: '' }, weChat: {}, contactName: {}, kf53StyleUrl: '', kf53: '', union400: []
       }
     }
 
@@ -49,6 +49,7 @@ export class BaseSiteController {
     if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
       data.isRedTopbar = true
     }
+
     return data
   }
 
@@ -90,7 +91,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem: Boolean(sem) });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem: sem === "1" });
   }
 
   @Get('/n')

@@ -20,8 +20,8 @@
 			.nav-right
 				img.phone-icon(src="//file.baixing.net/202106/ef154a3aecc779ec47020f542b278b7d.png", alt="")
 				//- TODO; 400字段待填充
-				span.phone-num 
+				span.phone-num(data-union400=union400||'')
 					if !isSem
 						| #{ phone.content }
 					else 
-						|	#{ phone.content400 }
+						|	#{ union400 && union400.length? union400[0]: '' }

@@ -7,4 +7,4 @@
     else
         - telWidth = '75%'
     .phone-box(style=`width: ${telWidth}`)
-        a(href="tel:" + (!isSem? phone.content : phone.content400)) 拨打电话
+        a(href="tel:" + (!isSem? phone.content : (union400 && union400.length? union400[0]: ''))) 拨打电话

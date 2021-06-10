@@ -20,5 +20,5 @@
 		.online-icon(style=`background: url(${kf53Icon}) no-repeat center/100%`)
 		p(style=`color:${kf53Color}`) 在线咨询
 	//- TODO;
-	a(href="tel:" + (!isSem? phone.content : phone.content400)).phone-box
+	a(href="tel:" + (!isSem? phone.content : (union400 && union400.length? union400[0]: ''))).phone-box
 		p 拨打电话
