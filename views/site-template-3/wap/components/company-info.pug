@@ -2,14 +2,7 @@
     .info
         img.info-logo(src=company.logo, alt="logo")
         .info-text
-            - const animatedTitle = company.name
-            //-去掉标题滚动动画
-            //-if animatedTitle.length > 12
-            //-    .animate
-            //-        h3.animate-title #{ animatedTitle }
-            //-else
-            //-    h3.info-name #{ animatedTitle }
-            h3.info-name #{ animatedTitle }
+            h3.info-name #{ companyName }
 
             .info-tag-list
                 .info-tag 百姓认证

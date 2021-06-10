@@ -14,6 +14,8 @@ html
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
         - const { company, copyRight } = renderData.basic
         - const { currentPage, currentPathname, domainType, shopId, shopName, isRedTopbar } = renderData
+        //- 名称先取企业别称 后取企业名称
+        - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
         - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
         - nav = renderData.navigation
         - productListTab = nav.filter(x => x.position == "productListPage")
@@ -28,7 +30,7 @@ html
         include ../../common/wap/official-header
         //-block official-breadcrumbs
         include ../../common/wap/official-red-breadcrumb.pug
-        - breadcrumbList = [{text:'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+        - breadcrumbList = [{text:'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName||'',url:'#'}]
         +breadcrumb(breadcrumbList)
 
         block header
