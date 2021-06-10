@@ -2,9 +2,9 @@ export default {
   env: 'local',
   services: {
     'midway-service': {
-      // host: 'http://172.30.2.14:31257'
+      host: 'http://172.30.2.14:31257'
       // host: 'http://172.30.2.14:30257'
-      host: 'http://172.17.2.175:8080'
+      // host: 'http://172.17.2.175:8080'
     },
     'zhidao-service': {
       host: 'http://172.30.2.14:31252'

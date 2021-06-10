@@ -6,7 +6,6 @@ import {
   CreateContentCateApiParams,
   CreateArticleApiParams,
   ModifyNavItem,
-  ImgItemParam,
   ImgOrdersParam,
   ImgDeleteParam,
   ImgListParam,
@@ -51,8 +50,8 @@ export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
 }
 
 // 改变 banner 顺序
-export const changeBannerOrderApi = (shopId: number, params: ImgOrdersParam) => {
-  return postApiData(ServicePath.SHOP, `midway/backend/banner/order}`, params, setShopHeader(shopId))
+export const changeBannerOrderApi = (shopId: number, ids: number[]) => {
+  return postApiData(ServicePath.SHOP, `midway/backend/banner/sort`, ids, setShopHeader(shopId))
 }
 
 // 创建banner

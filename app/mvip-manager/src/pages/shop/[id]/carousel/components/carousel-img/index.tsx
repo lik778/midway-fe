@@ -88,7 +88,7 @@ export default (props: Props) => {
   // 后端根据图片 ID 自动获取轮播图类型
   const onOrdersChange = _.debounce(
     async (ids: number[]) => {
-      console.log("ids: ", ids);
+      await changeBannerOrderApi(+params.id, ids);
     },
     500
   );
