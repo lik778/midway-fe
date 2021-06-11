@@ -63,10 +63,17 @@ export const ImgUpload = (props: Props) => {
   }
 
   const handlePreview = async (file: any) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+    console.log(file)
+    let preview: any = ''
+    if (file.url && file.url.indexOf('http') !== -1) {
+      let preview = file.url
+    } else if (file.preview) {
+      preview = file.preview
+    } else {
+      preview = await getBase64(file.originFileObj);
     }
-    setPreviewImage(file.url || file.preview)
+    console.log(preview)
+    setPreviewImage(preview)
     setPreviewVisible(true)
   }
 

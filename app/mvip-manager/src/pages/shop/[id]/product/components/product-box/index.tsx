@@ -64,9 +64,8 @@ export default (props: Props) => {
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
-    values.contentImg = values.contentImg ? values.contentImg.join(',') : ''
+    values.contentImg = !values.contentImg ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
     let resData: any;
-    console.log(values)
     setFormLoading(true)
     if (isEdit) {
       resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
