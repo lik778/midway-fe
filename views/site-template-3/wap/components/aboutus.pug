@@ -1,13 +1,13 @@
 include ../components/home-title.pug
-.aboutus
-    .aboutus-title-box
-      .title 联系公司
-    .bottom-box
-      a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-        img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
-        span.aboutus-text.only-oneline 公司地址： #{ company.address }
-        .more
-      if !isSem
+if !isSem
+  .aboutus
+      .aboutus-title-box
+        .title 联系公司
+      .bottom-box
+        a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
+          img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
+          span.aboutus-text.only-oneline 公司地址： #{ company.address }
+          .more
         a.aboutus-item(href="tel:" + phone.content)
           img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
           span.aboutus-text.only-oneline 联系电话：#{ phone.content }

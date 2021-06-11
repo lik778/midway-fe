@@ -41,7 +41,7 @@ export class SiteService {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1) {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       // domain = 'zmlc2b.shop-test.baixing.cn'
-       domain = 'niuniu.shop-test.baixing.cn'
+      //  domain = 'niuniu.shop-test.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
       //  domain = 'shop-test.baixing.cn'
@@ -51,7 +51,7 @@ export class SiteService {
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      //return 'shop.baixing.cn'
+      return 'shop.baixing.cn'
 
     }
     return domain
