@@ -1,4 +1,5 @@
 .contact-us
+  if !isSem
     .contact-us__address
         .contact-us__title #{ companyName || '暂未添加公司名称' }
         p.contact-us__detail 公司地址：#{ company.address || '暂未添加地址' }

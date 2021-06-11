@@ -6,7 +6,8 @@ block header
     include ../components/header
     include ../components/swiper
     include ../components/company-info-home
-    include ../components/nav
+    if !isSem
+        include ../components/nav
 
 block content
     h2.block-title 热门推荐
@@ -21,8 +22,9 @@ block content
         include ../components/user-defined-module.pug
         +user-defined-module('home',userDefinedList)
 
-    include ../components/aboutus.pug
-    +aboutus('home')
+    if !isSem
+        include ../components/aboutus.pug
+        +aboutus('home')
 
     h2.block-title 最新产品
         span
