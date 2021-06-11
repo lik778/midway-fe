@@ -66,13 +66,12 @@ export const ImgUpload = (props: Props) => {
     console.log(file)
     let preview: any = ''
     if (file.url && file.url.indexOf('http') !== -1) {
-      let preview = file.url
+      preview = file.url
     } else if (file.preview) {
       preview = file.preview
     } else {
       preview = await getBase64(file.originFileObj);
     }
-    console.log(preview)
     setPreviewImage(preview)
     setPreviewVisible(true)
   }

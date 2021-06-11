@@ -64,7 +64,7 @@ export default (props: Props) => {
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
-    values.contentImg = !values.contentImg ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
+    values.contentImg = !values.contentImg||values.contentImg.length === 0 ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
     let resData: any;
     setFormLoading(true)
     if (isEdit) {
@@ -85,10 +85,6 @@ export default (props: Props) => {
     setModalVisible(true)
   }
 
-  const aa = (...arg: any) => {
-    console.log(arg)
-  }
-
   return (
     <Drawer
       title="新建服务"
@@ -105,7 +101,6 @@ export default (props: Props) => {
         submit={sumbit}
         onClick={onModalClick}
         loading={formLoading}
-        formChange={aa}
         className="product-form" />
       <GroupModal
         type={ContentCateType.PRODUCT}
