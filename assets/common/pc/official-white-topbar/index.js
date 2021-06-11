@@ -3,7 +3,7 @@ import $ from 'jquery';
 export const initTopbar = () => {
   $(document).on('ready', function () {
     const input = $('#inputValue')
-
+    const searchBtn = $('#SearchBtn')
     // 搜索页需要预填充
     var query = decodeURIComponent(window.location.search.substring(1))
     var key = query.split("&").find(item => item && item.indexOf('key') !== -1)
@@ -17,10 +17,19 @@ export const initTopbar = () => {
       input.val('')
     })
 
-    $('#SearchBtn').on('click', function () {
+    searchBtn.on('click', function () {
       const shopDomain = $(this).data('shopdomain')
       const value = $.trim(input.val())
       window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
     })
+
+    //回车事件绑定  
+    $(document).on('keypress', function (event) {
+      if (event.which == 13 || event.keyCode == "13") {
+        const shopDomain = searchBtn.data('shopdomain')
+        const value = $.trim(input.val())
+        window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
+      }
+    });
   })
 }
