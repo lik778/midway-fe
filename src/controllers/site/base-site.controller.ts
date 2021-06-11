@@ -311,7 +311,6 @@ export class BaseSiteController {
     data.contentType = type
     data.contentKey = key
     data.contentPage = currentPage
-    console.log(data)
     return data
   }
 

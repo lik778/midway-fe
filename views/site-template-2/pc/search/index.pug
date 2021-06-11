@@ -4,6 +4,7 @@ block styles
     :combine(fileName="site-template-2-search-pc.css")
 
 block content
+    include ../components/common/breadcrumbs.pug
     .container
         .main
             - contentType = renderData.contentType
@@ -39,4 +40,3 @@ block append scripts
     script.
         window.contentType = 'search';
         window.trackSrc = 'listing';
-        document.title = '#{contentKey||'搜索结果页'}'
