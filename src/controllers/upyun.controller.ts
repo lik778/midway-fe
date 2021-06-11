@@ -59,7 +59,6 @@ export class UpyunController {
     //     $return = 'https';
     //   }
     // } else { // 线下
-    // TODO;
     // if (isset($GLOBALS['_SERVER']['HTTPS']) && $GLOBALS['_SERVER']['HTTPS'] == 'on') {
     // $return = 'https';
     // }
