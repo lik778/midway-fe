@@ -154,7 +154,7 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   return (
-    <div className="img-upload">
+    <div className="img-upload banner-img-upload">
       <Upload
         action={window.__upyunImgConfig?.uploadUrl}
         data={{
