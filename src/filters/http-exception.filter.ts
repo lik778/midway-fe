@@ -21,7 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         res.send('请求接口不存在');
         return
       } else {
-        res.render('common/404', { title: '页面找不到', haojingHost: config().haojing })
+        res.status(404).render('common/404', { title: '页面找不到', haojingHost: config().haojing })
         return
       }
     }
@@ -31,7 +31,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         res.send(exceptionRes);
         return
       } else {
-        res.render('common/500', { title: '出错了', exceptionRes, haojingHost: config().haojing })
+        res.status(500).render('common/500', { title: '出错了', exceptionRes, haojingHost: config().haojing })
         return
       }
     }
