@@ -181,8 +181,7 @@ export const BannerImgUpload = (props: Props) => {
         visible={previewVisible}
         title={previewTitle}
         footer={null}
-        onCancel={handleCancel}
-      >
+        onCancel={handleCancel}>
         <img alt="example" style={{ width: "100%" }} src={previewImage} />
       </Modal>
     </div>

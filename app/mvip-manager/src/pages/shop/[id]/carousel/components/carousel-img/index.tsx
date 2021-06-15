@@ -30,10 +30,13 @@ export default (props: Props) => {
   }, []);
 
   const createBannerImg = async (url: string) => {
+    const maxWeight = Math.max(...bannerList.map(x => +x.weight))
     const res = await createBannerApi(Number(params.id), {
       url,
       type,
-      position
+      position,
+      // 新图片的顺序排最后（weight 字段越大顺序越靠后）
+      weight: maxWeight + 1
     })
     if(res?.success){
       successMessage('上传成功');
