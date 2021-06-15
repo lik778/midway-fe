@@ -28,7 +28,6 @@ export const leaveLeads1 = function() {
             //    alert('请填写正确的手机号码')
             //    return false
             //}
-            // TODO;
             $('#upContactUsForm').attr('disabled','true')
             $.ajax({
                 url:"/site-api/leads",

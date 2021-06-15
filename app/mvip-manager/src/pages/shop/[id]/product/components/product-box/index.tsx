@@ -33,7 +33,8 @@ export default (props: Props) => {
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
-  useEffect(() => {
+
+  const initForm = () => {
     // 初始化表单----> value
     const newArticleFormChildren = productForm.children.map(item => {
       if (item.name === 'contentCateId') {
@@ -50,6 +51,10 @@ export default (props: Props) => {
       ...productForm,
       children: newArticleFormChildren
     })
+  }
+
+  useEffect(() => {
+    initForm()
   }, [cateList])
 
   const sumbit = async (values: any) => {
@@ -59,6 +64,7 @@ export default (props: Props) => {
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
+    values.contentImg = !values.contentImg||values.contentImg.length === 0 ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
     let resData: any;
     setFormLoading(true)
     if (isEdit) {
@@ -89,15 +95,13 @@ export default (props: Props) => {
       key={placement}
       width="700"
     >
-      <Form.Item>
-        <WildcatForm
-          editDataSource={editData}
-          config={formConfig}
-          submit={sumbit}
-          onClick={onModalClick}
-          loading={formLoading}
-          className="product-form"/>
-      </Form.Item>
+      <WildcatForm
+        editDataSource={editData}
+        config={formConfig}
+        submit={sumbit}
+        onClick={onModalClick}
+        loading={formLoading}
+        className="product-form" />
       <GroupModal
         type={ContentCateType.PRODUCT}
         editItem={null}

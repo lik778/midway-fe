@@ -5,24 +5,27 @@
 			h3 #{ companyName }
 		.center
 			.center-left
-				p 公司简介
-				.dash1
+				.line
+					.title 公司简介
+					.dash1
 				.intro
 					| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-			.center-right
-				p 工商保障
-				.dash2
-				.certification-icon
-					img.img1(src="//file.baixing.net/202102/b0e500e6cfa746ab5bd4980460d5dfb7.png", alt="icon")
-					.tag1 实力商家
-					img.img2(src="//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png", alt="icon")
-					.tag2 百姓认证
-				dl
-					dt 所在地区
-					dd #{ company.address }
-				dl
-					dt 联系人
-					dd #{ contactName.content }
+			if !isSem
+				.center-right
+					.line
+						.title 工商保障
+						.dash2
+					.certification-icon
+						img.img1(src="//file.baixing.net/202102/b0e500e6cfa746ab5bd4980460d5dfb7.png", alt="icon")
+						.tag1 实力商家
+						img.img2(src="//file.baixing.net/202102/040014dd6a47c01a5ec225974f3347ae.png", alt="icon")
+						.tag2 百姓认证
+					dl
+						dt 所在地区
+						dd #{ company.address }
+					dl
+						dt 联系人
+						dd #{ contactName.content }
 	.view-all
 		a(href=aboutLink) 查看全部
 
