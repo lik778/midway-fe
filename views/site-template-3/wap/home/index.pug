@@ -4,9 +4,12 @@ include ../components/home-title.pug
 block styles
     :combine(fileName="site-template-3-home-wap.css")
 
+
 block header
-    .float-nav
-        include ../components/drawer-nav
+    if !isSem
+        .float-nav
+            include ../components/drawer-nav
+            
 block append header
     include ../components/swiper
     - const { banner }= renderData

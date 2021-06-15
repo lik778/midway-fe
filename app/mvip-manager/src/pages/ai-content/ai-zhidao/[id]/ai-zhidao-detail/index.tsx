@@ -172,7 +172,6 @@ const AiZhidaoDetail = (props: any) => {
 
   const cancalSubmit = async () => {
     setUpDataLoading(true)
-    // TODO;
     const res = await cancalTaskApi()
     if (res.success) {
       successMessage('撤销成功')
