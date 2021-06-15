@@ -64,4 +64,5 @@ export interface ImagesItem {
   name: string;
   rule?: any[];
   maxSize?: number
+  maxLength?: number
 }

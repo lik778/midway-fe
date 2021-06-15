@@ -1,6 +1,6 @@
 import { Button, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CateItem } from '@/interfaces/shop';
 const Option = Select.Option;
 
