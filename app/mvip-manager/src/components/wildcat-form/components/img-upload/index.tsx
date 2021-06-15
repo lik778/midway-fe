@@ -46,7 +46,7 @@ export const ImgUpload = (props: Props) => {
     if (editData) {
       if (name && editData[name]) {
         if (Array.isArray(editData[name])) {
-          setFileList(editData[name].map((item: any) => ({ uid: item, status: 'done', url: item, thumbUrl: item })))
+          setFileList(editData[name].map((item: any, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item })))
         } else {
           setFileList([{ uid: '-1', status: 'done', url: editData[name], thumbUrl: editData[name] }])
         }
@@ -113,8 +113,6 @@ export const ImgUpload = (props: Props) => {
   }
 
   const handleRemove = (file: any) => {
-    console.log(file)
-    console.log(file)
     const nowFileList = fileList.filter(item => item.uid !== file.uid)
     setFileList(nowFileList)
     onChange!(nowFileList.map(item => getUrl(item.url)))
@@ -134,11 +132,6 @@ export const ImgUpload = (props: Props) => {
     }
     return isJpgOrPng && overrun;
   }
-
-
-  useEffect(() => {
-    console.log(fileList)
-  }, [fileList])
 
   return (
     <div className="img-upload">
