@@ -146,8 +146,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
                 {
                   (item.images || []).map((img) => {
                     return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                      <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={item.maxLength || 0}
-                        onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} />
+                      <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={img.maxLength || item.maxLength || 1} maxSize={img.maxSize} disabled={item.disabled} />
                     </Form.Item>
                     )
                   })
@@ -178,7 +177,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
               <AreaSelect width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
             </Form.Item>)
           } else if (item.type === FormType.GroupSelect) {
-            return (<div key={item.label}>
+            return (<div className={styles['group-select-btn']} key={item.label}>
               <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]}>
                 <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled}>
                   {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
