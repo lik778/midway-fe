@@ -115,7 +115,8 @@ export const ImgUpload = (props: Props) => {
   const handleRemove = (file: any) => {
     const nowFileList = fileList.filter(item => item.uid !== file.uid)
     setFileList(nowFileList)
-    onChange!(nowFileList.map(item => getUrl(item.url)))
+    // TODO ; 暂时为了兼容过去的代码 没有图的时候传空字符串
+    onChange!(nowFileList.length > 0 ? nowFileList.map(item => getUrl(item.url)) : '')
   }
 
   const beforeUpload = (file: any) => {
