@@ -1,23 +1,23 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { history } from 'umi';
 import { connect } from 'dva';
-import { Dispatch, AnyAction } from 'redux';
+import { AnyAction, Dispatch } from 'redux';
 import { ConnectState } from '@/models/connect';
-import {
-  SHOP_NAMESPACE,
-} from '@/models/shop';
+import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { CreateShopParams, ShopInfo, ShopStatus } from '@/interfaces/shop';
 import MainTitle from '@/components/main-title';
 import Loading from '@/components/loading';
 import MyModal, { ModalType } from '@/components/modal';
 import ShopBox from './components/shop-box';
-import EmptyStatus from './components/empty-status'
-import { shopMapDispatchToProps } from '@/models/shop'
+import EmptyStatus from './components/empty-status';
 import { notEmptyObject } from '@/utils';
-import ShopInfoForm from './components/form'
+import ShopInfoForm from './components/form';
 import { ShopIndustryType } from '@/enums';
-import styles from './index.less'
+import './index.less';
+import { AppSourceEnum, TicketType } from '@/enums/shop';
+import { renewShopApi } from '@/api/shop';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   dispatch: Dispatch<AnyAction>;
@@ -39,11 +39,18 @@ const ShopPage: FC<Props> = (props) => {
   // 控制两个弹窗
   const [modalGotoVisible, setModalGotoVisible] = useState<boolean>(false)
   const [modalInfoVisible, setModalInfoVisible] = useState<boolean>(false)
+  const [modalTicketVisible, setModalTicketVisible] = useState<boolean>(false)
   const [modalActionType, setModalActionType] = useState<'add' | 'edit' | ''>('')
   const shopInfoModalTitle = useMemo(() => modalActionType === 'add' ? '新建店铺' : modalActionType === 'edit' ? '修改店铺' : '', [modalActionType])
   // 弹窗的初始化数据
   const [modalInitData, setModalInitData] = useState<CreateShopParams | null>(null)
-
+  // 店铺ticket
+  const [ticketType, setTicketType] = useState<TicketType>(TicketType.CREATE)
+  const [shopId, setShopId] = useState<number>(0)
+  const [ticketId, setTicketId] = useState<number>(0)
+  const [submitRenewLoading, setSubmitRenewLoading] = useState<boolean>(false)
+  // 店铺ticket可用
+  const shopTicketValid = shopStatus && shopStatus.userValidTickets && shopStatus.userValidTickets.length
   // 空状态基本配置
   const emptyMsg = useMemo(() => ({
     btn: '新建店铺',
@@ -64,6 +71,14 @@ const ShopPage: FC<Props> = (props) => {
   }, [shopStatus])
 
   useEffect(() => {
+    if (shopTicketValid) {
+      const defaultTicketId = shopStatus && shopStatus.userValidTickets
+        && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
+      setTicketId(defaultTicketId || 0)
+    }
+  }, [shopTicketValid])
+
+  useEffect(() => {
     initPage()
   }, [])
 
@@ -82,8 +97,8 @@ const ShopPage: FC<Props> = (props) => {
   }
 
   const handleCreateShop = () => {
-    setModalInfoVisible(true)
-    setModalActionType('add')
+    setTicketType(TicketType.CREATE)
+    setModalTicketVisible(true)
   }
 
   const handleEditShop = (shopInfo: ShopInfo) => {
@@ -101,15 +116,39 @@ const ShopPage: FC<Props> = (props) => {
     setModalActionType('edit')
   }
 
+  // 续费
+  const renewHandle = async () => {
+    if (ticketType === TicketType.CREATE) {
+      setModalTicketVisible(false)
+      setModalInfoVisible(true)
+      setModalActionType('add')
+    } else if (ticketType === TicketType.RENEW) {
+      setSubmitRenewLoading(true)
+      const { success, message } = await renewShopApi({ shopId, ticketId })
+      setSubmitRenewLoading(false)
+      if (success) {
+        successMessage('续费成功')
+      } else {
+        errorMessage(message)
+      }
+    }
+  }
+
   return <>
     <MainTitle title="我的店铺" />
-    <div className={styles['shop-container']}>
+    <div className="shop-container">
       {
         loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <div >
           <Button type="primary" className="primary-btn p-btn btn" disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
-          <div className={styles["shop-list"]}>
+          <div className="shop-list">
             {
-              shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) => <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo} />)}
+              shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) =>
+                <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo}
+                         setTicketModal={(shopId: number) =>  {
+                           setTicketType(TicketType.RENEW)
+                           setModalTicketVisible(true)
+                           setShopId(shopId)
+                         }}/>)}
           </div>
         </div>
           : <div className="shop-create">
@@ -126,7 +165,7 @@ const ShopPage: FC<Props> = (props) => {
       destroyOnClose={true}
     >
       {
-        (modalActionType === 'edit' || modalActionType === 'add') && <ShopInfoForm shopInfoData={modalInitData} actionType={modalActionType} onCancal={handleCloseModal} handleChangeData={handleChangeData}></ShopInfoForm>
+        (modalActionType === 'edit' || modalActionType === 'add') && <ShopInfoForm ticketId={ticketId} shopInfoData={modalInitData} actionType={modalActionType} onCancal={handleCloseModal} handleChangeData={handleChangeData}></ShopInfoForm>
       }
     </Modal>
     <MyModal
@@ -138,6 +177,32 @@ const ShopPage: FC<Props> = (props) => {
       onCancel={() => setModalGotoVisible(false)}
       onOk={() => history.push('/company-info/base')}
       visible={modalGotoVisible} />
+    <Modal
+      width={600}
+      className="my-modal-box"
+      title={'选择可用的店铺额度'}
+      maskClosable={ false }
+      okText={"续费"}
+      okButtonProps={{ disabled: !shopTicketValid }}
+      onOk={renewHandle}
+      confirmLoading={submitRenewLoading}
+      onCancel={() => setModalTicketVisible(false)}
+      visible={modalTicketVisible}>
+      { shopTicketValid ?
+            <div className="ticket-list">
+              {  shopStatus?.userValidTickets?.map(t => {
+                  return (
+                    <div onClick={() => setTicketId(t.id)} className={ ticketId === t.id ? 'ticket-list-item active-item' : 'ticket-list-item' }>
+                      <span>钻石店铺 { t.source === AppSourceEnum.VIP && <strong>VIP</strong> }</span>
+                      <span>发文数量：<strong>{ t.quota.postQuota }</strong>篇</span>
+                      <span>AI发文数：<strong>{ t.quota.maxAiArticles }</strong></span>
+                      <span>时长：<strong>{ TicketType.CREATE ? t.createDays : t.renewDays }</strong>天</span>
+                    </div>
+                  )
+              })  }
+            </div> :
+            '暂无可选择额度' }
+    </Modal>
   </>
 }
 
