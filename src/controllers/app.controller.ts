@@ -37,6 +37,7 @@ export class AppController {
   @Get('/midway/verify')
   async jumpUrl(@Req() req: Request, @Res() res: Response) {
     const data2 = await this.midwayApiService.analytics({ ip: req.ip, jumpUrl: 'https://www.baidu.com'})
+    console.log(data2)
     res.setHeader('Content-Type', 'text/html');
     return res.send(data2.data.captchaHtml);
   }
