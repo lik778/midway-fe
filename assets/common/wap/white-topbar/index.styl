@@ -90,23 +90,43 @@
       //width 50vw
       position relative
       margin-right 3vw
-      input
-        //color #fff
-        box-sizing border-box
-        -webkit-appearance none
-        border-radius 0
-        width 100%
-        border 0
-        height 36px
-        line-height 36px
-        outline none
-        font-size 14px
-        opacity 0.8
-        background rgba(255, 255, 255, 0.3)
-        &::-webkit-input-placeholder
-          color #fff
-        &::-webkit-search-cancel-button
-          transform translateX(-15px)
+      .search-form
+        margin-bottom 0
+        .search-query
+          //color #fff
+          box-sizing border-box
+          -webkit-appearance none
+          border-radius 0
+          width 100%
+          border 0
+          height 36px
+          line-height 36px
+          outline none
+          font-size 14px
+          opacity 0.8
+          background rgba(255, 255, 255, 0.3)
+          padding-right: 50px
+          &:focus
+            border-bottom: 1px solid #E2E2E2
+          &::-webkit-search-cancel-button{
+            -webkit-appearance: none;
+          }
+          &::-ms-clear
+            display none
+          &:valid + .clear
+            display inline
+        .clear
+          display none 
+          width 14px  
+          height 14px 
+          position absolute 
+          top: 50%
+          right 26px
+          transform: translateY(-50%)
+          background url(//file.baixing.net/202106/f74265c45ac545d77010354d33397bb0.png) no-repeat 
+          background-size: cover
+          outline none
+          cursor pointer
       img.baicon
         width 14px
         position absolute

@@ -7,8 +7,10 @@ header.bx-header-red
 
      .bx-nav-search
       - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
-      input.search-query(type="search" name="query" placeholder="搜索", data-shopdomain=shopDomain.toString())
-      img.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt="")
+      form.search-form(action="javascript:return true")
+        input.search-query(type="search" name="query" placeholder="搜索", data-shopdomain=shopDomain.toString() required)
+        #searchClear.clear
+        img#SearchBtn.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt=""  data-shopdomain=shopDomain.toString())
 
      .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line
       a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/fabu/fuwu#nav") 发布

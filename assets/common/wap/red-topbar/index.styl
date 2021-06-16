@@ -13,7 +13,7 @@
     justify-content space-between
     div
       box-sizing border-box
-      //position absolute
+      //position absolute 
       //top 0
 
     .bx-nav-logo
@@ -26,30 +26,51 @@
   .bx-nav-search
     width 50vw
     position relative
-    input
-      color #fff
-      box-sizing border-box
-      -webkit-appearance none
-      border-radius 0
-      width 100%
-      border 0
-      height 36px
-      line-height 36px
-      padding-left 30px
-      padding-right 18px
-      outline none
-      font-size 14px
-      opacity 0.8
-      background rgba(255, 255, 255, 0.3)
-      &::-webkit-input-placeholder
+    .search-form
+      margin-bottom 0
+      .search-query
         color #fff
-    img.baicon
-      width 14px
-      color #fff
-      position absolute
-      left 10px
-      top 12px
-      opacity 0.8
+        box-sizing border-box
+        -webkit-appearance none
+        border-radius 0
+        width 100%
+        border 0
+        height 36px
+        line-height 36px
+        padding-left 30px
+        padding-right 18px
+        outline none
+        font-size 14px
+        opacity 0.8
+        background rgba(255, 255, 255, 0.3)
+        &::-webkit-input-placeholder
+          color #fff
+        &::-webkit-search-cancel-button{
+          -webkit-appearance: none;
+        }
+        &::-ms-clear
+          display none
+        &:valid + .clear
+          display inline
+      .clear
+        display none 
+        width 14px  
+        height 14px 
+        position absolute 
+        top: 50%
+        right 10px
+        transform: translateY(-50%)
+        background url(//file.baixing.net/202106/4b908e060a8901bcf60cda682ef0d763.png) no-repeat 
+        background-size: cover
+        outline none
+        cursor pointer
+      img.baicon
+        width 14px
+        color #fff
+        position absolute
+        left 10px
+        top 12px
+        opacity 0.8
 
   .cm-nav-bar-right
     width 35vw
