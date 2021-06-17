@@ -36,7 +36,7 @@ export default (props: Props) => {
       type,
       position,
       // 新图片的顺序排最后（weight 字段越大顺序越靠后）
-      weight: maxWeight + 1
+      weight: (maxWeight + 1) || 1
     })
     if(res?.success){
       successMessage('上传成功');
