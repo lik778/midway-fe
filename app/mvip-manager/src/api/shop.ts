@@ -6,7 +6,7 @@ import {
   CreateContentCateApiParams,
   CreateArticleApiParams,
   ModifyNavItem,
-  ImgOrdersParam,
+  ImgItemParam,
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
@@ -47,11 +47,6 @@ export const getNavListingApi = (shopId: number) => {
 // 更新导航列表
 export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/navigation/update', params, setShopHeader(shopId))
-}
-
-// 改变 banner 顺序
-export const changeBannerOrderApi = (shopId: number, ids: number[]) => {
-  return postApiData(ServicePath.SHOP, `midway/backend/banner/sort`, ids, setShopHeader(shopId))
 }
 
 // 创建banner
