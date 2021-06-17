@@ -2,7 +2,7 @@ import { Get, HostParam, Param, Query, Req, Res } from '@nestjs/common';
 import { SiteService } from '../../services/site.service';
 import { query, Request, Response } from 'express';
 import { UserAgent } from '../../decorator/user-agent.decorator';
-import { DomainTypeEnum } from '../../enums';
+import { DomainTypeEnum, SearchTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { TrackerType } from '../../enums/tracker';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../constant/cookie';
@@ -305,5 +305,78 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
     return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo } });
+  }
+
+
+  // 处理搜索来的数据 
+  private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
+    data.contentList = data.searchResult.result
+    data.contentType = type
+    data.contentKey = key
+    data.contentPage = currentPage
+    return data
+  }
+
+  // 搜索聚合页
+  @Get('/search')
+  async search(@Param() params, @HostParam('shopName') HostShopName: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
+    console.log(query)
+    const currentPage = query.page || 1
+    const searchKey = query.key || ''
+    const searchType = query.type || 'product'
+    console.log({
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+    })
+    const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+    }, domain);
+
+    // // test start  
+    // const { data: originData } = await this.midwayApiService[searchType === 'product' ? 'getProductPageData' : 'getNewsPageData'](shopName, device, {
+    //   keyword: searchKey, page: currentPage, type: searchType
+    // }, domain);
+    // // test end 
+
+    // 这里做统一处理
+    const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
+
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        _platform: device,
+        tracktype: 'pageview',
+        contentType: 'search',
+        category: '',
+      }
+    })
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/search/index`;
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+
+    return res.render(templateUrl, {
+      title: '搜索',
+      renderData: {
+        ...data,
+        searchKey,
+        shopName,
+        kf53,
+        shopId,
+        trackId,
+        userInfo,
+        domainType: this.domainType,
+        currentPage, currentPathname,
+      }
+    })
   }
 }

@@ -3,7 +3,7 @@
 .product-list
   if productList && productList.length >0
     each item in productList
-      a.item(href=item.urlSuffix target="_blank")
+      a.item(href=item.urlSuffix target="_blank" data-id=item.id)
         .left
           img.img(src=item.headImg || defaultImg)
           .text-content

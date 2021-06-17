@@ -11,7 +11,6 @@ block content
       +news-list(renderData.articleList.result)
 
       include ../../../common/pc/pagination.pug
-      //-include ../components/common/pagination.pug
       - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
       +pagination(totalPage, currentPage, `${currentPathname}`)
 

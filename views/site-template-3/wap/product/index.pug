@@ -17,9 +17,8 @@ block content
     //-留言资讯
     include ../components/contact-form.pug
 
-    //-TODO:分页尽量改成下拉加载
+    include ../../../common/wap/pagination.pug
     - const { totalPage } = renderData.productList
-    include ../components/pagination
     +pagination(totalPage, currentPage, `${currentPathname}`)
 
 //-block footer
