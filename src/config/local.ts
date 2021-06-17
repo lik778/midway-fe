@@ -3,12 +3,10 @@ export default {
   services: {
     'midway-service': {
       host: 'http://172.30.2.14:31257'
-      // host: 'http://172.30.2.14:30257'
-      // host: 'http://172.17.2.175:8080'
-      // host: 'http://172.17.1.51:8084'
+      // host: 'http://172.17.3.75:8080'
     },
     'zhidao-service': {
-      host: 'http://172.30.2.14:31252'
+      host: 'http://172.30.2.14:31252' 
       // host: 'http://172.17.3.110:8080'
     },
     'reporting-service': {

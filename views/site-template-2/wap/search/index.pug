@@ -1,0 +1,38 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-search-wap.css")
+
+block header
+    include ../components/header
+
+block content
+    //- 变量初始化
+    - const { contentList, contentType, contentPage, contentKey } = renderData
+    - lists = contentList.result || []
+
+    include ../components/search-tabs.pug
+    +tabs(contentType, contentKey, contentList.totalRecord)
+
+    //- 搜索列表
+    if isTabProduct
+        include ../components/product-list
+        +product-list('', lists)
+    if isTabNews
+        include ../components/news-list
+        +news-list(lists)
+
+    //- 翻页
+    include ../../../common/wap/pagination.pug
+    - var totalPage = (contentList && contentList.totalPage) || 1
+    +pagination(totalPage, contentPage)
+
+
+block footer
+   include ../components/footer.pug
+
+block scripts
+    :combine(fileName="site-template-2-search-wap.js")
+block append scripts
+    script.
+        window.contentType = 'search';
+        window.trackSrc = 'listing';
