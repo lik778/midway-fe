@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import { Dispatch, AnyAction } from 'redux';
 import { ConnectState } from '@/models/connect';
 import {
-  SHOP_NAMESPACE,
+  SHOP_NAMESPACE, shopMapDispatchToProps
 } from '@/models/shop';
 import { CreateShopParams, ShopInfo, ShopStatus } from '@/interfaces/shop';
 import MainTitle from '@/components/main-title';
@@ -13,7 +13,6 @@ import Loading from '@/components/loading';
 import MyModal, { ModalType } from '@/components/modal';
 import ShopBox from './components/shop-box';
 import EmptyStatus from './components/empty-status'
-import { shopMapDispatchToProps } from '@/models/shop'
 import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form'
 import { ShopIndustryType } from '@/enums';

@@ -57,6 +57,8 @@ export interface FormItem {
   display?: boolean;
   formItemWidth?: number | string,
   className?: string, // 自定义样式,
+  labelCol?: ColProps;
+  children?: FormItem[];// 嵌套表单
 }
 
 export interface ImagesItem {

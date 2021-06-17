@@ -6,13 +6,13 @@ import './index.less'
 
 const ShopNavPage = (props: any) => {
   return (
-      <div>
-       <BasisHeader {...props} type={ShopBasisType.NAV}/>
-       <div className="container">
-          <ShopNav/>
-       </div>
+    <>
+      <BasisHeader {...props} type={ShopBasisType.NAV} />
+      <div className="container">
+        <ShopNav />
       </div>
-    );
+    </>
+  );
 }
 
 ShopNavPage.wrappers = ['@/wrappers/path-auth']
