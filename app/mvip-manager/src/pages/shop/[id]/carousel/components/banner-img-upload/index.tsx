@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {Upload, Modal, Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { UploadFile } from 'antd/lib/upload/interface';
+import { Upload, Modal, Button } from 'antd';
+import { PlusOutlined, UpOutlined, DownOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { errorMessage } from '@/components/message';
+import _ from 'lodash'
+
+import './index.less'
 
 const getBase64 = function(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -18,15 +22,18 @@ interface Props {
   maxLength: number;
   disableBtn?: boolean | undefined;
   onChange(url: string, status: number): void;
+  onOrdersChange(ids: number[]): void;
   fileList?:any[];
 }
 export const BannerImgUpload = (props: Props) => {
   const list = props.fileList || []
-  const { onChange } = props
+  const { onChange, onOrdersChange } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewTitle, setPreviewTitle] = useState('')
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([])
+  const [orderList, setOrderList] = useState<number[]>([])
+
   const uploadButton = (isDisable?:boolean | undefined) =>{
     const txt = props.text || '上传'
     const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
@@ -38,9 +45,22 @@ export const BannerImgUpload = (props: Props) => {
     );
   }
 
+  // 初始化
   useEffect(() => {
     setFileList(list)
   }, [list])
+
+  // fileList 顺序改变时，上传顺序
+  useEffect(() => {
+    const newOrderList = fileList.map(x => +x.id);
+    const isChanged = !_.isEqual(orderList, newOrderList);
+    if (isChanged) {
+      if (orderList.length) {
+        onOrdersChange(newOrderList)
+      }
+      setOrderList(newOrderList);
+    }
+  }, [fileList])
 
   const handleCancel = ()=> {
     setPreviewVisible(false)
@@ -78,28 +98,83 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handleRemove = (file: any) => {
+    const tempFileList = [...fileList];
+    const index = tempFileList.findIndex(x => x === file);
+    tempFileList.splice(index, 1);
+    setFileList(tempFileList);
     onChange(`${file.id}`, 2);
   }
 
+  // 移动，正数向后移动，负数向前移动
+  const handleMove = (file: any, order: number) => {
+    const tempFileList = [...fileList]
+    const index = tempFileList.findIndex(x => x === file)
+    const length = tempFileList.length
+    tempFileList.splice(index, 1)
+    tempFileList.splice(
+      Math.min(length, Math.max(0, index + order)),
+      0,
+      file
+    )
+    setFileList(tempFileList)
+  }
+
+  // 渲染上传列表
+  const renderItem = (
+    originNode: ReactElement,
+    file: UploadFile,
+    fileList: any[],
+    actions: any,
+  ) => {
+    const isFirstOrder = file === fileList[0]
+    const isLastOrder = file === fileList[fileList.length - 1]
+    const isUploading = file?.status === "uploading";
+
+    let emptyPlaceholder = null
+    if (isUploading) {
+      emptyPlaceholder = <span>正在上传 ...</span>
+    }
+    if (!file.url) {
+      emptyPlaceholder = <span>正在上传 ...</span>
+    }
+
+    return (
+      <div className="upload-wrapper" key={file.url}>
+        {emptyPlaceholder || (<>
+          <img src={file.url} className="image" />
+          <div className="mask">
+            <EyeOutlined onClick={() => handlePreview(file)} />
+            <DeleteOutlined onClick={() => handleRemove(file)} />
+            {!isLastOrder && <DownOutlined onClick={() => handleMove(file, 1)} />}
+            {!isFirstOrder && <UpOutlined onClick={() => handleMove(file, -1)} />}
+          </div>
+        </>)}
+      </div>
+    );
+  }
 
   return (
-    <div className="img-upload">
+    <div className="img-upload banner-img-upload">
       <Upload
         action={window.__upyunImgConfig?.uploadUrl}
         data={{
           policy: window.__upyunImgConfig?.uploadParams?.policy,
-          signature: window.__upyunImgConfig?.uploadParams?.signature
+          signature: window.__upyunImgConfig?.uploadParams?.signature,
         }}
-        showUploadList={{showRemoveIcon:true}}
+        showUploadList={{ showRemoveIcon: true }}
         listType="picture-card"
         fileList={fileList}
-        onPreview={handlePreview}
+        itemRender={renderItem}
+        isImageUrl={() => {
+          return true;
+        }}
         beforeUpload={beforeUpload}
         onChange={handleChange}
-        isImageUrl={()=>{return true}}
-        onRemove={handleRemove}
       >
-        {fileList?.length >= props.maxLength ? (props.disableBtn? uploadButton(props?.disableBtn): null )
+        {fileList?.length >= props.maxLength
+          ? props.disableBtn
+            ? uploadButton(props?.disableBtn)
+            : null
           : uploadButton()}
       </Upload>
       <Modal
@@ -107,8 +182,8 @@ export const BannerImgUpload = (props: Props) => {
         title={previewTitle}
         footer={null}
         onCancel={handleCancel}>
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        <img alt="example" style={{ width: "100%" }} src={previewImage} />
       </Modal>
     </div>
-  )
+  );
 }
