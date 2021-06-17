@@ -6,7 +6,8 @@ import {
   SaveEnterpriseContactInfoApiParams,
   SaveEnterpriseForShopParams,
   ZhidaoMaterialData,
-  ZhidaoMaterial
+  ZhidaoMaterial,
+  Phone400Detail
 } from '@/interfaces/user';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -57,4 +58,21 @@ export const getZhidaoMaterial = (): Promise<ServiceResponse<ZhidaoMaterialData>
 /** 保存问答素材库 */
 export const setZhidaoMaterial = (params: ZhidaoMaterial): Promise<ServiceResponse<null>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/user/saveZhidaoMaterial', params)
+}
+
+
+// TODO;
+/** 获取400电话号码列表 */
+export const getPhone400ListApi = (): Promise<ServiceResponse<string[]>> => {
+  return postApiData(ServicePath.SHOP, '', {})
+}
+
+/** 获取400电话号码 */
+export const getPhone400Api = (): Promise<ServiceResponse<Phone400Detail[]>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/user/vm400/resource/get', {})
+}
+
+/** 设置400电话号码*/
+export const setPhone400Api = (params: Phone400Detail): Promise<ServiceResponse<any>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/user/vm400/resource/consume', params)
 }
