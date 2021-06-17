@@ -60,15 +60,24 @@ const BasisTab = (props: Props) => {
       const { type } = curShopInfo;
       const isB2B = Boolean(type === ProductType.B2B)
       const { hasMultiShopRights } = shopStatus;
+      console.log(shopStatus)
       return menuList.map(item => {
-        if (isB2B && item.key === ShopBasisType.SEO) {
-          item.display = true
+        if (item.key === ShopBasisType.SEO) {
+          if (isB2B) {
+            item.display = true
+          } else if (history.location.pathname.includes(ShopBasisType.SEO)) {
+            // 如果该用户B2B用户 还出现在seo页面 则跳到首页
+            history.replace('/shop')
+          }
         }
-        if (hasMultiShopRights && item.key === ShopBasisType.INFO) {
-          item.display = true
-        } else if(history.location.pathname.includes('/info')){
-          // 如果该用户不是白名单用户 还出现在info页面 则跳到首页
-          history.replace('/shop')
+        if (item.key === ShopBasisType.INFO) {
+          if (hasMultiShopRights) {
+            item.display = true
+          } else if (history.location.pathname.includes(ShopBasisType.INFO)) {
+            console.log(JSON.stringify(shopStatus))
+            // 如果该用户不是白名单用户 还出现在info页面 则跳到首页
+            history.replace('/shop')
+          }
         }
         return item
       })
