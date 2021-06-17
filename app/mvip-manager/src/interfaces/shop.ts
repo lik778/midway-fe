@@ -1,4 +1,5 @@
 import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
+import { AppSourceEnum } from '@/enums/shop';
 
 export interface RouteParams {
   id: string;
@@ -101,7 +102,8 @@ export interface TdkDetailMeta {
 
 export interface ShopStatus {
   isUserPerfect: boolean;
-  isTicketAvailable: boolean
+  isTicketAvailable: boolean;
+  userValidTickets: Ticket[];
 }
 
 export interface QuotaInfo {
@@ -109,6 +111,7 @@ export interface QuotaInfo {
   postRemain: number;
   buyUrl: string;
 }
+
 
 export interface CreateShopParams {
   id?: number,
@@ -119,9 +122,14 @@ export interface CreateShopParams {
   domainType: DomainStatus,
   /** 店铺域名 */
   domain: string,
+  ticketId?: number;
 }
 
 
+export interface RenewShopParams {
+  ticketId: number;
+  shopId: number;
+}
 
 export interface ShopInfo {
   about: string;
@@ -165,4 +173,20 @@ export interface CustomerSetListItem {
   mainModuleId?: number,
   mainModuleTitle: string,
   subModuleBos: CustomerSetChildListItem[]
+}
+
+export interface Quota {
+  id: number;
+  postQuota: number; // 发文quota
+  productQuota: number; // 产品quota
+  maxAiArticles: number; // 最大Ai发文量
+  des: string;
+}
+
+export interface Ticket {
+  id: number;
+  source: AppSourceEnum;
+  createDays: number;
+  renewDays: number;
+  quota: Quota;
 }

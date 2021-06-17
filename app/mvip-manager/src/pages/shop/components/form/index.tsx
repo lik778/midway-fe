@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useMemo } from 'react';
 import { Button, Row, Col, Form } from 'antd';
-import { CreateShopParams, ShopInfo } from '@/interfaces/shop'
+import { CreateShopParams, ShopInfo } from '@/interfaces/shop';
 import { shopInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig, OptionItem } from '@/components/wildcat-form/interfaces';
@@ -9,9 +9,10 @@ import { DomainStatus, ShopIndustryType } from '@/enums/index'
 import DomainItem from './components/domain-item'
 import styles from './index.less'
 import { createShopApi, updateShopApi } from '@/api/shop'
-import { successMessage, errorMessage } from '@/components/message'
+import { successMessage } from '@/components/message'
 
 interface Props {
+  ticketId: number;
   shopInfoData: CreateShopParams | null,
   actionType: 'add' | 'edit' | '',
   onCancal: () => void
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const ShopForm: FC<Props> = (props) => {
-  const { shopInfoData, actionType, onCancal, handleChangeData } = props
+  const { ticketId, shopInfoData, actionType, onCancal, handleChangeData } = props
   const [nowDomainType, setNowDomainType] = useState<DomainStatus>()
   const [errMsg, setErrMsg] = useState<string>('')
   const [updataLoading, setUpdataLoading] = useState<boolean>(false)
@@ -81,9 +82,10 @@ const ShopForm: FC<Props> = (props) => {
   }, [])
 
   const handleSumbit = async (value: CreateShopParams) => {
-    console.log(value)
     setUpdataLoading(true)
-    const { success, message, data } = actionType === 'add' ? await createShopApi(value) : await updateShopApi({ ...shopInfoData, ...value } as ShopInfo)
+    const { success, message, data } = actionType === 'add' ?
+        await createShopApi({...value, ticketId})
+      : await updateShopApi({ ...shopInfoData, ...value } as ShopInfo)
     setUpdataLoading(false)
     if (success) {
       successMessage('保存成功')
