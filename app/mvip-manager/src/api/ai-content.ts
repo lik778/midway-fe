@@ -116,7 +116,6 @@ export const getQuotaNumApi = (): Promise<ServiceResponse<{
   consumeCount: number,
   buyUrl?: string
 }>> => {
-  // TODO;
   return postApiData(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/getQaAiPostQuota', {})
 }
 

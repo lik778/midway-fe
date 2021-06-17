@@ -277,7 +277,6 @@ export default (props: ZhidaoCreateJobProp) => {
 
   /** 获取页面状态  如果能创建任务 则请求接下来的基础数据 */
   const getComponentStatus = async () => {
-    // TODO;
     setComponentBasicData(null)
     const res = await getCreateQuestionTaskPageStatusApi()
     // const res = await mockData<CreateQuestionTaskPageStatus>('data', 'SHOW_CREATE')

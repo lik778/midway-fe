@@ -10,10 +10,11 @@ html
         block styles
     body
         //-初始化公共数据
-        - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl } = renderData.basic.contact
+        - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
         - const { company, person, copyRight } = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo, isRedTopbar } = renderData
-        - companyName = renderData.basic.company.name
+        //- 名称先取企业别称 后取企业名称
+        - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
         //-导航因为后台可设置是否显示，因此要如下处理
         - nav = renderData.navigation
         - productListTab = nav.filter(x => x.position == "productListPage")
@@ -32,7 +33,8 @@ html
 
         block content
         //-QQ联系等开发时先注释掉
-        include ../../common/pc/customer-service.pug
+        if !isSem
+            include ../../common/pc/customer-service.pug
 
         block footer
             //- include ../../common/pc/footer.pug

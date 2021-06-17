@@ -1,13 +1,14 @@
 .view-phone
 	width 960px
-	height 120px
-	margin 0 auto
-	transform:  translateY(-40px)
-	margin-bottom 40px
+	height 0
+	margin 0 auto 40px
+	transform:  translateY(-120px)
 	display flex
 	z-index 10
 	.view-phone-left
+		box-sizing: border-box
 		width 480px
+		height 120px
 		background-color $color-main
 		padding 20px 30px
 		display flex
@@ -53,10 +54,12 @@
 			margin-bottom 2px
 
 	.view-phone-right
-		width 460px
+		box-sizing: border-box
+		height 120px
+		width 480px
 		background-color #FFFFFF
 		border 1px solid $color-main
-		padding 31px 43px
+		padding 30px 40px
 		display flex
 		flex-direction row
 		.linian-left
