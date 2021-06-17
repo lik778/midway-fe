@@ -94,7 +94,7 @@ export default (props: Props) => {
             onCancel={() => setVisibleDeleteDialog(false)}
             onOk={() => confirmDelete()}
             visible={visibleDeleteDialog}/>
-          <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
+          <Table rowKey="id" columns={columns} loading={loading} dataSource={dataSource} pagination={{
             showSizeChanger: false,  current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
         </div>
       }

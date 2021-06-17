@@ -1,25 +1,30 @@
 .pagination
     box-sizing border-box
     display flex
-    text-align center
+    justify-content space-between
+    gap 10px
+    padding 15px 18px
     color #999
-    > a,
+    text-align center
+    >.prev-page,
+    >.next-page,
     > span
-        flex-grow 1
-        display block
-        margin 5px 17px
-        line-height 16px
-        padding 12px 0
-        text-decoration none
         position relative
+        display block
+        flex-grow 1
+        box-sizing border-box
+        padding 12px 0
+        width 120px
+        height 40px
+        line-height 16px
+        text-decoration none
     > span
-        margin 5px 0
+        width 80px
     .select-change-container
         position relative
         background-color #fff
         select
-            position absolute
-            width 100%
+            width 80px
             opacity 0
             top 0
             left 0

@@ -5,7 +5,7 @@ import ShopModuleGroup from '../components/shop-module-group';
 import ProductBox from './components/product-box';
 import ProductList from './components/list';
 import ProductNav from './components/nav';
-import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
+import { ContentCateType, ShopModuleType, ProductType } from '@/enums'; 
 import { getProductListApi }  from '@/api/shop';
 import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
 import './index.less'
