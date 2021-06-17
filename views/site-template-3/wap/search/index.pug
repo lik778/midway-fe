@@ -1,0 +1,39 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-3-search-wap.css")
+
+block header
+
+block content
+    //- 变量初始化
+    - const { contentList, contentType, contentPage, contentKey } = renderData
+    - lists = contentList.result || []
+
+    include ../components/search-tabs.pug
+    +tabs(contentType, contentKey, contentList.totalRecord)
+    
+    //- 搜索列表 因为product-list 还用在首页  不需要空状态
+    if isTabProduct
+        if lists && lists.length >0
+            include ../components/product-list
+            +product-list(lists)
+        else 
+            include ../components/no-data
+    if isTabNews
+        include ../components/news-list
+        +news-list(lists)
+
+    //- 翻页
+    include ../../../common/wap/pagination.pug
+    - var totalPage = (contentList && contentList.totalPage) || 1
+    +pagination(totalPage, contentPage)
+
+block footer
+   include ../components/footer.pug
+
+block scripts
+    :combine(fileName="site-template-3-search-wap.js")
+block append scripts
+    script.
+        window.contentType = 'search';
+        window.trackSrc = 'listing';

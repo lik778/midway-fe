@@ -1,9 +1,11 @@
 .page-normal
 	text-align center
 	margin-top 45px
-	a
+	.page-item
+		display: inline
 		color #333
-	a,
+		cursor pointer
+	.page-item,
 	.page-current
 		border 1px solid#E5E5E5
 		padding 5px 11px
@@ -13,6 +15,6 @@
 //未选中的分页页码样式，和鼠标滑过样式如下
 .page-normal
 	.page-current,
-	a:hover
+	.page-item:hover
 		color #FFF !important
 		background-color #FF2D38
