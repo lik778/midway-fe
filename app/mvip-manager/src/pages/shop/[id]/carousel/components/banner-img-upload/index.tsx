@@ -1,13 +1,13 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface';
-import { Upload, Modal, Button } from 'antd';
+import { Upload, Modal, Button,  } from 'antd';
 import { PlusOutlined, UpOutlined, DownOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { errorMessage } from '@/components/message';
 import _ from 'lodash'
 
 import './index.less'
 
-const getBase64 = function(file: Blob) {
+const getBase64 = function (file: Blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -23,7 +23,7 @@ interface Props {
   disableBtn?: boolean | undefined;
   onChange(url: string, status: number): void;
   onOrdersChange(ids: number[]): void;
-  fileList?:any[];
+  fileList?: any[];
 }
 export const BannerImgUpload = (props: Props) => {
   const list = props.fileList || []
@@ -34,9 +34,9 @@ export const BannerImgUpload = (props: Props) => {
   const [fileList, setFileList] = useState<any[]>([])
   const [orderList, setOrderList] = useState<number[]>([])
 
-  const uploadButton = (isDisable?:boolean | undefined) =>{
+  const uploadButton = (isDisable?: boolean | undefined) => {
     const txt = props.text || '上传'
-    const cls = isDisable? 'upload-btn disabled' : 'upload-btn'
+    const cls = isDisable ? 'upload-btn disabled' : 'upload-btn'
     return (
       <Button className={cls} disabled={isDisable}>
         <PlusOutlined />
@@ -62,7 +62,7 @@ export const BannerImgUpload = (props: Props) => {
     }
   }, [fileList])
 
-  const handleCancel = ()=> {
+  const handleCancel = () => {
     setPreviewVisible(false)
   }
 
@@ -76,16 +76,16 @@ export const BannerImgUpload = (props: Props) => {
   }
 
   const handleChange = async (e: any) => {
-    if(!!e.file.status){
+    if (!!e.file.status) {
       if (e.file.status === 'done') {
         const { url } = e.file.response
-        onChange(`${url.slice(1, )}${window.__upyunImgConfig.imageSuffix}`, 1);
+        onChange(`${url.slice(1,)}${window.__upyunImgConfig.imageSuffix}`, 1);
       }
       setFileList(e.fileList)
     }
   }
 
-  const beforeUpload= (file: any) => {
+  const beforeUpload = (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg';
     if (!isJpgOrPng) {
       errorMessage('请上传jpg、jpeg、png格式的图片');
@@ -123,9 +123,12 @@ export const BannerImgUpload = (props: Props) => {
   const renderItem = (
     originNode: ReactElement,
     file: UploadFile,
-    fileList: any[],
-    actions: any,
+    fileList?: UploadFile[],
   ) => {
+    // 防止类型报错
+    if(!fileList){
+      fileList = []
+    }
     const isFirstOrder = file === fileList[0]
     const isLastOrder = file === fileList[fileList.length - 1]
     const isUploading = file?.status === "uploading";

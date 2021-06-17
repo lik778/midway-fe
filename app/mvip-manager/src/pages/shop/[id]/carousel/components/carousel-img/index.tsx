@@ -3,7 +3,7 @@ import { BannerImgUpload } from '../banner-img-upload';
 import { changeBannerOrderApi, createBannerApi, getBannerListApi, deleteBannerApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { RouteParams } from '@/interfaces/shop';
-import { DeviceType, PositionType} from '@/enums';
+import { DeviceType, PositionType } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import Loading from '@/components/loading';
 import _ from 'lodash'
@@ -21,7 +21,7 @@ interface Props {
 export default (props: Props) => {
   const [bannerList, setBannerList] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const {type, txt, tip, position } = props
+  const { type, txt, tip, position } = props
   // 获取店铺id
   const params: RouteParams = useParams();
 
@@ -30,18 +30,18 @@ export default (props: Props) => {
   }, []);
 
   const createBannerImg = async (url: string) => {
-    const maxWeight = Math.max(...bannerList.map(x => +x.weight))
+    const maxWeight = bannerList.length > 0 ? Math.max(...bannerList.map(x => +x.weight)) : 0
     const res = await createBannerApi(Number(params.id), {
       url,
       type,
       position,
       // 新图片的顺序排最后（weight 字段越大顺序越靠后）
-      weight: (maxWeight + 1) || 1
+      weight: maxWeight + 1
     })
-    if(res?.success){
+    if (res?.success) {
       successMessage('上传成功');
       getBannerList();
-    }else{
+    } else {
       errorMessage(`上传失败:${res?.message}`);
     }
   }
@@ -61,8 +61,8 @@ export default (props: Props) => {
         l['url'] = l.displayImgUrl
         l['status'] = 'done'
       })
-        setBannerList(list)
-        setIsLoading(false)
+      setBannerList(list)
+      setIsLoading(false)
     }
   }
 
@@ -70,18 +70,18 @@ export default (props: Props) => {
     const res = await deleteBannerApi(Number(params.id), {
       id,
     })
-    if(res?.success){
+    if (res?.success) {
       successMessage('删除成功');
       getBannerList()
-    }else{
+    } else {
       errorMessage(res?.message);
     }
   }
 
-  const onImgChange = (url: string, status: number)=> {
-    if(status === 1) { // 创建
+  const onImgChange = (url: string, status: number) => {
+    if (status === 1) { // 创建
       createBannerImg(url)
-    }else if(status === 2){ // 删除
+    } else if (status === 2) { // 删除
       const id = parseInt(url)
       deleteBannerImg(id)
     }
