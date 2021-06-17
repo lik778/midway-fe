@@ -66,7 +66,7 @@ const BasisTab = (props: Props) => {
           if (isB2B) {
             item.display = true
           } else if (history.location.pathname.includes(ShopBasisType.SEO)) {
-            // 如果该用户B2B用户 还出现在seo页面 则跳到首页
+            // 如果该用户不是B2B用户 还出现在seo页面 则跳到首页
             history.replace('/shop')
           }
         }
