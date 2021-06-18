@@ -40,7 +40,7 @@ const ShopForm: FC<Props> = (props) => {
   }]
 
 
-  const DomainFormItem = useMemo(() => nowDomainType ? <Form.Item label="店铺域名" name='domain' key='domain' required={true} rules={[{ required: true }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字', }]}>
+  const DomainFormItem = useMemo(() => nowDomainType ? <Form.Item label="店铺域名" name='domain' key='domain' required={true} rules={[{ required: true }, { pattern: /^[\s\S]{4,20}$/, message: '4～20个字', }]}>
     <DomainItem type={nowDomainType} disabled={Boolean(actionType === 'edit')} ></DomainItem>
   </Form.Item> : <div key="domain"></div>, [nowDomainType, actionType])
 
