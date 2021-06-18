@@ -1,5 +1,5 @@
 export default {
-  env: 'test1',
+  env: 'test2',
   services: {
     'midway-service': {
       host: 'http://172.30.2.14:30263'
@@ -15,7 +15,7 @@ export default {
   haojing: 'http://wulei.baixing.cn',
   haojingDomain: 'baixing.cn',
   hostType: {
-    prefix: ':shopName.shop-test1.baixing.cn',
-    base: 'shop-test1.baixing.cn'
+    prefix: ':shopName.shop-test2.baixing.cn',
+    base: 'shop-test2.baixing.cn'
   }
 }
