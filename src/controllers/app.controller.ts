@@ -13,7 +13,7 @@ export class AppController {
   constructor(readonly midwayApiService: SiteService) {}
   @Get('/')
   async home (@Req() req: Request, @Res() res: Response) {
-    this.jumpUrl(req, res)
+    res.render('common/home')
   }
 
    
@@ -32,14 +32,6 @@ export class AppController {
   @Get('/midway/health')
   async managementView(@Req() req: Request, @Res() res: Response) {
     res.send(process.env.NODE_ENV + ': everything is ok!!!')
-  }
-
-  @Get('/midway/verify')
-  async jumpUrl(@Req() req: Request, @Res() res: Response) {
-    const data2 = await this.midwayApiService.analytics({ ip: req.ip, jumpUrl: 'https://www.baidu.com'})
-    console.log(data2)
-    res.setHeader('Content-Type', 'text/html');
-    return res.send(data2.data.captchaHtml);
   }
 
 }

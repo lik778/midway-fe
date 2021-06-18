@@ -33,12 +33,7 @@ export class SiteService {
     this.midwayPrefixPath = `${host}/api/midway/backend`
     this.analyticsPrefix = `${host}/api/midway/internal`
   }
-
-  public analytics(params: analyticsParams): Promise<ServiceResponse<any>> {
-    return this.requestService.post(`${this.analyticsPrefix}/waf/analytics`, params, { 'content-type': 'application/json',
-    'x-api-secret': apiSecret });
-  }
-
+  
   public shieldCheck(params): Promise<ServiceResponse<any>> {
     return this.requestService.post(`${this.analyticsPrefix}/waf/check`, params, { 'content-type': 'application/json',
     'x-api-secret': apiSecret })
