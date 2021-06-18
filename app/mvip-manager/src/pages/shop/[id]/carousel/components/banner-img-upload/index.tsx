@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface';
-import { Upload, Modal, Button,  } from 'antd';
+import { Upload, Modal, Button, } from 'antd';
 import { PlusOutlined, UpOutlined, DownOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { errorMessage } from '@/components/message';
 import _ from 'lodash'
@@ -55,7 +55,7 @@ export const BannerImgUpload = (props: Props) => {
     const newOrderList = fileList.map(x => +x.id);
     const isChanged = !_.isEqual(orderList, newOrderList);
     if (isChanged) {
-      if (orderList.length) {
+      if (orderList.length && orderList.length === newOrderList.length) {
         onOrdersChange(newOrderList)
       }
       setOrderList(newOrderList);
@@ -126,7 +126,7 @@ export const BannerImgUpload = (props: Props) => {
     fileList?: UploadFile[],
   ) => {
     // 防止类型报错
-    if(!fileList){
+    if (!fileList) {
       fileList = []
     }
     const isFirstOrder = file === fileList[0]
