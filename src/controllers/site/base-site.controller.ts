@@ -45,10 +45,14 @@ export class BaseSiteController {
 
     data.autoConfig = data.autoConfig && data.autoConfig.length > 0 ? data.autoConfig : [{ mainModuleTitle: '企业优势', subModuleBos: [{ fontColor: 0, title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' }, { fontColor: 0, title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' }, { fontColor: 0, title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' }, { fontColor: 0, title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }] }]
     //红白头开关
-    if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
+    // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
+    //   data.isRedTopbar = true
+    // }
+    // 2021年6月19日9点切到红色头部
+    const nowTime = new Date().getTime()
+    if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-
     return data
   }
 
