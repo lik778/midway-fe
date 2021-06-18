@@ -89,3 +89,10 @@ export interface ZhidaoMaterial {
 export interface ZhidaoMaterialData extends ZhidaoMaterial {
   siteUrls: any
 }
+
+// 400 号码 请求
+export interface Phone400Detail {
+  account: string,
+  /** 手机号拼接而成 */
+  destNums: string,
+}
