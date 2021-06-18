@@ -10,8 +10,8 @@ block content
     - productList = renderData.productList.result
     +product-list('', productList)
 
+    include ../../../common/wap/pagination.pug
     - const { totalPage } = renderData.productList
-    include ../components/pagination
     +pagination(totalPage, currentPage, `${currentPathname}`)
 
 block scripts

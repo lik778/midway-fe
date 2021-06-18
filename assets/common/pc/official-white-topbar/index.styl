@@ -30,8 +30,9 @@
 			.search 
 				display flex
 				justify-content flex-start
-				width: 200px
+				width 200px
 				margin-right 10px
+				position relative
 				.input
 					width 160px
 					height 30px
@@ -41,6 +42,22 @@
 					font-size 12px
 					outline none
 					color #999999
+					&::-ms-clear
+						display none
+					&:valid + .clear
+						display inline
+				.clear
+					display none 
+					width 16px  
+					height 16px 
+					position absolute 
+					top: 50%
+					right 50px
+					transform: translateY(-50%)
+					background url(//file.baixing.net/202106/f74265c45ac545d77010354d33397bb0.png) no-repeat 
+					background-size: cover
+					outline none
+					cursor pointer
 				.search-btn
 					border 1px solid #DDDDDD
 					padding 0

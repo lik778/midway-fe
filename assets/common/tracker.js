@@ -54,7 +54,9 @@ export const eventTracker = (clickType, clickPosition, action = 'click', extraDa
         contentType: window.contentType,
         _ad: window.adId,
         category: '',
-        refer: '',
+        refer: document.referrer,
+        refer_keywords: '', // 当前这个字段在click event下数据不明晰作用，暂时置空
+        url: location.href,
         ...getBaxSemEventField(),
         ...extraData
       }
@@ -81,7 +83,9 @@ export const semEventTracker = (clickType, clickPosition, action, remarks) => {
         contentType: window.contentType,
         _ad: window.adId,
         category: '',
-        refer: '',
+        refer: document.referrer,
+        refer_keywords: '', // 当前这个字段在click event下数据不明晰作用，暂时置空
+        url: location.href,
         ...getBaxSemEventField()
       },
       success: (res) => {
