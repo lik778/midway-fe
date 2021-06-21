@@ -11,7 +11,7 @@ import {
   ImgListParam,
   TdkSaveMeta,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  CreateShopParams, RenewShopParams,
+  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -52,6 +52,11 @@ export const getNavListingApi = (shopId: number) => {
 // 更新导航列表
 export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/navigation/update', params, setShopHeader(shopId))
+}
+
+// 改变 banner 顺序
+export const changeBannerOrderApi = (shopId: number, ids: number[]) => {
+  return postApiData(ServicePath.SHOP, `midway/backend/banner/sort`, ids, setShopHeader(shopId))
 }
 
 // 创建banner
@@ -166,4 +171,14 @@ export const setCustomerSetApi = (shopId: number, requestData: {
   subModulesToDelete: number[]
 }): Promise<ServiceResponse<never>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
+}
+
+/** 获取店铺基础信息设置 */
+export const getShopBasicInfoApi = (shopId: number): Promise<ServiceResponse<ShopBasicInfo>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/getShopEnterprise', {}, setShopHeader(shopId))
+}
+
+/** 设置店铺基础信息设置 */
+export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoParams) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/setShopEnterprise', params, setShopHeader(shopId))
 }

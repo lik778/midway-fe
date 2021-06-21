@@ -1,17 +1,18 @@
 mixin tabs (type, key, total)
-  - isTabProduct = type === 'product'
-  - isTabNews = type === 'news'
-  - tabs = [{ type: 'product', active: isTabProduct, name: '服务' },{ type: 'news', active: isTabNews, name: '新闻资讯' }]
+    - isTabProduct = type === 'product'
+    - isTabNews = type === 'news'
+    - tabs = [{ type: 'product', active: isTabProduct, name: '服务' },{ type: 'news', active: isTabNews, name: '新闻资讯' }]
 
-  //- 标签页
-  .search-type-tabs
-      each tab in tabs
-          .item(class={active: tab.active}, data-type=tab.type) #{tab.name}
+    //- 标签页
+    .search-type-tabs
+        each tab in tabs
+            .item(class={active: tab.active}, data-type=tab.type) #{tab.name}
 
-  //- 搜索结果
-  .search-results
-      - tabName = (tabs.find(x => x.active) || {}).name || '未知类型'
-      if total === 0
-          span 未找到和“#{key}”相关的信息
-      else
-          span 匹配到和“#{key}”相关的#{tabName} #{total} 条
+    //- 搜索结果
+    .search-results
+        - tabName = (tabs.find(x => x.active) || {}).name || '未知类型'
+        if total === 0
+            span 未找到和“#{key}”相关的信息。
+        else
+            span 匹配到和“#{key}”相关的#{tabName} #{total} 条。
+        a.go-home(href=nav[0].content) &nbsp;返回首页

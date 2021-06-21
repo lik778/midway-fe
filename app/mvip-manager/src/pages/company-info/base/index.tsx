@@ -12,7 +12,9 @@ import { saveEnterpriseForShopApi } from '@/api/user'
 import { ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
-import './index.less';
+import { ConnectState } from '@/models/connect';
+import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
+import styles from './index.less';
 import { getThirdCategoryMetas } from '@/api/user';
 import { objToTargetObj } from '@/utils';
 
@@ -20,7 +22,7 @@ import { objToTargetObj } from '@/utils';
 const { Step } = Steps;
 
 function CompanyInfoBase(props: any) {
-  const { companyInfo, setCompanyInfo } = props
+  const { companyInfo, setCompanyInfo, shopStatus, getShopStatus } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<SaveEnterpriseForShopParams | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -118,6 +120,10 @@ function CompanyInfoBase(props: any) {
   }, [companyInfo])
 
 
+  useEffect(() => {
+    getShopStatus()
+  }, [])
+
   const next = () => {
     setHasEditFofrm(false)
     setCurrentStep(currentStep + 1)
@@ -154,7 +160,7 @@ function CompanyInfoBase(props: any) {
   return (
     <div>
       <MainTitle title="基础资料" />
-      <Steps current={currentStep} className="step-container">
+      <Steps current={currentStep} className={styles["step-container"]}>
         {steps.map(name => (
           <Step key={name} title={name} />
         ))}
@@ -167,10 +173,13 @@ function CompanyInfoBase(props: any) {
             submit={nextStep}
             editDataSource={enterpriseInfo} config={config} loading={loading}
             submitBtn={
-              <Row className="save-base-info-box">
+              <Row className={styles["save-base-info-box"]}>
                 <Col span={3}></Col>
-                <Col style={{ paddingLeft: 16 }}><Button loading={loading} className="btn"
+                <Col span={6} style={{ paddingLeft: 16 }}><Button loading={loading} className={styles["btn"]}
                   type="primary" size="large" htmlType="submit">保存并下一步</Button></Col>
+                {
+                  !shopStatus.hasMultiShopRights && <Col className={styles['tip']}>*  如需多套企业资料，请咨询销售</Col>
+                }
               </Row>
             } />
         }
@@ -181,7 +190,15 @@ function CompanyInfoBase(props: any) {
   );
 }
 
-const WrapperCompanyInfoBase: any = connect(userMapStateToProps, userMapDispatchToProps)(CompanyInfoBase)
+const WrapperCompanyInfoBase: any = connect((state: ConnectState) => {
+  const { curShopInfo, shopStatus } = state[SHOP_NAMESPACE]
+  return { curShopInfo, shopStatus, ...(userMapStateToProps(state)) }
+}, (dispatch) => {
+  return {
+    ...shopMapDispatchToProps(dispatch),
+    ...userMapDispatchToProps(dispatch)
+  }
+})(CompanyInfoBase)
 
 WrapperCompanyInfoBase.wrappers = ['@/wrappers/path-auth']
 

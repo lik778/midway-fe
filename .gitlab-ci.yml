@@ -16,6 +16,8 @@ stages:
   - test1-deploy
   - release
   - prod-deploy
+  - release-test2
+  - test2-deploy
 
 
 release-dev:
@@ -78,6 +80,26 @@ test1-deploy:
   - aliyun-k8s-dev
   script:
   - kubectl set image -n bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE
+
+release-test2:
+  stage: release-test2
+  only:
+  - test2@fenlei/midway-fe
+  tags:
+  - k8s-dev-build
+  script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+  - docker build --pull -t $MIDWAY_FE -f ./test2.Dockerfile .
+  - docker push $MIDWAY_FE
+
+test2-deploy:
+  stage: test2-deploy
+  only:
+  - test2@fenlei/midway-fe
+  tags:
+  - aliyun-k8s-dev
+  script:
+  - kubectl set image -n test-bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE
 
 
 release:
