@@ -42,7 +42,7 @@ function CompanyInfoPhone400(props: any) {
       phone4: '',
       phone5: '',
     }
-    const phoneList = res.data[0].destNums.split(',')
+    const phoneList = res.data[0].destNums ? res.data[0].destNums.split(',') : []
     Object.keys(data).map((item: string, index: number) => {
       data[item as keyof FormSourceData] = phoneList.shift() || ''
     })
