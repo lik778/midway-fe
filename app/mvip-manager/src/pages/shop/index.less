@@ -9,3 +9,38 @@
     flex-wrap: wrap;
   }
 }
+
+.ticket-list {
+  height: 220px;
+  overflow: auto;
+  .ticket-list-item {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+    span {
+      position: relative;
+      display: inline-block;
+      width: 23%;
+      text-align: center;
+      margin-right: 5px;
+      strong {
+        font-weight: bold;
+        color: #096dd9;
+      }
+      &:nth-child(n+2):before {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 14px;
+        position: absolute;
+        top: 4px;
+        left: -4px;
+        background: #096dd9;
+      }
+    }
+  }
+  .active-item {
+    border: 2px solid #096dd9;
+  }
+}
