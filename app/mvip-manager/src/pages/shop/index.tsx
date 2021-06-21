@@ -205,7 +205,7 @@ const ShopPage: FC<Props> = (props) => {
                 <span>钻石店铺 {t.source === AppSourceEnum.VIP && <strong>VIP</strong>}</span>
                 <span>发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
                 <span>AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
-                <span>时长：<strong>{TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
+                <span>时长：<strong>{ticketType === TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
               </div>
             )
           })}
