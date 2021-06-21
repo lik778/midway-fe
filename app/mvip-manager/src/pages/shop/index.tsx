@@ -59,9 +59,6 @@ const ShopPage: FC<Props> = (props) => {
     disabled: createShopDisabled
   }), [createShopDisabled])
 
-  const initPage = () => {
-    Promise.all([getShopStatus(), getShopList()])
-  }
 
   useEffect(() => {
     if (shopStatus && notEmptyObject(shopStatus)) {
@@ -77,6 +74,11 @@ const ShopPage: FC<Props> = (props) => {
       setTicketId(defaultTicketId || 0)
     }
   }, [shopTicketValid])
+
+
+  const initPage = () => {
+    Promise.all([getShopStatus(), getShopList()])
+  }
 
   useEffect(() => {
     initPage()
@@ -97,8 +99,12 @@ const ShopPage: FC<Props> = (props) => {
   }
 
   const handleCreateShop = () => {
-    setTicketType(TicketType.CREATE)
-    setModalTicketVisible(true)
+    if (shopStatus?.isUserPerfect) {
+      setTicketType(TicketType.CREATE)
+      setModalTicketVisible(true)
+    } else {
+      setModalGotoVisible(true)
+    }
   }
 
   const handleEditShop = (shopInfo: ShopInfo) => {
@@ -128,6 +134,8 @@ const ShopPage: FC<Props> = (props) => {
       setSubmitRenewLoading(false)
       if (success) {
         successMessage('续费成功')
+        setModalTicketVisible(false)
+        initPage()
       } else {
         errorMessage(message)
       }
@@ -144,11 +152,11 @@ const ShopPage: FC<Props> = (props) => {
             {
               shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) =>
                 <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo}
-                         setTicketModal={(shopId: number) =>  {
-                           setTicketType(TicketType.RENEW)
-                           setModalTicketVisible(true)
-                           setShopId(shopId)
-                         }}/>)}
+                  setTicketModal={(shopId: number) => {
+                    setTicketType(TicketType.RENEW)
+                    setModalTicketVisible(true)
+                    setShopId(shopId)
+                  }} />)}
           </div>
         </div>
           : <div className="shop-create">
@@ -178,30 +186,31 @@ const ShopPage: FC<Props> = (props) => {
       onOk={() => history.push('/company-info/base')}
       visible={modalGotoVisible} />
     <Modal
-      width={600}
+      width={650}
       className="my-modal-box"
       title={'选择可用的店铺额度'}
-      maskClosable={ false }
-      okText={"续费"}
+      maskClosable={false}
+      okText={"确定"}
       okButtonProps={{ disabled: !shopTicketValid }}
       onOk={renewHandle}
       confirmLoading={submitRenewLoading}
       onCancel={() => setModalTicketVisible(false)}
-      visible={modalTicketVisible}>
-      { shopTicketValid ?
-            <div className="ticket-list">
-              {  shopStatus?.userValidTickets?.map(t => {
-                  return (
-                    <div onClick={() => setTicketId(t.id)} className={ ticketId === t.id ? 'ticket-list-item active-item' : 'ticket-list-item' }>
-                      <span>钻石店铺 { t.source === AppSourceEnum.VIP && <strong>VIP</strong> }</span>
-                      <span>发文数量：<strong>{ t.quota.postQuota }</strong>篇</span>
-                      <span>AI发文数：<strong>{ t.quota.maxAiArticles }</strong></span>
-                      <span>时长：<strong>{ TicketType.CREATE ? t.createDays : t.renewDays }</strong>天</span>
-                    </div>
-                  )
-              })  }
-            </div> :
-            '暂无可选择额度' }
+      visible={modalTicketVisible}
+    >
+      {shopTicketValid ?
+        <div className="ticket-list">
+          {shopStatus?.userValidTickets?.map((t, index) => {
+            return (
+              <div onClick={() => setTicketId(t.id)} className={ticketId === t.id ? 'ticket-list-item active-item' : 'ticket-list-item'} key={index} data-id={t.id}>
+                <span>钻石店铺 {t.source === AppSourceEnum.VIP && <strong>VIP</strong>}</span>
+                <span>发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
+                <span>AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
+                <span>时长：<strong>{TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
+              </div>
+            )
+          })}
+        </div> :
+        '暂无可选择额度'}
     </Modal>
   </>
 }

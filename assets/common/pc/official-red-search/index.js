@@ -7,7 +7,7 @@ export const initSearch = () => {
     const searchBtn = $('#SearchBtn')
 
     // 搜索页需要预填充
-    var query = window.location.search.substring(1);
+    var query = decodeURIComponent(window.location.search.substring(1))
     var key = query.split("&").find(item => item && item.indexOf('key') !== -1);
     if (key) {
       const keyValue = key.split('=')[1]

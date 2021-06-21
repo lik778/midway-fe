@@ -104,6 +104,7 @@ export interface ShopStatus {
   isUserPerfect: boolean;
   isTicketAvailable: boolean;
   userValidTickets: Ticket[];
+  hasMultiShopRights: boolean
 }
 
 export interface QuotaInfo {
@@ -189,4 +190,53 @@ export interface Ticket {
   createDays: number;
   renewDays: number;
   quota: Quota;
+}
+
+// 店铺自己的基础信息模块 设置参数
+interface ShopBasicInfoParams {
+  companyName: string,
+  companyAlias: string,// 店铺名称 默认值取得店铺名称
+  companyAddress: string,
+  companyDescription: string,
+  promoteImg: string,
+  contactName: string,
+  contactMobile: string,
+  contactMobile2: string,
+  wechat: string,
+}
+export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
+  area: {
+    [key: string]: string
+  }
+}
+
+export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
+  area: string[],
+}
+
+// 请求填充参数
+export interface ShopBasicInfo {
+  company?: {
+    name: string,
+    alias: string,
+    address: string,
+    about: string,
+    logo: string
+  },
+  person?: { name: string, uid: number },
+  copyRight?: string,
+  city?: { id: string, name: string },
+  area?: {
+    [key: string]: string
+  }
+  contact?: {
+    contactName: { type: number, name: string, content: string },
+    weChat: { type: number, name: string, content: string },
+    phone: { type: number, name: string, content: string },
+    phone2: { type: number, name: string, content: string },
+    qq: [{ type: number, name: string, content: string }],
+    kf53: any,
+    kf53StyleUrl: any,
+    union400: string[]
+  },
 }
