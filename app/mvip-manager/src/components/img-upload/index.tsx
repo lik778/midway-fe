@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Upload, Modal } from 'antd';
+import { Upload, Modal, } from 'antd';
+import { UploadFile } from 'antd/lib/upload/interface'
 import { PlusOutlined } from '@ant-design/icons';
-import './index.less';
+import styles from './index.less';
 import { errorMessage } from '@/components/message';
+import ImgItem from './components/img-item'
 
 const getBase64 = function (file: Blob) {
   return new Promise((resolve, reject) => {
@@ -23,9 +25,10 @@ interface Props {
   disabled?: boolean | undefined;
   onChange?(url: string | string[]): void;
   fileList?: any[];
+  itemWidth?: string
 }
 export const ImgUpload = (props: Props) => {
-  const { editData, name, maxSize, onChange, text, maxLength, disabled } = props
+  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth } = props
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<any[]>([])
@@ -71,6 +74,7 @@ export const ImgUpload = (props: Props) => {
       preview = file.preview
     } else {
       preview = await getBase64(file.originFileObj);
+      file.preview = preview
     }
     setPreviewImage(preview)
     setPreviewVisible(true)
@@ -135,7 +139,7 @@ export const ImgUpload = (props: Props) => {
   }
 
   return (
-    <div className="img-upload">
+    <div className={styles["img-upload"]}>
       <Upload
         action={window.__upyunImgConfig?.uploadUrl}
         data={{
@@ -144,12 +148,13 @@ export const ImgUpload = (props: Props) => {
         }}
         listType="picture-card"
         fileList={fileList}
-        onPreview={handlePreview}
         beforeUpload={beforeUpload}
         onChange={handleChange}
         onRemove={handleRemove}
+        onPreview={handlePreview}
         isImageUrl={(file) => { return true }}
         disabled={disabled}
+        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} width={itemWidth}></ImgItem>}
       >
         {fileList.length < maxLength && uploadButton()}
       </Upload>
