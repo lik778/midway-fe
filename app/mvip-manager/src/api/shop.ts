@@ -6,12 +6,12 @@ import {
   CreateContentCateApiParams,
   CreateArticleApiParams,
   ModifyNavItem,
-  ImgOrdersParam,
+  ImgItemParam,
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  CreateShopParams, ShopBasicInfo, UploadShopBasicInfoParams
+  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -24,6 +24,11 @@ export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> =
 // 创建店铺
 export const createShopApi = (params: CreateShopParams): Promise<ServiceResponse<any>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/create', params)
+}
+
+// 店铺续费
+export const renewShopApi = (params: RenewShopParams): Promise<ServiceResponse<any>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/renew', params)
 }
 
 // 更新店铺
