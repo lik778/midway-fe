@@ -22,7 +22,7 @@ export interface SaveEnterpriseForShopParams {
 
 export interface SaveEnterpriseContactInfoApiParams {
   contactMobile: string;
-  contactMobile2?:string;
+  contactMobile2?: string;
   contactName: string;
   qqMap: any;
   wechat: string;
@@ -55,7 +55,7 @@ export interface UserEnterpriseInfo {
   qqMap: { [key: string]: string };
   companyNameLock: boolean;
   kefuStatus: KFStatus;
-  kf53Info: KF53Info|null;
+  kf53Info: KF53Info | null;
   serviceArea: string;
 }
 
@@ -88,4 +88,11 @@ export interface ZhidaoMaterial {
 
 export interface ZhidaoMaterialData extends ZhidaoMaterial {
   siteUrls: any
+}
+
+// 400 号码 请求
+export interface Phone400Detail {
+  account: string,
+  /** 手机号拼接而成 */
+  destNums: string | null,
 }

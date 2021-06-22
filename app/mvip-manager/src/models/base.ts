@@ -52,7 +52,7 @@ export default <Model>{
   namespace: BASE_NAMESPACE,
   state: cloneDeepWith(defaultState),
   effects: {
-    [GET_MENU_LIST_ACTION]: function * (action: AnyAction, effects: EffectsCommandMap) {
+    [GET_MENU_LIST_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
       const { put, select } = effects
       const menuList: MidMenuItem[] | null = yield select((state: any) => state[BASE_NAMESPACE].menuList)
       if (isNull(menuList)) {
@@ -68,7 +68,7 @@ export default <Model>{
   },
   reducers: {
     [SET_MENU_LIST_ACTION]: function (state: BaseModelState, action: AnyAction) {
-      return { ...state, menuList: [ ...action.payload ] }
+      return { ...state, menuList: [...action.payload] }
     },
     [SET_MENU_AUTH_LIST_ACTION]: function (state: BaseModelState, action: AnyAction) {
       return { ...state, menuAuthList: [...action.payload] }
