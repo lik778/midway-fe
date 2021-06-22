@@ -1,13 +1,11 @@
 export default {
-  env: 'local',
+  env: 'test2',
   services: {
     'midway-service': {
-      host: 'http://172.30.2.14:31257'
-      // host: 'http://172.17.14.155:8080'
+      host: 'http://172.30.2.14:30263'
     },
     'zhidao-service': {
-      host: 'http://172.30.2.14:31252'
-      // host: 'http://172.17.3.110:8080'
+      host: 'http://172.30.2.14:30252'
     },
     'reporting-service': {
       host: 'http://dev-api.baixing.cn'
@@ -17,7 +15,7 @@ export default {
   haojing: 'http://wulei.baixing.cn',
   haojingDomain: 'baixing.cn',
   hostType: {
-    prefix: ':shopName.shop.baixing.cn',
-    base: ''
+    prefix: ':shopName.shop-test2.baixing.cn',
+    base: 'shop-test2.baixing.cn'
   }
 }

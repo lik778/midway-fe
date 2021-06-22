@@ -7,3 +7,16 @@ export enum ShopStatus {
   REFUND = 5, // 退款下线
   EXPIRED = 6 // 过期-仅展示使用，数据库状态不会变动
 }
+
+
+export enum AppSourceEnum {
+  VIP = 1,
+  YHT = 2, // 易慧推
+  FM = 3,
+  BW = 4
+}
+
+export enum TicketType {
+  CREATE = 1,
+  RENEW = 2
+}

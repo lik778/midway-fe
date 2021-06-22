@@ -21,7 +21,7 @@ block content
             - console.log(currentPathname) 
         //-侧边栏
         .sidebar
-            - const { articleList } = renderData
+            - const { articleList } = renderData 
             include ../components/sidebar/cateList.pug
             +side-cateList('新闻资讯123456', articleList.result)
             include ../components/sidebar/products.pug
