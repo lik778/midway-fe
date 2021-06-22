@@ -15,14 +15,13 @@ export const QQCustomService = function (props: {
   useEffect(() => {
     if (companyInfo) {
       const { qqMap } = companyInfo
-      const list = qqMap && Object.keys(qqMap).map(k => ({ qq: k, name: qqMap[k] })) || []
-      setList(list)
-      onChange(list)
+      setList([...qqMap])
+      onChange([...qqMap])
     }
   }, [companyInfo])
 
   const addAction = function () {
-    setList([...list, { name: '', qq: '' }]);
+    setList([...list, { name: '', content: '' }]);
   }
 
   const deleteAction = function (i: number) {
@@ -31,10 +30,19 @@ export const QQCustomService = function (props: {
     onChange(list);
   }
 
-  const onInputChange = (e: any, i: number, type: 'name' | 'qq') => {
-    list[i][type] = e.target.value
-    setList([...list]);
-    onChange(list);
+  const onInputChange = (e: any, i: number, type: 'name' | 'content') => {
+    const newList = list.map((item, index) => {
+      if (i !== index) {
+        return item
+      } else {
+        return {
+          ...item,
+          [type]: e.target.value
+        }
+      }
+    })
+    setList(newList);
+    onChange(newList);
   }
 
   return (
@@ -43,7 +51,7 @@ export const QQCustomService = function (props: {
         return (
           <div key={i} style={{ width: 475, marginBottom: 16 }}>
             <Input maxLength={4} onChange={(e) => onInputChange(e, i, 'name')} value={item.name} className={styles['formItem']} placeholder="例客服张三" />
-            <Input maxLength={10} onChange={(e) => onInputChange(e, i, 'qq')} value={item.qq} className={styles['formItem']} placeholder="请输入qq号" />
+            <Input maxLength={10} onChange={(e) => onInputChange(e, i, 'content')} value={item.content} className={styles['formItem']} placeholder="请输入qq号" />
             <span className={styles['delete']} onClick={() => deleteAction(i)}>删除</span>
           </div>
         )

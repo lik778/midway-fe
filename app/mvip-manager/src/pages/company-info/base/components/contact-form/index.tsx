@@ -53,8 +53,7 @@ function ContactForm(props: any) {
     await Promise.all([formInstance?.validateFields(),kf53Ref.current?.form.validateFields()])
     let qqMap: any = null
     if (qqList.length > 0) {
-      qqMap = {}
-      qqList.forEach(x => qqMap[x.qq] = x.name)
+      qqMap = qqList
     }
     const clonedCompanyInfo = cloneDeepWith(companyInfo)
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
