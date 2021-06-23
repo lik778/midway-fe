@@ -7,6 +7,7 @@ import { errorMessage } from '@/components/message';
 import ImgItem from './components/img-item'
 import { ExpandShowUploadListInterface } from './data';
 import Crop from '@/components/crop'
+import { CropProps } from '../crop/data';
 
 const getBase64 = function (file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
@@ -49,9 +50,10 @@ interface Props {
   fileList?: any[];
   itemWidth?: number | string
   showUploadList?: ExpandShowUploadListInterface
+  cropProps: CropProps
 }
 export const ImgUpload = (props: Props) => {
-  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList } = props
+  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps } = props
   const [fileList, setFileList] = useState<any[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
@@ -85,8 +87,19 @@ export const ImgUpload = (props: Props) => {
         })
       }
     }
-    console.log(newFileList)
     setFileList(newFileList)
+    //  这里用嵌套if是为了理解简单
+    if (newFileList.length === 0) {
+      onChange!('');
+    } else if (newFileList.length === 1) {
+      if (newFileList[0].url) {
+        onChange!(getUrl(newFileList[0].url!));
+      }
+    } else {
+      if (newFileList.every(item => item.url)) {
+        onChange!(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)));
+      }
+    }
   }, [setFileList])
 
   // 修改值初始化
@@ -124,8 +137,6 @@ export const ImgUpload = (props: Props) => {
   const handleChange = async (e: any) => {
     if (!!e.file.status) {
       if (e.file.status === 'done') {
-        const { url } = e.file.response
-        console.log(e.fileList)
         const nowFileList = e.fileList.map((item: any) => {
           if (item.url) {
             return item
@@ -136,11 +147,6 @@ export const ImgUpload = (props: Props) => {
             }
           }
         })
-        if (e.fileList.length === 1) {
-          onChange!(getUrl(url));
-        } else {
-          onChange!(nowFileList.map((item: any) => getUrl(item.url)));
-        }
         decorateSetFileList(nowFileList)
       } else {
         decorateSetFileList([...e.fileList])
@@ -162,35 +168,35 @@ export const ImgUpload = (props: Props) => {
   const handleRemove = (file: UploadFile) => {
     const nowFileList = fileList.filter(item => item.uid !== file.uid)
     decorateSetFileList(nowFileList)
-    // TODO ; 暂时为了兼容过去的代码 没有图的时候传空字符串
-    onChange!(nowFileList.length > 0 ? nowFileList.map(item => getUrl(item.url)) : '')
   }
 
   // 裁剪
   const handleCrop = (file: UploadFile) => {
-    console.log(file)
     setCropItem(file)
     setCropVisible(true)
   }
 
-  const handleCropCancel = () => {
+  const handleCropClose = () => {
     setCropVisible(false)
     setCropItem(undefined)
   }
 
   // 传入url ，返回裁剪后的图的uid
-  const handleCropSuccess = (uid: string) => {
+  const handleCropSuccess = (uid: string, previewUrl: string) => {
     const nowFileList = fileList.map(item => {
       if (cropItem?.uid === item.uid) {
         return {
           ...item,
-          url: getUrl(uid)
+          url: uid,
+          preview: previewUrl,
+          thumbUrl: previewUrl
         }
       } else {
         return item
       }
     })
     decorateSetFileList(nowFileList)
+    handleCropClose()
   }
 
   // TODO; 暂时没有下载功能就 a标签跳新页面了，就不写这个函数了
@@ -227,9 +233,9 @@ export const ImgUpload = (props: Props) => {
         visible={cropVisible}
         footer={null}
         maskClosable={false}
-        onCancel={handleCropCancel}
+        onCancel={handleCropClose}
       >
-        <Crop url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
+        <Crop cropProps={cropProps} url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
       </Modal>
     </div>
   )

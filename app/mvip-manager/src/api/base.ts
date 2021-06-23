@@ -54,10 +54,10 @@ export const setShopHeader = (shopId: number) => {
 
 export const upFile = axios.create({
   timeout: 10000, // request timeout  设置请求超时时间
-  responseType: "json",
-  withCredentials: true,
+  withCredentials: false,// 服务器端不限制跨域 则前端不能带cookie
   headers: {
-    "Content-Type": "multipart/form-data"
+    "Content-Type": "multipart/form-data;",
+    "accept": '*/*'
   },
-  method: "POST"
+  method: "POST",
 })

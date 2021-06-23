@@ -10,5 +10,7 @@ export const getMenuApi = (): Promise<ServiceResponse<{ menuList: MidMenuItem[] 
 }
 
 export const upImageToYoupai = (params: any) => {
-  return upFile(window.__upyunImgConfig?.uploadUrl, params)
+  return upFile(window.__upyunImgConfig?.uploadUrl, {
+    data: params
+  })
 }
