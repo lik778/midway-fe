@@ -5,10 +5,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { errorMessage } from '@/components/message';
 import ImgItem from './components/img-item'
-import { ExpandShowUploadListInterface } from './data';
+import { ExpandShowUploadListInterface, ActionBtnListItem } from './data';
 import Crop from '@/components/crop'
 import { CropProps } from '../crop/data';
-
 const getBase64 = function (file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -50,10 +49,11 @@ interface Props {
   fileList?: any[];
   itemWidth?: number | string
   showUploadList?: ExpandShowUploadListInterface
-  cropProps: CropProps
+  cropProps: CropProps,
+  actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
 }
 export const ImgUpload = (props: Props) => {
-  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps } = props
+  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps, actionBtn } = props
   const [fileList, setFileList] = useState<any[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
@@ -217,7 +217,7 @@ export const ImgUpload = (props: Props) => {
         onPreview={handlePreview}
         isImageUrl={(file) => { return true }}
         disabled={disabled}
-        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} showUploadList={showUploadList} width={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop}></ImgItem>}
+        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} showUploadList={showUploadList} width={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
       >
         {fileList.length < maxLength && uploadButton}
       </Upload>

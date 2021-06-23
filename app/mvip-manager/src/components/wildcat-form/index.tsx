@@ -8,6 +8,8 @@ import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 import styles from './index.less'
+import ImgItem from '../img-upload/components/img-item';
+import { EditTwoTone } from '@ant-design/icons'
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
@@ -143,7 +145,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                  <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} itemWidth={img.imageItemWidth} showUploadList={img.showUploadList} />
+                  <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} itemWidth={img.imageItemWidth} showUploadList={img.showUploadList} cropProps={img.cropProps} />
                 </Form.Item>
                 )
               })

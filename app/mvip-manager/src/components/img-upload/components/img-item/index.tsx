@@ -2,12 +2,13 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { EyeOutlined, DeleteOutlined, ScissorOutlined, DownloadOutlined } from '@ant-design/icons'
 import { UploadFile, } from 'antd/lib/upload/interface'
 import styles from './index.less'
-import { ExpandShowUploadListInterface } from '../../data'
+import { ActionBtnListItem, ExpandShowUploadListInterface } from '../../data'
 
 interface Props {
   file: UploadFile,
   showUploadList?: ExpandShowUploadListInterface,
   width?: number | string // 图片块的宽度
+  actionBtn?: ActionBtnListItem[]
   onPreview: (file: any) => Promise<void>,
   onRemove: (file: any) => void,
   onCrop?: (file: any) => void,
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const ImgItem: FC<Props> = (props) => {
-  const { file, width, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
+  const { file, width, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
   const haveShowUploadList = useMemo<boolean>(() => {
     return typeof showUploadList !== 'undefined'
   }, [showUploadList])
@@ -48,8 +49,7 @@ const ImgItem: FC<Props> = (props) => {
         }
         {
           // 下载
-          // haveShowUploadList && showUploadList?.showDownloadIcon && <div className={styles['action-btn']} title="下载图片">
-          onDownload ?
+          haveShowUploadList && showUploadList?.showDownloadIcon && (onDownload ?
             <div className={styles['action-btn']} title="下载图片">
               {
                 showUploadList?.downloadIcon || <DownloadOutlined color={'#fff'} onClick={() => onDownload(file)} />
@@ -58,7 +58,14 @@ const ImgItem: FC<Props> = (props) => {
               {
                 showUploadList?.downloadIcon || <DownloadOutlined color={'#fff'} />
               }
-            </a>
+            </a>)
+        }
+        {
+          actionBtn && actionBtn.map((item, index) => <div className={styles['action-btn']} title={item.title} onClick={
+            () => item.action(file)
+          } key={`${index}-${item.title}`}>
+            {item.icon(file)}
+          </div>)
         }
       </div>
     </div>
