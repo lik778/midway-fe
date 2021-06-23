@@ -1,6 +1,7 @@
 import { FormType } from '../enums'
 import { ColProps } from 'antd'
 import { ReactNode } from 'react'
+import { ExpandShowUploadListInterface } from '@/components/img-upload/data'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -67,4 +68,6 @@ export interface ImagesItem {
   rule?: any[];
   maxSize?: number
   maxLength?: number
+  imageItemWidth?: number | string,// 图片显示块的大小
+  showUploadList?: ExpandShowUploadListInterface
 }

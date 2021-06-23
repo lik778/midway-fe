@@ -143,7 +143,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                  <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={img.maxLength || item.maxLength || 1} maxSize={img.maxSize} disabled={item.disabled} />
+                  <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={img.maxLength || item.maxLength || 1} maxSize={img.maxSize} disabled={item.disabled} itemWidth={img.imageItemWidth} showUploadList={img.showUploadList} />
                 </Form.Item>
                 )
               })

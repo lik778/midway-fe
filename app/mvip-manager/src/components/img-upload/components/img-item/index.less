@@ -11,19 +11,33 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
-    transition: background-color .3s;
     &:hover {
       .mask {
-        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.6);
       }
     }
     .mask {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
       width: 100%;
       height: 100%;
-      background-color: #00000080;
-      opacity: 0;
-      transition: all 0.3s;
+      background-color: rgba(0, 0, 0, 0);
       content: " ";
+      transition: background-color 0.3s;
+      &:hover {
+        .action-btn {
+          opacity: 1;
+        }
+      }
+      .action-btn {
+        padding: 0 5px;
+        color: #fff;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s;
+      }
     }
   }
 }
