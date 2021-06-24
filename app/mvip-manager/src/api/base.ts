@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ServicePath } from '@/enums/index'
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
