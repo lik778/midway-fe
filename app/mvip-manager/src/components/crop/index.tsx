@@ -17,11 +17,14 @@ const Crop: FC<Props> = (props) => {
   const { cropProps, url, handleCropSuccess } = props
   const [updataLoading, setUpdataLoading] = useState<boolean>(false)
   const [cropper, setCropper] = useState<Cropper>();
-
+  const [timestamp] = useState<number>(() => new Date().getTime())
   // 初始化 或者替换图片时需要恢复图片位置
   useEffect(() => {
     if (cropper) {
-      cropper.reset()
+      // 当图片太大，cropper可能对新图片还没准备好，所以给个延时
+      setTimeout(() => {
+        cropper.reset()
+      }, 0)
     }
   }, [url, cropper])
 
@@ -52,14 +55,14 @@ const Crop: FC<Props> = (props) => {
         {...cropProps}
         src={url}
         style={{ width: 800, height: 600 }}
-        preview={`.${styles["img-preview"]}`}
+        preview={`.img-preview-${timestamp}`}
         guides={true}
-        autoCropArea={0.8}
+        autoCropArea={1}
         movable={true} // 是否允许移动图片
-        zoomTo={2}
+        zoomTo={1}
         viewMode={2}
-        minCropBoxHeight={10}
-        minCropBoxWidth={10}
+        minCropBoxHeight={50}
+        minCropBoxWidth={50}
         background={false}
         responsive={true}
         cropBoxResizable={true}
@@ -74,7 +77,7 @@ const Crop: FC<Props> = (props) => {
     <div className={styles["crop-preview"]}>
       <div className={styles["title"]}>图片预览</div>
       <div className={styles["preview-box"]}>
-        <div className={styles["img-preview"]} />
+        <div className={`${styles["img-preview"]} img-preview-${timestamp}`} />
       </div>
       <Button size="large" type="primary" onClick={handleConfirmCropper} disabled={updataLoading} loading={updataLoading}>确认裁剪</Button>
     </div>
