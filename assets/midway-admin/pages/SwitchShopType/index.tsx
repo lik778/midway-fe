@@ -31,8 +31,6 @@ const SwitchShopType = () => {
       const res = await getShopListApi(values)
       setGetDataLoading(false)
       setDataList(res)
-      message.success('操作成功')
-
     } else {
       message.error('请至少输入一个搜索项！')
     }
