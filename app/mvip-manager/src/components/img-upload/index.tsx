@@ -67,7 +67,7 @@ export const ImgUpload = (props: Props) => {
     const txt = text || ''
     const cls = disabled ? 'upload-btn disabled' : 'upload-btn'
     return (
-      <div className={cls}>
+      <div className={cls} style={itemWidth ? { width: itemWidth } : {}}>
         <PlusOutlined />
         <div className='upload-img'>{txt}</div>
       </div>
@@ -222,6 +222,8 @@ export const ImgUpload = (props: Props) => {
         {fileList.length < maxLength && uploadButton}
       </Upload>
       <Modal
+        title="预览图片"
+        width={800}
         visible={previewVisible}
         onOk={handlePreviewCancel}
         onCancel={handlePreviewCancel}>
