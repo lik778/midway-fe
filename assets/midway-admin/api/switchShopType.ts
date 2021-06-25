@@ -4,10 +4,10 @@ import { postApi } from '../api/base';
 import { SearchShopListItem, GetShopListParams } from '../interfaces/switchShopType';
 
 export const getShopListApi = (params: GetShopListParams): Promise<SearchShopListItem[]> => {
-  return postApi('/api/midway/backend/shop/search', params)
+  return postApi('/api/midway/manager/shop/search', params)
 }
 
 // 传店铺id shopId
 export const setShopTypeApi = (params: { id: number }): Promise<null> => {
-  return postApi('/api/midway/backend/shop/switchTemplate', params)
+  return postApi('/api/midway/manager/shop/switchTemplate', params)
 }
