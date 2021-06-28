@@ -58,6 +58,12 @@ html
             } else {
                 window.isRedTopbar = '';
             }
+            let isSem = '#{ isSem }';
+            if(isSem){
+                window.isSem = isSem
+            } else {
+                window.isSem =  '';
+            }
         include ../../vendor/baidutongji.pug
         //-TODO:53客服线下开发先注释掉
         include ../../vendor/53kf.pug

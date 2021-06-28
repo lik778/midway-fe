@@ -47,11 +47,11 @@ export class SiteService {
       // domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      domain = 'zmlc2b.shop.baixing.cn'
+      // domain = 'zmlc2b.shop.baixing.cn'
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      // domain = 'shop.baixing.cn'
+      domain = 'shop.baixing.cn'
 
     }
     return domain
@@ -138,6 +138,13 @@ export class SiteService {
   // TODO;
   public getSearchPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.prefixPath}/home/search`, params,
+      this.setPageHeaders(shopName, device, domain));
+  }
+
+
+  // 获取400号码
+  public getPhone400Number(shopName: string, device: string, domain: string): Promise<any> {
+    return this.requestService.post(`${this.prefixPath}/vm400/dynamic`, {},
       this.setPageHeaders(shopName, device, domain));
   }
 }
