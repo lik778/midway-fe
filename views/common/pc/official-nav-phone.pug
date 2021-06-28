@@ -1,0 +1,23 @@
+if phone&&phone.content
+	img.phone-icon(src=navPhoneIcon||'//file.baixing.net/202106/ef154a3aecc779ec47020f542b278b7d.png', alt="")
+	if !isSem
+		span.phone-num(style="color:"+navPhoneColor)
+			| #{ phone.content }
+	else 
+		- let union400num =  union400 && union400.length? union400[0]: ''
+		.phone-num-box.hide
+			.phone-num(style="color:"+navPhoneColor)
+				|	#{ union400num }
+			.phone-num-tip.hide(style="border-color:"+navTipBorderColor+";background:"+navTipBackgroundColor)
+				.triangle
+					//- <!-- 底层三角形用于绘制三角形边框 -->
+					em(style="border-bottom-color:"+ navTipBorderColor )
+					//- <!-- 上层三角形用于消除得到镂空效果 -->
+					span(style="border-bottom-color:"+ navTipBackgroundColor )
+				.tip-text(style="color:"+navTipColor)
+					| 电话
+					span.time-num
+						| 180s
+					| 后过期，刷新页面重新获取 
+		.phone-400-action
+			button.btn(data-union400num=union400num||'' style="background:"+navPhoneColor) 查看电话号码

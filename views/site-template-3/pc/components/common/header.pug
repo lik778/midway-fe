@@ -10,18 +10,30 @@
 				p#shop-name(style="display:none") #{shopName}
 			if nav.length > 0 && !isSem
 				.nav-item
-					.text 商户导航
+					.text 商户导航 
 					.down-arrow
 					.nav-dropdown
 						each item in nav.slice(0,10)
 							a.only-oneline(href=item.content) #{ item.name }
 						a.only-oneline(href=aboutLink) 关于我们
-		if phone&&phone.content
-			.nav-right
+	
+		.nav-right
+			if phone&&phone.content
 				img.phone-icon(src="//file.baixing.net/202106/ef154a3aecc779ec47020f542b278b7d.png", alt="")
-				//- TODO; 400字段待填充
-				span.phone-num(data-union400=union400||'')
-					if !isSem
+				if !isSem
+					span.phone-num
 						| #{ phone.content }
-					else 
-						|	#{ union400 && union400.length? union400[0]: '' }
+				else 
+					- union400num =  union400 && union400.length? union400[0]: ''
+					//- - union400num = '测试有号码' 
+					.phone-num-box.hide
+						span.phone-num
+							|	#{ union400num }
+						.phone-num-tip.hide
+							| 号码将在
+							span.time-num 
+								| 180s
+							| 后过期，刷新页面重新获取 
+					.phone-400-action
+						| 400
+						button.btn(data-union400num=union400num||'') 查看号码

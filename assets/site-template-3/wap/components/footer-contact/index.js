@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker';
+import { initPhone } from '../../../../common/wap/contact-phone-btn'
 
 // input自带的select()方法在苹果端无法进行选择，所以需要自己去写一个类似的方法
 // 选择文本。createTextRange(setSelectionRange)是input方法
@@ -13,7 +14,7 @@ function selectText(textbox, startIndex, stopIndex) {
   } else {//firefox/chrome
     textbox.setSelectionRange(startIndex, stopIndex);
     textbox.focus();
-  }
+  } 
 }
 
 const copyText = (text, dom) => {
@@ -33,29 +34,27 @@ const copyText = (text, dom) => {
   }
   document.activeElement.blur()
   input.remove();
-  alert( "微信号已复制成功,请打开微信添加");
+  alert("微信号已复制成功,请打开微信添加");
 };
 
-export const footerContactModule = function(){
-	$(document).on('ready',function(){
-		const copyAddWechat = $('.wechat-box');
-		copyAddWechat.on('click',function(){
-			const data = $(this).data('value')
-			if ( data != '' ){
-				copyText(data, copyAddWechat)
+export const footerContactModule = function () {
+  $(document).on('ready', function () {
+    const copyAddWechat = $('.wechat-box');
+    copyAddWechat.on('click', function () {
+      const data = $(this).data('value')
+      if (data != '') {
+        copyText(data, copyAddWechat)
       }
-		})
+    })
 
-		//点击底部浮层打点
-		$(".online-box").on("click",()=>{
-			eventTracker("53kf-wap", "bottom-wap")
-		});
-		$(".wechat-box").on("click",()=>{
-			eventTracker("wechat-wap", "bottom-wap")
-		});
-		$(".phone-box").on("click",()=>{
-			eventTracker("phone-wap", "bottom-wap")
-		})
-	})
+    //点击底部浮层打点
+    $(".online-box").on("click", () => {
+      eventTracker("53kf-wap", "bottom-wap")
+    });
+    $(".wechat-box").on("click", () => {
+      eventTracker("wechat-wap", "bottom-wap")
+    });
+  })
+  initPhone()
 }
 

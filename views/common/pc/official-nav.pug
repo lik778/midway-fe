@@ -1,0 +1,8 @@
+if nav.length > 0 && !isSem
+	.nav-item
+		.text 商户导航 
+		.down-arrow
+		.nav-dropdown
+			each item in nav.slice(0,10)
+				a.only-oneline(href=item.content) #{ item.name }
+			a.only-oneline(href=aboutLink) 关于我们
