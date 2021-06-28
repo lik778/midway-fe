@@ -16,11 +16,14 @@ export default (props: any) => {
             <p>优选推管理后台</p>
           </Header>
           <Menu mode="inline" id="base-menu">
-            <SubMenu  key="verify" title="审核">
+            <SubMenu key="verify" title="审核">
               <Menu.Item key="list">
                 <Link to="/verify-word">词根审核</Link>
               </Menu.Item>
             </SubMenu>
+            <Menu.Item key="switch-shop-type">
+              <Link to="/switch-shop-type">模板切换</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">
@@ -28,7 +31,7 @@ export default (props: any) => {
             <p>管理员用户</p>
           </Header>
           <Content className="layout-content-box">
-            { React.cloneElement(props.children) }
+            {React.cloneElement(props.children)}
           </Content>
         </Layout>
       </Layout>
