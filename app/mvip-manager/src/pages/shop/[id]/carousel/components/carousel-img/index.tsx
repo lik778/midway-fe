@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import _ from "lodash";
 
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
@@ -22,7 +22,7 @@ interface Props {
 
 export default (props: Props) => {
   const { type, txt, tip, position } = props
-  const bannerList = useRef<any[]>([]);
+  const [bannerList, setBannerList] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const itemRenderWidth = type === 1 ? 531 : 264
   // 获取店铺id
@@ -47,7 +47,7 @@ export default (props: Props) => {
         l['url'] = l.displayImgUrl
         l['status'] = 'done'
       })
-      bannerList.current = list
+      setBannerList(list)
       setIsLoading(false)
     } else {
       errorMessage(`获取图片失败，请稍后重试。`)
@@ -55,9 +55,9 @@ export default (props: Props) => {
   }
 
   const createBannerImg = async (url: string) => {
-    const maxWeight = bannerList.current.length
-      ? Math.max(...bannerList.current.map(x => +x.weight))
-      : 0;
+    const maxWeight = bannerList.length
+      ? Math.max(...bannerList.map(x => +x.weight))
+      : 0
     return await createBannerApi(Number(params.id), {
       url,
       type,
@@ -71,22 +71,22 @@ export default (props: Props) => {
     return await deleteBannerApi(Number(params.id), {id})
   }
 
-  console.log("banner111: ", bannerList.current.length);
+  console.log("banner111: ", bannerList.length)
 
   // 目前受控数据每次变动的范围只有一个子项（新增或删除），
   // 图片裁剪也是只改了一个子项（新增且删除），
   // 后期如果 img-upload API 变动，这个地方需要重新确认，
   // 比如涉及到多图片上传时的交互，部分失败的情况
   const handleValueChange = useCallback((url: string | string[]) => {
-    console.log("banner222: ", bannerList.current.length);
+    console.log('banner222: ', bannerList.length)
     const urls = !url ? [] : url instanceof Array ? [...url] : [url]
 
-    const toRemoves = bannerList.current
+    const toRemoves = bannerList
       .filter(x => !urls.find(y => isSameImage(x, y)))
-      .filter(notNull);
+      .filter(notNull)
     const toCreates = urls
-      .filter(x => !bannerList.current.find(y => isSameImage(x, y)))
-      .filter(notNull);
+      .filter(x => !bannerList.find(y => isSameImage(x, y)))
+      .filter(notNull)
 
     const resRemoves = toRemoves.map(x => deleteBannerImg(x.id))
     const resCreates = toCreates.map(x => createBannerImg(x))
@@ -120,7 +120,7 @@ export default (props: Props) => {
 
   // 移动，正数向后移动，负数向前移动
   const handleMove = async (file: any, order: number) => {
-    const tempFileList = [...bannerList.current];
+    const tempFileList = [...bannerList]
     const index = tempFileList.findIndex(x => x === file)
     const length = tempFileList.length
     tempFileList.splice(index, 1)
@@ -129,7 +129,7 @@ export default (props: Props) => {
       0,
       file
     )
-    bannerList.current = tempFileList
+    setBannerList(tempFileList)
     await handleOrdersChange(tempFileList.map(x => x.id))
   }
 
@@ -138,7 +138,7 @@ export default (props: Props) => {
       title: "move-up",
       action: (file: any) => handleMove(file, -1),
       icon: (file: any) => {
-        const isFirstOrder = file === bannerList.current[0]
+        const isFirstOrder = file === bannerList[0]
         return isFirstOrder ? null : <UpOutlined />
       },
     },
@@ -146,8 +146,7 @@ export default (props: Props) => {
       title: "move-down",
       action: (file: any) => handleMove(file, 1),
       icon: (file: any) => {
-        const isLastOrder =
-          file === bannerList.current[bannerList.current.length - 1];
+        const isLastOrder = file === bannerList[bannerList.length - 1]
         return isLastOrder ? null : <DownOutlined />
       },
     },
@@ -169,7 +168,7 @@ export default (props: Props) => {
             text="上传图片"
             maxSize={3}
             maxLength={5}
-            fileList={bannerList.current}
+            fileList={bannerList}
             itemWidth={itemRenderWidth}
             cropProps={{ aspectRatio: 1920 / 450 }}
             actionBtn={renderIcons}
