@@ -74,8 +74,8 @@ export const ImgUpload = (props: Props) => {
     );
   }, [text, disabled])
 
-  // 包装一下setFileList函数 做一下图片处理
-  const decorateSetFileList = useCallback(async (fileList: UploadFile[]) => {
+  // 包装一下setFileList函数，不需要触发onChange时调用
+  const createFileList = async (fileList: UploadFile[]) => {
     const newFileList: UploadFile<any>[] = []
     for (let i = 0; i < fileList.length; i++) {
       if (fileList[i].preview) {
@@ -88,16 +88,23 @@ export const ImgUpload = (props: Props) => {
       }
     }
     setFileList(newFileList)
+    return newFileList
+  }
+
+  // 包装一下setFileList函数，需要触发onChange时调用 做一下图片处理
+  const decorateSetFileList = useCallback(async (fileList: UploadFile[]) => {
+    const newFileList = await createFileList(fileList)
+    if (!onChange) return
     //  这里用嵌套if是为了理解简单
     if (newFileList.length === 0) {
-      onChange!('');
+      onChange('');
     } else if (newFileList.length === 1) {
       if (newFileList[0].url) {
-        onChange!(getUrl(newFileList[0].url!));
+        onChange(getUrl(newFileList[0].url!));
       }
     } else {
       if (newFileList.every(item => item.url)) {
-        onChange!(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)));
+        onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)));
       }
     }
   }, [setFileList])
@@ -107,9 +114,9 @@ export const ImgUpload = (props: Props) => {
     if (editData) {
       if (name && editData[name]) {
         if (Array.isArray(editData[name])) {
-          decorateSetFileList(editData[name].map((item: any, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item })))
+          createFileList(editData[name].map((item: any, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item })))
         } else {
-          decorateSetFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData[name], thumbUrl: editData[name] }] as UploadFile[])
+          createFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData[name], thumbUrl: editData[name] }] as UploadFile[])
         }
       }
     }
@@ -149,7 +156,7 @@ export const ImgUpload = (props: Props) => {
         })
         decorateSetFileList(nowFileList)
       } else {
-        decorateSetFileList([...e.fileList])
+        createFileList([...e.fileList])
       }
     }
   }
