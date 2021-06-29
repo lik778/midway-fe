@@ -8,6 +8,7 @@ import ImgItem from './components/img-item'
 import { ExpandShowUploadListInterface, ActionBtnListItem } from './data';
 import Crop from '@/components/crop'
 import { CropProps } from '../crop/data';
+
 const getBase64 = function (file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -38,23 +39,37 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 }
 
 interface Props {
-  name: string;
-  editData: any;
+  name?: string;
+  editData?: any;
   text: string;
   maxSize?: number;
   imgType?: "text" | "picture-card" | "picture" | undefined;
   maxLength: number;
   disabled?: boolean | undefined;
-  onChange?(url: string | string[]): void;
   fileList?: any[];
   itemWidth?: number | string
   showUploadList?: ExpandShowUploadListInterface
   cropProps: CropProps,
+  // cropOnUpload: Boolean,
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
+  onChange(url: string | string[]): void;
 }
 export const ImgUpload = (props: Props) => {
-  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps, actionBtn } = props
-  const [fileList, setFileList] = useState<any[]>([])
+  const {
+    fileList: rawFileList = [],
+    editData,
+    name,
+    maxSize,
+    text,
+    maxLength,
+    disabled,
+    itemWidth,
+    showUploadList,
+    cropProps,
+    actionBtn,
+    onChange,
+  } = props
+  const [fileList, setFileList] = useState<any[]>(rawFileList)
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
   const [previewVisible, setPreviewVisible] = useState(false)
@@ -62,6 +77,7 @@ export const ImgUpload = (props: Props) => {
 
   const [cropVisible, setCropVisible] = useState(false)
   const [cropItem, setCropItem] = useState<UploadFile<any>>()
+  const [cropPreviewURL, setCropPreviewURL] = useState<string>('')
 
   const uploadButton = useMemo(() => {
     const txt = text || ''
@@ -89,15 +105,17 @@ export const ImgUpload = (props: Props) => {
     }
     setFileList(newFileList)
     //  这里用嵌套if是为了理解简单
-    if (newFileList.length === 0) {
-      onChange!('');
-    } else if (newFileList.length === 1) {
-      if (newFileList[0].url) {
-        onChange!(getUrl(newFileList[0].url!));
-      }
-    } else {
-      if (newFileList.every(item => item.url)) {
-        onChange!(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)));
+    if (onChange) {
+      if (newFileList.length === 0) {
+        onChange('');
+      } else if (newFileList.length === 1) {
+        if (newFileList[0].url) {
+          onChange(getUrl(newFileList[0].url!));
+        }
+      } else {
+        if (newFileList.every(item => item.url)) {
+          onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)));
+        }
       }
     }
   }, [setFileList])
@@ -118,6 +136,10 @@ export const ImgUpload = (props: Props) => {
   useEffect(() => {
     initEdit()
   }, [editData])
+
+  useEffect(() => {
+    setFileList(rawFileList)
+  }, [rawFileList])
 
   const beforeUpload = (file: any) => {
     if (file.url) {
@@ -156,8 +178,11 @@ export const ImgUpload = (props: Props) => {
 
   // 预览
   const handlePreview = async (file: UploadFile) => {
-    setPreviewImage(file.preview!)
-    setPreviewVisible(true)
+    const previewURL = file.preview || file.url
+    if (previewURL) {
+      setPreviewImage(previewURL)
+      setPreviewVisible(true)
+    }
   }
 
   const handlePreviewCancel = () => {
@@ -166,14 +191,19 @@ export const ImgUpload = (props: Props) => {
 
   // 删除
   const handleRemove = (file: UploadFile) => {
-    const nowFileList = fileList.filter(item => item.uid !== file.uid)
-    decorateSetFileList(nowFileList)
+    const newFileList = fileList.filter(item => item.uid !== file.uid)
+    const removedFileList = fileList.filter(item => item.uid === file.uid)
+    decorateSetFileList(newFileList)
   }
 
   // 裁剪
   const handleCrop = (file: UploadFile) => {
-    setCropItem(file)
-    setCropVisible(true)
+    const previewURL = file.preview || file.url
+    if (previewURL) {
+      setCropItem(file)
+      setCropPreviewURL(previewURL)
+      setCropVisible(true)
+    }
   }
 
   const handleCropClose = () => {
@@ -217,7 +247,21 @@ export const ImgUpload = (props: Props) => {
         onPreview={handlePreview}
         isImageUrl={(file) => { return true }}
         disabled={disabled}
-        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} showUploadList={showUploadList} width={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
+        itemRender={(
+            originNode: React.ReactElement,
+            file: UploadFile,
+            fileList?: Array<UploadFile<any>>
+          ) => (
+            <ImgItem
+              file={file}
+              showUploadList={showUploadList}
+              width={itemWidth}
+              onPreview={handlePreview}
+              onRemove={handleRemove}
+              onCrop={handleCrop}
+              actionBtn={actionBtn}
+            />
+        )}
       >
         {fileList.length < maxLength && uploadButton}
       </Upload>
@@ -237,7 +281,11 @@ export const ImgUpload = (props: Props) => {
         maskClosable={false}
         onCancel={handleCropClose}
       >
-        <Crop cropProps={cropProps} url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
+        <Crop
+          cropProps={cropProps}
+          url={cropPreviewURL}
+          handleCropSuccess={handleCropSuccess}
+        />
       </Modal>
     </div>
   )
