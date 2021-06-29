@@ -65,6 +65,7 @@ export interface ImgItemParam {
   type: number;
   url: string;
   position: number;
+  weight: number;
 }
 
 export interface ImgDeleteParam {
