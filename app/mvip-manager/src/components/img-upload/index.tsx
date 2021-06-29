@@ -38,7 +38,6 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 }
 
 interface Props {
-  name: string;
   editData: any;
   text: string;
   maxSize?: number;
@@ -53,7 +52,7 @@ interface Props {
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
 }
 export const ImgUpload = (props: Props) => {
-  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps, actionBtn } = props
+  const { editData, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps, actionBtn } = props
   const [fileList, setFileList] = useState<any[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
@@ -105,12 +104,10 @@ export const ImgUpload = (props: Props) => {
   // 修改值初始化
   const initEdit = () => {
     if (editData) {
-      if (name && editData[name]) {
-        if (Array.isArray(editData[name])) {
-          decorateSetFileList(editData[name].map((item: any, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item })))
-        } else {
-          decorateSetFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData[name], thumbUrl: editData[name] }] as UploadFile[])
-        }
+      if (Array.isArray(editData)) {
+        decorateSetFileList(editData.map((item: string, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item, size: 0, name: '', originFileObj: null as any, type: '', })))
+      } else {
+        decorateSetFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData, thumbUrl: editData }] as UploadFile[])
       }
     }
   }
