@@ -39,8 +39,7 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 }
 
 interface Props {
-  name?: string;
-  editData?: any;
+  editData: any;
   text: string;
   maxSize?: number;
   imgType?: "text" | "picture-card" | "picture" | undefined;
@@ -58,7 +57,6 @@ export const ImgUpload = (props: Props) => {
   const {
     fileList: rawFileList = [],
     editData,
-    name,
     maxSize,
     text,
     maxLength,
@@ -123,12 +121,10 @@ export const ImgUpload = (props: Props) => {
   // 修改值初始化
   const initEdit = () => {
     if (editData) {
-      if (name && editData[name]) {
-        if (Array.isArray(editData[name])) {
-          decorateSetFileList(editData[name].map((item: any, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item })))
-        } else {
-          decorateSetFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData[name], thumbUrl: editData[name] }] as UploadFile[])
-        }
+      if (Array.isArray(editData)) {
+        decorateSetFileList(editData.map((item: string, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item, size: 0, name: '', originFileObj: null as any, type: '', })))
+      } else {
+        decorateSetFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData, thumbUrl: editData }] as UploadFile[])
       }
     }
   }
