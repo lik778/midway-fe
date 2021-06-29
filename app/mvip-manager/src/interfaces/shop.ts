@@ -241,3 +241,13 @@ export interface ShopBasicInfo {
     union400: string[]
   },
 }
+
+export interface BannerListItem {
+  displayImgUrl: string
+  hrefUrl: string
+  id: number
+  imgUrl: string
+  position: number
+  status: number
+  weight: number
+}
