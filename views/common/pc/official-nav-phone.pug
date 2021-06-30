@@ -1,13 +1,16 @@
 if phone&&phone.content
 	img.official-nav-phone-icon(src=navPhoneIcon||'//file.baixing.net/202106/ef154a3aecc779ec47020f542b278b7d.png', alt="")
-	if !isSem
-		span.official-nav-phone-num(style="color:"+navPhoneColor)
-			| #{ phone.content }
-	else 
-		- let union400num =  union400 && union400.length? union400[0]: ''
-		.official-nav-phone-num-box.hide
-			.official-nav-phone-num(style="color:"+navPhoneColor)
-				|	#{ union400num }
+	.official-nav-phone-block
+		if !isSem
+			span.official-nav-phone-num(style="color:"+navPhoneColor)
+				| #{ phone.content }
+		else
+			- let union400num =  union400 && union400.length? union400[0]: ''
+			.official-nav-phone-400-action
+				button.btn(data-union400num=union400num||'' style="background:"+navPhoneColor) 查看电话号码
+			.official-nav-phone-num-box.hide
+				.official-nav-phone-num(style="color:"+navPhoneColor)
+					|	#{ union400num }
 			.official-nav-phone-num-tip.hide(style="border-color:"+navTipBorderColor+";background:"+navTipBackgroundColor)
 				.triangle
 					//- <!-- 底层三角形用于绘制三角形边框 -->
@@ -19,5 +22,4 @@ if phone&&phone.content
 					span.time-num
 						| 180s
 					| 后过期，刷新页面重新获取 
-		.official-nav-phone-400-action
-			button.btn(data-union400num=union400num||'' style="background:"+navPhoneColor) 查看电话号码
+				
