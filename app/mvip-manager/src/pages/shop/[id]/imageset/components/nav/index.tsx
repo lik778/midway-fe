@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Input, Form, Modal } from "antd";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 
+import { successMessage, errorMessage } from "@/components/message";
+import { createImagesetAlbum } from "@/api/shop";
+// import { createAlbumValidator } from './config'
+
 import styles from "./index.less";
 
 const FormItem = Form.Item
@@ -14,17 +18,33 @@ interface Props {
 export default (props: Props) => {
   const { shopId, refresh } = props;
   const [form] = Form.useForm();
-  const [createAlbumModal, setCreateAlbumModal] = useState(true);
-  // const [createAlbumModal, setCreateAlbumModal] = useState(false);
+  const [createAlbumModal, setCreateAlbumModal] = useState(false);
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
 
-  const createAlbum = () => {
-    setCreateAlbumModal(true);
-    setCreateAlbumLoading(true);
-    setTimeout(() => {
-      setCreateAlbumModal(false);
-      setCreateAlbumLoading(false);
-    }, 2000);
+  // 新增相册
+  const createAlbum = async () => {
+    form.validateFields()
+      .then(formvals => {
+        setCreateAlbumModal(true);
+        setCreateAlbumLoading(true);
+        createImagesetAlbum(shopId, formvals)
+          .then(res => {
+            if (res.success) {
+              successMessage("创建成功");
+              refresh && refresh();
+              form.resetFields();
+              setCreateAlbumModal(false);
+            } else {
+              throw new Error(res.message || "出错啦，请稍后重试");
+            }
+          })
+          .catch(error => {
+            errorMessage(error.message);
+          })
+          .finally(() => {
+            setCreateAlbumLoading(false);
+          });
+      })
   };
 
   const uploadImage = () => {};
@@ -68,6 +88,20 @@ export default (props: Props) => {
           <Form.Item name="name" label="相册名称">
             <Input />
           </Form.Item>
+          form={form}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+        >
+          <FormItem
+            name="name"
+            label="相册名称"
+            rules={[
+              { required: true, message: '请填写相册名称' },
+              { pattern: /^[\s\S]{2,20}$/, message: "字数限制为 2～20 个字符" },
+            ]}
+          >
+            <Input placeholder="请输入相册名称" />
+          </FormItem>
         </Form>
         <div className={styles["extra"]}>
           <div className={styles["name-tip"]}>
@@ -76,7 +110,9 @@ export default (props: Props) => {
           <Button
             className={styles["confirm-btn"]}
             type="primary"
-            onClick={uploadImage}
+            htmlType="submit"
+            loading={createAlbumLoading}
+            onClick={createAlbum}
           >
             确定
           </Button>

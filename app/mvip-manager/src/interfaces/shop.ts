@@ -240,3 +240,7 @@ export interface ShopBasicInfo {
     union400: string[]
   },
 }
+
+export interface CreateImagesetAlbumParam {
+  name: string;
+}
