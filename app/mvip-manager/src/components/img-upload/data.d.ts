@@ -7,7 +7,7 @@ export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
 }
 
 export interface ActionBtnListItem {
-  icon: (file: UploadFile) => React.ReactElement,
-  action: (file: UploadFile) => any
+  icon: (file: UploadFile, fileList: UploadFile[]) => (React.ReactElement | null),
+  action: (file: UploadFile, fileList: UploadFile[]) => any
   title?: string // 动作描述
 }

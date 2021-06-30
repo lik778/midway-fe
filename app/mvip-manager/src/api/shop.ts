@@ -11,10 +11,11 @@ import {
   ImgListParam,
   TdkSaveMeta,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams
+  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams, BannerListItem
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
+import { ListRes } from '@/interfaces/base';
 
 // 店铺初始信息
 export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> => {
@@ -75,7 +76,7 @@ export const getShopInfoApi = (shopId: number) => {
 }
 
 // banner 列表
-export const getBannerListApi = (shopId: number, params: ImgListParam) => {
+export const getBannerListApi = (shopId: number, params: ImgListParam): Promise<ServiceResponse<ListRes<BannerListItem[]>>> => {
   return postApiData(ServicePath.SHOP, `midway/backend/banner/listing`, params, setShopHeader(shopId))
 }
 
