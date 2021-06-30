@@ -19,7 +19,7 @@ export const productForm: FormConfig = {
       formItemWidth: 150, label: '用于正文', name: 'contentImg', type: FormType.ImgUpload, required: false, maxLength: 5, images: [{ text: '用于正文介绍', name: 'contentImg', maxSize: 3, cropProps: { aspectRatio: 300 / 200 }, imageItemWidth: '148px' }],
       tip: '图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于300*200'
     },
-    { className: 'f-textarea', label: '服务描述', name: 'content', type: FormType.Textarea, required: true, minLength: 100, maxLength: 1000, placeholder: '请输入简介，100～1000个字' },
+    { className: 'f-textarea', label: '服务描述', name: 'content', type: FormType.Textarea, required: true, minLength: 100, maxLength: 3000, placeholder: '请输入简介，100～3000个字' },
   ],
   buttonConfig: { text: '提交', size: 'large', className: 'mvip-btn' }
 }
