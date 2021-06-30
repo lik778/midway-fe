@@ -38,7 +38,8 @@ html
         //-为了提供给留咨参数
         if shopName
             p#shop-name(style="display:none") #{shopName}
-        block content
+        #layout-content
+            block content
 
         block footer
 
@@ -56,6 +57,12 @@ html
                 window.isRedTopbar = isRedTopbar
             } else {
                 window.isRedTopbar = '';
+            }
+            let isSem = '#{ isSem }';
+            if(isSem){
+                window.isSem = isSem
+            } else {
+                window.isSem =  '';
             }
         include ../../vendor/baidutongji.pug
         include ../../vendor/53kf.pug

@@ -11,7 +11,7 @@ html
     body
         //-初始化公共数据
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
-        - const { company, person, copyRight } = renderData.basic
+        - const { company, person, copyRight, shop } = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo, isRedTopbar } = renderData
         //- 名称先取企业别称 后取企业名称
         - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
@@ -29,24 +29,34 @@ html
         - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
         block header
             include ../../common/pc/official-header.pug
-            include ./components/common/header.pug
-
-        block content
-        if !isSem
-            include ../../common/pc/customer-service.pug
+            +officialHeader({navConfig:{navPhoneColor:'#FF2D38',navPhoneIcon:'//file.baixing.net/202106/75250dde9ca3ecf709da822454963017.png'}})
+            
+        #layout-content
+            block content
 
         block footer
             //- include ../../common/pc/footer.pug
             include ../../common/pc/official-footer.pug
+                
+        if !isSem
+            include ../../common/pc/customer-service.pug
             
     block append scripts
         script.
+            window.domainType = '#{shop.domainType}';
             window.shopId = #{shopId};
+            //  '#{ 变量 }'实际上是一个字符串 'true/false'
             let isRedTopbar = '#{ isRedTopbar }';
             if(isRedTopbar){
                 window.isRedTopbar = isRedTopbar
             } else {
-                window.isRedTopbar = '';
+                window.isRedTopbar = false;
+            }
+            let isSem = '#{ isSem }';
+            if(isSem){
+                window.isSem = isSem
+            } else {
+                window.isSem =  '';
             }
         include ../../vendor/baidutongji.pug
         include ../../vendor/53kf.pug
