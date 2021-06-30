@@ -5,6 +5,7 @@ import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { productSwiper } from '../components/home/product-swiper';
 import { viewPhone } from '../components/home/viewPhone';
+import { initContactFormSem } from '../../../common/pc/contact-form-sem'
 
 
 leaveLeads()
@@ -19,7 +20,6 @@ $(document).on('ready', function () {
       delay: 3000,
       waitForTransition: true
     },
-
     pagination: {
       el: '#banner-list .swiper-pagination',
       clickable: true,
@@ -30,17 +30,9 @@ $(document).on('ready', function () {
       prevEl: '#banner-list .swiper-button-prev',
     },
   });
-
   // sem需要禁止二跳
   if (isSem) {
-    function gotoContactUs(e) {
-      e.preventDefault()
-      window.location.href = '#contactUsSem'
-    }
-
-    $('.official-nav-block-bgc a').on('click', gotoContactUs)
-    $('.banner-list a').on('click', gotoContactUs)
-    $('.layout-content a').on('click', gotoContactUs)
+    initContactFormSem($('.home-contact-us'), $('#layout-content>.container'), $('.official-nav-block-bgc a,.banner-list a,#layout-content a'))
   }
 })
 

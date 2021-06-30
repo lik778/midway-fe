@@ -37,9 +37,12 @@ block content
 						include ../components/home/news-center.pug
 						.new-center.clearfix
 								+news-box('新闻资讯', articleList)
-
-				+home-title('联系我们')
-				include ../components/home/contact-us.pug
+								
+				.home-contact-us
+					+home-title('联系我们')
+					include ../components/home/contact-us.pug
+				//- 用于sem禁止外跳
+				include ../../../common/pc/contact-form-sem.pug
 
 block scripts
 		:combine(fileName="site-template-3-home-pc.js")
