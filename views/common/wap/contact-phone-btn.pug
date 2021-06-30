@@ -5,7 +5,7 @@ mixin contactPhoneBtn(bgColor)
 	else 
 		- let union400num =  union400 && union400.length? union400[0]: ''
 		button.footer-phone-sem-box.btn-text(data-union400num=union400num||'' style="background:"+bgColor)
-			| 获取电话
+			| 拨打电话
 		a.footer-phone-box.hide(style="background:"+bgColor , href="tel:" + union400num)
 			p.phone-num #{union400num}
 			.time-tip.hide 
