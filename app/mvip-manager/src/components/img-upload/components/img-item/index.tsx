@@ -6,6 +6,7 @@ import { ActionBtnListItem, ExpandShowUploadListInterface } from '../../data'
 
 interface Props {
   file: UploadFile,
+  fileList: UploadFile[],
   showUploadList?: ExpandShowUploadListInterface,
   width?: number | string // 图片块的宽度
   actionBtn?: ActionBtnListItem[]
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const ImgItem: FC<Props> = (props) => {
-  const { file, width, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
+  const { file, fileList, width, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
   const haveShowUploadList = useMemo<boolean>(() => {
     return typeof showUploadList !== 'undefined'
   }, [showUploadList])
@@ -61,11 +62,14 @@ const ImgItem: FC<Props> = (props) => {
             </a>)
         }
         {
-          actionBtn && actionBtn.map((item, index) => <div className={styles['action-btn']} title={item.title} onClick={
-            () => item.action(file)
-          } key={`${index}-${item.title}`}>
-            {item.icon(file)}
-          </div>)
+          actionBtn && actionBtn.map((item, index) => {
+            const icon = item.icon(file,fileList)
+            return icon && <div className={styles['action-btn']} title={item.title} onClick={
+              () => item.action(file, fileList)
+            } key={`${index}-${item.title}`}>
+              {icon}
+            </div>
+          })
         }
       </div>
     </div>
