@@ -60,7 +60,7 @@ const BasisTab = (props: Props) => {
       const { type } = curShopInfo;
       const isB2B = Boolean(type === ProductType.B2B)
       const { hasMultiShopRights } = shopStatus;
-      console.log(shopStatus)
+
       return menuList.map(item => {
         if (item.key === ShopBasisType.SEO) {
           if (isB2B) {
