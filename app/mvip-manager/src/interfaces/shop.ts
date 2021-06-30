@@ -65,6 +65,7 @@ export interface ImgItemParam {
   type: number;
   url: string;
   position: number;
+  weight: number;
 }
 
 export interface ImgDeleteParam {
@@ -239,4 +240,14 @@ export interface ShopBasicInfo {
     kf53StyleUrl: any,
     union400: string[]
   },
+}
+
+export interface BannerListItem {
+  displayImgUrl: string
+  hrefUrl: string
+  id: number
+  imgUrl: string
+  position: number
+  status: number
+  weight: number
 }

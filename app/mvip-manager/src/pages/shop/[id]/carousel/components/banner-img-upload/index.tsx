@@ -3,9 +3,14 @@ import { UploadFile } from 'antd/lib/upload/interface';
 import { Upload, Modal, Button, } from 'antd';
 import { PlusOutlined, UpOutlined, DownOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { errorMessage } from '@/components/message';
+import Crop from "@/components/crop";
+import { CropProps } from "@/components/crop/data";
 import _ from 'lodash'
 
 import './index.less'
+
+// ! TODO
+// ! 店铺轮播图设置中的裁剪迁移到 @/components/img-upload 没有其它文件依赖本图片上传时可删除此文件
 
 const getBase64 = function (file: Blob) {
   return new Promise((resolve, reject) => {

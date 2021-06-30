@@ -2,7 +2,7 @@ import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useM
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
 import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
-import { ImgUpload } from '@/components/img-upload';
+import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
@@ -145,7 +145,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                  <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} itemWidth={img.imageItemWidth} showUploadList={img.showUploadList} cropProps={img.cropProps} />
+                  <ImgUpload key={img.text} text={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} itemWidth={img.imageItemWidth} showUploadList={img.showUploadList} cropProps={img.cropProps} />
                 </Form.Item>
                 )
               })
