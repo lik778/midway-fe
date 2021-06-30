@@ -45,9 +45,9 @@ block content
 
     //-留言资讯模块
     include ../components/contact-form.pug
-
-//-block footer
-    include ../components/footer.pug
+    
+    //- 用于sem禁止外跳
+    include ../../../common/wap/contact-form-sem.pug
 
 block scripts
     :combine(fileName="site-template-3-home-wap.js")
