@@ -40,7 +40,7 @@ $(document).on('ready', function () {
 
     $('.official-nav-block-bgc a').on('click', gotoContactUs)
     $('.banner-list a').on('click', gotoContactUs)
-    $('.container a').on('click', gotoContactUs)
+    $('.layout-content a').on('click', gotoContactUs)
   }
 })
 
