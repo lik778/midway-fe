@@ -32,7 +32,7 @@ $(document).on('ready', function () {
   });
   // sem需要禁止二跳
   if (isSem) {
-    initContactFormSem($('.home-contact-us'), $('#layout-content>.container'), $('.official-nav-block-bgc a,.banner-list a,#layout-content a'))
+    initContactFormSem($('.home-contact-us .contact-us__message'), $('.home-contact-us #contactUs'), $('.official-nav-block-bgc a,.banner-list a,#layout-content a'))
   }
 })
 
