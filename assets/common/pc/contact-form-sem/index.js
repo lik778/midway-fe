@@ -1,5 +1,5 @@
 import $ from 'jquery';
-
+// 这玩意确实可以和wap公用 但是不知道放哪个文件夹，还是算了 
 export const initContactFormSem = function (contactForm, contactFormParent, allA) {
   // sem需要禁止二跳
   const contactFormSem = $('#contactFormSem')

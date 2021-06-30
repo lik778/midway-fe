@@ -3,6 +3,7 @@ import '../layout';
 import $ from 'jquery';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
+import { initContactFormSem } from '../../../common/pc/contact-form-sem'
 
 leaveLeads()
 
@@ -53,13 +54,6 @@ $(document).on('ready', function () {
 	
 	// sem需要禁止二跳
 	if (isSem) {
-		function gotoContactUs(e) {
-			e.preventDefault()
-			window.location.href = '#contactUsSem'
-		}
-
-		$('.official-nav-block-bgc a').on('click', gotoContactUs)
-		$('.banner-content a').on('click', gotoContactUs)
-		$('.layout-content a').on('click', gotoContactUs)
+		initContactFormSem($('.home-contact-us'), $('#layout-content>.container'), $('.official-nav-block-bgc a,.banner-content a,#layout-content a'))
 	}
 })
