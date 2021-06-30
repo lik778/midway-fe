@@ -53,7 +53,6 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-    console.log(data.basic)
     return data
   }
 
@@ -98,13 +97,17 @@ export class BaseSiteController {
     // 这里 isSem: sem === "1" ? true : undefined 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
     const isSem = sem === "1" ? true : undefined
 
-    const companyNameReg = /有限公司|公司|股份有限公司/gi
-    if (data.basic.company.name) {
-      data.basic.company.name = data.basic.company.name.replace(companyNameReg, '')
+    if (isSem) {
+      const companyNameReg = /有限公司|公司|股份有限公司/gi
+      if (data.basic.company.name) {
+        data.basic.company.name = data.basic.company.name.replace(companyNameReg, '')
+      }
+      if (data.basic.company.alias) {
+        data.basic.company.alias = data.basic.company.alias.replace(companyNameReg, '')
+      }
     }
-    if (data.basic.company.alias) {
-      data.basic.company.alias = data.basic.company.alias.replace(companyNameReg, '')
-    }
+
+
 
     return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem });
   }
