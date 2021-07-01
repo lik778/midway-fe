@@ -54,6 +54,6 @@ $(document).on('ready', function () {
 	
 	// sem需要禁止二跳
 	if (isSem) {
-		initContactFormSem($('.home-contact-us'), $('#layout-content>.container'), $('.official-nav-block-bgc a,.banner-content a,#layout-content a'))
+		initContactFormSem($('#contactUs .contact-us__message'), $('#contactUs'), $('.official-nav-block-bgc a,.banner-content a,#layout-content a'))
 	}
 })
