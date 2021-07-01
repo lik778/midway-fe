@@ -36,7 +36,6 @@ export default (props: Props) => {
   }, [bannerList])
   const [getDataLoading, setGetDataLoading] = useState(true)
   const [upDataLoading, setUpDataLoading] = useState(false)
-  const itemRenderWidth = type === 1 ? 531 : 264
   // 获取店铺id
   const params: RouteParams = useParams();
 
@@ -181,7 +180,7 @@ export default (props: Props) => {
             maxSize={3}
             maxLength={5}
             fileList={bannerList}
-            itemWidth={itemRenderWidth}
+            aspectRatio={aspectRatio}
             cropProps={{ aspectRatio }}
             actionBtn={renderIcons}
             onChange={handleChange}

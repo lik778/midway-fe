@@ -8,7 +8,7 @@ interface Props {
   file: UploadFile,
   fileList: UploadFile[],
   showUploadList?: ExpandShowUploadListInterface,
-  width?: number | string // 图片块的宽度
+  aspectRatio?: number // 图片块的宽度
   actionBtn?: ActionBtnListItem[]
   onPreview: (file: any) => Promise<void>,
   onRemove: (file: any) => void,
@@ -17,11 +17,11 @@ interface Props {
 }
 
 const ImgItem: FC<Props> = (props) => {
-  const { file, fileList, width, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
+  const { file, fileList, aspectRatio, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
   const haveShowUploadList = useMemo<boolean>(() => {
     return typeof showUploadList !== 'undefined'
   }, [showUploadList])
-  return <div className={styles['img-item']} style={width ? { width } : {}}>
+  return <div className={styles['img-item']} style={aspectRatio ? { width: aspectRatio * 86 + 16 } : {}}>
     <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.url})` }}>
       <div className={styles['mask']}>
         {
@@ -63,7 +63,7 @@ const ImgItem: FC<Props> = (props) => {
         }
         {
           actionBtn && actionBtn.map((item, index) => {
-            const icon = item.icon(file,fileList)
+            const icon = item.icon(file, fileList)
             return icon && <div className={styles['action-btn']} title={item.title} onClick={
               () => item.action(file, fileList)
             } key={`${index}-${item.title}`}>

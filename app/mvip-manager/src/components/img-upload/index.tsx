@@ -45,7 +45,7 @@ interface Props {
   maxLength: number;
   disabled?: boolean | undefined;
   fileList?: any[];
-  itemWidth?: number | string
+  aspectRatio?: number
   showUploadList?: ExpandShowUploadListInterface
   cropProps: CropProps,
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
@@ -59,7 +59,7 @@ interface Props {
 }
 
 const ImgUpload = (props: Props) => {
-  const { editData, maxSize, text, maxLength, disabled, itemWidth, showUploadList, cropProps, actionBtn, onChange } = props
+  const { editData, maxSize, text, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange } = props
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [lastFileList, setLastFileList] = useState<UploadFile[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
@@ -73,7 +73,7 @@ const ImgUpload = (props: Props) => {
     const txt = text || ''
     const cls = disabled ? 'upload-btn disabled' : 'upload-btn'
     return (
-      <div className={cls} style={itemWidth ? { width: itemWidth } : {}}>
+      <div className={cls} style={aspectRatio ? { width: aspectRatio * 86 + 16 } : {}}>
         <PlusOutlined />
         <div className='upload-img'>{txt}</div>
       </div>
@@ -229,7 +229,7 @@ const ImgUpload = (props: Props) => {
         onPreview={handlePreview}
         isImageUrl={(file) => { return true }}
         disabled={disabled}
-        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} fileList={fileList || []} showUploadList={showUploadList} width={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
+        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} fileList={fileList || []} showUploadList={showUploadList} aspectRatio={aspectRatio} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
       >
         {fileList.length < maxLength && uploadButton}
       </Upload >
