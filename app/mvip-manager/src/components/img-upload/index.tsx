@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
 import { Upload, Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
-import { PlusOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { ImgUploadProps } from './data';
 import { errorMessage } from '@/components/message';
 import ImgItem from './components/img-item'
-import { ExpandShowUploadListInterface, ActionBtnListItem } from './data';
 import Crop from '@/components/crop'
-import { CropProps } from '../crop/data';
+import UploadBtn from './components/upload-btn'
+import ImgUploadContext from './context'
+
 const getBase64 = function (file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -37,24 +38,10 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
   }
 }
 
-interface Props {
-  name: string;
-  editData: any;
-  text: string;
-  maxSize?: number;
-  imgType?: "text" | "picture-card" | "picture" | undefined;
-  maxLength: number;
-  disabled?: boolean | undefined;
-  onChange?(url: string | string[]): void;
-  fileList?: any[];
-  itemWidth?: number | string
-  showUploadList?: ExpandShowUploadListInterface
-  cropProps: CropProps,
-  actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
-}
-export const ImgUpload = (props: Props) => {
-  const { editData, name, maxSize, onChange, text, maxLength, disabled, itemWidth, showUploadList, cropProps, actionBtn } = props
-  const [fileList, setFileList] = useState<any[]>([])
+
+const ImgUpload = (props: ImgUploadProps) => {
+  const { editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange } = props
+  const [fileList, setFileList] = useState<UploadFile[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
   const [previewVisible, setPreviewVisible] = useState(false)
@@ -63,19 +50,17 @@ export const ImgUpload = (props: Props) => {
   const [cropVisible, setCropVisible] = useState(false)
   const [cropItem, setCropItem] = useState<UploadFile<any>>()
 
-  const uploadButton = useMemo(() => {
-    const txt = text || ''
-    const cls = disabled ? 'upload-btn disabled' : 'upload-btn'
-    return (
-      <div className={cls} style={itemWidth ? { width: itemWidth } : {}}>
-        <PlusOutlined />
-        <div className='upload-img'>{txt}</div>
-      </div>
-    );
-  }, [text, disabled])
+  const [atlasVisible, setAtlasVisible] = useState<boolean>(false)
 
-  // 包装一下setFileList函数 做一下图片处理
-  const decorateSetFileList = useCallback(async (fileList: UploadFile[]) => {
+  const [itemWidth] = useState<number | undefined>(() => {
+    return aspectRatio ? aspectRatio * 86 + 16 : undefined
+  })
+
+
+
+  // 为了保证出参入参不被修改 从这以下不能修改
+  // [包装一下setFileList函数，不需要触发onChange时调用,setA]
+  const createFileList = async (fileList: UploadFile[]) => {
     const newFileList: UploadFile<any>[] = []
     for (let i = 0; i < fileList.length; i++) {
       if (fileList[i].preview) {
@@ -88,29 +73,34 @@ export const ImgUpload = (props: Props) => {
       }
     }
     setFileList(newFileList)
+    return newFileList
+  }
+
+  // 包装一下setFileList函数，需要触发onChange时调用 做一下图片处理
+  const decorateSetFileList = useCallback(async (fileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => {
+    const newFileList = await createFileList(fileList)
+    if (!onChange) return
     //  这里用嵌套if是为了理解简单
     if (newFileList.length === 0) {
-      onChange!('');
+      onChange('', file, fileList, oldFileList);
     } else if (newFileList.length === 1) {
       if (newFileList[0].url) {
-        onChange!(getUrl(newFileList[0].url!));
+        onChange(getUrl(newFileList[0].url!), file, newFileList, oldFileList);
       }
     } else {
       if (newFileList.every(item => item.url)) {
-        onChange!(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)));
+        onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)), file, newFileList, oldFileList);
       }
     }
-  }, [setFileList])
+  }, [onChange])
 
   // 修改值初始化
   const initEdit = () => {
     if (editData) {
-      if (name && editData[name]) {
-        if (Array.isArray(editData[name])) {
-          decorateSetFileList(editData[name].map((item: any, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item })))
-        } else {
-          decorateSetFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData[name], thumbUrl: editData[name] }] as UploadFile[])
-        }
+      if (Array.isArray(editData)) {
+        createFileList(editData.map((item: string, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item, size: 0, name: '', originFileObj: null as any, type: '', })))
+      } else {
+        createFileList([{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData, thumbUrl: editData }] as UploadFile[])
       }
     }
   }
@@ -118,6 +108,8 @@ export const ImgUpload = (props: Props) => {
   useEffect(() => {
     initEdit()
   }, [editData])
+  // 为了保证出参入参不被修改 从这以上不能修改
+
 
   const beforeUpload = (file: any) => {
     if (file.url) {
@@ -136,6 +128,7 @@ export const ImgUpload = (props: Props) => {
 
   const handleChange = async (e: any) => {
     if (!!e.file.status) {
+      console.log(e.file)
       if (e.file.status === 'done') {
         const nowFileList = e.fileList.map((item: any) => {
           if (item.url) {
@@ -147,9 +140,9 @@ export const ImgUpload = (props: Props) => {
             }
           }
         })
-        decorateSetFileList(nowFileList)
+        decorateSetFileList(nowFileList, fileList.filter(item => item.uid !== e.file.uid), e.file)
       } else {
-        decorateSetFileList([...e.fileList])
+        createFileList([...e.fileList])
       }
     }
   }
@@ -167,7 +160,7 @@ export const ImgUpload = (props: Props) => {
   // 删除
   const handleRemove = (file: UploadFile) => {
     const nowFileList = fileList.filter(item => item.uid !== file.uid)
-    decorateSetFileList(nowFileList)
+    decorateSetFileList(nowFileList, [...fileList], file)
   }
 
   // 裁剪
@@ -195,15 +188,26 @@ export const ImgUpload = (props: Props) => {
         return item
       }
     })
-    decorateSetFileList(nowFileList)
+    decorateSetFileList(nowFileList, fileList, nowFileList.find(item => cropItem?.uid === item.uid)!)
     handleCropClose()
   }
 
   // TODO; 暂时没有下载功能就 a标签跳新页面了，就不写这个函数了
 
   return (
-    <div className={styles["img-upload"]}>
-      <Upload
+    // 公共配置数据context传下去 不提供修改函数，仅仅用于全局公共数据透传，避免数据修改混乱。
+    <ImgUploadContext.Provider value={{
+      fileList,
+      uploadBtnText,
+      maxSize,
+      maxLength,
+      disabled,
+      aspectRatio,
+      cropProps,
+      onChange: decorateSetFileList
+    }}>
+      <div className={styles["img-upload"]}>
+        {/* <Upload
         action={window.__upyunImgConfig?.uploadUrl}
         data={{
           policy: window.__upyunImgConfig?.uploadParams?.policy,
@@ -217,28 +221,35 @@ export const ImgUpload = (props: Props) => {
         onPreview={handlePreview}
         isImageUrl={(file) => { return true }}
         disabled={disabled}
-        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} showUploadList={showUploadList} width={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
-      >
-        {fileList.length < maxLength && uploadButton}
-      </Upload>
-      <Modal
-        title="预览图片"
-        width={800}
-        visible={previewVisible}
-        onOk={handlePreviewCancel}
-        onCancel={handlePreviewCancel}>
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
-      <Modal
-        width={1220}
-        title="裁剪图片"
-        visible={cropVisible}
-        footer={null}
-        maskClosable={false}
-        onCancel={handleCropClose}
-      >
-        <Crop cropProps={cropProps} url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
-      </Modal>
-    </div>
+        itemRender={(originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
+      ></Upload > */}
+        <div className={styles['img-selected-list']}>
+          {
+            fileList.map((item, _index, arr) => <ImgItem file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>)
+          }
+          {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />}
+        </div>
+        <Modal
+          title="预览图片"
+          width={800}
+          visible={previewVisible}
+          onOk={handlePreviewCancel}
+          onCancel={handlePreviewCancel}>
+          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        </Modal>
+        <Modal
+          width={1220}
+          title="裁剪图片"
+          visible={cropVisible}
+          footer={null}
+          maskClosable={false}
+          onCancel={handleCropClose}
+        >
+          <Crop cropProps={cropProps} url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
+        </Modal>
+      </div >
+    </ImgUploadContext.Provider>
   )
 }
+
+export default ImgUpload

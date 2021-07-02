@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { eventTracker } from "../../../../common/tracker";
+import { initPhone } from '../../../../common/wap/contact-phone-btn'
 
 export const footerContactModule = function(){
 	//等待DOM 结构加载完成，然后再执行操作
@@ -20,9 +21,7 @@ export const footerContactModule = function(){
 		$(".wechat-box").on("click",()=>{
 			eventTracker("wechat-wap", "bottom-wap")
 		});
-		$(".phone-box").on("click",()=>{
-			eventTracker("phone-wap", "bottom-wap")
-		})
 	})
+	initPhone()
 }
 

@@ -4,7 +4,5 @@
         - telWidth = '120px'
         .online-box
             a(href=kf53StyleUrl) 在线咨询
-    else
-        - telWidth = '75%'
-    .phone-box(style=`width: ${telWidth}`)
-        a(href="tel:" + (!isSem? phone.content : (union400 && union400.length? union400[0]: ''))) 拨打电话
+    include ../../../common/wap/contact-phone-btn.pug
+    +contactPhoneBtn('#EC2525') 

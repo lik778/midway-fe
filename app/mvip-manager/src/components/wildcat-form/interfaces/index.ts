@@ -69,7 +69,7 @@ export interface ImagesItem {
   rule?: any[];
   maxSize?: number
   maxLength?: number
-  imageItemWidth?: number | string,// 图片显示块的大小
+  aspectRatio?: number// 图片显示块的大小
   showUploadList?: ExpandShowUploadListInterface,
   cropProps: CropProps
 }

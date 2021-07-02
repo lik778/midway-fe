@@ -6,6 +6,8 @@
     "private": true,
     "license": "UNLICENSED",
     "scripts": {
+        "start": "npm run dev",
+        "start:mvip": "cd app/mvip-manager && npm start",
         "prebuild": "rimraf dist",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
