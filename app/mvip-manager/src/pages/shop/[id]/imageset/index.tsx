@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from "umi";
-import { Button, Checkbox, Pagination } from 'antd'
+import { Button, Checkbox, Form, Input, Modal, Pagination } from "antd";
 
 import ContentHeader from "../components/content-header";
 import ArticleNav from './components/nav'
 import Cards from './components/cards'
 import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
+import { successMessage, errorMessage } from "@/components/message";
+import { createImagesetAlbum } from "@/api/shop";
 
 import styles from './index.less';
+
+const FormItem = Form.Item;
 
 const ShopArticlePage = (props: any) => {
 
@@ -18,9 +22,39 @@ const ShopArticlePage = (props: any) => {
   const shopId = Number(params.id);
   const [selection, setSelection] = useState([])
 
+  const [form] = Form.useForm();
+  const [createAlbumModal, setCreateAlbumModal] = useState(false);
+  const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
+
   /***************************************************** Fns */
 
   const getList = () => {}
+  const refresh = () => {}
+
+  // 新增相册
+  const createAlbum = async () => {
+    form.validateFields([])
+      .then(formvals => {
+        setCreateAlbumLoading(true);
+        createImagesetAlbum(shopId, formvals)
+          .then(res => {
+            if (res.success) {
+              successMessage("创建成功");
+              refresh && refresh();
+              form.resetFields();
+              setCreateAlbumModal(false);
+            } else {
+              throw new Error(res.message || "出错啦，请稍后重试");
+            }
+          })
+          .catch(error => {
+            errorMessage(error.message);
+          })
+          .finally(() => {
+            setCreateAlbumLoading(false);
+          });
+      })
+  };
 
   /***************************************************** Templates */
 
@@ -30,7 +64,7 @@ const ShopArticlePage = (props: any) => {
       <div className={`container ${styles["container"]}`}>
         <ArticleNav
           shopId={shopId}
-          refresh={getList}
+          openCreateAlbumModal={() => setCreateAlbumModal(true)}
         />
         <SelectionBlock
           selection={selection}
@@ -43,6 +77,47 @@ const ShopArticlePage = (props: any) => {
           total={500}
         />
       </div>
+
+      {/* Modals */}
+      <Modal
+        wrapClassName="create-album-modal"
+        title="新建相册"
+        width={432}
+        footer={null}
+        visible={createAlbumModal}
+        onCancel={() => setCreateAlbumModal(false)}
+      >
+        <Form
+          name="create-album-form"
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 19 }}
+        >
+          <FormItem
+            name="name"
+            label="相册名称"
+            rules={[
+              { required: true, message: "请填写相册名称" },
+              { pattern: /^[\s\S]{2,20}$/, message: "字数限制为 2～20 个字符" },
+            ]}
+          >
+            <Input placeholder="请输入相册名称" />
+          </FormItem>
+        </Form>
+        <div className={styles["extra"]}>
+          <div className={styles["name-tip"]}>
+            注：可填写2~30个字符，支持中、英文，请不要填写特殊符号
+          </div>
+          <Button
+            className={styles["confirm-btn"]}
+            type="primary"
+            htmlType="submit"
+            loading={createAlbumLoading}
+            onClick={createAlbum}
+          >
+            确定
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 }

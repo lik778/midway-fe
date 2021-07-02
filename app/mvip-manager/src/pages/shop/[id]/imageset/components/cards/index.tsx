@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Pagination } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, DownOutlined } from "@ant-design/icons";
 
 import styles from "./index.less";
 
@@ -78,7 +78,21 @@ export default function Cards(props: CardsProps) {
       <div className={styles["album-card"]}>
         <div className={styles["selection"]}>
           <Checkbox value={isChecked} onChange={handleSelectCard} />
-          <DownOutlined className={styles["anticon-down"]} />
+          <div className={styles["anticon-down-con"]}>
+            <div className={styles["anticon-down"]}>
+              <DownOutlined />
+            </div>
+            <div className={styles["down-actions"]}>
+              <div className={styles["anticon-down-item"]}>
+                <EditOutlined />
+                <span>编辑</span>
+              </div>
+              <div className={styles["anticon-down-item"]}>
+                <DeleteOutlined />
+                <span>删除</span>
+              </div>
+            </div>
+          </div>
         </div>
         <img className={styles["cover"]} src={url} alt="cover" />
         <div className={styles["header"]}>
