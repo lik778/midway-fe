@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Modal } from "antd";
 import {
+  LeftOutlined,
+  RightOutlined,
   PartitionOutlined,
   DeleteOutlined,
   EditOutlined,
@@ -31,14 +33,28 @@ export default function Cards(props: CardsProps) {
   const [lists] = useState([
     {
       id: 1,
-      name: "默认相册",
+      name: "默认相册1",
       count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
+      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
+      type: "image",
+    },
+    {
+      id: 2,
+      name: "默认相册2",
+      count: 19,
+      url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+      type: "image",
+    },
+    {
+      id: 3,
+      name: "默认相册3",
+      count: 19,
+      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
       type: "image",
     }
   ]);
-  const [previewURL, setPreviewURL] = useState("");
-  const [previewModal, setPreviewModal] = useState(false);
+  const [previewURL, setPreviewURL] = useState("http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1");
+  const [previewModal, setPreviewModal] = useState(true);
 
   /***************************************************** Interaction Fns */
 
@@ -48,6 +64,10 @@ export default function Cards(props: CardsProps) {
   const previewImage = (url: string) => {
     setPreviewURL(url)
     setPreviewModal(true)
+  }
+  const closePreviewModal = () => {
+    setPreviewURL('')
+    setPreviewModal(false)
   }
 
   /***************************************************** Renders */
@@ -124,6 +144,27 @@ export default function Cards(props: CardsProps) {
         return ImageCard(card);
     }
   };
+  const renderPreviewModal = () => {
+    const target = lists.find(x => x.url === previewURL)
+    const targetIDX = lists.findIndex(x => x === target)
+    const prev = lists[targetIDX - 1]
+    const next = lists[targetIDX + 1]
+    return (
+      <Modal
+        wrapClassName="image-preview-modal"
+        width="100vw"
+        footer={null}
+        visible={previewModal}
+        onCancel={closePreviewModal}
+      >
+        <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
+          <img src={previewURL} title="预览图片" />
+          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev.url)} />}
+          {next && <RightOutlined title="下一张" onClick={() => previewImage(next.url)} />}
+        </div>
+      </Modal>
+    )
+  }
   return (
     <>
 
@@ -135,17 +176,7 @@ export default function Cards(props: CardsProps) {
 
       {/* Preview Image Modal */}
 
-      <Modal
-        wrapClassName="image-preview-modal"
-        width="100vw"
-        footer={null}
-        visible={previewModal}
-        onCancel={() => setPreviewModal(false)}
-      >
-        <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
-          <img src={previewURL} title="预览图片" />
-        </div>
-      </Modal>
+      {renderPreviewModal()}
     </>
   );
 }

@@ -132,6 +132,7 @@
       padding: 100px;
       width: 100vw;
       height: 100vh;
+      user-select: none;
       overflow: hidden;
       transition-delay: .5s;
 
@@ -145,8 +146,29 @@
 
       img {
         width: 0%;
+        max-height: 100%;
         object-fit: scale-down;
+        user-select: none;
         transition: .5s;
+      }
+
+      .anticon {
+        position: absolute;
+        top: 49%;
+        width: 44px;
+        height: 44px;
+        line-height: 46px;
+        background: #3A98FF;
+        border-radius: 50%;
+        font-size: 18px;
+        color: white;
+
+        &.anticon-left {
+          left: 10vw;
+        }
+        &.anticon-right {
+          right: 10vw;
+        }
       }
     }
 
@@ -164,7 +186,7 @@
     }
 
     .ant-modal-close-x {
-      margin: 100px 15vw 0 0;
+      margin: 60px 15vw 0 0;
       width: 28px;
       height: 28px;
       line-height: 23px;
