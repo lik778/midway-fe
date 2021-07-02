@@ -14,16 +14,14 @@ export interface ActionBtnListItem {
 }
 
 export interface ImgUploadProps {
-  editData: any;
-  text: string;
-  maxSize?: number;
-  imgType?: "text" | "picture-card" | "picture" | undefined;
-  maxLength: number;
-  disabled?: boolean | undefined;
-  fileList?: any[];
-  itemWidth?: number | string
-  showUploadList?: ExpandShowUploadListInterface
-  cropProps: CropProps,
+  editData: any;// 传入的数据
+  uploadBtnText: string;// 上传按钮上的提示文本
+  maxSize?: number;// 单个图片最大尺寸
+  maxLength: number;// 本次上传个数上线
+  disabled?: boolean | undefined;// 是否禁用
+  aspectRatio?: number// 图片不是正方形的时候通过传比例去设置长度
+  showUploadList?: ExpandShowUploadListInterface// 按钮控制
+  cropProps: CropProps,// 裁剪参数
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
   /**
    * onChange

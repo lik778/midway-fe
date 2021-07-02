@@ -11,8 +11,7 @@ import ImgUpload from "@/components/img-upload";
 import { ActionBtnListItem } from '@/components/img-upload/data';
 import { UploadFile } from "antd/lib/upload/interface";
 import { Spin } from 'antd'
-import "./index.less";
-import { useDebounce } from "@/hooks/debounce";
+import styles from './index.less'
 
 interface Props {
   type: DeviceType,
@@ -165,21 +164,19 @@ export default (props: Props) => {
   }, [handleMove])
 
   return (
-    <div className="all-img page-shop-carousel">
-      <span className="title">{txt}: </span>
-      <div className="img-list">
-        <p className="red-tip tip">
+    <div className={styles['carousel-img']} >
+      <div className={styles["title"]}>{txt}: </div>
+      <div className={styles["content"]}>
+        <p className={`${styles['tip']} ${styles['red-tip']}`}>
           严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担
         </p>
-        <p className="tip">{tip}</p>
+        <p className={styles["tip"]}>{tip}</p>
         <Spin spinning={upDataLoading || getDataLoading}>
           <ImgUpload
             editData={editData}
-            imgType="text"
-            text="上传图片"
+            uploadBtnText="上传图片"
             maxSize={3}
             maxLength={5}
-            fileList={bannerList}
             aspectRatio={aspectRatio}
             cropProps={{ aspectRatio }}
             actionBtn={renderIcons}
@@ -187,6 +184,6 @@ export default (props: Props) => {
           />
         </Spin>
       </div>
-    </div>
+    </div >
   );
 }
