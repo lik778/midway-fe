@@ -8,7 +8,7 @@ import Cards from './components/cards'
 import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
 import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
+import { createImagesetAlbum, updateImagesetAlbum, delImagesetAlbum } from "@/api/shop";
 
 import styles from './index.less';
 
@@ -52,7 +52,7 @@ const ShopArticlePage = (props: any) => {
 
   /***************************************************** API Calls */
 
-  // 新增相册
+  // 新增及编辑相册
   const createAlbum = async () => {
     createAlbumForm.validateFields([])
       .then(formvals => {
@@ -89,6 +89,35 @@ const ShopArticlePage = (props: any) => {
       })
   };
 
+  const delAlbum = async (album: any) => {
+    const { id, count } = album
+    const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
+    Modal.confirm({
+      title: '确认删除',
+      content: info,
+      width: 532,
+      onCancel() {},
+      onOk() {
+        return new Promise((resolve, reject) => {
+          delImagesetAlbum(shopId, { id })
+            .then(res => {
+              if (res.success) {
+                successMessage('删除成功');
+                refresh && refresh();
+                resolve(res.success)
+              } else {
+                throw new Error(res.message || "出错啦，请稍后重试");
+              }
+            })
+            .catch(error => {
+              errorMessage(error.message)
+              setTimeout(reject, 1000)
+            })
+        })
+      }
+    })
+  }
+
   /***************************************************** Renders */
 
   return (
@@ -110,6 +139,7 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           goImagePage={goImagePage}
           editAlbum={openCreateAlbumModal}
+          delAlbum={delAlbum}
         />
         <Pagination
           className={styles["pagination"]}

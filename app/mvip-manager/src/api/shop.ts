@@ -12,7 +12,7 @@ import {
   TdkSaveMeta,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  CreateImagesetAlbumParam, UpdateImagesetAlbumParam,
+  CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
   BannerListItem,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
@@ -194,4 +194,9 @@ export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumP
 // 修改店铺相册
 export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/updateImagesetAlbum', params, setShopHeader(shopId))
+}
+
+// 修改店铺相册
+export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetAlbum', params, setShopHeader(shopId))
 }

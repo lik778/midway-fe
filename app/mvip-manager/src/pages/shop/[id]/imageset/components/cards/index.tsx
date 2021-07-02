@@ -23,14 +23,15 @@ interface CardsProps {
   // TODO
   selection: any[];
   tabScope: TabScope;
-  editAlbum: (id?:number, name?:string) => void;
+  editAlbum: (id?: number, name?: string) => void;
+  delAlbum: (album: CardItem) => void;
   goImagePage: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { selection, tabScope, editAlbum, goImagePage } = props;
+  const { selection, tabScope, editAlbum, delAlbum, goImagePage } = props;
   const [lists] = useState([
     {
       id: 1,
@@ -74,6 +75,10 @@ export default function Cards(props: CardsProps) {
     editAlbum(id, name)
     e.stopPropagation()
   }
+  const handleDelAlbum = (e: any, album: CardItem) => {
+    delAlbum(album)
+    e.stopPropagation()
+  }
 
   /***************************************************** Renders */
 
@@ -93,7 +98,7 @@ export default function Cards(props: CardsProps) {
                 <EditOutlined />
                 <span>编辑</span>
               </div>
-              <div className={styles["anticon-down-item"]}>
+              <div className={styles["anticon-down-item"]} onClick={e => handleDelAlbum(e, card)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
