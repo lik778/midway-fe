@@ -112,3 +112,67 @@
     }
   }
 }
+
+
+/* create album modal */
+:global {
+  .image-preview-modal {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    .image-wrapper {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 100px;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      transition-delay: .5s;
+
+      &.active {
+        display: block;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      img {
+        width: 0%;
+        object-fit: scale-down;
+        transition: .5s;
+      }
+    }
+
+    .ant-modal {
+      top: 0;
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      transition: none;
+    }
+    .ant-modal-content {
+      background: transparent;
+      box-shadow: unset;
+    }
+
+    .ant-modal-close-x {
+      margin: 100px 15vw 0 0;
+      width: 28px;
+      height: 28px;
+      line-height: 23px;
+      border: solid 2px white;
+      border-radius: 50%;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  }
+}

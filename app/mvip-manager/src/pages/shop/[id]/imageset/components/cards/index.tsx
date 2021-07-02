@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Pagination } from "antd";
+import { Button, Checkbox, Modal } from "antd";
 import {
   PartitionOutlined,
   DeleteOutlined,
@@ -24,6 +24,9 @@ interface CardsProps {
   goImagePage: () => void;
 }
 export default function Cards(props: CardsProps) {
+
+  /***************************************************** States */
+
   const { selection, tabScope, goImagePage } = props;
   const [lists] = useState([
     {
@@ -32,60 +35,23 @@ export default function Cards(props: CardsProps) {
       count: 19,
       url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
       type: "image",
-    },
-    {
-      id: 2,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1",
-      type: "image",
-    },
+    }
   ]);
+  const [previewURL, setPreviewURL] = useState("");
+  const [previewModal, setPreviewModal] = useState(false);
+
+  /***************************************************** Interaction Fns */
+
   const handleSelectCard = val => {
     console.log(val);
   };
+  const previewImage = (url: string) => {
+    setPreviewURL(url)
+    setPreviewModal(true)
+  }
+
+  /***************************************************** Renders */
+
   const AlbumCard = (card: CardItem) => {
     const { id, name, url } = card;
     const isChecked = tabScope === 'album' && selection.find((y: any) => y.id === id);
@@ -123,7 +89,7 @@ export default function Cards(props: CardsProps) {
     const { id, url } = card;
     const isChecked = tabScope === 'image' && selection.find((y: any) => y.id === id);
     return (
-      <div className={styles["image-card"]}>
+      <div className={styles["image-card"]} onClick={() => previewImage(url)}>
         <div className={styles["selection"]}>
           <Checkbox value={isChecked} onChange={handleSelectCard} />
           <div className={styles["anticon-down-con"]}>
@@ -159,8 +125,27 @@ export default function Cards(props: CardsProps) {
     }
   };
   return (
-    <div className={styles["cards-con"]}>
-      {lists.map((x: any) => renderCard(x))}
-    </div>
+    <>
+
+      {/* Cards */}
+
+      <div className={styles["cards-con"]}>
+        {lists.map((x: any) => renderCard(x))}
+      </div>
+
+      {/* Preview Image Modal */}
+
+      <Modal
+        wrapClassName="image-preview-modal"
+        width="100vw"
+        footer={null}
+        visible={previewModal}
+        onCancel={() => setPreviewModal(false)}
+      >
+        <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
+          <img src={previewURL} title="预览图片" />
+        </div>
+      </Modal>
+    </>
   );
 }
