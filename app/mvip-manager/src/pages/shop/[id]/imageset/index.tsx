@@ -30,12 +30,15 @@ const ShopArticlePage = (props: any) => {
   const [createAlbumModal, setCreateAlbumModal] = useState(false);
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
 
-  /***************************************************** Fns */
+  /***************************************************** Interaction Fns */
 
   const getList = () => {}
   const refresh = () => {}
 
   const goAlbumPage = () => setTabScope('album')
+  const goImagePage = () => setTabScope('image')
+
+  /***************************************************** API Calls */
 
   // 新增相册
   const createAlbum = async () => {
@@ -78,7 +81,11 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           onSelectionChange={val => setSelection(val)}
         />
-        <Cards selection={selection} />
+        <Cards
+          tabScope={tabScope}
+          selection={selection}
+          goImagePage={goImagePage}
+        />
         <Pagination
           className={styles["pagination"]}
           defaultCurrent={1}
