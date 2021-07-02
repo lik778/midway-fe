@@ -104,7 +104,6 @@ const ShopArticlePage = (props: any) => {
             name="name"
             label="相册名称"
             rules={[
-              { required: true, message: "请填写相册名称" },
               { pattern: /^[\s\S]{2,20}$/, message: "字数限制为 2～20 个字符" },
             ]}
           >
