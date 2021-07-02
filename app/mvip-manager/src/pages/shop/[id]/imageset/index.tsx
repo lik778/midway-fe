@@ -14,6 +14,8 @@ import styles from './index.less';
 
 const FormItem = Form.Item;
 
+export type TabScope = 'album' | 'image'
+
 const ShopArticlePage = (props: any) => {
 
   /***************************************************** States */
@@ -22,7 +24,9 @@ const ShopArticlePage = (props: any) => {
   const shopId = Number(params.id);
   const [selection, setSelection] = useState([])
 
-  const [form] = Form.useForm();
+  const [tabScope, setTabScope] = useState<TabScope>("album");
+
+  const [createAlbumForm] = Form.useForm();
   const [createAlbumModal, setCreateAlbumModal] = useState(false);
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
 
@@ -31,9 +35,11 @@ const ShopArticlePage = (props: any) => {
   const getList = () => {}
   const refresh = () => {}
 
+  const goAlbumPage = () => setTabScope('album')
+
   // 新增相册
   const createAlbum = async () => {
-    form.validateFields([])
+    createAlbumForm.validateFields([])
       .then(formvals => {
         setCreateAlbumLoading(true);
         createImagesetAlbum(shopId, formvals)
@@ -41,7 +47,7 @@ const ShopArticlePage = (props: any) => {
             if (res.success) {
               successMessage("创建成功");
               refresh && refresh();
-              form.resetFields();
+              createAlbumForm.resetFields();
               setCreateAlbumModal(false);
             } else {
               throw new Error(res.message || "出错啦，请稍后重试");
@@ -64,6 +70,8 @@ const ShopArticlePage = (props: any) => {
       <div className={`container ${styles["container"]}`}>
         <ArticleNav
           shopId={shopId}
+          tabScope={tabScope}
+          goAlbumPage={goAlbumPage}
           openCreateAlbumModal={() => setCreateAlbumModal(true)}
         />
         <SelectionBlock
