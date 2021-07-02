@@ -23,9 +23,8 @@ export default (props: Props) => {
 
   // 新增相册
   const createAlbum = async () => {
-    form.validateFields()
+    form.validateFields([])
       .then(formvals => {
-        setCreateAlbumModal(true);
         setCreateAlbumLoading(true);
         createImagesetAlbum(shopId, formvals)
           .then(res => {
@@ -57,7 +56,7 @@ export default (props: Props) => {
           <Button
             className={styles["create-album-button"]}
             size="large"
-            onClick={createAlbum}
+            onClick={() => setCreateAlbumModal(true)}
           >
             新增相册
           </Button>
@@ -85,18 +84,11 @@ export default (props: Props) => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 20 }}
         >
-          <Form.Item name="name" label="相册名称">
-            <Input />
-          </Form.Item>
-          form={form}
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 20 }}
-        >
           <FormItem
             name="name"
             label="相册名称"
             rules={[
-              { required: true, message: '请填写相册名称' },
+              { required: true, message: "请填写相册名称" },
               { pattern: /^[\s\S]{2,20}$/, message: "字数限制为 2～20 个字符" },
             ]}
           >
