@@ -10,10 +10,10 @@ import {
   ImgDeleteParam,
   ImgListParam,
   TdkSaveMeta,
+  BannerListItem,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
-  BannerListItem,
+  CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam, DelImagesetImageParam,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -196,7 +196,12 @@ export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumP
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/updateImagesetAlbum', params, setShopHeader(shopId))
 }
 
-// 修改店铺相册
+// 删除店铺相册
 export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetAlbum', params, setShopHeader(shopId))
+}
+
+// 删除店铺相册图片
+export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetImage', params, setShopHeader(shopId))
 }

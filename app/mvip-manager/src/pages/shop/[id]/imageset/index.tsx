@@ -8,7 +8,7 @@ import Cards from './components/cards'
 import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
 import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum, updateImagesetAlbum, delImagesetAlbum } from "@/api/shop";
+import { createImagesetAlbum, updateImagesetAlbum, delImagesetAlbum, delImagesetImage } from "@/api/shop";
 
 import styles from './index.less';
 
@@ -40,9 +40,10 @@ const ShopArticlePage = (props: any) => {
   const goAlbumPage = () => setTabScope('album')
   const goImagePage = () => setTabScope('image')
 
-  const openCreateAlbumModal = (id?: number, defaultName?: string) => {
-    if (id) {
-      setCreateAlbumFormDefaultVals({ id, name: defaultName })
+  const openCreateAlbumModal = (album: any) => {
+    if (album) {
+      const { id, name } = album
+      setCreateAlbumFormDefaultVals({ id, name })
     }
     setCreateAlbumModal(true)
   }
@@ -89,17 +90,16 @@ const ShopArticlePage = (props: any) => {
       })
   };
 
-  const delAlbum = async (album: any) => {
-    const { id, count } = album
-    const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
+  // 删除确认 Modal
+  const delCallback = async (api: any, query: any, info: string, ) => {
     Modal.confirm({
       title: '确认删除',
       content: info,
       width: 532,
-      onCancel() {},
+      onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetAlbum(shopId, { id })
+          api(shopId, query)
             .then(res => {
               if (res.success) {
                 successMessage('删除成功');
@@ -109,13 +109,26 @@ const ShopArticlePage = (props: any) => {
                 throw new Error(res.message || "出错啦，请稍后重试");
               }
             })
-            .catch(error => {
+            .catch((error: any) => {
               errorMessage(error.message)
               setTimeout(reject, 1000)
             })
         })
       }
     })
+  }
+
+  // 删除相册
+  const delAlbum = async (album: any) => {
+    const { id, count } = album
+    const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
+    await delCallback(delImagesetAlbum, { id }, info)
+  }
+  // 删除图片
+  const delImage = async (image: any) => {
+    const { id } = image
+    const info = `删除后无法恢复，确认删除？`
+    await delCallback(delImagesetImage, { id }, info)
   }
 
   /***************************************************** Renders */
@@ -140,6 +153,7 @@ const ShopArticlePage = (props: any) => {
           goImagePage={goImagePage}
           editAlbum={openCreateAlbumModal}
           delAlbum={delAlbum}
+          delImage={delImage}
         />
         <Pagination
           className={styles["pagination"]}

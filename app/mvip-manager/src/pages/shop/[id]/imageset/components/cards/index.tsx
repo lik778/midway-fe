@@ -23,15 +23,16 @@ interface CardsProps {
   // TODO
   selection: any[];
   tabScope: TabScope;
-  editAlbum: (id?: number, name?: string) => void;
+  editAlbum: (album: CardItem) => void;
   delAlbum: (album: CardItem) => void;
+  delImage: (album: CardItem) => void;
   goImagePage: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { selection, tabScope, editAlbum, delAlbum, goImagePage } = props;
+  const { selection, tabScope, editAlbum, delAlbum, delImage, goImagePage } = props;
   const [lists] = useState([
     {
       id: 1,
@@ -71,12 +72,16 @@ export default function Cards(props: CardsProps) {
     setPreviewURL('')
     setPreviewModal(false)
   }
-  const handleEditAlbum = (e: any, id?: number, name?: string) => {
-    editAlbum(id, name)
+  const handleEditAlbum = (e: any, album: CardItem) => {
+    editAlbum(album)
     e.stopPropagation()
   }
   const handleDelAlbum = (e: any, album: CardItem) => {
     delAlbum(album)
+    e.stopPropagation()
+  }
+  const handleDelImage = (e: any, image: CardItem) => {
+    delImage(image)
     e.stopPropagation()
   }
 
@@ -94,7 +99,7 @@ export default function Cards(props: CardsProps) {
               <DownOutlined />
             </div>
             <div className={styles["down-actions"]}>
-              <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, id, name)}>
+              <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
                 <EditOutlined />
                 <span>编辑</span>
               </div>
@@ -131,7 +136,7 @@ export default function Cards(props: CardsProps) {
                 <PartitionOutlined />
                 <span>移动</span>
               </div>
-              <div className={styles["anticon-down-item"]}>
+              <div className={styles["anticon-down-item"]} onClick={e => handleDelImage(e, card)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
