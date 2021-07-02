@@ -16,6 +16,7 @@
     border: 1px solid #D9D9D9;
     background: #FFFFFF;
     box-shadow: 0 0 20px 0px rgba(0,0,0,.06);
+    overflow: hidden;
     cursor: pointer;
 
     &.image-card {
@@ -93,9 +94,11 @@
     }
 
     .cover {
-      height: auto;
-      object-fit: contain;
       flex-grow: 1;
+      height: auto;
+      max-height: 170px;
+      object-fit: cover;
+      object-position: top;
     }
 
     .header {

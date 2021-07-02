@@ -8,7 +8,7 @@ import Cards from './components/cards'
 import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
 import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum } from "@/api/shop";
+import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
 
 import styles from './index.less';
 
@@ -27,6 +27,8 @@ const ShopArticlePage = (props: any) => {
   const [tabScope, setTabScope] = useState<TabScope>("album");
 
   const [createAlbumForm] = Form.useForm();
+  const [createAlbumFormDefaultVals, setCreateAlbumFormDefaultVals] = useState<any>({})
+  const isEditingAlbum = Object.keys(createAlbumFormDefaultVals).length > 0
   const [createAlbumModal, setCreateAlbumModal] = useState(false);
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
 
@@ -38,6 +40,16 @@ const ShopArticlePage = (props: any) => {
   const goAlbumPage = () => setTabScope('album')
   const goImagePage = () => setTabScope('image')
 
+  const openCreateAlbumModal = (id?: number, defaultName?: string) => {
+    if (id) {
+      setCreateAlbumFormDefaultVals({ id, name: defaultName })
+    }
+    setCreateAlbumModal(true)
+  }
+  useEffect(() => {
+    createAlbumForm.setFieldsValue(createAlbumFormDefaultVals)
+  }, [createAlbumFormDefaultVals])
+
   /***************************************************** API Calls */
 
   // 新增相册
@@ -45,13 +57,25 @@ const ShopArticlePage = (props: any) => {
     createAlbumForm.validateFields([])
       .then(formvals => {
         setCreateAlbumLoading(true);
-        createImagesetAlbum(shopId, formvals)
+        let post = null
+        let successMsg = ''
+        let params: any = {}
+        if (isEditingAlbum) {
+          params.id = createAlbumFormDefaultVals.id
+          post = updateImagesetAlbum
+          successMsg = "编辑成功"
+        } else {
+          post = createImagesetAlbum
+          successMsg = "创建成功"
+        }
+        post(shopId, { ...formvals, ...params })
           .then(res => {
             if (res.success) {
-              successMessage("创建成功");
+              successMessage(successMsg);
               refresh && refresh();
-              createAlbumForm.resetFields();
               setCreateAlbumModal(false);
+              createAlbumForm.resetFields();
+              setCreateAlbumFormDefaultVals({})
             } else {
               throw new Error(res.message || "出错啦，请稍后重试");
             }
@@ -75,7 +99,7 @@ const ShopArticlePage = (props: any) => {
           shopId={shopId}
           tabScope={tabScope}
           goAlbumPage={goAlbumPage}
-          openCreateAlbumModal={() => setCreateAlbumModal(true)}
+          createAlbum={() => openCreateAlbumModal()}
         />
         <SelectionBlock
           selection={selection}
@@ -85,6 +109,7 @@ const ShopArticlePage = (props: any) => {
           tabScope={tabScope}
           selection={selection}
           goImagePage={goImagePage}
+          editAlbum={openCreateAlbumModal}
         />
         <Pagination
           className={styles["pagination"]}
@@ -96,7 +121,7 @@ const ShopArticlePage = (props: any) => {
       {/* Modals */}
       <Modal
         wrapClassName="create-album-modal"
-        title="新建相册"
+        title={isEditingAlbum ? '编辑相册' : "新建相册"}
         width={432}
         footer={null}
         visible={createAlbumModal}
@@ -104,6 +129,7 @@ const ShopArticlePage = (props: any) => {
       >
         <Form
           name="create-album-form"
+          form={createAlbumForm}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
         >

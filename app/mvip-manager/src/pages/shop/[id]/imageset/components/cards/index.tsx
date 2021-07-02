@@ -23,13 +23,14 @@ interface CardsProps {
   // TODO
   selection: any[];
   tabScope: TabScope;
+  editAlbum: (id?:number, name?:string) => void;
   goImagePage: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { selection, tabScope, goImagePage } = props;
+  const { selection, tabScope, editAlbum, goImagePage } = props;
   const [lists] = useState([
     {
       id: 1,
@@ -53,8 +54,8 @@ export default function Cards(props: CardsProps) {
       type: "image",
     }
   ]);
-  const [previewURL, setPreviewURL] = useState("http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1");
-  const [previewModal, setPreviewModal] = useState(true);
+  const [previewURL, setPreviewURL] = useState("");
+  const [previewModal, setPreviewModal] = useState(false);
 
   /***************************************************** Interaction Fns */
 
@@ -68,6 +69,10 @@ export default function Cards(props: CardsProps) {
   const closePreviewModal = () => {
     setPreviewURL('')
     setPreviewModal(false)
+  }
+  const handleEditAlbum = (e: any, id?: number, name?: string) => {
+    editAlbum(id, name)
+    e.stopPropagation()
   }
 
   /***************************************************** Renders */
@@ -84,7 +89,7 @@ export default function Cards(props: CardsProps) {
               <DownOutlined />
             </div>
             <div className={styles["down-actions"]}>
-              <div className={styles["anticon-down-item"]}>
+              <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, id, name)}>
                 <EditOutlined />
                 <span>编辑</span>
               </div>
@@ -127,7 +132,7 @@ export default function Cards(props: CardsProps) {
               </div>
               <div className={styles["anticon-down-item"]}>
                 <EditOutlined />
-                <span>删除</span>
+                <span>设为封面</span>
               </div>
             </div>
           </div>
@@ -167,15 +172,12 @@ export default function Cards(props: CardsProps) {
   }
   return (
     <>
-
       {/* Cards */}
-
       <div className={styles["cards-con"]}>
         {lists.map((x: any) => renderCard(x))}
       </div>
 
       {/* Preview Image Modal */}
-
       {renderPreviewModal()}
     </>
   );

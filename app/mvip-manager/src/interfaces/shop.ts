@@ -254,3 +254,8 @@ export interface BannerListItem {
 export interface CreateImagesetAlbumParam {
   name: string;
 }
+
+export interface UpdateImagesetAlbumParam {
+  id: number;
+  name: string;
+}

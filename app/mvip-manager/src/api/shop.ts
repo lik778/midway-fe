@@ -11,7 +11,9 @@ import {
   ImgListParam,
   TdkSaveMeta,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams, BannerListItem, CreateImagesetAlbumParam
+  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
+  CreateImagesetAlbumParam, UpdateImagesetAlbumParam,
+  BannerListItem,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -184,7 +186,12 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/setShopEnterprise', params, setShopHeader(shopId))
 }
 
-// api: 获取店铺产品列表
+// 创建店铺相册
 export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/createImagesetAlbum', params, setShopHeader(shopId))
+}
+
+// 修改店铺相册
+export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/updateImagesetAlbum', params, setShopHeader(shopId))
 }

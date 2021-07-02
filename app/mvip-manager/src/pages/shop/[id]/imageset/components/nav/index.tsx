@@ -10,10 +10,10 @@ interface Props {
   shopId: number;
   tabScope: TabScope;
   goAlbumPage: () => void;
-  openCreateAlbumModal: () => void;
+  createAlbum: () => void;
 }
 export default (props: Props) => {
-  const { shopId, tabScope, goAlbumPage, openCreateAlbumModal } = props;
+  const { shopId, tabScope, goAlbumPage, createAlbum } = props;
 
   const uploadImage = () => {};
 
@@ -38,7 +38,7 @@ export default (props: Props) => {
             <Button
               className={styles["create-album-button"]}
               size="large"
-              onClick={openCreateAlbumModal}
+              onClick={createAlbum}
             >
               新增相册
             </Button>
