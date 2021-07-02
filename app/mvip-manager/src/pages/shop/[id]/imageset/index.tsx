@@ -6,15 +6,15 @@ import ContentHeader from "../components/content-header";
 import ArticleNav from './components/nav'
 import Cards from './components/cards'
 import { ShopModuleType } from "@/enums";
-import { RouteParams } from "@/interfaces/shop";
 import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum, updateImagesetAlbum, delImagesetAlbum, delImagesetImage } from "@/api/shop";
+import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
 
 import styles from './index.less';
 
-const FormItem = Form.Item;
+import { RouteParams } from "@/interfaces/shop";
+import { TabScope, CardItem, AlbumItem, ImageItem } from './types'
 
-export type TabScope = 'album' | 'image'
+const FormItem = Form.Item;
 
 const ShopArticlePage = (props: any) => {
 
@@ -40,7 +40,7 @@ const ShopArticlePage = (props: any) => {
   const goAlbumPage = () => setTabScope('album')
   const goImagePage = () => setTabScope('image')
 
-  const openCreateAlbumModal = (album: any) => {
+  const openCreateAlbumModal = (album?: AlbumItem) => {
     if (album) {
       const { id, name } = album
       setCreateAlbumFormDefaultVals({ id, name })
@@ -90,47 +90,6 @@ const ShopArticlePage = (props: any) => {
       })
   };
 
-  // 删除确认 Modal
-  const delCallback = async (api: any, query: any, info: string, ) => {
-    Modal.confirm({
-      title: '确认删除',
-      content: info,
-      width: 532,
-      onCancel() { },
-      onOk() {
-        return new Promise((resolve, reject) => {
-          api(shopId, query)
-            .then(res => {
-              if (res.success) {
-                successMessage('删除成功');
-                refresh && refresh();
-                resolve(res.success)
-              } else {
-                throw new Error(res.message || "出错啦，请稍后重试");
-              }
-            })
-            .catch((error: any) => {
-              errorMessage(error.message)
-              setTimeout(reject, 1000)
-            })
-        })
-      }
-    })
-  }
-
-  // 删除相册
-  const delAlbum = async (album: any) => {
-    const { id, count } = album
-    const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, { id }, info)
-  }
-  // 删除图片
-  const delImage = async (image: any) => {
-    const { id } = image
-    const info = `删除后无法恢复，确认删除？`
-    await delCallback(delImagesetImage, { id }, info)
-  }
-
   /***************************************************** Renders */
 
   return (
@@ -148,12 +107,12 @@ const ShopArticlePage = (props: any) => {
           onSelectionChange={val => setSelection(val)}
         />
         <Cards
+          shopId={shopId}
           tabScope={tabScope}
           selection={selection}
           goImagePage={goImagePage}
+          refresh={refresh}
           editAlbum={openCreateAlbumModal}
-          delAlbum={delAlbum}
-          delImage={delImage}
         />
         <Pagination
           className={styles["pagination"]}

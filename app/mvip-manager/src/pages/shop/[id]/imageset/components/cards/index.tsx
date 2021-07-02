@@ -8,31 +8,26 @@ import {
   EditOutlined,
   DownOutlined,
 } from "@ant-design/icons";
+import { successMessage, errorMessage } from "@/components/message";
+import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
 
 import styles from "./index.less";
 
-import { TabScope } from '../../index'
-
-type CardItem = {
-  id: number,
-  name: string,
-  url: string
-}
+import { TabScope, CardItem, AlbumItem, ImageItem } from '../../types'
 
 interface CardsProps {
-  // TODO
+  shopId: number;
   selection: any[];
   tabScope: TabScope;
-  editAlbum: (album: CardItem) => void;
-  delAlbum: (album: CardItem) => void;
-  delImage: (album: CardItem) => void;
+  editAlbum: (album?: AlbumItem) => void;
   goImagePage: () => void;
+  refresh: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { selection, tabScope, editAlbum, delAlbum, delImage, goImagePage } = props;
+  const { shopId, selection, tabScope, editAlbum, goImagePage, refresh } = props;
   const [lists] = useState([
     {
       id: 1,
@@ -76,13 +71,50 @@ export default function Cards(props: CardsProps) {
     editAlbum(album)
     e.stopPropagation()
   }
-  const handleDelAlbum = (e: any, album: CardItem) => {
-    delAlbum(album)
-    e.stopPropagation()
+
+  /***************************************************** API Calls */
+
+  // 删除确认 Modal
+  const delCallback = async (api: any, query: any, info: string) => {
+    Modal.confirm({
+      title: '确认删除',
+      content: info,
+      width: 532,
+      onCancel() { },
+      onOk() {
+        return new Promise((resolve, reject) => {
+          api(shopId, query)
+            .then(res => {
+              if (res.success) {
+                successMessage('删除成功');
+                refresh && refresh();
+                resolve(res.success)
+              } else {
+                throw new Error(res.message || "出错啦，请稍后重试");
+              }
+            })
+            .catch((error: any) => {
+              errorMessage(error.message)
+              setTimeout(reject, 1000)
+            })
+        })
+      }
+    })
   }
-  const handleDelImage = (e: any, image: CardItem) => {
-    delImage(image)
+
+  // 删除相册
+  const delAlbum = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
+    const { id, count } = album
+    const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
+    await delCallback(delImagesetAlbum, { id }, info)
+  }
+  // 删除图片
+  const delImage = async (e: any, image: ImageItem) => {
+    e.stopPropagation()
+    const { id } = image
+    const info = `删除后无法恢复，确认删除？`
+    await delCallback(delImagesetImage, { id }, info)
   }
 
   /***************************************************** Renders */
@@ -103,7 +135,7 @@ export default function Cards(props: CardsProps) {
                 <EditOutlined />
                 <span>编辑</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => handleDelAlbum(e, card)}>
+              <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card as AlbumItem)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
@@ -136,7 +168,7 @@ export default function Cards(props: CardsProps) {
                 <PartitionOutlined />
                 <span>移动</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => handleDelImage(e, card)}>
+              <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card as ImageItem)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
