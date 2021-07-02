@@ -5,9 +5,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { errorMessage } from '@/components/message';
 import ImgItem from './components/img-item'
-import { ExpandShowUploadListInterface, ActionBtnListItem } from './data';
+import { ImgUploadProps } from './data';
 import Crop from '@/components/crop'
-import { CropProps } from '../crop/data';
+
 const getBase64 = function (file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -37,31 +37,10 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
   }
 }
 
-interface Props {
-  editData: any;
-  text: string;
-  maxSize?: number;
-  imgType?: "text" | "picture-card" | "picture" | undefined;
-  maxLength: number;
-  disabled?: boolean | undefined;
-  fileList?: any[];
-  aspectRatio?: number
-  showUploadList?: ExpandShowUploadListInterface
-  cropProps: CropProps,
-  actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
-  /**
-   * onChange
-   * @param values 当前输出的值
-   * @param file 触发本次修改的值
-   * @param fileList 当前文件列表
-   */
-  onChange?(values: string | string[], file: UploadFile | null, fileList: UploadFile[], oldFileList: UploadFile[]): void;
-}
 
-const ImgUpload = (props: Props) => {
+const ImgUpload = (props: ImgUploadProps) => {
   const { editData, maxSize, text, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange } = props
   const [fileList, setFileList] = useState<UploadFile[]>([])
-  const [lastFileList, setLastFileList] = useState<UploadFile[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
   const [previewVisible, setPreviewVisible] = useState(false)
@@ -97,6 +76,7 @@ const ImgUpload = (props: Props) => {
     return newFileList
   }
 
+  // 为了保证出参入参不被修改 从这以下不能修改
   // 包装一下setFileList函数，需要触发onChange时调用 做一下图片处理
   const decorateSetFileList = useCallback(async (fileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => {
     const newFileList = await createFileList(fileList)
@@ -129,6 +109,8 @@ const ImgUpload = (props: Props) => {
   useEffect(() => {
     initEdit()
   }, [editData])
+  // 为了保证出参入参不被修改 从这以上不能修改
+
 
   const beforeUpload = (file: any) => {
     if (file.url) {
