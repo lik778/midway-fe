@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { apiSecret } from 'src/constant';
 import { RequestService } from 'src/services/request.service';
+import { LogService } from 'src/services/log.service'
 
 @Injectable()
 export class UserGuard implements CanActivate {
@@ -13,6 +14,7 @@ export class UserGuard implements CanActivate {
         const req = context.switchToHttp().getRequest();
         const ip = req.headers['x-Original-Forwarded-For'];
         const url = `${req.url}`
+        new LogService().errorLog(req.headers)
         const params = {
             ip:  ip,
             jumpUrl: url
