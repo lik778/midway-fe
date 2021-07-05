@@ -11,7 +11,7 @@ export class UserGuard implements CanActivate {
     ) {}
     async canActivate(context: ExecutionContext): Promise<any> {
         const req = context.switchToHttp().getRequest();
-        const ip = req.ip;
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         const url = `${req.url}`
         const params = {
             ip:  ip,
