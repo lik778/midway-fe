@@ -12,9 +12,9 @@ export class UserGuard implements CanActivate {
     ) {}
     async canActivate(context: ExecutionContext): Promise<any> {
         const req = context.switchToHttp().getRequest();
-        const ip = req.headers['x-Original-Forwarded-For'];
+        const ip = req.headers['x-forwarded-for'];
         const url = `${req.url}`
-        new LogService().errorLog(req.headers)
+        new LogService().errorLog(`headers:${req.headers}`)
         const params = {
             ip:  ip,
             jumpUrl: url
@@ -23,7 +23,7 @@ export class UserGuard implements CanActivate {
         const host = this.configService.get('services.midway-service.host');
         const data = await this.requestService.post(`${host}/api/midway/internal/waf/analytics`, params, { 'content-type': 'application/json','x-api-secret': apiSecret })
         const { code, data: { captchaHtml, bot }} = data
-        console.log(data)
+        console.log('datadata', data)
             if(bot){
                 res.setHeader('Content-Type', 'text/html');
                 res.send(captchaHtml);

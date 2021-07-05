@@ -56,7 +56,6 @@ export class BaseSiteController {
   public async home(@Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     let shopName = ''
     const domain = req.hostname
-    console.log('init')
     if (this.domainType === DomainTypeEnum.B2C) {
       shopName = this.midwayApiService.getShopName(params.shopName)
       if (!/\/$/.test(req.path)) {
