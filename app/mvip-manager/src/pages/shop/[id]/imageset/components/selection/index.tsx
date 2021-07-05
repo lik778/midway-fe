@@ -97,9 +97,11 @@ export default function SelectionBlock(props: SelectionBlockProps) {
             清除选中
           </Button>
         )}
-        <Button className={styles["delete-all-btn"]} type="text" size="small" onClick={(e) => deleteSelectionCards(e)}>
-          批量删除
-        </Button>
+        {(selection.length > 0) && (
+          <Button className={styles["delete-all-btn"]} type="text" size="small" onClick={(e) => deleteSelectionCards(e)}>
+            批量删除
+          </Button>
+        )}
         <span className={styles["count-info"]}>
           共 <span className={styles["count-num"]}>{total}</span> 个相册
         </span>
