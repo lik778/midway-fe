@@ -9,7 +9,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage, updateImagesetImage } from '@/api/shop'
 
 import styles from "./index.less";
 
@@ -23,38 +23,70 @@ interface CardsProps {
   isScopeImage: boolean;
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
+  selectAlbum: () => Promise<AlbumItem>;
   refresh: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, refresh } = props;
-  const [lists] = useState([
-    {
-      id: 1,
-      name: "默认相册1",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
-      type: "image",
-    },
-    {
-      id: 2,
-      name: "默认相册2",
-      count: 19,
-      url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
-      type: "image",
-    },
-    {
-      id: 3,
-      name: "默认相册3",
-      count: 19,
-      url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
-      type: "image",
-    }
-  ]);
+  const { shopId, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, selectAlbum, refresh } = props;
+  const [lists, setLists] = useState<CardItem[]>([]);
   const [previewURL, setPreviewURL] = useState("");
   const [previewModal, setPreviewModal] = useState(false);
+
+  useEffect(() => {
+    const lastScope = tabScope[tabScope.length - 1]
+    if (!lastScope) {
+      return
+    }
+    if (lastScope.type === 'album') {
+      setLists([
+        {
+          id: 1,
+          name: "默认相册1",
+          count: 19,
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
+          type: "album",
+        },
+        {
+          id: 2,
+          name: "默认相册2",
+          count: 19,
+          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+          type: "album",
+        },
+        {
+          id: 3,
+          name: "默认相册3",
+          count: 19,
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
+          type: "album",
+        }
+      ])
+    } else {
+      setLists([
+        {
+          id: 1,
+          name: "默认相册1",
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
+          type: "image",
+        },
+        {
+          id: 2,
+          name: "默认相册2",
+          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+          type: "image",
+        },
+        {
+          id: 3,
+          name: "默认相册3",
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
+          type: "image",
+        }
+      ])
+    }
+  }, [tabScope])
 
   /***************************************************** Interaction Fns */
 
@@ -96,7 +128,7 @@ export default function Cards(props: CardsProps) {
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
-                refresh && refresh();
+                refresh();
                 resolve(res.success)
               } else {
                 throw new Error(res.message || "出错啦，请稍后重试");
@@ -126,9 +158,19 @@ export default function Cards(props: CardsProps) {
     await delCallback(delImagesetImage, { id }, info)
   }
 
+  // 移动图片
+  const moveImage = async (e: any, image: ImageItem) => {
+    e.stopPropagation()
+    const { id } = image
+    const album = await selectAlbum()
+    await updateImagesetImage(shopId, { id, albumID: album.id })
+    successMessage('移动成功');
+    refresh()
+  }
+
   /***************************************************** Renders */
 
-  const AlbumCard = (card: CardItem) => {
+  const AlbumCard = (card: AlbumItem) => {
     const { id, name, url } = card;
     const isChecked = isScopeAlbum && selection.find((y: any) => y.id === id);
     return (
@@ -144,7 +186,7 @@ export default function Cards(props: CardsProps) {
                 <EditOutlined />
                 <span>编辑</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card as AlbumItem)}>
+              <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
@@ -161,7 +203,7 @@ export default function Cards(props: CardsProps) {
       </div>
     );
   };
-  const ImageCard = (card: CardItem) => {
+  const ImageCard = (card: ImageItem) => {
     const { id, url } = card;
     const isChecked = isScopeImage && selection.find((y: any) => y.id === id);
     return (
@@ -172,12 +214,12 @@ export default function Cards(props: CardsProps) {
             <div className={styles["anticon-down"]}>
               <DownOutlined />
             </div>
-            <div className={styles["down-actions"]}>
+            <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
               <div className={styles["anticon-down-item"]}>
                 <PartitionOutlined />
                 <span>移动</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card as ImageItem)}>
+              <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
@@ -229,7 +271,7 @@ export default function Cards(props: CardsProps) {
         {lists.map((x: any) => renderCard(x))}
       </div>
 
-      {/* Preview Image Modal */}
+      {/* Modals */}
       {renderPreviewModal()}
     </>
   );

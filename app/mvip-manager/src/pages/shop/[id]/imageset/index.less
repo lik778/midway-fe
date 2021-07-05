@@ -33,8 +33,10 @@
 
 /* create album modal */
 :global {
-  .create-album-modal {
 
+  // Common Modal Styles
+
+  .create-album-modal {
     .ant-modal {
       margin-bottom: 14px;
       top: 350px;
@@ -66,11 +68,19 @@
     }
 
     .ant-modal-body {
-      padding: 40px;
+      padding: 24px 40px 40px 40px;
     }
+  }
 
+  // Create Album Modal Styles
+
+  .create-album-modal {
     .ant-form-item-explain {
       padding-left: 10px;
+    }
+
+    #create-album-form {
+      margin-top: 10px;
     }
 
     #create-album-form_name {

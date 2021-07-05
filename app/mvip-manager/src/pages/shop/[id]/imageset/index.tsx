@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from "umi";
-import { Button, Checkbox, Form, Input, Modal, Pagination } from "antd";
+import { Button, Checkbox, Form, Input, Select, Modal, Pagination } from "antd";
 
 import ContentHeader from "../components/content-header";
 import ArticleNav from './components/nav'
@@ -8,6 +8,7 @@ import Cards from './components/cards'
 import { ShopModuleType } from "@/enums";
 import { successMessage, errorMessage } from "@/components/message";
 import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
+import { useSelectAlbumListsModal } from './components/select-album-modal'
 
 import styles from './index.less';
 
@@ -48,6 +49,8 @@ const ShopArticlePage = (props: any) => {
   const isEditingAlbum = Object.keys(createAlbumFormDefaultVals).length > 0
   const [createAlbumModal, setCreateAlbumModal] = useState(false);
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
+
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
 
   /***************************************************** Interaction Fns */
 
@@ -90,6 +93,7 @@ const ShopArticlePage = (props: any) => {
   useEffect(() => {
     createAlbumForm.setFieldsValue(createAlbumFormDefaultVals)
   }, [createAlbumFormDefaultVals])
+
 
   /***************************************************** API Calls */
 
@@ -157,6 +161,7 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           refresh={refresh}
           editAlbum={openCreateAlbumModal}
+          selectAlbum={selectAlbum}
         />
         <Pagination
           className={styles["pagination"]}
@@ -165,7 +170,7 @@ const ShopArticlePage = (props: any) => {
         />
       </div>
 
-      {/* Modals */}
+      {/* Create Album Modal */}
       <Modal
         wrapClassName="create-album-modal"
         title={isEditingAlbum ? '编辑相册' : "新建相册"}
@@ -205,6 +210,8 @@ const ShopArticlePage = (props: any) => {
           </Button>
         </div>
       </Modal>
+
+      {$selectAlbumModal}
     </>
   );
 }
@@ -215,11 +222,9 @@ interface SelectionBlockProps {
 }
 function SelectionBlock (props: SelectionBlockProps) {
   const { selection, onSelectionChange } = props
-
   const handleCheckAll = (e: any) => {
     console.log(e)
   }
-
   return (
     <>
       <div className={styles["section-block"]}>

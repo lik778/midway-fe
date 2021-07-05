@@ -1,11 +1,13 @@
 export type AlbumItem = {
+  type: 'album'
   id: number,
   name: string,
   url: string,
-  count: string
+  count: number
 }
 
 export type ImageItem = {
+  type: 'image'
   id: number,
   name: string,
   url: string,
