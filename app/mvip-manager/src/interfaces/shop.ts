@@ -262,7 +262,7 @@ export interface UpdateImagesetAlbumParam {
 }
 
 export interface DelImagesetAlbumParam {
-  id: number;
+  ids: number | number[];
 }
 
 export interface DelImagesetImageParam {

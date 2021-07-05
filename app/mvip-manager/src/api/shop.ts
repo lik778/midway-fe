@@ -198,7 +198,8 @@ export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumP
 
 // 删除店铺相册
 export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetAlbum', params, setShopHeader(shopId))
+  const ids = Array.isArray(params.ids) ? params.ids : [params.ids]
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetAlbum', { ids }, setShopHeader(shopId))
 }
 
 // 删除相册图片

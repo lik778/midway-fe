@@ -24,6 +24,8 @@ interface CardsProps {
   tabScope: TabScope;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
+  select: (id: number | number[]) => void;
+  unselect: (id: number | number[]) => void;
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
   refresh: () => void;
@@ -32,7 +34,7 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, refresh } = props;
+  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, select, unselect, goTabScope, editAlbum, refresh } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
 
@@ -46,9 +48,8 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** Interaction Fns */
 
-  const handleSelectCard = (val: any) => {
-    console.log(val);
-  };
+  const stopEvent = (e: any) => e.stopPropagation()
+
   const previewImage = (url: string) => {
     setPreviewURL(url)
     setPreviewModal(true)
@@ -58,16 +59,27 @@ export default function Cards(props: CardsProps) {
     setPreviewModal(false)
   }
   const handleEditAlbum = (e: any, album: AlbumItem) => {
-    editAlbum(album)
     e.stopPropagation()
+    editAlbum(album)
   }
 
-  const checkAlbum = (album: AlbumItem) => {
+  // 查看相册详情
+  const goAlbumScope = (album: AlbumItem) => {
     goTabScope({
       type: 'image',
       item: album
     })
   }
+
+  // 选中/取消选中卡片
+  const handleSelectCard = (e: any, card: CardItem) => {
+    const { id } = card
+    if (e.target.checked) {
+      select(id)
+    } else {
+      unselect(id)
+    }
+  };
 
   /***************************************************** API Calls */
 
@@ -104,7 +116,7 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
     const { id, count } = album
     const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, { id }, info)
+    await delCallback(delImagesetAlbum, { ids: [id] }, info)
   }
   // 删除图片
   const delImage = async (e: any, image: ImageItem) => {
@@ -157,13 +169,13 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** Renders */
 
-  const AlbumCard = (card: AlbumItem) => {
+  const AlbumCard = useCallback((card: AlbumItem) => {
     const { id, name, url, count } = card;
-    const isChecked = isScopeAlbum && selection.find((y: any) => y.id === id);
+    const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
     return (
-      <div className={styles["album-card"]} onClick={() => checkAlbum(card)}>
-        <div className={styles["selection"]}>
-          <Checkbox value={isChecked} onChange={handleSelectCard} />
+      <div className={styles["album-card"]} onClick={() => goAlbumScope(card)} key={`album-card-${id}`}>
+        <div className={styles["selection"]} onClick={e => stopEvent(e)}>
+          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
           <div className={styles["anticon-down-con"]}>
             <div className={styles["anticon-down"]}>
               <DownOutlined />
@@ -189,14 +201,15 @@ export default function Cards(props: CardsProps) {
         </div>
       </div>
     );
-  };
-  const ImageCard = (card: ImageItem) => {
+  }, [selection])
+
+  const ImageCard = useCallback((card: ImageItem) => {
     const { id, url } = card;
-    const isChecked = isScopeImage && selection.find((y: any) => y.id === id);
+    const isChecked = isScopeImage && selection.find((y: number) => y === id);
     return (
-      <div className={styles["image-card"]} onClick={() => previewImage(url)}>
-        <div className={styles["selection"]}>
-          <Checkbox value={isChecked} onChange={handleSelectCard} />
+      <div className={styles["image-card"]} onClick={() => previewImage(url)} key={`image-card-${id}`}>
+        <div className={styles["selection"]} onClick={e => stopEvent(e)}>
+          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
           <div className={styles["anticon-down-con"]}>
             <div className={styles["anticon-down"]}>
               <DownOutlined />
@@ -220,7 +233,8 @@ export default function Cards(props: CardsProps) {
         <img className={styles["cover"]} src={url} alt="cover" />
       </div>
     );
-  };
+  }, [selection])
+
   const renderCard = (card: CardItem) => {
     if (isScopeAlbum) {
       return AlbumCard(card as AlbumItem);
@@ -230,6 +244,7 @@ export default function Cards(props: CardsProps) {
     }
     console.error('[ERR] Error TabScope Rendered')
   };
+
   const renderPreviewModal = () => {
     const target = lists.find(x => x.url === previewURL)
     const targetIDX = lists.findIndex(x => x === target)
@@ -251,14 +266,12 @@ export default function Cards(props: CardsProps) {
       </Modal>
     )
   }
+
   return (
     <>
-      {/* Cards */}
       <div className={styles["cards-con"]}>
         {lists.map((x: any) => renderCard(x))}
       </div>
-
-      {/* Modals */}
       {renderPreviewModal()}
       {$selectAlbumModal}
     </>

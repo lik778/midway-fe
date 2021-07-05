@@ -10,6 +10,7 @@ import { ShopModuleType } from "@/enums";
 import { successMessage, errorMessage } from "@/components/message";
 import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
 
+import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
 
 import { RouteParams } from "@/interfaces/shop";
@@ -25,7 +26,6 @@ const ShopArticlePage = (props: any) => {
 
   const params: RouteParams = useParams();
   const shopId = Number(params.id);
-  const [selection, setSelection] = useState([])
 
   const [tabScope, setTabScope] = useState<TabScope>([{ type: 'album', item: null }]);
   const [isScopeAlbum, setIsScopeAlbum] = useState(false);
@@ -66,6 +66,11 @@ const ShopArticlePage = (props: any) => {
   // 层级变换时重置翻页
   useEffect(() => curScope && resetPagi(), [curScope])
 
+  const [selection, setSelection, select, unselect] = useSelection()
+
+  // 层级变换时重置选取
+  useEffect(() => curScope && setSelection([]), [curScope])
+
   /***************************************************** Interaction Fns */
 
   // 根据分页以及文件层级获取列表
@@ -74,7 +79,6 @@ const ShopArticlePage = (props: any) => {
       return
     }
     const { current } = pagi
-    console.log('current: ', current)
     let res = Array(pagiConf.pageSize).fill('').map((x, i) => {
       const idx = ((current - 1) * pagiConf.pageSize) + i
       return {
@@ -182,8 +186,14 @@ const ShopArticlePage = (props: any) => {
           createAlbum={() => openCreateAlbumModal()}
         />
         <SelectionBlock
+          shopId={shopId}
+          total={pagiConf.total}
           selection={selection}
-          onSelectionChange={val => setSelection(val)}
+          select={select}
+          unselect={unselect}
+          setSelection={setSelection}
+          lists={lists}
+          refresh={refresh}
         />
         <Cards
           shopId={shopId}
@@ -193,6 +203,8 @@ const ShopArticlePage = (props: any) => {
           isScopeImage={isScopeImage}
           goTabScope={goTabScope}
           selection={selection}
+          select={select}
+          unselect={unselect}
           refresh={refresh}
           editAlbum={openCreateAlbumModal}
         />

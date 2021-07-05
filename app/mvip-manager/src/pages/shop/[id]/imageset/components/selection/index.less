@@ -7,12 +7,18 @@
   line-height: 40px;
   background: #F2F2F2;
 }
+.clear-selection-btn,
 .delete-all-btn {
   color: #096DD9;
+
   &:hover {
     color: #096DD9;
     opacity: .9;
   }
+}
+.selection-count + .clear-selection-btn,
+.selection-count + .delete-all-btn {
+  margin-left: 10px;
 }
 .count-info {
   flex-grow: 1;
