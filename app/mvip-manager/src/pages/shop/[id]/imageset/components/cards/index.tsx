@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Modal } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
+import { Checkbox, Modal } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -9,7 +9,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage, updateImagesetImage } from '@/api/shop'
+import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, updateImagesetImage } from '@/api/shop'
 
 import styles from "./index.less";
 
@@ -35,12 +35,16 @@ export default function Cards(props: CardsProps) {
   const [previewURL, setPreviewURL] = useState("");
   const [previewModal, setPreviewModal] = useState(false);
 
+  const [curScope, setCurScope] = useState<TabScopeItem>();
   useEffect(() => {
-    const lastScope = tabScope[tabScope.length - 1]
-    if (!lastScope) {
+    setCurScope(tabScope[tabScope.length - 1])
+  }, [tabScope])
+
+  useEffect(() => {
+    if (!curScope) {
       return
     }
-    if (lastScope.type === 'album') {
+    if (curScope.type === 'album') {
       setLists([
         {
           id: 1,
@@ -86,7 +90,7 @@ export default function Cards(props: CardsProps) {
         }
       ])
     }
-  }, [tabScope])
+  }, [curScope])
 
   /***************************************************** Interaction Fns */
 
@@ -106,7 +110,7 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
   }
 
-  const goImagePage = (album: AlbumItem) => {
+  const goAlbumDetail = (album: AlbumItem) => {
     goTabScope({
       type: 'image',
       item: album
@@ -163,10 +167,41 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
     const { id } = image
     const album = await selectAlbum()
-    await updateImagesetImage(shopId, { id, albumID: album.id })
-    successMessage('移动成功');
+    updateImagesetImage(shopId, { id, albumID: album.id })
+      .then((res: any) => {
+        if (res.success) {
+          successMessage('移动成功');
+        } else {
+          throw new Error(res.message || "出错啦，请稍后重试");
+        }
+      })
+      .catch((error: any) => {
+        errorMessage(error.message)
+      })
     refresh()
   }
+
+  // 设置封面图片
+  const setCoverImage = useCallback(async (e: any, image: ImageItem) => {
+    e.stopPropagation()
+    if (curScope && curScope.item) {
+      const { id } = image
+      const { item } = curScope
+      updateImagesetAlbum(shopId, { id: item.id, cover: id })
+        .then((res: any) => {
+          if (res.success) {
+            successMessage('设置成功');
+          } else {
+            throw new Error(res.message || "出错啦，请稍后重试");
+          }
+        })
+        .catch((error: any) => {
+          errorMessage(error.message)
+        })
+    } else {
+      console.warn('[WARN] Empty Scope in function setCoverImage')
+    }
+  }, [curScope])
 
   /***************************************************** Renders */
 
@@ -174,7 +209,7 @@ export default function Cards(props: CardsProps) {
     const { id, name, url } = card;
     const isChecked = isScopeAlbum && selection.find((y: any) => y.id === id);
     return (
-      <div className={styles["album-card"]} onClick={() => goImagePage(card)}>
+      <div className={styles["album-card"]} onClick={() => goAlbumDetail(card)}>
         <div className={styles["selection"]}>
           <Checkbox value={isChecked} onChange={handleSelectCard} />
           <div className={styles["anticon-down-con"]}>
@@ -223,7 +258,7 @@ export default function Cards(props: CardsProps) {
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
-              <div className={styles["anticon-down-item"]}>
+              <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
                 <EditOutlined />
                 <span>设为封面</span>
               </div>

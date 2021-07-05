@@ -257,7 +257,8 @@ export interface CreateImagesetAlbumParam {
 
 export interface UpdateImagesetAlbumParam {
   id: number;
-  name: string;
+  name?: string;
+  cover?: number;
 }
 
 export interface DelImagesetAlbumParam {
