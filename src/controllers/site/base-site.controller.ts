@@ -58,7 +58,7 @@ export class BaseSiteController {
 
 
   @Get('/')
-  public async home(@Query() query, @Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+  public async home(@Query() query, @Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     // 当参数里添加sem 则说明要切换为sem页
     const sem = query.sem
     let shopName = ''
@@ -94,6 +94,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
+
     // 这里 isSem: sem === "1" ? true : undefined 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
     const isSem = sem === "1" ? true : undefined
 
@@ -106,10 +107,9 @@ export class BaseSiteController {
         data.basic.company.alias = data.basic.company.alias.replace(companyNameReg, '')
       }
     }
-
-
-
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem });
+    // https://www.tapd.cn/20097551/prong/stories/view/1120097551001038611
+    const isCn = HostDomain === 'cn' ? true : undefined
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn });
   }
 
   @Get('/n')
