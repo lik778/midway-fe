@@ -52,8 +52,6 @@ const ShopArticlePage = (props: any) => {
     }
   }, [tabScope])
 
-  useEffect(() => curScope && refresh(), [curScope])
-
   const [createAlbumForm] = Form.useForm();
   const [createAlbumFormDefaultVals, setCreateAlbumFormDefaultVals] = useState<any>({})
   const isEditingAlbum = Object.keys(createAlbumFormDefaultVals).length > 0
@@ -61,8 +59,12 @@ const ShopArticlePage = (props: any) => {
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
 
   const [lists, setLists] = useState<CardItem[]>([]);
-  const [pagi, setPagi, pagiConf, setPagiConf] = usePagination()
+  const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
+    pageSizeOptions: [8, 16, 32]
+  })
 
+  // 层级变换时重置翻页
+  useEffect(() => curScope && resetPagi(), [curScope])
 
   /***************************************************** Interaction Fns */
 
@@ -71,59 +73,32 @@ const ShopArticlePage = (props: any) => {
     if (!curScope) {
       return
     }
-    if (curScope.type === 'album') {
-      setLists([
-        {
-          id: 1,
-          name: "默认相册1",
-          count: 19,
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
-          type: "album",
-        },
-        {
-          id: 2,
-          name: "默认相册2",
-          count: 19,
-          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
-          type: "album",
-        },
-        {
-          id: 3,
-          name: "默认相册3",
-          count: 19,
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
-          type: "album",
-        }
-      ])
-    } else {
-      setLists([
-        {
-          id: 1,
-          name: "默认相册1",
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
-          type: "image",
-        },
-        {
-          id: 2,
-          name: "默认相册2",
-          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
-          type: "image",
-        },
-        {
-          id: 3,
-          name: "默认相册3",
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
-          type: "image",
-        }
-      ])
-    }
-  }, [curScope, pagi])
+    const { current } = pagi
+    console.log('current: ', current)
+    let res = Array(pagiConf.pageSize).fill('').map((x, i) => {
+      const idx = ((current - 1) * pagiConf.pageSize) + i
+      return {
+        type: 'album',
+        id: idx + 1,
+        name: '默认相册' + idx,
+        count: ~~(Math.random() * 29),
+        url: (idx % 2)
+          ? `http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=${idx + 1}`
+          : "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+      }
+    })
+    setLists(res)
+    setPagiConf({ ...pagiConf, total: 80 })
+  }, [pagi])
 
-  // FIXME TODO
-  const handlePagiChange = (page: number, pageSize: number) => {
-    setPagi({ ...pagi, current: page })
+  // 切换翻页自动刷新列表
+  const handlePagiChange = (page: number, pageSize?: number | undefined) => {
+    pageSize = pageSize || pagiConf.pageSize
+    const pageSizeChanged = pageSize !== pagiConf.pageSize
+    setPagi({ ...pagi, current: pageSizeChanged ? 1 : page })
     setPagiConf({ ...pagiConf, pageSize })
   }
+  useEffect(() => refresh(), [pagi])
 
   // const goAlbumPage = () => setTabScope('album')
   // const goImagePage = () => setTabScope('image')
@@ -226,7 +201,10 @@ const ShopArticlePage = (props: any) => {
         <Pagination
           className={styles["pagination"]}
           defaultCurrent={1}
+          current={pagi.current}
           total={pagiConf.total}
+          pageSize={pagiConf.pageSize}
+          pageSizeOptions={pagiConf.pageSizeOptions}
           onChange={handlePagiChange}
         />
       </div>

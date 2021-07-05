@@ -6,16 +6,32 @@ type Pagination = {
 type PaginationSetting = {
   total: number
   pageSize: number
+  pageSizeOptions: number[]
 }
 
-export function usePagination() {
-  const [conf, setConf] = useState<PaginationSetting>({
+const getDefaultConf = (defaultVals: Partial<PaginationSetting>) => {
+  const { pageSizeOptions = [] } = defaultVals
+  return {
     total: 1,
-    pageSize: 10
-  })
-  const [data, setData] = useState<Pagination>({
-    current: 1,
-  })
+    pageSizeOptions: pageSizeOptions || [10, 25, 50],
+    pageSize: pageSizeOptions[0] || 10,
+  }
+}
 
-  return [data, setData, conf, setConf]
+const getDefaultData = () => {
+  return {
+    current: 1,
+  }
+}
+
+export function usePagination(defaultVals: Partial<PaginationSetting>) {
+  const [conf, setConf] = useState<PaginationSetting>(getDefaultConf(defaultVals))
+  const [data, setData] = useState<Pagination>(getDefaultData())
+
+  const reset = () => {
+    // setConf(getDefaultConf(defaultVals))
+    setData(getDefaultData())
+  }
+
+  return [data, setData, conf, setConf, reset]
 }

@@ -62,7 +62,7 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
   }
 
-  const goAlbumDetail = (album: AlbumItem) => {
+  const checkAlbum = (album: AlbumItem) => {
     goTabScope({
       type: 'image',
       item: album
@@ -158,10 +158,10 @@ export default function Cards(props: CardsProps) {
   /***************************************************** Renders */
 
   const AlbumCard = (card: AlbumItem) => {
-    const { id, name, url } = card;
+    const { id, name, url, count } = card;
     const isChecked = isScopeAlbum && selection.find((y: any) => y.id === id);
     return (
-      <div className={styles["album-card"]} onClick={() => goAlbumDetail(card)}>
+      <div className={styles["album-card"]} onClick={() => checkAlbum(card)}>
         <div className={styles["selection"]}>
           <Checkbox value={isChecked} onChange={handleSelectCard} />
           <div className={styles["anticon-down-con"]}>
@@ -184,7 +184,7 @@ export default function Cards(props: CardsProps) {
         <div className={styles["header"]}>
           <span className={styles["name"]}>{name}</span>
           <span>
-            <span>{selection.length}</span> 张
+            <span>{count}</span> 张
           </span>
         </div>
       </div>
