@@ -18,42 +18,42 @@ export function useCreateAlbumModal(props: Props) {
 
   const { shopId, refresh } = props
 
-  const [createAlbumForm] = Form.useForm();
-  const [createAlbumFormDefaultVals, setCreateAlbumFormDefaultVals] = useState<any>({})
-  const [isEditingAlbum, setIsEditingAlbum] = useState(false)
-  const [createAlbumModal, setCreateAlbumModal] = useState(false);
-  const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
+  const [form] = Form.useForm();
+  const [defaultVals, setDefaultVals] = useState<any>({})
+  const [isEditing, setIsEditing] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // 切换新建和编辑状态
   useEffect(() => {
     const notNull = (x: any) => !!x
-    setIsEditingAlbum(Object.values(createAlbumFormDefaultVals).filter(notNull).length > 0)
-  }, [createAlbumFormDefaultVals])
+    setIsEditing(Object.values(defaultVals).filter(notNull).length > 0)
+  }, [defaultVals])
 
   // 打开模态框
-  const openCreateAlbumModal = (album?: AlbumItem) => {
+  const open = (album?: AlbumItem) => {
     if (album) {
       const { id, name } = album
-      setCreateAlbumFormDefaultVals({ id, name })
+      setDefaultVals({ id, name })
     }
-    setCreateAlbumModal(true)
+    setVisible(true)
   }
   useEffect(() => {
-    createAlbumForm.setFieldsValue(createAlbumFormDefaultVals)
-  }, [createAlbumFormDefaultVals])
+    form.setFieldsValue(defaultVals)
+  }, [defaultVals])
 
   /***************************************************** Actions */
 
   // 新增及编辑相册
   const createAlbum = async () => {
-    createAlbumForm.validateFields([])
+    form.validateFields([])
       .then(formvals => {
-        setCreateAlbumLoading(true);
+        setLoading(true);
         let post = null
         let successMsg = ''
         let params: any = {}
-        if (isEditingAlbum) {
-          params.id = createAlbumFormDefaultVals.id
+        if (isEditing) {
+          params.id = defaultVals.id
           post = updateImagesetAlbum
           successMsg = "编辑成功"
         } else {
@@ -65,9 +65,9 @@ export function useCreateAlbumModal(props: Props) {
             if (res.success) {
               successMessage(successMsg);
               refresh();
-              setCreateAlbumModal(false);
-              createAlbumForm.resetFields();
-              setCreateAlbumFormDefaultVals({})
+              setVisible(false);
+              form.resetFields();
+              setDefaultVals({})
             } else {
               throw new Error(res.message || "出错啦，请稍后重试");
             }
@@ -76,7 +76,7 @@ export function useCreateAlbumModal(props: Props) {
             errorMessage(error.message);
           })
           .finally(() => {
-            setCreateAlbumLoading(false);
+            setLoading(false);
           });
       })
   };
@@ -86,15 +86,15 @@ export function useCreateAlbumModal(props: Props) {
   return [
     <Modal
       wrapClassName="create-album-modal"
-      title={isEditingAlbum ? '编辑相册' : "新建相册"}
+      title={isEditing ? '编辑相册' : "新建相册"}
       width={432}
       footer={null}
-      visible={createAlbumModal}
-      onCancel={() => setCreateAlbumModal(false)}
+      visible={visible}
+      onCancel={() => setVisible(false)}
     >
       <Form
         name="create-album-form"
-        form={createAlbumForm}
+        form={form}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 19 }}
       >
@@ -116,13 +116,13 @@ export function useCreateAlbumModal(props: Props) {
           className={styles["confirm-btn"]}
           type="primary"
           htmlType="submit"
-          loading={createAlbumLoading}
+          loading={loading}
           onClick={createAlbum}
         >
           确定
         </Button>
       </div>
     </Modal>,
-    openCreateAlbumModal
+    open
   ] as const
 }

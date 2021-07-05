@@ -13,9 +13,10 @@ interface Props {
   isScopeImage: boolean;
   goTabScope: (scope: TabScopeItem) => void;
   createAlbum: () => void;
+  openUpload: () => void;
 }
 export default (props: Props) => {
-  const { shopId, tabScope, isScopeAlbum, isScopeImage, goTabScope, createAlbum } = props;
+  const { shopId, tabScope, isScopeAlbum, isScopeImage, goTabScope, createAlbum, openUpload } = props;
 
   const [lastScope, setLastScope] = useState<TabScopeItem>();
   useEffect(() => {
@@ -23,8 +24,6 @@ export default (props: Props) => {
   }, [tabScope])
 
   const goHomeScope = () => goTabScope(tabScope[0])
-
-  const uploadImage = () => {};
 
   const lastScopeName = lastScope?.item?.name
   return (
@@ -58,7 +57,7 @@ export default (props: Props) => {
             icon={<PlusOutlined />}
             size="large"
             type="primary"
-            onClick={uploadImage}
+            onClick={openUpload}
           >
             上传图片
           </Button>

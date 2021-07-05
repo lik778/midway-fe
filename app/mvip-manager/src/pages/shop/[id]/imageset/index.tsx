@@ -7,6 +7,7 @@ import ArticleNav from './components/nav'
 import Cards from './components/cards'
 import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
+// import { useUploadModal } from './components/upload-modal'
 
 import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
@@ -115,7 +116,7 @@ const ShopArticlePage = (props: any) => {
 
   // PERF ?
   const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({ shopId, refresh })
-
+  // const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh })
   return (
     <>
       {/* 页头 */}
@@ -130,6 +131,7 @@ const ShopArticlePage = (props: any) => {
           isScopeImage={isScopeImage}
           goTabScope={goTabScope}
           createAlbum={createAlbum}
+          // openUpload={openUpload}
         />
         {/* 选框区 */}
         <SelectionBlock
@@ -167,7 +169,10 @@ const ShopArticlePage = (props: any) => {
           onChange={handlePagiChange}
         />
       </div>
+      {/* 创建/编辑相册模态框 */}
       {$CreateAlbumModal}
+      {/* 图片上传模态框 */}
+      {/* {$UploadModal} */}
     </>
   );
 }

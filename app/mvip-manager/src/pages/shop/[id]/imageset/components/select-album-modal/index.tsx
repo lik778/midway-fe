@@ -12,22 +12,22 @@ let albumSelectResolver: any = null
 // 选择 AlbumLists 所使用的模态框
 export function useSelectAlbumListsModal() {
   const [allAlbumLists] = useAllAlbumLists()
-  const [moveImageTo, setMoveImageTo] = useState<AlbumItem | null>(null);
-  const [albumSelectModal, setAlbumSelectModal] = useState(false);
+  const [select, setSelect] = useState<AlbumItem | null>(null);
+  const [visible, setVisible] = useState(false);
 
   const selectAlbum = async (): Promise<AlbumItem> => {
-    setAlbumSelectModal(true)
+    setVisible(true)
     return await new Promise(async resolve => {
       albumSelectResolver = resolve
     })
   }
   const handleSelectAlbum = (id: number) => {
     const target = allAlbumLists.find((x: AlbumItem) => x.id === id)
-    target && setMoveImageTo(target)
+    target && setSelect(target)
   }
   const handleConfirmSelectAlbum = () => {
-    albumSelectResolver && albumSelectResolver(moveImageTo)
-    setAlbumSelectModal(false)
+    albumSelectResolver && albumSelectResolver(select)
+    setVisible(false)
   }
 
   return [
@@ -36,8 +36,8 @@ export function useSelectAlbumListsModal() {
       title="移动到"
       width={432}
       footer={null}
-      visible={albumSelectModal}
-      onCancel={() => setAlbumSelectModal(false)}
+      visible={visible}
+      onCancel={() => setVisible(false)}
     >
       <Select
         className='album-select-album-selector'
