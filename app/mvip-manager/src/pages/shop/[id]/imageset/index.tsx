@@ -111,19 +111,18 @@ const ShopArticlePage = (props: any) => {
     setTabScope(newScopes)
   }
 
-  /***************************************************** API Calls */
-
   /***************************************************** Renders */
 
-  const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({
-    shopId,
-    refresh
-  })
+  // PERF ?
+  const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({ shopId, refresh })
 
   return (
     <>
-      <ContentHeader {...props} type={ShopModuleType.ARTICLE} />
+      {/* 页头 */}
+      <ContentHeader {...props} type={ShopModuleType.IMAGESET} />
+      {/* 内容 */}
       <div className={`container ${styles["container"]}`}>
+        {/* 页面内导航栏 */}
         <ArticleNav
           shopId={shopId}
           tabScope={tabScope}
@@ -132,6 +131,7 @@ const ShopArticlePage = (props: any) => {
           goTabScope={goTabScope}
           createAlbum={createAlbum}
         />
+        {/* 选框区 */}
         <SelectionBlock
           shopId={shopId}
           total={pagiConf.total}
@@ -142,6 +142,7 @@ const ShopArticlePage = (props: any) => {
           lists={lists}
           refresh={refresh}
         />
+        {/* 图片/相册展示区 */}
         <Cards
           shopId={shopId}
           lists={lists}
@@ -155,6 +156,7 @@ const ShopArticlePage = (props: any) => {
           refresh={refresh}
           editAlbum={createAlbum}
         />
+        {/* 分页 */}
         <Pagination
           className={styles["pagination"]}
           defaultCurrent={1}
