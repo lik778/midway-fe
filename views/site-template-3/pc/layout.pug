@@ -11,7 +11,7 @@ html
     body
         //-初始化公共数据
         - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
-        - const { company, person, copyRight } = renderData.basic
+        - const { company, person, copyRight ,shop} = renderData.basic
         - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo, isRedTopbar } = renderData
         //- 名称先取企业别称 后取企业名称
         - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
@@ -29,25 +29,35 @@ html
 
         block header
             include ../../common/pc/official-header.pug
-            include ./components/common/header.pug
+            +officialHeader({navConfig:{navPhoneIcon:'//file.baixing.net/202106/ef154a3aecc779ec47020f542b278b7d.png',navPhoneColor:'#f46',navTipBorderColor:' #FFACBB',navTipBackgroundColor:'rgb(255,249,250)',navTipColor:'#B9346B'}})
 
-        block content
-        //-QQ联系等开发时先注释掉
-        if !isSem
-            include ../../common/pc/customer-service.pug
+        #layout-content
+            block content
 
         block footer
             //- include ../../common/pc/footer.pug
             include ../../common/pc/official-footer.pug
+
+        //-QQ联系等开发时先注释掉
+        if !isSem
+            include ../../common/pc/customer-service.pug
     //-把打点值赋给window，便于传给node层和其他js层
     block append scripts
         script.
+            window.domainType = '#{shop.domainType}';
             window.shopId = #{shopId};
+            //  '#{ 变量 }'实际上是一个字符串 'true/false'
             let isRedTopbar = '#{ isRedTopbar }';
             if(isRedTopbar){
                 window.isRedTopbar = isRedTopbar
             } else {
                 window.isRedTopbar = '';
+            }
+            let isSem = '#{ isSem }';
+            if(isSem){
+                window.isSem = isSem
+            } else {
+                window.isSem =  '';
             }
         include ../../vendor/baidutongji.pug
         //-TODO:开发阶段先注释掉

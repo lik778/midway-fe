@@ -35,8 +35,11 @@ block content
 
     include ../components/contact-form.pug
 
-//-block footer
-//-    include ../components/footer.pug
+    //- 用于sem禁止外跳
+    include ../../../common/wap/contact-form-sem.pug
+    +contactFormSem('#FF2D38')
+
+
 
 block scripts
     :combine(fileName="site-template-2-home-wap.js")

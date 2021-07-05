@@ -17,16 +17,16 @@ export const baseInfoForm: FormConfig = {
   useLabelCol: { span: 3 },
   children: [
     { formItemWidth: 260, label: '企业名称', name: 'companyName', type: FormType.Input, required: true, maxLength: 50, minLength: 2, patternList: [{ pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }], placeholder: '请输入企业名称，2~50个字', disabled: false, showCount: true },
-    { formItemWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2, patternList: [{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }],  placeholder: '请输入企业别称，2~20个字', showCount: true },
+    { formItemWidth: 260, label: '企业别称', name: 'companyAlias', type: FormType.Input, required: false, maxLength: 20, minLength: 2, patternList: [{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }], placeholder: '请输入企业别称，2~20个字', showCount: true },
     { formItemWidth: 260, label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { formItemWidth: 260, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     { formItemWidth: 260, label: '服务区域', name: 'serviceArea', type: FormType.Input, required: true, placeholder: '请输入服务区域' },
     {
-      label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
-      minLength: 50, maxLength: 300, patternList: [{ pattern: /^[\s\S]{50,300}$/, message: '50～300个字' }]
+      label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～2000个字',
+      minLength: 50, maxLength: 2000, patternList: [{ pattern: /^[\s\S]{50,2000}$/, message: '50～2000个字' }]
     },
     {
-      label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }] }],
+      label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
       required: true, tip: '图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100'
     },
     { formItemWidth: 260, label: '类目', name: 'secondCategory', type: FormType.Select, required: true, placeholder: '请选择类目' },

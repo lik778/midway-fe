@@ -68,7 +68,7 @@ function CompanyInfoZhudao(props: any) {
             formChange={formChange}
             submitBtn={
               <Row className="save-base-info-box">
-                <Col span={3}></Col>
+                <Col span={2}></Col>
                 <Col style={{ paddingLeft: 16 }}><Button loading={loading} className="btn"
                   type="primary" size="large" htmlType="submit">保存</Button></Col>
               </Row>
