@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Button, Input, Form } from "antd";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { TabScope } from "../../index";
+import { TabScope, TabScopeItem } from "../../types";
 
 import styles from "./index.less";
 
 interface Props {
   shopId: number;
   tabScope: TabScope;
-  goAlbumPage: () => void;
+  isScopeAlbum: boolean;
+  isScopeImage: boolean;
+  goTabScope: (scope: TabScopeItem) => void;
   createAlbum: () => void;
 }
 export default (props: Props) => {
-  const { shopId, tabScope, goAlbumPage, createAlbum } = props;
+  const { shopId, tabScope, isScopeAlbum, isScopeImage, goTabScope, createAlbum } = props;
 
   const uploadImage = () => {};
 
@@ -22,10 +24,10 @@ export default (props: Props) => {
       <div className={styles["nav-container"]}>
         {/* left actions */}
 
-        {tabScope === "album" && <div />}
-        {tabScope === "image" && (
+        {isScopeAlbum && <div />}
+        {isScopeImage && (
           <Breadcrumb separator=">">
-            <Breadcrumb.Item onClick={goAlbumPage}>
+            <Breadcrumb.Item onClick={() => goTabScope(tabScope[0])}>
               <a>相册管理</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>默认相册</Breadcrumb.Item>
@@ -34,7 +36,7 @@ export default (props: Props) => {
 
         {/* right actions */}
         <div>
-          {tabScope === "album" && (
+          {isScopeAlbum && (
             <Button
               className={styles["create-album-button"]}
               size="large"

@@ -12,7 +12,7 @@ import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
 import styles from './index.less';
 
 import { RouteParams } from "@/interfaces/shop";
-import { TabScope, CardItem, AlbumItem, ImageItem } from './types'
+import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from './types'
 
 const FormItem = Form.Item;
 
@@ -24,7 +24,24 @@ const ShopArticlePage = (props: any) => {
   const shopId = Number(params.id);
   const [selection, setSelection] = useState([])
 
-  const [tabScope, setTabScope] = useState<TabScope>("album");
+  const [tabScope, setTabScope] = useState<TabScope>([]);
+  const [isScopeAlbum, setIsScopeAlbum] = useState(false);
+  const [isScopeImage, setIsScopeImage] = useState(false);
+  useEffect(() => {
+    const lastScope = tabScope[tabScope.length - 1]
+    if (lastScope) {
+      switch (lastScope.type) {
+        case 'album':
+          setIsScopeAlbum(true)
+          setIsScopeImage(false)
+          break
+        case 'image':
+          setIsScopeAlbum(false)
+          setIsScopeImage(true)
+          break
+      }
+    }
+  }, [tabScope])
 
   const [createAlbumForm] = Form.useForm();
   const [createAlbumFormDefaultVals, setCreateAlbumFormDefaultVals] = useState<any>({})
@@ -34,11 +51,34 @@ const ShopArticlePage = (props: any) => {
 
   /***************************************************** Interaction Fns */
 
-  const getList = () => {}
-  const refresh = () => {}
+  const getList = () => {
+    setTabScope([{
+      type: 'album',
+      item: null
+    }])
+  }
+  const refresh = getList
+  useEffect(() => {
+    refresh()
+  }, [])
 
-  const goAlbumPage = () => setTabScope('album')
-  const goImagePage = () => setTabScope('image')
+  // const goAlbumPage = () => setTabScope('album')
+  // const goImagePage = () => setTabScope('image')
+
+  // 切换文件层级
+  const goTabScope = (scope: TabScopeItem) => {
+    let newScopes = [...tabScope]
+    const target = newScopes.find(x => x?.item?.id === scope?.item?.id)
+    if (target) {
+      const idx = newScopes.findIndex(x => x === target)
+      if (idx !== -1) {
+        newScopes = newScopes.slice(0, idx)
+      }
+    } else {
+      newScopes.push(scope)
+    }
+    setTabScope(newScopes)
+  }
 
   const openCreateAlbumModal = (album?: AlbumItem) => {
     if (album) {
@@ -99,7 +139,9 @@ const ShopArticlePage = (props: any) => {
         <ArticleNav
           shopId={shopId}
           tabScope={tabScope}
-          goAlbumPage={goAlbumPage}
+          isScopeAlbum={isScopeAlbum}
+          isScopeImage={isScopeImage}
+          goTabScope={goTabScope}
           createAlbum={() => openCreateAlbumModal()}
         />
         <SelectionBlock
@@ -109,8 +151,10 @@ const ShopArticlePage = (props: any) => {
         <Cards
           shopId={shopId}
           tabScope={tabScope}
+          isScopeAlbum={isScopeAlbum}
+          isScopeImage={isScopeImage}
+          goTabScope={goTabScope}
           selection={selection}
-          goImagePage={goImagePage}
           refresh={refresh}
           editAlbum={openCreateAlbumModal}
         />

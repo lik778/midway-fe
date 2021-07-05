@@ -13,4 +13,8 @@ export type ImageItem = {
 
 export type CardItem = AlbumItem | ImageItem
 
-export type TabScope = 'album' | 'image'
+export type TabScopeItem = {
+  item: CardItem | null
+  type: 'album' | 'image'
+}
+export type TabScope = TabScopeItem[]

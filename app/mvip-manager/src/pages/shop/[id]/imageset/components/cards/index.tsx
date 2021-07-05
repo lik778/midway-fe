@@ -13,21 +13,23 @@ import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
 
 import styles from "./index.less";
 
-import { TabScope, CardItem, AlbumItem, ImageItem } from '../../types'
+import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from '../../types'
 
 interface CardsProps {
   shopId: number;
   selection: any[];
   tabScope: TabScope;
+  isScopeAlbum: boolean;
+  isScopeImage: boolean;
+  goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
-  goImagePage: () => void;
   refresh: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, selection, tabScope, editAlbum, goImagePage, refresh } = props;
+  const { shopId, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, refresh } = props;
   const [lists] = useState([
     {
       id: 1,
@@ -67,9 +69,16 @@ export default function Cards(props: CardsProps) {
     setPreviewURL('')
     setPreviewModal(false)
   }
-  const handleEditAlbum = (e: any, album: CardItem) => {
+  const handleEditAlbum = (e: any, album: AlbumItem) => {
     editAlbum(album)
     e.stopPropagation()
+  }
+
+  const goImagePage = (album: AlbumItem) => {
+    goTabScope({
+      type: 'image',
+      item: album
+    })
   }
 
   /***************************************************** API Calls */
@@ -84,7 +93,7 @@ export default function Cards(props: CardsProps) {
       onOk() {
         return new Promise((resolve, reject) => {
           api(shopId, query)
-            .then(res => {
+            .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
                 refresh && refresh();
@@ -121,9 +130,9 @@ export default function Cards(props: CardsProps) {
 
   const AlbumCard = (card: CardItem) => {
     const { id, name, url } = card;
-    const isChecked = tabScope === 'album' && selection.find((y: any) => y.id === id);
+    const isChecked = isScopeAlbum && selection.find((y: any) => y.id === id);
     return (
-      <div className={styles["album-card"]} onClick={goImagePage}>
+      <div className={styles["album-card"]} onClick={() => goImagePage(card)}>
         <div className={styles["selection"]}>
           <Checkbox value={isChecked} onChange={handleSelectCard} />
           <div className={styles["anticon-down-con"]}>
@@ -154,7 +163,7 @@ export default function Cards(props: CardsProps) {
   };
   const ImageCard = (card: CardItem) => {
     const { id, url } = card;
-    const isChecked = tabScope === 'image' && selection.find((y: any) => y.id === id);
+    const isChecked = isScopeImage && selection.find((y: any) => y.id === id);
     return (
       <div className={styles["image-card"]} onClick={() => previewImage(url)}>
         <div className={styles["selection"]}>
@@ -184,12 +193,13 @@ export default function Cards(props: CardsProps) {
     );
   };
   const renderCard = (card: CardItem) => {
-    switch (tabScope) {
-      case "album":
-        return AlbumCard(card);
-      case "image":
-        return ImageCard(card);
+    if (isScopeAlbum) {
+      return AlbumCard(card);
     }
+    if (isScopeImage) {
+      return ImageCard(card);
+    }
+    console.error('[ERR] Error TabScope Rendered')
   };
   const renderPreviewModal = () => {
     const target = lists.find(x => x.url === previewURL)
