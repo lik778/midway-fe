@@ -60,7 +60,7 @@ const ShopArticlePage = (props: any) => {
 
   const [lists, setLists] = useState<CardItem[]>([]);
   const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
-    pageSizeOptions: [8, 16, 32]
+    pageSizeOptions: ['8', '16', '32']
   })
 
   // 层级变换时重置翻页
@@ -82,9 +82,7 @@ const ShopArticlePage = (props: any) => {
         id: idx + 1,
         name: '默认相册' + idx,
         count: ~~(Math.random() * 29),
-        url: (idx % 2)
-          ? `http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=${idx + 1}`
-          : "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+        url: `http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1?x=${idx}`
       }
     })
     setLists(res)

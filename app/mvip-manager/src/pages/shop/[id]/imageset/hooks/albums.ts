@@ -17,5 +17,5 @@ export function useAllAlbumLists() {
       }
     }))
   })
-  return [lists, setLists]
+  return [lists, setLists] as const
 }

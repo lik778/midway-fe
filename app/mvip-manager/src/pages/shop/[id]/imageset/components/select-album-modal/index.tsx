@@ -60,5 +60,5 @@ export function useSelectAlbumListsModal() {
       </div>
     </Modal>,
     selectAlbum
-  ]
+  ] as const
 }
