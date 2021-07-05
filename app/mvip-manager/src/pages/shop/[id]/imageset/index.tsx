@@ -9,7 +9,7 @@ import SelectionBlock from './components/selection'
 import { ShopModuleType } from "@/enums";
 import { successMessage, errorMessage } from "@/components/message";
 import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
-import { useSelectAlbumListsModal } from './components/select-album-modal'
+
 import { usePagination } from './hooks/pagination'
 
 import { RouteParams } from "@/interfaces/shop";
@@ -59,8 +59,6 @@ const ShopArticlePage = (props: any) => {
   const isEditingAlbum = Object.keys(createAlbumFormDefaultVals).length > 0
   const [createAlbumModal, setCreateAlbumModal] = useState(false);
   const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
-
-  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
 
   const [lists, setLists] = useState<CardItem[]>([]);
   const [pagi, setPagi, pagiConf, setPagiConf] = usePagination()
@@ -224,7 +222,6 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           refresh={refresh}
           editAlbum={openCreateAlbumModal}
-          selectAlbum={selectAlbum}
         />
         <Pagination
           className={styles["pagination"]}
@@ -274,8 +271,6 @@ const ShopArticlePage = (props: any) => {
           </Button>
         </div>
       </Modal>
-
-      {$selectAlbumModal}
     </>
   );
 }

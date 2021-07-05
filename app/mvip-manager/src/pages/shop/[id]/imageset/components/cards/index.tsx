@@ -8,8 +8,10 @@ import {
   EditOutlined,
   DownOutlined,
 } from "@ant-design/icons";
+
 import { successMessage, errorMessage } from "@/components/message";
 import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, updateImagesetImage } from '@/api/shop'
+import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import styles from "./index.less";
 
@@ -24,14 +26,15 @@ interface CardsProps {
   isScopeImage: boolean;
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
-  selectAlbum: () => Promise<AlbumItem>;
   refresh: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, selectAlbum, refresh } = props;
+  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, refresh } = props;
+
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
 
   const [previewURL, setPreviewURL] = useState("");
   const [previewModal, setPreviewModal] = useState(false);
@@ -257,6 +260,7 @@ export default function Cards(props: CardsProps) {
 
       {/* Modals */}
       {renderPreviewModal()}
+      {$selectAlbumModal}
     </>
   );
 }
