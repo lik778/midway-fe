@@ -17,6 +17,7 @@ import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from '../../ty
 
 interface CardsProps {
   shopId: number;
+  lists: CardItem[];
   selection: any[];
   tabScope: TabScope;
   isScopeAlbum: boolean;
@@ -30,8 +31,8 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, selectAlbum, refresh } = props;
-  const [lists, setLists] = useState<CardItem[]>([]);
+  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, goTabScope, editAlbum, selectAlbum, refresh } = props;
+
   const [previewURL, setPreviewURL] = useState("");
   const [previewModal, setPreviewModal] = useState(false);
 
@@ -40,61 +41,9 @@ export default function Cards(props: CardsProps) {
     setCurScope(tabScope[tabScope.length - 1])
   }, [tabScope])
 
-  useEffect(() => {
-    if (!curScope) {
-      return
-    }
-    if (curScope.type === 'album') {
-      setLists([
-        {
-          id: 1,
-          name: "默认相册1",
-          count: 19,
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
-          type: "album",
-        },
-        {
-          id: 2,
-          name: "默认相册2",
-          count: 19,
-          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
-          type: "album",
-        },
-        {
-          id: 3,
-          name: "默认相册3",
-          count: 19,
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
-          type: "album",
-        }
-      ])
-    } else {
-      setLists([
-        {
-          id: 1,
-          name: "默认相册1",
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
-          type: "image",
-        },
-        {
-          id: 2,
-          name: "默认相册2",
-          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
-          type: "image",
-        },
-        {
-          id: 3,
-          name: "默认相册3",
-          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
-          type: "image",
-        }
-      ])
-    }
-  }, [curScope])
-
   /***************************************************** Interaction Fns */
 
-  const handleSelectCard = val => {
+  const handleSelectCard = (val: any) => {
     console.log(val);
   };
   const previewImage = (url: string) => {
@@ -271,10 +220,10 @@ export default function Cards(props: CardsProps) {
   };
   const renderCard = (card: CardItem) => {
     if (isScopeAlbum) {
-      return AlbumCard(card);
+      return AlbumCard(card as AlbumItem);
     }
     if (isScopeImage) {
-      return ImageCard(card);
+      return ImageCard(card as ImageItem);
     }
     console.error('[ERR] Error TabScope Rendered')
   };

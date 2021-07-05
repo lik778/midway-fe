@@ -15,7 +15,7 @@ export function useSelectAlbumListsModal() {
   const [moveImageTo, setMoveImageTo] = useState<AlbumItem | null>(null);
   const [albumSelectModal, setAlbumSelectModal] = useState(false);
 
-  const selectAlbum = async () => {
+  const selectAlbum = async (): Promise<AlbumItem> => {
     setAlbumSelectModal(true)
     return await new Promise(async resolve => {
       albumSelectResolver = resolve

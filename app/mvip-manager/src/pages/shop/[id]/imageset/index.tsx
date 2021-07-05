@@ -5,15 +5,17 @@ import { Button, Checkbox, Form, Input, Select, Modal, Pagination } from "antd";
 import ContentHeader from "../components/content-header";
 import ArticleNav from './components/nav'
 import Cards from './components/cards'
+import SelectionBlock from './components/selection'
 import { ShopModuleType } from "@/enums";
 import { successMessage, errorMessage } from "@/components/message";
 import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
 import { useSelectAlbumListsModal } from './components/select-album-modal'
-
-import styles from './index.less';
+import { usePagination } from './hooks/pagination'
 
 import { RouteParams } from "@/interfaces/shop";
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from './types'
+
+import styles from './index.less';
 
 const FormItem = Form.Item;
 
@@ -25,9 +27,15 @@ const ShopArticlePage = (props: any) => {
   const shopId = Number(params.id);
   const [selection, setSelection] = useState([])
 
-  const [tabScope, setTabScope] = useState<TabScope>([]);
+  const [tabScope, setTabScope] = useState<TabScope>([{ type: 'album', item: null }]);
   const [isScopeAlbum, setIsScopeAlbum] = useState(false);
   const [isScopeImage, setIsScopeImage] = useState(false);
+  const [curScope, setCurScope] = useState<TabScopeItem>();
+
+  useEffect(() => {
+    setCurScope(tabScope[tabScope.length - 1])
+  }, [tabScope])
+
   useEffect(() => {
     const lastScope = tabScope[tabScope.length - 1]
     if (lastScope) {
@@ -44,6 +52,8 @@ const ShopArticlePage = (props: any) => {
     }
   }, [tabScope])
 
+  useEffect(() => curScope && refresh(), [curScope])
+
   const [createAlbumForm] = Form.useForm();
   const [createAlbumFormDefaultVals, setCreateAlbumFormDefaultVals] = useState<any>({})
   const isEditingAlbum = Object.keys(createAlbumFormDefaultVals).length > 0
@@ -52,18 +62,70 @@ const ShopArticlePage = (props: any) => {
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
 
+  const [lists, setLists] = useState<CardItem[]>([]);
+  const [pagi, setPagi, pagiConf, setPagiConf] = usePagination()
+
+
   /***************************************************** Interaction Fns */
 
-  const getList = () => {
-    setTabScope([{
-      type: 'album',
-      item: null
-    }])
+  // 根据分页以及文件层级获取列表
+  const refresh = useCallback(() => {
+    if (!curScope) {
+      return
+    }
+    if (curScope.type === 'album') {
+      setLists([
+        {
+          id: 1,
+          name: "默认相册1",
+          count: 19,
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
+          type: "album",
+        },
+        {
+          id: 2,
+          name: "默认相册2",
+          count: 19,
+          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+          type: "album",
+        },
+        {
+          id: 3,
+          name: "默认相册3",
+          count: 19,
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
+          type: "album",
+        }
+      ])
+    } else {
+      setLists([
+        {
+          id: 1,
+          name: "默认相册1",
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=1",
+          type: "image",
+        },
+        {
+          id: 2,
+          name: "默认相册2",
+          url: "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
+          type: "image",
+        },
+        {
+          id: 3,
+          name: "默认相册3",
+          url: "http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=3",
+          type: "image",
+        }
+      ])
+    }
+  }, [curScope, pagi])
+
+  // FIXME TODO
+  const handlePagiChange = (page: number, pageSize: number) => {
+    setPagi({ ...pagi, current: page })
+    setPagiConf({ ...pagiConf, pageSize })
   }
-  const refresh = getList
-  useEffect(() => {
-    refresh()
-  }, [])
 
   // const goAlbumPage = () => setTabScope('album')
   // const goImagePage = () => setTabScope('image')
@@ -154,6 +216,7 @@ const ShopArticlePage = (props: any) => {
         />
         <Cards
           shopId={shopId}
+          lists={lists}
           tabScope={tabScope}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
@@ -166,7 +229,8 @@ const ShopArticlePage = (props: any) => {
         <Pagination
           className={styles["pagination"]}
           defaultCurrent={1}
-          total={500}
+          total={pagiConf.total}
+          onChange={handlePagiChange}
         />
       </div>
 
@@ -212,31 +276,6 @@ const ShopArticlePage = (props: any) => {
       </Modal>
 
       {$selectAlbumModal}
-    </>
-  );
-}
-
-interface SelectionBlockProps {
-  selection: any[];
-  onSelectionChange: (selection: any[]) => void;
-}
-function SelectionBlock (props: SelectionBlockProps) {
-  const { selection, onSelectionChange } = props
-  const handleCheckAll = (e: any) => {
-    console.log(e)
-  }
-  return (
-    <>
-      <div className={styles["section-block"]}>
-        <Checkbox onChange={handleCheckAll}>全选</Checkbox>
-        <Button className={styles["delete-all-btn"]} type="text" size="small">
-          批量删除
-        </Button>
-        <span className={styles["count-info"]}>
-          共 <span className={styles["count-num"]}>{selection.length}</span>{" "}
-          个相册
-        </span>
-      </div>
     </>
   );
 }
