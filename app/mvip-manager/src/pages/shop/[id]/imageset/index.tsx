@@ -1,24 +1,21 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from "umi";
-import { Button, Checkbox, Form, Input, Select, Modal, Pagination } from "antd";
+import { Pagination } from "antd";
 
 import ContentHeader from "../components/content-header";
 import ArticleNav from './components/nav'
 import Cards from './components/cards'
 import SelectionBlock from './components/selection'
-import { ShopModuleType } from "@/enums";
-import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
+import { useCreateAlbumModal } from './components/create-album-modal'
 
 import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
 
+import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
-import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from './types'
+import { TabScope, TabScopeItem, CardItem } from './types'
 
 import styles from './index.less';
-
-const FormItem = Form.Item;
 
 const ShopArticlePage = (props: any) => {
 
@@ -51,12 +48,6 @@ const ShopArticlePage = (props: any) => {
       }
     }
   }, [tabScope])
-
-  const [createAlbumForm] = Form.useForm();
-  const [createAlbumFormDefaultVals, setCreateAlbumFormDefaultVals] = useState<any>({})
-  const isEditingAlbum = Object.keys(createAlbumFormDefaultVals).length > 0
-  const [createAlbumModal, setCreateAlbumModal] = useState(false);
-  const [createAlbumLoading, setCreateAlbumLoading] = useState(false);
 
   const [lists, setLists] = useState<CardItem[]>([]);
   const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
@@ -120,58 +111,14 @@ const ShopArticlePage = (props: any) => {
     setTabScope(newScopes)
   }
 
-  const openCreateAlbumModal = (album?: AlbumItem) => {
-    if (album) {
-      const { id, name } = album
-      setCreateAlbumFormDefaultVals({ id, name })
-    }
-    setCreateAlbumModal(true)
-  }
-  useEffect(() => {
-    createAlbumForm.setFieldsValue(createAlbumFormDefaultVals)
-  }, [createAlbumFormDefaultVals])
-
-
   /***************************************************** API Calls */
 
-  // 新增及编辑相册
-  const createAlbum = async () => {
-    createAlbumForm.validateFields([])
-      .then(formvals => {
-        setCreateAlbumLoading(true);
-        let post = null
-        let successMsg = ''
-        let params: any = {}
-        if (isEditingAlbum) {
-          params.id = createAlbumFormDefaultVals.id
-          post = updateImagesetAlbum
-          successMsg = "编辑成功"
-        } else {
-          post = createImagesetAlbum
-          successMsg = "创建成功"
-        }
-        post(shopId, { ...formvals, ...params })
-          .then(res => {
-            if (res.success) {
-              successMessage(successMsg);
-              refresh && refresh();
-              setCreateAlbumModal(false);
-              createAlbumForm.resetFields();
-              setCreateAlbumFormDefaultVals({})
-            } else {
-              throw new Error(res.message || "出错啦，请稍后重试");
-            }
-          })
-          .catch(error => {
-            errorMessage(error.message);
-          })
-          .finally(() => {
-            setCreateAlbumLoading(false);
-          });
-      })
-  };
-
   /***************************************************** Renders */
+
+  const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({
+    shopId,
+    refresh
+  })
 
   return (
     <>
@@ -183,7 +130,7 @@ const ShopArticlePage = (props: any) => {
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
           goTabScope={goTabScope}
-          createAlbum={() => openCreateAlbumModal()}
+          createAlbum={createAlbum}
         />
         <SelectionBlock
           shopId={shopId}
@@ -206,7 +153,7 @@ const ShopArticlePage = (props: any) => {
           select={select}
           unselect={unselect}
           refresh={refresh}
-          editAlbum={openCreateAlbumModal}
+          editAlbum={createAlbum}
         />
         <Pagination
           className={styles["pagination"]}
@@ -218,47 +165,7 @@ const ShopArticlePage = (props: any) => {
           onChange={handlePagiChange}
         />
       </div>
-
-      {/* Create Album Modal */}
-      <Modal
-        wrapClassName="create-album-modal"
-        title={isEditingAlbum ? '编辑相册' : "新建相册"}
-        width={432}
-        footer={null}
-        visible={createAlbumModal}
-        onCancel={() => setCreateAlbumModal(false)}
-      >
-        <Form
-          name="create-album-form"
-          form={createAlbumForm}
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 19 }}
-        >
-          <FormItem
-            name="name"
-            label="相册名称"
-            rules={[
-              { pattern: /^[\s\S]{2,20}$/, message: "字数限制为 2～20 个字符" },
-            ]}
-          >
-            <Input placeholder="请输入相册名称" />
-          </FormItem>
-        </Form>
-        <div className={styles["extra"]}>
-          <div className={styles["name-tip"]}>
-            注：可填写2~30个字符，支持中、英文，请不要填写特殊符号
-          </div>
-          <Button
-            className={styles["confirm-btn"]}
-            type="primary"
-            htmlType="submit"
-            loading={createAlbumLoading}
-            onClick={createAlbum}
-          >
-            确定
-          </Button>
-        </div>
-      </Modal>
+      {$CreateAlbumModal}
     </>
   );
 }

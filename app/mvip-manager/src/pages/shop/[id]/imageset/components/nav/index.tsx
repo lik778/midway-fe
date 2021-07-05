@@ -28,7 +28,7 @@ export default (props: Props) => {
 
   const lastScopeName = lastScope?.item?.name
   return (
-    <div>
+    <>
       <div className={styles["nav-container"]}>
         {/* left actions */}
 
@@ -64,6 +64,6 @@ export default (props: Props) => {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
