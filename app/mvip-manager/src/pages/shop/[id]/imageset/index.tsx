@@ -75,7 +75,7 @@ const ShopArticlePage = (props: any) => {
     if (target) {
       const idx = newScopes.findIndex(x => x === target)
       if (idx !== -1) {
-        newScopes = newScopes.slice(0, idx)
+        newScopes = newScopes.slice(0, idx + 1)
       }
     } else {
       newScopes.push(scope)

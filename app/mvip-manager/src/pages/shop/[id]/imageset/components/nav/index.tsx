@@ -17,8 +17,16 @@ interface Props {
 export default (props: Props) => {
   const { shopId, tabScope, isScopeAlbum, isScopeImage, goTabScope, createAlbum } = props;
 
+  const [lastScope, setLastScope] = useState<TabScopeItem>();
+  useEffect(() => {
+    setLastScope(tabScope[tabScope.length - 1])
+  }, [tabScope])
+
+  const goHomeScope = () => goTabScope(tabScope[0])
+
   const uploadImage = () => {};
 
+  const lastScopeName = lastScope?.item?.name
   return (
     <div>
       <div className={styles["nav-container"]}>
@@ -27,10 +35,10 @@ export default (props: Props) => {
         {isScopeAlbum && <div />}
         {isScopeImage && (
           <Breadcrumb separator=">">
-            <Breadcrumb.Item onClick={() => goTabScope(tabScope[0])}>
+            <Breadcrumb.Item onClick={goHomeScope}>
               <a>相册管理</a>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>默认相册</Breadcrumb.Item>
+            <Breadcrumb.Item>{lastScopeName}</Breadcrumb.Item>
           </Breadcrumb>
         )}
 
