@@ -13,7 +13,7 @@ export const CustomerSetFormConfigFn: (key: string | number, imageChange: (...ar
       minLength: 30, maxLength: 50, patternList: [{ pattern: /^[\s\S]{30,50}$/, message: '30～50个字' }]
     },
     {
-      label: '上传图片', name: 'urlImg', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '', name: 'urlImg', maxSize: 3, cropProps: { aspectRatio: 595 / 222 } }],
+      label: '上传图片', name: 'urlImg', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 2, text: '', name: 'urlImg', maxSize: 3, cropProps: { aspectRatio: 595 / 222 } }],
       required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸595*222，上传图片后，请选择合适的字体颜色。', imagesTipPosition: 'right', onChange: imageChange
     },
   ]
