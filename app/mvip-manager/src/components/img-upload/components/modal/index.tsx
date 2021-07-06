@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useState, FC } from 'react';
-import { UploadFile } from 'antd/lib/upload/interface'
+import React, { useContext, useEffect, useState, FC } from 'react';
 import styles from './index.less'
+import AtlasModalHeader from './components/header'
+import { ImgUploadContext } from '../../context'
 
-interface Props {
-  atlasVisible: boolean
 
-}
+interface Props { }
 
 const Modal: FC<Props> = (props) => {
   // 第一次创建组件后缓存起来，模拟 antd modal 
-  const { atlasVisible } = props
+  const context = useContext(ImgUploadContext)
+  const { atlasVisible } = context
   const [init, setInit] = useState<boolean>(false)
 
   useEffect(() => {
@@ -23,9 +23,10 @@ const Modal: FC<Props> = (props) => {
       init && <div className={styles['img-upload-modal']} style={{
         display: atlasVisible ? 'block' : 'none'
       }}>
-        <div ></div>
+        <AtlasModalHeader></AtlasModalHeader>
       </div>
     }
   </>
 }
+
 export default Modal

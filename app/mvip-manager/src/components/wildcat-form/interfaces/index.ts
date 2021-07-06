@@ -64,6 +64,7 @@ export interface FormItem {
 }
 
 export interface ImagesItem {
+  uploadType: 1 | 2,//1：直接上传  2：打开图库
   text: string;
   name: string;
   rule?: any[];
