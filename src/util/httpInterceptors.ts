@@ -12,7 +12,7 @@ export class UserGuard implements CanActivate {
     ) {}
     async canActivate(context: ExecutionContext): Promise<any> {
         const req = context.switchToHttp().getRequest();
-        const ip = '172.30.2.14';
+        const ip = req.headers['x-forwarded-for'];
         const url = `${req.url}`
         new LogService().errorLog(`headers:${req.headers}`)
         const params = {
