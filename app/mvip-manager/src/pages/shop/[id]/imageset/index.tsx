@@ -9,6 +9,7 @@ import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
 import { useUploadModal } from './components/upload-modal'
 
+import usePrevious from './hooks/previous';
 import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
 import { useAlbumLists, useAllAlbumLists } from './hooks/albums'
@@ -30,6 +31,7 @@ const ShopArticlePage = (props: any) => {
   const [isScopeAlbum, setIsScopeAlbum] = useState(false);
   const [isScopeImage, setIsScopeImage] = useState(false);
   const [curScope, setCurScope] = useState<TabScopeItem>();
+  const prevCurScope = usePrevious(curScope)
 
   useEffect(() => {
     setCurScope(tabScope[tabScope.length - 1])
@@ -58,13 +60,16 @@ const ShopArticlePage = (props: any) => {
   const [lists, total, refresh] = useAlbumLists(shopId, albumPagiQueries)
   const [allAlbumLists] = useAllAlbumLists(shopId)
 
-  // 层级变换时重置翻页
-  useEffect(() => curScope && resetPagi(), [curScope])
-
   const [selection, setSelection, select, unselect] = useSelection()
 
-  // 层级变换时重置选取
-  useEffect(() => curScope && setSelection([]), [curScope])
+  // 层级变换时重置翻页和选取
+  useEffect(() => {
+    if (curScope) {
+      setSelection([])
+      resetPagi()
+      refresh()
+    }
+  }, [curScope])
 
   /***************************************************** Interaction Fns */
 

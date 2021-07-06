@@ -31,15 +31,15 @@ export function useAlbumLists(shopId: number, pagination: any = {}) {
       })
   }, [shopId, pagination, requestTime])
 
-  return [lists, total, refresh, setLists] as const
+  return [lists, total, refresh, setLists, setTotal] as const
 }
 
 // 获取所有相册钩子
 // * for test you can use `return [[], 0, () => {}, () => {}] as const`
 export function useAllAlbumLists(shopId: number) {
   const query = useMemo(() => ({ current: 1, pageSize: 999 }), [])
-  const [lists, total, refresh, setLists] = useAlbumLists(shopId, query)
-  return [lists, total, refresh, setLists] as const
+  const [lists, total, refresh, setLists, setTotal] = useAlbumLists(shopId, query)
+  return [lists, total, refresh, setLists, setTotal] as const
 }
 
 async function fetchAlbumLists(shopId: number, querys: any) {
