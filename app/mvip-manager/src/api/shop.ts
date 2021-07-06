@@ -188,26 +188,26 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
 
 // 创建店铺相册
 export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/createImagesetAlbum', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(shopId))
 }
 
 // 修改店铺相册
 export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/updateImagesetAlbum', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/updateImagesetAlbum', params, setShopHeader(shopId))
 }
 
 // 删除店铺相册
 export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
   const ids = Array.isArray(params.ids) ? params.ids : [params.ids]
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetAlbum', { ids }, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delImagesetAlbum', { ids }, setShopHeader(shopId))
 }
 
 // 删除相册图片
 export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/delImagesetImage', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delImagesetImage', params, setShopHeader(shopId))
 }
 
 // 更新相册图片
 export const updateImagesetImage = (shopId: number, params: UpdateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/updateImagesetImage', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/updateImagesetImage', params, setShopHeader(shopId))
 }
