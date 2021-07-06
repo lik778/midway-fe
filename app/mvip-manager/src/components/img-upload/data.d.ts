@@ -16,7 +16,7 @@ export interface ActionBtnListItem {
 
 export interface ImgUploadProps {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
-  editData: any;// 传入的数据
+  editData?: any;// 传入的数据
   uploadBtnText: string;// 上传按钮上的提示文本
   maxSize?: number;// 单个图片最大尺寸
   maxLength: number;// 本次上传个数上线
@@ -87,7 +87,7 @@ export interface ImgUploadContextProps {
   handleChangeAtlasVisible: (atlasVisible: boolean) => void
   handleChangeUpDataLoading: (upDataLoading: boolean) => void // 更新组件内打接口的loading
   /**
-   * onFileChange 
+   * onFileChange
    * @param newFileList: 操作后的数组
    * @param oldFileList: 操作前的数组
    * @param file: 引发本次操作的文件

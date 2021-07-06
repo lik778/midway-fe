@@ -22,7 +22,7 @@ export function useAlbumLists(shopId: number, pagination: any = {}) {
     }
     fetchAlbumLists(shopId, query)
       .then(([result, total]) => {
-        console.log(result, total, pagination, requestTime)
+        // console.log(result, total, pagination, requestTime)
         setLists(result)
         setTotal(total)
       })

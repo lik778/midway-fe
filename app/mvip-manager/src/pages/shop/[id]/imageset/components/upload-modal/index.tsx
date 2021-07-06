@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-import { useUpload } from '../../hooks/upload'
+import { useUpload } from './upload'
 import { useAlbumSelector } from '../album-selector'
 
 import { AlbumItem } from '../../types'
@@ -20,19 +20,15 @@ export function useUploadModal(props: Props) {
 
   /***************************************************** States */
   const { shopId, refresh, allAlbumLists } = props
-  const [lists, setLists] = useState<any[]>([])
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
+  // const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
-  const [$Uploader, upload] = useUpload()
+  const [$uploader, lists] = useUpload()
 
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
-
-  const handleUpload = () => {
-
-  }
 
   const uploadConfirm = () => {}
 
@@ -58,16 +54,18 @@ export function useUploadModal(props: Props) {
       {/* Container */}
       <div className={styles['upload-lists']}>
         {lists.map(item => {
-          const { id, url } = item
+          const { uid } = item
+          const url = item.preview
           return (
-            <div className={styles["upload-item"]} key={`upload-item-${id}-${url}`}>
-              <img src={url} />
+            <div className={styles["upload-item"]} key={`upload-item-${uid}-${url}`}>
+              <img className={styles["upload-img"]} src={url} />
             </div>
           )
         })}
         {(lists.length < MAX_UPLOAD_COUNT) && (
-          <div className={styles["upload-add"]} onClick={handleUpload}>
+          <div className={styles["upload-add"]}>
             <PlusOutlined />
+            {$uploader}
           </div>
         )}
       </div>

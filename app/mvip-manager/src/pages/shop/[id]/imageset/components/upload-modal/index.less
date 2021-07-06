@@ -1,5 +1,19 @@
-:global {
+.tranparent-uploader {
+  :global(.ant-upload) {
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  :global(.ant-upload-list) {
+    display: none;
+  }
+}
 
+:global {
   .upload-modal {
     .ant-modal {
       margin-bottom: 14px;
@@ -61,8 +75,15 @@
 .upload-item {
   width: 150px;
   height: 116px;
+  overflow: hidden;
+
+  .upload-img {
+    width: 100%;
+    object-fit: cover;
+  }
 }
 .upload-add {
+  position: relative;
   width: 150px;
   height: 116px;
   line-height: 113px;
