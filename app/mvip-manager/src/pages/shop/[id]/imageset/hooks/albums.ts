@@ -1,26 +1,54 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+
+import { getImagesetAlbum } from '@/api/shop'
 
 import { AlbumItem } from '../types'
 
-export function useAllAlbumLists() {
+// 获取相册钩子
+export function useAlbumLists(shopId: number, pagination: any = {}) {
   const [lists, setLists] = useState<AlbumItem[]>([])
+  const [total, setTotal] = useState(0)
+  const [requestTime, setRequestTime] = useState(+new Date())
+
+  const refresh = () => setRequestTime(+new Date())
 
   useEffect(() => {
-    console.log('useAllAlbumLists')
-    new Promise(resolve => setTimeout(resolve, 500)).then(() => {
-      setLists(Array(40).fill('').map((x, idx) => {
-        return {
-          type: 'album',
-          id: idx + 1,
-          name: '默认相册' + idx,
-          count: ~~(Math.random() * 29),
-          url: (idx % 1)
-            ? `http://img4.baixing.net/cda4411639701a0745b0513f968736f8.png_sv1?x=${idx + 1}`
-            : "http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1",
-        }
-      }))
-    })
-  }, [])
+    if (!shopId) {
+      return
+    }
+    const query = {
+      page: pagination.current,
+      size: pagination.pageSize
+    }
+    fetchAlbumLists(shopId, query)
+      .then(([result, total]) => {
+        console.log(result, total, pagination, requestTime)
+        setLists(result)
+        setTotal(total)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }, [shopId, pagination, requestTime])
 
-  return [lists, setLists] as const
+  return [lists, total, refresh, setLists] as const
+}
+
+// 获取所有相册钩子
+// * for test you can use `return [[], 0, () => {}, () => {}] as const`
+export function useAllAlbumLists(shopId: number) {
+  const query = useMemo(() => ({ current: 1, pageSize: 999 }), [])
+  const [lists, total, refresh, setLists] = useAlbumLists(shopId, query)
+  return [lists, total, refresh, setLists] as const
+}
+
+async function fetchAlbumLists(shopId: number, querys: any) {
+  try {
+    const res = await getImagesetAlbum(shopId, querys)
+    const { totalCate = 0, mediaCateBos = {} } = res.data
+    const { result = [] } = mediaCateBos
+    return [result, totalCate]
+  } catch(err) {
+    throw new Error(err)
+  }
 }

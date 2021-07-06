@@ -28,7 +28,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
     const all = lists.map(x => x.id)
     const allChecked = all.every(id => selection.includes(id))
     const noChecked = all.every(id => !selection.includes(id))
-    if (allChecked) {
+    if (allChecked && lists.length > 0) {
       setChecked(true)
       setIndeterminate(false)
     } else if (noChecked) {

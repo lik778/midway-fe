@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useParams } from "umi";
 import { Pagination } from "antd";
 
@@ -11,10 +11,11 @@ import { useUploadModal } from './components/upload-modal'
 
 import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
+import { useAlbumLists, useAllAlbumLists } from './hooks/albums'
 
 import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
-import { TabScope, TabScopeItem, CardItem } from './types'
+import { TabScope, TabScopeItem } from './types'
 
 import styles from './index.less';
 
@@ -50,10 +51,12 @@ const ShopArticlePage = (props: any) => {
     }
   }, [tabScope])
 
-  const [lists, setLists] = useState<CardItem[]>([]);
   const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
     pageSizeOptions: ['8', '16', '32']
   })
+  const albumPagiQueries = useMemo(() => ({ current: pagi.current, pageSize: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
+  const [lists, total, refresh] = useAlbumLists(shopId, albumPagiQueries)
+  const [allAlbumLists] = useAllAlbumLists(shopId)
 
   // 层级变换时重置翻页
   useEffect(() => curScope && resetPagi(), [curScope])
@@ -65,26 +68,6 @@ const ShopArticlePage = (props: any) => {
 
   /***************************************************** Interaction Fns */
 
-  // 根据分页以及文件层级获取列表
-  const refresh = useCallback(() => {
-    if (!curScope) {
-      return
-    }
-    const { current } = pagi
-    let res = Array(pagiConf.pageSize).fill('').map((x, i) => {
-      const idx = ((current - 1) * pagiConf.pageSize) + i
-      return {
-        type: 'album',
-        id: idx + 1,
-        name: '默认相册' + idx,
-        count: ~~(Math.random() * 29),
-        url: `http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1?x=${idx}`
-      }
-    })
-    setLists(res)
-    setPagiConf({ ...pagiConf, total: 80 })
-  }, [pagi])
-
   // 切换翻页自动刷新列表
   const handlePagiChange = (page: number, pageSize?: number | undefined) => {
     pageSize = pageSize || pagiConf.pageSize
@@ -92,7 +75,6 @@ const ShopArticlePage = (props: any) => {
     setPagi({ ...pagi, current: pageSizeChanged ? 1 : page })
     setPagiConf({ ...pagiConf, pageSize })
   }
-  useEffect(() => refresh(), [pagi])
 
   // const goAlbumPage = () => setTabScope('album')
   // const goImagePage = () => setTabScope('image')
@@ -116,7 +98,7 @@ const ShopArticlePage = (props: any) => {
 
   // PERF ?
   const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({ shopId, refresh })
-  const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh })
+  const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh, allAlbumLists })
   return (
     <>
       {/* 页头 */}
@@ -151,11 +133,12 @@ const ShopArticlePage = (props: any) => {
           tabScope={tabScope}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
-          goTabScope={goTabScope}
           selection={selection}
+          allAlbumLists={allAlbumLists}
+          refresh={refresh}
+          goTabScope={goTabScope}
           select={select}
           unselect={unselect}
-          refresh={refresh}
           editAlbum={createAlbum}
         />
         {/* 分页 */}
@@ -163,7 +146,7 @@ const ShopArticlePage = (props: any) => {
           className={styles["pagination"]}
           defaultCurrent={1}
           current={pagi.current}
-          total={pagiConf.total}
+          total={total}
           pageSize={pagiConf.pageSize}
           pageSizeOptions={pagiConf.pageSizeOptions}
           onChange={handlePagiChange}

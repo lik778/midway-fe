@@ -17,6 +17,8 @@ import styles from "./index.less";
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from '../../types'
 
+const DEFAULT_ALBUM_COVER = 'http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1'
+
 interface CardsProps {
   shopId: number;
   lists: CardItem[];
@@ -24,6 +26,7 @@ interface CardsProps {
   tabScope: TabScope;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
+  allAlbumLists: AlbumItem[];
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
   goTabScope: (scope: TabScopeItem) => void;
@@ -34,9 +37,9 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, select, unselect, goTabScope, editAlbum, refresh } = props;
+  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, select, unselect, goTabScope, editAlbum, refresh } = props;
 
-  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
   const [previewURL, setPreviewURL] = useState("");
   const [previewModal, setPreviewModal] = useState(false);
@@ -114,8 +117,8 @@ export default function Cards(props: CardsProps) {
   // 删除相册
   const delAlbum = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
-    const { id, count } = album
-    const info = `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
+    const { id, totalImg } = album
+    const info = `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
     await delCallback(delImagesetAlbum, { ids: [id] }, info)
   }
   // 删除图片
@@ -170,7 +173,7 @@ export default function Cards(props: CardsProps) {
   /***************************************************** Renders */
 
   const AlbumCard = useCallback((card: AlbumItem) => {
-    const { id, name, url, count } = card;
+    const { id, name, coverUrl, totalImg } = card;
     const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
     return (
       <div className={styles["album-card"]} onClick={() => goAlbumScope(card)} key={`album-card-${id}`}>
@@ -192,11 +195,11 @@ export default function Cards(props: CardsProps) {
             </div>
           </div>
         </div>
-        <img className={styles["cover"]} src={url} alt="cover" />
+        <img className={styles["cover"]} src={coverUrl || DEFAULT_ALBUM_COVER} alt="cover" />
         <div className={styles["header"]}>
           <span className={styles["name"]}>{name}</span>
           <span>
-            <span>{count}</span> 张
+            <span>{totalImg}</span> 张
           </span>
         </div>
       </div>

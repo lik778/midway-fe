@@ -2,8 +2,8 @@ export type AlbumItem = {
   type: 'album'
   id: number,
   name: string,
-  url: string,
-  count: number
+  coverUrl: string,
+  totalImg: number
 }
 
 export type ImageItem = {

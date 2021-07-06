@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Select } from "antd";
 
-import { useAllAlbumLists } from '../../hooks/albums'
-
 import { AlbumItem } from '../../types'
 
-export function useAlbumSelector() {
-  const [allAlbumLists] = useAllAlbumLists()
+export function useAlbumSelector(props: any) {
+  const { allAlbumLists } = props
   const [select, setSelect] = useState<AlbumItem | null>(null);
 
   const handleSelectAlbum = (id: number) => {

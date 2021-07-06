@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Select, Modal } from "antd";
 
-import { useAllAlbumLists } from '../../hooks/albums'
-
 import { AlbumItem } from '../../types'
 
 import styles from './index.less';
 
 let albumSelectResolver: any = null
 
-// 选择 AlbumLists 所使用的模态框
-export function useSelectAlbumListsModal() {
-  const [allAlbumLists] = useAllAlbumLists()
+type Props = {
+  allAlbumLists: AlbumItem[]
+}
+export function useSelectAlbumListsModal(props: Props) {
+  const { allAlbumLists } = props
   const [select, setSelect] = useState<AlbumItem | null>(null);
   const [visible, setVisible] = useState(false);
 

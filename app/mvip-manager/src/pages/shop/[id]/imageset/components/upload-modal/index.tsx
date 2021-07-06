@@ -5,17 +5,24 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useUpload } from '../../hooks/upload'
 import { useAlbumSelector } from '../album-selector'
 
+import { AlbumItem } from '../../types'
+
 import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 30
 
-export function useUploadModal() {
+type Props = {
+  shopId: number;
+  refresh: () => void;
+  allAlbumLists: AlbumItem[]
+}
+export function useUploadModal(props: Props) {
 
   /***************************************************** States */
-
+  const { shopId, refresh, allAlbumLists } = props
   const [lists, setLists] = useState<any[]>([])
   const [visible, setVisible] = useState(false);
-  const [$AlbumSelector, selectedAlbum] = useAlbumSelector()
+  const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
   const [$Uploader, upload] = useUpload()
 
   /***************************************************** Interaction Fns */

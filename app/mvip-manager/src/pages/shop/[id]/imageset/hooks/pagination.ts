@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-type Pagination = {
+export type Pagination = {
   current: number
 }
-type PaginationSetting = {
+export type PaginationSetting = {
   total: number
   pageSize: number
   pageSizeOptions: string[]

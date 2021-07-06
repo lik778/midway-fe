@@ -251,6 +251,12 @@ export interface BannerListItem {
   status: number
   weight: number
 }
+
+export interface GetImagesetAlbumParam {
+  page: number;
+  size: number;
+}
+
 export interface CreateImagesetAlbumParam {
   name: string;
 }
