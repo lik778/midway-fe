@@ -1,0 +1,122 @@
+:global {
+
+  .upload-modal {
+    .ant-modal {
+      margin-bottom: 14px;
+      top: 100px;
+      height: 700px;
+    }
+
+    .ant-modal-header {
+      display: flex;
+      align-items: center;
+      padding: 11px 40px;
+      height: 48px;
+      background: #F3F3F3;
+
+      .ant-modal-title {
+        font-weight: bold;
+        color: #333;
+      }
+    }
+
+    .ant-modal-close-x {
+      padding-right: 40px;
+      width: 12px;
+      height: 12px;
+      line-height: 48px;
+
+      .anticon-close {
+        font-size: 14px;
+        color: #999;
+      }
+    }
+
+    .ant-modal-body {
+      padding: 24px 40px 40px 40px;
+    }
+  }
+
+  .upload-modal {
+    .upload-image-uploador,
+    .ant-select-selector {
+      width: 240px;
+      height: 40px !important;
+      line-height: 40px;
+
+      .ant-select-selection-item,
+      .ant-select-selection-placeholder {
+        line-height: 40px;
+      }
+    }
+  }
+}
+
+.upload-lists {
+  display: flex;
+  justify-content: flex-start;
+  gap: 24px;
+  padding: 24px 58px;
+}
+.upload-item {
+  width: 150px;
+  height: 116px;
+}
+.upload-add {
+  width: 150px;
+  height: 116px;
+  line-height: 113px;
+  background: white;
+  border: solid 1px #D8D8D8;
+  font-size: 24px;
+  font-weight: 300;
+  color: #999;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  transition: .25s;
+
+  &:hover {
+    background: #fcfcfc;
+    border-color: #40a9ff;
+    color: #40a9ff;
+  }
+  &:active {
+    background: #f8f8f8;
+  }
+}
+
+.tips-con {
+  margin-left: 58px;
+  padding: 14px 20px;
+  width: 436px;
+  height: 114px;
+  background: #f2f2f2;
+  letter-spacing: .5px;
+}
+.tip-header {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+.tip {
+  font-size: 12px;
+  color: #666;
+}
+.highlight {
+  color: #096DD9;
+}
+
+.confirm-btn {
+  padding: unset;
+  width: 120px;
+  height: 40px;
+  line-height: 38px;
+  border-radius: 0;
+  background: #096DD9;
+  color: #fefefe;
+}
+.count-tip {
+  font-size: 12px;
+  color: #999;
+}

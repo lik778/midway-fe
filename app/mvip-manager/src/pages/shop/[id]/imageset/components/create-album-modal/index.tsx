@@ -46,7 +46,7 @@ export function useCreateAlbumModal(props: Props) {
 
   // 新增及编辑相册
   const createAlbum = async () => {
-    form.validateFields([])
+    form.validateFields()
       .then(formvals => {
         setLoading(true);
         let post = null
