@@ -4,7 +4,7 @@
 		- wechatColor = '#FF4466'
 	else
 		- wechatIcon = '//file.baixing.net/202105/ab94f0b173db8fcf4dfeee3cb8bc5919.png'
-		- wechatColor = '#AAAAAA'
+		- wechatColor = '#AAAAAA' 
 	if kf53StyleUrl && kf53StyleUrl.length > 0
 		- kf53Icon = '//file.baixing.net/202105/23e59b666fcc06d1f2e127b887d1cd8a.png'
 		- kf53Color = '#FF4466'
@@ -12,11 +12,13 @@
 		- kf53Icon = '//file.baixing.net/202105/343752505490e172c0ffc7567c858784.png'
 		- kf53Color = '#AAAAAA'
 
-	.wechat-box( data-value = weChat.content, style=`border-color:${wechatColor}` )
-		.wechat-icon(style=`background: url(${wechatIcon}) no-repeat center/100%`)
-		p(style=`color:${wechatColor}`) 加微信
+	if !isSem 
+		.wechat-box( data-value = weChat.content, style=`border-color:${wechatColor}` )
+			.wechat-icon(style=`background: url(${wechatIcon}) no-repeat center/100%`)
+			p(style=`color:${wechatColor}`) 加微信
 	a(href=kf53StyleUrl, style=`border-color:${kf53Color}`).online-box
 		.online-icon(style=`background: url(${kf53Icon}) no-repeat center/100%`)
 		p(style=`color:${kf53Color}`) 在线咨询
-	a(href="tel:" + phone.content).phone-box
-		p 拨打电话
+	//- TODO;
+	include ../../../common/wap/contact-phone-btn.pug
+	+contactPhoneBtn('#f46')

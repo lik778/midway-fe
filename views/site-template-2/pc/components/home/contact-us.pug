@@ -1,6 +1,8 @@
-.contact-us
+//- #contactUsSem 用于sem跳转
+.contact-us#contactUs
+  if !isSem
     .contact-us__address
-        .contact-us__title #{ company.name || '暂未添加公司名称' }
+        .contact-us__title #{ companyName || '暂未添加公司名称' }
         p.contact-us__detail 公司地址：#{ company.address || '暂未添加地址' }
         p.contact-us__detail 服务热线：#{ phone.content }
         if phone2.content
@@ -10,6 +12,6 @@
           a#baidu-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
             .address.only-oneline #{ company.address }
             .marker
-    .contact-us__message
-        .contact-us__title.align-center 留言咨询
-        include ../common/contact-form
+  .contact-us__message
+      .contact-us__title.align-center 留言咨询
+      include ../common/contact-form

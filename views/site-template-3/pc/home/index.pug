@@ -20,7 +20,8 @@ block content
 						include ../components/home/product-swiper.pug
 
 				include ../components/home/about-us.pug
-				include ../components/home/viewPhone.pug
+				if !isSem
+					include ../components/home/viewPhone.pug
 
 				//-自定义模块
 				- const { autoConfig } = renderData
@@ -36,9 +37,13 @@ block content
 						include ../components/home/news-center.pug
 						.new-center.clearfix
 								+news-box('新闻资讯', articleList)
-
+								
 				+home-title('联系我们')
 				include ../components/home/contact-us.pug
+				
+				//- 用于sem禁止外跳
+				include ../../../common/pc/contact-form-sem.pug
+				+contactFormSem('#F46')
 
 block scripts
 		:combine(fileName="site-template-3-home-pc.js")

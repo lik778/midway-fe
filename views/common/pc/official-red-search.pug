@@ -4,6 +4,8 @@
       span.text 全国
       img.baixing-logo(src="//file.baixing.net/202105/3252caa19b257e704b3e63ce31c5216f.png", alt="logo")
     .head-search
-      input#inputValue.input(onfocus="this.select();return false;" placeholder="" data-category="root" value="" x-webkit-speech="" name="query" autocomplete="off")
-      button#SearchBtn.search-btn( title="搜索") 搜索
+      input#inputValue.input(onfocus="this.select();return false;" placeholder="" data-category="root" value="" x-webkit-speech="" name="query" autocomplete="off" required)
+      #searchClear.clear
+      - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
+      button#SearchBtn.search-btn( title="搜索",data-shopdomain=shopDomain.toString()) 搜索
     a.post(href="https://www.baixing.com/fabu/" rel="nofollow") 免费发布信息

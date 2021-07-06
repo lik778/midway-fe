@@ -10,7 +10,7 @@ block content
         .main
             include ../components/product/cateList.pug
 
-            //-产品列表@明龙，修改下product-list文件及其样式
+            //-产品列表
             - productList = renderData.productList.result
             include ../components/product/product-list.pug
 
@@ -18,12 +18,12 @@ block content
             include ../../../common/pc/pagination.pug
             - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
-
+            - console.log(currentPathname) 
         //-侧边栏
         .sidebar
-            - const { articleList } = renderData
+            - const { articleList } = renderData 
             include ../components/sidebar/cateList.pug
-            +side-cateList('新闻资讯', articleList.result)
+            +side-cateList('新闻资讯123456', articleList.result)
             include ../components/sidebar/products.pug
 
 block scripts

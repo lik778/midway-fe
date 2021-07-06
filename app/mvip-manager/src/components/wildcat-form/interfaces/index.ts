@@ -1,6 +1,8 @@
 import { FormType } from '../enums'
 import { ColProps } from 'antd'
 import { ReactNode } from 'react'
+import { ExpandShowUploadListInterface } from '@/components/img-upload/data'
+import { CropProps } from '@/components/crop/data'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -57,6 +59,8 @@ export interface FormItem {
   display?: boolean;
   formItemWidth?: number | string,
   className?: string, // 自定义样式,
+  labelCol?: ColProps;
+  children?: FormItem[];// 嵌套表单
 }
 
 export interface ImagesItem {
@@ -64,4 +68,8 @@ export interface ImagesItem {
   name: string;
   rule?: any[];
   maxSize?: number
+  maxLength?: number
+  aspectRatio?: number// 图片显示块的大小
+  showUploadList?: ExpandShowUploadListInterface,
+  cropProps: CropProps
 }

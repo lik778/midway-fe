@@ -4,3 +4,4 @@ if newsList && newsList.length >0
 		.title 新闻资讯
 		a.more(href=newsLink) 查看全部
 	include ../components/news-list.pug
+	+news-list(newsList)

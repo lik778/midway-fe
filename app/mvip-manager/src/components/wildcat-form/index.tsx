@@ -2,12 +2,14 @@ import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useM
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
 import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
-import { ImgUpload } from '@/components/wildcat-form/components/img-upload';
+import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 import styles from './index.less'
+import ImgItem from '../img-upload/components/img-item';
+import { EditTwoTone } from '@ant-design/icons'
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
@@ -105,107 +107,118 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
     return Boolean((item as CustomerFormItem).node)
   }
 
+  const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
+    return FormItemList.map(item => {
+      if (isCustomerFormItem(item)) {
+        return item.node
+      }
+      const patternList = item.patternList ? item.patternList : [];
+      if (item.type === FormType.Input) {
+        return (
+          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+            <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount} />
+          </Form.Item>
+        )
+      } else if (item.type === FormType.InputNumber) {
+        return (
+          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+            <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled} />
+          </Form.Item>
+        )
+      } else if (item.type === FormType.Textarea) {
+        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+          <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} />
+        </Form.Item>)
+      } else if (item.type === FormType.Select) {
+        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+          <Select
+            onChange={(newValue) => onChange(newValue, item.name || '')}
+            placeholder={item.placeholder} size='large'
+            style={{ width: item.formItemWidth }} disabled={item.disabled}>
+            {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+          </Select>
+        </Form.Item>)
+      } else if (item.type === FormType.ImgUpload) {
+        return (<Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
+          label={item.label} required={item.required} labelCol={item.labelCol}>
+          <div className={styles['flex-box']}>
+            {
+              (item.images || []).map((img) => {
+                return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
+                  <ImgUpload key={img.text} text={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} />
+                </Form.Item>
+                )
+              })
+            }
+            {
+              item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ?
+                <div className={styles['tip-right']}>
+                  <p className={`${styles['image-tip']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p>
+                  <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+                </div>
+                : item.tip)
+            }
+          </div>
+          {
+            item.imagesTipPosition !== 'right' && (typeof item.tip === 'string' ?
+              <>
+                <p className={styles['image-tip']}>{item.tip}</p>
+                <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+              </>
+              : item.tip)
+          }
+        </Form.Item>)
+      } else if (item.type === FormType.AreaSelect) {
+        const value = getEditData(item.name || '');
+        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+          <AreaSelect width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
+        </Form.Item>)
+      } else if (item.type === FormType.GroupSelect) {
+        return (<div className={styles['group-select-btn']} key={item.label}>
+          <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+            <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled}>
+              {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+            </Select>
+          </Form.Item>
+          {item.btnConfig}
+        </div>)
+      } else if (item.type === FormType.Tag) {
+        const value = form.getFieldsValue()[item.name || ''];
+        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+          <TagModule
+            value={value || []}
+            maxLength={item.maxLength || 1}
+            minLength={item.minLength || 1}
+            maxNum={item.maxNum || 0}
+            onChange={(newValue) => onChange(newValue, item.name || '')} />
+        </Form.Item>)
+      } else if (item.type === FormType.MetaChecbox && item.display) {
+        return (
+          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+            <CheckboxGroup
+              options={item.options as OptionCheckBox[]}
+            />
+          </Form.Item>
+        )
+      } else if (item.type === FormType.GroupItem) {
+        return (
+          <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+            {
+              item.children ? creatForm(item.children) : ''
+            }
+          </Form.Item>
+        )
+      }
+    })
+  }
+
   return (
     <>
       <Form form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
         onFinish={props.submit} onValuesChange={props.formChange} className={`${styles['form-styles']} ${props.className}`} labelAlign={config.labelAlign || 'right'}>
-        {FormItemList.map(item => {
-          if (isCustomerFormItem(item)) {
-            return item.node
-          }
-          const patternList = item.patternList ? item.patternList : [];
-          if (item.type === FormType.Input) {
-            return (
-              <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
-                <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount} />
-              </Form.Item>
-            )
-          } else if (item.type === FormType.InputNumber) {
-            return (
-              <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
-                <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled} />
-              </Form.Item>
-            )
-          } else if (item.type === FormType.Textarea) {
-            return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
-              <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} />
-            </Form.Item>)
-          } else if (item.type === FormType.Select) {
-            return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]}>
-              <Select
-                onChange={(newValue) => onChange(newValue, item.name || '')}
-                placeholder={item.placeholder} size='large'
-                style={{ width: item.formItemWidth }} disabled={item.disabled}>
-                {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-              </Select>
-            </Form.Item>)
-          } else if (item.type === FormType.ImgUpload) {
-            return (<Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
-              label={item.label} required={item.required}>
-              <div className={styles['flex-box']}>
-                {
-                  (item.images || []).map((img) => {
-                    return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                      <ImgUpload key={img.text} name={img.name} text={img.text} editData={editDataSource} maxLength={item.maxLength || 0}
-                        onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} />
-                    </Form.Item>
-                    )
-                  })
-                }
-                {
-                  item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ?
-                    <div className={styles['tip-right']}>
-                      <p className={`${styles['image-tip']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p>
-                      <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
-                    </div>
-                    : item.tip)
-                }
-
-              </div>
-              {
-                item.imagesTipPosition !== 'right' && (typeof item.tip === 'string' ?
-                  <>
-                    <p className={styles['image-tip']}>{item.tip}</p>
-                    <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
-                  </>
-                  : item.tip)
-              }
-
-            </Form.Item>)
-          } else if (item.type === FormType.AreaSelect) {
-            const value = getEditData(item.name || '');
-            return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]}>
-              <AreaSelect width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
-            </Form.Item>)
-          } else if (item.type === FormType.GroupSelect) {
-            return (<div key={item.label}>
-              <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]}>
-                <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled}>
-                  {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-                </Select>
-              </Form.Item>
-              {item.btnConfig}
-            </div>)
-          } else if (item.type === FormType.Tag) {
-            const value = form.getFieldsValue()[item.name || ''];
-            return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]}>
-              <TagModule
-                value={value || []}
-                maxLength={item.maxLength || 1}
-                minLength={item.minLength || 1}
-                maxNum={item.maxNum || 0}
-                onChange={(newValue) => onChange(newValue, item.name || '')} />
-            </Form.Item>)
-          } else if (item.type === FormType.MetaChecbox && item.display) {
-            return (
-              <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]}>
-                <CheckboxGroup
-                  options={item.options as OptionCheckBox[]}
-                />
-              </Form.Item>
-            )
-          }
-        })}
+        {
+          creatForm(FormItemList)
+        }
         {
           props.submitBtn || config && config.buttonConfig &&
           (<Row>

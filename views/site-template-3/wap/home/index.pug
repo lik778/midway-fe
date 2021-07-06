@@ -4,9 +4,12 @@ include ../components/home-title.pug
 block styles
     :combine(fileName="site-template-3-home-wap.css")
 
+
 block header
-    .float-nav
-        include ../components/drawer-nav
+    if !isSem
+        .float-nav
+            include ../components/drawer-nav
+            
 block append header
     include ../components/swiper
     - const { banner }= renderData
@@ -42,9 +45,10 @@ block content
 
     //-留言资讯模块
     include ../components/contact-form.pug
-
-//-block footer
-    include ../components/footer.pug
+    
+    //- 用于sem禁止外跳
+    include ../../../common/wap/contact-form-sem.pug
+    +contactFormSem('#F46')
 
 block scripts
     :combine(fileName="site-template-3-home-wap.js")

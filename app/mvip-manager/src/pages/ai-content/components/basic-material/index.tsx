@@ -164,6 +164,8 @@ export default () => {
             formItemList.map((item) => <FormItem name={item.key} label={item.label} key={item.key} rules={item.rules} normalize={outgoingControl
             } >
               <TextArea rows={5}
+                showCount={true}
+                maxLength={500}
                 onBlur={() => textAreaBlur(item.key)}
                 placeholder={item.placeholder}
               />

@@ -11,10 +11,11 @@ import {
   ImgListParam,
   TdkSaveMeta,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  CreateShopParams
+  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams, BannerListItem
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
+import { ListRes } from '@/interfaces/base';
 
 // 店铺初始信息
 export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> => {
@@ -24,6 +25,11 @@ export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> =
 // 创建店铺
 export const createShopApi = (params: CreateShopParams): Promise<ServiceResponse<any>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/create', params)
+}
+
+// 店铺续费
+export const renewShopApi = (params: RenewShopParams): Promise<ServiceResponse<any>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/renew', params)
 }
 
 // 更新店铺
@@ -49,6 +55,11 @@ export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/navigation/update', params, setShopHeader(shopId))
 }
 
+// 改变 banner 顺序
+export const changeBannerOrderApi = (shopId: number, ids: number[]) => {
+  return postApiData(ServicePath.SHOP, `midway/backend/banner/sort`, ids, setShopHeader(shopId))
+}
+
 // 创建banner
 export const createBannerApi = (shopId: number, params: ImgItemParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/banner/create', params, setShopHeader(shopId))
@@ -65,7 +76,7 @@ export const getShopInfoApi = (shopId: number) => {
 }
 
 // banner 列表
-export const getBannerListApi = (shopId: number, params: ImgListParam) => {
+export const getBannerListApi = (shopId: number, params: ImgListParam): Promise<ServiceResponse<ListRes<BannerListItem[]>>> => {
   return postApiData(ServicePath.SHOP, `midway/backend/banner/listing`, params, setShopHeader(shopId))
 }
 
@@ -161,4 +172,14 @@ export const setCustomerSetApi = (shopId: number, requestData: {
   subModulesToDelete: number[]
 }): Promise<ServiceResponse<never>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
+}
+
+/** 获取店铺基础信息设置 */
+export const getShopBasicInfoApi = (shopId: number): Promise<ServiceResponse<ShopBasicInfo>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/getShopEnterprise', {}, setShopHeader(shopId))
+}
+
+/** 设置店铺基础信息设置 */
+export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoParams) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/shop/setShopEnterprise', params, setShopHeader(shopId))
 }

@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ServicePath } from '@/enums/index'
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
@@ -51,3 +50,13 @@ export const setShopHeader = (shopId: number) => {
   return headers;
 }
 
+
+export const upFile = axios.create({
+  timeout: 10000, // request timeout  设置请求超时时间
+  withCredentials: false,// 服务器端不限制跨域 则前端不能带cookie
+  headers: {
+    "Content-Type": "multipart/form-data;",
+    "accept": '*/*'
+  },
+  method: "POST",
+})

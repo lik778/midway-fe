@@ -6,12 +6,13 @@ block content
     - const cateList = renderData.articleCateList
     include ../components/toptab
     include ../components/news-list
+    +news-list(renderData.articleList.result)
 
     //-留言资讯
     include ../components/contact-form.pug
 
+    include ../../../common/wap/pagination.pug
     - const { totalPage } = renderData.articleList
-    include ../components/pagination
     +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
 //-block footer

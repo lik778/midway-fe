@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { message } from 'antd';
 const BASE_URL = '/management/api'
-const PREFIX = '/api/midway/manager/'
 
 const request = axios.create({
   baseURL: BASE_URL, // api 的 base_url
@@ -25,5 +24,5 @@ request.interceptors.response.use((res: AxiosResponse) => {
 })
 
 export const postApi = (path: string, params: any): Promise<any> => {
-  return request.post('', { method: 'post', path: `${PREFIX}${path}`, params: JSON.stringify(params) });
+  return request.post('', { method: 'post', path: path, params: JSON.stringify(params) });
 }

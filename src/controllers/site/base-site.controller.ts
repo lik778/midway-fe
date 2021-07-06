@@ -1,15 +1,15 @@
 import { Get, HostParam, Param, Query, Req, Res } from '@nestjs/common';
 import { SiteService } from '../../services/site.service';
-import { Request, Response } from 'express';
+import { query, Request, Response } from 'express';
 import { UserAgent } from '../../decorator/user-agent.decorator';
-import { DomainTypeEnum } from '../../enums';
+import { DomainTypeEnum, SearchTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { TrackerType } from '../../enums/tracker';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../constant/cookie';
 
 //模板页面基础控制器，进行数据请求和打点
-export class BaseSiteController { 
-  private whiteList: string[] = ['baomuyuesao','zhongheruijia','jikang','weichai','ndjx','hnfjhbsb']
+export class BaseSiteController {
+  private whiteList: string[] = ['baomuyuesao', 'zhongheruijia', 'jikang', 'weichai', 'ndjx', 'hnfjhbsb']
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
     protected domainType: DomainTypeEnum) { }
@@ -28,6 +28,7 @@ export class BaseSiteController {
     return userInfo
   }
 
+  // 对数据做兼容 ， 防止报错
   private setData(data) {
     if (!data.basic.company) {
       data.basic.company = {
@@ -37,15 +38,19 @@ export class BaseSiteController {
     }
     if (!data.basic.contact) {
       data.basic.contact = {
-        qq: {}, phone: { content: '' }, phone2: { content: '' }, weChat: {}, contactName: {}, kf53StyleUrl: '', kf53: ''
+        qq: {}, phone: { content: '' }, phone2: { content: '' }, weChat: {}, contactName: {}, kf53StyleUrl: '', kf53: '', union400: []
       }
     }
-
     data.basic.company.about = data.basic.company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
 
     data.autoConfig = data.autoConfig && data.autoConfig.length > 0 ? data.autoConfig : [{ mainModuleTitle: '企业优势', subModuleBos: [{ fontColor: 0, title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' }, { fontColor: 0, title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' }, { fontColor: 0, title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' }, { fontColor: 0, title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }] }]
     //红白头开关
-    if(this.whiteList.indexOf(data.basic.shop.domain)!==-1){
+    // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
+    //   data.isRedTopbar = true
+    // }
+    // 2021年6月19日9点切到红色头部
+    const nowTime = new Date().getTime()
+    if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
     return data
@@ -53,7 +58,9 @@ export class BaseSiteController {
 
 
   @Get('/')
-  public async home(@Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+  public async home(@Query() query, @Param() params, @HostParam('shopName') HostShopName: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    // 当参数里添加sem 则说明要切换为sem页
+    const sem = query.sem
     let shopName = ''
     const domain = req.hostname
     if (this.domainType === DomainTypeEnum.B2C) {
@@ -87,8 +94,22 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
+    // 这里 isSem: sem === "1" ? true : undefined 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
+    const isSem = sem === "1" ? true : undefined
 
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true });
+    if (isSem) {
+      const companyNameReg = /有限公司|公司|股份有限公司/gi
+      if (data.basic.company.name) {
+        data.basic.company.name = data.basic.company.name.replace(companyNameReg, '')
+      }
+      if (data.basic.company.alias) {
+        data.basic.company.alias = data.basic.company.alias.replace(companyNameReg, '')
+      }
+    }
+
+
+
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem });
   }
 
   @Get('/n')
@@ -303,5 +324,78 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
     return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo } });
+  }
+
+
+  // 处理搜索来的数据 
+  private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
+    data.contentList = data.searchResult.result
+    data.contentType = type
+    data.contentKey = key
+    data.contentPage = currentPage
+    return data
+  }
+
+  // 搜索聚合页
+  @Get('/search')
+  async search(@Param() params, @HostParam('shopName') HostShopName: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
+    console.log(query)
+    const currentPage = query.page || 1
+    const searchKey = query.key || ''
+    const searchType = query.type || 'product'
+    console.log({
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+    })
+    const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+    }, domain);
+
+    // // test start  
+    // const { data: originData } = await this.midwayApiService[searchType === 'product' ? 'getProductPageData' : 'getNewsPageData'](shopName, device, {
+    //   keyword: searchKey, page: currentPage, type: searchType
+    // }, domain);
+    // // test end 
+
+    // 这里做统一处理
+    const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
+
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        _platform: device,
+        tracktype: 'pageview',
+        contentType: 'search',
+        category: '',
+      }
+    })
+    const { templateId } = data.basic.shop
+    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/search/index`;
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+
+    return res.render(templateUrl, {
+      title: '搜索',
+      renderData: {
+        ...data,
+        searchKey,
+        shopName,
+        kf53,
+        shopId,
+        trackId,
+        userInfo,
+        domainType: this.domainType,
+        currentPage, currentPathname,
+      }
+    })
   }
 }
