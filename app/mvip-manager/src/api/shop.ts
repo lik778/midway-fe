@@ -198,7 +198,7 @@ export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumP
 
 // 修改店铺相册
 export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/updateImagesetAlbum', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params, setShopHeader(shopId))
 }
 
 // 删除店铺相册
