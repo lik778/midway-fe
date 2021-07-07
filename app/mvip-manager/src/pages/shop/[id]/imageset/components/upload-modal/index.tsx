@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { useUpload } from './upload'
+import { errorMessage } from '@/components/message';
+import { useUpload, UploadItem } from './upload'
 import { useAlbumSelector } from '../album-selector'
 
 import { AlbumItem } from '../../types'
@@ -10,6 +11,8 @@ import { AlbumItem } from '../../types'
 import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 30
+
+// TODO 多选
 
 type Props = {
   shopId: number;
@@ -21,20 +24,77 @@ export function useUploadModal(props: Props) {
   /***************************************************** States */
   const { shopId, refresh, allAlbumLists } = props
   const [visible, setVisible] = useState(true);
-  // const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
-  const [$uploader, lists] = useUpload()
+  const canUpload = true || useMemo(() => !!selectedAlbum, [selectedAlbum])
+  const [$uploader, lists, add, remove] = useUpload()
+  const canConfirm = useMemo(() => lists.every(x => x.state === 'done'), [lists])
 
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
 
-  const uploadConfirm = () => {}
+  const uploadConfirm = () => {
+    const isAllUploaded = false
+    if (isAllUploaded) {
+      closeModal()
+    }
+  }
+
+  const handleRemove = useCallback((item: UploadItem) => {
+    remove(item)
+  }, [remove])
 
   /***************************************************** Renders */
 
   const showActions = lists.length > 0
+
+  // ? PERF
+  // 渲染上传列表
+  const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
+    const { uid, state, percent, preview, error } = item
+    let $contents
+    let dispearMask = false
+    console.log('state: ', state)
+    if (state === 'uploading') {
+      const radius = 25
+      const percent100Len = Math.ceil(2 * 3.14 * radius)
+      const exactPercent = percent ? Math.floor(percent) : 0
+      $contents = <>
+        <svg className={styles['progress']} width="60px" height="60px">
+          <circle r="25" cy="30" cx="30" stroke-width="3" stroke="rgba(0,0,0,0.5)" stroke-linejoin="round" stroke-linecap="round" fill="none" />
+          <circle r="25" cy="30" cx="30" stroke-width="3" stroke="#1790FF" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-dashoffset="0px" stroke-dasharray={percent100Len + 'px'} />
+        </svg>
+        <span className={styles["upload-info"]}>{exactPercent}%</span>
+      </>
+    }
+    if (state === 'error') {
+      $contents = <span className={styles["upload-info"]}>{error || '出错了'}</span>
+    }
+    if (state === 'chibi') {
+      $contents = <span className={styles["upload-info"]}>审核中</span>
+    }
+    if (state === 'done') {
+      dispearMask = true
+      $contents = <>
+        <div className={styles['upload-item-actions']}>
+          <span className={styles['action']} onClick={() => handleRemove(item)}>
+            <DeleteOutlined />
+          </span>
+        </div>
+      </>
+    }
+    if (!state) {
+      dispearMask = true
+    }
+    return (
+      <div className={styles["upload-item"]} key={`${uid}-${idx}-${state}`}>
+        <img className={styles["upload-img"]} src={preview} />
+        <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
+        <div className={styles["wrapper"]}>{$contents}</div>
+      </div>
+    )
+  }), [lists])
 
   return [
     <Modal
@@ -53,17 +113,9 @@ export function useUploadModal(props: Props) {
 
       {/* Container */}
       <div className={styles['upload-lists']}>
-        {lists.map(item => {
-          const { uid } = item
-          const url = item.preview
-          return (
-            <div className={styles["upload-item"]} key={`upload-item-${uid}-${url}`}>
-              <img className={styles["upload-img"]} src={url} />
-            </div>
-          )
-        })}
+        {renderLists()}
         {(lists.length < MAX_UPLOAD_COUNT) && (
-          <div className={styles["upload-add"]}>
+          <div className={styles["upload-add"] + (canUpload ? '' : ' disabled')}>
             <PlusOutlined />
             {$uploader}
           </div>
@@ -87,6 +139,7 @@ export function useUploadModal(props: Props) {
             className={styles["confirm-btn"]}
             type="primary"
             htmlType="submit"
+            disabled={!canConfirm}
             onClick={uploadConfirm}
           >
             确定

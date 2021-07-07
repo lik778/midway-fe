@@ -267,6 +267,11 @@ export interface UpdateImagesetAlbumParam {
   cover?: number;
 }
 
+export interface CreateImagesetImageParam {
+  url: string;
+  albumID: number;
+}
+
 export interface DelImagesetAlbumParam {
   ids: number | number[];
 }

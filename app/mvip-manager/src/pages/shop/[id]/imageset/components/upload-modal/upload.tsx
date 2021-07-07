@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Upload } from 'antd'
-import { UploadFile } from 'antd/lib/upload/interface'
+import { UploadFile, UploadFileStatus } from 'antd/lib/upload/interface'
 
 import styles from './index.less'
 
+// 获取图片 base64 预览地址
 const getBase64 = function (file: Blob): Promise<any> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -13,19 +14,48 @@ const getBase64 = function (file: Blob): Promise<any> {
   });
 }
 
-export function useUpload() {
-  const [fileList, setFileList] = useState<UploadFile[]>([])
-  const [lists, setLists] = useState<any[]>([])
+export interface UploadItem extends UploadFile {
+  // 图片预览地址
+  preview: string
+  // 扩展赤壁审核枚举
+  state: UploadFileStatus | 'chibi'
+  // 出错原因
+  error: string
+}
 
-  const handleChange = async (e: any) => {
-    if (e.file.status) {
-      if (e.file.status === 'done') {
+export function useUpload() {
+  const [fileList, setFileList] = useState<UploadItem[]>([])
+
+  // ? 竞争
+  const handleChange = useCallback(async (e: any) => {
+    const { uid, status } = e.file
+
+    // 在上传开始就读取到图片的预览地址
+    if (status === 'done') {
+      if (e.file && !(e.file.preview)) {
         e.file.preview = await getBase64(e.file.originFileObj)
       }
-      setFileList(e.fileList)
-      setLists(e.fileList)
     }
-  }
+
+    e.file.state = e.file.status
+
+    setFileList(e.fileList)
+  }, [fileList])
+
+  const add = useCallback(item => {
+    console.log('TODO')
+  }, [fileList])
+
+  const remove = useCallback(item => {
+    const tempList = [...fileList]
+    const findIDX = tempList.findIndex(x => x.uid === item.uid)
+    if (findIDX !== -1) {
+      tempList.splice(findIDX, 1)
+      setFileList(tempList)
+    } else {
+      console.warn('[WARN] Not found', item, fileList)
+    }
+  }, [fileList])
 
   return [
     <Upload
@@ -38,6 +68,8 @@ export function useUpload() {
       fileList={fileList}
       onChange={handleChange}
     ><div></div></Upload>,
-    lists
+    fileList,
+    add,
+    remove
   ] as const
 }

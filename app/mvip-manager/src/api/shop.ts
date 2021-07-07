@@ -13,7 +13,8 @@ import {
   BannerListItem,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam, DelImagesetImageParam, UpdateImagesetImageParam,
+  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
+  CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -205,6 +206,11 @@ export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumP
 export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
   const ids = Array.isArray(params.ids) ? params.ids : [params.ids]
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delImagesetAlbum', { ids }, setShopHeader(shopId))
+}
+
+// 新增相册图片
+export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(shopId))
 }
 
 // 删除相册图片
