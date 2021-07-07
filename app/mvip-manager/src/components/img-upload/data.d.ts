@@ -1,7 +1,6 @@
-import { ShopInfo } from '@/interfaces/shop';
 import { ShowUploadListInterface, UploadFile } from 'antd/lib/upload/interface'
 import { CropProps } from '../crop/data';
-
+import { ShopInfo, AtlasTypeListItem, AtlasImageListItem } from '@/interfaces/shop'
 export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
   showCropIcon?: boolean // 是否显示裁剪icon
   cropIcon?: React.ReactNode
@@ -35,33 +34,12 @@ export interface ImgUploadProps {
   [key: string]: any
 }
 
-export interface AtlasShopListItem {
-  id: number,
-  name: string
-}
-
-export interface AtlasTypeListItem {
-  id: number,
-  name: string,
-}
-
-export interface AtlasImageListItem {
-  id: number,
-  url: string
-  status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
-}
 
 export interface ImageDataAtlasTypeListItem extends AtlasTypeListItem {
   images: AtlasImageListItem[]
   page: number,// 当前类型数据已经翻到多少页
   total: number,// 当前类型总页数
-}
-
-// 图册数据结构
-export interface ImageData {
-  [key: string]: {
-    [key: string]: ImageDataAtlasTypeListItem
-  }
+  init: boolean // 是否初始化过
 }
 
 export interface ImgUploadContextProps {
@@ -82,7 +60,8 @@ export interface ImgUploadContextProps {
   shopList: ShopInfo[]  // 因为model里初始化时null
   shopCurrent: ShopInfo | null // 当前选择的店铺
   loadingShopModel: boolean,// 当前
-  imageData: ImageData,
+  imageData: ImageDataAtlasTypeListItem[],
+  baixingImageData: ImageDataAtlasTypeListItem[],
   upDataLoading: boolean
   handleChangeAtlasVisible: (atlasVisible: boolean) => void
   handleChangeUpDataLoading: (upDataLoading: boolean) => void // 更新组件内打接口的loading
@@ -94,5 +73,6 @@ export interface ImgUploadContextProps {
    */
   handleChangeFileList: (newFileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => void // 更新确认选择文件
   handleChangeShopCurrent: (newShopCurrent: ShopInfo) => void // 更新当前店铺
-  handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => void // 更新图片数据
+  handleChangeImageData: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void // 更新图片数据
+  handleChangeBaixingImageData: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void // 更新图片数据
 }

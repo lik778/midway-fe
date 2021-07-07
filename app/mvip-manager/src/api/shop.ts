@@ -13,7 +13,7 @@ import {
   BannerListItem,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam, DelImagesetImageParam, UpdateImagesetImageParam,
+  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam, DelImagesetImageParam, UpdateImagesetImageParam, AtlasImageListItem, AtlasTypeListItem
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -215,4 +215,9 @@ export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) 
 // 更新相册图片
 export const updateImagesetImage = (shopId: number, params: UpdateImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/updateImagesetImage', params, setShopHeader(shopId))
+}
+
+// TODO;获取百姓网相册列表 URl
+export const getBaixingImagesetAlbum = (shopId: number, params: GetImagesetAlbumParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
 }

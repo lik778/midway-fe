@@ -9,7 +9,7 @@ export const zhidaoInfoForm: FormConfig = {
   children: [
     { formItemWidth: 260, label: '官网', name: 'siteUrl', type: FormType.Select, required: false, placeholder: '请选择' },
     {
-      label: '侧边广告', name: 'banner2', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 1, text: '知道侧栏', name: 'banner2', maxSize: 3, cropProps: { aspectRatio: 365 / 304 } }],
+      label: '侧边广告', name: 'banner2', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 1, text: '知道侧栏', name: 'banner2', maxSize: 3, aspectRatio: 365 / 304, cropProps: { aspectRatio: 365 / 304 } }],
       required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议尺寸为365px*304px'
     },
     {

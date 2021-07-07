@@ -279,3 +279,14 @@ export interface UpdateImagesetImageParam {
   id: number;
   albumID: number;
 }
+
+export interface AtlasTypeListItem {
+  id: number,
+  name: string,
+}
+
+export interface AtlasImageListItem {
+  id: number,
+  url: string
+  status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
+}
