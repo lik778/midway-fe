@@ -2,7 +2,6 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { errorMessage, successMessage } from '@/components/message';
 import { useUpload, UploadItem } from './upload'
 import { useAlbumSelector } from '../album-selector'
 import { createImagesetImage } from '@/api/shop'
@@ -43,9 +42,22 @@ export function useUploadModal(props: Props) {
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
 
-  const confim = () => {
-    refresh()
-    closeModal()
+  const confirm = () => {
+    if (canConfirm) {
+      refresh()
+      closeModal()
+    } else {
+      Modal.confirm({
+        title: '确认关闭',
+        content: '仍有图片仍未上传成功',
+        width: 532,
+        onCancel() { },
+        onOk() {
+          refresh()
+          closeModal()
+        }
+      })
+    }
   }
 
   const handleRemove = useCallback((item: UploadItem) => {
@@ -81,6 +93,7 @@ export function useUploadModal(props: Props) {
   const showActions = lists.length > 0
 
   // 渲染上传列表
+  // TODO 样式问题
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { uid, status, percent, preview, error, inChibi } = item
     let $contents
@@ -136,8 +149,7 @@ export function useUploadModal(props: Props) {
       closeIcon={null}
       footer={null}
       visible={visible}
-      maskClosable={false}
-      onCancel={() => setVisible(false)}
+      onCancel={confirm}
     >
       {/* Selector */}
       <div>
@@ -174,7 +186,7 @@ export function useUploadModal(props: Props) {
             type="primary"
             htmlType="submit"
             disabled={!canConfirm}
-            onClick={confim}
+            onClick={confirm}
           >
             确定
           </Button>
