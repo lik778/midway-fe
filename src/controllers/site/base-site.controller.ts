@@ -73,7 +73,7 @@ export class BaseSiteController {
       shopName = HostShopName
     }
     const userInfo = await this.getUserInfo(req, domain)
-    const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, domain);
+    const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, sem, domain);
     const data = this.setData(originData)
     // 打点
     const shopId = data.basic.shop.id
@@ -98,15 +98,6 @@ export class BaseSiteController {
     // 这里 isSem: sem === "1" ? true : undefined 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
     const isSem = sem === "1" ? true : undefined
 
-    if (isSem) {
-      const companyNameReg = /有限公司|公司|股份有限公司/gi
-      if (data.basic.company.name) {
-        data.basic.company.name = data.basic.company.name.replace(companyNameReg, '')
-      }
-      if (data.basic.company.alias) {
-        data.basic.company.alias = data.basic.company.alias.replace(companyNameReg, '')
-      }
-    }
     // https://www.tapd.cn/20097551/prong/stories/view/1120097551001038611
     const isCn = HostDomain === 'cn' ? true : undefined
     return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn });
