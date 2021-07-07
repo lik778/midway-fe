@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, FC } from 'react';
 import styles from './index.less'
 import AtlasModalHeader from './components/header'
+import AtlasModalContent from './components/content'
 import { ImgUploadContext } from '../../context'
 
 
@@ -11,7 +12,6 @@ const Modal: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
   const { atlasVisible } = context
   const [init, setInit] = useState<boolean>(false)
-
   useEffect(() => {
     if (atlasVisible) {
       setInit(true)
@@ -24,6 +24,7 @@ const Modal: FC<Props> = (props) => {
         display: atlasVisible ? 'block' : 'none'
       }}>
         <AtlasModalHeader></AtlasModalHeader>
+        <AtlasModalContent></AtlasModalContent>
       </div>
     }
   </>

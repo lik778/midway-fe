@@ -3,7 +3,7 @@ import { Upload, Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
 
 import styles from './index.less';
-import { ImgUploadProps, ImageData } from './data';
+import { ImgUploadProps } from './data';
 import { errorMessage } from '@/components/message';
 import ImgItem from './components/img-item'
 import Crop from '@/components/crop'
@@ -40,11 +40,10 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
   }
 }
 
-
+// 当前组件不要使用useContext(ImgUploadContext)
+// 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
   const { uploadType, editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange } = props
-  const context = useContext(ImgUploadContext)
-  const { atlasVisible, handleChangeAtlasVisible } = context
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
@@ -55,15 +54,13 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   const [cropVisible, setCropVisible] = useState(false)
   const [cropItem, setCropItem] = useState<UploadFile<any>>()
 
-
-
   const [itemWidth] = useState<number | undefined>(() => {
     return aspectRatio ? aspectRatio * 86 + 16 : undefined
   })
 
 
   // 为了保证出参入参不被修改 从这以下不能修改
-  // [包装一下setFileList函数，不需要触发onChange时调用,setA]
+  // [包装一下setFileList函数，不需要触发onChange时调用
   const createFileList = async (fileList: UploadFile[]) => {
     const newFileList: UploadFile<any>[] = []
     for (let i = 0; i < fileList.length; i++) {
@@ -178,16 +175,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     setCropVisible(false)
   }
 
-  // // 调取图片选择框
-  // const handleOpenAtlas = async () => {
-  //   setAtlasVisible(true)
-  // }
-
-  // // 关闭图片选择框
-  // const handleCloseAtlas = async () => {
-  //   setAtlasVisible(false)
-  // }
-
   // 传入url ，返回裁剪后的图的uid
   const handleCropSuccess = (uid: string, previewUrl: string) => {
     const nowFileList = fileList.map(item => {
@@ -209,8 +196,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // TODO; 暂时没有下载功能就 a标签跳新页面了，就不写这个函数了
 
   return (
-    // 公共配置数据context传下去 不提供修改函数，仅仅用于全局公共数据透传，避免数据修改混乱。
-    <ImgUploadContextComponent uploadType={uploadType} uploadBtnText={uploadBtnText} maxSize={maxSize} maxLength={maxLength} disabled={disabled} aspectRatio={aspectRatio} showUploadList={showUploadList} cropProps={cropProps} actionBtn={actionBtn} fileList={fileList} handleChangeFileList={decorateSetFileList}>
+    <>
       <div className={styles['img-upload']}>
         {
           uploadType === 1 && <Upload
@@ -219,6 +205,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
               policy: window.__upyunImgConfig?.uploadParams?.policy,
               signature: window.__upyunImgConfig?.uploadParams?.signature
             }}
+            style={{ width: itemWidth }}
             listType="picture-card"
             fileList={fileList}
             beforeUpload={beforeUpload}
@@ -235,17 +222,19 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           </Upload >
         }
         {
-          uploadType === 2 && <>
+          uploadType === 2 &&
+          // 公共配置数据context传下去。
+          <ImgUploadContextComponent uploadType={uploadType} uploadBtnText={uploadBtnText} maxSize={maxSize} maxLength={maxLength} disabled={disabled} aspectRatio={aspectRatio} showUploadList={showUploadList} cropProps={cropProps} actionBtn={actionBtn} fileList={fileList} handleChangeFileList={decorateSetFileList}>
             <div className={styles['img-selected-list']}>
               {
                 fileList.map((item, _index, arr) => <ImgItem file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={item.uid}></ImgItem>)
               }
-              {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} onClick={() => handleChangeAtlasVisible(true)} />}
+              {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />}
             </div>
-          </ >
+            <AtlasModal></AtlasModal>
+          </ImgUploadContextComponent >
         }
       </div>
-      <AtlasModal></AtlasModal>
       <Modal
         title="预览图片"
         width={800}
@@ -264,7 +253,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       >
         <Crop cropProps={cropProps} url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
       </Modal>
-    </ImgUploadContextComponent>
+    </>
   )
 }
 

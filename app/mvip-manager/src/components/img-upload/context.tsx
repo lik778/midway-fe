@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { CropProps } from '../crop/data';
-import { ImgUploadContextProps, ImageData, ExpandShowUploadListInterface, ActionBtnListItem, AtlasShopListItem } from './data'
+import { ImgUploadContextProps, ExpandShowUploadListInterface, ActionBtnListItem, ImageDataAtlasTypeListItem } from './data'
 import { useEffect } from 'react';
 import { ShopInfo } from '@/interfaces/shop';
 
 export const ImgUploadContext = React.createContext<ImgUploadContextProps>({
   fileList: [],
+  imageData: [],
+  baixingImageData: [],
   initConfig: {
     uploadType: 1,
     uploadBtnText: '',
@@ -30,9 +32,9 @@ export const ImgUploadContext = React.createContext<ImgUploadContextProps>({
   shopList: [],
   shopCurrent: null,
   loadingShopModel: false,
-  imageData: {},
   handleChangeShopCurrent: (newShopCurrent: ShopInfo) => { },
-  handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => { },
+  handleChangeImageData: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => { },
+  handleChangeBaixingImageData: (newBaixingImageData: ImageDataAtlasTypeListItem[], oldBaixingImageData: ImageDataAtlasTypeListItem[]) => { },
 });
 
 interface Props {
@@ -54,7 +56,8 @@ const ImgUploadContextComponent: FC<Props> = function (props): JSX.Element {
   const { uploadType, fileList, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, handleChangeFileList } = props
   const { shopList, getShopList, loadingShopModel } = props
   const [atlasVisible, setAtlasVisible] = useState<boolean>(uploadType === 2)
-  const [imageData, setImageData] = useState<ImageData>({})
+  const [imageData, setImageData] = useState<ImageDataAtlasTypeListItem[]>([])
+  const [baixingImageData, setBaixingImageData] = useState<ImageDataAtlasTypeListItem[]>([])
   const [shopListFilter, setShopListFilter] = useState<ShopInfo[]>([])
   const [shopCurrent, setShopCurrent] = useState<ShopInfo | null>(null)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
@@ -66,7 +69,7 @@ const ImgUploadContextComponent: FC<Props> = function (props): JSX.Element {
   }, [shopList])
 
   useEffect(() => {
-    if (!loadingShopModel) {
+    if (uploadType === 2 && !loadingShopModel) {
       getShopList()
     }
   }, [])
@@ -77,13 +80,20 @@ const ImgUploadContextComponent: FC<Props> = function (props): JSX.Element {
   }
 
   // 图片数据更改
-  const handleChangeImageData = (newImageData: ImageData, oldImageData: ImageData) => {
+  const handleChangeImageData = (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => {
+    console.log(newImageData)
     setImageData(newImageData)
+  }
+
+  // 图片数据更改
+  const handleChangeBaixingImageData = (newBaixingImageData: ImageDataAtlasTypeListItem[], oldBaixingImageData: ImageDataAtlasTypeListItem[]) => {
+    setBaixingImageData(newBaixingImageData)
   }
 
   return <ImgUploadContext.Provider value={{
     fileList,
     imageData,
+    baixingImageData,
     initConfig: {
       uploadType,
       uploadBtnText,
@@ -105,6 +115,7 @@ const ImgUploadContextComponent: FC<Props> = function (props): JSX.Element {
     handleChangeShopCurrent: handleChangeShopCurrent,
     handleChangeFileList: handleChangeFileList,
     handleChangeImageData: handleChangeImageData,
+    handleChangeBaixingImageData: handleChangeBaixingImageData,
   }}>
     {
       props.children

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState, FC, useContext } from 'react';
-
 import { Select } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import styles from './index.less'
@@ -10,13 +9,12 @@ const ModalHeader: FC = () => {
   const context = useContext(ImgUploadContext)
   const { shopCurrent, shopList, handleChangeShopCurrent, loadingShopModel, upDataLoading, handleChangeAtlasVisible } = context
   const selectValue = useMemo<number | undefined>(() => shopCurrent?.id, [shopCurrent])
-  console.log(context)
   const handleChange = (value: any) => {
     handleChangeShopCurrent(shopList!.find(item => item.id === value)!)
   }
 
   return <div className={styles['atlas-modal-header']}>
-    <Select className={styles['select']} onChange={handleChange} value={selectValue} loading={loadingShopModel || upDataLoading}>
+    <Select className={styles['select']} size="large" onChange={handleChange} value={selectValue} loading={loadingShopModel || upDataLoading}>
       {
         shopList && shopList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)
       }
