@@ -69,19 +69,78 @@
 .upload-lists {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 24px;
-  padding: 24px 58px;
+  padding: 24px 56px;
 }
 .upload-item {
+  position: relative;
   width: 150px;
   height: 116px;
   overflow: hidden;
 
   .upload-img {
     width: 100%;
+    min-height: 100%;
     object-fit: cover;
   }
 }
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+  transition: .5s;
+
+  &.none {
+    background: rgba(0,0,0,0);
+  }
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+}
+.upload-item-actions {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+.action {
+  width: 40px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: white;
+  background: rgba(0,0,0,.5);
+  cursor: pointer;
+}
+.progress {
+  position: absolute;
+  filter: drop-shadow(0,0,5px,white);
+  transition: .25s;
+}
+.upload-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
 .upload-add {
   position: relative;
   width: 150px;
@@ -89,6 +148,7 @@
   line-height: 113px;
   background: white;
   border: solid 1px #D8D8D8;
+  outline: none;
   font-size: 24px;
   font-weight: 300;
   color: #999;
@@ -105,10 +165,16 @@
   &:active {
     background: #f8f8f8;
   }
+
+  &.disabled {
+    background: #f8f8f8;
+    color: #777;
+    pointer-events: none;
+  }
 }
 
 .tips-con {
-  margin-left: 58px;
+  margin-left: 56px;
   padding: 14px 20px;
   width: 436px;
   height: 114px;
@@ -129,6 +195,7 @@
 }
 
 .confirm-btn {
+  margin-left: 56px;
   padding: unset;
   width: 120px;
   height: 40px;

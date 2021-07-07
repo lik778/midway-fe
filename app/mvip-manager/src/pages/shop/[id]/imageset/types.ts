@@ -10,7 +10,7 @@ export type ImageItem = {
   type: 'image'
   id: number,
   name: string,
-  url: string,
+  imgUrl: string,
 }
 
 export type CardItem = AlbumItem | ImageItem

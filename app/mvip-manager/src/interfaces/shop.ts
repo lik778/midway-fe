@@ -267,6 +267,17 @@ export interface UpdateImagesetAlbumParam {
   cover?: number;
 }
 
+export interface GetImagesetImageParam {
+  mediaCateId: number;
+  page: number;
+  size: number;
+}
+
+export interface CreateImagesetImageParam {
+  imgUrl: string;
+  mediaCateId: number;
+}
+
 export interface DelImagesetAlbumParam {
   ids: number | number[];
 }
@@ -277,7 +288,12 @@ export interface DelImagesetImageParam {
 
 export interface UpdateImagesetImageParam {
   id: number;
-  albumID: number;
+  mediaCateId: number;
+}
+
+export interface MoveImagesetImageParam {
+  id: number;
+  mediaCateId: number;
 }
 
 export interface AtlasTypeListItem {

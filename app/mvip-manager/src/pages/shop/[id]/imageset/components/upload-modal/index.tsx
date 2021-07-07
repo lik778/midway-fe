@@ -1,15 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { useUpload } from './upload'
+import { useUpload, UploadItem } from './upload'
 import { useAlbumSelector } from '../album-selector'
+import { createImagesetImage } from '@/api/shop'
 
 import { AlbumItem } from '../../types'
 
 import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 30
+
+// TODO 多选
 
 type Props = {
   shopId: number;
@@ -20,30 +23,133 @@ export function useUploadModal(props: Props) {
 
   /***************************************************** States */
   const { shopId, refresh, allAlbumLists } = props
-  const [visible, setVisible] = useState(true);
-  // const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
-  const [$uploader, lists] = useUpload()
+  const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
+  const [$uploader, lists, setLists, update, remove] = useUpload({
+    afterUploadHook
+  })
+  const canConfirm = useMemo(() => lists.every(x => x.status === 'done' && !x.inChibi), [lists])
+
+  useEffect(() => {
+    if (selectedAlbum) {
+      setLists([])
+    }
+  }, [selectedAlbum])
 
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
 
-  const uploadConfirm = () => {}
+  const confirm = () => {
+    if (canConfirm) {
+      refresh()
+      closeModal()
+    } else {
+      Modal.confirm({
+        title: '确认关闭',
+        content: '仍有图片仍未上传成功',
+        width: 532,
+        onCancel() { },
+        onOk() {
+          refresh()
+          closeModal()
+        }
+      })
+    }
+  }
+
+  const handleRemove = useCallback((item: UploadItem) => {
+    remove(item)
+  }, [remove])
+
+  /***************************************************** API Calls */
+
+  async function afterUploadHook(item: UploadItem) {
+    return await new Promise(async resolve => {
+      item.inChibi = true
+      update(item)
+      try {
+        const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
+        const res = await createImagesetImage(shopId, query)
+        if (res.success) {
+          item.inChibi = false
+          update(item)
+          resolve(true)
+        } else {
+          throw new Error('上传失败');
+        }
+      } catch (error) {
+        item.inChibi = false
+        item.status = 'error'
+        update(item)
+      }
+    })
+  }
 
   /***************************************************** Renders */
 
   const showActions = lists.length > 0
+
+  // 渲染上传列表
+  // TODO 样式问题
+  const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
+    const { uid, status, percent, preview, error, inChibi } = item
+    let $contents
+    let dispearMask = false
+    if (inChibi === true) {
+      $contents = <span className={styles["upload-info"]}>审核中</span>
+    } else {
+      if (status === 'uploading') {
+        const radius = 25
+        const percent100Len = Math.ceil(2 * 3.14 * radius)
+        const exactPercent = percent ? Math.floor(percent) : 0
+        $contents = <>
+          <svg className={styles['progress']} width="60px" height="60px">
+            <circle r="25" cy="30" cx="30" stroke-width="3" stroke="rgba(0,0,0,0.5)" stroke-linejoin="round" stroke-linecap="round" fill="none" />
+            <circle r="25" cy="30" cx="30" stroke-width="3" stroke="#1790FF" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-dashoffset="0px" stroke-dasharray={percent100Len + 'px'} />
+          </svg>
+          <span className={styles["upload-info"]}>{exactPercent}%</span>
+        </>
+      }
+      if (status === 'error') {
+        $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
+          {error || '出错了'}
+        </span>
+      }
+      if (status === 'done') {
+        dispearMask = true
+        $contents = <>
+          <div className={styles['upload-item-actions']}>
+            <span className={styles['action']} onClick={() => handleRemove(item)}>
+              <DeleteOutlined />
+            </span>
+          </div>
+        </>
+      }
+      if (!status) {
+        dispearMask = true
+      }
+    }
+    return (
+      <div className={styles["upload-item"]} key={`${uid}-${idx}-${status}`}>
+        <img className={styles["upload-img"]} src={preview} />
+        <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
+        <div className={styles["wrapper"]}>{$contents}</div>
+      </div>
+    )
+  }), [lists])
 
   return [
     <Modal
       wrapClassName="upload-modal"
       title="上传图片"
       width={1000}
+      closeIcon={null}
       footer={null}
       visible={visible}
-      onCancel={() => setVisible(false)}
+      onCancel={confirm}
     >
       {/* Selector */}
       <div>
@@ -53,16 +159,8 @@ export function useUploadModal(props: Props) {
 
       {/* Container */}
       <div className={styles['upload-lists']}>
-        {lists.map(item => {
-          const { uid } = item
-          const url = item.preview
-          return (
-            <div className={styles["upload-item"]} key={`upload-item-${uid}-${url}`}>
-              <img className={styles["upload-img"]} src={url} />
-            </div>
-          )
-        })}
-        {(lists.length < MAX_UPLOAD_COUNT) && (
+        {renderLists()}
+        {(lists.length < MAX_UPLOAD_COUNT) && canUpload && (
           <div className={styles["upload-add"]}>
             <PlusOutlined />
             {$uploader}
@@ -87,7 +185,8 @@ export function useUploadModal(props: Props) {
             className={styles["confirm-btn"]}
             type="primary"
             htmlType="submit"
-            onClick={uploadConfirm}
+            disabled={!canConfirm}
+            onClick={confirm}
           >
             确定
           </Button>

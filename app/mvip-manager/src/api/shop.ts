@@ -13,7 +13,8 @@ import {
   BannerListItem,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam, DelImagesetImageParam, UpdateImagesetImageParam, AtlasImageListItem, AtlasTypeListItem
+  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
+  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AtlasImageListItem, AtlasTypeListItem
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -207,14 +208,29 @@ export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) 
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delImagesetAlbum', { ids }, setShopHeader(shopId))
 }
 
+// 获取相册图片列表
+export const getImagesetImage = (shopId: number, params: GetImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
+}
+
+// 新增相册图片
+export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
+}
+
 // 删除相册图片
 export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delImagesetImage', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delImagesetImage', params, setShopHeader(shopId))
 }
 
 // 更新相册图片
-export const updateImagesetImage = (shopId: number, params: UpdateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/updateImagesetImage', params, setShopHeader(shopId))
+export const setImagesetAlbumCover = (shopId: number, params: UpdateImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(shopId))
+}
+
+// 移动相册图片到其它相册
+export const moveImagesetImage = (shopId: number, params: MoveImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(shopId))
 }
 
 // TODO;获取百姓网相册列表 URl

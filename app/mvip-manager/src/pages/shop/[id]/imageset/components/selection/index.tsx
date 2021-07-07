@@ -13,13 +13,14 @@ interface SelectionBlockProps {
   total: number;
   selection: any[];
   lists: CardItem[];
+  isScopeAlbum: boolean;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
   refresh: () => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, select, unselect, setSelection, refresh } = props
+  const { shopId, total, selection, lists, isScopeAlbum, select, unselect, setSelection, refresh } = props
 
   /* 控制全选框的样式 */
   const [checked, setChecked] = useState(false)
@@ -103,7 +104,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
           </Button>
         )}
         <span className={styles["count-info"]}>
-          共 <span className={styles["count-num"]}>{total}</span> 个相册
+          共 <span className={styles["count-num"]}>{total}</span> {isScopeAlbum ? '个相册' : '张图片'}
         </span>
       </div>
     </>

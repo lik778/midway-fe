@@ -30,16 +30,14 @@ export default (props: Props) => {
     <>
       <div className={styles["nav-container"]}>
         {/* left actions */}
-
-        {isScopeAlbum && <div />}
-        {isScopeImage && (
-          <Breadcrumb separator=">">
-            <Breadcrumb.Item onClick={goHomeScope}>
-              <a>相册管理</a>
-            </Breadcrumb.Item>
+        <Breadcrumb separator=">">
+          <Breadcrumb.Item onClick={goHomeScope}>
+            <a>相册管理</a>
+          </Breadcrumb.Item>
+          {isScopeImage && (
             <Breadcrumb.Item>{lastScopeName}</Breadcrumb.Item>
-          </Breadcrumb>
-        )}
+          )}
+        </Breadcrumb>
 
         {/* right actions */}
         <div>
