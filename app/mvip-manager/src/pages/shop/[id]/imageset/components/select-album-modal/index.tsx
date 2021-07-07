@@ -42,7 +42,7 @@ export function useSelectAlbumListsModal(props: Props) {
       <Select
         className='album-select-album-selector'
         placeholder="请选择一个相册"
-        onChange={val => handleSelectAlbum(val)}
+        onChange={(val: number) => handleSelectAlbum(val)}
       >
         {allAlbumLists.map((x: AlbumItem) => {
           return <Select.Option value={x.id}>{x.name}</Select.Option>

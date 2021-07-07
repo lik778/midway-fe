@@ -14,7 +14,7 @@ import {
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
-  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam,
+  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -226,4 +226,9 @@ export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) 
 // 更新相册图片
 export const updateImagesetImage = (shopId: number, params: UpdateImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/updateImagesetImage', params, setShopHeader(shopId))
+}
+
+// 移动相册图片到其它相册
+export const moveImagesetImage = (shopId: number, params: MoveImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(shopId))
 }

@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, updateImagesetImage } from '@/api/shop'
+import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, updateImagesetImage, moveImagesetImage } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import styles from "./index.less";
@@ -134,10 +134,11 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
     const { id } = image
     const album = await selectAlbum()
-    updateImagesetImage(shopId, { id, albumID: album.id })
+    moveImagesetImage(shopId, { id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功');
+          refresh()
         } else {
           throw new Error(res.message || "出错啦，请稍后重试");
         }
@@ -145,7 +146,6 @@ export default function Cards(props: CardsProps) {
       .catch((error: any) => {
         errorMessage(error.message)
       })
-    refresh()
   }
 
   // 设置封面图片

@@ -167,7 +167,7 @@ const ShopArticlePage = (props: any) => {
   );
 }
 
-function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem) {
+function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem | undefined) {
   const [lists, setLists] = useState([])
   const [total, setTotal] = useState(0)
   const [requestTime, setRequestTime] = useState(+new Date())

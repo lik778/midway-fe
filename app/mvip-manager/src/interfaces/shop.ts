@@ -290,3 +290,8 @@ export interface UpdateImagesetImageParam {
   id: number;
   mediaCateId: number;
 }
+
+export interface MoveImagesetImageParam {
+  id: number;
+  mediaCateId: number;
+}

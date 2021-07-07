@@ -33,7 +33,7 @@ export function useAlbumLists(shopId: number, query: any = {}) {
 // 获取所有相册钩子
 // * for test you can use `return [[], 0, () => {}, () => {}] as const`
 export function useAllAlbumLists(shopId: number) {
-  const query = useMemo(() => ({ current: 1, pageSize: 999 }), [])
+  const query = useMemo(() => ({ page: 1, size: 999 }), [])
   const [lists, total, refresh, setLists, setTotal] = useAlbumLists(shopId, query)
   return [lists, total, refresh, setLists, setTotal] as const
 }
