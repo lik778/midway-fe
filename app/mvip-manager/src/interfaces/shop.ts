@@ -267,6 +267,12 @@ export interface UpdateImagesetAlbumParam {
   cover?: number;
 }
 
+export interface GetImagesetImageParam {
+  mediaCateId: number;
+  page: number;
+  size: number;
+}
+
 export interface CreateImagesetImageParam {
   imgUrl: string;
   mediaCateId: number;

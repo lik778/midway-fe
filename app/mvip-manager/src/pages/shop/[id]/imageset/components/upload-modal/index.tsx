@@ -24,7 +24,7 @@ export function useUploadModal(props: Props) {
 
   /***************************************************** States */
   const { shopId, refresh, allAlbumLists } = props
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
@@ -42,6 +42,11 @@ export function useUploadModal(props: Props) {
 
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
+
+  const confim = () => {
+    refresh()
+    closeModal()
+  }
 
   const handleRemove = useCallback((item: UploadItem) => {
     remove(item)
@@ -80,7 +85,6 @@ export function useUploadModal(props: Props) {
     const { uid, status, percent, preview, error, inChibi } = item
     let $contents
     let dispearMask = false
-    console.log('status:', status, inChibi)
     if (inChibi === true) {
       $contents = <span className={styles["upload-info"]}>审核中</span>
     } else {
@@ -97,7 +101,9 @@ export function useUploadModal(props: Props) {
         </>
       }
       if (status === 'error') {
-        $contents = <span className={styles["upload-info"] + ' ' + styles['error']}>{error || '出错了'}</span>
+        $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
+          {error || '出错了'}
+        </span>
       }
       if (status === 'done') {
         dispearMask = true
@@ -127,8 +133,10 @@ export function useUploadModal(props: Props) {
       wrapClassName="upload-modal"
       title="上传图片"
       width={1000}
+      closeIcon={null}
       footer={null}
       visible={visible}
+      maskClosable={false}
       onCancel={() => setVisible(false)}
     >
       {/* Selector */}
@@ -166,7 +174,7 @@ export function useUploadModal(props: Props) {
             type="primary"
             htmlType="submit"
             disabled={!canConfirm}
-            onClick={closeModal}
+            onClick={confim}
           >
             确定
           </Button>
