@@ -8,11 +8,12 @@ import Cards from './components/cards'
 import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
 import { useUploadModal } from './components/upload-modal'
+import { getImagesetImage, getImagesetAlbum } from '@/api/shop'
 
 import usePrevious from './hooks/previous';
 import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
-import { useAlbumLists, useAllAlbumLists } from './hooks/albums'
+import { useAllAlbumLists } from './hooks/albums'
 
 import { ShopModuleType } from "@/enums";
 import { RouteParams } from "@/interfaces/shop";
@@ -56,10 +57,9 @@ const ShopArticlePage = (props: any) => {
   const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
     pageSizeOptions: ['8', '16', '32']
   })
-  const albumPagiQueries = useMemo(() => ({ current: pagi.current, pageSize: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
-  const [lists, total, refresh] = useAlbumLists(shopId, albumPagiQueries)
+  const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
   const [allAlbumLists] = useAllAlbumLists(shopId)
-
+  const [lists, total, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
   const [selection, setSelection, select, unselect] = useSelection()
 
   // 层级变换时重置翻页和选取
@@ -67,6 +67,7 @@ const ShopArticlePage = (props: any) => {
     if (curScope) {
       setSelection([])
       resetPagi()
+      // FIXME 请求两次问题
       refresh()
     }
   }, [curScope])
@@ -164,6 +165,68 @@ const ShopArticlePage = (props: any) => {
       {$UploadModal}
     </>
   );
+}
+
+function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem) {
+  const [lists, setLists] = useState([])
+  const [total, setTotal] = useState(0)
+  const [requestTime, setRequestTime] = useState(+new Date())
+
+  const refresh = () => {
+    setLists([])
+    setTotal(0)
+    setRequestTime(+new Date())
+  }
+
+  useEffect(() => {
+    /* Gaurds */
+    if (!shopId || !scope) {
+      return
+    }
+    let fetchMethod
+    if (isScopeAlbum) fetchMethod = fetchAlbumLists
+    if (isScopeImage) fetchMethod = fetchImageLists
+    if (!fetchMethod) {
+      return
+    }
+    /* Query & Fetch */
+    if (isScopeImage) {
+      query.mediaCateId = scope.item!.id
+    }
+    fetchMethod(shopId, query)
+      .then(([result, total]) => {
+        console.log(result, total, query, requestTime)
+        setLists(result)
+        setTotal(total)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }, [shopId, query, requestTime, isScopeAlbum, isScopeImage, scope])
+
+  return [lists, total, refresh, setLists, setTotal] as const
+}
+
+async function fetchAlbumLists(shopId: number, querys: any) {
+  try {
+    const res = await getImagesetAlbum(shopId, querys)
+    const { totalCate = 0, mediaCateBos = {} } = res.data
+    const { result = [] } = mediaCateBos
+    return [result, totalCate]
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+async function fetchImageLists(shopId: number, querys: any) {
+  try {
+    const res = await getImagesetImage(shopId, querys)
+    const { totalImg = 0, mediaImgBos = {} } = res.data
+    const { result = [] } = mediaImgBos
+    return [result, totalImg]
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
 ShopArticlePage.wrappers = ['@/wrappers/path-auth']

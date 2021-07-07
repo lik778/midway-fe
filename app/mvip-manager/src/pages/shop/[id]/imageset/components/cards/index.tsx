@@ -207,10 +207,10 @@ export default function Cards(props: CardsProps) {
   }, [selection])
 
   const ImageCard = useCallback((card: ImageItem) => {
-    const { id, url } = card;
+    const { id, imgUrl } = card;
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
     return (
-      <div className={styles["image-card"]} onClick={() => previewImage(url)} key={`image-card-${id}`}>
+      <div className={styles["image-card"]} onClick={() => previewImage(imgUrl)} key={`image-card-${id}`}>
         <div className={styles["selection"]} onClick={e => stopEvent(e)}>
           <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
           <div className={styles["anticon-down-con"]}>
@@ -233,7 +233,7 @@ export default function Cards(props: CardsProps) {
             </div>
           </div>
         </div>
-        <img className={styles["cover"]} src={url} alt="cover" />
+        <img className={styles["cover"]} src={imgUrl} alt="cover" />
       </div>
     );
   }, [selection])
@@ -248,8 +248,9 @@ export default function Cards(props: CardsProps) {
     console.error('[ERR] Error TabScope Rendered')
   };
 
+  // FIXME type
   const renderPreviewModal = () => {
-    const target = lists.find(x => x.url === previewURL)
+    const target: ImageItem = lists.find(x => x.imgUrl === previewURL)
     const targetIDX = lists.findIndex(x => x === target)
     const prev = lists[targetIDX - 1]
     const next = lists[targetIDX + 1]
@@ -263,8 +264,8 @@ export default function Cards(props: CardsProps) {
       >
         <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
           <img src={previewURL} title="预览图片" />
-          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev.url)} />}
-          {next && <RightOutlined title="下一张" onClick={() => previewImage(next.url)} />}
+          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev.imgUrl)} />}
+          {next && <RightOutlined title="下一张" onClick={() => previewImage(next.imgUrl)} />}
         </div>
       </Modal>
     )

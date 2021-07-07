@@ -5,7 +5,7 @@ import { getImagesetAlbum } from '@/api/shop'
 import { AlbumItem } from '../types'
 
 // 获取相册钩子
-export function useAlbumLists(shopId: number, pagination: any = {}) {
+export function useAlbumLists(shopId: number, query: any = {}) {
   const [lists, setLists] = useState<AlbumItem[]>([])
   const [total, setTotal] = useState(0)
   const [requestTime, setRequestTime] = useState(+new Date())
@@ -16,10 +16,6 @@ export function useAlbumLists(shopId: number, pagination: any = {}) {
     if (!shopId) {
       return
     }
-    const query = {
-      page: pagination.current,
-      size: pagination.pageSize
-    }
     fetchAlbumLists(shopId, query)
       .then(([result, total]) => {
         // console.log(result, total, pagination, requestTime)
@@ -29,7 +25,7 @@ export function useAlbumLists(shopId: number, pagination: any = {}) {
       .catch(error => {
         console.error(error)
       })
-  }, [shopId, pagination, requestTime])
+  }, [shopId, query, requestTime])
 
   return [lists, total, refresh, setLists, setTotal] as const
 }
