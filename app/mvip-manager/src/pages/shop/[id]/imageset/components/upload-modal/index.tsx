@@ -2,7 +2,7 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { errorMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 import { useUpload, UploadItem } from './upload'
 import { useAlbumSelector } from '../album-selector'
 
@@ -26,8 +26,10 @@ export function useUploadModal(props: Props) {
   const [visible, setVisible] = useState(true);
   const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
   const canUpload = true || useMemo(() => !!selectedAlbum, [selectedAlbum])
-  const [$uploader, lists, add, remove] = useUpload()
-  const canConfirm = useMemo(() => lists.every(x => x.state === 'done'), [lists])
+  const [$uploader, lists, setLists, update, remove] = useUpload({
+    afterUploadHook
+  })
+  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
 
   /***************************************************** Interaction Fns */
 
@@ -45,6 +47,20 @@ export function useUploadModal(props: Props) {
     remove(item)
   }, [remove])
 
+  /***************************************************** API Calls */
+
+  async function afterUploadHook(item: UploadItem) {
+    return await new Promise(resolve => {
+      item.inChibi = true
+      update(item)
+      setTimeout(() => {
+        item.inChibi = false
+        update(item)
+        resolve(true)
+      }, 3000)
+    })
+  }
+
   /***************************************************** Renders */
 
   const showActions = lists.length > 0
@@ -52,43 +68,44 @@ export function useUploadModal(props: Props) {
   // ? PERF
   // 渲染上传列表
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
-    const { uid, state, percent, preview, error } = item
+    const { uid, status, percent, preview, error, inChibi } = item
     let $contents
     let dispearMask = false
-    console.log('state: ', state)
-    if (state === 'uploading') {
-      const radius = 25
-      const percent100Len = Math.ceil(2 * 3.14 * radius)
-      const exactPercent = percent ? Math.floor(percent) : 0
-      $contents = <>
-        <svg className={styles['progress']} width="60px" height="60px">
-          <circle r="25" cy="30" cx="30" stroke-width="3" stroke="rgba(0,0,0,0.5)" stroke-linejoin="round" stroke-linecap="round" fill="none" />
-          <circle r="25" cy="30" cx="30" stroke-width="3" stroke="#1790FF" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-dashoffset="0px" stroke-dasharray={percent100Len + 'px'} />
-        </svg>
-        <span className={styles["upload-info"]}>{exactPercent}%</span>
-      </>
-    }
-    if (state === 'error') {
-      $contents = <span className={styles["upload-info"]}>{error || '出错了'}</span>
-    }
-    if (state === 'chibi') {
+    console.log('status:', status, inChibi)
+    if (inChibi === true) {
       $contents = <span className={styles["upload-info"]}>审核中</span>
-    }
-    if (state === 'done') {
-      dispearMask = true
-      $contents = <>
-        <div className={styles['upload-item-actions']}>
-          <span className={styles['action']} onClick={() => handleRemove(item)}>
-            <DeleteOutlined />
-          </span>
-        </div>
-      </>
-    }
-    if (!state) {
-      dispearMask = true
+    } else {
+      if (status === 'uploading') {
+        const radius = 25
+        const percent100Len = Math.ceil(2 * 3.14 * radius)
+        const exactPercent = percent ? Math.floor(percent) : 0
+        $contents = <>
+          <svg className={styles['progress']} width="60px" height="60px">
+            <circle r="25" cy="30" cx="30" stroke-width="3" stroke="rgba(0,0,0,0.5)" stroke-linejoin="round" stroke-linecap="round" fill="none" />
+            <circle r="25" cy="30" cx="30" stroke-width="3" stroke="#1790FF" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-dashoffset="0px" stroke-dasharray={percent100Len + 'px'} />
+          </svg>
+          <span className={styles["upload-info"]}>{exactPercent}%</span>
+        </>
+      }
+      if (status === 'error') {
+        $contents = <span className={styles["upload-info"]}>{error || '出错了'}</span>
+      }
+      if (status === 'done') {
+        dispearMask = true
+        $contents = <>
+          <div className={styles['upload-item-actions']}>
+            <span className={styles['action']} onClick={() => handleRemove(item)}>
+              <DeleteOutlined />
+            </span>
+          </div>
+        </>
+      }
+      if (!status) {
+        dispearMask = true
+      }
     }
     return (
-      <div className={styles["upload-item"]} key={`${uid}-${idx}-${state}`}>
+      <div className={styles["upload-item"]} key={`${uid}-${idx}-${status}`}>
         <img className={styles["upload-img"]} src={preview} />
         <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
         <div className={styles["wrapper"]}>{$contents}</div>

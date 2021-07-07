@@ -16,46 +16,65 @@ const getBase64 = function (file: Blob): Promise<any> {
 
 export interface UploadItem extends UploadFile {
   // 图片预览地址
-  preview: string
-  // 扩展赤壁审核枚举
-  state: UploadFileStatus | 'chibi'
+  preview: string;
+  // 赤壁审核
+  inChibi: boolean;
   // 出错原因
-  error: string
+  error: string;
 }
 
-export function useUpload() {
-  const [fileList, setFileList] = useState<UploadItem[]>([])
+type Props = {
+  afterUploadHook: (item: UploadItem) => void;
+}
+export function useUpload(props: Props) {
+  const { afterUploadHook } = props
+  const [lists, setLists] = useState<UploadItem[]>([])
 
   // ? 竞争
   const handleChange = useCallback(async (e: any) => {
     const { uid, status } = e.file
 
-    // 在上传开始就读取到图片的预览地址
+    // 读取到图片的预览地址
     if (status === 'done') {
       if (e.file && !(e.file.preview)) {
         e.file.preview = await getBase64(e.file.originFileObj)
       }
+      if (afterUploadHook) {
+        await afterUploadHook(e.file)
+      }
     }
 
-    e.file.state = e.file.status
+    setLists(e.fileList)
+  }, [lists])
 
-    setFileList(e.fileList)
-  }, [fileList])
+  // 增加一项
+  const add = useCallback((item: UploadItem) => {
+    console.log('TODO ?')
+  }, [lists])
 
-  const add = useCallback(item => {
-    console.log('TODO')
-  }, [fileList])
+  // 修改项目
+  const update = useCallback((item: UploadItem) => {
+    const tempList = [...lists]
+    const findIDX = tempList.findIndex(x => x.uid === item.uid)
+    if (findIDX !== -1) {
+      tempList.splice(findIDX, 1, item)
+      setLists(tempList)
+    } else {
+      console.warn('[WARN] update item not found', item, lists)
+    }
+  }, [lists])
 
-  const remove = useCallback(item => {
-    const tempList = [...fileList]
+  // 删除项目
+  const remove = useCallback((item: UploadItem) => {
+    const tempList = [...lists]
     const findIDX = tempList.findIndex(x => x.uid === item.uid)
     if (findIDX !== -1) {
       tempList.splice(findIDX, 1)
-      setFileList(tempList)
+      setLists(tempList)
     } else {
-      console.warn('[WARN] Not found', item, fileList)
+      console.warn('[WARN] remove item not found', item, lists)
     }
-  }, [fileList])
+  }, [lists])
 
   return [
     <Upload
@@ -65,11 +84,13 @@ export function useUpload() {
         policy: window.__upyunImgConfig?.uploadParams?.policy,
         signature: window.__upyunImgConfig?.uploadParams?.signature,
       }}
-      fileList={fileList}
+      fileList={lists}
       onChange={handleChange}
     ><div></div></Upload>,
-    fileList,
-    add,
-    remove
+    lists,
+    setLists,
+    update,
+    remove,
+    add
   ] as const
 }
