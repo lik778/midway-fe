@@ -1,10 +1,11 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 import { errorMessage, successMessage } from '@/components/message';
 import { useUpload, UploadItem } from './upload'
 import { useAlbumSelector } from '../album-selector'
+import { createImagesetImage } from '@/api/shop'
 
 import { AlbumItem } from '../../types'
 
@@ -25,23 +26,22 @@ export function useUploadModal(props: Props) {
   const { shopId, refresh, allAlbumLists } = props
   const [visible, setVisible] = useState(true);
   const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
-  const canUpload = true || useMemo(() => !!selectedAlbum, [selectedAlbum])
+  const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
     afterUploadHook
   })
-  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
+  const canConfirm = useMemo(() => lists.every(x => x.status === 'done' && !x.inChibi), [lists])
+
+  useEffect(() => {
+    if (selectedAlbum) {
+      setLists([])
+    }
+  }, [selectedAlbum])
 
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
-
-  const uploadConfirm = () => {
-    const isAllUploaded = false
-    if (isAllUploaded) {
-      closeModal()
-    }
-  }
 
   const handleRemove = useCallback((item: UploadItem) => {
     remove(item)
@@ -50,14 +50,24 @@ export function useUploadModal(props: Props) {
   /***************************************************** API Calls */
 
   async function afterUploadHook(item: UploadItem) {
-    return await new Promise(resolve => {
+    return await new Promise(async resolve => {
       item.inChibi = true
       update(item)
-      setTimeout(() => {
+      try {
+        const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
+        const res = await createImagesetImage(shopId, query)
+        if (res.success) {
+          item.inChibi = false
+          update(item)
+          resolve(true)
+        } else {
+          throw new Error('上传失败');
+        }
+      } catch (error) {
         item.inChibi = false
+        item.status = 'error'
         update(item)
-        resolve(true)
-      }, 3000)
+      }
     })
   }
 
@@ -65,7 +75,6 @@ export function useUploadModal(props: Props) {
 
   const showActions = lists.length > 0
 
-  // ? PERF
   // 渲染上传列表
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { uid, status, percent, preview, error, inChibi } = item
@@ -88,7 +97,7 @@ export function useUploadModal(props: Props) {
         </>
       }
       if (status === 'error') {
-        $contents = <span className={styles["upload-info"]}>{error || '出错了'}</span>
+        $contents = <span className={styles["upload-info"] + ' ' + styles['error']}>{error || '出错了'}</span>
       }
       if (status === 'done') {
         dispearMask = true
@@ -131,8 +140,8 @@ export function useUploadModal(props: Props) {
       {/* Container */}
       <div className={styles['upload-lists']}>
         {renderLists()}
-        {(lists.length < MAX_UPLOAD_COUNT) && (
-          <div className={styles["upload-add"] + (canUpload ? '' : ' disabled')}>
+        {(lists.length < MAX_UPLOAD_COUNT) && canUpload && (
+          <div className={styles["upload-add"]}>
             <PlusOutlined />
             {$uploader}
           </div>
@@ -157,7 +166,7 @@ export function useUploadModal(props: Props) {
             type="primary"
             htmlType="submit"
             disabled={!canConfirm}
-            onClick={uploadConfirm}
+            onClick={closeModal}
           >
             确定
           </Button>

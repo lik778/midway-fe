@@ -268,8 +268,8 @@ export interface UpdateImagesetAlbumParam {
 }
 
 export interface CreateImagesetImageParam {
-  url: string;
-  albumID: number;
+  imgUrl: string;
+  mediaCateId: number;
 }
 
 export interface DelImagesetAlbumParam {
@@ -282,5 +282,5 @@ export interface DelImagesetImageParam {
 
 export interface UpdateImagesetImageParam {
   id: number;
-  albumID: number;
+  mediaCateId: number;
 }

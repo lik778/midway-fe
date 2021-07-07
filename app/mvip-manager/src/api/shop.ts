@@ -210,15 +210,15 @@ export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) 
 
 // 新增相册图片
 export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
 }
 
 // 删除相册图片
 export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delImagesetImage', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delImagesetImage', params, setShopHeader(shopId))
 }
 
 // 更新相册图片
 export const updateImagesetImage = (shopId: number, params: UpdateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/updateImagesetImage', params, setShopHeader(shopId))
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/updateImagesetImage', params, setShopHeader(shopId))
 }
