@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, updateImagesetImage, moveImagesetImage } from '@/api/shop'
+import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import styles from "./index.less";
@@ -154,7 +154,7 @@ export default function Cards(props: CardsProps) {
     if (curScope && curScope.item) {
       const { id } = image
       const { item } = curScope
-      updateImagesetAlbum(shopId, { id: item.id, cover: id })
+      setImagesetAlbumCover(shopId, { id: item.id, mediaCateId: id })
         .then((res: any) => {
           if (res.success) {
             successMessage('设置成功');

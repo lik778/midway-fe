@@ -224,8 +224,8 @@ export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) 
 }
 
 // 更新相册图片
-export const updateImagesetImage = (shopId: number, params: UpdateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/updateImagesetImage', params, setShopHeader(shopId))
+export const setImagesetAlbumCover = (shopId: number, params: UpdateImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(shopId))
 }
 
 // 移动相册图片到其它相册
