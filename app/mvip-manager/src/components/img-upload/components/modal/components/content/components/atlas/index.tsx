@@ -20,7 +20,7 @@ const Atlas: FC<Props> = (props) => {
   const [menuKey, setMenuKey] = useState<number>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
-  const createNewData = (result: AtlasTypeListItem[], oldData: ImageDataAtlasTypeListItem[], updataFc: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void) => {
+  const createNewData = (result: AtlasTypeListItem[], oldData: ImageDataAtlasTypeListItem[], updateFc: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void) => {
     const newData = [...oldData, ...result.map<ImageDataAtlasTypeListItem>(item => {
       return {
         ...item,
@@ -30,16 +30,17 @@ const Atlas: FC<Props> = (props) => {
         init: false
       }
     })]
+    // 这里顺序不能颠倒 必须得先给 context里的imageData赋值再设置初始key，不然ImgList里还没拿到新的imageData就开始初始化了。
+    updateFc(newData, oldData)
     setInitMenuKey(newData)
-    updataFc(newData, oldData)
   }
 
   const getAtlasMenu = async () => {
     setGetDataLoading(true)
     const res = await mockData<AtlasTypeListItem>('list', { id: 1, name: '类型名' }, 'name', 1, 20)
-    if (tabsCurrent === '百姓图库') {
+    if (tabKey === '百姓图库') {
       createNewData(res.data.result, baixingImageData, handleChangeBaixingImageData)
-    } else {
+    } else if (tabKey === '我的图库') {
       createNewData(res.data.result, imageData, handleChangeImageData)
     }
     setGetDataLoading(false)
@@ -58,12 +59,11 @@ const Atlas: FC<Props> = (props) => {
 
   // 切换tab需要将左侧选到第一位
   const handleListenTabsCurrent = () => {
-    if (tabsCurrent === '百姓图库') {
+    if (tabsCurrent !== tabKey) return
+    if (tabKey === '百姓图库') {
       setInitMenuKey(baixingImageData)
-    } else if (tabsCurrent === '我的图库') {
+    } else if (tabKey === '我的图库') {
       setInitMenuKey(imageData)
-    } else {
-      setMenuKey(undefined)
     }
   }
 
@@ -74,7 +74,7 @@ const Atlas: FC<Props> = (props) => {
   return <Spin spinning={getDataLoading}>
     <div className={styles['atlas']}>
       <AtlasMenu tabsCurrent={tabsCurrent} menuKey={menuKey} handleChangeMenuKey={setMenuKey}></AtlasMenu>
-      <ImgList tabsCurrent={tabsCurrent} menuKey={menuKey}></ImgList>
+      <ImgList tabsCurrent={tabsCurrent} tabKey={tabKey} menuKey={menuKey}></ImgList>
     </div>
   </Spin>
 }

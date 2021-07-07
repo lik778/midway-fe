@@ -9,11 +9,12 @@ import { AtlasImageListItem } from '@/interfaces/shop';
 import styles from './index.less'
 interface Props {
   tabsCurrent: TabsKeys,
+  tabKey: TabsKeys,
   menuKey?: number
 }
 
 const ImgList: FC<Props> = (props) => {
-  const { tabsCurrent, menuKey } = props
+  const { tabsCurrent, tabKey, menuKey } = props
   const context = useContext(ImgUploadContext)
   const { baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
   const [atlasTypeDetail, setAtlasTypeDetail] = useState<ImageDataAtlasTypeListItem>()
@@ -31,6 +32,7 @@ const ImgList: FC<Props> = (props) => {
       total: totalRecord,
       init: true
     }
+    setAtlasTypeDetail(newAtlasTypeDetail)
     updataFc(oldData.map(item => {
       if (item.id === newAtlasTypeDetail.id) {
         return newAtlasTypeDetail
@@ -48,42 +50,37 @@ const ImgList: FC<Props> = (props) => {
       id: 1,
       url: 'qwe',
       status: 1
-    }, '', atlasTypeDetail?.page, 16)
-    if (tabsCurrent === '百姓图库') {
+    }, '', atlasTypeDetail.page, 16)
+    if (tabKey === '百姓图库') {
       createNewData(res.data.result, res.data.totalRecord, baixingImageData, handleChangeBaixingImageData)
-    } else if (tabsCurrent === '我的图库') {
+    } else if (tabKey === '我的图库') {
       createNewData(res.data.result, res.data.totalRecord, imageData, handleChangeImageData)
     }
     setGetDataLoading(false)
   }
 
-
-  const getData = useCallback((menuKey) => {
-    console.log(menuKey)
+  const getData = () => {
     if (menuKey) {
-      if (tabsCurrent === '百姓图库') {
+      if (tabKey === '百姓图库') {
         const newAtlasTypeDetail = baixingImageData.find(item => item.id === menuKey)
         setAtlasTypeDetail(newAtlasTypeDetail)
-        console.log('newAtlasTypeDetail', newAtlasTypeDetail)
-      } else if (tabsCurrent === '我的图库') {
+      } else if (tabKey === '我的图库') {
         const newAtlasTypeDetail = imageData.find(item => item.id === menuKey)
         setAtlasTypeDetail(newAtlasTypeDetail)
       }
     }
-  }, [baixingImageData, imageData, tabsCurrent])
+  }
 
   // 初始化一个图册时需要看它是否已经请求过数据，缓存起来了
   useEffect(() => {
-    console.log('atlasTypeDetail', atlasTypeDetail)
     if (atlasTypeDetail && !atlasTypeDetail.init) {
       getList()
     }
   }, [atlasTypeDetail])
 
   useEffect(() => {
-    console.log(123456789)
-    getData(menuKey)
-  }, [menuKey, getData])
+    getData()
+  }, [menuKey])
 
   return <Spin spinning={getDataLoading}>
     <div className={styles['img-list']}>
