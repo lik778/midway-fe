@@ -216,7 +216,7 @@ export default function Cards(props: CardsProps) {
         )}
         <img className={styles["cover"]} src={coverUrl || DEFAULT_ALBUM_COVER} alt="cover" />
         <div className={styles["header"]}>
-          <span className={styles["name"]}>{name}</span>
+          <span className={styles["name"]} title={name}>{name}</span>
           <span>
             <span>{totalImg}</span> 张
           </span>
