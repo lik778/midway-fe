@@ -202,6 +202,7 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
     if (isScopeImage) {
       query.mediaCateId = scope.item!.id
     }
+    setLoading(true)
     fetchMethod(shopId, query)
       .then(([result, total]) => {
         setLists(result.filter(notNull))
