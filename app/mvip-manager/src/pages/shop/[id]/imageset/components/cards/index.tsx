@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Checkbox, Modal } from "antd";
+import { Button, Result, Checkbox, Modal } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop";
@@ -32,12 +32,13 @@ interface CardsProps {
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
   refresh: () => void;
+  openUpload: () => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, select, unselect, goTabScope, editAlbum, refresh } = props;
+  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
@@ -271,10 +272,38 @@ export default function Cards(props: CardsProps) {
     )
   }
 
+  // 空列表提示
+  // * 目前至少有一个默认相册，所以相册列表不会为空
+  const renderEmptyTip = useCallback(() => {
+    if (!isScopeAlbum && !isScopeImage) {
+      return null
+    }
+    let info, $extra
+    if (isScopeAlbum) {
+      info = "..."
+      $extra = <Button type="primary">新建相册</Button>
+    }
+    if (isScopeImage) {
+      info = "当前相册还没有图片，快来上传一些吧~"
+      $extra = <Button
+        type="primary"
+        onClick={() => openUpload(curScope?.item?.id)}
+      >上传图片</Button>
+    }
+    return  (
+      <Result
+        className={styles['info']}
+        title={info}
+        extra={$extra}
+      />
+    )
+  }, [isScopeAlbum, isScopeImage])
+
   return (
     <>
       <div className={styles["cards-con"]}>
         {lists.map((x: any) => renderCard(x))}
+        {lists.length === 0 && renderEmptyTip()}
       </div>
       {renderPreviewModal()}
       {$selectAlbumModal}

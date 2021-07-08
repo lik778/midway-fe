@@ -146,17 +146,20 @@ const ShopArticlePage = (props: any) => {
           select={select}
           unselect={unselect}
           editAlbum={createAlbum}
+          openUpload={openUpload}
         />
         {/* 分页 */}
-        <Pagination
-          className={styles["pagination"]}
-          defaultCurrent={1}
-          current={pagi.current}
-          total={total}
-          pageSize={pagiConf.pageSize}
-          pageSizeOptions={pagiConf.pageSizeOptions}
-          onChange={handlePagiChange}
-        />
+        {lists.length > 0 && (
+          <Pagination
+            className={styles["pagination"]}
+            defaultCurrent={1}
+            current={pagi.current}
+            total={total}
+            pageSize={pagiConf.pageSize}
+            pageSizeOptions={pagiConf.pageSizeOptions}
+            onChange={handlePagiChange}
+          />
+        )}
       </div>
       {/* 创建/编辑相册模态框 */}
       {$CreateAlbumModal}
