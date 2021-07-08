@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState, FC } from 'react';
 import styles from './index.less'
 import AtlasModalHeader from './components/header'
 import AtlasModalContent from './components/content'
-import { ImgUploadContext } from '../../context'
+import AtlasModalFooter from './components/footer'
+import ImgUploadContext from '@/components/img-upload/context'
 
 
 interface Props { }
@@ -25,6 +26,7 @@ const Modal: FC<Props> = (props) => {
       }}>
         <AtlasModalHeader></AtlasModalHeader>
         <AtlasModalContent></AtlasModalContent>
+        <AtlasModalFooter></AtlasModalFooter>
       </div>
     }
   </>

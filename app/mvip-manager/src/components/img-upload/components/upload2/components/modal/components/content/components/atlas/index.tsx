@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC } from 'react';
 import { Spin } from 'antd'
-import { ImgUploadContext } from '../../../../../../context'
+import ImgUploadContext  from '@/components/img-upload/context'
 import styles from './index.less'
 import AtlasMenu from './components/atlas-menu'
 import ImgList from './components/img-list'
+import { getImagesetAlbum, getBaixingImagesetAlbum } from '@/api/shop'
 import { mockData } from '@/utils';
-import { AtlasTypeListItem } from '@/interfaces/shop';
+import { AlbumItem } from '@/interfaces/shop';
 import { TabsKeys } from '../../data'
 import { ImageDataAtlasTypeListItem } from '@/components/img-upload/data';
 interface Props {
@@ -20,7 +21,7 @@ const Atlas: FC<Props> = (props) => {
   const [menuKey, setMenuKey] = useState<number>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
-  const createNewData = (result: AtlasTypeListItem[], oldData: ImageDataAtlasTypeListItem[], updateFc: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void) => {
+  const createNewData = (result: AlbumItem[], oldData: ImageDataAtlasTypeListItem[], updateFc: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void) => {
     const newData = [...oldData, ...result.map<ImageDataAtlasTypeListItem>(item => {
       return {
         ...item,
@@ -37,11 +38,19 @@ const Atlas: FC<Props> = (props) => {
 
   const getAtlasMenu = async () => {
     setGetDataLoading(true)
-    const res = await mockData<AtlasTypeListItem>('list', { id: 1, name: '类型名' }, 'name', 1, 20)
+
     if (tabKey === '百姓图库') {
-      createNewData(res.data.result, baixingImageData, handleChangeBaixingImageData)
+      const res = await getBaixingImagesetAlbum(shopCurrent!.id, {
+        page: 1,
+        size: 1000
+      })
+      createNewData(res.data.mediaCateBos.result, baixingImageData, handleChangeBaixingImageData)
     } else if (tabKey === '我的图库') {
-      createNewData(res.data.result, imageData, handleChangeImageData)
+      const res = await getImagesetAlbum(shopCurrent!.id, {
+        page: 1,
+        size: 1000
+      })
+      createNewData(res.data.mediaCateBos.result, imageData, handleChangeImageData)
     }
     setGetDataLoading(false)
   }

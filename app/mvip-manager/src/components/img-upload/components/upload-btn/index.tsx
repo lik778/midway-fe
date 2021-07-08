@@ -1,6 +1,6 @@
 import React, { useContext, FC } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { ImgUploadContext } from '../../context'
+import ImgUploadContext  from '@/components/img-upload/context'
 import styles from './index.less'
 interface Props {
   text?: string

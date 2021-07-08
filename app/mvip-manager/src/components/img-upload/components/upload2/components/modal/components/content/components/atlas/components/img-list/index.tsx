@@ -1,12 +1,14 @@
-import { ImageDataAtlasTypeListItem } from '@/components/img-upload/data';
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC } from 'react';
+import { ImageDataAtlasTypeListItem } from '@/components/img-upload/data';
 import { Spin } from 'antd'
 import { TabsKeys } from '../../../../data';
-import ImgItem from './components/img-item'
-import { ImgUploadContext } from '../../../../../../../../context'
+import ImgItem from '../../../img-item'
+import ImgUploadContext from '@/components/img-upload/context'
 import { mockData } from '@/utils';
-import { AtlasImageListItem } from '@/interfaces/shop';
+import { ImageItem } from '@/interfaces/shop';
 import styles from './index.less'
+import { getImagesetImage } from '@/api/shop'
+
 interface Props {
   tabsCurrent: TabsKeys,
   tabKey: TabsKeys,
@@ -16,12 +18,12 @@ interface Props {
 const ImgList: FC<Props> = (props) => {
   const { tabsCurrent, tabKey, menuKey } = props
   const context = useContext(ImgUploadContext)
-  const { baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
+  const { shopCurrent, baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
   const [atlasTypeDetail, setAtlasTypeDetail] = useState<ImageDataAtlasTypeListItem>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
-  const createNewData = (result: AtlasImageListItem[], totalRecord: number, oldData: ImageDataAtlasTypeListItem[], updataFc: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void) => {
-    // images: AtlasImageListItem[]
+  const createNewData = (result: ImageItem[], totalRecord: number, oldData: ImageDataAtlasTypeListItem[], updataFc: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void) => {
+    // images: ImageItem[]
     // page: number,// 当前类型数据已经翻到多少页
     // total: number,// 当前类型总页数
     // init: boolean // 是否初始化过
@@ -46,15 +48,15 @@ const ImgList: FC<Props> = (props) => {
     if (!atlasTypeDetail) return
     if (atlasTypeDetail.page > atlasTypeDetail.total) return
     setGetDataLoading(true)
-    const res = await mockData<AtlasImageListItem>('list', {
-      id: 1,
-      url: 'qwe',
-      status: 1
-    }, '', atlasTypeDetail.page, 16)
+    const res = await getImagesetImage(shopCurrent!.id, {
+      page: atlasTypeDetail.page,
+      size: 16
+    })
+
     if (tabKey === '百姓图库') {
-      createNewData(res.data.result, res.data.totalRecord, baixingImageData, handleChangeBaixingImageData)
+      createNewData(res.data.mediaImgBos.result || [], res.data.mediaImgBos.totalPage, baixingImageData, handleChangeBaixingImageData)
     } else if (tabKey === '我的图库') {
-      createNewData(res.data.result, res.data.totalRecord, imageData, handleChangeImageData)
+      createNewData(res.data.mediaImgBos.result || [], res.data.mediaImgBos.totalPage, imageData, handleChangeImageData)
     }
     setGetDataLoading(false)
   }
@@ -82,7 +84,7 @@ const ImgList: FC<Props> = (props) => {
     getData()
   }, [menuKey])
 
-  return <Spin spinning={getDataLoading}>
+  return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
     <div className={styles['img-list']}>
       {
         atlasTypeDetail && atlasTypeDetail.images.map(item => <ImgItem detail={item} key={item.id}></ImgItem>)

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC } from 'react';
-import { ImgUploadContext } from '../../../../../../../../context'
+import ImgUploadContext  from '@/components/img-upload/context'
 import { TabsKeys } from '../../../../data'
 import styles from './index.less'
 

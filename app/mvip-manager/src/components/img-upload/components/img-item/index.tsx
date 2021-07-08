@@ -10,7 +10,7 @@ interface Props {
   showUploadList?: ExpandShowUploadListInterface,
   itemWidth?: number // 图片块的宽度
   actionBtn?: ActionBtnListItem[]
-  onPreview: (file: any) => Promise<void>,
+  onPreview: (file: any) => void,
   onRemove: (file: any) => void,
   onCrop?: (file: any) => void,
   onDownload?: (file: any) => void,
@@ -18,46 +18,64 @@ interface Props {
 
 const ImgItem: FC<Props> = (props) => {
   const { file, fileList, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
-  const haveShowUploadList = useMemo<boolean>(() => {
-    return typeof showUploadList !== 'undefined'
+  const localShopUploadList = useMemo<ExpandShowUploadListInterface>(() => {
+    const initShowUploadList: ExpandShowUploadListInterface = {
+      showPreviewIcon: true,
+      previewIcon: <EyeOutlined color={'#fff'} />,
+      showRemoveIcon: true,
+      removeIcon: <DeleteOutlined color={'#fff'} />,
+      showCropIcon: true,
+      cropIcon: <ScissorOutlined color={'#fff'} />,
+      showDownloadIcon: false,
+      downloadIcon: <DownloadOutlined color={'#fff'} />
+    }
+    if (showUploadList) {
+      return {
+        ...initShowUploadList,
+        ...showUploadList
+      }
+    } else {
+      return initShowUploadList
+    }
   }, [showUploadList])
+
   return <div className={styles['img-item']} style={{ width: itemWidth }}>
     <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.url})` }}>
       <div className={styles['mask']}>
         {
           // 预览
-          (!haveShowUploadList || showUploadList?.showPreviewIcon) && <div className={styles['action-btn']} title="预览图片">
+          (localShopUploadList.showPreviewIcon) && <div className={styles['action-btn']} title="预览图片" onClick={() => onPreview(file)}>
             {
-              showUploadList?.previewIcon || <EyeOutlined color={'#fff'} onClick={() => onPreview(file)} />
+              localShopUploadList.previewIcon
             }
           </div>
         }
         {
           // 删除
-          (!haveShowUploadList || showUploadList?.showRemoveIcon) && <div className={styles['action-btn']} title="删除图片">
+          (localShopUploadList.showRemoveIcon) && <div className={styles['action-btn']} title="删除图片" onClick={() => onRemove(file)}>
             {
-              showUploadList?.removeIcon || <DeleteOutlined color={'#fff'} onClick={() => onRemove(file)} />
+              localShopUploadList.removeIcon
             }
           </div>
         }
         {
           // 裁剪
-          (!haveShowUploadList || showUploadList?.showCropIcon) && <div className={styles['action-btn']} title="裁剪图片">
+          (localShopUploadList.showCropIcon) && <div className={styles['action-btn']} title="裁剪图片" onClick={() => onCrop && onCrop(file)}>
             {
-              showUploadList?.cropIcon || <ScissorOutlined color={'#fff'} onClick={() => onCrop && onCrop(file)} />
+              localShopUploadList.cropIcon
             }
           </div>
         }
         {
           // 下载
-          haveShowUploadList && showUploadList?.showDownloadIcon && (onDownload ?
-            <div className={styles['action-btn']} title="下载图片">
+          localShopUploadList.showDownloadIcon && (onDownload ?
+            <div className={styles['action-btn']} title="下载图片" onClick={() => onDownload(file)}>
               {
-                showUploadList?.downloadIcon || <DownloadOutlined color={'#fff'} onClick={() => onDownload(file)} />
+                localShopUploadList.downloadIcon
               }
             </div> : <a className={styles['action-btn']} title="下载图片" href={file.preview} target='_block'>
               {
-                showUploadList?.downloadIcon || <DownloadOutlined color={'#fff'} />
+                localShopUploadList.downloadIcon
               }
             </a>)
         }
