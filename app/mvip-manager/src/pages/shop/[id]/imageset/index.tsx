@@ -124,7 +124,7 @@ const ShopArticlePage = (props: any) => {
         {/* 选框区 */}
         <SelectionBlock
           shopId={shopId}
-          total={pagiConf.total}
+          total={total}
           isScopeAlbum={isScopeAlbum}
           selection={selection}
           select={select}
