@@ -15,7 +15,7 @@ export default {
   haojing: 'https://www.baixing.com',
   haojingDomain: 'baixing.com',
   hostType: {
-    prefix: ':shopName.shop.baixing.com',
-    base: 'shop.baixing.com'
+    prefix: ':shopName.shop.baixing.:domain',
+    base: 'shop.baixing.:domain'
   }
 }

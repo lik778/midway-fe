@@ -8,8 +8,6 @@ import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import { isEmptyObject } from '@/utils';
 import styles from './index.less'
-import ImgItem from '../img-upload/components/img-item';
-import { EditTwoTone } from '@ant-design/icons'
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
