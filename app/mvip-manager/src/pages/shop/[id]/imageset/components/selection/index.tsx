@@ -66,7 +66,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetAlbum(shopId, { ids: selection })
+          delImagesetAlbum(shopId, selection)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
