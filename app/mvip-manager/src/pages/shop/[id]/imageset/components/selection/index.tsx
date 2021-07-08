@@ -4,7 +4,7 @@ import { Button, Checkbox, Modal } from "antd";
 import { successMessage, errorMessage } from "@/components/message";
 import { delImagesetAlbum } from '@/api/shop'
 
-import { CardItem } from '../../types'
+import { CardItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 

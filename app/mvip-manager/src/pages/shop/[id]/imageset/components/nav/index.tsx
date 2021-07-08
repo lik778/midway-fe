@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Button, Input, Form } from "antd";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { TabScope, TabScopeItem } from "../../types";
+import { TabScope, TabScopeItem } from "@/interfaces/shop";
 
 import styles from "./index.less";
 

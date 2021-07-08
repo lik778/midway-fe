@@ -306,3 +306,33 @@ export interface AtlasImageListItem {
   url: string
   status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
 }
+
+/* 店铺图集相关定义 Start */
+
+// 相册类型
+export type AlbumItem = {
+  type: 'album'
+  id: number,
+  name: string,
+  coverUrl: string,
+  totalImg: number
+}
+
+// 相册图片类型
+export type ImageItem = {
+  type: 'image'
+  id: number,
+  name: string,
+  imgUrl: string,
+}
+
+export type CardItem = AlbumItem | ImageItem
+
+// 相册管理目录层级类型
+export type TabScopeItem = {
+  item: CardItem | null
+  type: 'album' | 'image'
+}
+export type TabScope = TabScopeItem[]
+
+/* 店铺图集相关定义 End */

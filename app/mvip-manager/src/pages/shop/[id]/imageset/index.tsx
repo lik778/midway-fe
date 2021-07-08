@@ -16,8 +16,7 @@ import { usePagination } from './hooks/pagination'
 import { useAllAlbumLists } from './hooks/albums'
 
 import { ShopModuleType } from "@/enums";
-import { RouteParams } from "@/interfaces/shop";
-import { TabScope, TabScopeItem } from './types'
+import { RouteParams, TabScope, TabScopeItem, CardItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
@@ -168,7 +167,7 @@ const ShopArticlePage = (props: any) => {
 }
 
 function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem | undefined) {
-  const [lists, setLists] = useState([])
+  const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
   const [requestTime, setRequestTime] = useState(+new Date())
 
@@ -195,7 +194,6 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
     }
     fetchMethod(shopId, query)
       .then(([result, total]) => {
-        console.log(result, total, query, requestTime)
         setLists(result)
         setTotal(total)
       })
@@ -210,9 +208,8 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetAlbum(shopId, querys)
-    const { totalCate = 0, mediaCateBos = {} } = res.data
-    const { result = [] } = mediaCateBos
-    return [result, totalCate]
+    const { result, totalRecord } = res.data.mediaCateBos
+    return [result, totalRecord] as const
   } catch (err) {
     throw new Error(err)
   }
@@ -221,9 +218,8 @@ async function fetchAlbumLists(shopId: number, querys: any) {
 async function fetchImageLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetImage(shopId, querys)
-    const { totalImg = 0, mediaImgBos = {} } = res.data
-    const { result = [] } = mediaImgBos
-    return [result, totalImg]
+    const { result, totalRecord } = res.data.mediaImgBos
+    return [result, totalRecord] as const
   } catch (err) {
     throw new Error(err)
   }

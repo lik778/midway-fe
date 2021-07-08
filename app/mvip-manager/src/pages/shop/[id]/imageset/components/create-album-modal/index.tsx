@@ -4,7 +4,7 @@ import { Button, Modal, Form, Input } from "antd";
 import { successMessage, errorMessage } from "@/components/message";
 import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
 
-import { AlbumItem } from '../../types'
+import { AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 

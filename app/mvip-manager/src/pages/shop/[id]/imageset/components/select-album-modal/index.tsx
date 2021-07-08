@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Select, Modal } from "antd";
 
-import { AlbumItem } from '../../types'
+import { AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 

@@ -13,9 +13,9 @@ import { successMessage, errorMessage } from "@/components/message";
 import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
-import styles from "./index.less";
+import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop";
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from '../../types'
+import styles from "./index.less";
 
 const DEFAULT_ALBUM_COVER = 'http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1'
 

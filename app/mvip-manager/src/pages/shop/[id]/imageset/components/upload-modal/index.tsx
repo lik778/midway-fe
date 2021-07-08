@@ -6,7 +6,7 @@ import { useUpload, UploadItem } from './upload'
 import { useAlbumSelector } from '../album-selector'
 import { createImagesetImage } from '@/api/shop'
 
-import { AlbumItem } from '../../types'
+import { AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 

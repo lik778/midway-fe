@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 
 import { getImagesetAlbum } from '@/api/shop'
 
-import { AlbumItem } from '../types'
+import { AlbumItem } from "@/interfaces/shop";
 
 // 获取相册钩子
 export function useAlbumLists(shopId: number, query: any = {}) {
@@ -41,9 +41,8 @@ export function useAllAlbumLists(shopId: number) {
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetAlbum(shopId, querys)
-    const { totalCate = 0, mediaCateBos = {} } = res.data
-    const { result = [] } = mediaCateBos
-    return [result, totalCate]
+    const { result, totalRecord } = res.data.mediaCateBos
+    return [result, totalRecord] as const
   } catch(err) {
     throw new Error(err)
   }

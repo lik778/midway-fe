@@ -12,6 +12,7 @@ import {
   TdkSaveMeta,
   BannerListItem,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
+  AlbumItem, ImageItem, CardItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
   GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AtlasImageListItem, AtlasTypeListItem
@@ -19,6 +20,8 @@ import {
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
+
+type ShopAPIReturn<T> = Promise<ServiceResponse<T>>
 
 // 店铺初始信息
 export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> => {
@@ -45,7 +48,6 @@ export const getShopListApi = (): Promise<ServiceResponse<ShopInfo>> => {
   // tips: // 这里的params写死，因为用户店铺不会超过1000个
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/listing', { page: 1, size: 1000 })
 }
-
 
 // 基础配置
 // 获取导航列表
@@ -156,7 +158,6 @@ export const isNewUserApi = () => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/isNewUser', {})
 }
 
-
 /** 获取所有自定义模块列表 */
 export const getCustomerModuleListApi = (shopId: number,): Promise<ServiceResponse<{ mainModuleBos: CustomerListItem[] }>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleList', {}, setShopHeader(shopId))
@@ -188,9 +189,14 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
 }
 
 // 获取相册列表
-export const getImagesetAlbum = (shopId: number, params: GetImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
-}
+export const getImagesetAlbum:
+  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<{
+    mediaCateBos: {
+      totalRecord: number;
+      result: AlbumItem[]
+    }
+  }> =
+  (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
 
 // 创建店铺相册
 export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumParam) => {
@@ -209,9 +215,14 @@ export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) 
 }
 
 // 获取相册图片列表
-export const getImagesetImage = (shopId: number, params: GetImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
-}
+export const getImagesetImage:
+  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<{
+    mediaImgBos: {
+      totalRecord: number;
+      result: AlbumItem[]
+    }
+  }> =
+  (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
 
 // 新增相册图片
 export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam) => {

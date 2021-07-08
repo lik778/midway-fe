@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Select } from "antd";
 
-import { AlbumItem } from '../../types'
+import { AlbumItem } from "@/interfaces/shop";
 
 export function useAlbumSelector(props: any) {
   const { allAlbumLists } = props
