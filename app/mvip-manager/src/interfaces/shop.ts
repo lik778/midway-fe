@@ -322,13 +322,16 @@ export interface AtlasImageListItem {
 
 /* 店铺图集相关定义 Start */
 
-// 相册类型
+// 默认相册/普通相册：默认相册不能编辑、删除
+export type AlbumType = 'DEFAULT' | 'NORMAL'
+
+// 相册
 export type AlbumItem = {
   id: number,
   name: string,
   coverUrl: string,
   totalImg: number,
-  type: 'DEFAULT' | 'NORMAL'
+  type: AlbumType
 }
 
 // 相册图片类型
