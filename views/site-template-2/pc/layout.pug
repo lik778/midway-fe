@@ -58,6 +58,12 @@ html
             } else {
                 window.isSem =  '';
             }
+            let isCn = '#{ isCn }';
+            if(isCn){
+                window.isCn = isCn
+            } else {
+                window.isCn =  '';
+            }
         include ../../vendor/baidutongji.pug
         include ../../vendor/53kf.pug
     :combine(fileName=["tb-vendors.js", "tb-commons.js"])

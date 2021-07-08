@@ -51,7 +51,7 @@ export class SiteService {
       domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      // domain = 'shop.baixing.cn'
+      domain = 'shop.baixing.cn'
 
     }
     return domain
@@ -82,8 +82,8 @@ export class SiteService {
     }
   }
 
-  public getHomePageData(shopName: string, device: string, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/home/`, {},
+  public getHomePageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.prefixPath}/home/?semKeyWordFlag=${params}`, {},
       this.setPageHeaders(shopName, device, domain));
   }
   //服务内容列表
