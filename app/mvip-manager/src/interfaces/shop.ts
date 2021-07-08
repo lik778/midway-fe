@@ -1,6 +1,6 @@
 import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum } from '@/enums/shop';
-
+import { ListRes } from '@/interfaces/base';
 export interface RouteParams {
   id: string;
 }
@@ -275,7 +275,7 @@ export interface GetImagesetImageParam {
 
 export interface CreateImagesetImageParam {
   imgUrl: string;
-  mediaCateId: number;
+  mediaCateId?: number; // 不传则上传到默认图库
 }
 
 export type DelImagesetAlbumParam = number[]
@@ -303,10 +303,7 @@ export interface GetImagesetAlbumRes {
 }
 
 export interface GetImagesetImageRes {
-  mediaImgBos: {
-    totalRecord: number;
-    result: AlbumItem[]
-  }
+  mediaImgBos: ListRes<ImageItem[]>
 }
 
 export interface AtlasTypeListItem {
@@ -334,11 +331,17 @@ export type AlbumItem = {
   type: AlbumType
 }
 
-// 相册图片类型
+
+export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
+/**
+ * @description 相册图片类型
+ * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
+ */
 export type ImageItem = {
   id: number,
   name: string,
   imgUrl: string,
+  checkStatus: CheckStatusType
 }
 
 export type CardItem = AlbumItem | ImageItem

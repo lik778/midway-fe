@@ -173,6 +173,7 @@ export default (props: Props) => {
         <p className={styles["tip"]}>{tip}</p>
         <Spin spinning={upDataLoading || getDataLoading}>
           <ImgUpload
+            uploadType={2}
             editData={editData}
             uploadBtnText="上传图片"
             maxSize={3}

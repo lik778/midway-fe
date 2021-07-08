@@ -16,7 +16,7 @@ import {
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
   GetImagesetImageRes, GetImagesetAlbumRes,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
-  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AtlasImageListItem, AtlasTypeListItem
+  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -215,7 +215,7 @@ export const getImagesetImage:
   (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
 
 // 新增相册图片
-export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam) => {
+export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam): ShopAPIReturn<ImageItem> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
 }
 
@@ -235,6 +235,6 @@ export const moveImagesetImage = (shopId: number, params: MoveImagesetImageParam
 }
 
 // TODO;获取百姓网相册列表 URl
-export const getBaixingImagesetAlbum = (shopId: number, params: GetImagesetAlbumParam) => {
+export const getBaixingImagesetAlbum = (shopId: number, params: GetImagesetAlbumParam): ShopAPIReturn<GetImagesetAlbumRes> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
 }

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState, FC, useContext } from
 import { Select } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import styles from './index.less'
-import { ImgUploadContext } from '../../../../context'
+import ImgUploadContext  from '@/components/img-upload/context'
 const Option = Select.Option
 
 const ModalHeader: FC = () => {
