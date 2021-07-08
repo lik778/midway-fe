@@ -324,16 +324,15 @@ export interface AtlasImageListItem {
 
 // 相册类型
 export type AlbumItem = {
-  type: 'album'
   id: number,
   name: string,
   coverUrl: string,
-  totalImg: number
+  totalImg: number,
+  type: 'DEFAULT' | 'NORMAL'
 }
 
 // 相册图片类型
 export type ImageItem = {
-  type: 'image'
   id: number,
   name: string,
   imgUrl: string,

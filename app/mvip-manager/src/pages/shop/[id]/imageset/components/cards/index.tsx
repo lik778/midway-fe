@@ -178,28 +178,31 @@ export default function Cards(props: CardsProps) {
   /***************************************************** Renders */
 
   const AlbumCard = useCallback((card: AlbumItem) => {
-    const { id, name, coverUrl, totalImg } = card;
+    const { id, name, coverUrl, totalImg, type } = card;
+    const isDefaultAlbum = type === 'DEFAULT'
     const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
     return (
       <div className={styles["album-card"]} onClick={() => goAlbumScope(card)} key={`album-card-${id}`}>
-        <div className={styles["selection"]} onClick={e => stopEvent(e)}>
-          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
-          <div className={styles["anticon-down-con"]}>
-            <div className={styles["anticon-down"]}>
-              <DownOutlined />
-            </div>
-            <div className={styles["down-actions"]}>
-              <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
-                <EditOutlined />
-                <span>编辑</span>
+        {!isDefaultAlbum && (
+          <div className={styles["selection"]} onClick={e => stopEvent(e)}>
+            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
+            <div className={styles["anticon-down-con"]}>
+              <div className={styles["anticon-down"]}>
+                <DownOutlined />
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
-                <DeleteOutlined />
-                <span>删除</span>
+              <div className={styles["down-actions"]}>
+                <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
+                  <EditOutlined />
+                  <span>编辑</span>
+                </div>
+                <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
+                  <DeleteOutlined />
+                  <span>删除</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         <img className={styles["cover"]} src={coverUrl || DEFAULT_ALBUM_COVER} alt="cover" />
         <div className={styles["header"]}>
           <span className={styles["name"]}>{name}</span>
