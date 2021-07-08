@@ -45,7 +45,10 @@ export function useUploadModal(props: Props) {
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
-  const closeModal = () => setVisible(false)
+  const closeModal = () => {
+    setLists([])
+    setVisible(false)
+  }
 
   const confirm = useCallback(() => {
     if (canConfirm) {
