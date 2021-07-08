@@ -84,6 +84,7 @@ export function useUpload(props: Props) {
         policy: window.__upyunImgConfig?.uploadParams?.policy,
         signature: window.__upyunImgConfig?.uploadParams?.signature,
       }}
+      multiple={true}
       fileList={lists}
       onChange={handleChange}
     ><div></div></Upload>,
