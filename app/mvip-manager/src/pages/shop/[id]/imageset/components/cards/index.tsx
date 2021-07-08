@@ -17,7 +17,8 @@ import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interf
 
 import styles from "./index.less";
 
-const DEFAULT_ALBUM_COVER = 'http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1'
+import DEFAULT_ALBUM_COVER from '../../statics/default-album-cover.png'
+// const DEFAULT_ALBUM_COVER = 'http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1'
 
 interface CardsProps {
   shopId: number;
