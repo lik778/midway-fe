@@ -120,7 +120,7 @@ export function useUploadModal(props: Props) {
       }
       if (status === 'error') {
         $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
-          {error || '出错了'}
+          {(error || '出错了') + '，点击删除'}
         </span>
       }
       if (status === 'done') {

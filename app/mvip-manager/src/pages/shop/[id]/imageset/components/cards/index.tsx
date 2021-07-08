@@ -291,7 +291,7 @@ export default function Cards(props: CardsProps) {
       $extra = <Button type="primary">新建相册</Button>
     }
     if (isScopeImage) {
-      info = "当前相册还没有图片，快来上传一些吧~"
+      info = "当前相册还没有图片，快上传一些吧~"
       $extra = <Button
         type="primary"
         onClick={() => openUpload(curScope?.item?.id)}
@@ -304,7 +304,7 @@ export default function Cards(props: CardsProps) {
         extra={$extra}
       />
     )
-  }, [isScopeAlbum, isScopeImage])
+  }, [isScopeAlbum, isScopeImage, curScope])
 
   return (
     <>
