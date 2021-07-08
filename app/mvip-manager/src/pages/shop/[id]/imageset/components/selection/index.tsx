@@ -4,7 +4,7 @@ import { Button, Checkbox, Modal } from "antd";
 import { successMessage, errorMessage } from "@/components/message";
 import { delImagesetAlbum } from '@/api/shop'
 
-import { CardItem } from "@/interfaces/shop";
+import { CardItem, AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 
@@ -27,9 +27,9 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
   useEffect(() => {
-    // FIXME type
+    // 选中时排除默认相册
     const all = isScopeAlbum
-      ? lists.filter((x: AlbumItem) => x.type !== 'DEFAULT').map(x => x.id)
+      ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
       : lists.map(x => x.id)
     const allChecked = all.every(id => selection.includes(id))
     const noChecked = all.every(id => !selection.includes(id))

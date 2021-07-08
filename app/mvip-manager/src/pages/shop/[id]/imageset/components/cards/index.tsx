@@ -267,7 +267,6 @@ export default function Cards(props: CardsProps) {
     console.error('[ERR] Error TabScope Rendered')
   };
 
-  // FIXME type
   const renderPreviewModal = () => {
     if (!previewItem) {
       return
