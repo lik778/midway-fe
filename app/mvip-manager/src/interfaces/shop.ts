@@ -279,11 +279,12 @@ export interface CreateImagesetImageParam {
 }
 
 export interface DelImagesetAlbumParam {
-  ids: number | number[];
+  ids: number[];
 }
 
 export interface DelImagesetImageParam {
-  id: number;
+  ids: number[];
+  mediaCateId: number;
 }
 
 export interface UpdateImagesetImageParam {

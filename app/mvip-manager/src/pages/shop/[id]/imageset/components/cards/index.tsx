@@ -43,7 +43,7 @@ export default function Cards(props: CardsProps) {
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
-  const [previewURL, setPreviewURL] = useState("");
+  const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
   const [previewModal, setPreviewModal] = useState(false);
 
   const [curScope, setCurScope] = useState<TabScopeItem>();
@@ -55,12 +55,12 @@ export default function Cards(props: CardsProps) {
 
   const stopEvent = (e: any) => e.stopPropagation()
 
-  const previewImage = (url: string) => {
-    setPreviewURL(url)
+  const previewImage = (image: ImageItem) => {
+    setPreviewItem(image)
     setPreviewModal(true)
   }
   const closePreviewModal = () => {
-    setPreviewURL('')
+    setPreviewItem(undefined)
     setPreviewModal(false)
   }
   const handleEditAlbum = (e: any, album: AlbumItem) => {
@@ -130,7 +130,7 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
     const { id } = image
     const info = `图片删除后无法恢复，确认删除？`
-    await delCallback(delImagesetImage, { id }, info)
+    await delCallback(delImagesetImage, { ids: [id], mediaCateId: curScope?.item?.id }, info)
   }
 
   // 移动图片
@@ -214,7 +214,7 @@ export default function Cards(props: CardsProps) {
     const { id, imgUrl } = card;
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
     return (
-      <div className={styles["image-card"]} onClick={() => previewImage(imgUrl)} key={`image-card-${id}`}>
+      <div className={styles["image-card"]} onClick={() => previewImage(card)} key={`image-card-${id}`}>
         <div className={styles["selection"]} onClick={e => stopEvent(e)}>
           <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
           <div className={styles["anticon-down-con"]}>
@@ -254,7 +254,10 @@ export default function Cards(props: CardsProps) {
 
   // FIXME type
   const renderPreviewModal = () => {
-    const target: ImageItem = lists.find(x => x.imgUrl === previewURL)
+    if (!previewItem) {
+      return
+    }
+    const target = lists.find(x => x.id === previewItem.id)
     const targetIDX = lists.findIndex(x => x === target)
     const prev = lists[targetIDX - 1]
     const next = lists[targetIDX + 1]
@@ -266,10 +269,10 @@ export default function Cards(props: CardsProps) {
         visible={previewModal}
         onCancel={closePreviewModal}
       >
-        <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
-          <img src={previewURL} title="预览图片" />
-          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev.imgUrl)} />}
-          {next && <RightOutlined title="下一张" onClick={() => previewImage(next.imgUrl)} />}
+        <div className={"image-wrapper " + ((previewModal && previewItem) ? 'active' : '')}>
+          <img src={previewItem.imgUrl} title="预览图片" />
+          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev as ImageItem)} />}
+          {next && <RightOutlined title="下一张" onClick={() => previewImage(next as ImageItem)} />}
         </div>
       </Modal>
     )
