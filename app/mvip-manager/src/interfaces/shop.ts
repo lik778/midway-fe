@@ -278,9 +278,7 @@ export interface CreateImagesetImageParam {
   mediaCateId: number;
 }
 
-export interface DelImagesetAlbumParam {
-  ids: number[];
-}
+export type DelImagesetAlbumParam = number[]
 
 export interface DelImagesetImageParam {
   ids: number[];

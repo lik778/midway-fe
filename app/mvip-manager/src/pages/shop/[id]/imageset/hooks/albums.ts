@@ -10,6 +10,8 @@ export function useAlbumLists(shopId: number, query: any = {}) {
   const [total, setTotal] = useState(0)
   const [requestTime, setRequestTime] = useState(+new Date())
 
+  const notNull = (x: any) => !!x
+
   const refresh = () => setRequestTime(+new Date())
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export function useAlbumLists(shopId: number, query: any = {}) {
     fetchAlbumLists(shopId, query)
       .then(([result, total]) => {
         // console.log(result, total, pagination, requestTime)
-        setLists(result)
+        setLists(result.filter(notNull))
         setTotal(total)
       })
       .catch(error => {
@@ -41,7 +43,7 @@ export function useAllAlbumLists(shopId: number) {
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetAlbum(shopId, querys)
-    const { result, totalRecord } = res.data.mediaCateBos
+    const { result = [], totalRecord = 0 } = res.data.mediaCateBos
     return [result, totalRecord] as const
   } catch(err) {
     throw new Error(err)

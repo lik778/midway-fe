@@ -177,6 +177,8 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
   const [loading, setLoading] = useState(false)
   const [requestTime, setRequestTime] = useState(+new Date())
 
+  const notNull = (x: any) => !!x
+
   const refresh = () => {
     setLoading(true)
     setLists([])
@@ -201,7 +203,7 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
     }
     fetchMethod(shopId, query)
       .then(([result, total]) => {
-        setLists(result)
+        setLists(result.filter(notNull))
         setTotal(total)
       })
       .catch(error => {
@@ -218,7 +220,7 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetAlbum(shopId, querys)
-    const { result, totalRecord } = res.data.mediaCateBos
+    const { result = [], totalRecord = 0 } = res.data.mediaCateBos
     return [result, totalRecord] as const
   } catch (err) {
     throw new Error(err)
@@ -228,7 +230,7 @@ async function fetchAlbumLists(shopId: number, querys: any) {
 async function fetchImageLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetImage(shopId, querys)
-    const { result, totalRecord } = res.data.mediaImgBos
+    const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {
     throw new Error(err)

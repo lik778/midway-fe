@@ -123,7 +123,7 @@ export default function Cards(props: CardsProps) {
     const info = totalImg === 0
       ? `相册删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, { ids: [id] }, info)
+    await delCallback(delImagesetAlbum, [id], info)
   }
   // 删除图片
   const delImage = async (e: any, image: ImageItem) => {
@@ -158,7 +158,7 @@ export default function Cards(props: CardsProps) {
     if (curScope && curScope.item) {
       const { id } = image
       const { item } = curScope
-      setImagesetAlbumCover(shopId, { id: item.id, mediaCateId: id })
+      setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
         .then((res: any) => {
           if (res.success) {
             successMessage('设置成功');
