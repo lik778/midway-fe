@@ -31,6 +31,7 @@ interface CardsProps {
   allAlbumLists: AlbumItem[];
   loading: boolean;
   select: (id: number | number[]) => void;
+  setSelection: (ids: number[]) => void;
   unselect: (id: number | number[]) => void;
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
@@ -41,7 +42,7 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
+  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
@@ -121,6 +122,7 @@ export default function Cards(props: CardsProps) {
       ? `相册删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
     await delCallback(delImagesetAlbum, [id], info)
+    setSelection(selection.filter(x => x !== id))
   }
   // 删除图片
   const delImage = async (e: any, image: ImageItem) => {
@@ -128,10 +130,11 @@ export default function Cards(props: CardsProps) {
     const { id } = image
     const info = `图片删除后无法恢复，确认删除？`
     await delCallback(delImagesetImage, { ids: [id], mediaCateId: curScope?.item?.id }, info)
+    setSelection(selection.filter(x => x !== id))
   }
 
   // 移动图片
-  const moveImage = async (e: any, image: ImageItem) => {
+  const moveImage = useCallback(async (e: any, image: ImageItem) => {
     e.stopPropagation()
     if (!curScope) {
       return
@@ -144,6 +147,7 @@ export default function Cards(props: CardsProps) {
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功');
+          setSelection(selection.filter(x => x !== id))
           refresh()
         } else {
           throw new Error(res.message || "出错啦，请稍后重试");
@@ -152,7 +156,7 @@ export default function Cards(props: CardsProps) {
       .catch((error: any) => {
         errorMessage(error.message)
       })
-  }
+  }, [shopId, selection, curScope])
 
   // 设置封面图片
   const setCoverImage = useCallback(async (e: any, image: ImageItem) => {

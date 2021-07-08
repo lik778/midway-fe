@@ -153,7 +153,7 @@ export function useUploadModal(props: Props) {
     <Modal
       wrapClassName="upload-modal"
       title="上传图片"
-      width={1000}
+      width={1045}
       closeIcon={null}
       footer={null}
       destroyOnClose={true}

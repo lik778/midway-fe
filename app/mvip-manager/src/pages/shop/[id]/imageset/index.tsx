@@ -144,6 +144,7 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           allAlbumLists={allAlbumLists}
           loading={loading}
+          setSelection={setSelection}
           refresh={refresh}
           goTabScope={goTabScope}
           select={select}

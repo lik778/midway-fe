@@ -70,6 +70,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
+                setSelection([])
                 refresh();
                 resolve(res.success)
               } else {
