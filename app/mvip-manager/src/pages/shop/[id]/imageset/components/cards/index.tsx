@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage, createImagesetAlbum } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop";
@@ -300,15 +300,12 @@ export default function Cards(props: CardsProps) {
     }
     let info, $extra
     if (isScopeAlbum) {
-      info = "..."
-      $extra = <Button type="primary">新建相册</Button>
+      info = "没有找到相册，快新建一个吧~"
+      $extra = <Button type="primary" onClick={() => editAlbum()}>新建相册</Button>
     }
     if (isScopeImage) {
       info = "当前相册还没有图片，快上传一些吧~"
-      $extra = <Button
-        type="primary"
-        onClick={() => openUpload(curScope?.item?.id)}
-      >上传图片</Button>
+      $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传图片</Button>
     }
     return  (
       <Result

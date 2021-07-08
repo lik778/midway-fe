@@ -84,9 +84,6 @@ const ShopArticlePage = (props: any) => {
     setPagiConf({ ...pagiConf, pageSize })
   }
 
-  // const goAlbumPage = () => setTabScope('album')
-  // const goImagePage = () => setTabScope('image')
-
   // 切换文件层级
   const goTabScope = (scope: TabScopeItem) => {
     let newScopes = [...tabScope]

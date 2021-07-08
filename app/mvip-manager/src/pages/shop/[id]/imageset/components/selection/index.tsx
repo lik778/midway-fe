@@ -113,7 +113,12 @@ export default function SelectionBlock(props: SelectionBlockProps) {
           </Button>
         )}
         <span className={styles["count-info"]}>
-          共 <span className={styles["count-num"]}>{total}</span> {isScopeAlbum ? '个相册' : '张图片'}
+          {total === 0 && (
+            <span>暂无数据</span>
+          )}
+          {total > 0 && (
+            <span>共 <span className={styles["count-num"]}>{total}</span> {isScopeAlbum ? '个相册' : '张图片'}</span>
+          )}
         </span>
       </div>
     </>
