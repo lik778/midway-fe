@@ -21,6 +21,8 @@ export default (props: Props) => {
 
   const goHomeScope = () => goTabScope(tabScope[0])
 
+  const handleCreateAlbum = () => createAlbum()
+
   const lastScopeName = curScope?.item?.name
   return (
     <>
@@ -41,7 +43,7 @@ export default (props: Props) => {
             <Button
               className={styles["create-album-button"]}
               size="large"
-              onClick={createAlbum}
+              onClick={handleCreateAlbum}
             >
               新增相册
             </Button>

@@ -16,7 +16,7 @@ import { usePagination } from './hooks/pagination'
 import { useAllAlbumLists } from './hooks/albums'
 
 import { ShopModuleType } from "@/enums";
-import { RouteParams, TabScope, TabScopeItem, CardItem } from "@/interfaces/shop";
+import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
@@ -57,7 +57,7 @@ const ShopArticlePage = (props: any) => {
     pageSizeOptions: ['8', '16', '32']
   })
   const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
-  const [allAlbumLists] = useAllAlbumLists(shopId)
+  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumLists(shopId)
   const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
   const [selection, setSelection, select, unselect] = useSelection()
 
@@ -101,9 +101,17 @@ const ShopArticlePage = (props: any) => {
 
   /***************************************************** Renders */
 
-  // PERF ?
-  const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({ shopId, refresh })
+  const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
   const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh, allAlbumLists })
+
+  // 创建或编辑相册后重新拉取所有相册列表
+  const createAlbum = useCallback(async (album?: AlbumItem) => {
+    const isDone = await createOrEditAlbum(album)
+    if (isDone) {
+      refreshAllAlbumLists()
+    }
+  }, [createOrEditAlbum])
+
   return (
     <>
       {/* 页头 */}
@@ -116,8 +124,8 @@ const ShopArticlePage = (props: any) => {
           tabScope={tabScope}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
-          goTabScope={goTabScope}
           curScope={curScope}
+          goTabScope={goTabScope}
           createAlbum={createAlbum}
           openUpload={openUpload}
         />
@@ -127,10 +135,11 @@ const ShopArticlePage = (props: any) => {
           total={total}
           isScopeAlbum={isScopeAlbum}
           selection={selection}
+          lists={lists}
+          refreshAllAlbumLists={refreshAllAlbumLists}
           select={select}
           unselect={unselect}
           setSelection={setSelection}
-          lists={lists}
           refresh={refresh}
         />
         {/* 图片/相册展示区 */}
@@ -144,6 +153,7 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           allAlbumLists={allAlbumLists}
           loading={loading}
+          refreshAllAlbumLists={refreshAllAlbumLists}
           setSelection={setSelection}
           refresh={refresh}
           goTabScope={goTabScope}

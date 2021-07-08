@@ -14,13 +14,14 @@ interface SelectionBlockProps {
   selection: any[];
   lists: CardItem[];
   isScopeAlbum: boolean;
+  refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
   refresh: () => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, isScopeAlbum, select, unselect, setSelection, refresh } = props
+  const { shopId, total, selection, lists, isScopeAlbum, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
   /* 控制全选框的样式 */
   const [checked, setChecked] = useState(false)
@@ -72,6 +73,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
                 successMessage('删除成功');
                 setSelection([])
                 refresh();
+                refreshAllAlbumLists()
                 resolve(res.success)
               } else {
                 throw new Error(res.message || "出错啦，请稍后重试");

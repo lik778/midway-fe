@@ -30,6 +30,7 @@ interface CardsProps {
   isScopeImage: boolean;
   allAlbumLists: AlbumItem[];
   loading: boolean;
+  refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
   unselect: (id: number | number[]) => void;
@@ -42,7 +43,7 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
+  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
@@ -61,7 +62,7 @@ export default function Cards(props: CardsProps) {
     setPreviewItem(undefined)
     setPreviewModal(false)
   }
-  const handleEditAlbum = (e: any, album: AlbumItem) => {
+  const handleEditAlbum = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
     editAlbum(album)
   }
@@ -87,7 +88,7 @@ export default function Cards(props: CardsProps) {
   /***************************************************** API Calls */
 
   // 删除确认 Modal
-  const delCallback = async (api: any, query: any, info: string) => {
+  const delCallback = async (api: any, query: any, info: string, callback?: () => void) => {
     Modal.confirm({
       title: '确认删除',
       content: info,
@@ -100,6 +101,7 @@ export default function Cards(props: CardsProps) {
               if (res.success) {
                 successMessage('删除成功');
                 refresh();
+                callback && callback()
                 resolve(res.success)
               } else {
                 throw new Error(res.message || "出错啦，请稍后重试");
@@ -115,23 +117,27 @@ export default function Cards(props: CardsProps) {
   }
 
   // 删除相册
-  const delAlbum = async (e: any, album: AlbumItem) => {
+  const delAlbum = useCallback(async (e: any, album: AlbumItem) => {
     e.stopPropagation()
     const { id, totalImg } = album
     const info = totalImg === 0
       ? `相册删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, [id], info)
-    setSelection(selection.filter(x => x !== id))
-  }
+    await delCallback(delImagesetAlbum, [id], info, () => {
+      setSelection(selection.filter(x => x !== id))
+      refreshAllAlbumLists()
+    })
+  }, [selection])
+
   // 删除图片
-  const delImage = async (e: any, image: ImageItem) => {
+  const delImage = useCallback(async (e: any, image: ImageItem) => {
     e.stopPropagation()
     const { id } = image
     const info = `图片删除后无法恢复，确认删除？`
-    await delCallback(delImagesetImage, { ids: [id], mediaCateId: curScope?.item?.id }, info)
-    setSelection(selection.filter(x => x !== id))
-  }
+    await delCallback(delImagesetImage, { ids: [id], mediaCateId: curScope?.item?.id }, info, () => {
+      setSelection(selection.filter(x => x !== id))
+    })
+  }, [selection])
 
   // 移动图片
   const moveImage = useCallback(async (e: any, image: ImageItem) => {
