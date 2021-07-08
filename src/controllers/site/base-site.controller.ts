@@ -240,7 +240,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     // https://www.tapd.cn/20097551/prong/stories/view/1120097551001038611
     const isCn = HostDomain === 'cn' ? true : undefined
-    if (/.html$/.test(req.url)) {
+    if (/.html/.test(req.url)) {
       const productId = params.id.split(".")[0]
       const { data: originData } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId }, domain);
       const data = this.setData(originData)
