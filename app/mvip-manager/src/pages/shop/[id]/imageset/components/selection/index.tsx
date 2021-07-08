@@ -27,7 +27,10 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
   useEffect(() => {
-    const all = lists.map(x => x.id)
+    // FIXME type
+    const all = isScopeAlbum
+      ? lists.filter((x: AlbumItem) => x.type !== 'DEFAULT').map(x => x.id)
+      : lists.map(x => x.id)
     const allChecked = all.every(id => selection.includes(id))
     const noChecked = all.every(id => !selection.includes(id))
     if (allChecked && lists.length > 0) {
@@ -40,7 +43,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       // partial selected
       setIndeterminate(true)
     }
-  }, [selection, lists])
+  }, [selection, lists, isScopeAlbum])
 
   // 全选/取消全选
   const checkAll = (e: any) => {

@@ -58,8 +58,11 @@ const ShopArticlePage = (props: any) => {
   })
   const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
   const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumLists(shopId)
+  const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
-  const [selection, setSelection, select, unselect] = useSelection()
+  const [selection, setSelection, select, unselect] = useSelection({
+    excludeFn: x => defaultAlbumIDs.includes(x)
+  })
 
   // 层级变换时重置翻页和选取
   useEffect(() => {
