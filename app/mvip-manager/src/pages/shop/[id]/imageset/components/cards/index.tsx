@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Button, Result, Checkbox, Modal } from "antd";
+import { Spin, Button, Result, Checkbox, Modal } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -27,6 +27,7 @@ interface CardsProps {
   isScopeAlbum: boolean;
   isScopeImage: boolean;
   allAlbumLists: AlbumItem[];
+  loading: boolean;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
   goTabScope: (scope: TabScopeItem) => void;
@@ -38,7 +39,7 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
+  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
@@ -301,10 +302,12 @@ export default function Cards(props: CardsProps) {
 
   return (
     <>
-      <div className={styles["cards-con"]}>
-        {lists.map((x: any) => renderCard(x))}
-        {lists.length === 0 && renderEmptyTip()}
-      </div>
+      <Spin spinning={loading}>
+        <div className={styles["cards-con"]}>
+          {lists.map((x: any) => renderCard(x))}
+          {(lists.length === 0 && !loading) && renderEmptyTip()}
+        </div>
+      </Spin>
       {renderPreviewModal()}
       {$selectAlbumModal}
     </>

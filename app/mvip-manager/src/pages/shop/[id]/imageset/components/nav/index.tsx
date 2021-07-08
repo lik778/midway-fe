@@ -11,8 +11,8 @@ interface Props {
   tabScope: TabScope;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
+  curScope?: TabScopeItem;
   goTabScope: (scope: TabScopeItem) => void;
-  curScope: TabScopeItem;
   createAlbum: () => void;
   openUpload: (defaultVal?: number) => void;
 }

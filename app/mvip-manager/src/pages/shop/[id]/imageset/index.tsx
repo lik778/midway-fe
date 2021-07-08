@@ -58,7 +58,7 @@ const ShopArticlePage = (props: any) => {
   })
   const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
   const [allAlbumLists] = useAllAlbumLists(shopId)
-  const [lists, total, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
+  const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
   const [selection, setSelection, select, unselect] = useSelection()
 
   // 层级变换时重置翻页和选取
@@ -142,6 +142,7 @@ const ShopArticlePage = (props: any) => {
           isScopeImage={isScopeImage}
           selection={selection}
           allAlbumLists={allAlbumLists}
+          loading={loading}
           refresh={refresh}
           goTabScope={goTabScope}
           select={select}
@@ -173,9 +174,11 @@ const ShopArticlePage = (props: any) => {
 function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem | undefined) {
   const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(false)
   const [requestTime, setRequestTime] = useState(+new Date())
 
   const refresh = () => {
+    setLoading(true)
     setLists([])
     setTotal(0)
     setRequestTime(+new Date())
@@ -204,9 +207,12 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
       .catch(error => {
         console.error(error)
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [shopId, query, requestTime, isScopeAlbum, isScopeImage, scope])
 
-  return [lists, total, refresh, setLists, setTotal] as const
+  return [lists, total, loading, refresh, setLists, setTotal] as const
 }
 
 async function fetchAlbumLists(shopId: number, querys: any) {
