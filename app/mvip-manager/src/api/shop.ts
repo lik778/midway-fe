@@ -14,6 +14,7 @@ import {
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
   AlbumItem, ImageItem, CardItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
+  GetImagesetImageRes, GetImagesetAlbumRes,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
   GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AtlasImageListItem, AtlasTypeListItem
 } from '@/interfaces/shop';
@@ -190,12 +191,7 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
 
 // 获取相册列表
 export const getImagesetAlbum:
-  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<{
-    mediaCateBos: {
-      totalRecord: number;
-      result: AlbumItem[]
-    }
-  }> =
+  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<GetImagesetAlbumRes> =
   (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
 
 // 创建店铺相册
@@ -216,12 +212,7 @@ export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) 
 
 // 获取相册图片列表
 export const getImagesetImage:
-  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<{
-    mediaImgBos: {
-      totalRecord: number;
-      result: AlbumItem[]
-    }
-  }> =
+  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<GetImagesetImageRes> =
   (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
 
 // 新增相册图片

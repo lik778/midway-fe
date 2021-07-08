@@ -296,6 +296,20 @@ export interface MoveImagesetImageParam {
   mediaCateId: number;
 }
 
+export interface GetImagesetAlbumRes {
+  mediaCateBos: {
+    totalRecord: number;
+    result: AlbumItem[]
+  }
+}
+
+export interface GetImagesetImageRes {
+  mediaImgBos: {
+    totalRecord: number;
+    result: AlbumItem[]
+  }
+}
+
 export interface AtlasTypeListItem {
   id: number,
   name: string,
