@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { Button, Select, Modal } from "antd";
 
 import { AlbumItem } from "@/interfaces/shop";
@@ -12,10 +12,16 @@ type Props = {
 }
 export function useSelectAlbumListsModal(props: Props) {
   const { allAlbumLists } = props
+  const [exclude, setExclude] = useState<number[]>([])
+  const displayLists = useMemo(() => allAlbumLists.filter(x => !exclude.includes(x.id)), [exclude])
   const [select, setSelect] = useState<AlbumItem | null>(null);
   const [visible, setVisible] = useState(false);
 
-  const selectAlbum = async (): Promise<AlbumItem> => {
+  const selectAlbum = async (args: { exclude: number[] }): Promise<AlbumItem> => {
+    const { exclude = [] } = args
+    if (exclude && exclude.length > 0) {
+      setExclude(exclude)
+    }
     setVisible(true)
     return await new Promise(async resolve => {
       albumSelectResolver = resolve
@@ -44,7 +50,7 @@ export function useSelectAlbumListsModal(props: Props) {
         placeholder="请选择一个相册"
         onChange={(val: number) => handleSelectAlbum(val)}
       >
-        {allAlbumLists.map((x: AlbumItem) => {
+        {displayLists.map((x: AlbumItem) => {
           return <Select.Option value={x.id}>{x.name}</Select.Option>
         })}
       </Select>

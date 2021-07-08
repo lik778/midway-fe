@@ -24,6 +24,7 @@ interface CardsProps {
   lists: CardItem[];
   selection: any[];
   tabScope: TabScope;
+  curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
   allAlbumLists: AlbumItem[];
@@ -39,17 +40,12 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
+  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
   const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
   const [previewModal, setPreviewModal] = useState(false);
-
-  const [curScope, setCurScope] = useState<TabScopeItem>();
-  useEffect(() => {
-    setCurScope(tabScope[tabScope.length - 1])
-  }, [tabScope])
 
   /***************************************************** Interaction Fns */
 
@@ -136,8 +132,13 @@ export default function Cards(props: CardsProps) {
   // 移动图片
   const moveImage = async (e: any, image: ImageItem) => {
     e.stopPropagation()
+    if (!curScope) {
+      return
+    }
     const { id } = image
-    const album = await selectAlbum()
+    const album = await selectAlbum({
+      exclude: curScope.item ? [curScope?.item?.id] : []
+    })
     moveImagesetImage(shopId, { id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {

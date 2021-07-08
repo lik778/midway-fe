@@ -138,6 +138,7 @@ const ShopArticlePage = (props: any) => {
           shopId={shopId}
           lists={lists}
           tabScope={tabScope}
+          curScope={curScope}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
           selection={selection}
