@@ -53,12 +53,12 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   }
 
   // 批量删除卡片
-  const deleteSelectionCards = (e: any) => {
+  const deleteSelectionCards = useCallback((e: any) => {
     e.stopPropagation()
     const count = selection.length
     const info = count === 0
       ? `删除后无法恢复，确认删除？`
-      : `本次预计删除 ${count} 个相册，删除后无法恢复，确认删除？`
+      : `本次预计删除 ${count} ${isScopeAlbum ? '个相册' : '张图片'}，删除后无法恢复，确认删除？`
     Modal.confirm({
       title: '确认删除',
       content: info,
@@ -83,7 +83,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }
+  }, [shopId, isScopeAlbum, selection])
 
   return (
     <>
