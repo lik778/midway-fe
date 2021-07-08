@@ -275,7 +275,7 @@ export default function Cards(props: CardsProps) {
         onCancel={closePreviewModal}
       >
         <div className={"image-wrapper " + ((previewModal && previewItem) ? 'active' : '')}>
-          <img src={previewItem.imgUrl} title="预览图片" />
+          <img src={previewItem.imgUrl} alt="预览图片" />
           {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev as ImageItem)} />}
           {next && <RightOutlined title="下一张" onClick={() => previewImage(next as ImageItem)} />}
         </div>
