@@ -117,6 +117,7 @@ const ShopArticlePage = (props: any) => {
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
           goTabScope={goTabScope}
+          curScope={curScope}
           createAlbum={createAlbum}
           openUpload={openUpload}
         />

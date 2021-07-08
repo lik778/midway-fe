@@ -24,7 +24,7 @@ export function useUploadModal(props: Props) {
   /***************************************************** States */
   const { shopId, refresh, allAlbumLists } = props
   const [visible, setVisible] = useState(false);
-  const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
+  const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
     afterUploadHook
@@ -37,14 +37,19 @@ export function useUploadModal(props: Props) {
     }
   }, [selectedAlbum])
 
+  const open = (defaultVal?: number) => {
+    setAlbumByID(defaultVal)
+    openModal()
+  }
+
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
   const closeModal = () => setVisible(false)
 
-  const confirm = () => {
+  const confirm = useCallback(() => {
     if (canConfirm) {
-      refresh()
+      lists.length > 0 && refresh()
       closeModal()
     } else {
       Modal.confirm({
@@ -58,7 +63,7 @@ export function useUploadModal(props: Props) {
         }
       })
     }
-  }
+  }, [lists])
 
   const handleRemove = useCallback((item: UploadItem) => {
     remove(item)
@@ -148,6 +153,7 @@ export function useUploadModal(props: Props) {
       width={1000}
       closeIcon={null}
       footer={null}
+      destroyOnClose={true}
       visible={visible}
       onCancel={confirm}
     >
@@ -194,6 +200,6 @@ export function useUploadModal(props: Props) {
         </div>
       )}
     </Modal>,
-    openModal
+    open
   ] as const
 }

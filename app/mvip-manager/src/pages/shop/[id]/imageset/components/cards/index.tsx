@@ -32,7 +32,7 @@ interface CardsProps {
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
   refresh: () => void;
-  openUpload: () => void;
+  openUpload: (defaultVal?: number) => void;
 }
 export default function Cards(props: CardsProps) {
 

@@ -12,20 +12,16 @@ interface Props {
   isScopeAlbum: boolean;
   isScopeImage: boolean;
   goTabScope: (scope: TabScopeItem) => void;
+  curScope: TabScopeItem;
   createAlbum: () => void;
-  openUpload: () => void;
+  openUpload: (defaultVal?: number) => void;
 }
 export default (props: Props) => {
-  const { shopId, tabScope, isScopeAlbum, isScopeImage, goTabScope, createAlbum, openUpload } = props;
-
-  const [lastScope, setLastScope] = useState<TabScopeItem>();
-  useEffect(() => {
-    setLastScope(tabScope[tabScope.length - 1])
-  }, [tabScope])
+  const { shopId, tabScope, curScope, isScopeAlbum, isScopeImage, goTabScope, createAlbum, openUpload } = props;
 
   const goHomeScope = () => goTabScope(tabScope[0])
 
-  const lastScopeName = lastScope?.item?.name
+  const lastScopeName = curScope?.item?.name
   return (
     <>
       <div className={styles["nav-container"]}>
@@ -55,7 +51,7 @@ export default (props: Props) => {
             icon={<PlusOutlined />}
             size="large"
             type="primary"
-            onClick={openUpload}
+            onClick={() => openUpload(curScope?.item?.id)}
           >
             上传图片
           </Button>
