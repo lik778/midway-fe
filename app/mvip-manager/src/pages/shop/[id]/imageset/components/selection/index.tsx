@@ -56,9 +56,12 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   const deleteSelectionCards = (e: any) => {
     e.stopPropagation()
     const count = selection.length
+    const info = count === 0
+      ? `删除后无法恢复，确认删除？`
+      : `本次预计删除 ${count} 个相册，删除后无法恢复，确认删除？`
     Modal.confirm({
       title: '确认删除',
-      content: `本次预计删除 ${count} 个相册，删除后无法恢复，确认删除？`,
+      content: info,
       width: 532,
       onCancel() { },
       onOk() {
@@ -90,7 +93,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         </Checkbox>
         {(selection.length > 0) && (
           <span className={styles["selection-count"]}>
-            当前选中 <span className={styles["count-num"]}>{selection.length}</span> 个相册
+            当前选中 <span className={styles["count-num"]}>{selection.length}</span> {isScopeAlbum ? '个相册' : '张图片'}
           </span>
         )}
         {(selection.length > 0) && (

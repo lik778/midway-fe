@@ -120,14 +120,16 @@ export default function Cards(props: CardsProps) {
   const delAlbum = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
     const { id, totalImg } = album
-    const info = `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
+    const info = totalImg === 0
+      ? `相册删除后无法恢复，确认删除？`
+      : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
     await delCallback(delImagesetAlbum, { ids: [id] }, info)
   }
   // 删除图片
   const delImage = async (e: any, image: ImageItem) => {
     e.stopPropagation()
     const { id } = image
-    const info = `删除后无法恢复，确认删除？`
+    const info = `图片删除后无法恢复，确认删除？`
     await delCallback(delImagesetImage, { id }, info)
   }
 
