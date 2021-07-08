@@ -24,7 +24,7 @@ export function useUploadModal(props: Props) {
   /***************************************************** States */
   const { shopId, refresh, allAlbumLists } = props
   const [visible, setVisible] = useState(false);
-  const [$AlbumSelector, selectedAlbum] = useAlbumSelector({ allAlbumLists })
+  const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
     afterUploadHook
@@ -37,14 +37,22 @@ export function useUploadModal(props: Props) {
     }
   }, [selectedAlbum])
 
+  const open = (defaultVal?: number) => {
+    setAlbumByID(defaultVal)
+    openModal()
+  }
+
   /***************************************************** Interaction Fns */
 
   const openModal = () => setVisible(true)
-  const closeModal = () => setVisible(false)
+  const closeModal = () => {
+    setLists([])
+    setVisible(false)
+  }
 
-  const confirm = () => {
+  const confirm = useCallback(() => {
     if (canConfirm) {
-      refresh()
+      lists.length > 0 && refresh()
       closeModal()
     } else {
       Modal.confirm({
@@ -58,7 +66,7 @@ export function useUploadModal(props: Props) {
         }
       })
     }
-  }
+  }, [lists])
 
   const handleRemove = useCallback((item: UploadItem) => {
     remove(item)
@@ -115,7 +123,7 @@ export function useUploadModal(props: Props) {
       }
       if (status === 'error') {
         $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
-          {error || '出错了'}
+          {(error || '出错了') + '，点击删除'}
         </span>
       }
       if (status === 'done') {
@@ -145,9 +153,10 @@ export function useUploadModal(props: Props) {
     <Modal
       wrapClassName="upload-modal"
       title="上传图片"
-      width={1000}
+      width={1045}
       closeIcon={null}
       footer={null}
+      destroyOnClose={true}
       visible={visible}
       onCancel={confirm}
     >
@@ -194,6 +203,6 @@ export function useUploadModal(props: Props) {
         </div>
       )}
     </Modal>,
-    openModal
+    open
   ] as const
 }

@@ -8,6 +8,8 @@ import { AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 
+let createAlbumResover: ((isDone: boolean | PromiseLike<boolean>) => void) | null = null
+
 type Props = {
   shopId: number;
   refresh: () => void;
@@ -24,28 +26,31 @@ export function useCreateAlbumModal(props: Props) {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 切换新建和编辑状态
-  useEffect(() => {
-    const notNull = (x: any) => !!x
-    setIsEditing(Object.values(defaultVals).filter(notNull).length > 0)
-  }, [defaultVals])
-
   // 打开模态框
-  const open = (album?: AlbumItem) => {
+  const openModal = async (album?: AlbumItem): Promise<boolean> => {
     if (album) {
       const { id, name } = album
       setDefaultVals({ id, name })
+      form.setFieldsValue(defaultVals)
+      setIsEditing(true)
+    } else {
+      setIsEditing(false)
     }
     setVisible(true)
+    return await new Promise(resolve => {
+      createAlbumResover = resolve
+    })
   }
-  useEffect(() => {
-    form.setFieldsValue(defaultVals)
-  }, [defaultVals])
+
+  const closeModal = () => {
+    createAlbumResover && createAlbumResover(false)
+    setVisible(false)
+  }
 
   /***************************************************** Actions */
 
   // 新增及编辑相册
-  const createAlbum = async () => {
+  const createAlbum = useCallback(async () => {
     form.validateFields()
       .then(formvals => {
         setLoading(true);
@@ -68,18 +73,21 @@ export function useCreateAlbumModal(props: Props) {
               setVisible(false);
               form.resetFields();
               setDefaultVals({})
+              createAlbumResover && createAlbumResover(true)
             } else {
               throw new Error(res.message || "出错啦，请稍后重试");
             }
           })
           .catch(error => {
             errorMessage(error.message);
+            createAlbumResover && createAlbumResover(false)
           })
           .finally(() => {
             setLoading(false);
+            createAlbumResover && createAlbumResover(false)
           });
       })
-  };
+  }, [createAlbumResover])
 
   /***************************************************** Renders */
 
@@ -90,7 +98,7 @@ export function useCreateAlbumModal(props: Props) {
       width={432}
       footer={null}
       visible={visible}
-      onCancel={() => setVisible(false)}
+      onCancel={closeModal}
     >
       <Form
         name="create-album-form"
@@ -123,6 +131,6 @@ export function useCreateAlbumModal(props: Props) {
         </Button>
       </div>
     </Modal>,
-    open
+    openModal
   ] as const
 }

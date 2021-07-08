@@ -97,6 +97,9 @@
           &:hover {
             color: #096DD9;
           }
+          &:active {
+            background: #f3f3f3;
+          }
         }
       }
     }
@@ -119,9 +122,17 @@
 
       .name {
         font-weight: bold;
+        width: 10em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }
+}
+
+.info {
+  margin: auto;
 }
 
 
@@ -148,7 +159,9 @@
       transition-delay: .5s;
 
       &.active {
-        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         img {
           width: 100%;

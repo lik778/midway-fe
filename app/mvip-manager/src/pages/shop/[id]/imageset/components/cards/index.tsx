@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Checkbox, Modal } from "antd";
+import { Spin, Button, Result, Checkbox, Modal } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -10,58 +10,59 @@ import {
 } from "@ant-design/icons";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { updateImagesetAlbum, delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage, createImagesetAlbum } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop";
 
 import styles from "./index.less";
 
-const DEFAULT_ALBUM_COVER = 'http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1'
+import DEFAULT_ALBUM_COVER from '../../statics/default-album-cover.png'
+// const DEFAULT_ALBUM_COVER = 'http://img4.baixing.net/63becd57373449038fcbc3b599aecc8c.jpg_sv1'
 
 interface CardsProps {
   shopId: number;
   lists: CardItem[];
   selection: any[];
   tabScope: TabScope;
+  curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
   allAlbumLists: AlbumItem[];
+  loading: boolean;
+  refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
+  setSelection: (ids: number[]) => void;
   unselect: (id: number | number[]) => void;
   goTabScope: (scope: TabScopeItem) => void;
   editAlbum: (album?: AlbumItem) => void;
   refresh: () => void;
+  openUpload: (defaultVal?: number) => void;
 }
 export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, isScopeAlbum, isScopeImage, allAlbumLists, select, unselect, goTabScope, editAlbum, refresh } = props;
+  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
-  const [previewURL, setPreviewURL] = useState("");
+  const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
   const [previewModal, setPreviewModal] = useState(false);
-
-  const [curScope, setCurScope] = useState<TabScopeItem>();
-  useEffect(() => {
-    setCurScope(tabScope[tabScope.length - 1])
-  }, [tabScope])
 
   /***************************************************** Interaction Fns */
 
   const stopEvent = (e: any) => e.stopPropagation()
 
-  const previewImage = (url: string) => {
-    setPreviewURL(url)
+  const previewImage = (image: ImageItem) => {
+    setPreviewItem(image)
     setPreviewModal(true)
   }
   const closePreviewModal = () => {
-    setPreviewURL('')
+    setPreviewItem(undefined)
     setPreviewModal(false)
   }
-  const handleEditAlbum = (e: any, album: AlbumItem) => {
+  const handleEditAlbum = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
     editAlbum(album)
   }
@@ -87,7 +88,7 @@ export default function Cards(props: CardsProps) {
   /***************************************************** API Calls */
 
   // 删除确认 Modal
-  const delCallback = async (api: any, query: any, info: string) => {
+  const delCallback = async (api: any, query: any, info: string, callback?: () => void) => {
     Modal.confirm({
       title: '确认删除',
       content: info,
@@ -100,6 +101,7 @@ export default function Cards(props: CardsProps) {
               if (res.success) {
                 successMessage('删除成功');
                 refresh();
+                callback && callback()
                 resolve(res.success)
               } else {
                 throw new Error(res.message || "出错啦，请稍后重试");
@@ -115,29 +117,43 @@ export default function Cards(props: CardsProps) {
   }
 
   // 删除相册
-  const delAlbum = async (e: any, album: AlbumItem) => {
+  const delAlbum = useCallback(async (e: any, album: AlbumItem) => {
     e.stopPropagation()
     const { id, totalImg } = album
-    const info = `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, { ids: [id] }, info)
-  }
+    const info = totalImg === 0
+      ? `相册删除后无法恢复，确认删除？`
+      : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
+    await delCallback(delImagesetAlbum, [id], info, () => {
+      setSelection(selection.filter(x => x !== id))
+      refreshAllAlbumLists()
+    })
+  }, [selection])
+
   // 删除图片
-  const delImage = async (e: any, image: ImageItem) => {
+  const delImage = useCallback(async (e: any, image: ImageItem) => {
     e.stopPropagation()
     const { id } = image
-    const info = `删除后无法恢复，确认删除？`
-    await delCallback(delImagesetImage, { id }, info)
-  }
+    const info = `图片删除后无法恢复，确认删除？`
+    await delCallback(delImagesetImage, { ids: [id], mediaCateId: curScope?.item?.id }, info, () => {
+      setSelection(selection.filter(x => x !== id))
+    })
+  }, [selection])
 
   // 移动图片
-  const moveImage = async (e: any, image: ImageItem) => {
+  const moveImage = useCallback(async (e: any, image: ImageItem) => {
     e.stopPropagation()
+    if (!curScope) {
+      return
+    }
     const { id } = image
-    const album = await selectAlbum()
+    const album = await selectAlbum({
+      exclude: curScope.item ? [curScope?.item?.id] : []
+    })
     moveImagesetImage(shopId, { id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功');
+          setSelection(selection.filter(x => x !== id))
           refresh()
         } else {
           throw new Error(res.message || "出错啦，请稍后重试");
@@ -146,7 +162,7 @@ export default function Cards(props: CardsProps) {
       .catch((error: any) => {
         errorMessage(error.message)
       })
-  }
+  }, [shopId, selection, curScope])
 
   // 设置封面图片
   const setCoverImage = useCallback(async (e: any, image: ImageItem) => {
@@ -154,7 +170,7 @@ export default function Cards(props: CardsProps) {
     if (curScope && curScope.item) {
       const { id } = image
       const { item } = curScope
-      setImagesetAlbumCover(shopId, { id: item.id, mediaCateId: id })
+      setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
         .then((res: any) => {
           if (res.success) {
             successMessage('设置成功');
@@ -173,31 +189,34 @@ export default function Cards(props: CardsProps) {
   /***************************************************** Renders */
 
   const AlbumCard = useCallback((card: AlbumItem) => {
-    const { id, name, coverUrl, totalImg } = card;
+    const { id, name, coverUrl, totalImg, type } = card;
+    const isDefaultAlbum = type === 'DEFAULT'
     const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
     return (
       <div className={styles["album-card"]} onClick={() => goAlbumScope(card)} key={`album-card-${id}`}>
-        <div className={styles["selection"]} onClick={e => stopEvent(e)}>
-          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
-          <div className={styles["anticon-down-con"]}>
-            <div className={styles["anticon-down"]}>
-              <DownOutlined />
-            </div>
-            <div className={styles["down-actions"]}>
-              <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
-                <EditOutlined />
-                <span>编辑</span>
+        {!isDefaultAlbum && (
+          <div className={styles["selection"]} onClick={e => stopEvent(e)}>
+            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
+            <div className={styles["anticon-down-con"]}>
+              <div className={styles["anticon-down"]}>
+                <DownOutlined />
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
-                <DeleteOutlined />
-                <span>删除</span>
+              <div className={styles["down-actions"]}>
+                <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
+                  <EditOutlined />
+                  <span>编辑</span>
+                </div>
+                <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
+                  <DeleteOutlined />
+                  <span>删除</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         <img className={styles["cover"]} src={coverUrl || DEFAULT_ALBUM_COVER} alt="cover" />
         <div className={styles["header"]}>
-          <span className={styles["name"]}>{name}</span>
+          <span className={styles["name"]} title={name}>{name}</span>
           <span>
             <span>{totalImg}</span> 张
           </span>
@@ -210,7 +229,7 @@ export default function Cards(props: CardsProps) {
     const { id, imgUrl } = card;
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
     return (
-      <div className={styles["image-card"]} onClick={() => previewImage(imgUrl)} key={`image-card-${id}`}>
+      <div className={styles["image-card"]} onClick={() => previewImage(card)} key={`image-card-${id}`}>
         <div className={styles["selection"]} onClick={e => stopEvent(e)}>
           <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
           <div className={styles["anticon-down-con"]}>
@@ -248,9 +267,11 @@ export default function Cards(props: CardsProps) {
     console.error('[ERR] Error TabScope Rendered')
   };
 
-  // FIXME type
   const renderPreviewModal = () => {
-    const target: ImageItem = lists.find(x => x.imgUrl === previewURL)
+    if (!previewItem) {
+      return
+    }
+    const target = lists.find(x => x.id === previewItem.id)
     const targetIDX = lists.findIndex(x => x === target)
     const prev = lists[targetIDX - 1]
     const next = lists[targetIDX + 1]
@@ -262,20 +283,47 @@ export default function Cards(props: CardsProps) {
         visible={previewModal}
         onCancel={closePreviewModal}
       >
-        <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
-          <img src={previewURL} title="预览图片" />
-          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev.imgUrl)} />}
-          {next && <RightOutlined title="下一张" onClick={() => previewImage(next.imgUrl)} />}
+        <div className={"image-wrapper " + ((previewModal && previewItem) ? 'active' : '')}>
+          <img src={previewItem.imgUrl} alt="预览图片" />
+          {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev as ImageItem)} />}
+          {next && <RightOutlined title="下一张" onClick={() => previewImage(next as ImageItem)} />}
         </div>
       </Modal>
     )
   }
 
+  // 空列表提示
+  // * 目前至少有一个默认相册，所以相册列表不会为空
+  const renderEmptyTip = useCallback(() => {
+    if (!isScopeAlbum && !isScopeImage) {
+      return null
+    }
+    let info, $extra
+    if (isScopeAlbum) {
+      info = "没有找到相册，快新建一个吧~"
+      $extra = <Button type="primary" onClick={() => editAlbum()}>新建相册</Button>
+    }
+    if (isScopeImage) {
+      info = "当前相册还没有图片，快上传一些吧~"
+      $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传图片</Button>
+    }
+    return  (
+      <Result
+        className={styles['info']}
+        title={info}
+        extra={$extra}
+      />
+    )
+  }, [isScopeAlbum, isScopeImage, curScope])
+
   return (
     <>
-      <div className={styles["cards-con"]}>
-        {lists.map((x: any) => renderCard(x))}
-      </div>
+      <Spin spinning={loading}>
+        <div className={styles["cards-con"]}>
+          {lists.map((x: any) => renderCard(x))}
+          {(lists.length === 0 && !loading) && renderEmptyTip()}
+        </div>
+      </Spin>
       {renderPreviewModal()}
       {$selectAlbumModal}
     </>

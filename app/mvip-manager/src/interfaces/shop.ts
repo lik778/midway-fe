@@ -278,12 +278,11 @@ export interface CreateImagesetImageParam {
   mediaCateId?: number; // 不传则上传到默认图库
 }
 
-export interface DelImagesetAlbumParam {
-  ids: number | number[];
-}
+export type DelImagesetAlbumParam = number[]
 
 export interface DelImagesetImageParam {
-  id: number;
+  ids: number[];
+  mediaCateId: number;
 }
 
 export interface UpdateImagesetImageParam {
@@ -320,13 +319,16 @@ export interface AtlasImageListItem {
 
 /* 店铺图集相关定义 Start */
 
-// 相册类型
+// 默认相册/普通相册：默认相册不能编辑、删除
+export type AlbumType = 'DEFAULT' | 'NORMAL'
+
+// 相册
 export type AlbumItem = {
-  type: 'album'
   id: number,
   name: string,
   coverUrl: string,
-  totalImg: number
+  totalImg: number,
+  type: AlbumType
 }
 
 
@@ -336,7 +338,6 @@ export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAP
  * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
  */
 export type ImageItem = {
-  type: 'image'
   id: number,
   name: string,
   imgUrl: string,

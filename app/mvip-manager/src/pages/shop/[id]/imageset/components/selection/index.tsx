@@ -4,7 +4,7 @@ import { Button, Checkbox, Modal } from "antd";
 import { successMessage, errorMessage } from "@/components/message";
 import { delImagesetAlbum } from '@/api/shop'
 
-import { CardItem } from "@/interfaces/shop";
+import { CardItem, AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 
@@ -14,19 +14,23 @@ interface SelectionBlockProps {
   selection: any[];
   lists: CardItem[];
   isScopeAlbum: boolean;
+  refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
   refresh: () => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, isScopeAlbum, select, unselect, setSelection, refresh } = props
+  const { shopId, total, selection, lists, isScopeAlbum, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
   /* 控制全选框的样式 */
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
   useEffect(() => {
-    const all = lists.map(x => x.id)
+    // 选中时排除默认相册
+    const all = isScopeAlbum
+      ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
+      : lists.map(x => x.id)
     const allChecked = all.every(id => selection.includes(id))
     const noChecked = all.every(id => !selection.includes(id))
     if (allChecked && lists.length > 0) {
@@ -39,7 +43,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       // partial selected
       setIndeterminate(true)
     }
-  }, [selection, lists])
+  }, [selection, lists, isScopeAlbum])
 
   // 全选/取消全选
   const checkAll = (e: any) => {
@@ -53,21 +57,26 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   }
 
   // 批量删除卡片
-  const deleteSelectionCards = (e: any) => {
+  const deleteSelectionCards = useCallback((e: any) => {
     e.stopPropagation()
     const count = selection.length
+    const info = count === 0
+      ? `删除后无法恢复，确认删除？`
+      : `本次预计删除 ${count} ${isScopeAlbum ? '个相册' : '张图片'}，删除后无法恢复，确认删除？`
     Modal.confirm({
       title: '确认删除',
-      content: `本次预计删除 ${count} 个相册，删除后无法恢复，确认删除？`,
+      content: info,
       width: 532,
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetAlbum(shopId, { ids: selection })
+          delImagesetAlbum(shopId, selection)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
+                setSelection([])
                 refresh();
+                refreshAllAlbumLists()
                 resolve(res.success)
               } else {
                 throw new Error(res.message || "出错啦，请稍后重试");
@@ -80,7 +89,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }
+  }, [shopId, isScopeAlbum, selection])
 
   return (
     <>
@@ -90,7 +99,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         </Checkbox>
         {(selection.length > 0) && (
           <span className={styles["selection-count"]}>
-            当前选中 <span className={styles["count-num"]}>{selection.length}</span> 个相册
+            当前选中 <span className={styles["count-num"]}>{selection.length}</span> {isScopeAlbum ? '个相册' : '张图片'}
           </span>
         )}
         {(selection.length > 0) && (
@@ -104,7 +113,12 @@ export default function SelectionBlock(props: SelectionBlockProps) {
           </Button>
         )}
         <span className={styles["count-info"]}>
-          共 <span className={styles["count-num"]}>{total}</span> {isScopeAlbum ? '个相册' : '张图片'}
+          {total === 0 && (
+            <span>暂无数据</span>
+          )}
+          {total > 0 && (
+            <span>共 <span className={styles["count-num"]}>{total}</span> {isScopeAlbum ? '个相册' : '张图片'}</span>
+          )}
         </span>
       </div>
     </>

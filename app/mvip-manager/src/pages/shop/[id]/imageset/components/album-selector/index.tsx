@@ -3,19 +3,28 @@ import { Select } from "antd";
 
 import { AlbumItem } from "@/interfaces/shop";
 
-export function useAlbumSelector(props: any) {
+interface Props {
+  allAlbumLists: AlbumItem[];
+}
+export function useAlbumSelector(props: Props) {
   const { allAlbumLists } = props
-  const [select, setSelect] = useState<AlbumItem | null>(null);
+  const [select, setSelect] = useState<AlbumItem | undefined>(undefined);
 
-  const handleSelectAlbum = (id: number) => {
+  const handleSelectAlbum = (id?: number) => {
     const target = allAlbumLists.find((x: AlbumItem) => x.id === id)
-    target && setSelect(target)
+    if (target) {
+      setSelect(target)
+    } else {
+      setSelect(undefined)
+    }
   }
+  const setSelectByID = handleSelectAlbum
 
   return [
     <Select
       className='upload-image-uploador'
       placeholder="请选择一个相册"
+      value={select ? select.id : undefined}
       onChange={(val: number) => handleSelectAlbum(val)}
     >
       {allAlbumLists.map((x: AlbumItem) => {
@@ -23,6 +32,7 @@ export function useAlbumSelector(props: any) {
       })}
     </Select>,
     select,
-    setSelect
+    setSelect,
+    setSelectByID,
   ] as const
 }

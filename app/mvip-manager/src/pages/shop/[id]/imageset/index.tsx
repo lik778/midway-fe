@@ -16,7 +16,7 @@ import { usePagination } from './hooks/pagination'
 import { useAllAlbumLists } from './hooks/albums'
 
 import { ShopModuleType } from "@/enums";
-import { RouteParams, TabScope, TabScopeItem, CardItem } from "@/interfaces/shop";
+import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
@@ -57,9 +57,12 @@ const ShopArticlePage = (props: any) => {
     pageSizeOptions: ['8', '16', '32']
   })
   const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
-  const [allAlbumLists] = useAllAlbumLists(shopId)
-  const [lists, total, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
-  const [selection, setSelection, select, unselect] = useSelection()
+  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumLists(shopId)
+  const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
+  const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
+  const [selection, setSelection, select, unselect] = useSelection({
+    excludeFn: x => defaultAlbumIDs.includes(x)
+  })
 
   // 层级变换时重置翻页和选取
   useEffect(() => {
@@ -81,9 +84,6 @@ const ShopArticlePage = (props: any) => {
     setPagiConf({ ...pagiConf, pageSize })
   }
 
-  // const goAlbumPage = () => setTabScope('album')
-  // const goImagePage = () => setTabScope('image')
-
   // 切换文件层级
   const goTabScope = (scope: TabScopeItem) => {
     let newScopes = [...tabScope]
@@ -101,9 +101,17 @@ const ShopArticlePage = (props: any) => {
 
   /***************************************************** Renders */
 
-  // PERF ?
-  const [$CreateAlbumModal, createAlbum] = useCreateAlbumModal({ shopId, refresh })
+  const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
   const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh, allAlbumLists })
+
+  // 创建或编辑相册后重新拉取所有相册列表
+  const createAlbum = useCallback(async (album?: AlbumItem) => {
+    const isDone = await createOrEditAlbum(album)
+    if (isDone) {
+      refreshAllAlbumLists()
+    }
+  }, [createOrEditAlbum])
+
   return (
     <>
       {/* 页头 */}
@@ -116,6 +124,7 @@ const ShopArticlePage = (props: any) => {
           tabScope={tabScope}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
+          curScope={curScope}
           goTabScope={goTabScope}
           createAlbum={createAlbum}
           openUpload={openUpload}
@@ -123,13 +132,14 @@ const ShopArticlePage = (props: any) => {
         {/* 选框区 */}
         <SelectionBlock
           shopId={shopId}
-          total={pagiConf.total}
+          total={total}
           isScopeAlbum={isScopeAlbum}
           selection={selection}
+          lists={lists}
+          refreshAllAlbumLists={refreshAllAlbumLists}
           select={select}
           unselect={unselect}
           setSelection={setSelection}
-          lists={lists}
           refresh={refresh}
         />
         {/* 图片/相册展示区 */}
@@ -137,26 +147,33 @@ const ShopArticlePage = (props: any) => {
           shopId={shopId}
           lists={lists}
           tabScope={tabScope}
+          curScope={curScope}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
           selection={selection}
           allAlbumLists={allAlbumLists}
+          loading={loading}
+          refreshAllAlbumLists={refreshAllAlbumLists}
+          setSelection={setSelection}
           refresh={refresh}
           goTabScope={goTabScope}
           select={select}
           unselect={unselect}
           editAlbum={createAlbum}
+          openUpload={openUpload}
         />
         {/* 分页 */}
-        <Pagination
-          className={styles["pagination"]}
-          defaultCurrent={1}
-          current={pagi.current}
-          total={total}
-          pageSize={pagiConf.pageSize}
-          pageSizeOptions={pagiConf.pageSizeOptions}
-          onChange={handlePagiChange}
-        />
+        {lists.length > 0 && (
+          <Pagination
+            className={styles["pagination"]}
+            defaultCurrent={1}
+            current={pagi.current}
+            total={total}
+            pageSize={pagiConf.pageSize}
+            pageSizeOptions={pagiConf.pageSizeOptions}
+            onChange={handlePagiChange}
+          />
+        )}
       </div>
       {/* 创建/编辑相册模态框 */}
       {$CreateAlbumModal}
@@ -169,9 +186,13 @@ const ShopArticlePage = (props: any) => {
 function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem | undefined) {
   const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(false)
   const [requestTime, setRequestTime] = useState(+new Date())
 
+  const notNull = (x: any) => !!x
+
   const refresh = () => {
+    setLoading(true)
     setLists([])
     setTotal(0)
     setRequestTime(+new Date())
@@ -192,23 +213,27 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
     if (isScopeImage) {
       query.mediaCateId = scope.item!.id
     }
+    setLoading(true)
     fetchMethod(shopId, query)
       .then(([result, total]) => {
-        setLists(result)
+        setLists(result.filter(notNull))
         setTotal(total)
       })
       .catch(error => {
         console.error(error)
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [shopId, query, requestTime, isScopeAlbum, isScopeImage, scope])
 
-  return [lists, total, refresh, setLists, setTotal] as const
+  return [lists, total, loading, refresh, setLists, setTotal] as const
 }
 
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetAlbum(shopId, querys)
-    const { result, totalRecord } = res.data.mediaCateBos
+    const { result = [], totalRecord = 0 } = res.data.mediaCateBos
     return [result, totalRecord] as const
   } catch (err) {
     throw new Error(err)
@@ -218,7 +243,7 @@ async function fetchAlbumLists(shopId: number, querys: any) {
 async function fetchImageLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetImage(shopId, querys)
-    const { result, totalRecord } = res.data.mediaImgBos
+    const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {
     throw new Error(err)

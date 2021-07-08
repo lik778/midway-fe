@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+/**
+ * ! WIP Warning，do not use at this time
+ * */
+
 // 请求及结果钩子
-// FIXME request pool
-export default function useRequest(requestFn, query: any[]) {
+// TODO request pool
+export default function useRequest(requestFn: any, query: any[]) {
   const [res, setRes] = useState<any>()
   const [time, setTime] = useState(+new Date())
 
