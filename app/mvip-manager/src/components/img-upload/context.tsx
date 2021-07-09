@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface'
-import { ImgUploadContextProps, ImageDataAtlasTypeListItem } from './data'
+import { ImgUploadContextProps, ImageData, ImageDataAlbumListItem } from './data'
 import { ShopInfo } from '@/interfaces/shop';
 
 const defaultValue = {
   fileList: [],
   localFileList: [],
   checkFileObject: {},
-  imageData: [],
+  imageData: {},
   baixingImageData: [],
   initConfig: {
     uploadType: 1 as 1,
@@ -22,8 +22,8 @@ const defaultValue = {
     },
   },
   upDataLoading: false,
-  atlasVisible: false,
-  handleChangeAtlasVisible: (atlasVisible: boolean) => { },
+  albumVisible: false,
+  handleChangeAlbumVisible: (albumVisible: boolean) => { },
   handleChangeUpDataLoading: (upDataLoading: boolean) => { },
   handleChangeFileList: (newFileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => { },
   handleReloadFileList: (newFileList: UploadFile[]) => Promise.resolve([]),
@@ -31,8 +31,8 @@ const defaultValue = {
   shopCurrent: null,
   loadingShopModel: false,
   handleChangeShopCurrent: (newShopCurrent: ShopInfo) => { },
-  handleChangeImageData: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => { },
-  handleChangeBaixingImageData: (newBaixingImageData: ImageDataAtlasTypeListItem[], oldBaixingImageData: ImageDataAtlasTypeListItem[]) => { },
+  handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => { },
+  handleChangeBaixingImageData: (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => { },
   handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => { },
   handlePreview: (file: UploadFile) => { },
   handleRemove: (file: UploadFile) => { },

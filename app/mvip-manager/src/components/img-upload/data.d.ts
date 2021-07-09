@@ -1,7 +1,8 @@
 import React from 'react';
 import { ShowUploadListInterface, UploadFile } from 'antd/lib/upload/interface'
 import { CropProps } from '../crop/data';
-import { ShopInfo, AlbumItem, ImageItem } from '@/interfaces/shop'
+import { ShopInfo, ImageItem, AlbumNameListItem } from '@/interfaces/shop'
+
 export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
   showCropIcon?: boolean // 是否显示裁剪icon
   cropIcon?: React.ReactNode
@@ -40,12 +41,17 @@ export interface ImgUploadProps {
   [key: string]: any
 }
 
-
-export interface ImageDataAtlasTypeListItem extends AlbumItem {
+export interface ImageDataAlbumListItem {
+  id: number,
+  name: string,
   images: ImageItem[]
   page: number,// 当前类型数据已经翻到多少页
   total: number,// 当前类型总页数
   init: boolean // 是否初始化过
+}
+
+export interface ImageData {
+  [key: string]: ImageDataAlbumListItem[]
 }
 
 export interface ImgUploadContextProps {
@@ -69,14 +75,14 @@ export interface ImgUploadContextProps {
     uploadBeforeCrop?: boolean,// 选择时裁剪 
     itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
   },
-  atlasVisible: boolean, // 图片库是否显示
+  albumVisible: boolean, // 图片库是否显示
   shopList: ShopInfo[]  // 因为model里初始化时null
   shopCurrent: ShopInfo | null // 当前选择的店铺
-  loadingShopModel: boolean,// 当前
-  imageData: ImageDataAtlasTypeListItem[],
-  baixingImageData: ImageDataAtlasTypeListItem[],
+  loadingShopModel: boolean,// 当前shop Model是否在请求状态
+  imageData: ImageData,
+  baixingImageData: ImageDataAlbumListItem[],
   upDataLoading: boolean
-  handleChangeAtlasVisible: (atlasVisible: boolean) => void
+  handleChangeAlbumVisible: (albumVisible: boolean) => void
   handleChangeUpDataLoading: (upDataLoading: boolean) => void // 更新组件内打接口的loading
   /**
    * onFileChange
@@ -88,8 +94,8 @@ export interface ImgUploadContextProps {
   // 更新确认选择文件
   handleReloadFileList: (fileList: UploadFile[]) => Promise<UploadFile<any>[]> // 更新数组但是不会触发onChange通知外部
   handleChangeShopCurrent: (newShopCurrent: ShopInfo) => void // 更新当前店铺
-  handleChangeImageData: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void // 更新图片数据
-  handleChangeBaixingImageData: (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => void // 更新图片数据
+  handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => void // 更新图片数据
+  handleChangeBaixingImageData: (newImageData: ImageDataAlbumListItem[], oldImageData: ImageDataAlbumListItem[]) => void // 更新图片数据
   handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => void,
   handlePreview: (file: UploadFile) => void
   handleRemove: (file: UploadFile) => void

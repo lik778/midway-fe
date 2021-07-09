@@ -7,7 +7,7 @@ import { UploadFile } from 'antd/lib/upload/interface';
 
 const ModalFooter: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { fileList, localFileList, initConfig: { maxLength }, handleChangeLocalFileList, handleChangeFileList, handleChangeAtlasVisible } = context
+  const { fileList, localFileList, initConfig: { maxLength }, handleChangeLocalFileList, handleChangeFileList, handleChangeAlbumVisible } = context
   const empty = useMemo(() => {
     return Array.from({ length: maxLength - localFileList.length })
   }, [localFileList, maxLength])
@@ -16,7 +16,7 @@ const ModalFooter: FC = () => {
     handleChangeLocalFileList(localFileList.filter(item => item.uid !== file.uid))
   }
 
-  const handleDragStart = (e: React.DragEvent<HTMLImageElement>, index: number) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.dataTransfer.setData("json", `${index}`)
   }
 
@@ -38,7 +38,7 @@ const ModalFooter: FC = () => {
 
   const handleClickOk = () => {
     handleChangeFileList([...localFileList], fileList, null)
-    handleChangeAtlasVisible(false)
+    handleChangeAlbumVisible(false)
   }
 
   return <div className={styles['modal-footer']}>
@@ -47,8 +47,8 @@ const ModalFooter: FC = () => {
     </div>
     <div className={styles['line']}>
       {
-        localFileList.map((item, index) => <div className={styles["item"]} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={item.uid}>
-          <img className={styles['img']} src={item.preview} draggable={true} onDragStart={(e) => handleDragStart(e, index)}></img>
+        localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={item.uid}>
+          <img className={styles['img']} src={item.preview} draggable={false} ></img>
           <div className={styles['delete']} onClick={() => handleDel(item)}>
             <DeleteOutlined style={{
               color: '#fff'

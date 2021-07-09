@@ -1,6 +1,6 @@
 import React, { useContext, FC } from 'react'
 import styles from './index.less';
-import AtlasModal from '@/components/img-upload/components/upload2/components/modal'
+import AlbumModal from '@/components/img-upload/components/upload2/components/modal'
 import ImgUploadContext  from '@/components/img-upload/context'
 import ImgItem from '@/components/img-upload/components/img-item'
 import UploadBtn from '@/components/img-upload/components/upload-btn'
@@ -16,7 +16,7 @@ const Upload2: FC = () => {
       }
       {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />}
     </div>
-    <AtlasModal></AtlasModal></>
+    <AlbumModal></AlbumModal></>
 }
 
 export default Upload2

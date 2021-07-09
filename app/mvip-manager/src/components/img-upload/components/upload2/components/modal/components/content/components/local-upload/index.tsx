@@ -11,14 +11,14 @@ import ImgItem from '../img-item'
 const LocalUpload: FC = () => {
   const context = useContext(ImgUploadContext)
   const { initConfig: { uploadBtnText, maxSize, aspectRatio, cropProps }, shopCurrent } = context
-  const [atlasList, setAtlasList] = useState<ImageItem[]>([])
+  const [albumList, setAlbumList] = useState<ImageItem[]>([])
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const handleChange = async (values: string | string[], file: UploadFile<any> | null, fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
     setUpDataLoading(true)
     const res = await createImagesetImage(shopCurrent!.id, {
       imgUrl: file!.url!
     })
-    setAtlasList([...atlasList, res.data])
+    setAlbumList([...albumList, res.data])
     setUpDataLoading(false)
   }
 
@@ -30,7 +30,7 @@ const LocalUpload: FC = () => {
     <div className={styles['local-upload']}>
       <div className={styles['line']}>
         {
-          atlasList.map(item => <ImgItem detail={item} key={item.id}></ImgItem>)
+          albumList.map(item => <ImgItem detail={item} itemHeight={102} key={item.id}></ImgItem>)
         }
         <ImgUpload uploadType={1} uploadBtnText={uploadBtnText} maxLength={1000} onChange={handleChange} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
           showRemoveIcon: false,

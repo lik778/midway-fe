@@ -16,7 +16,7 @@ import {
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
   GetImagesetImageRes, GetImagesetAlbumRes,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
-  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam,
+  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -211,7 +211,7 @@ export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) 
 
 // 获取相册图片列表
 export const getImagesetImage:
-  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<GetImagesetImageRes> =
+  (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes> =
   (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
 
 // 新增相册图片
@@ -234,7 +234,23 @@ export const moveImagesetImage = (shopId: number, params: MoveImagesetImageParam
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(shopId))
 }
 
-// TODO;获取百姓网相册列表 URl
-export const getBaixingImagesetAlbum = (shopId: number, params: GetImagesetAlbumParam): ShopAPIReturn<GetImagesetAlbumRes> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
+// 获取百姓网相册名称列表 URl
+export const getBaixingAlbum = (shopId: number, params: GetImagesetAlbumParam): ShopAPIReturn<GetImagesetAlbumRes> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', params, setShopHeader(shopId))
 }
+
+// 获取我的相册名称列表 URl
+export const getAlbumNameList = (shopId: number): ShopAPIReturn<AlbumNameListItem[]> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', {}, setShopHeader(shopId))
+}
+
+// 获取百姓网相册名称列表 URl
+export const getBaixingAlbumNameList = (shopId: number): ShopAPIReturn<AlbumNameListItem[]> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', {}, setShopHeader(shopId))
+}
+
+// 获取相册图片列表
+export const getBaixingImagesetImage:
+  (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes> =
+  (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/baiXingListing', params, setShopHeader(shopId))
+
