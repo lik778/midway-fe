@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Upload } from 'antd'
-import { UploadFile, UploadFileStatus } from 'antd/lib/upload/interface'
+import { UploadFile } from 'antd/lib/upload/interface'
 
 import styles from './index.less'
 
@@ -24,10 +24,11 @@ export interface UploadItem extends UploadFile {
 }
 
 type Props = {
-  afterUploadHook: (item: UploadItem) => void;
+  afterUploadHook?: (item: UploadItem) => void;
+  afterRemoveHook?: (item: UploadItem) => void;
 }
 export function useUpload(props: Props) {
-  const { afterUploadHook } = props
+  const { afterUploadHook, afterRemoveHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
 
   // ? 竞争
@@ -41,6 +42,11 @@ export function useUpload(props: Props) {
       }
       if (afterUploadHook) {
         await afterUploadHook(e.file)
+      }
+    }
+    if (status === 'removed') {
+      if (afterRemoveHook) {
+        await (afterRemoveHook(e.file))
       }
     }
 

@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Button, Checkbox, Modal } from "antd";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
 
-import { CardItem, AlbumItem } from "@/interfaces/shop";
+import { CardItem, AlbumItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 
@@ -13,6 +13,7 @@ interface SelectionBlockProps {
   total: number;
   selection: any[];
   lists: CardItem[];
+  curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
   refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
@@ -21,7 +22,7 @@ interface SelectionBlockProps {
   refresh: () => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, isScopeAlbum, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
+  const { shopId, total, selection, lists, isScopeAlbum, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
   /* 控制全选框的样式 */
   const [checked, setChecked] = useState(false)
@@ -70,7 +71,13 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetAlbum(shopId, selection)
+          const deleteFn = isScopeAlbum
+            ? delImagesetAlbum
+            : delImagesetImage
+          const query = isScopeAlbum
+            ? [...selection]
+            : { ids: [...selection], mediaCateId: curScope?.item?.id }
+          deleteFn(shopId, query)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
@@ -89,7 +96,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }, [shopId, isScopeAlbum, selection])
+  }, [shopId, isScopeAlbum, selection, curScope])
 
   return (
     <>
