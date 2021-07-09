@@ -102,7 +102,7 @@ const ShopArticlePage = (props: any) => {
   /***************************************************** Renders */
 
   const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
-  const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh, allAlbumLists })
+  const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh, allAlbumLists, curScope })
 
   // 创建或编辑相册后重新拉取所有相册列表
   const createAlbum = useCallback(async (album?: AlbumItem) => {

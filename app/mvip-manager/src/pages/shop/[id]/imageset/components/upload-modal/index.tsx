@@ -2,30 +2,38 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { useUpload, UploadItem } from './upload'
+import { createImagesetImage, delImagesetImage } from '@/api/shop'
 import { useAlbumSelector } from '../album-selector'
-import { createImagesetImage } from '@/api/shop'
+import { useUpload, UploadItem } from './upload'
 
-import { AlbumItem } from "@/interfaces/shop";
+import { AlbumItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 30
 
-// TODO 多选
+// 保存 UploadItem 和 上传结果的关系
+type UploadResMap = {
+  uid: string;
+  imageID: number;
+}
 
 type Props = {
   shopId: number;
-  refresh: () => void;
+  curScope?: TabScopeItem;
   allAlbumLists: AlbumItem[]
+  refresh: () => void;
 }
+
 export function useUploadModal(props: Props) {
 
   /***************************************************** States */
-  const { shopId, refresh, allAlbumLists } = props
+  const { shopId, curScope, allAlbumLists, refresh } = props
   const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
+  const [uploadedLists, setUploadedLists] = useState<UploadResMap[]>([])
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
+
   const [$uploader, lists, setLists, update, remove] = useUpload({
     afterUploadHook
   })
@@ -41,6 +49,54 @@ export function useUploadModal(props: Props) {
     setAlbumByID(defaultVal)
     openModal()
   }
+
+  /***************************************************** API Calls */
+
+  async function afterUploadHook(item: UploadItem) {
+    return await new Promise(async resolve => {
+      item.inChibi = true
+      update(item)
+      try {
+        const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
+        const res = await createImagesetImage(shopId, query)
+        if (res.success && (typeof res.data.id === 'number')) {
+          item.inChibi = false
+          update(item)
+          setUploadedLists([...uploadedLists, {
+            uid: item.uid,
+            imageID: res.data.id
+          }])
+          resolve(true)
+        } else {
+          throw new Error('上传失败');
+        }
+      } catch (error) {
+        item.inChibi = false
+        item.status = 'error'
+        update(item)
+      }
+    })
+  }
+
+  const handleRemove = useCallback((item: UploadItem) => {
+    if (!selectedAlbum) return
+    const { uid } = item
+    const findUploaded = uploadedLists.find(x => x.uid === uid)
+    if (findUploaded) {
+      // dont care is delete done or not ...
+      const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
+      delImagesetImage(shopId, query)
+        .then(res => {
+          if (res.success) {
+            const findIDX = uploadedLists.findIndex(x => x === findUploaded)
+            setUploadedLists([
+              ...uploadedLists.splice(findIDX, 1)
+            ])
+          }
+        })
+    }
+    remove(item)
+  }, [uploadedLists, remove, selectedAlbum])
 
   /***************************************************** Interaction Fns */
 
@@ -67,34 +123,6 @@ export function useUploadModal(props: Props) {
       })
     }
   }, [lists])
-
-  const handleRemove = useCallback((item: UploadItem) => {
-    remove(item)
-  }, [remove])
-
-  /***************************************************** API Calls */
-
-  async function afterUploadHook(item: UploadItem) {
-    return await new Promise(async resolve => {
-      item.inChibi = true
-      update(item)
-      try {
-        const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
-        const res = await createImagesetImage(shopId, query)
-        if (res.success) {
-          item.inChibi = false
-          update(item)
-          resolve(true)
-        } else {
-          throw new Error('上传失败');
-        }
-      } catch (error) {
-        item.inChibi = false
-        item.status = 'error'
-        update(item)
-      }
-    })
-  }
 
   /***************************************************** Renders */
 
