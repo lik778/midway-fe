@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Button, Input, Form } from "antd";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { Breadcrumb, Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 import { TabScope, TabScopeItem } from "@/interfaces/shop";
 

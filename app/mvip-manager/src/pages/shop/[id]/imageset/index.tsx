@@ -133,6 +133,7 @@ const ShopArticlePage = (props: any) => {
         <SelectionBlock
           shopId={shopId}
           total={total}
+          curScope={curScope}
           isScopeAlbum={isScopeAlbum}
           selection={selection}
           lists={lists}
@@ -214,6 +215,7 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
       query.mediaCateId = scope.item!.id
     }
     setLoading(true)
+    // FIXME type
     fetchMethod(shopId, query)
       .then(([result, total]) => {
         setLists(result.filter(notNull))
