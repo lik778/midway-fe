@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
-import { ImgUploadProps, ImageDataAtlasTypeListItem } from './data';
+import { ImgUploadProps, ImageData, ImageDataAlbumListItem } from './data';
 import Crop from '@/components/crop'
 import ImgUploadContext from '@/components/img-upload/context'
 import { ShopInfo } from '@/interfaces/shop';
@@ -117,34 +117,39 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     localFileList.forEach(item => checkFileObject[item.url!] = true)
     return checkFileObject
   }, [localFileList])
-  const [atlasVisible, setAtlasVisible] = useState<boolean>(false)
-  const [imageData, setImageData] = useState<ImageDataAtlasTypeListItem[]>([])
-  const [baixingImageData, setBaixingImageData] = useState<ImageDataAtlasTypeListItem[]>([])
+  const [albumVisible, setAlbumVisible] = useState<boolean>(false)
+  const [imageData, setImageData] = useState<ImageData>({})
+  const [baixingImageData, setBaixingImageData] = useState<ImageDataAlbumListItem[]>([])
   const [shopListFilter, setShopListFilter] = useState<ShopInfo[]>([])
   const [shopCurrent, setShopCurrent] = useState<ShopInfo | null>(null)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
   // 弹窗模式需要 开始
-  // 获得店铺列表后需要设置店铺
-
+  // 初始化弹窗 开始
   useEffect(() => {
-    if (atlasVisible) {
+    if (albumVisible) {
       handleChangeLocalFileList([...fileList])
     }
-  }, [atlasVisible])
+  }, [albumVisible])
 
   useEffect(() => {
+    // 过滤出正常状态的店铺 设置初始店铺
     const newShopListFilter = shopList ? (shopList as ShopInfo[]).filter(item => item.status === 1) : []
     setShopListFilter(newShopListFilter)
-    setShopCurrent(newShopListFilter.length > 0 ? newShopListFilter[0] : null)
+    if (newShopListFilter.length > 0) {
+      const newShopCurrent = newShopListFilter[0]
+      setShopCurrent(newShopCurrent)
+    }
   }, [shopList])
 
   // 弹窗模式需要获取店铺列表
+  // 不放到albumVisible===true时是因为避免这个事情
   useEffect(() => {
     if (uploadType === 2 && !loadingShopModel) {
       getShopList()
     }
   }, [])
+  // 初始化弹窗 结束
 
   // 当前店铺修改
   const handleChangeShopCurrent = (newShopCurrent: ShopInfo) => {
@@ -152,12 +157,12 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   }
 
   // 图片数据更改
-  const handleChangeImageData = (newImageData: ImageDataAtlasTypeListItem[], oldImageData: ImageDataAtlasTypeListItem[]) => {
+  const handleChangeImageData = (newImageData: ImageData, oldImageData: ImageData) => {
     setImageData(newImageData)
   }
 
   // 图片数据更改
-  const handleChangeBaixingImageData = (newBaixingImageData: ImageDataAtlasTypeListItem[], oldBaixingImageData: ImageDataAtlasTypeListItem[]) => {
+  const handleChangeBaixingImageData = (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => {
     setBaixingImageData(newBaixingImageData)
   }
 
@@ -166,7 +171,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     setLocalFileList(newLocalFileList)
   }
   // 弹窗模式需要 结束
-
 
   // 预览
   const handlePreview = (file: UploadFile) => {
@@ -252,12 +256,12 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
             itemRender,
             uploadBeforeCrop
           },
-          atlasVisible,
+          albumVisible,
           shopList: shopListFilter,
           shopCurrent,
           loadingShopModel,
           upDataLoading,
-          handleChangeAtlasVisible: setAtlasVisible,
+          handleChangeAlbumVisible: setAlbumVisible,
           handleChangeUpDataLoading: setUpDataLoading,
           handleChangeShopCurrent: handleChangeShopCurrent,
           handleChangeImageData: handleChangeImageData,

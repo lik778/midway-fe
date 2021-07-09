@@ -7,11 +7,12 @@ import styles from './index.less'
 import { UploadFile } from 'antd/lib/upload/interface';
 
 interface Props {
-  detail: ImageItem
+  detail: ImageItem,
+  itemHeight?: number
 }
 
 const ImgItem: FC<Props> = (props) => {
-  const { detail } = props
+  const { detail, itemHeight } = props
   const context = useContext(ImgUploadContext)
   const { checkFileObject, localFileList, handleChangeLocalFileList, initConfig: { maxLength } } = context
   const [originSize, setOriginSize] = useState<{
@@ -30,27 +31,23 @@ const ImgItem: FC<Props> = (props) => {
     })
   }
 
-  const handleChangeCheckbox = (e: CheckboxChangeEvent) => {
-    console.log(e.target.checked)
-    if (e.target.checked && localFileList.length < maxLength) {
-
-      const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: detail.imgUrl, thumbUrl: detail.imgUrl, preview: detail.imgUrl as string, size: 0, name: '', originFileObj: null as any, type: '' }
+  const handleClickItem = () => {
+    if (detail.checkStatus !== 'APPROVE') return
+    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: detail.imgUrl, thumbUrl: detail.imgUrl, preview: detail.imgUrl as string, size: 0, name: '', originFileObj: null as any, type: '' }
+    if (maxLength === 1) {
+      handleChangeLocalFileList([newFile])
+    } else {
+      if (localFileList.length >= maxLength) return
       const newLocalFileList = [...localFileList, newFile]
       handleChangeLocalFileList(newLocalFileList)
-    } else {
-      handleChangeLocalFileList(localFileList.filter(item => item.url !== detail.imgUrl))
+      handleChangeLocalFileList(newLocalFileList)
     }
   }
 
-  return <div className={styles['img-item']}>
+  return <div className={styles['img-item']} onClick={handleClickItem} style={{
+    height: itemHeight
+  }}>
     <img className={styles['img']} src={detail.imgUrl} onLoad={handleLoad} />
-    <Checkbox
-      className={styles['checkbox']}
-      disabled={detail.checkStatus !== 'APPROVE'}
-      onChange={handleChangeCheckbox}
-      checked={checkFileObject[detail.imgUrl]}
-    >
-    </Checkbox>
     <div className={styles["tip"]}>
       {`${originSize.width}*${originSize.heigth}`}
     </div>

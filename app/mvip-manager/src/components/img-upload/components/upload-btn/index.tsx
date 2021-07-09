@@ -11,10 +11,10 @@ interface Props {
 const UploadBtn: FC<Props> = (props) => {
   const { text, disabled, itemWidth } = props
   const context = useContext(ImgUploadContext)
-  const { initConfig, handleChangeAtlasVisible } = context
+  const { initConfig, handleChangeAlbumVisible } = context
   const handleClick = () => {
     if (initConfig.uploadType) {
-      handleChangeAtlasVisible(true)
+      handleChangeAlbumVisible(true)
     }
   }
 

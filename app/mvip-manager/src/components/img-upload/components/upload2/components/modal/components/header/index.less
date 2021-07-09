@@ -1,4 +1,4 @@
-.atlas-modal-header {
+.album-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,8 +14,15 @@
   :global {
     .ant-select {
       .ant-select-selector {
+        border: none;
+        outline: none;
         background-color: #f3f3f3;
         border-color: #f3f3f3;
+      }
+      &:hover {
+        .ant-select-selector {
+          border-color: #f3f3f3;
+        }
       }
     }
   }

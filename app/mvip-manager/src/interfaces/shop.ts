@@ -268,7 +268,7 @@ export interface UpdateImagesetAlbumParam {
 }
 
 export interface GetImagesetImageParam {
-  mediaCateId: number;
+  mediaCateId?: number;// 获取图库内所有图片则不传，某个图册则传
   page: number;
   size: number;
 }
@@ -306,16 +306,18 @@ export interface GetImagesetImageRes {
   mediaImgBos: ListRes<ImageItem[]>
 }
 
-export interface AtlasTypeListItem {
+export interface AlbumNameListItem {
   id: number,
   name: string,
 }
 
-export interface AtlasImageListItem {
+export interface AlbumImageListItem {
   id: number,
   url: string
   status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
 }
+
+
 
 /* 店铺图集相关定义 Start */
 
@@ -352,5 +354,6 @@ export type TabScopeItem = {
   type: 'album' | 'image'
 }
 export type TabScope = TabScopeItem[]
+
 
 /* 店铺图集相关定义 End */

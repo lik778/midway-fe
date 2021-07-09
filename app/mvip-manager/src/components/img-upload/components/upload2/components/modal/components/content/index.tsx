@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState, FC, useContext } from 'react';
 import { Spin, Tabs } from 'antd'
 import styles from './index.less'
-import Atlas from './components/atlas'
+import Album from './components/album'
 import LocalUpload from './components/local-upload'
 import ImgUploadContext  from '@/components/img-upload/context'
 import { TabsKeys } from './data'
@@ -19,10 +19,10 @@ const ModalContent: FC = () => {
           <LocalUpload></LocalUpload>
         </TabPane>
         <TabPane tab="百姓图库" key="百姓图库">
-          <Atlas tabsCurrent={tabsCurrent} tabKey="百姓图库"></Atlas>
+          <Album tabsCurrent={tabsCurrent} tabKey="百姓图库"></Album>
         </TabPane>
         <TabPane tab="我的图库" key="我的图库">
-          <Atlas tabsCurrent={tabsCurrent} tabKey="我的图库"></Atlas>
+          <Album tabsCurrent={tabsCurrent} tabKey="我的图库"></Album>
         </TabPane>
       </Tabs>
     </div>

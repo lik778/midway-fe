@@ -7,19 +7,19 @@ const Option = Select.Option
 
 const ModalHeader: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { shopCurrent, shopList, handleChangeShopCurrent, loadingShopModel, upDataLoading, handleChangeAtlasVisible } = context
+  const { shopCurrent, shopList, handleChangeShopCurrent, loadingShopModel, upDataLoading, handleChangeAlbumVisible } = context
   const selectValue = useMemo<number | undefined>(() => shopCurrent?.id, [shopCurrent])
   const handleChange = (value: any) => {
     handleChangeShopCurrent(shopList!.find(item => item.id === value)!)
   }
 
-  return <div className={styles['atlas-modal-header']}>
+  return <div className={styles['album-modal-header']}>
     <Select className={styles['select']} size="large" onChange={handleChange} value={selectValue} loading={loadingShopModel || upDataLoading}>
       {
         shopList && shopList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)
       }
     </Select>
-    <CloseOutlined className={styles['close']} onClick={() => handleChangeAtlasVisible(false)}></CloseOutlined>
+    <CloseOutlined className={styles['close']} onClick={() => handleChangeAlbumVisible(false)}></CloseOutlined>
   </div>
 }
 export default ModalHeader
