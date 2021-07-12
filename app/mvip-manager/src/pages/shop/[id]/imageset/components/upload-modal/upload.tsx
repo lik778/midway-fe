@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Upload } from 'antd'
 import { UploadFile } from 'antd/lib/upload/interface'
 
@@ -24,11 +24,11 @@ export interface UploadItem extends UploadFile {
 }
 
 type Props = {
-  afterUploadHook?: (item: UploadItem) => void;
-  afterRemoveHook?: (item: UploadItem) => void;
+  // 上传后钩子函数
+  afterUploadHook?: (item: UploadItem, update: Function) => Promise<UploadItem>;
 }
 export function useUpload(props: Props) {
-  const { afterUploadHook, afterRemoveHook } = props
+  const { afterUploadHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
 
   // 增加一项
@@ -37,16 +37,21 @@ export function useUpload(props: Props) {
   }, [lists])
 
   // 修改项目
-  const update = useCallback((item: UploadItem) => {
+  const update = useCallback((item: UploadItem, props?: Partial<UploadItem>) => {
     const tempList = [...lists]
     const findIDX = tempList.findIndex(x => x.uid === item.uid)
     if (findIDX !== -1) {
-      tempList.splice(findIDX, 1, item)
+      tempList.splice(findIDX, 1, props ? Object.assign(item, props) : item)
       setLists(tempList)
     } else {
       console.warn('[WARN] update item not found', item, lists)
     }
   }, [lists])
+
+  const updateRef = useRef<Function>(() => {})
+  useEffect(() => {
+    updateRef.current = update
+  }, [update])
 
   // 删除项目
   const remove = useCallback((item: UploadItem) => {
@@ -60,27 +65,22 @@ export function useUpload(props: Props) {
     }
   }, [lists])
 
-  const handleChange = useCallback(async (e: any) => {
+  // 同步本地 fileList 和 Ant Upload 中的 fileList
+  const handleChange = async (e: any) => {
     const { uid, status } = e.file
-
     // 读取到图片的预览地址
     if (status === 'done') {
       if (e.file && !(e.file.preview)) {
-        await new Promise(resolve => setTimeout(resolve, (~~(Math.random() * 5 + 5)) * 1000))
-        e.file.preview = await getBase64(e.file.originFileObj)
+        getBase64(e.file.originFileObj).then(preview => {
+          updateRef.current(e.file, { preview })
+        })
       }
       if (afterUploadHook) {
-        await afterUploadHook(e.file)
+        afterUploadHook(e.file, updateRef.current)
       }
     }
-    if (status === 'removed') {
-      if (afterRemoveHook) {
-        await (afterRemoveHook(e.file))
-      }
-    }
-
     setLists(e.fileList)
-  }, [lists])
+  }
 
   return [
     <Upload
@@ -92,6 +92,7 @@ export function useUpload(props: Props) {
       }}
       multiple={true}
       fileList={lists}
+      showUploadList={false}
       onChange={handleChange}
     ><div></div></Upload>,
     lists,

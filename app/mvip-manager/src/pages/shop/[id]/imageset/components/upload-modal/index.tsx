@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react';
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -16,6 +16,8 @@ const MAX_UPLOAD_COUNT = 30
 type UploadResMap = {
   uid: string;
   imageID: number;
+  inChibi: boolean;
+  status: string;
 }
 
 type Props = {
@@ -31,13 +33,23 @@ export function useUploadModal(props: Props) {
   const { shopId, curScope, allAlbumLists, refresh } = props
   const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
-  const [uploadedLists, setUploadedLists] = useState<UploadResMap[]>([])
-  const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
 
+  // 10/10 垃圾，
+  // 我需要这个数组用来记录已经上传的列表，
+  // reRender 用来触发重渲染
+  const uploadedLists = useRef<UploadResMap[]>([])
+  const [reRender, setRerender] = useState(Math.random())
+  const record = (newLists: UploadResMap[]) => {
+    uploadedLists.current = newLists
+    setRerender(Math.random())
+  }
+
+  const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
-    afterUploadHook
+    afterUploadHook,
   })
-  const canConfirm = useMemo(() => lists.every(x => x.status === 'done' && !x.inChibi), [lists])
+
+  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
 
   useEffect(() => {
     if (selectedAlbum) {
@@ -52,28 +64,35 @@ export function useUploadModal(props: Props) {
 
   /***************************************************** API Calls */
 
-  async function afterUploadHook(item: UploadItem) {
+  async function afterUploadHook(item: UploadItem, update: Function): Promise<UploadItem> {
     return await new Promise(async resolve => {
-      item.inChibi = true
-      update(item)
+      record([...uploadedLists.current, {
+        uid: item.uid,
+        imageID: -1,
+        inChibi: true,
+        status: 'done'
+      }])
       try {
         const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
         const res = await createImagesetImage(shopId, query)
         if (res.success && (typeof res.data.id === 'number')) {
-          item.inChibi = false
-          update(item)
-          setUploadedLists([...uploadedLists, {
-            uid: item.uid,
-            imageID: res.data.id
-          }])
-          resolve(true)
+          const target = uploadedLists.current.find(x => x.uid === item.uid)
+          if (target) {
+            target.imageID = res.data.id
+            target.inChibi = false
+            record(uploadedLists.current)
+          }
+          resolve(item)
         } else {
           throw new Error('上传失败');
         }
       } catch (error) {
-        item.inChibi = false
-        item.status = 'error'
-        update(item)
+        const target = uploadedLists.current.find(x => x.uid === item.uid)
+        if (target) {
+          target.inChibi = false
+          target.status = 'error'
+          record(uploadedLists.current)
+        }
       }
     })
   }
@@ -81,22 +100,20 @@ export function useUploadModal(props: Props) {
   const handleRemove = useCallback((item: UploadItem) => {
     if (!selectedAlbum) return
     const { uid } = item
-    const findUploaded = uploadedLists.find(x => x.uid === uid)
+    const findUploaded = uploadedLists.current.find(x => x.uid === uid)
     if (findUploaded) {
       // dont care is delete done or not ...
       const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
       delImagesetImage(shopId, query)
         .then(res => {
           if (res.success) {
-            const findIDX = uploadedLists.findIndex(x => x === findUploaded)
-            setUploadedLists([
-              ...uploadedLists.splice(findIDX, 1)
-            ])
+            const findIDX = uploadedLists.current.findIndex(x => x === findUploaded)
+            uploadedLists.current = uploadedLists.current.splice(findIDX, 1)
           }
         })
     }
     remove(item)
-  }, [uploadedLists, remove, selectedAlbum])
+  }, [remove, selectedAlbum])
 
   /***************************************************** Interaction Fns */
 
@@ -131,7 +148,11 @@ export function useUploadModal(props: Props) {
   // 渲染上传列表
   // TODO 样式问题
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
-    const { uid, status, percent, preview, error, inChibi } = item
+    const { uid, percent, preview, error } = item
+    const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
+    const status = uploadedItem ? uploadedItem.status : item.status
+    const inChibi = uploadedItem ? uploadedItem.inChibi : false
+
     let $contents
     let dispearMask = false
     if (inChibi === true) {
@@ -175,7 +196,7 @@ export function useUploadModal(props: Props) {
         <div className={styles["wrapper"]}>{$contents}</div>
       </div>
     )
-  }), [lists])
+  }), [lists, uploadedLists, reRender])
 
   return [
     <Modal
