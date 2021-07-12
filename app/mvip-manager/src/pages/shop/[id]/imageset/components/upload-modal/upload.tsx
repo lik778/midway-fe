@@ -24,11 +24,12 @@ export interface UploadItem extends UploadFile {
 }
 
 type Props = {
+  maxCount?: number;
   // 上传后钩子函数
   afterUploadHook?: (item: UploadItem, update: Function) => Promise<UploadItem>;
 }
 export function useUpload(props: Props) {
-  const { afterUploadHook } = props
+  const { maxCount = 15, afterUploadHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
 
   // 增加一项
@@ -94,6 +95,7 @@ export function useUpload(props: Props) {
       fileList={lists}
       showUploadList={false}
       onChange={handleChange}
+      maxCount={maxCount}
     ><div></div></Upload>,
     lists,
     setLists,

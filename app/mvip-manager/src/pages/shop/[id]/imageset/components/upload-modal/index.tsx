@@ -10,7 +10,7 @@ import { AlbumItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
-const MAX_UPLOAD_COUNT = 30
+const MAX_UPLOAD_COUNT = 15
 
 // 保存 UploadItem 和 上传结果的关系
 type UploadResMap = {
@@ -46,6 +46,7 @@ export function useUploadModal(props: Props) {
 
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
+    maxCount: 15,
     afterUploadHook,
   })
 
@@ -198,6 +199,8 @@ export function useUploadModal(props: Props) {
     )
   }), [lists, uploadedLists, reRender])
 
+  const showUploadBtn = (lists.length < MAX_UPLOAD_COUNT) && canUpload
+
   return [
     <Modal
       wrapClassName="upload-modal"
@@ -218,12 +221,10 @@ export function useUploadModal(props: Props) {
       {/* Container */}
       <div className={styles['upload-lists']}>
         {renderLists()}
-        {(lists.length < MAX_UPLOAD_COUNT) && canUpload && (
-          <div className={styles["upload-add"]}>
-            <PlusOutlined />
-            {$uploader}
-          </div>
-        )}
+        <div className={styles["upload-add"] + ' ' + (!showUploadBtn ? styles['hidden'] : '')}>
+          <PlusOutlined />
+          {$uploader}
+        </div>
       </div>
 
       {/* Tips */}
