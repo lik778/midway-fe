@@ -6,7 +6,7 @@ import { createImagesetImage, delImagesetImage } from '@/api/shop'
 import { useAlbumSelector } from '../album-selector'
 import { useUpload, UploadItem } from './upload'
 
-import { AlbumItem, TabScopeItem } from "@/interfaces/shop";
+import { AlbumNameListItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
@@ -23,7 +23,7 @@ type UploadResMap = {
 type Props = {
   shopId: number;
   curScope?: TabScopeItem;
-  allAlbumLists: AlbumItem[]
+  allAlbumLists: AlbumNameListItem[]
   refresh: () => void;
 }
 
@@ -147,7 +147,7 @@ export function useUploadModal(props: Props) {
   const showActions = lists.length > 0
 
   // 渲染上传列表
-  // TODO 样式问题
+  // TODO REFACTOR 样式
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { uid, percent, preview, error } = item
     const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)

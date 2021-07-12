@@ -13,7 +13,7 @@ import { successMessage, errorMessage } from "@/components/message";
 import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage, createImagesetAlbum } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop";
+import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop";
 
 import styles from "./index.less";
 
@@ -28,7 +28,7 @@ interface CardsProps {
   curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
-  allAlbumLists: AlbumItem[];
+  allAlbumLists: AlbumNameListItem[];
   loading: boolean;
   refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;

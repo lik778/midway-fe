@@ -13,7 +13,7 @@ import { getImagesetImage, getImagesetAlbum } from '@/api/shop'
 import usePrevious from './hooks/previous';
 import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
-import { useAllAlbumLists } from './hooks/albums'
+import useAllAlbumNames from './hooks/album-names'
 
 import { ShopModuleType } from "@/enums";
 import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop";
@@ -57,7 +57,7 @@ const ShopArticlePage = (props: any) => {
     pageSizeOptions: ['8', '16', '32']
   })
   const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
-  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumLists(shopId)
+  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames(shopId)
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
   const [selection, setSelection, select, unselect] = useSelection({
@@ -69,8 +69,7 @@ const ShopArticlePage = (props: any) => {
     if (curScope) {
       setSelection([])
       resetPagi()
-      // FIXME 请求两次问题
-      refresh()
+      // refresh()
     }
   }, [curScope])
 
@@ -217,9 +216,12 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
     setLoading(true)
     // FIXME type
     fetchMethod(shopId, query)
-      .then(([result, total]) => {
-        setLists(result.filter(notNull))
-        setTotal(total)
+      .then(res => {
+        if (res) {
+          const [result, total] = res
+          setLists(result ? result.filter(notNull) : [])
+          setTotal(total || 0)
+        }
       })
       .catch(error => {
         console.error(error)

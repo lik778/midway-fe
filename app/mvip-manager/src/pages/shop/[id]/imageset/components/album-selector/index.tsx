@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Select } from "antd";
 
-import { AlbumItem } from "@/interfaces/shop";
+import { AlbumNameListItem } from "@/interfaces/shop";
 
 interface Props {
-  allAlbumLists: AlbumItem[];
+  allAlbumLists: AlbumNameListItem[];
 }
 export function useAlbumSelector(props: Props) {
   const { allAlbumLists } = props
-  const [select, setSelect] = useState<AlbumItem | undefined>(undefined);
+  const [select, setSelect] = useState<AlbumNameListItem | undefined>(undefined);
 
   const handleSelectAlbum = (id?: number) => {
-    const target = allAlbumLists.find((x: AlbumItem) => x.id === id)
+    const target = allAlbumLists.find((x: AlbumNameListItem) => x.id === id)
     if (target) {
       setSelect(target)
     } else {
@@ -27,7 +27,7 @@ export function useAlbumSelector(props: Props) {
       value={select ? select.id : undefined}
       onChange={(val: number) => handleSelectAlbum(val)}
     >
-      {allAlbumLists.map((x: AlbumItem) => {
+      {allAlbumLists.map((x: AlbumNameListItem) => {
         return <Select.Option value={x.id}>{x.name}</Select.Option>
       })}
     </Select>,
