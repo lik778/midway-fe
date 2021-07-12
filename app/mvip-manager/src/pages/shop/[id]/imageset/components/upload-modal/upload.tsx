@@ -31,28 +31,6 @@ export function useUpload(props: Props) {
   const { afterUploadHook, afterRemoveHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
 
-  // ? 竞争
-  const handleChange = useCallback(async (e: any) => {
-    const { uid, status } = e.file
-
-    // 读取到图片的预览地址
-    if (status === 'done') {
-      if (e.file && !(e.file.preview)) {
-        e.file.preview = await getBase64(e.file.originFileObj)
-      }
-      if (afterUploadHook) {
-        await afterUploadHook(e.file)
-      }
-    }
-    if (status === 'removed') {
-      if (afterRemoveHook) {
-        await (afterRemoveHook(e.file))
-      }
-    }
-
-    setLists(e.fileList)
-  }, [lists])
-
   // 增加一项
   const add = useCallback((item: UploadItem) => {
     console.log('TODO ?')
@@ -80,6 +58,28 @@ export function useUpload(props: Props) {
     } else {
       console.warn('[WARN] remove item not found', item, lists)
     }
+  }, [lists])
+
+  const handleChange = useCallback(async (e: any) => {
+    const { uid, status } = e.file
+
+    // 读取到图片的预览地址
+    if (status === 'done') {
+      if (e.file && !(e.file.preview)) {
+        await new Promise(resolve => setTimeout(resolve, (~~(Math.random() * 5 + 5)) * 1000))
+        e.file.preview = await getBase64(e.file.originFileObj)
+      }
+      if (afterUploadHook) {
+        await afterUploadHook(e.file)
+      }
+    }
+    if (status === 'removed') {
+      if (afterRemoveHook) {
+        await (afterRemoveHook(e.file))
+      }
+    }
+
+    setLists(e.fileList)
   }, [lists])
 
   return [
