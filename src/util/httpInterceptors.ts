@@ -21,8 +21,13 @@ export class UserGuard implements CanActivate {
         }
         const res = context.switchToHttp().getResponse();
         const host = this.configService.get('services.midway-service.host');
-        const data = await this.requestService.post(`${host}/api/midway/internal/waf/analytics`, params, { 'content-type': 'application/json','x-api-secret': apiSecret })
-        const { code, data: { captchaHtml, bot }} = data
+        const { code, data: { captchaHtml, bot }} =  await this.requestService.post(
+            `${host}/api/midway/internal/waf/analytics`, 
+            params, 
+            { 'content-type': 'application/json',
+            'x-api-secret': apiSecret },
+            { timeout: 200}
+        )
         if(code === 200){
             if(bot){
                 res.setHeader('Content-Type', 'text/html');

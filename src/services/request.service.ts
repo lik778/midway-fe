@@ -1,5 +1,5 @@
-import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
-import { AxiosError, AxiosResponse } from 'axios';
+import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { LogService } from './log.service';
 import { PageException } from '../exceptions/page.exception';
 import { ApiException } from '../exceptions/api.exception';
@@ -34,9 +34,9 @@ export class RequestService {
       })
   }
 
-  public post(url: string, data: any, headers?: any): Promise<any>  {
-    return new Promise((resolve, reject) => {      
-      this.httpService.post(url, data, { headers }).toPromise().then((res: AxiosResponse) => {
+  public post(url: string, data: any, headers?: any, config?: AxiosRequestConfig): Promise<any>  {
+    return new Promise((resolve, reject) => {       
+      this.httpService.post(url, data, { ...headers, ...config }).toPromise().then((res: AxiosResponse) => {
         resolve(res.data) }).catch((err: AxiosError) =>reject(err)) })
       .catch((err) => {
         this.logService.errorLog(err)
