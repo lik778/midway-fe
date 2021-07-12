@@ -7,13 +7,13 @@ import { UploadFile } from 'antd/lib/upload/interface';
 
 const ModalFooter: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { fileList, localFileList, initConfig: { maxLength }, handleChangeLocalFileList, handleChangeFileList, handleChangeAlbumVisible } = context
+  const { fileList, localFileList, initConfig: { maxLength }, handleChangeLocalFileList, handleChangeFileList, handleChangeAlbumVisible, handlePreview } = context
   const empty = useMemo(() => {
     return Array.from({ length: maxLength - localFileList.length })
   }, [localFileList, maxLength])
 
-  const handleDel = (file: UploadFile) => {
-    handleChangeLocalFileList(localFileList.filter(item => item.uid !== file.uid))
+  const handleDel = (fileIndex: number) => {
+    handleChangeLocalFileList(localFileList.filter((_item, index) => index !== fileIndex))
   }
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
@@ -41,15 +41,19 @@ const ModalFooter: FC = () => {
     handleChangeAlbumVisible(false)
   }
 
+  const handleDoubleClick = (item: UploadFile) => {
+    handlePreview(item)
+  }
+
   return <div className={styles['modal-footer']}>
     <div className={styles['tip']}>
       您一共选择了 <span className={styles['num']}>{localFileList.length}</span> 张图片<span className={styles['ps']}>（最多可添加<span>{maxLength}</span>张图片，支持鼠标拖拽排序）</span>
     </div>
     <div className={styles['line']}>
       {
-        localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={item.uid}>
-          <img className={styles['img']} src={item.preview} draggable={false} ></img>
-          <div className={styles['delete']} onClick={() => handleDel(item)}>
+        localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={`${item.uid}-${index}`}>
+          <img className={styles['img']} src={item.preview} draggable={false} onDoubleClick={() => handleDoubleClick(item)}></img>
+          <div className={styles['delete']} onClick={() => handleDel(index)}>
             <DeleteOutlined style={{
               color: '#fff'
             }} />
