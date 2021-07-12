@@ -37,7 +37,7 @@ export interface ImgUploadProps {
    * @param file 触发本次修改的值
    * @param fileList 当前文件列表
    */
-  onChange?(values: string | string[], file: UploadFile | null, fileList: UploadFile[], oldFileList: UploadFile[]): void;
+  onChange?(values: string | string[], fileList: UploadFile[], oldFileList: UploadFile[]): void;
   [key: string]: any
 }
 
