@@ -74,7 +74,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
           const deleteFn = isScopeAlbum
             ? delImagesetAlbum
             : delImagesetImage
-          const query = isScopeAlbum
+          const query: any = isScopeAlbum
             ? [...selection]
             : { ids: [...selection], mediaCateId: curScope?.item?.id }
           deleteFn(shopId, query)
