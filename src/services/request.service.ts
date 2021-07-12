@@ -35,8 +35,9 @@ export class RequestService {
   }
 
   public post(url: string, data: any, headers?: any, config?: AxiosRequestConfig): Promise<any>  {
+    const options = config ? { headers, timeout: config.timeout } : { headers }
     return new Promise((resolve, reject) => {       
-      this.httpService.post(url, data, { ...headers, ...config }).toPromise().then((res: AxiosResponse) => {
+      this.httpService.post(url, data, options).toPromise().then((res: AxiosResponse) => {
         resolve(res.data) }).catch((err: AxiosError) =>reject(err)) })
       .catch((err) => {
         this.logService.errorLog(err)

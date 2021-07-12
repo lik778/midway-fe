@@ -27,7 +27,7 @@ export class UserGuard implements CanActivate {
                 params, 
                 { 'content-type': 'application/json',
                 'x-api-secret': apiSecret },
-                { timeout: 5}
+                { timeout: 200}
             )
             if(code === 200){
                 if(bot){
@@ -41,8 +41,10 @@ export class UserGuard implements CanActivate {
                 return true
             }  
         } catch (error) {
+            console.log(error)
             return true
         } finally {
+            console.log('error')
             return true 
         }
     }
