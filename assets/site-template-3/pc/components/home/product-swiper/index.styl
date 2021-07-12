@@ -2,87 +2,45 @@
   width 1220px
   margin 0 auto 80px
   position relative
-  .swiper-wrapper
-    height auto
-  .products
-    height 319px
-    a.product
-      display block
-      width 290px
-      float left
-      margin-right 20px
-      &:nth-child(4n)
-        margin-right 0
-      img
-        width 100%
-        height 193px !important
-      .product-desc
-        height 126px !important
-        width 100%
-        height 110px
-        background-color #F7F7F7
+  overflow hidden
+  a.product
+    display block
+    width 290px
+    float left
+    margin 0 20px 20px 0
+    &:nth-child(4n)
+      margin-right 0
+    img
+      width 100%
+      height 193px !important
+    .product-desc
+      height 126px !important
+      width 100%
+      height 110px
+      background-color #F7F7F7
+      text-align center
+      position relative
+      p
+        font-size 16px
+        padding 22px 10px
+        color #666
+      .vad-btn
+        width 116px
+        height 40px
+        border 1px solid $color-main
+        border-radius 20px
         text-align center
-        position relative
+        line-height 40px
+        position absolute
+        left 50%
+        margin-left -58px
+        bottom 25px
+        color $color-main
+    &:hover
+      .product-desc
+        background-color $color-main
         p
-          font-size 16px
-          padding 22px 10px
-          color #666
+          color #fff
         .vad-btn
-          width 116px
-          height 40px
-          border 1px solid $color-main
-          border-radius 20px
-          text-align center
-          line-height 40px
-          position absolute
-          left 50%
-          margin-left -58px
-          bottom 25px
-          color $color-main
-      &:hover
-        .product-desc
-          background-color $color-main
-          p
-            color #fff
-          .vad-btn
-            background-color #fff
+          background-color #fff
 
-  //.swiper-button-prev,
-  //.swiper-button-next
-  //  right -5%
-  //  width 40px
-  //  height 40px
-  //  background url(//file.baixing.net/202105/d5dd1d1a4af4c0a8900eb97f6c185cfe.png) no-repeat center center/100%
-  //  outline none
-
-  //.swiper-button-prev
-  //  left -5%
-  //  background url(//file.baixing.net/202105/d5dd1d1a4af4c0a8900eb97f6c185cfe.png) no-repeat center center/100%
-  //  transform rotate(180deg)
-
-  //.swiper-button-prev.swiper-button-disabled
-  //  background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
-  //  transform rotate(0)
-
-  //.swiper-button-next.swiper-button-disabled
-  //  background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
-  //  transform rotate(180deg)
-
-  .swiper-button-prev
-    left -5%
-    width 40px
-    height 40px
-    background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
-    &:hover
-      background url(//file.baixing.net/202105/d5dd1d1a4af4c0a8900eb97f6c185cfe.png) no-repeat center center/100%
-      transform rotate(180deg)
-
-  .swiper-button-next
-    right -5%
-    width 40px
-    height 40px
-    background url(//file.baixing.net/202105/9e94b8e9da48a792f4908e4847aa20ba.png) no-repeat center center/100%
-    transform rotate(180deg)
-    &:hover
-      background url(//file.baixing.net/202105/d5dd1d1a4af4c0a8900eb97f6c185cfe.png) no-repeat center center/100%
-      transform rotate(0)

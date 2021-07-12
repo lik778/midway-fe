@@ -9,7 +9,6 @@ import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../consta
 
 //模板页面基础控制器，进行数据请求和打点
 export class BaseSiteController {
-  private whiteList: string[] = ['baomuyuesao', 'zhongheruijia', 'jikang', 'weichai', 'ndjx', 'hnfjhbsb']
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
     protected domainType: DomainTypeEnum) { }
