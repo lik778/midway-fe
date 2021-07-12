@@ -59,6 +59,12 @@ html
             } else {
                 window.isSem =  '';
             }
+            let isCn = '#{ isCn }';
+            if(isCn){
+                window.isCn = isCn
+            } else {
+                window.isCn =  '';
+            }
         include ../../vendor/baidutongji.pug
         //-TODO:开发阶段先注释掉
         include ../../vendor/53kf.pug
