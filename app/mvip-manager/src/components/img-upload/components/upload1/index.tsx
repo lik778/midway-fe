@@ -22,21 +22,22 @@ const Upload1: FC = () => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg';
     if (!isJpgOrPng) {
       errorMessage('请上传jpg、jpeg、png格式的图片');
+      return false
     }
     const overrun = file.size / 1024 / 1024 < maxSize;
-    if (!overrun && isJpgOrPng) {
+    if (!overrun) {
       errorMessage(`请上传不超过${maxSize}M的图片`);
+      return false
     }
     if (uploadBeforeCrop) {
       setCropItem(file)
       return false
     }
-    return isJpgOrPng && overrun;
+    return isJpgOrPng && overrun && !uploadBeforeCrop;
   }
 
   const handleChange = async (e: any) => {
     if (!!e.file.status) {
-      console.log(e.file)
       if (e.file.status === 'done') {
         const nowFileList = e.fileList.map((item: any) => {
           if (item.url) {

@@ -71,11 +71,13 @@ export default (props: Props) => {
       // weight 字段越大排序越靠后
       weight: maxWeight
     })
+    setUpDataLoading(false)
     if (res.success) {
+      return res.data
     } else {
       errorMessage(`上传失败: ${res.message}`)
+      return null
     }
-    setUpDataLoading(false)
   }
 
   const deleteBannerImg = async (id: number) => {
@@ -86,6 +88,7 @@ export default (props: Props) => {
       errorMessage(`上传失败: ${res.message}`)
     }
     setUpDataLoading(false)
+    return null
   }
 
   // 改变轮播图顺序
@@ -96,36 +99,46 @@ export default (props: Props) => {
     setUpDataLoading(false)
   }
 
-  // 目前受控数据每次变动的范围只有一个子项（新增或删除），
-  // 图片裁剪也是只改了一个子项（新增且删除），
-  // 后期如果 img-upload API 变动，这个地方需要重新确认，
-  // 比如涉及到多图片上传时的交互，部分失败的情况
-  const handleChange = async (values: string | string[], file: UploadFile<any> | null, fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
+  // 目前可以同时操纵多个图片 可同时新增删除
+
+  const handleChange = async (values: string | string[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
+    // oldFileList 对应bannerLiet的文件 ，且顺序相同。
+    // 找到fileList与oldFileList的交集a。
+    // 维持localValues的顺序等于values，并将已有的id记录在localValues里
+    // 删除oldFileList中不存在于a的项
+    // 新增localValues中不存在id的项
+
     // 这里是因为图片组件的values传值问题
-    let localValues = []
+    let localValues: { id?: number, url: string }[] = []
     if (typeof values === 'string') {
       if (values.length !== 0) {
-        localValues.push(values)
+        localValues.push({
+          url: values,
+        })
       }
     } else {
-      localValues = values
+      localValues = values.map(item => ({
+        url: item
+      }))
     }
-    const type = fileList.length > oldFileList.length ? 'add' : fileList.length === oldFileList.length ? 'crop' : 'delete'
-    console.log(file, fileList, oldFileList)
-    if (type === 'add') {
-      // 新增情况下肯定有值
-      const addIndex = fileList.findIndex(item => item.uid === file!.uid)
-      await createBannerImg(localValues[addIndex])
-      await getBannerList()
-    } else if (type === 'crop') {
-      const actionIndex = oldFileList.findIndex(item => item.uid === file!.uid)
-      await Promise.all([deleteBannerImg(bannerList[actionIndex].id), createBannerImg(localValues[actionIndex], bannerList[actionIndex].weight)])
-      await getBannerList()
-    } else {
-      const deleteIndex = oldFileList.findIndex(item => item.uid === file!.uid)
-      await deleteBannerImg(bannerList[deleteIndex].id)
-      await getBannerList()
-    }
+    const localBannerList = [...bannerList]
+    localValues.forEach(item => {
+      const index = localBannerList.findIndex(oItem => oItem.displayImgUrl === item.url)
+      if (index !== -1) {
+        const dItem = localBannerList.splice(index, 1)[0]
+        item.id = dItem.id
+      }
+    })
+    // 这里的ids会混入删除接口传进来的空，所以下面要过滤
+    const ids = await Promise.all([...localValues.map(item => {
+      if (item.id) {
+        return Promise.resolve(item.id)
+      } else {
+        return createBannerImg(item.url)
+      }
+    }), ...localBannerList.map(item => deleteBannerImg(item.id))])
+    await handleOrdersChange(ids.filter(item => typeof item === 'number') as number[])
+    await getBannerList()
   }
 
   const handleMove = useCallback(async (file: UploadFile, fileList: UploadFile[], order: number) => {
@@ -166,25 +179,27 @@ export default (props: Props) => {
   return (
     <div className={styles['carousel-img']} >
       <div className={styles["title"]}>{txt}: </div>
-      <div className={styles["content"]}>
-        <p className={`${styles['tip']} ${styles['red-tip']}`}>
-          严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担
+      <Spin spinning={upDataLoading || getDataLoading}>
+        <div className={styles["content"]}>
+          <p className={`${styles['tip']} ${styles['red-tip']}`}>
+            严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担
         </p>
-        <p className={styles["tip"]}>{tip}</p>
-        <Spin spinning={upDataLoading || getDataLoading}>
-          <ImgUpload
-            uploadType={2}
-            editData={editData}
-            uploadBtnText="上传图片"
-            maxSize={3}
-            maxLength={5}
-            aspectRatio={aspectRatio}
-            cropProps={{ aspectRatio }}
-            actionBtn={renderIcons}
-            onChange={handleChange}
-          />
-        </Spin>
-      </div>
+          <p className={styles["tip"]}>{tip}</p>
+          <div className={styles['upload-container']}>
+            <ImgUpload
+              uploadType={2}
+              editData={editData}
+              uploadBtnText="上传图片"
+              maxSize={3}
+              maxLength={5}
+              aspectRatio={aspectRatio}
+              cropProps={{ aspectRatio }}
+              actionBtn={renderIcons}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+      </Spin>
     </div >
   );
 }

@@ -67,7 +67,7 @@ export const changeBannerOrderApi = (shopId: number, ids: number[]) => {
 }
 
 // 创建banner
-export const createBannerApi = (shopId: number, params: ImgItemParam) => {
+export const createBannerApi = (shopId: number, params: ImgItemParam): ShopAPIReturn<number> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/banner/create', params, setShopHeader(shopId))
 }
 

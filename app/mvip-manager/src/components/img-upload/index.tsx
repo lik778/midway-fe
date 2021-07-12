@@ -70,19 +70,19 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   }
 
   // 包装一下setFileList函数，需要触发onChange时调用 做一下图片处理
-  const decorateSetFileList = useCallback(async (fileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => {
+  const decorateSetFileList = useCallback(async (fileList: UploadFile[], oldFileList: UploadFile[]) => {
     const newFileList = await createFileList(fileList)
     if (!onChange) return
     //  这里用嵌套if是为了理解简单
     if (newFileList.length === 0) {
-      onChange('', file, fileList, oldFileList);
+      onChange('', fileList, oldFileList);
     } else if (newFileList.length === 1) {
       if (newFileList[0].url) {
-        onChange(getUrl(newFileList[0].url!), file, newFileList, oldFileList);
+        onChange(getUrl(newFileList[0].url!), newFileList, oldFileList);
       }
     } else {
       if (newFileList.every(item => item.url)) {
-        onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)), file, newFileList, oldFileList);
+        onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)), newFileList, oldFileList);
       }
     }
   }, [onChange])
@@ -145,7 +145,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // 弹窗模式需要获取店铺列表
   // 不放到albumVisible===true时是因为避免这个事情
   useEffect(() => {
-    if (uploadType === 2 && !loadingShopModel) {
+    if (uploadType === 2) {
       getShopList()
     }
   }, [])
@@ -186,7 +186,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // 删除
   const handleRemove = (file: UploadFile) => {
     const nowFileList = fileList.filter(item => item.uid !== file.uid)
-    decorateSetFileList(nowFileList, [...fileList], file)
+    decorateSetFileList(nowFileList, [...fileList])
   }
 
   // 裁剪
@@ -227,7 +227,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       })
     }
     //  这里file的寻找用|| 是因为 当时上传前裁剪的话，将文件id作为图片的uid使用，保证唯一性
-    decorateSetFileList(nowFileList, fileList, nowFileList.find(item => cropItem?.uid === item.uid || uid === item.uid)!)
+    decorateSetFileList(nowFileList, fileList)
     handleCropClose()
   }
 

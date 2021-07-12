@@ -72,5 +72,6 @@ export interface ImagesItem {
   maxLength?: number
   aspectRatio?: number// 图片显示块的大小
   showUploadList?: ExpandShowUploadListInterface,
-  cropProps: CropProps
+  cropProps: CropProps,
+  uploadBeforeCrop?: boolean,// 上传前裁剪
 }
