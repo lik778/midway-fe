@@ -23,7 +23,7 @@ export class UserGuard implements CanActivate {
         const host = this.configService.get('services.midway-service.host');
         const data = await this.requestService.post(`${host}/api/midway/internal/waf/analytics`, params, { 'content-type': 'application/json','x-api-secret': apiSecret })
         const { code, data: { captchaHtml, bot }} = data
-        console.log('datadata', data)
+        if(code === 200){
             if(bot){
                 res.setHeader('Content-Type', 'text/html');
                 res.send(captchaHtml);
@@ -31,5 +31,8 @@ export class UserGuard implements CanActivate {
             }else{
                 return true
             }
+        }else{
+            return true
+        }
     }
 }

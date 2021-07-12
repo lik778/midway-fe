@@ -34,10 +34,7 @@ import { SemController } from './controllers/sem.controller'
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config]
-    }), HttpModule.register({
-      timeout: 5,
-      maxRedirects: 5,
-    })],
+    }), HttpModule],
   controllers: [
     AppController,
     AdminController,
