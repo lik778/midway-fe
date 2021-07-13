@@ -41,7 +41,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(...exceptionFilters);
 
-  await app.listen(PORT);
+  await app.listen(PORT, '0.0.0.0');
 }
 
 bootstrap();
