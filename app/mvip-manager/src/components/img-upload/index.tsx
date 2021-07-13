@@ -286,7 +286,9 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
         width={800}
         visible={previewVisible}
         onOk={handlePreviewCancel}
-        onCancel={handlePreviewCancel}>
+        onCancel={handlePreviewCancel}
+        footer={null}
+      >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
       <Modal
