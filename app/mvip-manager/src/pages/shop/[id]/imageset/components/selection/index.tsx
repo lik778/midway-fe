@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Button, Checkbox, Modal } from "antd";
 
 import { successMessage, errorMessage } from "@/components/message";
@@ -24,17 +24,22 @@ interface SelectionBlockProps {
 export default function SelectionBlock(props: SelectionBlockProps) {
   const { shopId, total, selection, lists, isScopeAlbum, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
+  // 不包含默认相册的列表项目的 ID
+  const ids = useMemo(() => {
+    const all = isScopeAlbum
+      ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
+      : lists.map(x => x.id)
+    return all
+  }, [lists, isScopeAlbum])
+
   /* 控制全选框的样式 */
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
   useEffect(() => {
     // 选中时排除默认相册
-    const all = isScopeAlbum
-      ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
-      : lists.map(x => x.id)
-    const allChecked = all.every(id => selection.includes(id))
-    const noChecked = all.every(id => !selection.includes(id))
-    if (allChecked && lists.length > 0) {
+    const allChecked = ids.every(id => selection.includes(id))
+    const noChecked = ids.every(id => !selection.includes(id))
+    if (allChecked && ids.length > 0) {
       setChecked(true)
       setIndeterminate(false)
     } else if (noChecked) {
@@ -44,21 +49,18 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       // partial selected
       setIndeterminate(true)
     }
-  }, [selection, lists, isScopeAlbum])
+  }, [selection, ids])
 
   // 全选/取消全选
   const checkAll = useCallback((e: any) => {
     e.stopPropagation()
     const isCheck = e.target.checked
     if (isCheck) {
-      const all = isScopeAlbum
-        ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
-        : lists.map(x => x.id)
-      select(all)
+      select(ids)
     } else {
-      unselect(lists.map(x => x.id))
+      unselect(ids)
     }
-  }, [isScopeAlbum, lists])
+  }, [ids])
 
   // 批量删除卡片
   const deleteSelectionCards = useCallback((e: any) => {
