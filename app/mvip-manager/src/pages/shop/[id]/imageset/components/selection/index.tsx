@@ -47,7 +47,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   }, [selection, lists, isScopeAlbum])
 
   // 全选/取消全选
-  const checkAll = (e: any) => {
+  const checkAll = useCallback((e: any) => {
     e.stopPropagation()
     const isCheck = e.target.checked
     if (isCheck) {
@@ -58,7 +58,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
     } else {
       unselect(lists.map(x => x.id))
     }
-  }
+  }, [isScopeAlbum, lists])
 
   // 批量删除卡片
   const deleteSelectionCards = useCallback((e: any) => {
