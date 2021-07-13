@@ -27,10 +27,11 @@ export function useCreateAlbumModal(props: Props) {
   const [loading, setLoading] = useState(false);
 
   // 打开模态框
-  const openModal = async (album?: AlbumItem): Promise<boolean> => {
+  const openModal = useCallback(async (album?: AlbumItem): Promise<boolean> => {
     if (album) {
       const { id, name } = album
-      setDefaultVals({ id, name })
+      const defaultVals = { id, name }
+      setDefaultVals(defaultVals)
       form.setFieldsValue(defaultVals)
       setIsEditing(true)
     } else {
@@ -40,11 +41,12 @@ export function useCreateAlbumModal(props: Props) {
     return await new Promise(resolve => {
       createAlbumResover = resolve
     })
-  }
+  }, [defaultVals, form])
 
   const closeModal = () => {
     createAlbumResover && createAlbumResover(false)
     setVisible(false)
+    form.resetFields()
   }
 
   /***************************************************** Actions */
