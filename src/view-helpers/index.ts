@@ -11,8 +11,8 @@ export const useScriptFallback = true
 const cdnPath = config().cdnPath
 const host = config().fuwu
 const fallbackSource = fs.readFileSync(join(__dirname, './simple-resouce-reload.js'), { encoding: 'utf-8' })
-  .replace(/('|")CDN_PATH('|")/, cdnPath)
-  .replace(/('|")SOURCE_PATH('|")/, host)
+  .replace(/('|")CDN_PATH('|")/, `"${cdnPath}"`)
+  .replace(/('|")SOURCE_PATH('|")/, `"${host}"`)
 // fs.writeFileSync(join(__dirname, './testfile.txt'), 'utf-8')
 const fallbackFnInject = useScriptFallback
   ? `<style>\n${fallbackSource}\n</style>`
