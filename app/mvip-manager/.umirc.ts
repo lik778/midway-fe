@@ -12,8 +12,7 @@ export default defineConfig({
   define: {
     CUR_ENV: process.env.ENV
   },
-  // publicPath: process.env.ENV === 'production' ? '//yxt.baixing.net/assets/' : '/assets/',
-  publicPath: '/assets/',
+  publicPath: process.env.ENV === 'production' ? '//yxt.baixing.net/assets/' : '/assets/',
   "proxy": {
     "/management/api": {
       "target": "http://localhost:7001",

@@ -5,11 +5,25 @@ import * as util from './util';
 import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
 
+/* CDN 资源加载出错时的简单回退至加载源站 */
+const prefix = config().cdnPath
+const host = config().fuwu
+export const useScriptFallback = true
+const scriptTagFallbackProps = useScriptFallback
+  ? (clsName: string) => `class="${clsName}" onerror="simpleResourceReload('${clsName}')"`
+  : () => ''
+const scriptFallbackFunction = fs.readFileSync(join(__dirname, './simple-resouce-reload'), { encoding: 'utf-8' })
+  .replace(/('|")PREFIX('|")/, prefix)
+  .replace(/('|")PREFIX_SOURCE('|")/, host)
+const scriptFallbackFunctionContents = useScriptFallback
+  ? `<style>\n${scriptFallbackFunction}\n</style>`
+  : ''
+
 export default {
   combine: function (text, options) {
     const { fileName } = options
     const handleArr = Array.isArray(fileName) ? [...fileName] : [fileName]
-    let retAssets = ''
+    let retAssets = `${scriptFallbackFunctionContents}`
     if (handleArr.length === 0) return ''
     handleArr.forEach(item => {
       const name = item.split('.')[0]
@@ -17,16 +31,12 @@ export default {
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
       const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-      // if (suffix === 'css') {
-      //   retAssets += `<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}"/>`
-      // } else if (suffix === 'js') {
-      //   retAssets += `<script src="${cdnPath}/assets/${assetsName}"></script>`
-      // }
-
+      
       if (suffix === 'css') {
-        retAssets += `<link rel="stylesheet" href="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"/>`
-      } else if (suffix === 'js') {
-        retAssets += `<script src="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"></script>`
+        retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" ${scriptTagFallbackProps('main-css')} />`
+      }
+      if (suffix === 'js') {
+        retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" ${scriptTagFallbackProps('main-js')}></script>`
       }
     })
     return retAssets
