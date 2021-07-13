@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { RequestService } from './request.service';
 import { SemPageHeaderParams, HeaderAuthParams, ServiceResponse, ShopComponents } from '../interface';
 import { LogService } from './log.service';
-import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
 
 @Injectable()
 export class SemApiService {
@@ -75,6 +75,7 @@ export class SemApiService {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
+      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }
