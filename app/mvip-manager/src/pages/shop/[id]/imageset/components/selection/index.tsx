@@ -51,7 +51,10 @@ export default function SelectionBlock(props: SelectionBlockProps) {
     e.stopPropagation()
     const isCheck = e.target.checked
     if (isCheck) {
-      select(lists.map(x => x.id))
+      const all = isScopeAlbum
+        ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
+        : lists.map(x => x.id)
+      select(all)
     } else {
       unselect(lists.map(x => x.id))
     }
