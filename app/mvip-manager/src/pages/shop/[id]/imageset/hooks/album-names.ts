@@ -18,19 +18,15 @@ function useAlbumLists(shopId: number, query: any = {}) {
     if (!shopId) {
       return
     }
-    // REFACTOR 调用获取 AlbumList 接口时，后端判断如果没有默认相册则会创建默认相册，
-    // 所以获取所有 AlbumListOptions 时，需要和页面的获取列表接口错开时间
-    setTimeout(() => {
-      fetchAlbumNameLists(shopId, query)
-        .then(([result, total]) => {
-          // console.log(result, total, pagination, requestTime)
-          setLists(result.filter(notNull))
-          setTotal(total)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }, 2000)
+    fetchAlbumNameLists(shopId)
+      .then(([result, total]) => {
+        // console.log(result, total, pagination, requestTime)
+        setLists(result.filter(notNull))
+        setTotal(total)
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }, [shopId, query, requestTime])
 
   return [lists, total, refresh, setLists, setTotal] as const

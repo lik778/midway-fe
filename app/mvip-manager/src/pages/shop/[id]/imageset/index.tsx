@@ -58,8 +58,39 @@ const ShopArticlePage = (props: any) => {
   })
   const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
   const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames(shopId)
+  // TODO fix type
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
+
+  // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
+  // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
+  // 请求时间指数避退
+  useEffect(() => {
+    // @ts-ignore
+    const canRefresh = lists.length === 0 && allAlbumLists.length > 0
+    if (canRefresh) {
+      // @ts-ignore
+      window._mvip_imageset_ticktime = window._mvip_imageset_ticktime || 500
+      // @ts-ignore
+      if (window._mvip_imageset_ticktime < 5 * 1000) {
+        // @ts-ignore
+        if (window._mvip_imageset_tick) {
+          // @ts-ignore
+          window.clearTimeout(window._mvip_imageset_tick)
+        }
+        // @ts-ignore
+        window._mvip_imageset_tick = setTimeout(() => {
+          // @ts-ignore
+          window._mvip_imageset_ticktime = window._mvip_imageset_ticktime * 2
+          refresh()
+        // @ts-ignore
+      }, window._mvip_imageset_ticktime)
+      }
+    }
+    // @ts-ignore
+    return () => window.clearTimeout(window._mvip_imageset_tick)
+  }, [lists, allAlbumLists])
+
   const [selection, setSelection, select, unselect] = useSelection({
     excludeFn: x => defaultAlbumIDs.includes(x)
   })
@@ -69,7 +100,6 @@ const ShopArticlePage = (props: any) => {
     if (curScope) {
       setSelection([])
       resetPagi()
-      // refresh()
     }
   }, [curScope])
 
@@ -219,7 +249,8 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
       .then(res => {
         if (res) {
           const [result, total] = res
-          setLists(result ? result.filter(notNull) : [])
+          const lists = (result || []).filter(notNull)
+          setLists(lists)
           setTotal(total || 0)
         }
       })
