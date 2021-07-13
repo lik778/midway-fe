@@ -112,7 +112,8 @@ export function useCreateAlbumModal(props: Props) {
           name="name"
           label="相册名称"
           rules={[
-            { pattern: /^[\s\S]{2,20}$/, message: "字数限制为 2～20 个字符" },
+            { pattern: /^[\s\S]{2,20}$/, message: "相册名称限制为 2～20 个字符" },
+            { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]+$/, message: '相册名称不允许有特殊字符' }
           ]}
         >
           <Input placeholder="请输入相册名称" />
@@ -120,7 +121,7 @@ export function useCreateAlbumModal(props: Props) {
       </Form>
       <div className={styles["extra"]}>
         <div className={styles["name-tip"]}>
-          注：可填写2~30个字符，支持中、英文，请不要填写特殊符号
+          注：可填写2~20个字符，支持中、英文，请不要填写特殊符号
         </div>
         <Button
           className={styles["confirm-btn"]}
