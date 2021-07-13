@@ -6,24 +6,23 @@ import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
 
 /* CDN 资源加载出错时的简单回退至加载源站 */
-const prefix = config().cdnPath
-const host = config().fuwu
+
 export const useScriptFallback = true
-const scriptTagFallbackProps = useScriptFallback
-  ? (clsName: string) => `class="${clsName}" onerror="simpleResourceReload('${clsName}')"`
-  : () => ''
-const scriptFallbackFunction = fs.readFileSync(join(__dirname, './simple-resouce-reload'), { encoding: 'utf-8' })
-  .replace(/('|")PREFIX('|")/, prefix)
-  .replace(/('|")PREFIX_SOURCE('|")/, host)
-const scriptFallbackFunctionContents = useScriptFallback
-  ? `<style>\n${scriptFallbackFunction}\n</style>`
+const cdnPath = config().cdnPath
+const host = config().fuwu
+const fallbackSource = fs.readFileSync(join(__dirname, './simple-resouce-reload.js'), { encoding: 'utf-8' })
+  .replace(/('|")CDN_PATH('|")/, cdnPath)
+  .replace(/('|")SOURCE_PATH('|")/, host)
+// fs.writeFileSync(join(__dirname, './testfile.txt'), 'utf-8')
+const fallbackFnInject = useScriptFallback
+  ? `<style>\n${fallbackSource}\n</style>`
   : ''
 
 export default {
   combine: function (text, options) {
     const { fileName } = options
     const handleArr = Array.isArray(fileName) ? [...fileName] : [fileName]
-    let retAssets = `${scriptFallbackFunctionContents}`
+    let retAssets = `${fallbackFnInject}`
     if (handleArr.length === 0) return ''
     handleArr.forEach(item => {
       const name = item.split('.')[0]
@@ -33,10 +32,10 @@ export default {
       const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
       
       if (suffix === 'css') {
-        retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" ${scriptTagFallbackProps('main-css')} />`
+        retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
       }
       if (suffix === 'js') {
-        retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" ${scriptTagFallbackProps('main-js')}></script>`
+        retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
       }
     })
     return retAssets

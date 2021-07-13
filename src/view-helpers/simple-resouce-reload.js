@@ -1,3 +1,7 @@
+/** simpleResourceReload
+ * 找到 link 或 script 资源，将 CDN 路径替换为源站路径并重新加载
+ * @param {string} 元素的类选择器名称
+ */
 function simpleResourceReload(clsName) {
   const $reload = document.querySelector(`.${clsName}`)
   if (!$reload) {
@@ -8,10 +12,13 @@ function simpleResourceReload(clsName) {
   const isStyle = tagname === 'link'
   const url = isScript ? $reload.src : isStyle ? $reload.href : ''
 
-  const prefix = "PREFIX"
-  const staticPathReg = new RegExp(`${prefix}(/.+)*$`)
-  const staticPath = url.match(staticPathReg)[1]
-  const sourcePrefix = "PREFIX_SOURCE"
+  // CDN origin（same as window.location.origin）
+  const prefix = 'CDN_PATH'
+  // 资源文件 origin
+  const sourcePrefix = 'SOURCE_PATH'
+
+  const staticPathReg = new RegExp(`(https?:)?${prefix}(/.+)*$`)
+  const staticPath = url.match(staticPathReg)[2]
   const sourcePath = sourcePrefix + staticPath
 
   const $source = document.createElement(tagname)
