@@ -19,7 +19,7 @@ interface SelectionBlockProps {
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
-  refresh: () => void;
+  refresh: (resetPagi?: boolean) => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
   const { shopId, total, selection, lists, isScopeAlbum, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
@@ -87,7 +87,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
               if (res.success) {
                 successMessage('删除成功');
                 setSelection([])
-                refresh();
+                refresh(true);
                 refreshAllAlbumLists()
                 resolve(res.success)
               } else {

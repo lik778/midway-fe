@@ -60,7 +60,15 @@ const ShopArticlePage = (props: any) => {
   const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames(shopId)
   // TODO fix type
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
-  const [lists, total, loading, refresh] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
+  const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
+
+  const refresh = useCallback((resetPage?: boolean) => {
+    if (resetPage) {
+      resetPagi()
+    } else {
+      refreshLists()
+    }
+  }, [refreshLists])
 
   // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
