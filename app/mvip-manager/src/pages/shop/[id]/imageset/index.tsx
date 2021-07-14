@@ -131,15 +131,17 @@ const ShopArticlePage = (props: any) => {
   /***************************************************** Renders */
 
   const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
-  const [$UploadModal, openUpload] = useUploadModal({ shopId, refresh, allAlbumLists, curScope })
 
   // 创建或编辑相册后重新拉取所有相册列表
   const createAlbum = useCallback(async (album?: AlbumItem) => {
     const isDone = await createOrEditAlbum(album)
     if (isDone) {
+      console.log('refresh all album lists')
       refreshAllAlbumLists()
     }
   }, [createOrEditAlbum])
+
+  const [$UploadModal, openUpload] = useUploadModal({ shopId, createAlbum, refresh, allAlbumLists, curScope })
 
   return (
     <>
@@ -205,10 +207,10 @@ const ShopArticlePage = (props: any) => {
           />
         )}
       </div>
-      {/* 创建/编辑相册模态框 */}
-      {$CreateAlbumModal}
       {/* 图片上传模态框 */}
       {$UploadModal}
+      {/* 创建/编辑相册模态框 */}
+      {$CreateAlbumModal}
     </>
   );
 }

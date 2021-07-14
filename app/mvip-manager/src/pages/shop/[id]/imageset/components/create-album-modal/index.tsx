@@ -100,6 +100,7 @@ export function useCreateAlbumModal(props: Props) {
       width={432}
       footer={null}
       visible={visible}
+      destroyOnClose={true}
       onCancel={closeModal}
     >
       <Form

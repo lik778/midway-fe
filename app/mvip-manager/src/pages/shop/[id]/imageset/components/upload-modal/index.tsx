@@ -25,14 +25,17 @@ type Props = {
   curScope?: TabScopeItem;
   allAlbumLists: AlbumNameListItem[]
   refresh: () => void;
+  createAlbum: () => void;
 }
 
 export function useUploadModal(props: Props) {
 
   /***************************************************** States */
-  const { shopId, curScope, allAlbumLists, refresh } = props
+  const { shopId, curScope, allAlbumLists, refresh, createAlbum } = props
   const [visible, setVisible] = useState(false);
   const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
+
+  const handleCreateAlbum = () => createAlbum()
 
   // 10/10 垃圾，
   // 我需要这个数组用来记录已经上传的列表，
@@ -216,6 +219,9 @@ export function useUploadModal(props: Props) {
       <div>
         <span>上传到：</span>
         {$AlbumSelector}
+        <Button className={styles["create-album-btn"]} type="text" size="small" onClick={handleCreateAlbum}>
+          新增相册
+        </Button>
       </div>
 
       {/* Container */}
