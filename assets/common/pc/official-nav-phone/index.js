@@ -26,7 +26,7 @@ export const initPhone = function () {
       const phone400Action = $('.official-nav-phone-block .official-nav-phone-400-action')
       const phone400ActionBtn = $('.official-nav-phone-block .official-nav-phone-400-action .btn')
       const phoneNumTipText = $('.official-nav-phone-block .official-nav-phone-num-tip>.tip-text')
-      phone400ActionBtn.on('click', async function (e) {
+      phone400ActionBtn.one('click', async function (e) {
         var union400num = $(this).data('union400num')
         if (union400num) {
           phoneNumBox.removeClass('hide')
@@ -52,3 +52,4 @@ export const initPhone = function () {
     }
   })
 }
+ 

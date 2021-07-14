@@ -1,25 +1,67 @@
 import $ from 'jquery';
-// 这玩意确实可以和wap公用 但是不知道放哪个文件夹，还是算了 
-export const initContactFormSem = function (contactForm, contactFormParent, allA) {
-  // sem需要禁止二跳
+
+
+
+const setForm = (contactForm, contactFormParent, formA) => {
+  // sem部分链接需要禁止二跳
   const contactFormSem = $('#contactFormSem')
   const contactFormContent = $('#contactFormContent')
   const contactFormSemClose = $('#contactFormSemClose')
   const htmlDom = $('html')
+
   function gotoContactUs(e) {
     e.preventDefault()
     contactFormContent.append(contactForm)
     contactFormSem.css('top', '0')
     htmlDom.css('overflow', 'hidden')
   }
-
-  allA.on('click', gotoContactUs)
+  formA.on('click', gotoContactUs)
 
   contactFormSem.on('click', function (e) {
-    if (contactFormSemClose.is(e.target)||(!contactFormContent.is(e.target) && contactFormSem.is(e.target))) {
+    if (contactFormSemClose.is(e.target) || (!contactFormContent.is(e.target) && contactFormSem.is(e.target))) {
       contactFormParent.append(contactForm)
       contactFormSem.css('top', '-100vh')
       htmlDom.css('overflow', 'visible')
     }
   });
+}
+
+function gotoDetail(e) {
+  e.preventDefault()
+  const href = $(this).attr('href')
+  if (!href) return
+  const target = $(this).attr('target')
+  if (href.indexOf('?') !== -1) {
+    window.open(`${href}&sem=1`, target,)
+  } else {
+    window.open(`${href}?sem=1`, target,)
+  }
+}
+
+function disable(e) {
+  e.preventDefault()
+  window.open(`#`, target,)
+}
+
+// 这玩意确实可以和wap公用 但是不知道放哪个文件夹，还是算了 
+/**
+ * 
+ * @param {*} type home/detail 是首页还是详情页
+ * @param {*} contactForm 是首页 需要有留资弹窗
+ * @param {*} contactFormParent 是首页 需要有留资弹窗的父节点
+ * @param {*} formA 是首页 需要展示留资弹窗的a标签
+ * @param {*} gotoDetailA 需要前往详情页的a标签
+ * @param {*} disableA 被禁用的a标签
+ */
+export const initSem = function ({ type, contactForm, contactFormParent, formA, gotoDetailA, disableA }) {
+  // 不跳转的链接则谈窗
+  if (type === 'home') {
+    setForm(contactForm, contactFormParent, formA)
+  }
+
+  // 跳转的链接则加上sem=1的参数
+  gotoDetailA && gotoDetailA.on('click', gotoDetail)
+
+  // 被禁用的a标签点击无反应
+  disableA && disableA.on('click', disable)
 }
