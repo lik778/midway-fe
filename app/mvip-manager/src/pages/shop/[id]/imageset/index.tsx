@@ -74,11 +74,15 @@ const ShopArticlePage = (props: any) => {
   // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
   const refresh = useCallback((resetPage?: boolean) => {
     if (resetPage) {
-      resetPagi()
+      if (pagi.current !== 1) {
+        resetPagi()
+      } else {
+        refreshLists()
+      }
     } else {
       refreshLists()
     }
-  }, [refreshLists, resetPagi])
+  }, [pagi.current, refreshLists, resetPagi])
 
   // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
@@ -244,9 +248,11 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
     setLists([])
     setTotal(0)
     setRequestTime(+new Date())
+    console.log('refreshed')
   }
 
   useEffect(() => {
+    console.log(scope)
     /* Gaurds */
     if (!shopId || !scope) {
       return
