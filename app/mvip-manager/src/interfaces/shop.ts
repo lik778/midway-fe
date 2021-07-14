@@ -274,6 +274,7 @@ export interface GetImagesetImageParam {
 }
 
 export interface CreateImagesetImageParam {
+  shopId: number;
   imgUrl: string;
   mediaCateId?: number; // 不传则上传到默认图库
 }
