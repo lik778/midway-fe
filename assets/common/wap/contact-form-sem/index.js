@@ -29,6 +29,7 @@ const setForm = (contactForm, contactFormParent, formA) => {
 function gotoDetail(e) {
   e.preventDefault()
   const href = $(this).attr('href')
+  if (!href) return
   const target = $(this).attr('target')
   if (href.indexOf('?') !== -1) {
     window.open(`${href}&sem=1`, target,)
@@ -37,10 +38,30 @@ function gotoDetail(e) {
   }
 }
 
+function disable(e) {
+  e.preventDefault()
+  window.open(`#`, target,)
+}
+
 // 这玩意确实可以和wap公用 但是不知道放哪个文件夹，还是算了 
-export const initSem = function ({ contactForm, contactFormParent, formA, gotoDetailA }) {
+/**
+ * 
+ * @param {*} type home/detail 是首页还是详情页
+ * @param {*} contactForm 是首页 需要有留资弹窗
+ * @param {*} contactFormParent 是首页 需要有留资弹窗的父节点
+ * @param {*} formA 是首页 需要展示留资弹窗的a标签
+ * @param {*} gotoOtherPageA 需要前往详情页的a标签
+ * @param {*} disableA 被禁用的a标签
+ */
+export const initSem = function ({ type, contactForm, contactFormParent, formA, gotoOtherPageA, disableA }) {
   // 不跳转的链接则谈窗
-  setForm(contactForm, contactFormParent, formA)
+  if (type === 'home') {
+    setForm(contactForm, contactFormParent, formA)
+  }
+
   // 跳转的链接则加上sem=1的参数
-  gotoDetailA && gotoDetailA.on('click', gotoDetail)
+  gotoOtherPageA && gotoOtherPageA.on('click', gotoDetail)
+
+  // 被禁用的a标签点击无反应
+  disableA && disableA.on('click', disable)
 }

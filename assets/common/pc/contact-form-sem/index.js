@@ -50,17 +50,17 @@ function disable(e) {
  * @param {*} contactForm 是首页 需要有留资弹窗
  * @param {*} contactFormParent 是首页 需要有留资弹窗的父节点
  * @param {*} formA 是首页 需要展示留资弹窗的a标签
- * @param {*} gotoDetailA 需要前往详情页的a标签
+ * @param {*} gotoOtherPageA 需要前往详情页的a标签
  * @param {*} disableA 被禁用的a标签
  */
-export const initSem = function ({ type, contactForm, contactFormParent, formA, gotoDetailA, disableA }) {
+export const initSem = function ({ type, contactForm, contactFormParent, formA, gotoOtherPageA, disableA }) {
   // 不跳转的链接则谈窗
   if (type === 'home') {
     setForm(contactForm, contactFormParent, formA)
   }
 
   // 跳转的链接则加上sem=1的参数
-  gotoDetailA && gotoDetailA.on('click', gotoDetail)
+  gotoOtherPageA && gotoOtherPageA.on('click', gotoDetail)
 
   // 被禁用的a标签点击无反应
   disableA && disableA.on('click', disable)

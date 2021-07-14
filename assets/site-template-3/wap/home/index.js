@@ -20,7 +20,7 @@ $(document).on("ready", function () {
       contactForm: $('#contactForm'),
       contactFormParent: $('#layout-content'),
       formA: $('#layout-content a').not('.products a,.news-list a'),
-      gotoDetailA: $('.products a,.news-list a')
+      gotoOtherPageA: $('.products a,.news-list a')
     })
   }
 })

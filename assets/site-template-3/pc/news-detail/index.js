@@ -1,18 +1,15 @@
 import $ from "jquery";
 import './index.styl';
 import '../layout/index';
-import { initSem } from '../../../common/pc/contact-form-sem'
-
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { viewPhone } from '../components/contact-form-companyInfo';
+import { initSem } from '../../../common/pc/contact-form-sem'
 
 initializeSidebarProductSwiper()
 leaveLeads()
 viewPhone()
-
-
 
 $(document).on('ready', function () {
   new Swiper('#banner-list .swiper-container', {
@@ -40,7 +37,7 @@ $(document).on('ready', function () {
   if (isSem) {
     initSem({
       type: 'detail',
-      gotoDetailA: $('#layout-content .container a')
+      gotoOtherPageA: $('#layout-content .container a')
     })
   }
 })

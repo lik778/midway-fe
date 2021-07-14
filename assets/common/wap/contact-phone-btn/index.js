@@ -39,15 +39,21 @@ export const initPhone = function () {
           footerPhoneSemBtn.attr('disabled', true)
           footerPhoneSemBtn.attr('loading', true)
           const data = await get400Number()
-          union400num = data.account
-          phoneNum.text(data.account)
-          footerPhoneBox.attr('href', "tel:" + union400num)
-          footerPhoneBox.removeClass('hide')
-          timeTip.removeClass('hide')
-          footerPhoneSemBtn.addClass('hide')
-          set400NumbertimeOut()
+          if (data.account) {
+            union400num = data.account
+            phoneNum.text(data.account)
+            footerPhoneBox.attr('href', "tel:" + union400num)
+            footerPhoneBox.removeClass('hide')
+            timeTip.removeClass('hide')
+            footerPhoneSemBtn.addClass('hide')
+            set400NumbertimeOut()
+            window.location.href = `tel:${union400num}`
+          } else {
+            alert('号码获取失败，请稍后再试')
+          }
+          footerPhoneSemBtn.attr('disabled', false)
+          footerPhoneSemBtn.attr('loading', false)
         }
-        window.location.href = `tel:${union400num}`
       })
     }
   })

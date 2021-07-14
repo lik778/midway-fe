@@ -36,7 +36,7 @@ $(document).on('ready', function () {
       contactForm: $('#contactUs .contact-us__message'),
       contactFormParent: $('#contactUs'),
       formA:  $('.official-nav-block-bgc a,.banner-list a,#layout-content a').not('.products a,.about-us-bgc a,.new-center .news-data-box a'),
-      gotoDetailA: $('.products a,.about-us-bgc a,.new-center .news-data-box a')
+      gotoOtherPageA: $('.products a,.about-us-bgc a,.new-center .news-data-box a')
     })
   }
 })

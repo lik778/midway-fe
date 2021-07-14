@@ -15,7 +15,8 @@ $(document).on('ready', function () {
   if (isSem) {
     initSem({
       type: 'detail',
-      gotoDetailA: $('#layout-content .container a')
+      gotoOtherPageA: $('#layout-content .container a')
     })
   }
 })
+ 

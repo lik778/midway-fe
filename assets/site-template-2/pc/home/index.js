@@ -59,7 +59,7 @@ $(document).on('ready', function () {
 			contactForm: $('#contactUs .contact-us__message'),
 			contactFormParent: $('#contactUs'),
 			formA: $('.official-nav-block-bgc a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a'),
-			gotoDetailA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
+			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
 		})
 	}
 })
