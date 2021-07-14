@@ -107,11 +107,11 @@ export default function SelectionBlock(props: SelectionBlockProps) {
     <>
       <div className={styles["section-block"]}>
         <Checkbox checked={checked} indeterminate={indeterminate} onChange={checkAll}>
-          全选
+          本页全选
         </Checkbox>
         {(selection.length > 0) && (
           <span className={styles["selection-count"]}>
-            当前选中 <span className={styles["count-num"]}>{selection.length}</span> {isScopeAlbum ? '个相册' : '张图片'}
+            （共选中 <span className={styles["count-num"]}>{selection.length}</span> {isScopeAlbum ? '个相册' : '张图片'}）
           </span>
         )}
         {(selection.length > 0) && (
