@@ -162,8 +162,6 @@ export function useUploadModal(props: Props) {
     const inChibi = uploadedItem ? uploadedItem.inChibi : false
     const error = uploadedItem ? uploadedItem.error : ''
 
-    console.log('error : ', error)
-
     let $contents
     let dispearMask = false
     if (inChibi === true) {

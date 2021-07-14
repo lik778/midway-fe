@@ -109,7 +109,7 @@ export function useUpload(props: Props) {
       })
       return false
     }
-    return validType && validSize
+    return true
   }
 
   return [

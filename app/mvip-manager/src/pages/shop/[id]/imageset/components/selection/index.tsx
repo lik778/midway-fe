@@ -64,6 +64,8 @@ export default function SelectionBlock(props: SelectionBlockProps) {
 
   // 批量删除卡片
   const deleteSelectionCards = useCallback((e: any) => {
+    const resetFreshPage = selection.length === lists.length &&
+      selection.every(id => lists.find(x => x.id === id))
     e.stopPropagation()
     const count = selection.length
     const info = count === 0
@@ -87,7 +89,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
               if (res.success) {
                 successMessage('删除成功');
                 setSelection([])
-                refresh(true);
+                refresh(resetFreshPage)
                 refreshAllAlbumLists()
                 resolve(res.success)
               } else {
@@ -101,7 +103,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }, [shopId, isScopeAlbum, selection, curScope])
+  }, [shopId, isScopeAlbum, selection, curScope, lists, refresh])
 
   return (
     <>
