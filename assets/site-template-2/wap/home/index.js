@@ -17,6 +17,7 @@ $(document).on("ready", function () {
   // tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
   if (isSem) {
     initSem({
+      type: 'home',
       contactForm: $('#contactForm'),
       contactFormParent: $('#layout-content'),
       formA: $('#layout-content a').not('.products a'),

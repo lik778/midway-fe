@@ -17,6 +17,7 @@ initCompanyInfo()
 $(document).on("ready", function () {
   if (isSem) {
     initSem({
+      type: 'home',
       contactForm: $('#contactForm'),
       contactFormParent: $('#layout-content'),
       formA: $('#layout-content a').not('.products a,.news-list a'),

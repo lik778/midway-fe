@@ -56,6 +56,7 @@ $(document).on('ready', function () {
 	// tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
 	if (isSem) {
 		initSem({
+			type: 'home',
 			contactForm: $('#contactUs .contact-us__message'),
 			contactFormParent: $('#contactUs'),
 			formA: $('.official-nav-block-bgc a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a'),

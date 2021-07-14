@@ -13,7 +13,7 @@ $(document).on('ready', function () {
   if (isSem) {
     initSem({
       type: 'detail',
-      gotoOtherPageA: $('#layout-content .container a')
+      gotoOtherPageA: $('#layout-content .container a,.official-nav-block-bgc a')
     })
   }
 })

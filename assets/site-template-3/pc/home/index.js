@@ -33,9 +33,10 @@ $(document).on('ready', function () {
   // sem部分链接需要禁止二跳
   if (isSem) {
     initSem({
+      type: 'home',
       contactForm: $('#contactUs .contact-us__message'),
       contactFormParent: $('#contactUs'),
-      formA:  $('.official-nav-block-bgc a,.banner-list a,#layout-content a').not('.products a,.about-us-bgc a,.new-center .news-data-box a'),
+      formA: $('.official-nav-block-bgc a,.banner-list a,#layout-content a').not('.products a,.about-us-bgc a,.new-center .news-data-box a'),
       gotoOtherPageA: $('.products a,.about-us-bgc a,.new-center .news-data-box a')
     })
   }

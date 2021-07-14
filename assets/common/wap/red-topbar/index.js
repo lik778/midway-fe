@@ -23,7 +23,7 @@ export const initRedTopbar = () => {
     searchBtn.on('click', function () {
       const shopDomain = $(this).data('shopdomain')
       const value = $.trim(input.val())
-      window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
+      window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? '&sem=1' : ''}`
     })
 
 
@@ -33,7 +33,7 @@ export const initRedTopbar = () => {
         const shopDomain = searchBtn.data('shopdomain')
         var value = $.trim(input.val());
         document.activeElement.blur();//软键盘收起
-        window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
+        window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? '&sem=1' : ''}`
       }
     });
   })
