@@ -151,7 +151,7 @@ export function useUploadModal(props: Props) {
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { uid, percent, preview, error } = item
     const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
-    const status = uploadedItem ? uploadedItem.status : item.status
+    const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const inChibi = uploadedItem ? uploadedItem.inChibi : false
 
     let $contents
@@ -173,7 +173,7 @@ export function useUploadModal(props: Props) {
       }
       if (status === 'error') {
         $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
-          {(error || '出错了') + '，点击删除'}
+          {'上传失败，点击删除'}
         </span>
       }
       if (status === 'done') {

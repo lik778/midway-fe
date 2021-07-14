@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Upload } from 'antd'
-import { UploadFile } from 'antd/lib/upload/interface'
+import { Upload, notification } from 'antd'
+import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 
 import styles from './index.less'
 
@@ -80,7 +80,36 @@ export function useUpload(props: Props) {
         afterUploadHook(e.file, updateRef.current)
       }
     }
-    setLists(e.fileList)
+    if (status) {
+      setLists(e.fileList)
+    }
+  }
+
+  // 检测图片是否符合格式及大小限制
+  const checkImage = (file: RcFile) => {
+    const maxSize = 3
+    if (!file) {
+      return false
+    }
+    const validType = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg'
+    if (!validType) {
+      notification.open({
+        key: 'imageset-upload-error-filetype',
+        message: '图片格式错误',
+        description: '请上传 jpg、jpeg、png 格式的图片',
+      })
+      return false
+    }
+    const validSize = file.size / 1024 / 1024 < maxSize
+    if (!validSize) {
+      notification.open({
+        key: 'imageset-upload-error-filesize',
+        message: '图片过大',
+        description: `请上传不超过${maxSize}M的图片`,
+      })
+      return false
+    }
+    return validType && validSize
   }
 
   return [
@@ -94,6 +123,7 @@ export function useUpload(props: Props) {
       multiple={true}
       fileList={lists}
       showUploadList={false}
+      beforeUpload={checkImage}
       onChange={handleChange}
       maxCount={maxCount}
     ><div></div></Upload>,
@@ -103,4 +133,5 @@ export function useUpload(props: Props) {
     remove,
     add
   ] as const
+
 }
