@@ -73,7 +73,6 @@ const ShopArticlePage = (props: any) => {
 
   // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
   const refresh = useCallback((resetPage?: boolean) => {
-    // console.log('refresh:')
     if (resetPage) {
       resetPagi()
     } else {
