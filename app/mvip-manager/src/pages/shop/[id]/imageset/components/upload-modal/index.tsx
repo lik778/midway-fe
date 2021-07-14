@@ -11,6 +11,7 @@ import { AlbumNameListItem, TabScopeItem } from "@/interfaces/shop";
 import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 15
+const UPLOAD_RES_MAP_DEFAULT_ID = -1
 
 // 保存 UploadItem 和 上传结果的关系
 type UploadResMap = {
@@ -18,6 +19,7 @@ type UploadResMap = {
   imageID: number;
   inChibi: boolean;
   status: string;
+  error: string;
 }
 
 type Props = {
@@ -72,9 +74,10 @@ export function useUploadModal(props: Props) {
     return await new Promise(async resolve => {
       record([...uploadedLists.current, {
         uid: item.uid,
-        imageID: -1,
+        imageID: UPLOAD_RES_MAP_DEFAULT_ID,
         inChibi: true,
-        status: 'done'
+        status: 'done',
+        error: ''
       }])
       try {
         const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
@@ -88,13 +91,14 @@ export function useUploadModal(props: Props) {
           }
           resolve(item)
         } else {
-          throw new Error('上传失败');
+          throw new Error(res.message || '上传失败');
         }
-      } catch (error) {
+      } catch (error: any) {
         const target = uploadedLists.current.find(x => x.uid === item.uid)
         if (target) {
           target.inChibi = false
           target.status = 'error'
+          target.error = error.message
           record(uploadedLists.current)
         }
       }
@@ -105,7 +109,7 @@ export function useUploadModal(props: Props) {
     if (!selectedAlbum) return
     const { uid } = item
     const findUploaded = uploadedLists.current.find(x => x.uid === uid)
-    if (findUploaded) {
+    if (findUploaded && findUploaded.imageID !== UPLOAD_RES_MAP_DEFAULT_ID) {
       // dont care is delete done or not ...
       const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
       delImagesetImage(shopId, query)
@@ -152,10 +156,13 @@ export function useUploadModal(props: Props) {
   // 渲染上传列表
   // TODO REFACTOR 样式
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
-    const { uid, percent, preview, error } = item
+    const { uid, percent, preview } = item
     const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const inChibi = uploadedItem ? uploadedItem.inChibi : false
+    const error = uploadedItem ? uploadedItem.error : ''
+
+    console.log('error : ', error)
 
     let $contents
     let dispearMask = false
@@ -176,7 +183,7 @@ export function useUploadModal(props: Props) {
       }
       if (status === 'error') {
         $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
-          {'上传失败，点击删除'}
+          {error || '上传失败，点击删除'}
         </span>
       }
       if (status === 'done') {
