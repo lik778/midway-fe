@@ -1,9 +1,10 @@
+export default `
 /** simpleResourceReload
  * 找到 link 或 script 资源，将 CDN 路径替换为源站路径并重新加载
  * @param {string} 元素的类选择器名称
  */
 function simpleResourceReload(clsName) {
-  const $reload = document.querySelector(`.${clsName}`)
+  const $reload = document.querySelector('.'+clsName)
   if (!$reload) {
     throw new Error('[ERR] resources loaded error:', clsName)
   }
@@ -17,7 +18,7 @@ function simpleResourceReload(clsName) {
   // 资源文件 origin
   const sourcePrefix = 'SOURCE_PATH'
 
-  const staticPathReg = new RegExp(`(https?:)?${prefix}(/.+)*$`)
+  const staticPathReg = new RegExp('(https?:)?'+prefix+'(/.+)*$')
   const staticPath = url.match(staticPathReg)[2]
   const sourcePath = sourcePrefix + staticPath
 
@@ -37,3 +38,4 @@ function simpleResourceReload(clsName) {
 function simpleResourceReloadLog(clsName) {
   console.log('[LOAD] resources reloaded:', clsName)
 }
+`

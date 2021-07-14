@@ -5,15 +5,16 @@ import * as util from './util';
 import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
 
-/* CDN 资源加载出错时的简单回退至加载源站 */
+import scriptFallbackFunctionSouce from './simple-resouce-reload'
+
+/* CDN 资源加载出错时的简单回退至加载源站，没有考虑加载顺序 */
 
 export const useScriptFallback = true
 const cdnPath = config().cdnPath
 const host = config().fuwu
-const fallbackSource = fs.readFileSync(join(__dirname, './simple-resouce-reload.js'), { encoding: 'utf-8' })
+const fallbackSource = scriptFallbackFunctionSouce
   .replace(/('|")CDN_PATH('|")/, `"${cdnPath}"`)
   .replace(/('|")SOURCE_PATH('|")/, `"${host}"`)
-// fs.writeFileSync(join(__dirname, './testfile.txt'), 'utf-8')
 const fallbackFnInject = useScriptFallback
   ? `<style>\n${fallbackSource}\n</style>`
   : ''
