@@ -56,19 +56,30 @@ const ShopArticlePage = (props: any) => {
   const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
     pageSizeOptions: ['8', '16', '32']
   })
-  const pagiQuery = useMemo(() => ({ page: pagi.current, size: pagiConf.pageSize }), [pagi.current, pagiConf.pageSize])
+  const pagiQuery = useMemo(() => {
+    let page = pagi.current
+    let size = pagiConf.pageSize
+    const isChangeScope = curScope && prevCurScope && (curScope.type !== prevCurScope.type)
+    if (isChangeScope) {
+      page = 1
+      resetPagi()
+    }
+    return { page, size }
+  }, [pagi.current, pagiConf.pageSize, curScope])
   const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames(shopId)
   // TODO fix type
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
-  const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, isScopeAlbum, isScopeImage, curScope)
+  const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, curScope)
 
+  // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
   const refresh = useCallback((resetPage?: boolean) => {
+    // console.log('refresh:')
     if (resetPage) {
       resetPagi()
     } else {
       refreshLists()
     }
-  }, [refreshLists])
+  }, [refreshLists, resetPagi])
 
   // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
@@ -103,11 +114,10 @@ const ShopArticlePage = (props: any) => {
     excludeFn: x => defaultAlbumIDs.includes(x)
   })
 
-  // 层级变换时重置翻页和选取
+  // 层级变换时重置选取
   useEffect(() => {
     if (curScope) {
       setSelection([])
-      resetPagi()
     }
   }, [curScope])
 
@@ -144,7 +154,6 @@ const ShopArticlePage = (props: any) => {
   const createAlbum = useCallback(async (album?: AlbumItem) => {
     const isDone = await createOrEditAlbum(album)
     if (isDone) {
-      console.log('refresh all album lists')
       refreshAllAlbumLists()
     }
   }, [createOrEditAlbum])
@@ -223,7 +232,7 @@ const ShopArticlePage = (props: any) => {
   );
 }
 
-function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImage: boolean, scope: TabScopeItem | undefined) {
+function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
   const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -244,15 +253,19 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
       return
     }
     let fetchMethod
-    if (isScopeAlbum) fetchMethod = fetchAlbumLists
-    if (isScopeImage) fetchMethod = fetchImageLists
+    if (scope.type === 'album') fetchMethod = fetchAlbumLists
+    if (scope.type === 'image') fetchMethod = fetchImageLists
     if (!fetchMethod) {
       return
     }
-    /* Query & Fetch */
-    if (isScopeImage) {
-      query.mediaCateId = scope.item!.id
+    if (scope.type === 'image') {
+      if (!(scope.item && scope.item.id)) {
+        return
+      } else {
+        query.mediaCateId = scope.item!.id
+      }
     }
+    /* Query & Fetch */
     setLoading(true)
     // FIXME type
     fetchMethod(shopId, query)
@@ -270,7 +283,7 @@ function useLists(shopId: number, query: any, isScopeAlbum: boolean, isScopeImag
       .finally(() => {
         setLoading(false)
       })
-  }, [shopId, query, requestTime, isScopeAlbum, isScopeImage, scope])
+  }, [shopId, query, requestTime])
 
   return [lists, total, loading, refresh, setLists, setTotal] as const
 }
