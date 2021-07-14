@@ -72,15 +72,15 @@ const ShopArticlePage = (props: any) => {
   const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, curScope)
 
   // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
-  const refresh = useCallback((resetPage?: boolean) => {
+  const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
     if (resetPage) {
       if (pagi.current !== 1) {
         resetPagi()
       } else {
-        refreshLists()
+        refreshLists(showLoading)
       }
     } else {
-      refreshLists()
+      refreshLists(showLoading)
     }
   }, [pagi.current, refreshLists, resetPagi])
 
@@ -89,7 +89,9 @@ const ShopArticlePage = (props: any) => {
   // 请求时间指数避退
   useEffect(() => {
     // @ts-ignore
-    const canRefresh = lists.length === 0 && allAlbumLists.length > 0
+    const canRefresh = (curScope && curScope.type === 'album') &&
+      lists.length === 0 &&
+      allAlbumLists.length > 0
     if (canRefresh) {
       // @ts-ignore
       window._mvip_imageset_ticktime = window._mvip_imageset_ticktime || 500
@@ -111,7 +113,7 @@ const ShopArticlePage = (props: any) => {
     }
     // @ts-ignore
     return () => window.clearTimeout(window._mvip_imageset_tick)
-  }, [lists, allAlbumLists])
+  }, [lists, allAlbumLists, curScope])
 
   const [selection, setSelection, select, unselect] = useSelection({
     excludeFn: x => defaultAlbumIDs.includes(x)
@@ -243,16 +245,14 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
 
   const notNull = (x: any) => !!x
 
-  const refresh = () => {
-    setLoading(true)
+  const refresh = (showLoading?: boolean) => {
+    setLoading(showLoading || true)
     setLists([])
     setTotal(0)
     setRequestTime(+new Date())
-    console.log('refreshed')
   }
 
   useEffect(() => {
-    console.log(scope)
     /* Gaurds */
     if (!shopId || !scope) {
       return
