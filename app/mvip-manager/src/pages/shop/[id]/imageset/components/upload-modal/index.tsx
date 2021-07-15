@@ -82,7 +82,15 @@ export function useUploadModal(props: Props) {
       }])
       try {
         const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
-        const res = await createImagesetImage(shopId, query)
+        const res: any = await Promise.race([
+          createImagesetImage(shopId, query),
+          new Promise((resove, reject) => {
+            setTimeout(() => {
+              reject(new Error('上传超时，点击删除'))
+            }, 5 * 1000)
+          })
+        ])
+        console.log('res: ', res)
         if (res.success && (typeof res.data.id === 'number')) {
           const target = uploadedLists.current.find(x => x.uid === item.uid)
           if (target) {
