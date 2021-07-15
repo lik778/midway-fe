@@ -22,7 +22,6 @@ export const get400Number = function () {
         alert(res.message || '请稍后再试！')
         reject(res)
       },
-
     });
   })
 }

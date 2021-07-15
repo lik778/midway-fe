@@ -5,7 +5,7 @@ import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { productSwiper } from '../components/home/product-swiper';
 import { viewPhone } from '../components/home/viewPhone';
-import { initContactFormSem } from '../../../common/pc/contact-form-sem'
+import { initSem } from '../../../common/pc/contact-form-sem'
 
 
 leaveLeads()
@@ -30,9 +30,15 @@ $(document).on('ready', function () {
       prevEl: '#banner-list .swiper-button-prev',
     },
   });
-  // sem需要禁止二跳
+  // sem部分链接需要禁止二跳
   if (isSem) {
-    initContactFormSem($('#contactUs .contact-us__message'), $('#contactUs'), $('.official-nav-block-bgc a,.banner-list a,#layout-content a'))
+    initSem({
+      type: 'home',
+      contactForm: $('#contactUs .contact-us__message'),
+      contactFormParent: $('#contactUs'),
+      formA: $('.official-nav-block-bgc a,.banner-list a,#layout-content a').not('.products a,.about-us-bgc a,.new-center .news-data-box a'),
+      gotoOtherPageA: $('.products a,.about-us-bgc a,.new-center .news-data-box a')
+    })
   }
 })
 

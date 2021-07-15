@@ -76,6 +76,7 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
+    console.log(data)
     return data
   }
 
@@ -115,8 +116,10 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
-
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+    this.checkCn(HostDomain)
+    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isCn = this.checkCn(HostDomain)
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, });
   }
 
   @Get('/n')
@@ -149,7 +152,9 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isCn = this.checkCn(HostDomain)
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
 
   @Get('/n-:id')
@@ -184,7 +189,14 @@ export class BaseSiteController {
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+      const isSem = this.checkSem(query.sem, query.bannerId)
+      if (isSem) {
+        if (data.articleInfo && data.articleInfo.content) {
+          data.articleInfo.content = this.replaceMobile(data.articleInfo.content)
+        }
+      }
+      const isCn = this.checkCn(HostDomain)
+      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -209,7 +221,9 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+      const isSem = this.checkSem(query.sem, query.bannerId)
+      const isCn = this.checkCn(HostDomain)
+      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
     }
   }
 
@@ -243,7 +257,9 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
 
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isCn = this.checkCn(HostDomain)
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
 
   @Get('/p-:id')
@@ -279,7 +295,16 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
 
-      return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+      const isSem = this.checkSem(query.sem, query.bannerId)
+      // 如果是sem情况下需要对数据做联系方式过滤
+      if (isSem) {
+        if (data.productInfo && data.productInfo.content) {
+          data.productInfo.content = this.replaceMobile(data.productInfo.content)
+        }
+      }
+
+      const isCn = this.checkCn(HostDomain)
+      return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -303,7 +328,9 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+      const isSem = this.checkSem(query.sem, query.bannerId)
+      const isCn = this.checkCn(HostDomain)
+      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
     }
   }
 
@@ -338,8 +365,16 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
+    const isSem = this.checkSem(query.sem, query.bannerId)
+    // 如果是sem情况下需要对数据做联系方式过滤
+    if (isSem) {
+      if (data.basic && data.basic.company && data.basic.company.about) {
+        data.basic.company.about = this.replaceMobile(data.basic.company.about)
+      }
+    }
 
-    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain) });
+    const isCn = this.checkCn(HostDomain)
+    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
 
 
@@ -390,9 +425,10 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-
+    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, {
-      title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem: this.checkSem(query.sem, query.bannerId), isCn: this.checkCn(HostDomain)
+      title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn,
     })
   }
 }

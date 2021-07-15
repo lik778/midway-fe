@@ -26,10 +26,6 @@ block content
     - var totalPage = (contentList && contentList.totalPage) || 1
     +pagination(totalPage, contentPage)
 
-
-block footer
-   include ../components/footer.pug
-
 block scripts
     :combine(fileName="site-template-2-search-wap.js")
 block append scripts
