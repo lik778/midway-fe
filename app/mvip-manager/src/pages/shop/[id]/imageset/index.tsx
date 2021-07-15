@@ -72,20 +72,26 @@ const ShopArticlePage = (props: any) => {
   const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, curScope)
 
   // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
-  const refresh = useCallback((resetPage?: boolean) => {
+  const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
     if (resetPage) {
-      resetPagi()
+      if (pagi.current !== 1) {
+        resetPagi()
+      } else {
+        refreshLists(showLoading)
+      }
     } else {
-      refreshLists()
+      refreshLists(showLoading)
     }
-  }, [refreshLists, resetPagi])
+  }, [pagi.current, refreshLists, resetPagi])
 
   // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
   // 请求时间指数避退
   useEffect(() => {
     // @ts-ignore
-    const canRefresh = lists.length === 0 && allAlbumLists.length > 0
+    const canRefresh = (curScope && curScope.type === 'album') &&
+      lists.length === 0 &&
+      allAlbumLists.length > 0
     if (canRefresh) {
       // @ts-ignore
       window._mvip_imageset_ticktime = window._mvip_imageset_ticktime || 500
@@ -107,7 +113,7 @@ const ShopArticlePage = (props: any) => {
     }
     // @ts-ignore
     return () => window.clearTimeout(window._mvip_imageset_tick)
-  }, [lists, allAlbumLists])
+  }, [lists, allAlbumLists, curScope])
 
   const [selection, setSelection, select, unselect] = useSelection({
     excludeFn: x => defaultAlbumIDs.includes(x)
@@ -239,8 +245,8 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
 
   const notNull = (x: any) => !!x
 
-  const refresh = () => {
-    setLoading(true)
+  const refresh = (showLoading?: boolean) => {
+    setLoading(showLoading || true)
     setLists([])
     setTotal(0)
     setRequestTime(+new Date())

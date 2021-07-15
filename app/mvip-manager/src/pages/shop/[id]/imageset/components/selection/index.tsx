@@ -65,6 +65,9 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   // 批量删除卡片
   const deleteSelectionCards = useCallback((e: any) => {
     e.stopPropagation()
+    // 批量删除时必定重新刷新页面分页参数，
+    // 因为不知道删了啥，删了之后这也还存不存在
+    const resetFreshPage = true
     const count = selection.length
     const info = count === 0
       ? `删除后无法恢复，确认删除？`
@@ -87,7 +90,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
               if (res.success) {
                 successMessage('删除成功');
                 setSelection([])
-                refresh(true);
+                refresh(resetFreshPage)
                 refreshAllAlbumLists()
                 resolve(res.success)
               } else {
@@ -101,7 +104,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }, [shopId, isScopeAlbum, selection, curScope])
+  }, [shopId, isScopeAlbum, selection, curScope, lists, refresh])
 
   return (
     <>

@@ -127,7 +127,7 @@ export default function Cards(props: CardsProps) {
       // TODO 在选区删除时也这么判断一下，现在是 refresh(true)
       refresh(lists.length === 1)
     })
-  }, [selection, lists])
+  }, [selection, lists, refresh])
 
   // 删除图片
   const delImage = useCallback(async (e: any, image: ImageItem) => {
@@ -138,7 +138,7 @@ export default function Cards(props: CardsProps) {
       setSelection(selection.filter(x => x !== id))
       refresh(lists.length === 1)
     })
-  }, [selection, lists])
+  }, [selection, lists, refresh])
 
   // 移动图片
   const moveImage = useCallback(async (e: any, image: ImageItem) => {
@@ -150,12 +150,13 @@ export default function Cards(props: CardsProps) {
     const album = await selectAlbum({
       exclude: curScope.item ? [curScope?.item?.id] : []
     })
+    const resetRefreshPagi = lists.length === 1
     moveImagesetImage(shopId, { id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功');
           setSelection(selection.filter(x => x !== id))
-          refresh(lists.length === 1)
+          refresh(resetRefreshPagi)
         } else {
           throw new Error(res.message || "出错啦，请稍后重试");
         }
@@ -163,7 +164,7 @@ export default function Cards(props: CardsProps) {
       .catch((error: any) => {
         errorMessage(error.message)
       })
-  }, [shopId, selection, curScope, lists])
+  }, [shopId, selection, curScope, lists, refresh])
 
   // 设置封面图片
   const setCoverImage = useCallback(async (e: any, image: ImageItem) => {

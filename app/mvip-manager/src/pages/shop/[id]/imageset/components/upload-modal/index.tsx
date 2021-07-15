@@ -11,6 +11,8 @@ import { AlbumNameListItem, TabScopeItem } from "@/interfaces/shop";
 import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 15
+const UPLOAD_RES_MAP_DEFAULT_ID = -1
+const getID = (): string => String(Math.random()).slice(-6) + +new Date()
 
 // 保存 UploadItem 和 上传结果的关系
 type UploadResMap = {
@@ -18,6 +20,7 @@ type UploadResMap = {
   imageID: number;
   inChibi: boolean;
   status: string;
+  error: string;
 }
 
 type Props = {
@@ -41,10 +44,10 @@ export function useUploadModal(props: Props) {
   // 我需要这个数组用来记录已经上传的列表，
   // reRender 用来触发重渲染
   const uploadedLists = useRef<UploadResMap[]>([])
-  const [reRender, setRerender] = useState(Math.random())
+  const [reRender, setRerender] = useState(getID())
   const record = (newLists: UploadResMap[]) => {
     uploadedLists.current = newLists
-    setRerender(Math.random())
+    setRerender(getID())
   }
 
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
@@ -72,13 +75,21 @@ export function useUploadModal(props: Props) {
     return await new Promise(async resolve => {
       record([...uploadedLists.current, {
         uid: item.uid,
-        imageID: -1,
+        imageID: UPLOAD_RES_MAP_DEFAULT_ID,
         inChibi: true,
-        status: 'done'
+        status: 'done',
+        error: ''
       }])
       try {
         const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
-        const res = await createImagesetImage(shopId, query)
+        const res: any = await Promise.race([
+          createImagesetImage(shopId, query),
+          new Promise((resove, reject) => {
+            setTimeout(() => {
+              reject(new Error('上传超时，点击删除'))
+            }, 5 * 1000)
+          })
+        ])
         if (res.success && (typeof res.data.id === 'number')) {
           const target = uploadedLists.current.find(x => x.uid === item.uid)
           if (target) {
@@ -88,13 +99,14 @@ export function useUploadModal(props: Props) {
           }
           resolve(item)
         } else {
-          throw new Error('上传失败');
+          throw new Error(res.message || '上传失败');
         }
-      } catch (error) {
+      } catch (error: any) {
         const target = uploadedLists.current.find(x => x.uid === item.uid)
         if (target) {
           target.inChibi = false
           target.status = 'error'
+          target.error = error.message
           record(uploadedLists.current)
         }
       }
@@ -105,7 +117,7 @@ export function useUploadModal(props: Props) {
     if (!selectedAlbum) return
     const { uid } = item
     const findUploaded = uploadedLists.current.find(x => x.uid === uid)
-    if (findUploaded) {
+    if (findUploaded && findUploaded.imageID !== UPLOAD_RES_MAP_DEFAULT_ID) {
       // dont care is delete done or not ...
       const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
       delImagesetImage(shopId, query)
@@ -152,10 +164,11 @@ export function useUploadModal(props: Props) {
   // 渲染上传列表
   // TODO REFACTOR 样式
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
-    const { uid, percent, preview, error } = item
+    const { uid, percent, preview } = item
     const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const inChibi = uploadedItem ? uploadedItem.inChibi : false
+    const error = uploadedItem ? uploadedItem.error : ''
 
     let $contents
     let dispearMask = false
@@ -173,24 +186,28 @@ export function useUploadModal(props: Props) {
           </svg>
           <span className={styles["upload-info"]}>{exactPercent}%</span>
         </>
-      }
-      if (status === 'error') {
+      } else if (status === 'error' || item.status === 'error') {
         $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
-          {'上传失败，点击删除'}
+          {error || '上传失败，点击删除'}
         </span>
-      }
-      if (status === 'done') {
+      } else if (status === 'done') {
+        if (preview) {
+          dispearMask = true
+          $contents = <>
+            <div className={styles['upload-item-actions']}>
+              <span className={styles['action']} onClick={() => handleRemove(item)}>
+                <DeleteOutlined />
+              </span>
+            </div>
+          </>
+        } else {
+          dispearMask = false
+          $contents = <span className={styles["upload-info"]}>加载中</span>
+        }
+      } else if (!status) {
         dispearMask = true
-        $contents = <>
-          <div className={styles['upload-item-actions']}>
-            <span className={styles['action']} onClick={() => handleRemove(item)}>
-              <DeleteOutlined />
-            </span>
-          </div>
-        </>
-      }
-      if (!status) {
-        dispearMask = true
+      } else {
+        // ...
       }
     }
     return (
