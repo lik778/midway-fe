@@ -1,4 +1,5 @@
 {
+  "name": "mvip-manager",
   "private": true,
   "scripts": {
     "start": "umi dev",
