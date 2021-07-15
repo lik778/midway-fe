@@ -4,7 +4,7 @@ WORKDIR /usr/src
 
 COPY . .
 
-RUN RUN npm set registry https://registry.npm.taobao.org && \
+RUN npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
     npm ci --cache .npm --prefer-offline --production && \
     npm run release:prod && \
