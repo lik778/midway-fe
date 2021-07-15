@@ -14,7 +14,6 @@ const cdnPath = config().cdnPath
 const host = config().fuwu
 const fallbackSource = scriptFallbackFunctionSouce
   .replace(/('|")CDN_PATH('|")/, `"${cdnPath}"`)
-  .replace(/('|")SOURCE_PATH('|")/, `"${host}"`)
 const fallbackFnInject = useScriptFallback
   ? `<script>\n${fallbackSource}\n</script>`
   : ''
