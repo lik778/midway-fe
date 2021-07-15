@@ -5,22 +5,23 @@ block styles
 
 //-使用了统一的header和nav
 block content
+	if !isSem
 		include ../components/common/breadcrumbs.pug
 
-		.container
-				.banner
-						| #{ companyName }
-				.intro
-						| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+	.container
+		.banner
+			| #{ companyName }
+		.intro
+			| !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
 
-				- const userDefinedList = renderData.autoConfig
-				if userDefinedList && userDefinedList.length>0
-						include ../components/common/user-defined-module-about.pug
-						+user-defined-module-about(userDefinedList)
-				include ../components/common/contact-form-companyInfo.pug
+		- const userDefinedList = renderData.autoConfig
+		if userDefinedList && userDefinedList.length>0
+			include ../components/common/user-defined-module-about.pug
+			+user-defined-module-about(userDefinedList)
+		include ../components/common/contact-form-companyInfo.pug
 
 block scripts
-		:combine(fileName="site-template-3-about-pc.js")
+	:combine(fileName="site-template-3-about-pc.js")
 block append scripts
-		script.
-				window.trackSrc = 'about';
+	script.
+			window.trackSrc = 'about';

@@ -22,7 +22,7 @@ export const initSearch = () => {
     searchBtn.on('click', function () {
       const shopDomain = $(this).data('shopdomain')
       const value = input.val()
-      window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
+      window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? '&sem=1' : ''}`
     })
 
     //回车事件绑定  
@@ -30,7 +30,7 @@ export const initSearch = () => {
       if (event.which == 13 || event.keyCode == "13") {
         const shopDomain = searchBtn.data('shopdomain')
         const value = $.trim(input.val())
-        window.location.href = `${shopDomain}search?key=${(value || '').toString()}`
+        window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? '&sem=1' : ''}`
       }
     });
   })
