@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { RequestService } from './request.service';
 import { PageHeaderParams, HeaderAuthParams, ServiceResponse, ShopComponents } from '../interface';
 import { LogService } from './log.service';
-import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY ,COOKIE_CHAOREN_USER_KEY} from '../constant/cookie';
 import { apiSecret } from 'src/constant';
 export type analyticsParams = {
   ip: string,
@@ -60,14 +60,14 @@ export class SiteService {
       // domain = 'hongtest2.shop-test.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      // domain = 'shop-test.baixing.cn'
+      domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       // domain = 'zmlc2b.shop.baixing.cn'
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      domain = 'shop.baixing.cn'
+      // domain = 'shop.baixing.cn'
 
     }
     return domain
@@ -79,6 +79,7 @@ export class SiteService {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
+      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig,'').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }

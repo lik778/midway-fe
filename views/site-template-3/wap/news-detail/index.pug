@@ -1,29 +1,30 @@
 extends ../layout.pug
 
 block styles
-    :combine(fileName="site-template-3-news-detail-wap.css")
+  :combine(fileName="site-template-3-news-detail-wap.css")
 
 block header
-    include ../components/header
-    include ../components/swiper
-    - const { banner }= renderData
-    +swiper(banner, 'newsDetail')
+  include ../components/header
+  include ../components/swiper
+  - const { banner }= renderData
+  +swiper(banner, 'newsDetail')
 
 block content
+  if !isSem
     include ../components/company-info-other.pug
-    - const cateList = renderData.articleCateList
-    include ../components/news-detail.pug
-    include ../components/product-recommend.pug
+  - const cateList = renderData.articleCateList
+  include ../components/news-detail.pug
+  include ../components/product-recommend.pug
 
-    include ../components/contact-form.pug
+  include ../components/contact-form.pug
 
 //-block footer
     include ../components/footer.pug
 
 block scripts
-    :combine(fileName="site-template-3-news-detail-wap.js")
+  :combine(fileName="site-template-3-news-detail-wap.js")
 block append scripts
-    script.
-        window.contentType = 'article';
-        window.trackSrc = 'viewad';
-        window.adId = #{renderData.articleInfo.id};
+  script.
+    window.contentType = 'article';
+    window.trackSrc = 'viewad';
+    window.adId = #{renderData.articleInfo.id};

@@ -1,53 +1,55 @@
 extends ../layout
 block styles
-    :combine(fileName="site-template-2-news-detail-pc.css")
+  :combine(fileName="site-template-2-news-detail-pc.css")
 
 block content
-    include ./news-detail-swiper.pug
+  include ./news-detail-swiper.pug
+  if !isSem
     include ../components/common/breadcrumbs.pug
-    - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo
-    .container
-        .news-detail
-            .news-content
-                .news-title
-                    h1.news-title__text #{ name }
-                    .news-title__date #{ dateFormat2(modifiedTime) }
-                if contentImg
-                    .news-content__pic
-                        img(src=contentImg, alt="")
-                .news-content__text.
-                    !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+  - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo
+  .container
+    .news-detail
+      .news-content
+        .news-title
+          h1.news-title__text #{ name }
+          .news-title__date #{ dateFormat2(modifiedTime) }
+        if contentImg
+          .news-content__pic
+            img(src=contentImg, alt="")
+        .news-content__text.
+          !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
 
-            .news-nav
-                .news-nav__pre
-                    span 上一篇：
-                    if preArticle
-                        a(href= preArticle.url).only-oneline #{ preArticle.name}
-                    else
-                        a 无
+      .news-nav
+        .news-nav__pre
+          span 上一篇：
+          if preArticle
+            a(href= preArticle.url).only-oneline #{ preArticle.name}
+          else
+            a 无
 
-                .news-nav__next
-                    span 下一篇：
-                    if nextArticle
-                        a(href=nextArticle.url).only-oneline #{ nextArticle.name }
-                    else
-                        a 无
+        .news-nav__next
+          span 下一篇：
+          if nextArticle
+            a(href=nextArticle.url).only-oneline #{ nextArticle.name }
+          else
+            a 无
 
-            include ../components/common/contact-form-companyInfo.pug
+      include ../components/common/contact-form-companyInfo.pug
 
-        .sidebar
-            include ../components/sidebar/company-card.pug
-            include ../components/sidebar/news-list.pug
+    if !isSem
+      .sidebar
+        include ../components/sidebar/company-card.pug
+        include ../components/sidebar/news-list.pug
 
-            - const sidecateList = renderData.articleCateList
-            include ../components/sidebar/cateList.pug
-            +side-cateList('文章分类', sidecateList)
-            include ../components/sidebar/products.pug
+        - const sidecateList = renderData.articleCateList
+        include ../components/sidebar/cateList.pug
+        +side-cateList('文章分类', sidecateList)
+        include ../components/sidebar/products.pug
 
 block scripts
-    :combine(fileName="site-template-2-news-detail-pc.js")
+  :combine(fileName="site-template-2-news-detail-pc.js")
 block append scripts
-    script.
-        window.contentType = 'article';
-        window.trackSrc = 'viewad';
-        window.adId = #{renderData.articleInfo.id};
+  script.
+    window.contentType = 'article';
+    window.trackSrc = 'viewad';
+    window.adId = #{renderData.articleInfo.id};

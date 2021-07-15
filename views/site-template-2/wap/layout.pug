@@ -1,76 +1,20 @@
-html
-    head
-        meta(charset='utf-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
-        meta(http-equiv='X-UA-Compatible', content='ie=edge')
-        title #{ renderData.meta.title || "" }
-        meta(name='keywords' content=renderData.meta.keywords || "")
-        meta(name='description' content=renderData.meta.description || "")
-        link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
-        block styles
-    body
-        //-初始化公共数据
-        - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
-        - const { company } = renderData.basic
-        - const { currentPage, currentPathname, domainType, shopId, shopName, isRedTopbar} = renderData
-        //- 名称先取企业别称 后取企业名称
-        - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
-        - defaultImg = "//file.baixing.net/202103/89395a19ded05d93d57f0524024acb4e.png"
-        - nav = renderData.navigation
-        - productListTab = nav.filter(x => x.position == "productListPage")
-        - newsLinkListTab = nav.filter(x => x.position == "articleListPage")
-        - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
-        if productListTab.length >0
-            - productLink = productListTab[0].content
-        if newsLinkListTab.length >0
-            - newsLink = newsLinkListTab[0].content
-
-        include ../../common/wap/official-header
-        //-block official-breadcrumbs
-        include ../../common/wap/official-red-breadcrumb.pug
-        - breadcrumbList = [{text:isCn?'首页':'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
-        +breadcrumb(breadcrumbList)
-
-        block header
-            include ./components/header
-            include ./components/swiper
-            include ./components/nav
-        //-为了提供给留咨参数
-        if shopName
-            p#shop-name(style="display:none") #{shopName}
-        #layout-content
-            block content
-
-        block footer
-
-        include ../../common/wap/official-footer.pug
-        block footer-contact
-            div(style="padding-bottom:75px")
-            include ./components/footer-contact
+extends ../../common/layout.pug
+block public-header
+  include ../../common/wap/official-header
+  //-block official-breadcrumbs
+  include ../../common/wap/official-red-breadcrumb.pug
+  - breadcrumbList = [{text:isCn?'首页':'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
+  +breadcrumb(breadcrumbList)
+  //-为了提供给留咨参数
+  if shopName
+      p#shop-name(style="display:none") #{shopName}
+  block header
+    include ./components/header
+    include ./components/swiper
+    include ./components/nav
 
 
-    block append scripts
-        script.
-            window.shopId = #{ shopId };
-            let isRedTopbar = '#{ isRedTopbar }';
-            if(isRedTopbar){
-                window.isRedTopbar = isRedTopbar
-            } else {
-                window.isRedTopbar = '';
-            }
-            let isSem = '#{ isSem }';
-            if(isSem){
-                window.isSem = isSem
-            } else {
-                window.isSem =  '';
-            }
-            let isCn = '#{ isCn }';
-            if(isCn){
-                window.isCn = isCn
-            } else {
-                window.isCn =  '';
-            }
-        include ../../vendor/baidutongji.pug
-        include ../../vendor/53kf.pug
-    :combine(fileName=["tb-vendors.js", "tb-commons.js"])
-    block scripts
+block footer
+  include ../../common/wap/official-footer.pug
+  div(style="padding-bottom:75px")
+  include ./components/footer-contact
