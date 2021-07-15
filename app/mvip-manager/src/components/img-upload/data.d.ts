@@ -11,7 +11,7 @@ export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
 
 export interface ActionBtnListItem {
   icon: (file: UploadFile, fileList: UploadFile[]) => (React.ReactElement | null),
-  action: (file: UploadFile, fileList: UploadFile[]) => any
+  action: (file: UploadFile, fileList: UploadFile[], fileIndex: number) => any
   title?: string // 动作描述
 }
 
@@ -97,7 +97,7 @@ export interface ImgUploadContextProps {
   handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => void // 更新图片数据
   handleChangeBaixingImageData: (newImageData: ImageDataAlbumListItem[], oldImageData: ImageDataAlbumListItem[]) => void // 更新图片数据
   handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => void,
-  handlePreview: (file: UploadFile) => void
-  handleRemove: (file: UploadFile) => void
-  handleCrop: (file: UploadFile) => void
+  handlePreview: (file: UploadFile, fileIndex: number) => void
+  handleRemove: (file: UploadFile, fileIndex: number) => void
+  handleCrop: (file: UploadFile, fileIndex: number) => void
 }

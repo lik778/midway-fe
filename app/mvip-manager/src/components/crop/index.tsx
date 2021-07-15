@@ -78,7 +78,9 @@ const Crop: FC<Props> = (props) => {
             cropBoxResizable={true}
             cropBoxMovable={true}
             dragMode='move'
-            checkOrientation={true}
+            crossOrigin={"anonymous"} // 跨域设置
+            checkCrossOrigin={true}
+            checkOrientation={false}
             onInitialized={(instance) => {
               setCropper(instance);
             }}

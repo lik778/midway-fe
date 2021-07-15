@@ -15,7 +15,8 @@ import { getFileBase64 } from '@/utils/index'
 
 // 返回的url/开始初始化的url 处理方式不同
 const getUrl = (url: string) => {
-  if (url.indexOf('http') !== -1) {
+  // 判断url里是否有二级域名baixing.
+  if (url.indexOf('.baixing.') !== -1) {
     return url
   } else {
     return `${url.slice(1,)}${window.__upyunImgConfig.imageSuffix}`
@@ -46,6 +47,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
   const [cropVisible, setCropVisible] = useState(false)
   const [cropItem, setCropItem] = useState<UploadFile<any>>()
+  const [cropItemIndex, setCropItemIndex] = useState<number>()
 
   const [itemWidth] = useState<number | undefined>(() => {
     return aspectRatio ? aspectRatio * 86 + 16 : undefined
@@ -173,7 +175,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // 弹窗模式需要 结束
 
   // 预览
-  const handlePreview = (file: UploadFile) => {
+  const handlePreview = (file: UploadFile, fileIndex: number) => {
     setPreviewImage(file.preview!)
     setPreviewVisible(true)
   }
@@ -184,20 +186,22 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   }
 
   // 删除
-  const handleRemove = (file: UploadFile) => {
-    const nowFileList = fileList.filter(item => item.uid !== file.uid)
+  const handleRemove = (_file: UploadFile, fileIndex: number) => {
+    const nowFileList = fileList.filter((item, index) => fileIndex !== index)
     decorateSetFileList(nowFileList, [...fileList])
   }
 
   // 裁剪
-  const handleCrop = (file: UploadFile) => {
+  const handleCrop = (file: UploadFile, fileIndex: number) => {
     setCropItem(file)
+    setCropItemIndex(fileIndex)
     setCropVisible(true)
   }
 
   // 取消裁剪
   const handleCropClose = () => {
     setCropVisible(false)
+    setCropItemIndex(undefined)
   }
 
   // 传入url ，返回裁剪后的图的uid
@@ -213,8 +217,8 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
         thumbUrl: previewUrl
       }]
     } else {
-      nowFileList = fileList.map(item => {
-        if (cropItem?.uid === item.uid) {
+      nowFileList = fileList.map((item, index) => {
+        if (index === cropItemIndex) {
           return {
             ...item,
             url: uid,
@@ -225,6 +229,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           return item
         }
       })
+      setCropItemIndex(undefined)
     }
     //  这里file的寻找用|| 是因为 当时上传前裁剪的话，将文件id作为图片的uid使用，保证唯一性
     decorateSetFileList(nowFileList, fileList)

@@ -9,6 +9,7 @@ import { ImageItem } from '@/interfaces/shop';
 import styles from './index.less'
 import { getImagesetImage, getBaixingImagesetImage } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
+import { errorMessage } from '@/components/message';
 
 interface Props {
   tabsCurrent: TabsKeys,
@@ -48,7 +49,11 @@ const ImgList: FC<Props> = (props) => {
       size: 16,
       mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined
     })
-
+    setGetDataLoading(false)
+    if (!res.success) {
+      errorMessage(res.message)
+      return
+    }
     const newAlbumTypeDetail = createNewData(res.data.mediaImgBos.result || [], res.data.mediaImgBos.totalPage)
     if (tabKey === '百姓图库') {
       handleChangeBaixingImageData(baixingImageData.map(item => {
@@ -71,7 +76,6 @@ const ImgList: FC<Props> = (props) => {
       }, imageData)
     }
     setAlbumTypeDetail(newAlbumTypeDetail)
-    setGetDataLoading(false)
   }
 
   const getData = () => {

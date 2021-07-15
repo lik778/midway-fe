@@ -34,9 +34,9 @@ const defaultValue = {
   handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => { },
   handleChangeBaixingImageData: (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => { },
   handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => { },
-  handlePreview: (file: UploadFile) => { },
-  handleRemove: (file: UploadFile) => { },
-  handleCrop: (file: UploadFile) => { },
+  handlePreview: (file: UploadFile, fileIndex: number) => { },
+  handleRemove: (file: UploadFile, fileIndex: number) => { },
+  handleCrop: (file: UploadFile, fileIndex: number) => { },
 }
 
 const ImgUploadContext = React.createContext<ImgUploadContextProps>(defaultValue);

@@ -15,7 +15,7 @@ const Upload1: FC = () => {
   const setCropItem = async (file: RcFile,) => {
     const filrUrl = await getFileBase64(file)
     const cropItem: UploadFile = { uid: file.uid, status: 'uploading', preview: filrUrl as string, size: 0, name: '', originFileObj: null as any, type: '', }
-    handleCrop(cropItem)
+    handleCrop(cropItem, fileList.length)
   }
 
   const beforeUpload = (file: RcFile) => {
@@ -69,7 +69,7 @@ const Upload1: FC = () => {
     onChange={handleChange}
     isImageUrl={(file) => { return true }}
     disabled={disabled}
-    itemRender={itemRender ? itemRender : (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
+    itemRender={itemRender ? itemRender : (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem fileIndex={(fileList || []).findIndex(item => item.uid === file.uid)} file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
   >
     {
       fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />
