@@ -25,23 +25,29 @@ export const init400Btn = function () {
     const phoneNumTip = $('.official-400-btn .official-nav-phone-num-tip')
     const phoneNumTipText = $('.official-400-btn .official-nav-phone-num-tip>.tip-text')
 
-    phoneNumBtn.on("click", async () => {
+    phoneNumBtn.on("click", async function (e) {
       if (isSem) {
-        phoneNumBtn.attr('disabled', true)
-        phoneNumBtn.attr('loading', true)
-        const data = await get400Number()
-        if (data.account) {
-          phoneNumText.text(data.account)
-          set400NumbertimeOut()
+        var union400num = $(this).data('union400num')
+        if (union400num) {
+          phoneNumText.text(union400num)
+          phoneNumBtn.attr('disabled', true)
         } else {
-          phoneNumTipText.text('号码获取失败，请联系客服')
-          phoneNumBtn.attr('disabled', false)
+          phoneNumBtn.attr('disabled', true)
+          phoneNumBtn.attr('loading', true)
+          const data = await get400Number()
+          if (data.account) {
+            phoneNumText.text(data.account)
+            set400NumbertimeOut()
+          } else {
+            phoneNumTipText.text('号码获取失败，请联系客服')
+            phoneNumBtn.attr('disabled', false)
+          }
+          phoneNumBtn.attr('loading', false)
+          phoneNumTip.removeClass('hide')
         }
-        phoneNumBtn.attr('loading', false)
-        phoneNumTip.removeClass('hide')
       } else {
-        const telNum = phoneNumBtn.attr("href").slice(4);
-        phoneNumText.text(telNum)
+        var phone = $(this).data('phone')
+        phoneNumText.text(phone)
         eventTracker("phone-pc", "vad-pc")
       }
     });

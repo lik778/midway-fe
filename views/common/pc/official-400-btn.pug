@@ -1,5 +1,6 @@
 mixin official400Btn(config)
-  button.official-400-btn(href="tel:" + config.phone , style=" background-color:"+config.backgroundColor+";border-color:"+config.borderColor)
+  - let union400num =  union400 && union400.length? union400[0]: ''
+  button.official-400-btn(data-phone=config.phone ,data-union400num=union400num style=" background-color:"+config.backgroundColor+";border-color:"+config.borderColor)
     img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon")
     span 查看电话
     .official-nav-phone-num-tip.hide(style="border-color:"+config.navTipBorderColor+";background:"+config.navTipBackgroundColor)
