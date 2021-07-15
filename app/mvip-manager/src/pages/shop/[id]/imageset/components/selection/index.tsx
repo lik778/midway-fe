@@ -64,9 +64,10 @@ export default function SelectionBlock(props: SelectionBlockProps) {
 
   // 批量删除卡片
   const deleteSelectionCards = useCallback((e: any) => {
-    const resetFreshPage = selection.length === lists.length &&
-      selection.every(id => lists.find(x => x.id === id))
     e.stopPropagation()
+    // 批量删除时必定重新刷新页面分页参数，
+    // 因为不知道删了啥，删了之后这也还存不存在
+    const resetFreshPage = true
     const count = selection.length
     const info = count === 0
       ? `删除后无法恢复，确认删除？`
