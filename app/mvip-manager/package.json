@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
-    "@types/lodash": "^4.14.170",
+    "@types/lodash": "^4.14.167",
     "cross-env": "^7.0.3"
   }
 }
