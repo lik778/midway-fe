@@ -5,12 +5,17 @@ import { RequestService } from './request.service';
 import { PageHeaderParams, HeaderAuthParams, ServiceResponse, ShopComponents } from '../interface';
 import { LogService } from './log.service';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
-
+import { apiSecret } from 'src/constant';
+export type analyticsParams = {
+  ip: string,
+  jumpUrl: string
+}
 @Injectable()
 export class SiteService {
   private haojingHost: string;
   private prefixPath: string;
   private midwayPrefixPath: string;
+  private analyticsPrefix: string;
   //定义：后端传的模板id对应的前端模板类型
   static templateMapping = {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
@@ -26,6 +31,17 @@ export class SiteService {
     const host = configService.get('services.midway-service.host');
     this.prefixPath = `${host}/api/midway/frontend`
     this.midwayPrefixPath = `${host}/api/midway/backend`
+    this.analyticsPrefix = `${host}/api/midway/internal`
+  }
+  
+  public shieldCheck(params): Promise<ServiceResponse<any>> {
+    return this.requestService.post(`${this.analyticsPrefix}/waf/check`, params, { 'content-type': 'application/json',
+    'x-api-secret': apiSecret })
+  }
+  public async shieldGet(params): Promise<ServiceResponse<any>> {
+    console.log(params)
+    return this.requestService.post(`${this.analyticsPrefix}/waf/get`, params, { 'content-type': 'application/json',
+    'x-api-secret': apiSecret })
   }
 
   public getShopName(shopName: string): string {
@@ -47,7 +63,7 @@ export class SiteService {
       domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      // domain = 'zmlc2b.shop.baixing.cn'
+      domain = 'zmlc2b.shop.baixing.cn'
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
