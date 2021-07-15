@@ -22,7 +22,6 @@ const LocalUpload: FC = () => {
     // 这里这么判断是因为再弹窗选图下，本地上传模块的图片后不存在删除操作，只有新增，所以比对一下url不同就知道是哪一个文件被修改了
     const file = fileList.find((item, index) => !oldFileList[index] || item.url !== oldFileList[index].url)
     const res = await createImagesetImage(shopCurrent!.id, {
-      shopId: shopCurrent!.id,
       imgUrl: file!.url!
     })
     setAlbumList([...albumList, res.data])

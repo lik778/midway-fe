@@ -80,11 +80,7 @@ export function useUploadModal(props: Props) {
         error: ''
       }])
       try {
-        const query = {
-          shopId,
-          imgUrl: item.response.url,
-          mediaCateId: selectedAlbum!.id,
-        }
+        const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
         const res = await createImagesetImage(shopId, query)
         if (res.success && (typeof res.data.id === 'number')) {
           const target = uploadedLists.current.find(x => x.uid === item.uid)
