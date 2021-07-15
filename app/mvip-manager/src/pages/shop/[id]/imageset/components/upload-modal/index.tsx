@@ -90,7 +90,6 @@ export function useUploadModal(props: Props) {
             }, 5 * 1000)
           })
         ])
-        console.log('res: ', res)
         if (res.success && (typeof res.data.id === 'number')) {
           const target = uploadedLists.current.find(x => x.uid === item.uid)
           if (target) {
@@ -187,24 +186,28 @@ export function useUploadModal(props: Props) {
           </svg>
           <span className={styles["upload-info"]}>{exactPercent}%</span>
         </>
-      }
-      if (status === 'error') {
+      } else if (status === 'error' || item.status === 'error') {
         $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
           {error || '上传失败，点击删除'}
         </span>
-      }
-      if (status === 'done') {
+      } else if (status === 'done') {
+        if (preview) {
+          dispearMask = true
+          $contents = <>
+            <div className={styles['upload-item-actions']}>
+              <span className={styles['action']} onClick={() => handleRemove(item)}>
+                <DeleteOutlined />
+              </span>
+            </div>
+          </>
+        } else {
+          dispearMask = false
+          $contents = <span className={styles["upload-info"]}>加载中</span>
+        }
+      } else if (!status) {
         dispearMask = true
-        $contents = <>
-          <div className={styles['upload-item-actions']}>
-            <span className={styles['action']} onClick={() => handleRemove(item)}>
-              <DeleteOutlined />
-            </span>
-          </div>
-        </>
-      }
-      if (!status) {
-        dispearMask = true
+      } else {
+        // ...
       }
     }
     return (

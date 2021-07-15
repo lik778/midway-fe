@@ -72,9 +72,14 @@ export function useUpload(props: Props) {
     // 读取到图片的预览地址
     if (status === 'done') {
       if (e.file && !(e.file.preview)) {
-        getBase64(e.file.originFileObj).then(preview => {
-          updateRef.current(e.file, { preview })
-        })
+        getBase64(e.file.originFileObj)
+          .then(preview => {
+            updateRef.current(e.file, { preview })
+          })
+          .catch(error => {
+            console.error(error)
+            updateRef.current(e.file, { status: 'error', error: '解析失败' })
+          })
       }
       if (afterUploadHook) {
         afterUploadHook(e.file, updateRef.current)
