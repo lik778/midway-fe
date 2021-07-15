@@ -17,7 +17,7 @@
         "release:test": "cross-env NODE_ENV=test nest build && cross-env NODE_ENV=production  webpack -c ./build/webpack.prod.config.js",
         "release:test1": "cross-env NODE_ENV=test1 nest build && cross-env NODE_ENV=production  webpack -c ./build/webpack.prod.config.js",
         "release:test2": "cross-env NODE_ENV=test2 nest build && cross-env NODE_ENV=production  webpack -c ./build/webpack.prod.config.js",
-        "release:prod": "npx cross-env NODE_ENV=production nest build && npx cross-env NODE_ENV=production npx webpack -c ./build/webpack.prod.config.js",
+        "release:prod": "cross-env NODE_ENV=production nest build && cross-env NODE_ENV=production  webpack -c ./build/webpack.prod.config.js",
         "dev:docker-build": "docker build -t midway-fe .",
         "dev:docker-run": "docker run -p 7001:7001 midway-fe",
         "start:debug": "nest start --debug --watch",
