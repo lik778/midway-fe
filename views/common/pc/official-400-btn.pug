@@ -1,0 +1,15 @@
+mixin official400Btn(config)
+  button.official-400-btn(href="tel:" + config.phone , style=" background-color:"+config.backgroundColor+";border-color:"+config.borderColor)
+    img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon")
+    span 查看电话
+    .official-nav-phone-num-tip.hide(style="border-color:"+config.navTipBorderColor+";background:"+config.navTipBackgroundColor)
+      .triangle
+        //- <!-- 底层三角形用于绘制三角形边框 -->
+        em(style="border-bottom-color:"+ config.navTipBorderColor )
+        //- <!-- 上层三角形用于消除得到镂空效果 -->
+        span(style="border-bottom-color:"+ config.navTipBackgroundColor )
+      .tip-text(style="color:"+config.navTipColor)
+        | 电话
+        span.time-num
+          | 180s
+        | 后过期，刷新页面重新获取 

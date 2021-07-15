@@ -43,7 +43,7 @@ export const initPhone = function () {
             set400NumbertimeOut()
           } else {
             phoneNumTip.removeClass('hide')
-            phoneNumTipText.html('号码获取失败，请联系客服')
+            phoneNumTipText.text('号码获取失败，请联系客服')
           }
           phone400ActionBtn.attr('disabled', false)
           phone400ActionBtn.attr('loading', false)
