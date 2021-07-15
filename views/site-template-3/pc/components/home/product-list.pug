@@ -7,7 +7,7 @@ mixin item(item)
       p.only-oneline #{ item.name }
       .vad-btn 查看详情
 
-#product-swiper-box
+#product-list-box
   each p in proList.slice(0,12)
     +item(p)
 

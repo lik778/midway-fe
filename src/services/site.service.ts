@@ -39,7 +39,6 @@ export class SiteService {
     'x-api-secret': apiSecret })
   }
   public async shieldGet(params): Promise<ServiceResponse<any>> {
-    console.log(params)
     return this.requestService.post(`${this.analyticsPrefix}/waf/get`, params, { 'content-type': 'application/json',
     'x-api-secret': apiSecret })
   }
