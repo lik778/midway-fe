@@ -3,31 +3,32 @@ section.lz__section
 		.lz__contact-us
 				.contact-form
 						include ./contact-form.pug
-				.company-info
-						.info-label 公司信息
-						.info-item
-								span 联系人
-								span #{ contactName.content }
-						.info-item.phone1
-								span 联系电话
-								if phone.content && phone.content.length > 0
-										span.phoneNumber-slice #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) || "暂未添加电话" }
-										span.phoneNumber-full.hide #{ phone.content || "暂未添加电话" }
-										span.view-phone 查看
-						if phone2&&phone2.content&&phone2.content.length > 0
-								.info-item.phone2
-										span 联系电话2
-										if phone2.content && phone2.content.length > 0
-												span.phoneNumber-slice #{ phone2.content.slice(0,3)+'****'+phone2.content.slice(7) || "暂未添加电话" }
-												span.phoneNumber-full.hide #{ phone2.content || "暂未添加电话" }
-												span.view-phone 查看
-						.info-item
-								span 微信号码
-								span #{ weChat.content || "暂未添加微信号"}
-						if qq && qq.length > 0
-								.info-item
-										span QQ号码
-										span #{ qq[0].content }
-						.info-item
-								span 公司地址
-								span #{ company.address || "暂未添加公司地址"}
+				if !isSem
+					.company-info
+							.info-label 公司信息
+							.info-item
+									span 联系人
+									span #{ contactName.content }
+							.info-item.phone1
+									span 联系电话
+									if phone.content && phone.content.length > 0
+											span.phoneNumber-slice #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) || "暂未添加电话" }
+											span.phoneNumber-full.hide #{ phone.content || "暂未添加电话" }
+											span.view-phone 查看
+							if phone2&&phone2.content&&phone2.content.length > 0
+									.info-item.phone2
+											span 联系电话2
+											if phone2.content && phone2.content.length > 0
+													span.phoneNumber-slice #{ phone2.content.slice(0,3)+'****'+phone2.content.slice(7) || "暂未添加电话" }
+													span.phoneNumber-full.hide #{ phone2.content || "暂未添加电话" }
+													span.view-phone 查看
+							.info-item
+									span 微信号码
+									span #{ weChat.content || "暂未添加微信号"}
+							if qq && qq.length > 0
+									.info-item
+											span QQ号码
+											span #{ qq[0].content }
+							.info-item
+									span 公司地址
+									span #{ company.address || "暂未添加公司地址"}

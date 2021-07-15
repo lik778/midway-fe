@@ -1,21 +1,23 @@
 .product-detail
-		- const { headImg, name, price, content, contentImg} = renderData.productInfo
-				.pro-top
-						img(src=headImg || defaultImg, alt="")
-						.pro-meta
-								h3 #{ name }
-								p 价格：#{ price || '面议'}
-								p 商家地址：#{ renderData.basic.company.address }
-				.pro-center
-						include ./company-info-other.pug
-				.pro-bottom
-						.pro-title
-								div
-								span 服务详情
-						if contentImg && contentImg.length > 0
-							each item in contentImg
-									.pro-pic
-											img(src=item, alt="")
-						.pro-content.
-								!{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+  - const { headImg, name, price, content, contentImg} = renderData.productInfo
+    .pro-top
+      img(src=headImg || defaultImg, alt="")
+      .pro-meta
+        h3 #{ name }
+        p 价格：#{ price || '面议'}
+        if !isSem
+          p 商家地址：#{ renderData.basic.company.address }
+    .pro-center
+      if !isSem
+        include ./company-info-other.pug
+    .pro-bottom
+      .pro-title
+        div
+        span 服务详情
+      if contentImg && contentImg.length > 0
+        each item in contentImg
+          .pro-pic
+            img(src=item, alt="")
+      .pro-content.
+        !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
 

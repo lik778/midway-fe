@@ -175,7 +175,7 @@ const CustomerSet: FC<Props> = (props) => {
           dataList.map((item, index) => <CustomerSetForm item={item} index={index} key={item.key} total={dataList.length} ref={(ref) => forms.current[index] = ref} onDel={handleDeleteItem} />)
         }
         {
-          dataList.length < 10 && <Button className={`${styles['add-btn']}`} type="primary" onClick={handleClickAdd}>+增加优势</Button>
+          dataList.length < 10 && <Button className={`${styles['add-btn']}`} type="primary" onClick={handleClickAdd}>+增加子模块</Button>
         }
         <div>
           <Button className={`${styles['submit-btn']}`} loading={upDataLoading} disabled={upDataLoading}
