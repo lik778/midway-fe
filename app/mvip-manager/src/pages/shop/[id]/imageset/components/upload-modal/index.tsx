@@ -12,6 +12,7 @@ import styles from './index.less';
 
 const MAX_UPLOAD_COUNT = 15
 const UPLOAD_RES_MAP_DEFAULT_ID = -1
+const getID = (): string => String(Math.random()).slice(-6) + +new Date()
 
 // 保存 UploadItem 和 上传结果的关系
 type UploadResMap = {
@@ -43,10 +44,10 @@ export function useUploadModal(props: Props) {
   // 我需要这个数组用来记录已经上传的列表，
   // reRender 用来触发重渲染
   const uploadedLists = useRef<UploadResMap[]>([])
-  const [reRender, setRerender] = useState(Math.random())
+  const [reRender, setRerender] = useState(getID())
   const record = (newLists: UploadResMap[]) => {
     uploadedLists.current = newLists
-    setRerender(Math.random())
+    setRerender(getID())
   }
 
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
