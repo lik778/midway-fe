@@ -11,7 +11,7 @@ export default {
       host: 'http://dev-api.baixing.cn'
     }
   },
-  cdnPath: '',
+  cdnPath: '//yxt.baixing.net',
   haojing: 'http://wulei.baixing.cn',
   haojingDomain: 'baixing.cn',
   hostType: {
