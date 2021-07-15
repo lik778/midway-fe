@@ -16,7 +16,7 @@ const fallbackSource = scriptFallbackFunctionSouce
   .replace(/('|")CDN_PATH('|")/, `"${cdnPath}"`)
   .replace(/('|")SOURCE_PATH('|")/, `"${host}"`)
 const fallbackFnInject = useScriptFallback
-  ? `<style>\n${fallbackSource}\n</style>`
+  ? `<script>\n${fallbackSource}\n</script>`
   : ''
 
 export default {
