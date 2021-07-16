@@ -5,11 +5,24 @@ import * as util from './util';
 import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
 
+import scriptFallbackFunctionSouce from './simple-resouce-reload'
+
+/* CDN 资源加载出错时的简单回退至加载源站，没有考虑加载顺序 */
+
+export const useScriptFallback = true
+const cdnPath = config().cdnPath
+const host = config().fuwu
+const fallbackSource = scriptFallbackFunctionSouce
+  .replace(/('|")CDN_PATH('|")/, `"${cdnPath}"`)
+const fallbackFnInject = useScriptFallback
+  ? `<script>\n${fallbackSource}\n</script>`
+  : ''
+
 export default {
   combine: function (text, options) {
     const { fileName } = options
     const handleArr = Array.isArray(fileName) ? [...fileName] : [fileName]
-    let retAssets = ''
+    let retAssets = `${fallbackFnInject}`
     if (handleArr.length === 0) return ''
     handleArr.forEach(item => {
       const name = item.split('.')[0]
@@ -17,16 +30,12 @@ export default {
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
       const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-      // if (suffix === 'css') {
-      //   retAssets += `<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}"/>`
-      // } else if (suffix === 'js') {
-      //   retAssets += `<script src="${cdnPath}/assets/${assetsName}"></script>`
-      // }
-
+      
       if (suffix === 'css') {
-        retAssets += `<link rel="stylesheet" href="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"/>`
-      } else if (suffix === 'js') {
-        retAssets += `<script src="${cdnPath ? '//shop.baixing.com' : ''}/assets/${assetsName}"></script>`
+        retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
+      }
+      if (suffix === 'js') {
+        retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
       }
     })
     return retAssets
