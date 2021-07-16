@@ -19,7 +19,8 @@ const LocalUpload: FC = () => {
   // ImgUpload uploadType===1情况下，每次onChange只会操作一个动作
   const handleChange = async (values: string | string[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
     setUpDataLoading(true)
-    // 这里这么判断是因为再弹窗选图下，本地上传模块的图片后不存在删除操作，只有新增，所以比对一下url不同就知道是哪一个文件被修改了
+    // 这里这么判断是因为在弹窗选图下，本地上传模块的图片后不存在删除操作，只有新增，所以比对一下url不同就知道是哪一个文件被修改了
+    // 至于为什么不用最后一个，以免以后有裁剪功能什么的比对
     const file = fileList.find((item, index) => !oldFileList[index] || item.url !== oldFileList[index].url)
     const res = await createImagesetImage(shopCurrent!.id, {
       imgUrl: file!.url!
@@ -41,7 +42,7 @@ const LocalUpload: FC = () => {
         <ImgUpload uploadType={1} editData={fileList} uploadBtnText={uploadBtnText} maxLength={1000} onChange={handleChange} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
           showRemoveIcon: false,
           showCropIcon: false
-        }} cropProps={cropProps} uploadBeforeCrop={true} itemRender={itemRender}></ImgUpload>
+        }} cropProps={cropProps} itemRender={itemRender}></ImgUpload>
       </div>
     </div>
   </Spin>

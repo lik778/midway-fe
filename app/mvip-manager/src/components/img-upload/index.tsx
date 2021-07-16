@@ -11,6 +11,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import { ShopInfo } from '@/interfaces/shop';
 import Upload1 from '@/components/img-upload/components/upload1'
 import Upload2 from '@/components/img-upload/components/upload2'
+import CropModal from '@/components/img-upload/components/crop-modal'
 import { getFileBase64 } from '@/utils/index'
 
 // 返回的url/开始初始化的url 处理方式不同
@@ -26,7 +27,7 @@ const getUrl = (url: string) => {
 const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
   if (file.preview) {
     return file.preview
-  } else if (file.url && file.url.indexOf('http') !== -1) {
+  } else if (file.url && file.url.indexOf('.baixing.') !== -1) {
     return file.url
   } else {
     const preview = getFileBase64(file.originFileObj);
@@ -175,7 +176,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // 弹窗模式需要 结束
 
   // 预览
-  const handlePreview = (file: UploadFile, fileIndex: number) => {
+  const handlePreview = (file: UploadFile) => {
     setPreviewImage(file.preview!)
     setPreviewVisible(true)
   }
@@ -296,16 +297,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
-      <Modal
-        width={1220}
-        title="裁剪图片"
-        visible={cropVisible}
-        footer={null}
-        maskClosable={false}
-        onCancel={handleCropClose}
-      >
-        <Crop cropProps={cropProps} url={cropItem?.preview!} handleCropSuccess={handleCropSuccess}></Crop>
-      </Modal>
+      <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={cropItem?.preview} handleCropSuccess={handleCropSuccess}></CropModal>
     </>
   )
 }

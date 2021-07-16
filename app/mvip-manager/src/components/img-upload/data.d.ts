@@ -97,7 +97,7 @@ export interface ImgUploadContextProps {
   handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => void // 更新图片数据
   handleChangeBaixingImageData: (newImageData: ImageDataAlbumListItem[], oldImageData: ImageDataAlbumListItem[]) => void // 更新图片数据
   handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => void,
-  handlePreview: (file: UploadFile, fileIndex: number) => void
+  handlePreview: (file: UploadFile) => void
   handleRemove: (file: UploadFile, fileIndex: number) => void
   handleCrop: (file: UploadFile, fileIndex: number) => void
 }

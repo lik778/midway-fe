@@ -92,6 +92,12 @@ const ImgList: FC<Props> = (props) => {
     }
   }
 
+  // 切换店铺图册滚动到顶部
+  const scrollTop = () => {
+    if (!ref.current) return
+    ref.current.scrollTop = 0
+  }
+
   // 初始化一个图册时需要看它是否已经请求过数据，缓存起来了
   useEffect(() => {
     if (albumTypeDetail && !albumTypeDetail.init) {
@@ -99,16 +105,11 @@ const ImgList: FC<Props> = (props) => {
     }
   }, [albumTypeDetail])
 
-  // 切换图册， 切换住
+  // 切换图册，切换店铺，都要触发，切换店铺时，新的店铺的左侧图册列表还没请求，所以及时shopCurrent触发了更新，但是imageData，baixingImageData
   useEffect(() => {
+    scrollTop()
     getData()
   }, [menuKey, shopCurrent])
-
-  // 切换店铺当前滚动到顶部
-  useEffect(() => {
-    if (!ref.current) return
-    ref.current.scrollTop = 0
-  }, [shopCurrent])
 
   const handleScroll: React.UIEventHandler<HTMLDivElement> = useDebounce((e) => {
     // 未滚动到底部
@@ -122,8 +123,8 @@ const ImgList: FC<Props> = (props) => {
   }, 200)
 
   return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
-    <div className={styles['img-list']} onScroll={handleScroll}>
-      <div className={styles['list']} ref={(dom) => ref.current = dom}>
+    <div className={styles['img-list']} onScroll={handleScroll}  ref={(dom) => ref.current = dom}>
+      <div className={styles['list']}>
         {
           albumTypeDetail && albumTypeDetail.images.map(item => <ImgItem detail={item} key={item.id}></ImgItem>)
         }

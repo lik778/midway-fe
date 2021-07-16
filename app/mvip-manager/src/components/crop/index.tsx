@@ -9,7 +9,7 @@ import { CropProps } from './data'
 import { Spin } from 'antd'
 interface Props {
   cropProps: CropProps,
-  url: string,
+  url?: string,
   handleCropSuccess: (uid: string, previewUrl: string) => void
 }
 
@@ -26,7 +26,7 @@ const Crop: FC<Props> = (props) => {
       // 当图片太大，cropper可能对新图片还没准备好，所以给个延时
       setTimeout(() => {
         cropper.reset()
-      }, 0)
+      }, 100)
     }
   }, [url, cropper])
 

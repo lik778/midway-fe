@@ -38,20 +38,24 @@ const Album: FC<Props> = (props) => {
     // 选择好店铺后，先判断是否有请求过左侧相册名列表
     if (shopCurrent) {
       if (tabKey === '百姓图库') {
-        if (baixingImageData.length > 0) return
-        setGetDataLoading(true)
-        const res = await getBaixingAlbumNameList(shopCurrent!.id)
-        const newData = createNewData(res.data)
-        handleChangeBaixingImageData(newData, baixingImageData)
+        if (baixingImageData.length <= 0) {
+          setMenuKey(undefined)
+          setGetDataLoading(true)
+          const res = await getBaixingAlbumNameList(shopCurrent!.id)
+          const newData = createNewData(res.data)
+          handleChangeBaixingImageData(newData, baixingImageData)
+        }
       } else if (tabKey === '我的图库') {
-        if (imageData[shopCurrent.id]) return
-        setGetDataLoading(true)
-        const res = await getAlbumNameList(shopCurrent!.id)
-        const newData = createNewData(res.data)
-        handleChangeImageData({
-          ...imageData,
-          [shopCurrent.id]: newData
-        }, imageData)
+        if (!imageData[shopCurrent.id]) {
+          setMenuKey(undefined)
+          setGetDataLoading(true)
+          const res = await getAlbumNameList(shopCurrent!.id)
+          const newData = createNewData(res.data)
+          handleChangeImageData({
+            ...imageData,
+            [shopCurrent.id]: newData
+          }, imageData)
+        }
       }
       setGetDataLoading(false)
       setMenuKey(-1)
