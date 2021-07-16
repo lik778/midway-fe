@@ -17,7 +17,7 @@ export interface ActionBtnListItem {
 
 export interface ImgUploadProps {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
-  editData?: any;// 传入的数据
+  editData?: string | string[];// 传入的数据
   uploadBtnText: string;// 上传按钮上的提示文本
   maxSize?: number;// 单个图片最大尺寸
   maxLength: number;// 本次上传个数上线

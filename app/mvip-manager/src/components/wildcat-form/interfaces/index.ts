@@ -75,3 +75,18 @@ export interface ImagesItem {
   cropProps: CropProps,
   uploadBeforeCrop?: boolean,// 上传前裁剪
 }
+
+
+
+export interface WildcatFormProps {
+  config: FormConfig;
+  onInit?(form: any): void;
+  //父传的表单数据
+  editDataSource?: any;
+  submit?(values: any): void;
+  formChange?(changeValue: any, allValues: any): void;
+  className?: string;
+  onClick?: any;
+  loading?: boolean;
+  submitBtn?: ReactNode;
+}

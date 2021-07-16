@@ -343,7 +343,8 @@ export type ImageItem = {
   id: number,
   name: string,
   imgUrl: string,
-  checkStatus: CheckStatusType
+  checkStatus: CheckStatusType,// 状态
+  reason:string,// 驳回理由
 }
 
 export type CardItem = AlbumItem | ImageItem

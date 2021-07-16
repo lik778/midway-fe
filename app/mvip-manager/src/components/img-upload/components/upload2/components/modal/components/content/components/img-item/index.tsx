@@ -6,6 +6,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import styles from './index.less'
 import { UploadFile } from 'antd/lib/upload/interface';
 import CropModal from '@/components/img-upload/components/crop-modal'
+import { errorMessage } from '@/components/message';
 
 interface Props {
   detail: ImageItem,
@@ -36,7 +37,15 @@ const ImgItem: FC<Props> = (props) => {
   }
 
   const handleSelectItem = () => {
-    if (detail.checkStatus !== 'APPROVE') return
+    if (maxLength > 1 && localFileList.length >= maxLength) {
+      errorMessage('上传数量达到上限！')
+      return
+    }
+
+    if (detail.checkStatus !== 'APPROVE') {
+      errorMessage(detail.reason)
+      return
+    }
     setCropVisible(true)
   }
 
@@ -69,14 +78,11 @@ const ImgItem: FC<Props> = (props) => {
   const handleCropSuccess = (uid: string, previewUrl: string) => {
     const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: uid, thumbUrl: previewUrl, preview: previewUrl as string, size: 0, name: '', originFileObj: null as any, type: '' }
     if (maxLength === 1) {
-
       handleChangeLocalFileList([newFile])
     } else {
-      if (localFileList.length >= maxLength) return
       const newLocalFileList = [...localFileList, newFile]
       handleChangeLocalFileList(newLocalFileList)
     }
-
     setCropVisible(false)
   }
 

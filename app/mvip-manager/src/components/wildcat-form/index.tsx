@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
-import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem } from '@/components/wildcat-form/interfaces';
+import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
@@ -13,22 +13,7 @@ const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
-
-interface Props {
-  config: FormConfig;
-  onInit?(form: any): void;
-  //父传的表单数据
-  editDataSource?: any;
-  submit?(values: any): void;
-  formChange?(changeValue: any, allValues: any): void;
-  className?: string;
-  onClick?: any;
-  loading?: boolean;
-  submitBtn?: ReactNode;
-}
-
-
-const WildcatForm = (props: Props, parentRef: Ref<any>) => {
+const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm();
   const { editDataSource, onInit, loading, config } = props
 
