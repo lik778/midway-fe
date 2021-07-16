@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
-    # npm ci &&  \
+    # npm ci && \
     npm ci --cache .npm --prefer-offline && \
     npm run release:prod && \
     cd app/mvip-manager/ && \
