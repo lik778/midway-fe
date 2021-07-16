@@ -9,7 +9,6 @@ import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../../consta
 
 //模板页面基础控制器，进行数据请求和打点
 export class BaseSiteController {
-  private whiteList: string[] = ['baomuyuesao', 'zhongheruijia', 'jikang', 'weichai', 'ndjx', 'hnfjhbsb']
   constructor(protected readonly midwayApiService: SiteService,
     protected readonly trackerService: TrackerService,
     protected domainType: DomainTypeEnum) { }
@@ -33,12 +32,20 @@ export class BaseSiteController {
     return HostDomain === 'cn' ? true : undefined
   }
 
-  private checkSem(sem: string | undefined, bannerId: string | undefined) {
+  private checkSem(sem: string | undefined, bannerId: string | undefined, account: string) {
     // 投放页改成店铺首页
-
+    // 1.先判断bannerid是否包含凤鸣id：
+    // a.无bannerid的按KA要求页面显示（400电话样式）；
+    // b.有bannerid的判断有无account参数：
+    // b-1.无account按account=0处理，代表小微账号，店铺落地页显示单品页面，即用户自己电话的页面；
+    // b-2.有account且=1，代表KA账户，店铺落地页显示sem=1的页面，即400电话的页面；
     const bannerIdList = ['2192', '2195', '2005', '2241']
     if (bannerId && bannerIdList.indexOf(bannerId) !== -1) {
-      return undefined
+      if (account === '1') {
+        return true
+      } else {
+        return undefined
+      }
     } else {
       // 这里 isSem: sem === "1" ? true : undefined 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
       return sem === "1" ? true : undefined
@@ -77,7 +84,6 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-    console.log(data)
     return data
   }
 
@@ -118,7 +124,7 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
-    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, });
   }
@@ -153,7 +159,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
@@ -190,7 +196,7 @@ export class BaseSiteController {
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      const isSem = this.checkSem(query.sem, query.bannerId)
+      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
       if (isSem) {
         if (data.articleInfo && data.articleInfo.content) {
           data.articleInfo.content = this.replaceMobile(data.articleInfo.content)
@@ -222,7 +228,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      const isSem = this.checkSem(query.sem, query.bannerId)
+      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
       const isCn = this.checkCn(HostDomain)
       return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
     }
@@ -258,7 +264,7 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
 
-    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
@@ -296,7 +302,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
 
-      const isSem = this.checkSem(query.sem, query.bannerId)
+      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
       // 如果是sem情况下需要对数据做联系方式过滤
       if (isSem) {
         if (data.productInfo && data.productInfo.content) {
@@ -329,7 +335,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      const isSem = this.checkSem(query.sem, query.bannerId)
+      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
       const isCn = this.checkCn(HostDomain)
       return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
     }
@@ -366,7 +372,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     // 如果是sem情况下需要对数据做联系方式过滤
     if (isSem) {
       if (data.basic && data.basic.company && data.basic.company.about) {
@@ -426,7 +432,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    const isSem = this.checkSem(query.sem, query.bannerId)
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, {
       title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn,
