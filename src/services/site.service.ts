@@ -39,7 +39,6 @@ export class SiteService {
     'x-api-secret': apiSecret })
   }
   public async shieldGet(params): Promise<ServiceResponse<any>> {
-    console.log(params)
     return this.requestService.post(`${this.analyticsPrefix}/waf/get`, params, { 'content-type': 'application/json',
     'x-api-secret': apiSecret })
   }
@@ -57,10 +56,10 @@ export class SiteService {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1) {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       // domain = 'zmlc2b.shop-test.baixing.cn'
-      // domain = 'hongtest2.shop-test.baixing.cn'
+      domain = 'hongtest1.shop-test.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      domain = 'shop-test.baixing.cn'
+      // domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       // domain = 'zmlc2b.shop.baixing.cn'

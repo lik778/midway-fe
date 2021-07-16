@@ -3,13 +3,11 @@ import './index.styl';
 import '../layout/index';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
-import { productSwiper } from '../components/home/product-swiper';
 import { viewPhone } from '../components/home/viewPhone';
 import { initSem } from '../../../common/pc/contact-form-sem'
 
 
 leaveLeads()
-productSwiper()
 viewPhone()
 
 $(document).on('ready', function () {

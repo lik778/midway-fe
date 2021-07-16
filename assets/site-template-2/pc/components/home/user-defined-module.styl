@@ -1,53 +1,46 @@
 .user-defined-list
-	display flex
-	flex-wrap wrap
-	justify-content space-between
-	width 1220px
-	margin 0 auto
-	&:last-child
-		margin-bottom 24px
-	.viewMore
-		display flex
-		align-items center
-		justify-content center
-	.user-defined-item
-		width 585px
-		padding 30px 34px
-		margin-bottom 16px
-		background #FFF
-		box-sizing border-box
-		.bg-content
-			display flex
-			justify-content center
-			padding 19px 13px
-			border-radius 4px
-			.number
-				color #FF4466
-				min-width 70px
-				font-size 60px
-				font-weight 100
-				padding-right 25px
-				transform translateY(-10px)
-			.title
-				font-size 28px
-				font-weight bold
-			.user-defined-line
-				width 35px
-				height 4px
-				background-color #D8D8D8
-				margin 14px 0 30px
-			.content
-				width 375px
-				color #666666
-				font-size 14px
-		a
-			display inline-block
-			color #333
-			width 240px
-			height 45px
-			line-height 45px
-			border 1px solid #ccc
-			text-align center
-			&:hover
-				span
-					color #333
+  width 1220px
+  margin 0 auto 80px
+  *
+    box-sizing: border-box
+  .user-defined-item
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-bottom 20px
+    .user-defined-item-img
+      width: 595px
+      height: 222px
+    .user-defined-item-content
+      width: 625px
+      height: 222px
+      padding: 50px 107px 0 75px
+      position relative
+      background-color: #fff
+      .triangle 
+        position: absolute;
+        top: 50%;
+        transform: translateY( -50%);
+        border: 10px solid transparent;
+        &.left
+          right: -15px
+          border-left: 15px solid  #fff;
+          border-right: 0;
+        &.right
+          left: -15px
+          border-left: 0;
+          border-right: 15px solid  #fff;
+      .title
+        margin-bottom 10px
+        font-size: 30px;
+        font-weight: bold;
+        color: #333333;
+      .line
+        width: 30px
+        height: 4px
+        margin-bottom 30px
+        background: #D8D8D8;
+      .desc
+        font-size: 14px;
+        color: #666666;
+        word-break: break-word;

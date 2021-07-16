@@ -1,33 +1,30 @@
-mixin user-defined-module(userDefinedModuleList)
-	each userDefinedModule in userDefinedModuleList
-		.block-title
-			.point
-				.littlePoint
-				.largePoint
-			h2 #{ userDefinedModule.mainModuleTitle }
-			.point
-				.largePoint
-				.littlePoint
-				
-				
-			//-是否为奇数个，奇数个展示查看更多
-		- const userDefinedList = userDefinedModule.subModuleBos
-		- const isOdd = userDefinedList.length%2 === 0 ? false : true
-		.user-defined-list
-			each item, index in userDefinedList
-				- const isWhite = item.fontColor === 1 ? true : false
-				if index < 9
-					- var id = '0' + (index+1)
-				else
-					- var id = index+1
-				.user-defined-item( style = item.urlImg ? `background:url(${item.urlImg}) no-repeat center/100%` : {} )
-					.bg-content(style =item.urlImg?(isWhite ? { 'background-color':'rgba(0,0,0,0.7)'} : { 'background-color':'rgba(255,255,255,0.8)'}):{}) 
-						.number( style = isWhite ? {color:'#FFF'} : {} ) #{ id }
-						div
-							.title( style = isWhite ? {color:'#FFF'} : {} ) #{ item.title }
-							.user-defined-line( style = isWhite ? {background:'#FFF'} : {})
-							.content.only-twoline( style = isWhite ? {color:'#FFF'} : {} ) #{ item.content }
-			if isOdd
-				.user-defined-item.viewMore
-					a(href=aboutLink) 
-						span 查看企业介绍详情
+
+mixin user-defined-item-content(item,type)
+  .user-defined-item-content 
+    .triangle(class=type)
+    .title #{ item.title }
+    .line 
+    .desc #{ item.content }
+
+mixin user-defined-module(autoConfig)
+  - const defaultImg = ['//file.baixing.net/202107/00042d82d26996a834f634da24f4c4ed.png','//file.baixing.net/202107/a01c46433402abc2764a73159dbf46dc.png','//file.baixing.net/202107/b713e1c02612812f0972bcea65cb58bd.png','//file.baixing.net/202107/4c4c8531457a49f12b432243a20d6fce.png','//file.baixing.net/202107/ed8b66237a86e68c23f369854fe6fcc0.png','//file.baixing.net/202107/eabfa36d86e81cd4eb1031f3ace065a6.png','//file.baixing.net/202107/7665f5e7a4f21c9d1e864408b3ede10a.png','//file.baixing.net/202107/4a17dbc06030214723ec295899c63d65.png','//file.baixing.net/202107/eb3969456c6b4995d648a175a1a091a2.png','//file.baixing.net/202107/9250dd40e68112fbc54ebaef9c8006ff.png']
+  each configItem in autoConfig
+    .block-title
+      .point
+        .littlePoint
+        .largePoint
+      h2 #{ configItem.mainModuleTitle }
+      .point
+        .largePoint
+        .littlePoint
+      //-是否为奇数个，奇数个展示查看更多
+    - let { subModuleBos } = configItem
+    .user-defined-list
+      each item, index in subModuleBos
+        .user-defined-item
+          if index % 2 === 0
+            .user-defined-item-img(style =`background:url(${item.urlImg ?item.urlImg: defaultImg[index]}) no-repeat center/100%`) 
+            +user-defined-item-content(item,'right')
+          else 
+            +user-defined-item-content(item,'left')
+            .user-defined-item-img(style =`background:url(${item.urlImg ?item.urlImg: defaultImg[index]}) no-repeat center/100%`) 
