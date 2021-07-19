@@ -24,7 +24,7 @@ export const LeaveMessageSearchListConfig = ({
       type: 'range-picker',
       value: getLast24Hours(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: moment.Moment) => date > moment().endOf('day'),
     },
   ],
   table: {

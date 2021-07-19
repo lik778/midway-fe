@@ -71,6 +71,7 @@ export default function SearchList (props: Props) {
     setIsValid(!itemHasError)
     if (itemHasError) {
       // TODO 显示校验错误的逻辑
+      console.log('[WARN]', itemHasError)
       // notification.error({ message: JSON.stringify(itemHasError.errors[0]) })
     } else {
       const params = fields.reduce((h: any, c: any) => {
