@@ -29,8 +29,9 @@ export const baseInfoForm: FormConfig = {
       label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
       required: true, tip: '图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100'
     },
-    { formItemWidth: 260, label: '类目', name: 'secondCategory', type: FormType.Select, required: true, placeholder: '请选择类目' },
-    { label: '服务内容', name: 'thirdMetas', type: FormType.MetaChecbox, required: true, display: false },
+    // { formItemWidth: 260, label: '类目', name: 'secondCategory', type: FormType.Select, required: true, placeholder: '请选择类目' },
+    // { label: '服务内容', name: 'thirdMetas', type: FormType.MetaChecbox, required: true, display: false },
+    { formItemWidth: 260, label: '', name: '', type: FormType.MetaSelect, required: true },
     { formItemWidth: 260, minNum: 1, label: '公司人数', name: 'employeeCount', type: FormType.InputNumber, required: true, placeholder: '请输入公司人数' },
     { formItemWidth: 260, minNum: 1, label: '公司年限', name: 'companyYears', type: FormType.InputNumber, required: true, placeholder: '请输入公司已经营年限' },
   ]

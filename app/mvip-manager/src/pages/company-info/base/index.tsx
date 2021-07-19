@@ -9,7 +9,7 @@ import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import { ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
+import { InitEnterpriseForShopParams, ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import { ConnectState } from '@/models/connect';
@@ -23,7 +23,7 @@ const { Step } = Steps;
 
 function CompanyInfoBase(props: any) {
   const { companyInfo, setCompanyInfo, shopStatus, getShopStatus } = props
-  const [enterpriseInfo, setEnterpriseInfo] = useState<SaveEnterpriseForShopParams | null>(null)
+  const [enterpriseInfo, setEnterpriseInfo] = useState<InitEnterpriseForShopParams | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
@@ -45,7 +45,6 @@ function CompanyInfoBase(props: any) {
     //切换类目后，清空thirdMetas数据
     form.setFieldsValue({ thirdMetas: [] })
     getThirdCategoryMetasFn(catogoryName)
-
   }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
@@ -54,7 +53,7 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
+    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedFirstCategory, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
     //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
       //...companyInfo,
@@ -67,7 +66,7 @@ function CompanyInfoBase(props: any) {
       companyYears,
       employeeCount,
       promoteImg,
-      secondCategory: selectedSecondCategory ? Object.keys(selectedSecondCategory)[0] : "",
+      secondCategory: [selectedFirstCategory ? Object.keys(selectedFirstCategory)[0] : "", selectedSecondCategory ? Object.keys(selectedSecondCategory)[0] : ""],
       thirdMetas: selectedThirdMetas ? Object.keys(selectedThirdMetas) : []
     })
     setFormLoading(false)
@@ -90,7 +89,7 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { companyNameLock, secondCategories, selectedSecondCategory } = companyInfo
+    const { companyNameLock, firstCategory, secondCategories, selectedSecondCategory } = companyInfo
     const newChildren = config.children.map(item => {
       //目的：禁止企业名称改写
       if (companyNameLock && item.name === 'companyName') {
@@ -98,22 +97,16 @@ function CompanyInfoBase(props: any) {
       }
 
       //修改config里类目选择组件的配置信息，并给select加了onChange
-      if (item.name === 'secondCategory') {
+      if (item.type === 'MetaSelect') {
         //item.defaultValue = defaultCategory
-        item.onChange = onChangeCategory
-        item.options = objToTargetObj(secondCategories)
+        item.options = objToTargetObj(firstCategory)
       }
 
-      //这里options没获取到值
-      if (item.name === 'thirdMetas') {
-        item.options = thirdMetas!
-        //只要thirdMetas数据，则显示
-        item.display = !!(thirdMetas && thirdMetas.length > 0)
-      }
       return item
     })
     setConfig({ ...config, children: newChildren })
   }
+
   //会根据企业信息变更，重新渲染大表单
   useEffect(() => {
     initComponent()
@@ -129,21 +122,24 @@ function CompanyInfoBase(props: any) {
     setCurrentStep(currentStep + 1)
   }
 
-  const nextStep = async (values: SaveEnterpriseForShopParams) => {
+  const nextStep = async (values: InitEnterpriseForShopParams) => {
     if (!hasEditForm) {
       next(); return
     }
 
-    //对地区进行处理
-    if (!Array.isArray(values.area)) {
-      values.area = Object.keys(values.area).map(k => k)
+    const requestData: SaveEnterpriseForShopParams = {
+      ...values,
+      area: Array.isArray(values.area) ? values.area : Object.keys(values.area).map(k => k),
+      firstCategory: values.secondCategory && values.secondCategory.length >= 2 ? values.secondCategory[0] : '',
+      secondCategory: values.secondCategory && values.secondCategory.length >= 2 ? values.secondCategory[1] : '',
     }
+
     setLoading(true)
 
     // 一级类目
     values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
     //console.log("提交表单数据",values)
-    const { success, message, data } = await saveEnterpriseForShopApi(values)
+    const { success, message, data } = await saveEnterpriseForShopApi(requestData)
     setLoading(false)
     if (success) {
       successMessage('修改基础资料成功')

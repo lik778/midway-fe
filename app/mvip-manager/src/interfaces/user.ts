@@ -5,6 +5,22 @@ export interface VerifyItem {
   verifyRequestType: VerifyType;
 }
 
+
+export interface InitEnterpriseForShopParams {
+  area: any;
+  companyAddress: string;
+  companyAlias: string;
+  companyDescription: string;
+  companyName: string;
+  companyYears: number;
+  employeeCount: number;
+  firstCategory?: string;
+  serviceArea: string;
+  promoteImg: string;
+  secondCategory: string[];
+  thirdMetas: string[];
+}
+
 export interface SaveEnterpriseForShopParams {
   area: any;
   companyAddress: string;
@@ -44,8 +60,9 @@ export interface UserEnterpriseInfo {
   employeeCount: number;
   companyYears: number;
   firstCategory: { [key: string]: string };
-  selectedSecondCategory: { [key: string]: string };
+  selectedFirstCategory: { [key: string]: string };
   secondCategories: { [key: string]: string };
+  selectedSecondCategory: { [key: string]: string };
   selectedThirdMetas: { [key: string]: string };
   thirdMetas: { [key: string]: string };
   contactName: string;

@@ -30,7 +30,7 @@
 | required          | 是否必填                                                                            | boolean                          |                                            | true                                   |
 | patternList       | 对字段的正则规则                                                                    | any[]                            | []                                         | false                                  |
 | placeholder       | 提示语                                                                              | string                           |                                            | false                                  |
-| options           | Select、checkbox 的选择项                                                           | OptionItem[] 、 OptionCheckBox[] |                                            | false                                  |
+| options           | Select、checkbox 的选择项                                                           | OptionItem[] |                                            | false                                  |
 | maxLength         | 最大长度 ， 输入框指最大输入长度，图片则是指最大上传个数，tag 是指 tag 文字最大长度 | number                           | Input、textarea: undefined, upload:0,tag:1 | false                                  |
 | minLength         | 最小长度 输入框指最小输入长度，tag 是指 tag 文字最小长度                            | number                           | Input、textarea: undefined, tag:1          | false                                  |
 | tip               | 文案说明，目前只用在图片上传                                                        | string 、ReactNode               |                                            | false                                  |
