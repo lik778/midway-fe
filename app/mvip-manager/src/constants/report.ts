@@ -2,7 +2,9 @@ import {
   PlatformType,
   BaxProductType,
   CateProductType,
-  DisplayType, ReportProductType,
+  DisplayType,
+  ReportProductType,
+  LeaveMessageChannelType,
 } from '@/enums/report';
 
 export const PlatformLabelMap = {
@@ -34,4 +36,10 @@ export const ReportLinkMap: any = {
   [ReportProductType.BIAOWANG]: '/a/quanwangtong?src=datacenter#four',
   [ReportProductType.FENGMING]: '/a/quanwangtong?src=datacenter#three',
   [ReportProductType.YIHUITUI]: '/a/yihuitui?src=datacenter'
+}
+
+export const LeaveMessageChannelMap = {
+  [LeaveMessageChannelType.TIEZI]: '帖子',
+  [LeaveMessageChannelType.DIANPU]: '店铺',
+  [LeaveMessageChannelType.KF53]: '53KF'
 }

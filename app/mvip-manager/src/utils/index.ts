@@ -88,6 +88,18 @@ export const getLastMonth = () => [
   moment(moment().format('YYYY-MM-DD'))
 ]
 
+// 获取上一周的时间区间
+export const getLastWeek = () => [
+  moment(moment().format('YYYY-MM-DD')).subtract(1, 'weeks'),
+  moment(moment().format('YYYY-MM-DD'))
+]
+
+// 获取今天的时间区间
+export const getLast24Hours = () => [
+  moment(moment().format('YYYY-MM-DD')).subtract(1, 'days'),
+  moment(moment().format('YYYY-MM-DD'))
+]
+
 // TODO refactor
 // 格式化 ant date-range 时间值，
 // 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天

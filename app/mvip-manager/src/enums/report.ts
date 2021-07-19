@@ -28,3 +28,9 @@ export enum ReportProductType {
   FENGMING = 'fengming',
   YIHUITUI = 'yihuitui'
 }
+
+export enum LeaveMessageChannelType {
+  TIEZI = 1,
+  DIANPU = 2,
+  KF53 = 2
+}

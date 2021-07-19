@@ -3,7 +3,8 @@ import {
   BaxProductType,
   CateProductType,
   DisplayType,
-  PlatformType
+  PlatformType,
+  LeaveMessageChannelType
 } from '@/enums/report';
 
 /* 请求类型 */
@@ -133,4 +134,18 @@ export interface KeywordDetailListData {
   ranking: number;
   url: string;
   isExcellentWord: boolean;
+}
+
+export interface getLeaveMessageListParams {
+  startTime: string;
+  endTime: string;
+}
+
+export interface LeaveMessageListData {
+  date: string
+  type: LeaveMessageChannelType
+  name: string
+  url: string
+  content: string
+  mobile: string
 }

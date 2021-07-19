@@ -4,9 +4,16 @@ import { Table, notification } from 'antd'
 import InlineForm from '@/pages/report/components/quick-form'
 import { QueryConfigItem } from '@/pages/report/components/quick-form/interface'
 
+export interface SearchListConfig {
+  form: any
+  dataSource: any
+  query: any
+  table: any
+}
+
 // TODO doc props
 interface Props {
-  config: any
+  config: SearchListConfig
   onQuery: any
   loading?: boolean
 }
@@ -108,7 +115,7 @@ export default function SearchList (props: Props) {
         })
       }
     }
-  }, [queryParams, paginationParams])
+  }, [queryParams, paginationParams.current, paginationParams.pageSize])
 
   return (
     <div className="cmpt-search-list">

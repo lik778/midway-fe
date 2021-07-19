@@ -12,7 +12,11 @@ import {
   BaxFlowDetailParams,
   KeywordOverviewData,
   KeywordDetailListData,
-  KeywordDetailListParams, SummaryOverviewData, FlowChartData,
+  KeywordDetailListParams,
+  SummaryOverviewData,
+  FlowChartData,
+  getLeaveMessageListParams,
+  LeaveMessageListData
 } from '@/interfaces/report';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { errorMessage } from '@/components/message';
@@ -127,6 +131,31 @@ export const getKeywordOverview:
 export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ReportListResponse<KeywordDetailListData[]> =
   (params) => post('/keyword/detail', params)
+
+// 获取留言列表
+export const getLeaveMessageList:
+  (params: getLeaveMessageListParams) => ReportListResponse<LeaveMessageListData[]> =
+  (params) => new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        code: 200,
+        success: true,
+        data: {
+          totalElements: 20,
+          totalPages: 2,
+          result: Array(10).fill('').map((x,i) => ({
+            key: i,
+            date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-')+' 12:00:00',
+            type: ~~(Math.random() * 3),
+            name: Math.random() < .5 ? '我是超长帖子标' : '我是超长帖子标题我是超长帖子标题',
+            url: 'http://www.baidu.com',
+            mobile: '18607827312',
+            content: '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？',
+          }))
+        }
+      })
+    }, 1000)
+  })
 
 // TODO delete mock data
 // 以下是非 P0 页面的 Mock 数据
