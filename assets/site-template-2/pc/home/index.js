@@ -3,7 +3,7 @@ import '../layout';
 import $ from 'jquery';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
-import { initContactFormSem } from '../../../common/pc/contact-form-sem'
+import { initSem } from '../../../common/pc/contact-form-sem'
 
 leaveLeads()
 
@@ -51,9 +51,17 @@ $(document).on('ready', function () {
 		}
 	});
 
-	
-	// sem需要禁止二跳
+
+	// sem需要禁止部分内容二跳
+	// tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
 	if (isSem) {
-		initContactFormSem($('#contactUs .contact-us__message'), $('#contactUs'), $('.official-nav-block-bgc a,.banner-content a,#layout-content a'))
+		initSem({
+			type: 'home',
+			contactForm: $('#contactUs .contact-us__message'),
+			contactFormParent: $('#contactUs'),
+			formA: $('.official-nav-block-bgc a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a'),
+			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
+		})
 	}
 })
+

@@ -48,24 +48,6 @@ const CustomerSetForm = (props: Props, parentRef: Ref<any>) => {
     fontColor: item.fontColor || 0
   }))
 
-  const RadioFormItem = useMemo(() => <FormItem label="字体颜色" name='fontColor' key='fontColor'>
-    <Radio.Group disabled={nowItem.urlImg === ''}>
-      <Radio style={{ marginRight: 44 }} value={0}>黑色<PreviewItem color="black"></PreviewItem></Radio>
-      <Radio value={1}>白色 <PreviewItem color="white"></PreviewItem></Radio>
-    </Radio.Group>
-  </FormItem>, [nowItem])
-
-  useEffect(() => {
-    setConfig({
-      ...config,
-      customerFormItemList: [{
-        index: 3,
-        key: 'fontColor',
-        node: RadioFormItem
-      }]
-    })
-  }, [RadioFormItem])
-
   const formChange = (changeValue: any, allValues: any) => {
     setNowItem(allValues)
   }

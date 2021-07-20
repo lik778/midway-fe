@@ -1,4 +1,5 @@
 import { Controller, Get, HttpException, HttpStatus, Req, Res } from '@nestjs/common';
+import { SiteService } from '../services/site.service';
 import { Request, Response } from 'express';
 import { join } from 'path';
 import * as fs  from 'fs';
@@ -9,10 +10,13 @@ const files = fs.readdirSync(staticFiles);
 
 @Controller({ host: config().hostType.base, path: '/' })
 export class AppController {
+  constructor(readonly midwayApiService: SiteService) {}
   @Get('/')
-  home (@Req() req: Request, @Res() res: Response) {
+  async home (@Req() req: Request, @Res() res: Response) {
     res.render('common/home')
   }
+
+   
 
   @Get(files) // 处理静态资源
   haha (@Req() req: Request, @Res() res: Response) {

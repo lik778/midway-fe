@@ -10,7 +10,7 @@ import { TrackerService } from './services/tracker.service';
 import { ManagementService } from './services/management.service';
 import { ReportService } from './services/report.service';
 import { ZhidaoService } from './services/zhidao.service';
-import { SemApiService } from './services/sem.service'
+import { SemApiService } from './services/sem.service';
 // 引入controller
 import { ManagementController } from './controllers/management.controller';
 import { AppController } from './controllers/app.controller';
@@ -23,7 +23,10 @@ import { TrackerController } from './controllers/tracker.controller';
 import { ReportController } from './controllers/report.controller';
 import { ZhidaoController } from './controllers/zhidao.controller';
 import { SiteCommonController } from './controllers/site/site-common.controller';
+import { AnalyticsController } from './controllers/analytics.controller';
 import { SemController } from './controllers/sem.controller'
+
+
 
 /**
  * 应用程序根模块
@@ -40,6 +43,7 @@ import { SemController } from './controllers/sem.controller'
     ManagementController,
     SitemapController,
     SiteCommonController,
+    AnalyticsController,
     B2bSiteController,
     B2cSiteController,
     UpyunController,

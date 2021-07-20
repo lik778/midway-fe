@@ -10,14 +10,17 @@
 mixin officialHeader(headerOption)
   - const { navConfig } = headerOption||{}
   - const { navPhoneIcon, navPhoneColor,navTipBorderColor,navTipBackgroundColor,navTipColor } = navConfig||{}
-  if isRedTopbar
-    include ./official-red-topbar.pug
-    include ./official-red-search.pug
-    if isHome
-      include ./official-red-breadcrumb.pug
-      - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name,url:'#'}]
-      +breadcrumb(breadcrumbList)
-  else 
-    include ./official-white-topbar.pug
+  if isCn
+    include ./official-topbar-cn.pug
+  else
+    if isRedTopbar
+      include ./official-red-topbar.pug
+      include ./official-red-search.pug
+      if isHome
+        include ./official-red-breadcrumb.pug
+        - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name,url:'#'}]
+        +breadcrumb(breadcrumbList)
+    else 
+      include ./official-white-topbar.pug
   include ./official-nav-block.pug
 

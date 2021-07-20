@@ -5,16 +5,16 @@
 		.company-text
 			h3 #{ name }
 			p 价格：#{ price || '面议' }
-			.company-address
-				span 商家地址：
-				span #{ company.address }
-			a.telBtn(href="tel:" + phone.content )
-				img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon")
-				span 查看电话
+			if !isSem
+				.company-address
+					span 商家地址：
+					span #{ company.address }
+			include ../../../../common/pc/official-400-btn
+			+official400Btn({backgroundColor:'#f46',borderColor:'#f46',phone:phone.content})
 			if kf53StyleUrl && kf53StyleUrl.length > 0
 				a.online-btn(href=kf53StyleUrl)
 					img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
 					span 在线咨询
 	.company-right
-		include ../sidebar/company-card.pug
-
+		if !isSem
+			include ../sidebar/company-card.pug
