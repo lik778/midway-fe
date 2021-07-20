@@ -19,6 +19,11 @@ stages:
   - release-test2
   - test2-deploy
 
+cache:
+  key: fenlei/midway-fe
+  paths:
+    - .npm/
+    - node_modules/
 
 release-dev:
   stage: release-dev
@@ -26,10 +31,6 @@ release-dev:
     - dev@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  cache:
-    key: ${REGISTRY_BASE}
-    paths:
-      - .npm/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
@@ -51,10 +52,6 @@ release-test:
     - test@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  cache:
-    key: ${REGISTRY_BASE}
-    paths:
-      - .npm/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
