@@ -91,6 +91,11 @@ export function useUploadModal(props: Props) {
           })
         ])
         if (res.success && (typeof res.data.id === 'number')) {
+          const auditFail = res.data.checkStatus !== 'APPROVE'
+          if (auditFail) {
+            throw new Error(res.data.reason || '上传失败');
+          }
+
           const target = uploadedLists.current.find(x => x.uid === item.uid)
           if (target) {
             target.imageID = res.data.id
