@@ -48,6 +48,16 @@ export function useUploadModal(props: Props) {
   const record = (newLists: UploadResMap[]) => {
     uploadedLists.current = newLists
     setRerender(getID())
+    // 一秒之后触发重渲染，防止一直 pending 在“加载中”
+    // @ts-ignore
+    if (window._upload_rerender_tick) {
+      // @ts-ignore
+      clearInterval(window._upload_rerender_tick)
+    }
+    // @ts-ignore
+    window._upload_rerender_tick = setInterval(() => {
+      getID()
+    }, 1000)
   }
 
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
