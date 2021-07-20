@@ -14,7 +14,7 @@ import EmptyStatus from './components/empty-status';
 import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form';
 import { ShopIndustryType } from '@/enums';
-import './index.less';
+import styles from './index.less';
 import { AppSourceEnum, TicketType } from '@/enums/shop';
 import { renewShopApi } from '@/api/shop';
 import { errorMessage, successMessage } from '@/components/message';
@@ -144,11 +144,19 @@ const ShopPage: FC<Props> = (props) => {
 
   return <>
     <MainTitle title="我的店铺" />
-    <div className="shop-container">
+    <div className={styles["shop-container"]}>
       {
-        loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <div >
-          <Button type="primary" className="primary-btn p-btn btn" disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
-          <div className="shop-list">
+        loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <>
+          <div className={styles['header']}>
+            <Button type="primary" className={`${styles['add-btn']} primary-btn`} disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
+            <div className={styles['add-tip']}>
+              {
+                shopStatus?.userValidTickets?.length ? `（您当前还有 ${shopStatus?.userValidTickets?.length} 个店铺创建额度）` : <></>
+              }
+            </div>
+          </div>
+
+          <div className={styles["shop-list"]}>
             {
               shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) =>
                 <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo}
@@ -158,8 +166,8 @@ const ShopPage: FC<Props> = (props) => {
                     setShopId(shopId)
                   }} />)}
           </div>
-        </div>
-          : <div className="shop-create">
+        </>
+          : <div className={styles["shop-create"]} >
             <EmptyStatus emptyMsg={emptyMsg} onClick={handleCreateShop} />
           </div>
       }
@@ -187,7 +195,7 @@ const ShopPage: FC<Props> = (props) => {
       visible={modalGotoVisible} />
     <Modal
       width={650}
-      className="my-modal-box"
+      className={styles["my-modal-box"]}
       title={'选择可用的店铺额度'}
       maskClosable={false}
       okText={"确定"}
@@ -198,10 +206,10 @@ const ShopPage: FC<Props> = (props) => {
       visible={modalTicketVisible}
     >
       {shopTicketValid ?
-        <div className="ticket-list">
+        <div className={styles["ticket-list"]} >
           {shopStatus?.userValidTickets?.map((t, index) => {
             return (
-              <div onClick={() => setTicketId(t.id)} className={ticketId === t.id ? 'ticket-list-item active-item' : 'ticket-list-item'} key={index} data-id={t.id}>
+              <div onClick={() => setTicketId(t.id)} className={`${styles['ticket-list-item']} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
                 <span>钻石店铺 {t.source === AppSourceEnum.VIP && <strong>VIP</strong>}</span>
                 <span>发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
                 <span>AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>

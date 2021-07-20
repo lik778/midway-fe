@@ -57,6 +57,11 @@ export default <Model>{
       const menuList: MidMenuItem[] | null = yield select((state: any) => state[BASE_NAMESPACE].menuList)
       if (isNull(menuList)) {
         const { success, message, data: { menuList } } = yield getMenuApi()
+        menuList[menuList.length - 1].menuList.push({
+          key: "mailbox",
+          menuName: "站内信",
+          path: "/report/mailbox"
+        })
         if (success) {
           yield put({ type: SET_MENU_LIST_ACTION, payload: menuList })
           yield put({ type: SET_MENU_AUTH_LIST_ACTION, payload: traverseMenuList(menuList) })
