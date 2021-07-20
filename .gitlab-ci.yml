@@ -19,6 +19,11 @@ stages:
   - release-test2
   - test2-deploy
 
+cache:
+  key: fenlei-midway-fe
+  paths:
+    - .npm/
+    - node_modules/
 
 release-dev:
   stage: release-dev
