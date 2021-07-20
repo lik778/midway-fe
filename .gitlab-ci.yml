@@ -27,10 +27,10 @@ test-release:
   tags:
     - k8s-dev-build
   cache:
-    - key: TEST-REALEASE-DEPENDS-NEST
+    - key: "TEST-REALEASE-DEPENDS-NEST"
       paths:
         - .npm/
-    - key: TEST-REALEASE-DEPENDS-MVIP
+    - key: "TEST-REALEASE-DEPENDS-MVIP"
       paths:
         - app/mvip-manager/.npm/
   script:
