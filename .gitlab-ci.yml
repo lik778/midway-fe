@@ -28,14 +28,14 @@ test-release:
     - k8s-dev-build
   cache:
     - key: 
-      files:
-        - package-lock.json
+        files:
+          - package-lock.json
       paths:
         - .npm/
         - node_modules/
     - key: 
-      files:
-        - package-lock.json
+        files:
+          - package-lock.json
       paths:
         - app/mvip-manager/.npm/
         - app/mvip-manager/node_modules/
