@@ -87,7 +87,7 @@ export function useUploadModal(props: Props) {
           new Promise((resove, reject) => {
             setTimeout(() => {
               reject(new Error('上传超时，点击删除'))
-            }, 5 * 1000)
+            }, 15 * 1000)
           })
         ])
         if (res.success && (typeof res.data.id === 'number')) {
