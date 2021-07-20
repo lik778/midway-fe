@@ -20,18 +20,25 @@ stages:
   - test2-deploy
   - test-release
 
-cache:
-  key: fenlei-midway-fe
-  paths:
-    - .npm/
-    - node_modules/
-
 test-release:
   stage: test-release
   only:
     - feat-speed-up-ci@fenlei/midway-fe
   tags:
     - k8s-dev-build
+  cache:
+    - key: 
+      files:
+        - package-lock.json
+      paths:
+        - .npm/
+        - node_modules/
+    - key: 
+      files:
+        - package-lock.json
+      paths:
+        - app/mvip-manager/.npm/
+        - app/mvip-manager/node_modules/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
