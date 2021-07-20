@@ -7,6 +7,7 @@ import { ImageItem } from '@/interfaces/shop'
 import { createImagesetImage } from '@/api/shop'
 import styles from './index.less'
 import ImgItem from '../img-item'
+import { errorMessage } from '@/components/message'
 
 const LocalUpload: FC = () => {
   const context = useContext(ImgUploadContext)
@@ -25,6 +26,9 @@ const LocalUpload: FC = () => {
     const res = await createImagesetImage(shopCurrent!.id, {
       imgUrl: file!.url!
     })
+    if (res.success && res.data.checkStatus !== 'APPROVE') {
+      errorMessage(res.data.reason)
+    }
     setAlbumList([...albumList, res.data])
     setUpDataLoading(false)
   }

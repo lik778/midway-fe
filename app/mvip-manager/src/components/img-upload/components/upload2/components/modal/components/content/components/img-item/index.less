@@ -9,7 +9,21 @@
     height: 100%;
     object-fit: cover;
   }
-  .tip {
+  .error-tip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    color: #fff;
+    background: rgba(0,0,0,.5);
+    padding: 5px 10px;
+  }
+  .size-tip {
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -23,7 +37,7 @@
     transition: all 0.3s;
   }
   &:hover {
-    .tip {
+    .size-tip {
       opacity: 1;
     }
   }

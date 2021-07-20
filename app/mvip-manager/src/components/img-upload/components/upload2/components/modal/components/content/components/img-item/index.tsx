@@ -91,9 +91,14 @@ const ImgItem: FC<Props> = (props) => {
       height: itemHeight
     }} onClick={handleClickItem}>
       <img className={styles['img']} src={detail.imgUrl} onLoad={handleLoad} />
-      <div className={styles["tip"]}>
-        {`${originSize.width}*${originSize.heigth}`}
-      </div>
+      {
+        detail.checkStatus === 'APPROVE' && <div className={styles["size-tip"]}>
+          {`${originSize.width}*${originSize.heigth}`}
+        </div>
+      }
+      {
+        detail.checkStatus !== 'APPROVE' && <div className={styles["error-tip"]}>{detail.reason}</div>
+      }
     </div>
     <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
   </>
