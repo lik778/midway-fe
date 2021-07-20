@@ -27,12 +27,11 @@ test-release:
   tags:
     - k8s-dev-build
   cache:
-    - key: "TEST-REALEASE-DEPENDS-NEST"
-      paths:
-        - .npm/
-    - key: "TEST-REALEASE-DEPENDS-MVIP"
-      paths:
-        - app/mvip-manager/.npm/
+    key: "TEST-REALEASE-DEPENDS"
+    paths:
+    paths:
+      - .npm/
+      - app/mvip-manager/.npm/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
