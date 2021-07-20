@@ -30,7 +30,10 @@ const ContentHeader = (props: Props) => {
           <a className="visit-online" href={curShopInfo?.shopDomain} target="_blank">访问线上</a>
         </>
       }
-      <ShopModuleTab type={type} tabType={curShopInfo?.type === ProductType.B2B ? '产品' : '服务'} />
+      <ShopModuleTab
+        type={type}
+        tabType={curShopInfo?.type === ProductType.B2B ? '产品' : '服务'}
+      />
     </div>
   );
 }

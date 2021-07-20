@@ -18,14 +18,19 @@ export default (props: Props) => {
     {
       link: ShopModuleType.PRODUCT,
       label: `${props.tabType}模块`,
-      key: ShopModuleType.PRODUCT
+      key: ShopModuleType.PRODUCT,
     },
     {
       link: ShopModuleType.ARTICLE,
       label: "文章模块",
-      key: ShopModuleType.ARTICLE
-    }
-  ]
+      key: ShopModuleType.ARTICLE,
+    },
+    {
+      link: ShopModuleType.IMAGESET,
+      label: "图片管理",
+      key: ShopModuleType.IMAGESET
+    },
+  ];
 
   return (
     <div>

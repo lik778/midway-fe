@@ -1,0 +1,49 @@
+.img-item {
+  width: 140px;
+  height: 116px;
+  position: relative;
+  margin: 0 12px 12px 0;
+  cursor: pointer;
+  .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .error-tip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    color: #fff;
+    background: rgba(0,0,0,.5);
+    padding: 5px 10px;
+  }
+  .size-tip {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 14px;
+    line-height: 24px;
+    color: #ffffff;
+    text-align: center;
+    background-color: rgba(#000000, 0.5);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  &:hover {
+    .size-tip {
+      opacity: 1;
+    }
+  }
+  .checkbox {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+}

@@ -120,6 +120,7 @@ export default (props: Props) => {
       visible={visible}
       key={placement}
       width="700"
+      destroyOnClose={true}
     >
       <Form.Item>
         <WildcatForm
