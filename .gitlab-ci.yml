@@ -27,7 +27,7 @@ release-dev:
   tags:
     - k8s-dev-build
   cache:
-    key: ${CI_BUILD_REF_NAME}
+    key: ${REGISTRY_BASE}
     paths:
       - .npm/
   script:
@@ -52,7 +52,7 @@ release-test:
   tags:
     - k8s-dev-build
   cache:
-    key: ${CI_BUILD_REF_NAME}
+    key: ${REGISTRY_BASE}
     paths:
       - .npm/
   script:
@@ -76,7 +76,7 @@ release-test1:
   tags:
   - k8s-dev-build
 cache:
-  key: ${CI_BUILD_REF_NAME}
+  key: ${REGISTRY_BASE}
   paths:
     - .npm/
   script:
@@ -100,7 +100,7 @@ release-test2:
   tags:
   - k8s-dev-build
 cache:
-  key: ${CI_BUILD_REF_NAME}
+  key: ${REGISTRY_BASE}
   paths:
     - .npm/
   script:
@@ -125,7 +125,7 @@ release:
 #  tags:
 #    - k8s-dev-build
 cache:
-  key: ${CI_BUILD_REF_NAME}
+  key: ${REGISTRY_BASE}
   paths:
     - .npm/
   script:
