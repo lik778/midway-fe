@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
-import { FormConfig, FormItem, OptionItem, CustomerFormItem } from '@/components/wildcat-form/interfaces';
+import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
@@ -14,22 +14,7 @@ const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
-
-interface Props {
-  config: FormConfig;
-  onInit?(form: any): void;
-  //父传的表单数据
-  editDataSource?: any;
-  submit?(values: any): void;
-  formChange?(changeValue: any, allValues: any): void;
-  className?: string;
-  onClick?: any;
-  loading?: boolean;
-  submitBtn?: ReactNode;
-}
-
-
-const WildcatForm = (props: Props, parentRef: Ref<any>) => {
+const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm();
   const { editDataSource, onInit, loading, config } = props
 
@@ -148,7 +133,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                  <ImgUpload key={img.text} text={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} />
+                  <ImgUpload uploadType={img.uploadType} key={img.text} uploadBtnText={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
                 </Form.Item>
                 )
               })

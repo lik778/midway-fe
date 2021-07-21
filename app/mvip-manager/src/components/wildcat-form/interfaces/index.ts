@@ -59,6 +59,7 @@ export interface FormItem {
 }
 
 export interface ImagesItem {
+  uploadType: 1 | 2,//1：直接上传  2：打开图库
   text: string;
   name: string;
   rule?: any[];
@@ -66,5 +67,21 @@ export interface ImagesItem {
   maxLength?: number
   aspectRatio?: number// 图片显示块的大小
   showUploadList?: ExpandShowUploadListInterface,
-  cropProps: CropProps
+  cropProps: CropProps,
+  uploadBeforeCrop?: boolean,// 上传前裁剪
+}
+
+
+
+export interface WildcatFormProps {
+  config: FormConfig;
+  onInit?(form: any): void;
+  //父传的表单数据
+  editDataSource?: any;
+  submit?(values: any): void;
+  formChange?(changeValue: any, allValues: any): void;
+  className?: string;
+  onClick?: any;
+  loading?: boolean;
+  submitBtn?: ReactNode;
 }

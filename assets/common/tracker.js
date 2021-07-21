@@ -19,7 +19,7 @@ try {
 } catch (e) {
   console.log(e)
 }
-const isPro = host.indexOf('baixing.com') !== -1
+const isPro = host.indexOf('shop.baixing') !== -1
 const BASE_URL = isPro ? '//cloud.baixing.com.cn' : '//dev-api.baixing.cn'
 
 
