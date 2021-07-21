@@ -7,13 +7,13 @@ COPY . .
 RUN npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
     # npm ci && \
-    npm ci --cache /usr/src/.npm --prefer-offline --quiet --no-progress && \
+    npm ci --prefer-offline --quiet --no-progress && \
     npm run release:dev && \
     cd app/mvip-manager/ && \
     npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
     # npm ci && \
-    npm ci --cache /usr/src/app/mvip-manager/.npm --prefer-offline --quiet --no-progress && \
+    npm ci --prefer-offline --quiet --no-progress && \
     npm run build:dev && \
     cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/
 
