@@ -56,3 +56,4 @@ lerna-debug.log*
 /app/mvip-manager/.env.local
 
 .vscode/
+.npm/
