@@ -29,7 +29,6 @@ test-release:
   cache:
     key: "TEST-REALEASE-DEPENDS"
     paths:
-    paths:
       - .npm/
       - app/mvip-manager/.npm/
   script:
