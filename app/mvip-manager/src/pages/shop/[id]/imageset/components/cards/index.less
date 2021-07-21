@@ -1,0 +1,225 @@
+.cards-con {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 36px;
+  margin-bottom: 24px;
+
+  .image-card,
+  .album-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 220px;
+    height: 216px;
+    border: 1px solid #D9D9D9;
+    background: #FFFFFF;
+    box-shadow: 0 0 20px 0px rgba(0,0,0,.06);
+    overflow: hidden;
+    cursor: pointer;
+
+    &.image-card {
+      height: 170px;
+    }
+
+    .selection {
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      width: 100%;
+      height: 50px;
+      background-image: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.26) 0%,
+        rgba(0,0,0,0.08) 76%,
+        rgba(0,0,0,0.00) 100%
+      );
+
+      // &:hover {
+      //   .anticon-down-con {
+      //     opacity: 1;
+      //   }
+      // }
+
+      .anticon-down-con {
+        position: relative;
+        padding: 5px;
+        margin: -5px -5px 0 0;
+        height: 26px;
+        filter: drop-shadow(0 0 1px #D9D9D9);
+        // opacity: 0;
+        // transition: .25s;
+
+        &:hover .down-actions {
+          top: calc(100% - 5px);
+          opacity: 1;
+          pointer-events: all;
+        }
+      }
+
+      .anticon-down {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 16px;
+        height: 16px;
+        line-height: 19px;
+        background: white;
+        border-radius: 1px;
+        font-size: 12px;
+        color: #999;
+        cursor: pointer;
+      }
+
+      .down-actions {
+        position: absolute;
+        top: calc(120% - 5px);
+        right: 0;
+        width: 100px;
+        background: white;
+        border-radius: 2px;
+        opacity: 0;
+        transition: .25s;
+        pointer-events: none;
+
+        .anticon-down-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 0 15px;
+          height: 30px;
+          line-height: 30px;
+          font-size: 12px;
+          cursor: pointer;
+
+          &:hover {
+            color: #096DD9;
+          }
+          &:active {
+            background: #f3f3f3;
+          }
+        }
+      }
+    }
+
+    .cover {
+      flex-grow: 1;
+      height: auto;
+      max-height: 170px;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      height: 46px;
+      line-height: 30px;
+      color: #333;
+
+      .name {
+        font-weight: bold;
+        width: 10em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.info {
+  margin: auto;
+}
+
+
+/* create album modal */
+:global {
+  .image-preview-modal {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    .image-wrapper {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 100px;
+      width: 100vw;
+      height: 100vh;
+      user-select: none;
+      overflow: hidden;
+      transition-delay: .5s;
+
+      &.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: auto;
+        }
+      }
+
+      img {
+        width: 0%;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        user-select: none;
+        transition: .5s;
+      }
+
+      .anticon {
+        position: absolute;
+        top: 49%;
+        width: 44px;
+        height: 44px;
+        line-height: 46px;
+        background: #3A98FF;
+        border-radius: 50%;
+        font-size: 18px;
+        color: white;
+
+        &.anticon-left {
+          left: 10vw;
+        }
+        &.anticon-right {
+          right: 10vw;
+        }
+      }
+    }
+
+    .ant-modal {
+      top: 0;
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      transition: none;
+    }
+    .ant-modal-content {
+      background: transparent;
+      box-shadow: unset;
+    }
+
+    .ant-modal-close-x {
+      margin: 60px 15vw 0 0;
+      width: 28px;
+      height: 28px;
+      line-height: 23px;
+      border: solid 2px white;
+      border-radius: 50%;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  }
+}

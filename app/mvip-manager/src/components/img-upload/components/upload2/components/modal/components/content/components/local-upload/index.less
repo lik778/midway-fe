@@ -1,0 +1,15 @@
+.local-upload {
+  height: 337px;
+  overflow-y: scroll;
+  .line {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    :global {
+      .ant-upload-list-picture-card-container {
+        display: none;
+      }
+    }
+  }
+}

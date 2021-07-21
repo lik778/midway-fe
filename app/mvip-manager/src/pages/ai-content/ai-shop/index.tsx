@@ -3,12 +3,12 @@ import MainTitle from '@/components/main-title';
 import { Tabs } from 'antd';
 import CreateJob from '../components/shop-create-job';
 import JobList from '../components/shop-job-list';
-
+import styles from './index.less'
 const { TabPane } = Tabs;
 
 const AIShopPage = (props: any) => {
-    return (<div>
-        <MainTitle title="店铺AI"/>
+    return (<div className={styles['ai-shop']}>
+        <MainTitle title="店铺AI" />
         <Tabs defaultActiveKey="job-list">
             <TabPane tab="任务列表" key="job-list">
                 <JobList {...props} />
