@@ -139,6 +139,7 @@ export interface KeywordDetailListData {
 export interface getLeaveMessageListParams {
   startTime: string;
   endTime: string;
+  pageNo: number;
 }
 
 export interface LeaveMessageListData {

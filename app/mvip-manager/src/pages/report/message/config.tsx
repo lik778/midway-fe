@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import { history } from 'umi'
 import { Popover, Button } from 'antd'
 
 import { getLast24Hours, formatDateRange } from '@/utils'
