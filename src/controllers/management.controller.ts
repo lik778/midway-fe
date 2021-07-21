@@ -9,6 +9,7 @@ import config from '../config';
 @Controller({ host: config().hostType.base, path: '/management' })
 export class ManagementController {
   constructor(private managementService: ManagementService) {}
+  
   @Get('*')
   managementView(@Req() req: Request, @Res() res: Response) {
     // const goto = () => res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))

@@ -2,12 +2,23 @@ import { Body, Controller, Get, HttpStatus, Post, Query, Req, Res } from '@nestj
 import { Request, Response } from 'express';
 import { ApiQeqDTO } from '../dto/api-req.dto';
 import { ReportService } from '../services/report.service';
+import { UserAgent } from '../decorator/user-agent.decorator';
 import config from '../config';
 import { PageException } from '../exceptions/page.exception';
 
 @Controller({ host: config().hostType.base, path: '/report' })
 export class ReportController {
   constructor(private reportService: ReportService) {}
+
+  // 留资页面手机端 
+  @Get('/message-share')
+  messageReport(@Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    res.render('report/share', {
+      title: '留资列表',
+      url: `//${ config().hostType.base || 'localhost' }/management/report/message?mobile=${device!=='pc'?1:0}`
+    })
+  }
+
   // 报表分享 
   @Get('/keyword')
   overviewReport(@Req() req: Request, @Res() res: Response, @Query() query) {
