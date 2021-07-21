@@ -16,7 +16,7 @@ import {
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
   GetImagesetImageRes, GetImagesetAlbumRes,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
-  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem,
+  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem, ShopProductListItem, ShopArticleListItem,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
@@ -42,6 +42,14 @@ export const renewShopApi = (params: RenewShopParams): Promise<ServiceResponse<a
 // 更新店铺
 export const updateShopApi = (params: ShopInfo): Promise<ServiceResponse<any>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/update', params)
+}
+
+// 更新店铺
+export const updateShopVersionApi = (versionId: number, shopId: number): Promise<ServiceResponse<any>> => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/dataVersion/submit', {
+    id: versionId,
+    shopId
+  }, setShopHeader(shopId))
 }
 
 // 获取店铺列表
@@ -96,7 +104,10 @@ export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
   return postApiData(ServicePath.SHOP, `midway/backend/meta/save`, params, setShopHeader(shopId))
 }
 
-export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
+export const getProductListApi = (shopId: number, params: GetContentApiParams): Promise<ServiceResponse<{
+  productList: ListRes<ShopProductListItem[]>,
+  cateList: any
+}>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/product/list', params, setShopHeader(shopId))
 }
 
@@ -112,8 +123,11 @@ export const deleteProductApi = (shopId: number, params: HandleApiParams) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/product/delete', params, setShopHeader(shopId))
 }
 
-// api: 获取店铺产品列表
-export const getArticleListApi = (shopId: number, params: GetContentApiParams) => {
+// api: 获取店铺文章列表
+export const getArticleListApi = (shopId: number, params: GetContentApiParams): Promise<ServiceResponse<{
+  articleList: ListRes<ShopArticleListItem[]>,
+  cateList: any
+}>> => {
   return postApiData(ServicePath.SHOP, 'midway/backend/article/list', params, setShopHeader(shopId))
 }
 

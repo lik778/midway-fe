@@ -164,7 +164,7 @@ const ShopPage: FC<Props> = (props) => {
                     setTicketType(TicketType.RENEW)
                     setModalTicketVisible(true)
                     setShopId(shopId)
-                  }} />)}
+                  }} getShopList={getShopList} />)}
           </div>
         </>
           : <div className={styles["shop-create"]} >

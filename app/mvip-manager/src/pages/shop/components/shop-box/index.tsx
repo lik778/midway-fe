@@ -1,10 +1,13 @@
 
 import React from 'react';
 import { history } from 'umi';
-import './index.less';
+import { ExclamationCircleFilled } from '@ant-design/icons'
+import styles from './index.less';
 import moment from 'moment';
-import { ShopStatus as ShopStatusEnum } from '@/enums/shop';
+import { ShopStatus as ShopStatusEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ShopInfo, ShopStatus } from '@/interfaces/shop';
+import { useMemo } from 'react';
+import { updateShopVersionApi } from '@/api/shop'
 
 interface Props {
   shopInfo: ShopInfo,
@@ -12,40 +15,73 @@ interface Props {
   handleEditShop: (shopInfo: ShopInfo) => void
   setCurShopInfo: (shopInfo: ShopInfo) => void
   setTicketModal: (shopId: number) => void
+  getShopList: () => Promise<any>
 }
 
 export default (props: Props) => {
-  const { shopInfo, handleEditShop, shopStatus, setCurShopInfo, setTicketModal } = props
+  const { shopInfo, handleEditShop, shopStatus, setCurShopInfo, setTicketModal, getShopList } = props
 
-  const getStatusClassName = (status: any) => {
-    switch (status) {
-      case ShopStatusEnum.ONLINE:
-        return 's-active';
-        break;
-      case ShopStatusEnum.EXPIRED:
-        return 's-expired';
-        break;
-      default:
-        return 's-offline';
-        break;
+  // 1 待发布 2审核中 3 审核驳回  4 审核通过  0 无审核
+  const versionStatus = useMemo(() => {
+    if (shopInfo.status === ShopStatusEnum.ONLINE && shopInfo.newestDataVersion) {
+      switch (shopInfo.newestDataVersion.status) {
+        case ShopVersionStatusEnum.INIT:
+          return 1;
+        case ShopVersionStatusEnum.VERIFY:
+          return 2;
+        case ShopVersionStatusEnum.MACHINE_REJECT:
+        case ShopVersionStatusEnum.HUMAN_REJECT:
+          return 3;
+        case ShopVersionStatusEnum.APPROVE:
+          return 4;
+      }
+    } else {
+      return 0
     }
-  }
-  const getStatusTxt = (status: any) => {
-    switch (status) {
+  }, [shopInfo])
+
+  const versionRejectTip = useMemo(() => {
+    if (versionStatus === 3) {
+      const memo = shopInfo.newestDataVersion?.memo.slice(0, 19)
+      return <div className={styles['version-reject-tip']}>
+        <ExclamationCircleFilled className={styles['icon']} />
+        <div className={styles['content']}>
+          <div className={styles['title']}>最新修改未通过审核</div>
+          <div className={styles['text']}>{`${memo ? memo + (memo.length >= 20 ? '...' : '') : ''}`}</div>
+          <div className={styles['text']}>站内信查看详情</div>
+        </div>
+      </div>
+    } else {
+      return <></>
+    }
+  }, [versionStatus])
+
+  const StatusBox = useMemo(() => {
+    switch (shopInfo.status) {
       case ShopStatusEnum.ONLINE:
-        return '生效中';
-        break;
+        if (shopInfo.newestDataVersion) {
+          switch (shopInfo.newestDataVersion.status) {
+            case ShopVersionStatusEnum.INIT:
+              return <></>;
+            case ShopVersionStatusEnum.VERIFY:
+              return <div className={`${styles['s-status']} ${styles["s-red"]}`}>审核中</div>;
+            case ShopVersionStatusEnum.MACHINE_REJECT:
+            case ShopVersionStatusEnum.HUMAN_REJECT:
+              return <div className={`${styles['s-status']} ${styles["s-red"]}`}>修改未生效</div>;
+            case ShopVersionStatusEnum.APPROVE:
+              return <div className={`${styles['s-status']} ${styles["s-green"]}`}>生效中</div>;
+          }
+        } else {
+          return <div className={`${styles['s-status']} ${styles["s-green"]}`}>生效中</div>;
+        }
       case ShopStatusEnum.OFFLINE_SENSITIVE:
-        return '审核驳回';
-        break;
+        return <div className={`${styles['s-status']} ${styles["s-red"]}`}>审核驳回</div>;
       case ShopStatusEnum.EXPIRED:
-        return '已失效';
-        break;
+        return <div className={`${styles['s-status']} ${styles["s-red"]}`}>已失效</div>;
       default:
-        return '已下线';
-        break;
+        return <div className={`${styles['s-status']} ${styles["s-gray"]}`}>已下线</div>;
     }
-  }
+  }, [shopInfo])
 
   const linkTo = (link: string) => {
     if (shopStatus.isUserPerfect || false) {
@@ -54,48 +90,63 @@ export default (props: Props) => {
     }
   }
 
-  const genEditBtn = () => {
+  const genEditBtn = useMemo(() => {
     if ([ShopStatusEnum.ONLINE, ShopStatusEnum.OFFLINE_SENSITIVE].includes(shopInfo.status)) {
-      return (<span className="s-edit" onClick={() => {
+      return (<span className={styles["s-edit"]} onClick={() => {
         handleEditShop(shopInfo)
       }}></span>)
     }
-  }
+  }, [shopInfo, handleEditShop])
 
-  const genLinkPanel = () => {
+  const genLinkPanel = useMemo(() => {
     if ([ShopStatusEnum.ONLINE, ShopStatusEnum.OFFLINE_SENSITIVE].includes(shopInfo.status)) {
-      return (<div className="s-btn">
+      return (<div className={styles["s-btn"]} >
         <span onClick={() => linkTo(`/shop/${shopInfo.id}/nav`)} >基础设置</span>
         <span onClick={() => linkTo(`/shop/${shopInfo.id}/product`)}>内容管理</span>
       </div>)
     }
-  }
+  }, [shopInfo])
 
-  const genRenewBtn = (shopInfo: ShopInfo) => {
+  const genRenewBtn = useMemo(() => {
     if (shopInfo.status === ShopStatusEnum.ONLINE) {
-      return <span onClick={() => setTicketModal(shopInfo.id)} className="renew-btn">续费</span>
+      return <span onClick={() => setTicketModal(shopInfo.id)} className={styles["renew-btn"]} >续费</span>
     } else if (shopInfo.status === ShopStatusEnum.EXPIRED) {
-      return <span onClick={() => setTicketModal(shopInfo.id)} className="renew-btn locked">解锁</span>
+      return <span onClick={() => setTicketModal(shopInfo.id)} className={`${styles["renew-btn"]} ${styles["locked"]}`} >解锁</span>
+    }
+  }, [shopInfo])
+
+  const handleClickSubmit: React.MouseEventHandler<HTMLSpanElement> = async (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const res = await updateShopVersionApi(shopInfo.newestDataVersion!.id, shopInfo.id)
+    if (res.success) {
+      getShopList()
     }
   }
 
   return (
-    <div className="shop-box">
-      <div className="s-img">
+    <div className={styles["shop-box"]}>
+      <div className={styles["s-img"]} >
         <a href={shopInfo.shopDomain} target="_blank">
           <img src={shopInfo.thumb} />
-          <div className={`s-status ${ getStatusClassName(shopInfo.status) }`}>{ getStatusTxt(shopInfo.status) }</div>
+          {StatusBox}
+          {versionRejectTip}
         </a>
       </div>
-      <div className="s-title" >
-        <a href={shopInfo.shopDomain} target="_blank">{shopInfo.name}</a>
-        {genEditBtn()}
+      <div className={styles["s-title"]}  >
+        <a href={shopInfo.shopDomain} target="_blank">
+          {shopInfo.name}
+          {
+            versionStatus === 1 && <span className={styles['submit']} onClick={handleClickSubmit}>发布</span>
+          }
+        </a>
+        {genEditBtn}
       </div>
-      <div className="dead-time">
-        到期时间：{ moment(shopInfo.expiredTime * 1000).format('YYYY/MM/DD') }
-        { genRenewBtn(shopInfo) }
+      <div className={styles["dead-time"]}>
+        到期时间：{moment(shopInfo.expiredTime * 1000).format('YYYY/MM/DD')}
+        {genRenewBtn}
       </div>
-      { genLinkPanel()}
+      {genLinkPanel}
     </div>
   );
 }

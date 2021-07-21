@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Modal, Table } from 'antd';
-import { RouteParams } from '@/interfaces/shop';
+import { Modal, Table, Popover } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons'
+import { RouteParams, ShopArticleListItem } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ArticleSource, AuditStatus } from '@/enums';
 import Loading from '@/components/loading';
@@ -34,7 +35,7 @@ export default (props: Props) => {
     setVisibleDeleteDialog(true)
   }
   const confirmDelete = async () => {
-    const res  = await deleteArticleApi(Number(params.id), { id: actionId })
+    const res = await deleteArticleApi(Number(params.id), { id: actionId })
     if (res.success) {
       successMessage(res.message);
       location.reload()
@@ -45,23 +46,43 @@ export default (props: Props) => {
 
   const columns = [
     { title: '序号', dataIndex: 'key', key: 'key' },
-    { title: '文章标题', dataIndex: 'name', key: 'name',
+    {
+      title: '文章标题', dataIndex: 'name', key: 'name',
       render: (text: string, record: any) => <a className="article-action-btn" href={record.urlSuffix} target="_blank">{text}</a>
     },
     { title: '文章分组', dataIndex: 'cateName', key: 'cateName' },
-    { title: '发文来源', dataIndex: 'source', key: 'source',
+    {
+      title: '发文来源', dataIndex: 'source', key: 'source',
       render: (text: string) => <span style={{
-        color: Number(text) ===ArticleSource.AI ? '#FF8D19' : '' }}>{ ArticleSourceText[text] }</span>  },
-    { title: '审核结果', dataIndex: 'status', key: 'status',
-      render: (text: AuditStatus) => {
-        return <span style={{  color: text === AuditStatus.APPROVE ? '#999' :
-            (AuditStatus.REJECT ? '#F1492C' : '')}}>{ auditStatusText[text] }</span>
+        color: Number(text) === ArticleSource.AI ? '#FF8D19' : ''
+      }}>{ArticleSourceText[text]}</span>
+    },
+    {
+      title: '审核结果', dataIndex: 'status', key: 'status',
+      render: (text: AuditStatus, record: ShopArticleListItem) => {
+        return <>
+          <span style={{
+            color: text === AuditStatus.APPROVE ? '#999' :
+              (AuditStatus.REJECT ? '#F1492C' : ''),
+            marginRight: 4
+          }}>{auditStatusText[text]}</span>
+          {
+            text === AuditStatus.REJECT && <Popover trigger="hover" placement="top" title="审核信息" content={<div style={{
+              maxWidth: 200
+            }}>{record.memo}</div>}>
+              <ExclamationCircleFilled style={{
+                color: '#F1492C',
+              }} />
+            </Popover>
+          }
+        </>
       }
     },
-    { title: '操作', dataIndex: '', key: 'x',
+    {
+      title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
-          { record.status === AuditStatus.APPROVE && <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a> }
+          { record.status === AuditStatus.APPROVE && <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a>}
           <span onClick={() => editAction(record)} className="article-action-btn">修改</span>
           <span onClick={() => deleteAction(record.id)} className="article-action-btn">删除</span>
         </div>)
@@ -70,25 +91,26 @@ export default (props: Props) => {
 
   return (
     <div>
-      { total === null && <Loading /> }
+      { total === null && <Loading />}
       {
         total === 0 && <div className="no-list-data">
-          <img src="//file.baixing.net/202012/de46c0eceb014b71d86c304b20224032.png"  />
+          <img src="//file.baixing.net/202012/de46c0eceb014b71d86c304b20224032.png" />
           <p>暂无文章，你可以新建文章</p>
         </div>
       }
       {
         total !== null && total > 0 && <div>
           <Modal title={<span style={{ color: '#F1492C' }}>确认删除</span>}
-                 onCancel={() => setVisibleDeleteDialog(false)}
-                 onOk={() => confirmDelete()}
-                 visible={visibleDeleteDialog}>
+            onCancel={() => setVisibleDeleteDialog(false)}
+            onOk={() => confirmDelete()}
+            visible={visibleDeleteDialog}>
             <p>删除后无法恢复，确认删除？</p>
           </Modal>
           <Table columns={columns} loading={loading} dataSource={dataSource} pagination={{
-            showSizeChanger: true, onShowSizeChange, current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+            showSizeChanger: true, onShowSizeChange, current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']
+          }} />
         </div>
       }
     </div>
-    )
+  )
 }
