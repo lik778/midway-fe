@@ -29,8 +29,8 @@ test-release:
   cache:
     key: "TEST-REALEASE-DEPENDS"
     paths:
-      - .npm/
-      - app/mvip-manager/.npm/
+      - /usr/src/.npm/
+      - /usr/src/app/mvip-manager/.npm/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
