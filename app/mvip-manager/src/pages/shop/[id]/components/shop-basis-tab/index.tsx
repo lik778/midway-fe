@@ -87,7 +87,7 @@ const BasisTab = (props: Props) => {
   }, [curShopInfo, shopStatus])
 
   useEffect(() => {
-    if (shopStatus && Object.keys(shopStatus).length === 0) {
+    if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
       getShopStatus()
     }
   }, [])
