@@ -52,7 +52,7 @@ export interface UserEnterpriseInfo {
   contactMobile: string;
   contactMobile2?: string;
   wechat: string;
-  qqMap: { [key: string]: string };
+  qqMap: { name: string, content: string }[];
   companyNameLock: boolean;
   kefuStatus: KFStatus;
   kf53Info: KF53Info | null;
@@ -72,7 +72,7 @@ export interface KF53Info {
 
 export interface QQItem {
   name: string;
-  qq: string;
+  content: string;
 }
 
 export interface ThirdMetas {
