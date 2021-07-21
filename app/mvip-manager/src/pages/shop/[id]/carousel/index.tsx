@@ -5,7 +5,7 @@ import { ShopBasisType, DeviceType, ProductType } from '@/enums';
 import './index.less';
 import { connect } from 'dva';
 import { SHOP_NAMESPACE } from '@/models/shop';
-import { RouteParams, ShopInfo } from '@/interfaces/shop';
+import { ShopInfo } from '@/interfaces/shop';
 import styles from './index.less'
 
 
@@ -26,7 +26,7 @@ const ShopCarouselPage = (props: any) => {
             tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸1920*360'}
             txt={'PC端内容轮播图'}
             type={DeviceType.PC}
-            position={3} 
+            position={3}
             aspectRatio={1920 / 360}
           />
         </div>

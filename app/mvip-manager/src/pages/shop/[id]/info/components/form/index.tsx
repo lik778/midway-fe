@@ -13,7 +13,7 @@ const FormItem = Form.Item
 
 interface Props {
   id: number,
-  shopBasicInfoParams: InitShopBasicInfoParams,
+  shopBasicInfoParams: InitShopBasicInfoParams | {},
   getDataLoading: boolean
   onChange: () => void
 }

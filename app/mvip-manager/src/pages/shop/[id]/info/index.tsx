@@ -1,62 +1,58 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'umi';
 import { Spin } from 'antd'
+import { connect } from 'dva';
+import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
+import { ConnectState } from '@/models/connect'
+import { ShopInfo } from '@/interfaces/shop';
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
 import { ShopBasisType } from '@/enums'
 import styles from './index.less'
 import { getShopBasicInfoApi } from '@/api/shop'
 import { ShopBasicInfo, InitShopBasicInfoParams } from '@/interfaces/shop'
 import ShopBasicInfoForm from './components/form'
-const CustomerSet: FC = () => {
+
+
+
+const CustomerSet: FC<{ curShopInfo: ShopInfo | null, loadingShopModel: boolean }> = (props) => {
+  const { curShopInfo, loadingShopModel } = props
+
   const { id } = useParams<{ id: string }>()
-  const [detail, setDeatil] = useState<ShopBasicInfo | null>(null)
-  const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
-  const initShopBasicInfoParams = useMemo<InitShopBasicInfoParams | null>(() => {
-    if (detail) {
-      return {
-        companyName: detail.company?.name,
-        companyAlias: detail.company?.alias,// 店铺名称 默认值取得店铺名称
-        area: detail.area,
-        companyAddress: detail.company?.address,
-        companyDescription: detail.company?.about,
-        promoteImg: detail.company?.logo,
-        contactName: detail.contact?.contactName.content,
-        contactMobile: detail.contact?.phone.content,
-        contactMobile2: detail.contact?.phone2.content,
-        wechat: detail.contact?.weChat.content,
-      } as InitShopBasicInfoParams
+  const initShopBasicInfoParams = useMemo<InitShopBasicInfoParams | {} | null>(() => {
+    if (curShopInfo) {
+      if (curShopInfo.about && curShopInfo.about.length > 0) {
+        return JSON.parse(curShopInfo.about) as InitShopBasicInfoParams
+      } else {
+        return {}
+      }
     } else {
       return null
     }
-  }, [detail])
+  }, [curShopInfo])
 
-  // 这个版本没有获取module列表接口
-  const getShopBasicInfo = async () => {
-    setGetDataLoading(true)
-    const res = await getShopBasicInfoApi(Number(id))
-    setDeatil(res.data)
-    setGetDataLoading(false)
-  }
-
-  useEffect(() => {
-    getShopBasicInfo()
-  }, [])
-
-  const handleChangeInfo = () => {
-    getShopBasicInfo()
-  }
 
   return <>
     <BasisHeader type={ShopBasisType.INFO} />
 
-    <Spin spinning={getDataLoading}>
+    <Spin spinning={loadingShopModel}>
       <div className="container">
         {
-          initShopBasicInfoParams && <ShopBasicInfoForm id={Number(id)} shopBasicInfoParams={initShopBasicInfoParams} getDataLoading={getDataLoading} onChange={handleChangeInfo}></ShopBasicInfoForm>
+          initShopBasicInfoParams && <ShopBasicInfoForm id={Number(id)} shopBasicInfoParams={initShopBasicInfoParams} getDataLoading={loadingShopModel} onChange={() => {
+            window.location.reload()
+          }}></ShopBasicInfoForm>
         }
       </div>
     </Spin>
   </>
 }
 
-export default CustomerSet
+//取状态管理里的当前店铺信息，用于判断店铺类型
+export default connect<any>((state: any) => {
+  const { curShopInfo } = (state as ConnectState)[SHOP_NAMESPACE]
+  const { loading } = (state as ConnectState)
+  return { curShopInfo, loadingShopModel: loading.models.shop }
+}, (dispatch) => {
+  return {
+    ...shopMapDispatchToProps(dispatch),
+  }
+})(CustomerSet)
