@@ -46,11 +46,11 @@ export const updateShopApi = (params: ShopInfo): Promise<ServiceResponse<any>> =
 
 // 更新店铺
 export const updateShopVersionApi = (versionId: number, shopId: number): Promise<ServiceResponse<any>> => {
-  // return postApiData(ServicePath.SHOP, 'midway/backend/dataVersion/submit', {
-  //   id: versionId,
-  //   shopId
-  // }, setShopHeader(shopId))
-  return getApi(`midway/backend/dataVersion/submit?id=${versionId}&shopId=${shopId}`, {})
+  return postApiData(ServicePath.SHOP, 'midway/backend/dataVersion/submit', {
+    id: versionId,
+    shopId
+  }, setShopHeader(shopId))
+  // return getApi(`midway/backend/dataVersion/submit?id=${versionId}&shopId=${shopId}`, {})
 }
 
 // 获取店铺列表
