@@ -136,6 +136,7 @@ export const getKeywordDetailList:
 export const getLeaveMessageList:
   (params: getLeaveMessageListParams) => ReportListResponse<LeaveMessageListData[]> =
   (params) => new Promise(resolve => {
+    console.log(params)
     setTimeout(() => {
       resolve({
         code: 200,
@@ -143,8 +144,8 @@ export const getLeaveMessageList:
         data: {
           totalElements: 20,
           totalPages: 2,
-          result: Array(10).fill('').map((x,i) => ({
-            id: i,
+          result: Array((params?.pageNo || 0) < 5 ? (Math.random() < .5 ? 10 : 1) : 0).fill('').map((x,i) => ({
+            id: (params?.pageNo || 0) * 10 + i,
             date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-')+' 12:00:00',
             type: ~~(Math.random() * 3),
             name: Math.random() < .5 ? '我是超长帖子标' : '我是超长帖子标题我是超长帖子标题',

@@ -94,13 +94,16 @@ export const getLastWeek = () => [
   moment(moment().format('YYYY-MM-DD'))
 ]
 
-// 获取今天的时间区间
-export const getLast24Hours = () => [
-  moment(moment().format('YYYY-MM-DD')).subtract(1, 'days'),
-  moment(moment().format('YYYY-MM-DD'))
-]
+// 获取过去24小时时间区间
+export const getLast24Hours = (anchor?: any) => {
+  anchor = anchor || moment()
+  return [
+    moment(anchor.format('YYYY-MM-DD')).subtract(1, 'days'),
+    moment(anchor.format('YYYY-MM-DD'))
+  ]
+}
 
-// TODO refactor
+// TODO refactor no effects
 // 格式化 ant date-range 时间值，
 // 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天
 export const formatDateRange = (dates: any, query: any) => {
@@ -108,6 +111,17 @@ export const formatDateRange = (dates: any, query: any) => {
   const [start, end] = dates
   query.startTime = String(start.unix())
   query.endTime = String(end.add(1, 'day').subtract(1, 'second').unix())
+}
+
+// 格式化 ant date-range 时间值，
+// 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天
+export const formatTimeRange = (dates: any[]) => {
+  if (!dates || !dates.length) return []
+  const [start, end] = dates
+  return [
+    String(start.unix()),
+    String(end.add(1, 'day').subtract(1, 'second').unix())
+  ]
 }
 
 export const insertStyle = (cssText: string) => {
