@@ -26,7 +26,7 @@ export const baseInfoForm: FormConfig = {
       minLength: 50, maxLength: 2000, patternList: [{ pattern: /^[\s\S]{50,2000}$/, message: '50～2000个字' }]
     },
     {
-      label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
+      label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 1, text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
       required: true, tip: '图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100'
     },
     { formItemWidth: 260, label: '类目', name: 'secondCategory', type: FormType.Select, required: true, placeholder: '请选择类目' },
