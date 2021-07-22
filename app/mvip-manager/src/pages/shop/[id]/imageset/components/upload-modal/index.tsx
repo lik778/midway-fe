@@ -113,7 +113,7 @@ export function useUploadModal(props: Props) {
           }
           resolve(item)
         } else {
-          throw new Error(res.message || '上传失败');
+          throw new Error(res.message || '上传失败')
         }
       } catch (error: any) {
         const target = uploadedLists.current.find(x => x.uid === item.uid)
@@ -206,7 +206,7 @@ export function useUploadModal(props: Props) {
     let dispearMask = false
     if (inChibi === true) {
       $contents = <span className={styles["upload-info"]}>审核中</span>
-    } if (chibiFailed) {
+    } else if (chibiFailed) {
       $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
         <AuditFailedIcon />
         <span>该图片涉及违禁</span>
