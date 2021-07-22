@@ -210,6 +210,8 @@ const ShopArticlePage = (props: any) => {
           selection={selection}
           allAlbumLists={allAlbumLists}
           loading={loading}
+          pagiConf={pagiConf}
+          setPagiConf={setPagiConf}
           refreshAllAlbumLists={refreshAllAlbumLists}
           setSelection={setSelection}
           refresh={refresh}

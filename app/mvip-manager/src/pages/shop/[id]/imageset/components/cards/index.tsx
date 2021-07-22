@@ -14,6 +14,7 @@ import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImageset
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop";
+import { PaginationSetting } from '../../hooks/pagination'
 
 import styles from "./index.less";
 
@@ -29,6 +30,8 @@ interface CardsProps {
   isScopeImage: boolean;
   allAlbumLists: AlbumNameListItem[];
   loading: boolean;
+  pagiConf: any;
+  setPagiConf: (conf: Partial<PaginationSetting>) => void;
   refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
@@ -42,12 +45,49 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
+  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf, setPagiConf, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
   const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
   const [previewModal, setPreviewModal] = useState(false);
+
+  const [countInLine, setCountInLine] = useState(0)
+  const checkMaxCountInLine = (width?: number) => {
+    if (width) {
+      const cardWidth = 220
+      const gapMax = 46
+      const gapMin = 36
+      const tryCount = [3, 4, 5, 6, 7, 8]
+      // FIXME type
+      const result = tryCount.reduce((h, c) => {
+        if (!h) {
+          const maxWidthLimit = (cardWidth + gapMax) * c - gapMax
+          const minWidthLimit = (cardWidth + gapMin) * c - gapMin
+          const isFit = ((width > minWidthLimit) && (width < maxWidthLimit))
+          if (isFit) return c
+          const isBigger = width < minWidthLimit
+          if (isBigger) {
+            const last = tryCount.find((x, i) => tryCount[i+1] === c)
+            return last
+          }
+        }
+        return h
+      }, 0) || tryCount[0]
+      const countInPage = result * 2
+      if (pagiConf.pageSize !== countInPage) {
+        setCountInLine(result)
+        setPagiConf({
+          pageSize: countInPage,
+          pageSizeOptions: [
+            String(countInPage),
+            String(countInPage * 2),
+            String(countInPage * 4),
+          ]
+        })
+      }
+    }
+  }
 
   /***************************************************** Interaction Fns */
 
@@ -296,6 +336,18 @@ export default function Cards(props: CardsProps) {
     )
   }
 
+  // 填充 flex 布局中未满的区域
+  const renderFlexPadding = useCallback(() => {
+    if (countInLine) {
+      const padCount = countInLine - (lists.length % countInLine)
+      if (padCount > 0 && padCount < countInLine) {
+        return Array(padCount).fill('').map((x, i) => {
+          return <div className={styles["padding-card"]} key={i} />
+        })
+      }
+    }
+  }, [countInLine, lists])
+
   // 空列表提示
   // * 目前至少有一个默认相册，所以相册列表不会为空
   const renderEmptyTip = useCallback(() => {
@@ -323,8 +375,9 @@ export default function Cards(props: CardsProps) {
   return (
     <>
       <Spin spinning={loading}>
-        <div className={styles["cards-con"]}>
+        <div className={styles["cards-con"]} ref={el => checkMaxCountInLine(el?.offsetWidth)}>
           {lists.map((x: any) => renderCard(x))}
+          {renderFlexPadding()}
           {(lists.length === 0 && !loading) && renderEmptyTip()}
         </div>
       </Spin>
