@@ -146,18 +146,20 @@ export function useUploadModal(props: Props) {
   }, [remove, selectedAlbum])
 
   // 申诉图片
-  const reAuditImage = async (image: UploadResMap) => {
-    reAuditImagesetImage(shopId, { id: image.imageID })
-      .then((res: any) => {
-        if (res.success) {
-          successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')
-        } else {
-          throw new Error(res.message || '出错啦，请稍后重试')
-        }
-      })
-      .catch((error: any) => {
-        errorMessage(error.message)
-      })
+  const reAuditImage = async (image: UploadResMap | undefined) => {
+    if (image) {
+      reAuditImagesetImage(shopId, { id: image.imageID })
+        .then((res: any) => {
+          if (res.success) {
+            successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')
+          } else {
+            throw new Error(res.message || '出错啦，请稍后重试')
+          }
+        })
+        .catch((error: any) => {
+          errorMessage(error.message)
+        })
+    }
   }
 
   /***************************************************** Interaction Fns */
