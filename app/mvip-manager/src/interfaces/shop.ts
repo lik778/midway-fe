@@ -278,6 +278,10 @@ export interface CreateImagesetImageParam {
   mediaCateId?: number; // 不传则上传到默认图库
 }
 
+export interface ReAuditImagesetImageParam {
+  id: number
+}
+
 export type DelImagesetAlbumParam = number[]
 
 export interface DelImagesetImageParam {
@@ -341,14 +345,16 @@ export type AlbumItem = {
 
 
 export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
+export type ImageType = 'NOT_COVER' | 'COVER'
 /**
  * @description 相册图片类型
  * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
  */
 export type ImageItem = {
   id: number,
-  name: string,
+  name?: string,
   imgUrl: string,
+  type: ImageType,
   checkStatus: CheckStatusType,// 状态
   reason:string,// 驳回理由
 }

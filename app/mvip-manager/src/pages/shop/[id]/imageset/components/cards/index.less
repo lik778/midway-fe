@@ -25,6 +25,7 @@
     box-shadow: 0 0 20px 0px rgba(0,0,0,.06);
     overflow: hidden;
     cursor: pointer;
+    user-select: none;
 
     &.error-image-card,
     &.image-card {
@@ -118,6 +119,23 @@
       max-height: 170px;
       object-fit: cover;
       object-position: top;
+    }
+    .mask {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 56px;
+      line-height: 56px;
+      text-align: center;
+      background: rgba(0,0,0,.55);
+      color: white;
+
+      .anticon {
+        position: relative;
+        margin-right: 6px;
+        top: 6px;
+      }
     }
 
     .header {
