@@ -26,12 +26,13 @@ interface Props {
   shopStatus: ShopStatus | null;
   loadingShop: boolean,
   getShopStatus: () => Promise<any>
-  getShopList: () => Promise<any>
+  getShopList: (data?: { reloadList?: boolean }) => Promise<any>
+  setShopList: (list: ShopInfo[]) => void
   setCurShopInfo: (ShopInfo: ShopInfo) => Promise<any>
 }
 
 const ShopPage: FC<Props> = (props) => {
-  const { shopStatus, shopList, shopTotal, loadingShop, getShopStatus, getShopList, setCurShopInfo } = props
+  const { shopStatus, shopList, shopTotal, loadingShop, getShopStatus, getShopList, setShopList, setCurShopInfo } = props
 
   // 创建按钮禁用
   const [createShopDisabled, setCreateShopDisabled] = useState<boolean>(true)
@@ -77,7 +78,7 @@ const ShopPage: FC<Props> = (props) => {
 
 
   const initPage = () => {
-    Promise.all([getShopStatus(), getShopList()])
+    Promise.all([getShopStatus(), getShopList({ reloadList: true })])
   }
 
   useEffect(() => {
@@ -159,7 +160,7 @@ const ShopPage: FC<Props> = (props) => {
           <div className={styles["shop-list"]}>
             {
               shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) =>
-                <ShopBox shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setCurShopInfo={setCurShopInfo}
+                <ShopBox shopList={shopList} shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setShopList={setShopList} setCurShopInfo={setCurShopInfo}
                   setTicketModal={(shopId: number) => {
                     setTicketType(TicketType.RENEW)
                     setModalTicketVisible(true)

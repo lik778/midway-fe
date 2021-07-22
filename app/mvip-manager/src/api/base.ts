@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { ServiceResponse } from '@/interfaces/api'
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
@@ -22,7 +23,7 @@ request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(err.response && err.response.data)
 })
 
-export const postApi = (url: string, data: ApiReqParams, headers?: any): Promise<AxiosResponse<any>> => {
+export const postApi = <T>(url: string, data: ApiReqParams, headers?: any): Promise<ServiceResponse<T>> => {
   const { method, path, params } = data;
   return request.post(url, { method, params, path }, { headers });
 }
@@ -32,10 +33,17 @@ export const getApi = (url: string, params: any): Promise<any> => {
   return request.get(url, { params });
 }
 
-
-export const postApiData = (servicePath: string, path: string, params: any = {}, headers?: any): Promise<any> => {
+export const getApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
   const p = JSON.stringify(params)
-  return postApi(servicePath, {
+  return postApi<T>(servicePath, {
+    method: 'get', path: `/api/${path}`,
+    params: p,
+  }, headers)
+}
+
+export const postApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
+  const p = JSON.stringify(params)
+  return postApi<T>(servicePath, {
     method: 'post', path: `/api/${path}`,
     params: p,
   }, headers)

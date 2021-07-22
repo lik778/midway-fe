@@ -10,16 +10,18 @@ import { useMemo } from 'react';
 import { updateShopVersionApi } from '@/api/shop'
 
 interface Props {
+  shopList: ShopInfo[]
   shopInfo: ShopInfo,
   shopStatus: ShopStatus
   handleEditShop: (shopInfo: ShopInfo) => void
   setCurShopInfo: (shopInfo: ShopInfo) => void
   setTicketModal: (shopId: number) => void
-  getShopList: () => Promise<any>
+  getShopList: (data?: { reloadList?: boolean }) => Promise<any>
+  setShopList: (list: ShopInfo[]) => void
 }
 
-export default (props: Props) => {
-  const { shopInfo, handleEditShop, shopStatus, setCurShopInfo, setTicketModal, getShopList } = props
+const ShopBox = (props: Props) => {
+  const { shopList, shopInfo, handleEditShop, shopStatus, setCurShopInfo, setTicketModal, getShopList, setShopList } = props
 
   // 1 待发布 2审核中 3 审核驳回  4 审核通过  0 无审核
   const versionStatus = useMemo(() => {
@@ -120,7 +122,16 @@ export default (props: Props) => {
     e.preventDefault()
     const res = await updateShopVersionApi(shopInfo.newestDataVersion!.id, shopInfo.id)
     if (res.success) {
-      getShopList()
+      setShopList(shopList.map(item => {
+        if (item.id === shopInfo.id) {
+          return {
+            ...shopInfo,
+            newestDataVersion: res.data
+          }
+        } else {
+          return item
+        }
+      }))
     }
   }
 
@@ -150,3 +161,5 @@ export default (props: Props) => {
     </div>
   );
 }
+
+export default ShopBox
