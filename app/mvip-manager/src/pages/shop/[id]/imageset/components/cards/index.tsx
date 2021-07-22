@@ -54,7 +54,8 @@ export default function Cards(props: CardsProps) {
   const [previewModal, setPreviewModal] = useState(false);
 
   const [countInLine, setCountInLine] = useState(0)
-  const checkMaxCountInLine = (width?: number) => {
+
+  const checkMaxCountInLine = useCallback((width?: number) => {
     if (width) {
       const cardWidth = 220
       const gapMax = 46
@@ -75,9 +76,11 @@ export default function Cards(props: CardsProps) {
         }
         return h
       }, 0) || tryCount[0]
+      if (countInLine !== result) {
+        setCountInLine(result)
+      }
       const countInPage = result * 2
       if (pagiConf.pageSize !== countInPage) {
-        setCountInLine(result)
         setPagiConf({
           pageSize: countInPage,
           pageSizeOptions: [
@@ -88,7 +91,7 @@ export default function Cards(props: CardsProps) {
         })
       }
     }
-  }
+  }, [countInLine])
 
   /***************************************************** Interaction Fns */
 
