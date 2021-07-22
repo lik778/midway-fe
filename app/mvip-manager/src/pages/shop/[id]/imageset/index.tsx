@@ -27,6 +27,8 @@ const ShopArticlePage = (props: any) => {
   const params: RouteParams = useParams();
   const shopId = Number(params.id);
 
+  // tabScope 维护当前页面进入不同文件夹的深度，
+  // 维护方式类似 history.pushState
   const [tabScope, setTabScope] = useState<TabScope>([{ type: 'album', item: null }]);
   const [isScopeAlbum, setIsScopeAlbum] = useState(false);
   const [isScopeImage, setIsScopeImage] = useState(false);
@@ -59,6 +61,7 @@ const ShopArticlePage = (props: any) => {
   const pagiQuery = useMemo(() => {
     let page = pagi.current
     let size = pagiConf.pageSize
+    // @ts-ignore
     const isChangeScope = curScope && prevCurScope && (curScope.type !== prevCurScope.type)
     if (isChangeScope) {
       page = 1
@@ -272,11 +275,11 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
     }
     /* Query & Fetch */
     setLoading(true)
-    // FIXME type
     fetchMethod(shopId, query)
       .then(res => {
         if (res) {
           const [result, total] = res
+          // @ts-ignore
           const lists = (result || []).filter(notNull)
           setLists(lists)
           setTotal(total || 0)

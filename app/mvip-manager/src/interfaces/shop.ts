@@ -309,6 +309,7 @@ export interface GetImagesetImageRes {
 export interface AlbumNameListItem {
   id: number,
   name: string,
+  type: AlbumType
 }
 
 export interface AlbumImageListItem {
@@ -316,10 +317,6 @@ export interface AlbumImageListItem {
   url: string
   status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
 }
-
-
-
-/* 店铺图集相关定义 Start */
 
 // 默认相册/普通相册：默认相册不能编辑、删除
 export type AlbumType = 'DEFAULT' | 'NORMAL'
@@ -356,5 +353,3 @@ export type TabScopeItem = {
 }
 export type TabScope = TabScopeItem[]
 
-
-/* 店铺图集相关定义 End */
