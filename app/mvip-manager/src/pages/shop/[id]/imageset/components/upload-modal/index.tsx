@@ -196,8 +196,8 @@ export function useUploadModal(props: Props) {
         const exactPercent = percent ? Math.floor(percent) : 0
         $contents = <>
           <svg className={styles['progress']} width="60px" height="60px">
-            <circle r="25" cy="30" cx="30" stroke-width="3" stroke="rgba(0,0,0,0.5)" stroke-linejoin="round" stroke-linecap="round" fill="none" />
-            <circle r="25" cy="30" cx="30" stroke-width="3" stroke="#1790FF" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-dashoffset="0px" stroke-dasharray={percent100Len + 'px'} />
+            <circle r="25" cy="30" cx="30" strokeWidth="3" stroke="rgba(0,0,0,0.5)" strokeLinejoin="round" strokeLinecap="round" fill="none" />
+            <circle r="25" cy="30" cx="30" strokeWidth="3" stroke="#1790FF" strokeLinejoin="round" strokeLinecap="round" fill="none" strokeDashoffset="0px" strokeDasharray={percent100Len + 'px'} />
           </svg>
           <span className={styles["upload-info"]}>{exactPercent}%</span>
         </>
