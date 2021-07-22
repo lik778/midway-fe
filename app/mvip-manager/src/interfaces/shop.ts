@@ -306,6 +306,15 @@ export interface GetImagesetImageRes {
   mediaImgBos: ListRes<ImageItem[]>
 }
 
+export interface GetImagesetFailedImageParam {
+  page: number;
+  size: number;
+}
+
+export interface GetImagesetFailedImageRes {
+  mediaImgBos: ListRes<ImageItem[]>
+}
+
 export interface AlbumNameListItem {
   id: number,
   name: string,
@@ -349,7 +358,7 @@ export type CardItem = AlbumItem | ImageItem
 // 相册管理目录层级类型
 export type TabScopeItem = {
   item: CardItem | null
-  type: 'album' | 'image'
+  type: 'album' | 'image' | 'audit'
 }
 export type TabScope = TabScopeItem[]
 

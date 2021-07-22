@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Spin, Button, Result, Checkbox, Modal } from "antd";
+import React, { useEffect, useState, useCallback } from "react"
+import { Spin, Button, Result, Checkbox, Modal } from "antd"
 import {
   LeftOutlined,
   RightOutlined,
@@ -7,16 +7,16 @@ import {
   DeleteOutlined,
   EditOutlined,
   DownOutlined,
-} from "@ant-design/icons";
+} from "@ant-design/icons"
 
-import { successMessage, errorMessage } from "@/components/message";
+import { successMessage, errorMessage } from "@/components/message"
 import { delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage, createImagesetAlbum } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop";
+import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
 import { PaginationSetting } from '../../hooks/pagination'
 
-import styles from "./index.less";
+import styles from "./index.less"
 
 import DEFAULT_ALBUM_COVER from '../../statics/default-album-cover.png'
 
@@ -26,6 +26,7 @@ interface CardsProps {
   selection: any[];
   tabScope: TabScope;
   curScope: TabScopeItem | undefined;
+  isScopeAudit: boolean;
   isScopeAlbum: boolean;
   isScopeImage: boolean;
   allAlbumLists: AlbumNameListItem[];
@@ -45,7 +46,7 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** States */
 
-  const { shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf, setPagiConf, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
+  const { shopId, lists, selection, tabScope, curScope, isScopeAudit, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf, setPagiConf, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
@@ -301,15 +302,48 @@ export default function Cards(props: CardsProps) {
     );
   }, [selection, loading])
 
+  const ErrorImageCard = useCallback((card: ImageItem) => {
+    const { id, imgUrl, checkStatus } = card;
+    const isChecked = isScopeAudit && selection.find((y: number) => y === id)
+    const inAudit = checkStatus === 'REAPPLY'
+    return (
+      <div className={styles["error-image-card"]} onClick={() => previewImage(card)} key={`error-image-card-${id}`}>
+        {!inAudit && (
+          <div className={styles["selection"]} onClick={e => stopEvent(e)}>
+            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
+            <div className={styles["anticon-down-con"]}>
+              <div className={styles["anticon-down"]}>
+                <DownOutlined />
+              </div>
+              <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
+                <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
+                  <DeleteOutlined />
+                  <span>删除</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {(!loading && imgUrl) && (
+          <img className={styles["cover"]} src={imgUrl} alt="cover" />
+        )}
+      </div>
+    )
+  }, [selection, loading])
+
+  // 根据文件夹类型的不同渲染不同的卡片
   const renderCard = (card: CardItem) => {
     if (isScopeAlbum) {
-      return AlbumCard(card as AlbumItem);
+      return AlbumCard(card as AlbumItem)
     }
     if (isScopeImage) {
-      return ImageCard(card as ImageItem);
+      return ImageCard(card as ImageItem)
+    }
+    if (isScopeAudit) {
+      return ErrorImageCard(card as ImageItem)
     }
     console.error('[ERR] Error TabScope Rendered')
-  };
+  }
 
   const renderPreviewModal = () => {
     if (!previewItem) {
@@ -351,7 +385,7 @@ export default function Cards(props: CardsProps) {
   // 空列表提示
   // * 目前至少有一个默认相册，所以相册列表不会为空
   const renderEmptyTip = useCallback(() => {
-    if (!isScopeAlbum && !isScopeImage) {
+    if (!(isScopeAlbum || isScopeImage || isScopeAudit)) {
       return null
     }
     let info, $extra
@@ -363,6 +397,10 @@ export default function Cards(props: CardsProps) {
       info = "当前相册还没有图片，快上传一些吧~"
       $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传图片</Button>
     }
+    if (isScopeAudit) {
+      info = "当前没有审核中的图片哦~"
+      $extra = null
+    }
     return  (
       <Result
         className={styles['info']}
@@ -370,7 +408,7 @@ export default function Cards(props: CardsProps) {
         extra={$extra}
       />
     )
-  }, [isScopeAlbum, isScopeImage, curScope])
+  }, [isScopeAlbum, isScopeImage, isScopeAudit, curScope])
 
   return (
     <>
@@ -384,5 +422,5 @@ export default function Cards(props: CardsProps) {
       {renderPreviewModal()}
       {$selectAlbumModal}
     </>
-  );
+  )
 }

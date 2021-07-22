@@ -16,6 +16,7 @@ import {
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
   GetImagesetImageRes, GetImagesetAlbumRes,
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
+  GetImagesetFailedImageParam, GetImagesetFailedImageRes,
   GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem,
 } from '@/interfaces/shop';
 import { ServiceResponse } from '@/interfaces/api';
@@ -213,6 +214,11 @@ export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) 
 export const getImagesetImage:
   (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes> =
   (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
+
+// 获取申诉列表（审核失败和审核中的图片）
+export const getImagesetFailedImage:
+  (shopId: number, params: GetImagesetFailedImageParam) => ShopAPIReturn<GetImagesetFailedImageRes> =
+  (shopId, params) => postApiData(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(shopId))
 
 // 新增相册图片
 export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam): ShopAPIReturn<ImageItem> => {

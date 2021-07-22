@@ -4,7 +4,7 @@ import { Button, Checkbox, Modal } from "antd";
 import { successMessage, errorMessage } from "@/components/message";
 import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
 
-import { CardItem, AlbumItem, TabScopeItem } from "@/interfaces/shop";
+import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 
@@ -24,11 +24,11 @@ interface SelectionBlockProps {
 export default function SelectionBlock(props: SelectionBlockProps) {
   const { shopId, total, selection, lists, isScopeAlbum, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
-  // 不包含默认相册的列表项目的 ID
+  // 排除默认相册和正在审核中的项目
   const ids = useMemo(() => {
     const all = isScopeAlbum
-      ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
-      : lists.map(x => x.id)
+    ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
+    : lists.filter(x => (x as ImageItem).checkStatus !== 'REAPPLY').map(x => x.id)
     return all
   }, [lists, isScopeAlbum])
 
@@ -36,7 +36,6 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
   useEffect(() => {
-    // 选中时排除默认相册
     const allChecked = ids.every(id => selection.includes(id))
     const noChecked = ids.every(id => !selection.includes(id))
     if (allChecked && ids.length > 0) {
