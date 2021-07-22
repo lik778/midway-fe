@@ -11,7 +11,6 @@ import { getLeaveMessageList } from '@/api/report'
 import { LeaveMessageSearchListConfig } from './config'
 import { getLast24Hours, getLastWeek, getLastMonth, formatTimeRange } from '@/utils'
 
-import { ServiceResponse } from '@/interfaces/api'
 import { LeaveMessageChannelMap } from '@/constants/report'
 import { ReportListResData, getLeaveMessageListParams, LeaveMessageListData } from '@/interfaces/report'
 
