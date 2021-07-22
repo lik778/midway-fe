@@ -2,11 +2,12 @@ import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react'
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { createImagesetImage, delImagesetImage } from '@/api/shop'
+import { reAuditImagesetImage, createImagesetImage, delImagesetImage } from '@/api/shop'
+import { successMessage, errorMessage } from "@/components/message"
 import { useAlbumSelector } from '../album-selector'
 import { useUpload, UploadItem } from './upload'
 
-import { AlbumNameListItem, TabScopeItem } from "@/interfaces/shop";
+import { ImageItem,  AlbumNameListItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less';
 
@@ -19,6 +20,7 @@ type UploadResMap = {
   uid: string;
   imageID: number;
   inChibi: boolean;
+  chibiFailed: boolean;
   status: string;
   error: string;
 }
@@ -87,6 +89,7 @@ export function useUploadModal(props: Props) {
         uid: item.uid,
         imageID: UPLOAD_RES_MAP_DEFAULT_ID,
         inChibi: true,
+        chibiFailed: false,
         status: 'done',
         error: ''
       }])
@@ -101,15 +104,11 @@ export function useUploadModal(props: Props) {
           })
         ])
         if (res.success && (typeof res.data.id === 'number')) {
-          const auditFail = res.data.checkStatus !== 'APPROVE'
-          if (auditFail) {
-            throw new Error(res.data.reason || '上传失败');
-          }
-
           const target = uploadedLists.current.find(x => x.uid === item.uid)
           if (target) {
             target.imageID = res.data.id
             target.inChibi = false
+            target.chibiFailed = res.data.checkStatus !== 'APPROVE'
             record(uploadedLists.current)
           }
           resolve(item)
@@ -145,6 +144,21 @@ export function useUploadModal(props: Props) {
     }
     remove(item)
   }, [remove, selectedAlbum])
+
+  // 申诉图片
+  const reAuditImage = async (image: UploadResMap) => {
+    reAuditImagesetImage(shopId, { id: image.imageID })
+      .then((res: any) => {
+        if (res.success) {
+          successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')
+        } else {
+          throw new Error(res.message || '出错啦，请稍后重试')
+        }
+      })
+      .catch((error: any) => {
+        errorMessage(error.message)
+      })
+  }
 
   /***************************************************** Interaction Fns */
 
@@ -183,12 +197,19 @@ export function useUploadModal(props: Props) {
     const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const inChibi = uploadedItem ? uploadedItem.inChibi : false
+    const chibiFailed = uploadedItem ? uploadedItem.chibiFailed : false
     const error = uploadedItem ? uploadedItem.error : ''
 
     let $contents
     let dispearMask = false
     if (inChibi === true) {
       $contents = <span className={styles["upload-info"]}>审核中</span>
+    } if (chibiFailed) {
+      $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
+        <AuditFailedIcon />
+        <span>该图片涉及违禁</span>
+        <span className={styles["re-audit-btn"]} onClick={() => reAuditImage(uploadedItem)}>点击申诉</span>
+      </span>
     } else {
       if (status === 'uploading') {
         const radius = 25
@@ -293,4 +314,17 @@ export function useUploadModal(props: Props) {
     </Modal>,
     open
   ] as const
+}
+
+function AuditFailedIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="22px" height="22px" viewBox="0 0 22 22" version="1.1">
+    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+      <g transform="translate(-317.000000, -486.000000)">
+        <g transform="translate(317.000000, 486.000000)">
+          <circle fill="#F1492C" cx="11" cy="11" r="11" />
+          <path d="M10.8217593,5.72916667 C11.2084864,5.72916667 11.5219907,6.04267098 11.5219907,6.42939815 L11.5211667,10.1211667 L15.2141204,10.1215278 C15.6008475,10.1215278 15.9143519,10.4350321 15.9143519,10.8217593 C15.9143519,11.2084864 15.6008475,11.5219907 15.2141204,11.5219907 L11.5211667,11.5211667 L11.5219907,15.2141204 C11.5219907,15.6008475 11.2084864,15.9143519 10.8217593,15.9143519 C10.4350321,15.9143519 10.1215278,15.6008475 10.1215278,15.2141204 L10.1211667,11.5211667 L6.42939815,11.5219907 C6.04267098,11.5219907 5.72916667,11.2084864 5.72916667,10.8217593 C5.72916667,10.4350321 6.04267098,10.1215278 6.42939815,10.1215278 L10.1211667,10.1211667 L10.1215278,6.42939815 C10.1215278,6.04267098 10.4350321,5.72916667 10.8217593,5.72916667 Z" id="形状结合" fill="#FFFFFF" transform="translate(10.821759, 10.821759) rotate(-45.000000) translate(-10.821759, -10.821759) " />
+        </g>
+      </g>
+    </g>
+  </svg>
 }
