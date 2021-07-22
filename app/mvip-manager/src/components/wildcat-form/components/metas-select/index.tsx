@@ -1,83 +1,41 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC, useMemo } from 'react';
 import { Form, Cascader, } from 'antd'
-import { CascaderOptionType } from 'antd/lib/cascader'
-
-import { FormItem, OptionItem, } from '../../interfaces/index'
-
+import { FormItem, } from '../../interfaces/index'
+import { MetasItem, } from '@/interfaces/user'
+import MetasCascader from './components/metas-cascader'
+import MetasCheckbox from './components/metas-checkbox'
+import { ShopMetas } from '@/interfaces/user'
 // 三级类目选择
 const MetasSelect: FC<{
-  item: FormItem
+  item: FormItem,
+  initialValues: ShopMetas | undefined,
+  onChange: (value: any, key: 'metas' | 'metaCascader' | 'metaCheckbox') => void
 }> = (props) => {
-  const { item } = props
-  const { options } = item // 解构出一级meta的数据结构
-  const [CascaderOptions, setCascaderOptions] = useState<CascaderOptionType[]>([])
-
+  const { item, initialValues, onChange } = props
+  const [cascaderValue, setCascaderValue] = useState<(MetasItem | undefined)[]>([]);
+  const [checkboxValue, setCheckboxValue] = useState<string[]>([])
   useEffect(() => {
-    setCascaderOptions(() => (options || []).map(item => ({
-      ...item,
-      label: item.key,
-      isLeaf: false
-    })))
-  }, [options])
-
-  const handleChangeFirstMates = (selectedOptions?: CascaderOptionType[]) => {
-    console.log(selectedOptions)
-  }
+    onChange([cascaderValue[0], cascaderValue[1], checkboxValue], 'metas')
+  }, [cascaderValue, checkboxValue])
 
   return <>
-    <Form.Item className={item.className} label='类目' name='secondCategories' key='类目' rules={[{ required: item.required }]} labelCol={item.labelCol}>
-      <Cascader style={{ width: item.formItemWidth }} options={CascaderOptions} loadData={handleChangeFirstMates}></Cascader>
+    <Form.Item className={item.className} label='类目' key='类目' rules={[{ required: item.required, message: '请选择类目' }]} labelCol={item.labelCol} name='metaCascaderValue'>
+      <MetasCascader item={item} initialValues={initialValues} handleChangeCascaderValue={setCascaderValue}></MetasCascader>
     </Form.Item>
-    {/* <Form.Item className={item.className} label='服务内容' name='thirdMetas' key='服务内容' rules={[{ required: item.required }]} labelCol={item.labelCol}>
-      <div>123</div>
-    </Form.Item> */}
+    <Form.Item style={cascaderValue.length === 0 ? {
+      display: 'none'
+    } : {}} className={item.className} label='服务内容' key='服务内容' rules={[{ required: item.required, message: '请选择服务内容' }]} labelCol={item.labelCol} name='metaCheckbox'>
+      <MetasCheckbox item={item} initialValues={initialValues} cascaderValue={cascaderValue} handleChangeCheckboxValue={setCheckboxValue}></MetasCheckbox>
+    </Form.Item>
+
+    {/*  用于存储metas字段的FormItem */}
+    <Form.Item style={{
+      display: 'none'
+    }} key='metas' name={item.name}>
+      <div></div>
+    </Form.Item>
   </>
 
 }
 
 export default MetasSelect
-
-
-// const optionLists = [
-//   {
-//     value: 'zhejiang',
-//     label: 'Zhejiang',
-//     isLeaf: false,
-//   },
-//   {
-//     value: 'jiangsu',
-//     label: 'Jiangsu',
-//     isLeaf: false,
-//   },
-// ];
-
-// const LazyOptions = () => {
-//   const [options, setOptions] = React.useState(optionLists);
-
-//   const onChange = (value, selectedOptions) => {
-//     console.log(value, selectedOptions);
-//   };
-
-//   const loadData = selectedOptions => {
-//     const targetOption = selectedOptions[selectedOptions.length - 1];
-//     targetOption.loading = true;
-
-//     // load options lazily
-//     setTimeout(() => {
-//       targetOption.loading = false;
-//       targetOption.children = [
-//         {
-//           label: `${targetOption.label} Dynamic 1`,
-//           value: 'dynamic1',
-//         },
-//         {
-//           label: `${targetOption.label} Dynamic 2`,
-//           value: 'dynamic2',
-//         },
-//       ];
-//       setOptions([...options]);
-//     }, 1000);
-//   };
-
-//   return <Cascader options={options} loadData={loadData} onChange={onChange} changeOnSelect />;
-// };

@@ -9,19 +9,25 @@ import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import { InitEnterpriseForShopParams, ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
+import { InitEnterpriseForShopParams, MetasItem, SaveEnterpriseForShopParams, UserEnterpriseInfo, ShopMetas } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
-import { getThirdCategoryMetas } from '@/api/user';
+import { ShopStatus } from '@/interfaces/shop';
 import { objToTargetObj } from '@/utils';
-
 
 const { Step } = Steps;
 
-function CompanyInfoBase(props: any) {
+interface Props {
+  companyInfo: UserEnterpriseInfo,
+  setCompanyInfo: (data: UserEnterpriseInfo) => void,
+  shopStatus: ShopStatus,
+  getShopStatus: () => void
+}
+
+function CompanyInfoBase(props: Props) {
   const { companyInfo, setCompanyInfo, shopStatus, getShopStatus } = props
   const [enterpriseInfo, setEnterpriseInfo] = useState<InitEnterpriseForShopParams | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -30,22 +36,6 @@ function CompanyInfoBase(props: any) {
   const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
   const steps = ['基础信息', '联系方式']
-  const [thirdMetas, setThirdMetas] = useState<ThirdMetas[] | null>(null)
-
-  //获取三级类目meta
-  const getThirdCategoryMetasFn = async (catogoryName: any) => {
-    const res = await getThirdCategoryMetas(catogoryName);
-    if (res?.success) {
-      const metas = objToTargetObj(res.data, "label")
-      setThirdMetas(metas)
-    }
-  }
-
-  const onChangeCategory = (catogoryName: any, form: any) => {
-    //切换类目后，清空thirdMetas数据
-    form.setFieldsValue({ thirdMetas: [] })
-    getThirdCategoryMetasFn(catogoryName)
-  }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
   const initComponent = async () => {
@@ -53,7 +43,11 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedFirstCategory, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
+    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedFirstCategory, selectedSecondCategory, selectedThirdMetas } = companyInfo
+
+    // 做一手转化 转为组件需要的输入值 ShopMetas类型
+    const metas: ShopMetas = [objToTargetObj(selectedFirstCategory)[0], objToTargetObj(selectedSecondCategory)[0], Object.keys(selectedThirdMetas)]
+
     //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
       //...companyInfo,
@@ -66,30 +60,19 @@ function CompanyInfoBase(props: any) {
       companyYears,
       employeeCount,
       promoteImg,
-      secondCategory: [selectedFirstCategory ? Object.keys(selectedFirstCategory)[0] : "", selectedSecondCategory ? Object.keys(selectedSecondCategory)[0] : ""],
-      thirdMetas: selectedThirdMetas ? Object.keys(selectedThirdMetas) : []
+      metas: metas
     })
     setFormLoading(false)
 
-    if (selectedSecondCategory && Object.keys(selectedSecondCategory).length > 0) {
-      getThirdCategoryMetasFn(Object.keys(selectedSecondCategory)[0])
-      return
-      //备注：getThirdCategoryMetasFn里获得thirdMetas后，会effect触发执行updateConfigData,故return掉，防止重复更新
-    }
     updateConfigData()
   }
-
-  useEffect(() => {
-    updateConfigData()
-  }, [thirdMetas])
-
 
   const updateConfigData = () => {
     if (!companyInfo) {
       setFormLoading(true)
       return
     }
-    const { companyNameLock, firstCategory, secondCategories, selectedSecondCategory } = companyInfo
+    const { companyNameLock, firstCategory } = companyInfo
     const newChildren = config.children.map(item => {
       //目的：禁止企业名称改写
       if (companyNameLock && item.name === 'companyName') {
@@ -98,10 +81,19 @@ function CompanyInfoBase(props: any) {
 
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {
-        //item.defaultValue = defaultCategory
-        item.options = objToTargetObj(firstCategory)
+        // item.options = objToTargetObj(firstCategory)
+        item.options = objToTargetObj({
+          "jianzhi": "兼职",
+          "cheliang": "车辆",
+          "jiaoyupeixun": "培训",
+          "jiexieshebei": "机械设备",
+          "chongwuleimu": "宠物",
+          "gongzuo": "招聘",
+          "fang": "房屋",
+          "fuwu": "服务",
+          "ershou": "二手"
+        })
       }
-
       return item
     })
     setConfig({ ...config, children: newChildren })
@@ -127,13 +119,24 @@ function CompanyInfoBase(props: any) {
       next(); return
     }
 
+    // metas 相关的值需要自己从metas里取
+    const metas: {
+      firstCategory: string;
+      secondCategory: string;
+      thirdMetas: string[];
+    } = {
+      firstCategory: values.metas[0]?.value || '',
+      secondCategory: values.metas[1]?.value || '',
+      thirdMetas: values.metas[2],
+    }
+
     const requestData: SaveEnterpriseForShopParams = {
       ...values,
       area: Array.isArray(values.area) ? values.area : Object.keys(values.area).map(k => k),
-      firstCategory: values.secondCategory && values.secondCategory.length >= 2 ? values.secondCategory[0] : '',
-      secondCategory: values.secondCategory && values.secondCategory.length >= 2 ? values.secondCategory[1] : '',
+      ...metas
     }
-
+    console.log('values', values)
+    console.log('requestData', requestData)
     setLoading(true)
 
     // 一级类目
@@ -180,7 +183,7 @@ function CompanyInfoBase(props: any) {
             } />
         }
         {!formLoading && currentStep == 1 &&
-          <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
+          <ContactForm back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );

@@ -17,6 +17,8 @@ import { isNewUserApi } from '@/api/shop';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import styles from './index.less';
 
+
+
 function ContactForm(props: any) {
   const { companyInfo, setCompanyInfo } = props
   const [qqList, setQQList] = useState<QQItem[]>([]);
@@ -50,7 +52,7 @@ function ContactForm(props: any) {
   const saveInfo = async () => {
     // 这里的校验是分两段校验的  微笑
     // 校验电话联系人  , 校验53客服
-    await Promise.all([formInstance?.validateFields(),kf53Ref.current?.form.validateFields()])
+    await Promise.all([formInstance?.validateFields(), kf53Ref.current?.form.validateFields()])
     let qqMap: any = null
     if (qqList.length > 0) {
       qqMap = {}
@@ -108,4 +110,8 @@ function ContactForm(props: any) {
   )
 }
 
-export default connect(userMapStateToProps, userMapDispatchToProps)(ContactForm)
+interface Props {
+  back: () => void
+}
+
+export default connect<any, any, Props>(userMapStateToProps, userMapDispatchToProps)(ContactForm)

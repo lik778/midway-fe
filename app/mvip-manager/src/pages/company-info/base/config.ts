@@ -31,7 +31,7 @@ export const baseInfoForm: FormConfig = {
     },
     // { formItemWidth: 260, label: '类目', name: 'secondCategory', type: FormType.Select, required: true, placeholder: '请选择类目' },
     // { label: '服务内容', name: 'thirdMetas', type: FormType.MetaChecbox, required: true, display: false },
-    { formItemWidth: 260, label: '', name: '', type: FormType.MetaSelect, required: true },
+    { formItemWidth: 260, label: '类目', name: 'metas', type: FormType.MetaSelect, required: true },
     { formItemWidth: 260, minNum: 1, label: '公司人数', name: 'employeeCount', type: FormType.InputNumber, required: true, placeholder: '请输入公司人数' },
     { formItemWidth: 260, minNum: 1, label: '公司年限', name: 'companyYears', type: FormType.InputNumber, required: true, placeholder: '请输入公司已经营年限' },
   ]

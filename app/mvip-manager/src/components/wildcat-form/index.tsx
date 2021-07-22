@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
-import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
+import { FormItem, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
@@ -191,7 +191,8 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       //   )
       // }
       else if (item.type === FormType.MetaSelect) {
-        return <MetasSelect item={item} key='MetaSelect'></MetasSelect>
+        const value = getEditData(item.name || '');
+        return <MetasSelect item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} ></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
         return (
           <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>

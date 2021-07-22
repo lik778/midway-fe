@@ -5,6 +5,7 @@ export interface VerifyItem {
   verifyRequestType: VerifyType;
 }
 
+export type ShopMetas = [MetasItem | undefined, MetasItem | undefined, string[]]
 
 export interface InitEnterpriseForShopParams {
   area: any;
@@ -17,8 +18,7 @@ export interface InitEnterpriseForShopParams {
   firstCategory?: string;
   serviceArea: string;
   promoteImg: string;
-  secondCategory: string[];
-  thirdMetas: string[];
+  metas: ShopMetas
 }
 
 export interface SaveEnterpriseForShopParams {
@@ -92,9 +92,10 @@ export interface QQItem {
   qq: string;
 }
 
-export interface ThirdMetas {
+export interface MetasItem {
   label: string;
-  value: string
+  value: string;
+  [key: string]: any
 }
 
 export interface ZhidaoMaterial {
