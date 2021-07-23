@@ -377,6 +377,7 @@ export default function Cards(props: CardsProps) {
     const inAuditLoading = auditLoadingItem && auditLoadingItem.id === id
     const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
     const showCoverInfo = inAudit || rejected
+    const showReapplyBtn = rejected && checkStatus !== 'REJECT_BYHUMAN'
     return (
       <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card)}>
         {showCoverInfo && (
@@ -395,10 +396,12 @@ export default function Cards(props: CardsProps) {
                   <DownOutlined />
                 </div>
                 <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
-                  <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card)}>
-                    {inAuditLoading ? <LoadingOutlined /> : <ReApplyIcon />}
-                    <span>申诉</span>
-                  </div>
+                  {showReapplyBtn && (
+                    <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card)}>
+                      {inAuditLoading ? <LoadingOutlined /> : <ReApplyIcon />}
+                      <span>申诉</span>
+                    </div>
+                  )}
                   <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
                     <DeleteOutlined />
                     <span>删除</span>
