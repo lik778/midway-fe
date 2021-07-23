@@ -7,6 +7,7 @@ import {
   DeleteOutlined,
   EditOutlined,
   DownOutlined,
+  LoadingOutlined
 } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
@@ -49,6 +50,7 @@ export default function Cards(props: CardsProps) {
   const { shopId, lists, selection, tabScope, curScope, isScopeAudit, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf, setPagiConf, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
+  const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem|null>()
 
   const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
   const [previewModal, setPreviewModal] = useState(false);
@@ -186,6 +188,7 @@ export default function Cards(props: CardsProps) {
 
   // 申诉图片
   const reAuditImage = useCallback(async (e: any, image: ImageItem) => {
+    setAuditLoadingItem(image)
     e.stopPropagation()
     if (!curScope) {
       return
@@ -201,6 +204,9 @@ export default function Cards(props: CardsProps) {
       })
       .catch((error: any) => {
         errorMessage(error.message)
+      })
+      .finally(() => {
+        setAuditLoadingItem(null)
       })
   }, [curScope, lists])
 
@@ -329,6 +335,7 @@ export default function Cards(props: CardsProps) {
     const { id, imgUrl, checkStatus } = card;
     const isChecked = isScopeAudit && selection.find((y: number) => y === id)
     const inAudit = checkStatus === 'REAPPLY'
+    const inAuditLoading = auditLoadingItem && auditLoadingItem.id === id
     const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
     const showCoverInfo = inAudit || rejected
     return (
@@ -342,7 +349,7 @@ export default function Cards(props: CardsProps) {
               </div>
               <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
                 <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card)}>
-                  <ReApplyIcon />
+                  {inAuditLoading ? <LoadingOutlined /> : <ReApplyIcon />}
                   <span>申诉</span>
                 </div>
                 <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
@@ -364,7 +371,7 @@ export default function Cards(props: CardsProps) {
         )}
       </div>
     )
-  }, [selection, loading])
+  }, [selection, loading, auditLoadingItem])
 
   // 根据文件夹类型的不同渲染不同的卡片
   const renderCard = (card: CardItem) => {
