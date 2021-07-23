@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { Table, Button, Input, Form, Modal } from 'antd'
+import { message, Table, Button, Input, Form, Modal } from 'antd'
 import { ZoomInOutlined } from "@ant-design/icons"
 
 import { getAuditImageList, auditImage } from '../../api/shop'
@@ -11,7 +11,6 @@ import './index.css'
 
 export default () => {
   const [form] = Form.useForm()
-  const [modalVisible, setModalVisible] = useState<boolean | null>(null)
   const [lists, setLists] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -22,7 +21,7 @@ export default () => {
     setLoading(true)
     page = page || 1
     const queryData = form.getFieldsValue()
-    const lists = await getAuditImageList({ ...queryData, page, size: 10 })
+    const lists = await getAuditImageList({ ...queryData, page, size: 99 })
     setLoading(false)
     setLists(lists.map(x => ({ ...x, key: x.id })))
   }
@@ -39,8 +38,43 @@ export default () => {
     setPreviewModal(false)
   }
 
-  const viewWord = () => {
-    setModalVisible(true)
+  const passImage = async (item: ImageItem) => {
+    setLoading(true)
+    const res = await auditImage({
+      id: item.id,
+      reason: '',
+      checkResult: 1
+    })
+    try {
+      const isPass = res.checkStatus === 'APPROVE'
+      if (isPass) {
+        message.success('操作成功')
+        getLists()
+      } else {
+        message.success('出错了，请稍后重试~')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+  const notPassImage = async (item: ImageItem) => {
+    setLoading(true)
+    const res = await auditImage({
+      id: item.id,
+      reason: '',
+      checkResult: 4
+    })
+    try {
+      const isPass = res.checkStatus === 'REJECT_BYHUMAN'
+      if (isPass) {
+        message.success('操作成功')
+        getLists()
+      } else {
+        message.success('出错了，请稍后重试~')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   const columns = [
@@ -63,10 +97,10 @@ export default () => {
     { title: '审核结果', dataIndex: 'reason', key: 'reason' },
     { 
       title: '操作',
-      render: () => {
+      render: (_, item: ImageItem) => {
         return <>
-          <Button type="primary" onClick={() => viewWord()}>通过</Button>
-          <Button type="primary" danger onClick={() => viewWord()} style={{ marginLeft: '1em' }}>不通过</Button>
+          <Button type="primary" disabled={loading} onClick={() => passImage(item)}>通过</Button>
+          <Button type="primary" danger disabled={loading} onClick={() => notPassImage(item)} style={{ marginLeft: '1em' }}>不通过</Button>
         </>
       }
     },
@@ -99,7 +133,6 @@ export default () => {
         </Form.Item>
       </Form>
       <Table
-        loading={loading}
         dataSource={lists}
         columns={columns}
       />

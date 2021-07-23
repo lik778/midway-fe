@@ -68,9 +68,11 @@ export class ManagementService {
     }
   }
 
-  private setApiInternalHeaders(): Partial<HeaderAuthParams> {
+  private setApiInternalHeaders(cookies: any): Partial<HeaderAuthParams> {
     return {
-      'x-api-secret': midwayAdminAPISecret
+      'x-api-secret': midwayAdminAPISecret,
+      'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
+      'content-type': 'application/json;charset=UTF-8',
     }
   }
 
@@ -79,9 +81,9 @@ export class ManagementService {
     const method = input.method.toLocaleLowerCase()
     switch (method) {
       case 'get':
-        return this.requestService.get(`${this.host}${path}`, params, this.setApiInternalHeaders())
+        return this.requestService.get(`${this.host}${path}`, params, this.setApiInternalHeaders(req.cookies))
       case 'post':
-        return this.requestService.post(`${this.host}${path}`, params, this.setApiInternalHeaders())
+        return this.requestService.post(`${this.host}${path}`, params, this.setApiInternalHeaders(req.cookies))
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR)
     }
