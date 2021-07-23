@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useRef, useState, useCallback } from "react"
 import { Spin, Button, Result, Checkbox, Modal } from "antd"
 import {
   LeftOutlined,
@@ -9,6 +9,7 @@ import {
   DownOutlined,
   LoadingOutlined
 } from "@ant-design/icons"
+import { debounce } from 'lodash'
 
 import { successMessage, errorMessage } from "@/components/message"
 import { reAuditImagesetImage, delImagesetAlbum, delImagesetImage, delImagesetFailedImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
@@ -50,14 +51,17 @@ export default function Cards(props: CardsProps) {
   const { shopId, lists, selection, tabScope, curScope, isScopeAudit, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf, setPagiConf, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, editAlbum, refresh, openUpload } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
-  const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem|null>()
+  const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem | null>()
   const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
-  const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
+  const [previewItem, setPreviewItem] = useState<ImageItem | undefined>();
   const [previewModal, setPreviewModal] = useState(false);
 
   const [countInLine, setCountInLine] = useState(0)
+  const cardsRef = useRef<HTMLElement | undefined>()
 
+  // 计算 cards 区域的宽度一行能放几个卡片，
+  // 依次设置分页参数
   const checkMaxCountInLine = useCallback((width?: number) => {
     if (width) {
       const cardWidth = 220
@@ -95,6 +99,25 @@ export default function Cards(props: CardsProps) {
       }
     }
   }, [countInLine])
+
+  const saveCardsRef = useCallback((el: HTMLElement) => {
+    cardsRef.current = el
+    checkMaxCountInLine(cardsRef.current.offsetWidth)
+  }, [checkMaxCountInLine])
+
+  // 视窗宽度变化后自动重设每行最大卡片数量
+  useEffect(() => {
+    const reCalcWidth = debounce(() => {
+      const $el = cardsRef.current
+      if ($el) {
+        checkMaxCountInLine($el.offsetWidth)
+      }
+    }, 300)
+    window.addEventListener('resize', reCalcWidth)
+    return () => {
+      window.removeEventListener('resize', reCalcWidth)
+    }
+  }, [])
 
   /***************************************************** Interaction Fns */
 
@@ -471,7 +494,7 @@ export default function Cards(props: CardsProps) {
   return (
     <>
       <Spin spinning={loading}>
-        <div className={styles["cards-con"]} ref={el => checkMaxCountInLine(el?.offsetWidth)}>
+        <div className={styles["cards-con"]} ref={el => el && saveCardsRef(el)}>
           {lists.map((x: any) => renderCard(x))}
           {renderFlexPadding()}
           {(lists.length === 0 && !loading) && renderEmptyTip()}
