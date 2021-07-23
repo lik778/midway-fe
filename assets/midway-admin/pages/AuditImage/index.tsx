@@ -82,7 +82,7 @@ export default () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: '预览',
+      title: '图片预览',
       dataIndex: 'imgUrl',
       key: 'imgUrl',
       render: src => {
@@ -96,9 +96,9 @@ export default () => {
         )
       }
     },
-    { title: '审核结果', dataIndex: 'reason', key: 'reason' },
+    { title: '违规原因', dataIndex: 'reason', key: 'reason' },
     { 
-      title: '操作',
+      title: '审核操作',
       render: (_, item: ImageItem) => {
         return <>
           <Button type="primary" disabled={loading} onClick={() => passImage(item)}>通过</Button>
