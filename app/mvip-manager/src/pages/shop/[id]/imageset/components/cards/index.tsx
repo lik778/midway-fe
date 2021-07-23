@@ -51,6 +51,7 @@ export default function Cards(props: CardsProps) {
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
   const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem|null>()
+  const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
   const [previewItem, setPreviewItem] = useState<ImageItem|undefined>();
   const [previewModal, setPreviewModal] = useState(false);
@@ -244,6 +245,7 @@ export default function Cards(props: CardsProps) {
   const setCoverImage = useCallback(async (e: any, image: ImageItem) => {
     e.stopPropagation()
     if (curScope && curScope.item) {
+      setSetCoverItem(image)
       const { id } = image
       const { item } = curScope
       setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
@@ -256,6 +258,9 @@ export default function Cards(props: CardsProps) {
         })
         .catch((error: any) => {
           errorMessage(error.message)
+        })
+        .finally(() => {
+          setSetCoverItem(null)
         })
     } else {
       console.warn('[WARN] Empty Scope in function setCoverImage')
@@ -306,6 +311,7 @@ export default function Cards(props: CardsProps) {
   const ImageCard = useCallback((card: ImageItem) => {
     const { id, imgUrl } = card;
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
+    const inSetCoverLoading = setCoverItem && setCoverItem.id === id
     return (
       <div className={styles["image-card"]} key={`image-card-${id}`}>
         <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
@@ -325,7 +331,7 @@ export default function Cards(props: CardsProps) {
                   <span>删除</span>
                 </div>
                 <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
-                  <EditOutlined />
+                  {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
                   <span>设为封面</span>
                 </div>
               </div>
@@ -337,7 +343,7 @@ export default function Cards(props: CardsProps) {
         )}
       </div>
     );
-  }, [selection, loading])
+  }, [selection, loading, setCoverItem])
 
   const ErrorImageCard = useCallback((card: ImageItem) => {
     const { id, imgUrl, checkStatus } = card;
