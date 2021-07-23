@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import * as dayjs from 'dayjs';
 import { LogService } from './log.service';
-import { apiSecret } from '../constant';
+import { apiSecret, midwayAdminAPISecret } from '../constant';
 import { TrackerDTO } from '../dto/tracker.dto';
 import { ApiException } from '../exceptions/api.exception';
 
@@ -65,6 +65,24 @@ export class TrackerService {
 
   public generateTrackId() {
     return dayjs(new Date()).unix().toString() + Math.floor(10000 + Math.random() * 90000).toString();
+  }
+
+  // FIXME
+
+  setMediaImgHeaders(): any {
+    return {
+      'content-type': 'application/json',
+      'x-api-secret': midwayAdminAPISecret
+    }
+  }
+
+  public getAuditImgList(req: Request, res: Response, body: TrackerDTO): Promise<any> {
+    const { eventType, data } = body
+    return this.httpService.post(`${this.host}/api/midway/internal/mediaImg/imgReapply`,
+      JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) }), { headers: this.setMediaImgHeaders() }).toPromise().catch(err => {
+        this.logService.errorLog(err);
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '获取审核记录错误');
+      })
   }
 
 }

@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { ErrorCode } from '../enums/error';
 import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
+import { midwayAdminAPISecret } from '../constant'
 import { AxiosResponse } from 'axios';
 
 @Injectable()
@@ -21,7 +22,7 @@ export class ManagementService {
     this.haojingHost = configService.get('haojing');
   }
 
-  private setApiAHeaders(cookies: any, shopId?: string): HeaderAuthParams {
+  private setApiAHeaders(cookies: any, shopId?: string): Partial<HeaderAuthParams> {
     const headers = {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
@@ -60,13 +61,29 @@ export class ManagementService {
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
       case 'post':
         return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
-        break;
+    }
+  }
+
+  private setApiInternalHeaders(): Partial<HeaderAuthParams> {
+    return {
+      'x-api-secret': midwayAdminAPISecret
+    }
+  }
+
+  public requestInternal(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
+    const { path, params } = input
+    const method = input.method.toLocaleLowerCase()
+    switch (method) {
+      case 'get':
+        return this.requestService.get(`${this.host}${path}`, params, this.setApiInternalHeaders())
+      case 'post':
+        return this.requestService.post(`${this.host}${path}`, params, this.setApiInternalHeaders())
+      default:
+        throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
