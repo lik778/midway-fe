@@ -274,7 +274,7 @@ export default function Cards(props: CardsProps) {
     const isDefaultAlbum = type === 'DEFAULT'
     const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
     return (
-      <div className={styles["album-card"]} key={`album-card-${id}`}>
+      <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => goAlbumScope(card)}>
         {!isDefaultAlbum && (
           <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => goAlbumScope(card)}>
             <div className={styles["action-wrapper"]}>
@@ -313,7 +313,7 @@ export default function Cards(props: CardsProps) {
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
     const inSetCoverLoading = setCoverItem && setCoverItem.id === id
     return (
-      <div className={styles["image-card"]} key={`image-card-${id}`}>
+      <div className={styles["image-card"]} key={`image-card-${id}`} onClick={() => previewImage(card)}>
         <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
           <div className={styles["action-wrapper"]}>
             <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
@@ -353,7 +353,7 @@ export default function Cards(props: CardsProps) {
     const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
     const showCoverInfo = inAudit || rejected
     return (
-      <div className={styles["error-image-card"]} key={`error-image-card-${id}`}>
+      <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card)}>
         {!inAudit && (
           <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
             <div className={styles["action-wrapper"]}>
