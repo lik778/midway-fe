@@ -34,24 +34,30 @@
 
     .selection {
       position: absolute;
-      display: flex;
-      justify-content: space-between;
       padding: 8px 12px;
       width: 100%;
-      height: 50px;
+      height: 100%;
       background-image: linear-gradient(
         180deg,
-        rgba(0,0,0,0.26) 0%,
-        rgba(0,0,0,0.08) 76%,
-        rgba(0,0,0,0.00) 100%
+        rgba(0,0,0,0.26) 0px,
+        rgba(0,0,0,0.08) 40px,
+        rgba(0,0,0,0.00) 50px
       );
 
-      // &:hover {
-      //   .anticon-down-con {
-      //     opacity: 1;
-      //   }
-      // }
+      &.auto-hide {
+        opacity: 0;
+        transition: .35s;
+      }
+      &:hover {
+        opacity: 1;
+      }
 
+      .action-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 16px;
+      }
       .anticon-down-con {
         position: relative;
         padding: 5px;

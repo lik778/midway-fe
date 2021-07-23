@@ -122,13 +122,14 @@ export default function Cards(props: CardsProps) {
 
   // 选中/取消选中卡片
   const handleSelectCard = (e: any, card: CardItem) => {
+    e.stopPropagation()
     const { id } = card
     if (e.target.checked) {
       select(id)
     } else {
       unselect(id)
     }
-  };
+  }
 
   /***************************************************** API Calls */
 
@@ -268,22 +269,24 @@ export default function Cards(props: CardsProps) {
     const isDefaultAlbum = type === 'DEFAULT'
     const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
     return (
-      <div className={styles["album-card"]} onClick={() => goAlbumScope(card)} key={`album-card-${id}`}>
+      <div className={styles["album-card"]} key={`album-card-${id}`}>
         {!isDefaultAlbum && (
-          <div className={styles["selection"]} onClick={e => stopEvent(e)}>
-            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
-            <div className={styles["anticon-down-con"]}>
-              <div className={styles["anticon-down"]}>
-                <DownOutlined />
-              </div>
-              <div className={styles["down-actions"]}>
-                <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
-                  <EditOutlined />
-                  <span>编辑</span>
+          <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => goAlbumScope(card)}>
+            <div className={styles["action-wrapper"]}>
+              <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+              <div className={styles["anticon-down-con"]}>
+                <div className={styles["anticon-down"]}>
+                  <DownOutlined />
                 </div>
-                <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
-                  <DeleteOutlined />
-                  <span>删除</span>
+                <div className={styles["down-actions"]}>
+                  <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
+                    <EditOutlined />
+                    <span>编辑</span>
+                  </div>
+                  <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
+                    <DeleteOutlined />
+                    <span>删除</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -304,25 +307,27 @@ export default function Cards(props: CardsProps) {
     const { id, imgUrl } = card;
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
     return (
-      <div className={styles["image-card"]} onClick={() => previewImage(card)} key={`image-card-${id}`}>
-        <div className={styles["selection"]} onClick={e => stopEvent(e)}>
-          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
-          <div className={styles["anticon-down-con"]}>
-            <div className={styles["anticon-down"]}>
-              <DownOutlined />
-            </div>
-            <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
-              <div className={styles["anticon-down-item"]}>
-                <PartitionOutlined />
-                <span>移动</span>
+      <div className={styles["image-card"]} key={`image-card-${id}`}>
+        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
+          <div className={styles["action-wrapper"]}>
+            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+            <div className={styles["anticon-down-con"]}>
+              <div className={styles["anticon-down"]}>
+                <DownOutlined />
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
-                <DeleteOutlined />
-                <span>删除</span>
-              </div>
-              <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
-                <EditOutlined />
-                <span>设为封面</span>
+              <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
+                <div className={styles["anticon-down-item"]}>
+                  <PartitionOutlined />
+                  <span>移动</span>
+                </div>
+                <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
+                  <DeleteOutlined />
+                  <span>删除</span>
+                </div>
+                <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
+                  <EditOutlined />
+                  <span>设为封面</span>
+                </div>
               </div>
             </div>
           </div>
@@ -342,22 +347,24 @@ export default function Cards(props: CardsProps) {
     const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
     const showCoverInfo = inAudit || rejected
     return (
-      <div className={styles["error-image-card"]} onClick={() => previewImage(card)} key={`error-image-card-${id}`}>
+      <div className={styles["error-image-card"]} key={`error-image-card-${id}`}>
         {!inAudit && (
-          <div className={styles["selection"]} onClick={e => stopEvent(e)}>
-            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} />
-            <div className={styles["anticon-down-con"]}>
-              <div className={styles["anticon-down"]}>
-                <DownOutlined />
-              </div>
-              <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
-                <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card)}>
-                  {inAuditLoading ? <LoadingOutlined /> : <ReApplyIcon />}
-                  <span>申诉</span>
+          <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
+            <div className={styles["action-wrapper"]}>
+              <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+              <div className={styles["anticon-down-con"]}>
+                <div className={styles["anticon-down"]}>
+                  <DownOutlined />
                 </div>
-                <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
-                  <DeleteOutlined />
-                  <span>删除</span>
+                <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
+                  <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card)}>
+                    {inAuditLoading ? <LoadingOutlined /> : <ReApplyIcon />}
+                    <span>申诉</span>
+                  </div>
+                  <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
+                    <DeleteOutlined />
+                    <span>删除</span>
+                  </div>
                 </div>
               </div>
             </div>
