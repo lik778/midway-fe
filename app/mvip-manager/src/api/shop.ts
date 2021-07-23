@@ -236,6 +236,11 @@ export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) 
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delete', params, setShopHeader(shopId))
 }
 
+// 删除相册图片（专用来删除审核失败的图片）
+export const delImagesetFailedImage = (shopId: number, params: Pick<DelImagesetImageParam, 'ids'>) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/deleteFailed', params, setShopHeader(shopId))
+}
+
 // 更新相册图片
 export const setImagesetAlbumCover = (shopId: number, params: UpdateImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(shopId))

@@ -202,6 +202,7 @@ const ShopArticlePage = (props: any) => {
           total={total}
           curScope={curScope}
           isScopeAlbum={isScopeAlbum}
+          isScopeAudit={isScopeAudit}
           selection={selection}
           lists={lists}
           refreshAllAlbumLists={refreshAllAlbumLists}

@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { reAuditImagesetImage, delImagesetAlbum, delImagesetImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
+import { reAuditImagesetImage, delImagesetAlbum, delImagesetImage, delImagesetFailedImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
@@ -179,12 +179,15 @@ export default function Cards(props: CardsProps) {
   const delImage = useCallback(async (e: any, image: ImageItem) => {
     e.stopPropagation()
     const { id } = image
+    const delMethod = curScope?.type === 'image'
+      ? delImagesetImage
+      : delImagesetFailedImage
     const info = `图片删除后无法恢复，确认删除？`
-    await delCallback(delImagesetImage, { ids: [id], mediaCateId: curScope?.item?.id }, info, () => {
+    await delCallback(delMethod, { ids: [id], mediaCateId: curScope?.item?.id }, info, () => {
       setSelection(selection.filter(x => x !== id))
       refresh(lists.length === 1)
     })
-  }, [selection, lists, refresh])
+  }, [selection, lists, curScope, refresh])
 
   // 申诉图片
   const reAuditImage = useCallback(async (e: any, image: ImageItem) => {

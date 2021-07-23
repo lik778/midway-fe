@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Button, Checkbox, Modal } from "antd";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage, delImagesetFailedImage } from '@/api/shop'
 
 import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop";
 
@@ -15,6 +15,7 @@ interface SelectionBlockProps {
   lists: CardItem[];
   curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
+  isScopeAudit: boolean;
   refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
@@ -22,7 +23,7 @@ interface SelectionBlockProps {
   refresh: (resetPagi?: boolean) => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, isScopeAlbum, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
+  const { shopId, total, selection, lists, isScopeAlbum, isScopeAudit, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
   // 排除默认相册和正在审核中的项目
   const ids = useMemo(() => {
@@ -80,6 +81,8 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         return new Promise((resolve, reject) => {
           const deleteFn = isScopeAlbum
             ? delImagesetAlbum
+            : isScopeAudit
+            ? delImagesetFailedImage
             : delImagesetImage
           const query: any = isScopeAlbum
             ? [...selection]
@@ -103,7 +106,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }, [shopId, isScopeAlbum, selection, curScope, lists, refresh])
+  }, [shopId, isScopeAlbum, isScopeAudit, selection, curScope, lists, refresh])
 
   return (
     <>
