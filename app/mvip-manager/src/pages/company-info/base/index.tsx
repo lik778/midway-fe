@@ -81,18 +81,7 @@ function CompanyInfoBase(props: Props) {
 
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {
-        // item.options = objToTargetObj(firstCategory)
-        item.options = objToTargetObj({
-          "jianzhi": "兼职",
-          "cheliang": "车辆",
-          "jiaoyupeixun": "培训",
-          "jiexieshebei": "机械设备",
-          "chongwuleimu": "宠物",
-          "gongzuo": "招聘",
-          "fang": "房屋",
-          "fuwu": "服务",
-          "ershou": "二手"
-        })
+        item.options = objToTargetObj(firstCategory)
       }
       return item
     })

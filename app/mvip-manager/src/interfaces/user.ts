@@ -63,8 +63,8 @@ export interface UserEnterpriseInfo {
   selectedFirstCategory: { [key: string]: string };
   secondCategories: { [key: string]: string };
   selectedSecondCategory: { [key: string]: string };
-  selectedThirdMetas: { [key: string]: string };
   thirdMetas: { [key: string]: string };
+  selectedThirdMetas: { [key: string]: string };
   contactName: string;
   contactMobile: string;
   contactMobile2?: string;
@@ -93,6 +93,7 @@ export interface QQItem {
 }
 
 export interface MetasItem {
+  key: string;
   label: string;
   value: string;
   [key: string]: any

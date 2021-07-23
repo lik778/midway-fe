@@ -4,7 +4,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 
 const validatorArea = (rule: any, val: any) => {
   if (!val || isEmptyObject(val)) {
-    return Promise.reject('请输入企业地址')
+    return Promise.reject('请选择企业地址')
   }
   return Promise.resolve()
 }

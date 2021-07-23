@@ -57,8 +57,7 @@ const MetasCascader: FC<Props> = (props) => {
     if (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1]
       targetOption.loading = true;
-      const res = await mockData('data', { jiameng: "招商加盟", baomu: "保姆月嫂" })
-      // const res = await getSecondCategoryMetas(selectedOptions[0].value)
+      const res = await getSecondCategoryMetas(selectedOptions[0].value)
       targetOption.loading = false;
       targetOption.children = objToTargetObj(res.data, "label")
       setCascaderOptions([...cascaderOptions]);
@@ -69,6 +68,7 @@ const MetasCascader: FC<Props> = (props) => {
   const handleChangeValue = async (value: CascaderValueType, selectedOptions?: CascaderOptionType[] | undefined) => {
     setCascaderValue(value as string[])
     const newCascaderValue = (selectedOptions || []).map(item => ({
+      key: item.label,
       value: item.value,
       label: item.label
     } as MetasItem))

@@ -1,6 +1,7 @@
 import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
+import { ShopMetas } from '@/interfaces/user'
 export interface RouteParams {
   id: string;
 }
@@ -205,7 +206,10 @@ interface ShopBasicInfoParams {
   contactMobile2: string,
   wechat: string,
 }
+
 export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
+  firstCategory: { [key: string]: string };
+  metas: ShopMetas
   area: {
     [key: string]: string
   }
@@ -213,6 +217,7 @@ export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
 
 export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
   area: string[],
+  metas: ShopMetas
 }
 
 // 请求填充参数
@@ -344,7 +349,7 @@ export type ImageItem = {
   name: string,
   imgUrl: string,
   checkStatus: CheckStatusType,// 状态
-  reason:string,// 驳回理由
+  reason: string,// 驳回理由
 }
 
 export type CardItem = AlbumItem | ImageItem
