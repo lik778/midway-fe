@@ -10,7 +10,7 @@ import { ImageItem } from '../../interfaces/shop'
 import './index.css'
 
 export default () => {
-  const [form] = Form.useForm()
+  // const [form] = Form.useForm()
   const [lists, setLists] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -18,13 +18,15 @@ export default () => {
   const [previewModal, setPreviewModal] = useState(false);
 
   const getLists = async (page?: number) => {
+    // console.log(form.getFieldsValue())
     setLoading(true)
     page = page || 1
-    const queryData = form.getFieldsValue()
-    const lists = await getAuditImageList({ ...queryData, page, size: 99 })
+    // const queryData = form.getFieldsValue()
+    const lists = await getAuditImageList({ page, size: 999 })
     setLoading(false)
     setLists(lists.map(x => ({ ...x, key: x.id })))
   }
+
   useEffect(() => {
     getLists()
   }, [])
@@ -127,12 +129,13 @@ export default () => {
 
   return (
     <div className="page-audit-image">
-      <Form layout="inline" form={form} style={{ marginBottom: 32 }}>
+      {/* <Form layout="inline" form={form} style={{ marginBottom: 32 }}>
         <Form.Item label="用户id" name="usrId">
           <Input placeholder="请输入用户id" />
         </Form.Item>
-      </Form>
+      </Form> */}
       <Table
+        loading={loading}
         dataSource={lists}
         columns={columns}
       />
