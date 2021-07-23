@@ -137,6 +137,26 @@
       background: rgba(0,0,0,.55);
       color: white;
 
+      &.full {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: .5em;
+        height: 100%;
+        line-height: 26px;
+        font-size: 16px;
+
+        .anticon {
+          top: 0;
+          margin-right: 0;
+        }
+        .reason {
+          font-size: 12px;
+          color: #ddd;
+        }
+      }
+
       .anticon {
         position: relative;
         margin-right: 6px;

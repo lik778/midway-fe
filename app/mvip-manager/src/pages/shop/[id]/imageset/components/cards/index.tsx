@@ -369,7 +369,9 @@ export default function Cards(props: CardsProps) {
   }, [selection, loading, setCoverItem])
 
   const ErrorImageCard = useCallback((card: ImageItem) => {
-    const { id, imgUrl, checkStatus } = card;
+    const { id, imgUrl, checkStatus, reason } = card;
+    const shortReasonMatch = (reason || '').match(/\[(.+)\]/)
+    const shortReason = shortReasonMatch ? shortReasonMatch[1] : '审核驳回'
     const isChecked = isScopeAudit && selection.find((y: number) => y === id)
     const inAudit = checkStatus === 'REAPPLY'
     const inAuditLoading = auditLoadingItem && auditLoadingItem.id === id
@@ -377,6 +379,13 @@ export default function Cards(props: CardsProps) {
     const showCoverInfo = inAudit || rejected
     return (
       <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card)}>
+        {showCoverInfo && (
+          <div className={styles["mask"] + ' ' + (rejected ? styles['full'] : '')}>
+            {rejected && <AuditFailedIcon />}
+            {inAudit ? '申诉中' : rejected ? '申诉不通过' : ''}
+            {rejected && <span className={styles["reason"]}>违规原因：{shortReason}</span>}
+          </div>
+        )}
         {!inAudit && (
           <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
             <div className={styles["action-wrapper"]}>
@@ -401,12 +410,6 @@ export default function Cards(props: CardsProps) {
         )}
         {(!loading && imgUrl) && (
           <img className={styles["cover"]} src={imgUrl} alt="cover" />
-        )}
-        {showCoverInfo && (
-          <div className={styles["mask"]}>
-            {rejected && <AuditFailedIcon />}
-            {inAudit ? '审核中' : rejected ? '审核不通过' : ''}
-          </div>
         )}
       </div>
     )
@@ -479,7 +482,7 @@ export default function Cards(props: CardsProps) {
       $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传图片</Button>
     }
     if (isScopeAudit) {
-      info = "当前没有审核中的图片哦~"
+      info = "当前没有申诉中的图片哦~"
       $extra = null
     }
     return  (
