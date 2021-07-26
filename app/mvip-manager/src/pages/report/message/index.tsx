@@ -29,15 +29,13 @@ function LeaveMessagePage() {
   const isPC = useMemo(() => !isMobile, [isMobile])
 
   const [queryForm] = Form.useForm()
+  const [query, setQuery] = useState<any>()
   const [page, setPage] = useState(1)
   const [range, setRange] = useState<any[]>(getLast24Hours())
   const [loadMore, setLoadMore] = useState(false)
   const [noMore, setNoMore] = useState(false)
 
   const defaultQueries = useMemo(() => {
-    if (isPC) {
-      return null
-    }
     const [timeStart, timeEnd] = formatTimeRange(range)
     return {
       timeStart,
@@ -45,13 +43,11 @@ function LeaveMessagePage() {
       page: 1,
       size: PAGESIZE
     }
-  }, [range, isPC])
+  }, [range])
 
   // 第一次请求时也需要设置 noMore 等状态
-  const getList = async (querys: getLeaveMessageListParams) => {
-    if (!querys) return
-
-    const ret: any = await getLeaveMessageList(querys)
+  const getList = async (query: getLeaveMessageListParams) => {
+    const ret: any = await getLeaveMessageList(query)
     const isSuccess = ret && (ret.success || ret.code === 200)
     const items = ret?.data?.res?.result || []
     if (!isSuccess || items.length < PAGESIZE) {
@@ -157,7 +153,7 @@ function LeaveMessagePage() {
   }
 
   // PC端选择日期后重刷新列表
-  const handleQueryChange = useCallback((query: any) => {
+  const queryList = useCallback(() => {
     if (query) {
       const { timeStart, timeEnd } = query
       setPage(1)
@@ -169,7 +165,7 @@ function LeaveMessagePage() {
         size: PAGESIZE
       })
     }
-  }, [])
+  }, [query])
 
   // ********************************************************* renders
 
@@ -178,12 +174,13 @@ function LeaveMessagePage() {
       return <>
         <MainTitle title="留咨报表" />
         <div className="container">
-          {loading && <Loading />}
-          <div className={"segment" + ' ' + (loading ? 'hide' : '')}>
+          <div className='segment'>
             <h2>留咨报表</h2>
             <Query
-              onQueryChange={handleQueryChange}
+              loading={loading}
+              onQueryChange={(query: any) => setQuery(query)}
               config={LeaveMessageSearchListConfig({
+                onSearch: queryList,
                 form: queryForm,
                 dataSource: lists?.result
               })}

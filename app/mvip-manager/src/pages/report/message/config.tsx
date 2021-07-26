@@ -16,7 +16,8 @@ export const formatTime = (unixTime: number) => dayjs(unixTime * 1000).format('Y
 export const LeaveMessageSearchListConfig = ({
   form,
   dataSource,
-}: Partial<SearchListConfig>) => ({
+  onSearch,
+}: Partial<SearchListConfig> & { onSearch: () => void }) => ({
   form,
   dataSource,
   pagiQueryKeys: {
@@ -33,6 +34,10 @@ export const LeaveMessageSearchListConfig = ({
       format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
       disabledDate: (date: moment.Moment) => date > moment().endOf('day'),
     },
+    {
+      type: 'render',
+      render: () => <Button type="primary" onClick={onSearch}>查询</Button>
+    }
   ],
   table: {
     columns: [

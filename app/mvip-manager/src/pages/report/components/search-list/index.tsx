@@ -151,6 +151,7 @@ export default function SearchList (props: Props) {
         <Table
           className="cmpt-search-list-table"
           columns={columns}
+          loading={loading}
           dataSource={indexedDataSource}
           bordered
           pagination={{

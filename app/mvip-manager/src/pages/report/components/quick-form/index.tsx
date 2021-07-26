@@ -71,6 +71,8 @@ export default function InlineForm(props: Props) {
       type === 'render'
         ? item.render instanceof Array
           ? item.render.filter(Boolean)
+          : item.render instanceof Function
+          ? item.render()
           : item.render
         : getFormItemInstance(allProps)
 
@@ -103,7 +105,7 @@ export default function InlineForm(props: Props) {
   })
 
   // 过滤空子项并降维
-  formItems = formItems.filter(Boolean)  .reduce((p, c) => p.concat(c), [])
+  formItems = formItems.filter(Boolean).reduce((p, c) => p.concat(c), [])
 
   return (
     <Form
