@@ -35,3 +35,13 @@ export enum LeaveMessageChannelType {
   ZHIDAO = 'ZHIDAO',
   FENGMING = 'FENGMING'
 }
+
+// 留咨页面来源
+export enum LeaveMessagePageFromEnum {
+  // 公众号-留咨中心
+  WECHAT = 'wechat',
+  // 店铺 MVIP 后台-营销报表菜单栏
+  MVIP = 'mvip',
+  // 主站 VIP 后台-数据分析-核心统计-留咨入口
+  MSVIP = 'msvip',
+}

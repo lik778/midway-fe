@@ -8,10 +8,12 @@ import MainTitle from '@/components/main-title'
 import Query from '../components/search-list'
 
 import { useApi } from '@/hooks/api'
+import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
-import { getLast24Hours, getLastWeek, getLastMonth, formatTimeRange } from '@/utils'
+import { getCookie, getLast24Hours, getLastWeek, getLastMonth, formatTimeRange } from '@/utils'
 
+import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
 import { ReportListResData, getLeaveMessageListParams, LeaveMessageListData } from '@/interfaces/report'
 
@@ -29,8 +31,11 @@ function LeaveMessagePage() {
   // ********************************************************* states
 
   const params = useMemo(() => new URLSearchParams(window.location.search), [])
+  // FIXME type
+  const from = useMemo<LeaveMessagePageFromEnum | null>(() => params.get('from'), [params])
   const isMobile = useMemo(() => params.get('mobile') === '1', [params])
   const isPC = useMemo(() => !isMobile, [isMobile])
+  const uid = useMemo(() => getCookie('__u'), [])
 
   const [queryForm] = Form.useForm()
   const [query, setQuery] = useState<any>()
@@ -38,6 +43,21 @@ function LeaveMessagePage() {
   const [range, setRange] = useState<any[]>(getLast24Hours())
   const [loadMore, setLoadMore] = useState(false)
   const [noMore, setNoMore] = useState(false)
+
+  // TODO FIXME 线下数据过滤逻辑应该放到 tracker.service
+  useEffect(() => {
+    // console.log('from: ', from)
+    if (from) {
+      track({
+        eventType: 'shop-mvip-message-page',
+        data: {
+          event_type: 'pv',
+          uid,
+          from,
+        }
+      })
+    }
+  }, [from])
 
   const defaultQueries = useMemo(() => {
     const [timeStart, timeEnd] = formatTimeRange(range)
@@ -293,6 +313,6 @@ function Card (props: CardProps) {
   </div>
 }
 
-LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
+// LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
 
 export default LeaveMessagePage
