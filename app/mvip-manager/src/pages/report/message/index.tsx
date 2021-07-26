@@ -34,11 +34,12 @@ function LeaveMessagePage() {
   const [noMore, setNoMore] = useState(false)
 
   const defaultQueries = useMemo(() => {
-    const [startTime, endTime] = formatTimeRange(range)
+    const [timeStart, timeEnd] = formatTimeRange(range)
     return {
-      startTime,
-      endTime,
-      pageNo: 1
+      timeStart,
+      timeEnd,
+      page: 1,
+      size: PAGESIZE
     }
   }, [range])
   // 第一次请求时也需要设置 noMore 等状态
@@ -75,11 +76,12 @@ function LeaveMessagePage() {
         // console.log('shouldLoadMore: ', shouldLoadMore)
         if (shouldLoadMore && !loadMore && !noMore) {
           setLoadMore(true)
-          const [startTime, endTime] = formatTimeRange(range)
+          const [timeStart, timeEnd] = formatTimeRange(range)
           const lists = await refreshList({
-            startTime,
-            endTime,
-            pageNo: page + 1
+            timeStart,
+            timeEnd,
+            page: page + 1,
+            size: PAGESIZE
           } as getLeaveMessageListParams)
           const items = lists?.result || []
           if (items.length < PAGESIZE) {
@@ -116,11 +118,12 @@ function LeaveMessagePage() {
     }
     if (range) {
       setRange(range)
-      const [startTime, endTime] = formatTimeRange(range)
+      const [timeStart, timeEnd] = formatTimeRange(range)
       refreshList({
-        startTime,
-        endTime,
-        pageNo: 1
+        timeStart,
+        timeEnd,
+        page: 1,
+        size: PAGESIZE
       })
     } else {
       setRange([])
@@ -133,11 +136,12 @@ function LeaveMessagePage() {
     setPage(1)
     setDataSource([])
     setRange(range)
-    const [startTime, endTime] = formatTimeRange(range)
+    const [timeStart, timeEnd] = formatTimeRange(range)
     refreshList({
-      startTime,
-      endTime,
-      pageNo: 1
+      timeStart,
+      timeEnd,
+      page: 1,
+      size: PAGESIZE
     })
   }
 
