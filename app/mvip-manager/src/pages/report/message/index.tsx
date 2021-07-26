@@ -20,6 +20,10 @@ import "./index.less"
 const TabPane = Tabs.TabPane
 const PAGESIZE = 10
 
+// 现在 PC 和手机端页面是一个组件，
+// 后期这玩意儿会越来越难维护...可以尝试拆开
+// 要是把 SearchList 和 QuickForm 放到营销报表之外用的话,
+// 就是毒瘤，快改！
 function LeaveMessagePage() {
 
   // ********************************************************* states
@@ -47,17 +51,21 @@ function LeaveMessagePage() {
 
   // 第一次请求时也需要设置 noMore 等状态
   const getList = async (query: getLeaveMessageListParams) => {
-    const ret: any = await getLeaveMessageList(query)
-    const isSuccess = ret && (ret.success || ret.code === 200)
-    const items = ret?.data?.res?.result || []
-    if (!isSuccess || items.length < PAGESIZE) {
+    try {
+      const ret: any = await getLeaveMessageList(query)
+      const isSuccess = ret && (ret.success || ret.code === 200)
+      const items = ret?.data?.res?.result || []
+      if (!isSuccess || items.length < PAGESIZE) {
+        setNoMore(true)
+      }
+      const adapter = {
+        ...ret,
+        data: ret?.data?.res
+      }
+      return adapter
+    } catch (err) {
       setNoMore(true)
     }
-    const adapter = {
-      ...ret,
-      data: ret?.data?.res
-    }
-    return adapter
   }
   const [lists, loading, refreshList] = useApi<ReportListResData<LeaveMessageListData[]> | null, getLeaveMessageListParams | null>(null, getList, defaultQueries)
   const [activeTab, setActiveTab] = useState<string>('1day')
@@ -192,10 +200,10 @@ function LeaveMessagePage() {
   }, [isPC, lists, refreshList])
 
   const $cards = useCallback(tabKey => {
-    if (!activeTab || tabKey !== activeTab || dataSource.length === 0) {
+    if (!activeTab || tabKey !== activeTab) {
       return null
     }
-    // console.log('[INFO] rendered:', tabKey, dataSource)
+    // console.log('[INFO] rendered:', tabKey, dataSource, loadMore, noMore)
     // TODO REFACTOR components ListView
     return <div className="cards-con" ref={el => el && (cardsRef.current = el)}>
       {dataSource.map((item: LeaveMessageListData) => <Card item={item} key={item.id} />)}
@@ -285,6 +293,6 @@ function Card (props: CardProps) {
   </div>
 }
 
-// LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
+LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
 
 export default LeaveMessagePage
