@@ -35,6 +35,9 @@ function LeaveMessagePage() {
   const [noMore, setNoMore] = useState(false)
 
   const defaultQueries = useMemo(() => {
+    if (isPC) {
+      return null
+    }
     const [timeStart, timeEnd] = formatTimeRange(range)
     return {
       timeStart,
@@ -42,9 +45,12 @@ function LeaveMessagePage() {
       page: 1,
       size: PAGESIZE
     }
-  }, [range])
+  }, [range, isPC])
+
   // 第一次请求时也需要设置 noMore 等状态
   const getList = async (querys: getLeaveMessageListParams) => {
+    if (!querys) return
+
     const ret: any = await getLeaveMessageList(querys)
     const isSuccess = ret && (ret.success || ret.code === 200)
     const items = ret?.data?.res?.result || []
@@ -57,7 +63,7 @@ function LeaveMessagePage() {
     }
     return adapter
   }
-  const [lists, loading, refreshList] = useApi<ReportListResData<LeaveMessageListData[]> | null, getLeaveMessageListParams>(null, getList, defaultQueries)
+  const [lists, loading, refreshList] = useApi<ReportListResData<LeaveMessageListData[]> | null, getLeaveMessageListParams | null>(null, getList, defaultQueries)
   const [activeTab, setActiveTab] = useState<string>('1day')
   const [dataSource, setDataSource] = useState<LeaveMessageListData[]>([])
   useEffect(() => {
@@ -135,6 +141,7 @@ function LeaveMessagePage() {
     }
   }
 
+  // 手机端选择日期后重新刷新列表
   const onSelectDate = (date: any) => {
     const range = getLast24Hours(date)
     setPage(1)
@@ -149,6 +156,21 @@ function LeaveMessagePage() {
     })
   }
 
+  // PC端选择日期后重刷新列表
+  const handleQueryChange = useCallback((query: any) => {
+    if (query) {
+      const { timeStart, timeEnd } = query
+      setPage(1)
+      setDataSource([])
+      refreshList({
+        timeStart,
+        timeEnd,
+        page: 1,
+        size: PAGESIZE
+      })
+    }
+  }, [])
+
   // ********************************************************* renders
 
   const $pcPage = useCallback(() => {
@@ -160,7 +182,7 @@ function LeaveMessagePage() {
           <div className={"segment" + ' ' + (loading ? 'hide' : '')}>
             <h2>留咨报表</h2>
             <Query
-              onQuery={refreshList}
+              onQueryChange={handleQueryChange}
               config={LeaveMessageSearchListConfig({
                 form: queryForm,
                 dataSource: lists?.result

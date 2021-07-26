@@ -8,19 +8,24 @@ export function useApi<DefaultValue = null, Params = null>(defaultValue: Default
 
   const request = async (reqParams?: Params) => {
     setLoading(true)
-    const ret: ServiceResponse<DefaultValue> = await requestApiFunc(reqParams)
-    const isSuccess = ret && (ret.success || ret.code === 0)
-    const message = ret && ret.message || '未知错误'
-    const data = ret && ret.data
+    let returnData = null
+    try {
+      const ret: ServiceResponse<DefaultValue> = await requestApiFunc(reqParams)
+      const isSuccess = ret && (ret.success || ret.code === 0)
+      const isFailed = ret && (ret.success === false || /50[0-9]/.test(String(ret.code)))
+      const message = ret && ret.message || '未知错误'
+      returnData = ret && ret.data
 
-    if (isSuccess) {
-      setRet(data)
-    } else {
-      errorMessage(message)
+      if (isSuccess) {
+        setRet(returnData)
+      }
+      if (isFailed) {
+        errorMessage(message)
+      }
+    } finally {
+      setLoading(false)
+      return returnData
     }
-
-    setLoading(false)
-    return data
   }
 
   useEffect(() => { request(params) }, [])

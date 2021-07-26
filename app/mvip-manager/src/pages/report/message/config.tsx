@@ -19,13 +19,18 @@ export const LeaveMessageSearchListConfig = ({
 }: Partial<SearchListConfig>) => ({
   form,
   dataSource,
+  pagiQueryKeys: {
+    pageKey: 'page',
+    sizeKey: 'size'
+  },
   query: [
     {
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
       value: getLast24Hours(),
-      format: formatDateRange,
+      // @ts-ignore
+      format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
       disabledDate: (date: moment.Moment) => date > moment().endOf('day'),
     },
   ],
