@@ -51,10 +51,11 @@ function LeaveMessagePage() {
       track(arg)
     }
   }, [from, uid])
+
   useEffect(() => {
-    // console.log('from: ', from)
+    // console.log('from: ', from, uid)
     if (from && uid) {
-      trackEvent({
+      track({
         eventType: TRACK_TYPE,
         data: {
           event_type: 'page-pv',
@@ -63,7 +64,7 @@ function LeaveMessagePage() {
         }
       })
     }
-  }, [from, uid, trackEvent])
+  }, [from, uid])
 
   const defaultQueries = useMemo(() => {
     const [timeStart, timeEnd] = formatTimeRange(range)
