@@ -146,11 +146,11 @@ function LeaveMessagePage() {
   const $pcPage = useCallback(() => {
     if (isPC) {
       return <>
-        <MainTitle title="留资报表" />
+        <MainTitle title="留咨报表" />
         <div className="container">
           {loading && <Loading />}
           <div className={"segment" + ' ' + (loading ? 'hide' : '')}>
-            <h2>留资报表</h2>
+            <h2>留咨报表</h2>
             <Query
               onQuery={refreshList}
               config={LeaveMessageSearchListConfig({

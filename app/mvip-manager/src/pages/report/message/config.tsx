@@ -62,7 +62,7 @@ export const LeaveMessageSearchListConfig = ({
         render: (_: any, r: Item) => <Button type="link"><a href={r.url} target="__blank">查看详情</a></Button>
       },
       {
-        title: '留资内容',
+        title: '留咨内容',
         dataIndex: 'content',
         minWidth: 440,
         key: 'content',

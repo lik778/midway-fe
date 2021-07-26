@@ -10,11 +10,11 @@ import { PageException } from '../exceptions/page.exception';
 export class ReportController {
   constructor(private reportService: ReportService) {}
 
-  // 留资页面手机端 
+  // 留咨页面手机端 
   @Get('/message-share')
   messageReport(@Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     res.render('report/share', {
-      title: '留资列表',
+      title: '留咨列表',
       url: `//${ config().hostType.base || 'localhost' }/management/report/message?mobile=${device!=='pc'?1:0}`
     })
   }
