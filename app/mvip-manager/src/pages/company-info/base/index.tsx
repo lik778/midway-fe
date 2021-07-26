@@ -72,7 +72,7 @@ function CompanyInfoBase(props: Props) {
       setFormLoading(true)
       return
     }
-    const { companyNameLock, firstCategory } = companyInfo
+    const { companyNameLock, firstCategory, secondCategories } = companyInfo
     const newChildren = config.children.map(item => {
       //目的：禁止企业名称改写
       if (companyNameLock && item.name === 'companyName') {
@@ -81,7 +81,12 @@ function CompanyInfoBase(props: Props) {
 
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {
-        item.options = objToTargetObj(firstCategory)
+        const options = objToTargetObj(firstCategory)
+        const secondCategoriesArr = objToTargetObj(secondCategories)
+        if (options.length > 0 && secondCategoriesArr.length > 0) {
+          options[0].children = secondCategoriesArr
+        }
+        item.options = options
       }
       return item
     })

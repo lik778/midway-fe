@@ -13,6 +13,7 @@ export interface OptionItem {
   key: string;
   value: any;
   disabled?: boolean;
+  children?: OptionItem[]
 }
 
 export interface FormConfig {

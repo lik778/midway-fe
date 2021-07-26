@@ -44,7 +44,11 @@ const MetasCascader: FC<Props> = (props) => {
     setCascaderOptions(() => options.map(item => ({
       ...item,
       label: item.key,
-      isLeaf: false
+      isLeaf: false,
+      children: item.children && item.children.map(citem => ({
+        label: citem.key,
+        value: citem.value
+      }))
     })))
   }
 
