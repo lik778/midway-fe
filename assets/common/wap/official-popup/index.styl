@@ -1,0 +1,54 @@
+
+@keyframes popup-animate {
+  0%   { 
+    left: -50vw  
+  }
+  100%{
+    left: 50vw  
+  }
+}
+
+.official-popup-container
+  display: flex
+  justify-content: space-between
+  align-items: center
+  width: 80vw
+  padding: 15px
+  position: fixed
+  top: 100px
+  left: -50vw  
+  animation popup-animate 1s 1s forwards
+  transform: translateX(-50%)
+  z-index 100
+  background-color: #fff
+  border-radius: 8px
+  box-shadow 0 0 10px 0 rgba(0,0,0,0.14)
+  .left
+    width: 40px
+    height: 40px
+    margin-right 5px
+    background-color:  blue
+  .center
+    font-size: 14px
+    font-weight: bold
+    .red
+      color: #f46
+  .right
+    padding: 0 15px
+    margin-left 5px
+    line-height: 30px
+    font-size: 14px
+    color: #fff
+    background-color: #f46
+    border-radius: 15px
+  .close
+    width 20px
+    height 20px
+    position: absolute
+    top: -10px
+    right: -10px
+    line-height: 20px
+    color:#fff
+    border-radius: 10px
+    text-align: center
+    background-color: #999

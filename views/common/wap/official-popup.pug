@@ -1,0 +1,11 @@
+mixin official-popup (options)
+  - const { mainColor,formId } = options||{}
+  .official-popup-container 
+    img.left(src="", alt="")
+    .center 
+      | 给我们留言，获取
+      span.red(style="color:"+mainColor) 详细信息
+    a.right(style="background-color:"+mainColor href=formId)
+      | 去看看
+    .close 
+      | ×

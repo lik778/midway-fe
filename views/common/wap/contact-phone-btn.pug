@@ -1,13 +1,15 @@
-mixin contactPhoneBtn(bgColor)
-	if phone&&phone.content
-		if !isSem
-			a(style="background:"+bgColor,href="tel:" + phone.content).footer-phone-box
-				p.phone-num 拨打电话
-		else 
-			- let union400num =  union400 && union400.length? union400[0]: ''
-			button.footer-phone-sem-box.btn-text(data-union400num=union400num||'' style="background:"+bgColor)
-				| 拨打电话
-			a.footer-phone-box.hide(style="background:"+bgColor , href="tel:" + union400num)
-				p.phone-num #{union400num}
-				.time-tip.hide 
-					| 180s后更新
+mixin contactPhoneBtn()
+  if phone&&phone.content
+    if !isSem
+      a(href="tel:" + phone.content).footer-phone-box
+        .icon(style=`background: url('//file.baixing.net/202105/23e59b666fcc06d1f2e127b887d1cd8a.png') no-repeat center/100%`)
+        p.btn-text 拨打电话
+    else 
+      - let union400num =  union400 && union400.length? union400[0]: ''
+      button.footer-phone-sem-box(data-union400num=union400num||'' )
+        .icon(style=`background: url('//file.baixing.net/202105/23e59b666fcc06d1f2e127b887d1cd8a.png') no-repeat center/100%`)
+        span.btn-text 拨打电话
+      a.footer-phone-box.col.hide(href="tel:" + union400num)
+        p.phone-num #{union400num}
+        .time-tip.hide 
+          | 180s后更新
