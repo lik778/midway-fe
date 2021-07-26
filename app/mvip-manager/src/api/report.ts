@@ -1,6 +1,7 @@
 import {
   Response,
   ReportListResponse,
+  ManagementListResponse,
   CateFlowOverviewData,
   CateFlowChartParams,
   CateFlowChartData,
@@ -57,19 +58,23 @@ request.interceptors.response.use((res: AxiosResponse<any>) => {
 
 type Method = 'post' | 'get'
 
-const REPORT_URL_PREFIX = '/report/api'
+const REPORT_PREFIX = '/report/api'
+const MANAGEMENT_PREFIX = '/management/api'
 
-const createRequest = (method: Method): ((path: string, params?: any) => Response<any>) => {
-  return (path: string, params?: any): Response<any> => {
-    return request.post(REPORT_URL_PREFIX, {
+const createRequest = (method: Method, BASE_URL: string): ((path: string, params?: any, headers?: any) => Response<any>) => {
+  return (path: string, params?: any, headers?: any): Response<any> => {
+    return request.post(BASE_URL, {
       method,
       path,
       params: method === 'post' ? params : null
+    }, {
+      headers
     })
   }
 }
-const post = createRequest('post')
-const get = createRequest('get')
+const post = createRequest('post', REPORT_PREFIX)
+const get = createRequest('get', REPORT_PREFIX)
+const postMidway = createRequest('post', MANAGEMENT_PREFIX)
 
 /* 业务 API 定义 */
 
@@ -134,7 +139,8 @@ export const getKeywordDetailList:
 
 // 获取留言列表
 export const getLeaveMessageList:
-  (params: getLeaveMessageListParams) => ReportListResponse<LeaveMessageListData[]> =
+  (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
+  // (params) => postMidway('/api/midway/backend/messageCenter/messageListing', JSON.stringify(params))
   (params) => new Promise(resolve => {
     console.log(params)
     setTimeout(() => {
@@ -142,21 +148,24 @@ export const getLeaveMessageList:
         code: 200,
         success: true,
         data: {
-          totalElements: 20,
-          totalPages: 2,
-          result: Array((params?.page || 0) < 5 ? (Math.random() < .5 ? 10 : 1) : 0).fill('').map((x,i) => ({
-            id: (params?.page || 0) * 10 + i,
-            date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-')+' 12:00:00',
-            type: ~~(Math.random() * 3),
-            name: Math.random() < .5 ? '我是超长帖子标' : '我是超长帖子标题我是超长帖子标题',
-            url: 'http://www.baidu.com',
-            mobile: '18607827312',
-            content: Math.random() < .5
-              ? '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？'
-              : Math.random() < .5
-              ? '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？'
-              : '沿海见：有难度吗？',
-          }))
+          res: {
+            pageSize: 10,
+            totalPage: 2,
+            totalElements: 20,
+            result: Array((params?.page || 0) < 5 ? (Math.random() < .5 ? 10 : 1) : 0).fill('').map((x,i) => ({
+              id: (params?.page || 0) * 10 + i,
+              time: "1627006734",
+              type: ['DIANPU', 'ZHIDAO', 'TIEZI', 'FENGMING'][Math.floor(Math.random() * 4)],
+              sourceName: Math.random() < .5 ? '我是超长帖子标' : '我是超长帖子标题我是超长帖子标题',
+              sourceUrl: 'http://www.baidu.com',
+              contact: '18607827312',
+              message: Math.random() < .5
+                ? '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？'
+                : Math.random() < .5
+                ? '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？'
+                : '沿海见：有难度吗？',
+            }))
+          }
         }
       })
     }, 1000)

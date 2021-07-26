@@ -2,13 +2,14 @@ import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { Tabs, Form, Calendar } from 'antd'
 import { throttle } from 'lodash'
 import { PhoneFilled, DownOutlined } from '@ant-design/icons'
+
 import Loading from '@/components/loading'
 import MainTitle from '@/components/main-title'
 import Query from '../components/search-list'
 
 import { useApi } from '@/hooks/api'
 import { getLeaveMessageList } from '@/api/report'
-import { LeaveMessageSearchListConfig } from './config'
+import { LeaveMessageSearchListConfig, formatTime } from './config'
 import { getLast24Hours, getLastWeek, getLastMonth, formatTimeRange } from '@/utils'
 
 import { LeaveMessageChannelMap } from '@/constants/report'
@@ -43,21 +44,24 @@ function LeaveMessagePage() {
     }
   }, [range])
   // 第一次请求时也需要设置 noMore 等状态
-  const getList = useCallback(async (...args: any[]) => {
-    const ret: any = await getLeaveMessageList(...args)
-    const isSuccess = ret && (ret.success || ret.code === 0)
-    const data = ret && ret.data
-    const items = data?.result || []
+  const getList = async (querys: getLeaveMessageListParams) => {
+    const ret: any = await getLeaveMessageList(querys)
+    const isSuccess = ret && (ret.success || ret.code === 200)
+    const items = ret?.data?.res?.result || []
     if (!isSuccess || items.length < PAGESIZE) {
       setNoMore(true)
     }
-    return ret
-  }, [noMore])
+    const adapter = {
+      ...ret,
+      data: ret?.data?.res
+    }
+    return adapter
+  }
   const [lists, loading, refreshList] = useApi<ReportListResData<LeaveMessageListData[]> | null, getLeaveMessageListParams>(null, getList, defaultQueries)
   const [activeTab, setActiveTab] = useState<string>('1day')
   const [dataSource, setDataSource] = useState<LeaveMessageListData[]>([])
   useEffect(() => {
-    if (dataSource.length === 0) {
+    if (lists && dataSource.length === 0) {
       const items = lists?.result || []
       setDataSource(items)
     }
@@ -239,20 +243,20 @@ function Card (props: CardProps) {
     <div className="header">
       <div className="left">
         <div className="title">用户刘女士留言</div>
-        <div className="date">2017-10-01 12:00</div>
+        <div className="date">{formatTime(+item.time)}</div>
       </div>
       <div className="right">
         <div className="phone-btn">
           <PhoneFilled />
-          <a href={`tel:${item.mobile}`}>{item.mobile}</a>
+          <a href={`tel:${item.contact}`}>{item.contact}</a>
         </div>
       </div>
     </div>
     <div className="message line-2" ref={el => checkEllipses(el)}>
-      {item.content}
+      {item.message}
     </div>
     <div className="source">
-      <span>来源【{LeaveMessageChannelMap[item.type] || '未知'}】</span>{item.name}
+      <span>来源【{LeaveMessageChannelMap[item.type] || '未知'}】</span>{item.sourceName}
     </div>
     {shouldFold && (
       <div className="fold-btn" onClick={() => setFold(!fold)}>

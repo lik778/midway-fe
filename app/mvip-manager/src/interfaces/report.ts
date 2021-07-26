@@ -23,7 +23,18 @@ export interface ReportListResData<T> {
   result: T;
 }
 
+export interface ManagementListResData<T> {
+  res: {
+    result: T,
+    pageSize: number,
+    totalPage: number,
+    totalRecord: number
+  }
+}
+
 export type ReportListResponse<T> = Response<ReportListResData<T>>
+
+export type ManagementListResponse<T> = Response<ManagementListResData<T>>
 
 /* 业务数据类型约束 */
 
@@ -145,10 +156,10 @@ export interface getLeaveMessageListParams {
 
 export interface LeaveMessageListData {
   id: string
-  date: string
+  time: string
   type: LeaveMessageChannelType
-  name: string
-  url: string
-  content: string
-  mobile: string
+  sourceName: string
+  sourceUrl: string
+  message: string
+  contact: string
 }

@@ -10,7 +10,7 @@ export function useApi<DefaultValue = null, Params = null>(defaultValue: Default
     setLoading(true)
     const ret: ServiceResponse<DefaultValue> = await requestApiFunc(reqParams)
     const isSuccess = ret && (ret.success || ret.code === 0)
-    const message = ret && ret.message
+    const message = ret && ret.message || '未知错误'
     const data = ret && ret.data
 
     if (isSuccess) {

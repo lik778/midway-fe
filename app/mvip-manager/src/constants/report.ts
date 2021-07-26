@@ -41,5 +41,6 @@ export const ReportLinkMap: any = {
 export const LeaveMessageChannelMap = {
   [LeaveMessageChannelType.TIEZI]: '帖子',
   [LeaveMessageChannelType.DIANPU]: '店铺',
-  [LeaveMessageChannelType.KF53]: '53KF'
+  [LeaveMessageChannelType.ZHIDAO]: '知道',
+  [LeaveMessageChannelType.FENGMING]: '凤鸣',
 }

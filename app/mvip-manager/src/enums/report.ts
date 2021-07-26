@@ -30,7 +30,8 @@ export enum ReportProductType {
 }
 
 export enum LeaveMessageChannelType {
-  TIEZI = 1,
-  DIANPU = 2,
-  KF53 = 2
+  TIEZI = 'TIEZI',
+  DIANPU = 'DIANPU',
+  ZHIDAO = 'ZHIDAO',
+  FENGMING = 'FENGMING'
 }
