@@ -17,5 +17,6 @@ export const upImageToYoupai = (params: any) => {
 
 // 打点接口
 export const track = (params: any): Promise<void> => {
+  // console.log(params)
   return postApiData(ServicePath.TRACKER, '', params)
 }

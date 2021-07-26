@@ -21,6 +21,7 @@ import "./index.less"
 
 const TabPane = Tabs.TabPane
 const PAGESIZE = 10
+const TRACK_TYPE = 'shop-mvip-message-page'
 
 // 现在 PC 和手机端页面是一个组件，
 // 后期这玩意儿会越来越难维护...可以尝试拆开
@@ -32,7 +33,7 @@ function LeaveMessagePage() {
 
   const params = useMemo(() => new URLSearchParams(window.location.search), [])
   // FIXME type
-  const from = useMemo<LeaveMessagePageFromEnum | null>(() => params.get('from'), [params])
+  const from = useMemo<LeaveMessagePageFromEnum | null>(() => params.get('from') || LeaveMessagePageFromEnum.MVIP, [params])
   const isMobile = useMemo(() => params.get('mobile') === '1', [params])
   const isPC = useMemo(() => !isMobile, [isMobile])
   const uid = useMemo(() => getCookie('__u'), [])
@@ -45,19 +46,24 @@ function LeaveMessagePage() {
   const [noMore, setNoMore] = useState(false)
 
   // TODO FIXME 线下数据过滤逻辑应该放到 tracker.service
+  const trackEvent = useCallback((arg: any) => {
+    if (from && uid) {
+      track(arg)
+    }
+  }, [from, uid])
   useEffect(() => {
     // console.log('from: ', from)
-    if (from) {
-      track({
-        eventType: 'shop-mvip-message-page',
+    if (from && uid) {
+      trackEvent({
+        eventType: TRACK_TYPE,
         data: {
-          event_type: 'pv',
+          event_type: 'page-pv',
           uid,
           from,
         }
       })
     }
-  }, [from])
+  }, [from, uid, trackEvent])
 
   const defaultQueries = useMemo(() => {
     const [timeStart, timeEnd] = formatTimeRange(range)
@@ -69,12 +75,28 @@ function LeaveMessagePage() {
     }
   }, [range])
 
-  // 第一次请求时也需要设置 noMore 等状态
-  const getList = async (query: getLeaveMessageListParams) => {
+  const getList = useCallback(async (query: getLeaveMessageListParams) => {
     try {
       const ret: any = await getLeaveMessageList(query)
       const isSuccess = ret && (ret.success || ret.code === 200)
       const items = ret?.data?.res?.result || []
+
+      // 移动端留咨 PV 打点，每项都要！
+      // TODO check 不知道客户数量，推算不出有多少请求数量，还得上线康康
+      if (items.length) {
+        items.map((x: LeaveMessageListData) => {
+          trackEvent({
+            eventType: TRACK_TYPE,
+            data: {
+              event_type: 'mobile-item-pv',
+              item_id: x.id,
+              uid,
+              from,
+            }
+          })
+        })
+      }
+
       if (!isSuccess || items.length < PAGESIZE) {
         setNoMore(true)
       }
@@ -86,7 +108,8 @@ function LeaveMessagePage() {
     } catch (err) {
       setNoMore(true)
     }
-  }
+  }, [isMobile])
+
   const [lists, loading, refreshList] = useApi<ReportListResData<LeaveMessageListData[]> | null, getLeaveMessageListParams | null>(null, getList, defaultQueries)
   const [activeTab, setActiveTab] = useState<string>('1day')
   const [dataSource, setDataSource] = useState<LeaveMessageListData[]>([])
@@ -226,11 +249,12 @@ function LeaveMessagePage() {
     // console.log('[INFO] rendered:', tabKey, dataSource, loadMore, noMore)
     // TODO REFACTOR components ListView
     return <div className="cards-con" ref={el => el && (cardsRef.current = el)}>
-      {dataSource.map((item: LeaveMessageListData) => <Card item={item} key={item.id} />)}
+      {/* TODO refactor uid\from injection better than props */}
+      {dataSource.map((item: LeaveMessageListData) => <Card item={item} uid={uid} from={from} key={item.id} />)}
       {loadMore && <div className='loading'>加载中...</div>}
       {noMore && <div className='loading'>没有更多啦~</div>}
     </div>
-  }, [dataSource, activeTab, loadMore, noMore])
+  }, [dataSource, activeTab, loadMore, noMore, uid, from])
 
   const $mobilePage = useCallback(() => {
     if (isMobile) {
@@ -271,10 +295,12 @@ function LeaveMessagePage() {
 
 
 type CardProps = {
-  item: LeaveMessageListData
+  item: LeaveMessageListData,
+  uid: string,
+  from: string
 }
 function Card (props: CardProps) {
-  const { item } = props
+  const { item, uid, from } = props
   const [shouldFold, setShouldFold] = useState(false)
   const [fold, setFold] = useState(true)
 
@@ -286,6 +312,20 @@ function Card (props: CardProps) {
     }
   }, [setShouldFold])
 
+  const trackTel = useCallback(() => {
+    if (item.id && uid && from) {
+      track({
+        eventType: TRACK_TYPE,
+        data: {
+          event_type: 'mobile-item-contact-click',
+          item_id: item.id,
+          uid,
+          from,
+        }
+      })
+    }
+  }, [item.id])
+
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
       <div className="left">
@@ -295,7 +335,7 @@ function Card (props: CardProps) {
       <div className="right">
         <div className="phone-btn">
           <PhoneFilled />
-          <a href={`tel:${item.contact}`}>{item.contact}</a>
+          <a href={`tel:${item.contact}`} onClick={trackTel}>{item.contact}</a>
         </div>
       </div>
     </div>
