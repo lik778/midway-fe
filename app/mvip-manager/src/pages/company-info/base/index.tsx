@@ -124,8 +124,6 @@ function CompanyInfoBase(props: Props) {
       area: Array.isArray(values.area) ? values.area : Object.keys(values.area).map(k => k),
       ...metas
     }
-    console.log('values', values)
-    console.log('requestData', requestData)
     setLoading(true)
 
     // 一级类目

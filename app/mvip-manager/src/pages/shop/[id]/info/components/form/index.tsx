@@ -37,7 +37,6 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
       }
       return item
     })
-    console.log(newChildren)
     setConfig({ ...config, children: newChildren })
   }
 

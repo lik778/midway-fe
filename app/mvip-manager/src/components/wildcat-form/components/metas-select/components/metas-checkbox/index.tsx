@@ -17,10 +17,11 @@ interface Props {
   handleChangeCheckboxValue: (value: string[]) => void // 通知父组件
   value?: any,
   onChange?: (value: string[]) => void, // 更新from表单的值
+  setThirdDataLength: (length: number | undefined) => void
 }
 
 const MetasCheckbox: FC<Props> = (props) => {
-  const { item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange } = props
+  const { item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange, setThirdDataLength } = props
   const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
   // 缓存一下请求数据
   const [thirdMates, setThirdMates] = useState<{
@@ -68,6 +69,7 @@ const MetasCheckbox: FC<Props> = (props) => {
 
   //获取三级类目meta
   const handleChangeSecondMates = async (catogoryName: any) => {
+    setThirdDataLength(undefined)
     const res = await getThirdCategoryMetas(catogoryName);
     if (res?.success) {
       const newShopData = objToTargetObj(res.data, "label")
@@ -76,6 +78,7 @@ const MetasCheckbox: FC<Props> = (props) => {
         [catogoryName]: newShopData
       })
       setShowData(newShopData)
+      setThirdDataLength(newShopData.length)
     }
   }
 

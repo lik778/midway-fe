@@ -23,7 +23,6 @@ const MetasCascader: FC<Props> = (props) => {
 
   // 仅用于初始值
   const initValues = () => {
-    console.log('initialValues', initialValues)
     if (initialValues) {
       const first = initialValues[0]
       const second = initialValues[1]
