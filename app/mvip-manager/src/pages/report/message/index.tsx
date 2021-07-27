@@ -53,6 +53,7 @@ function LeaveMessagePage() {
   }, [from, uid])
 
   useEffect(() => {
+    // console.log('from: ', from, uid)
     if (from && uid) {
       track({
         eventType: TRACK_TYPE,
@@ -106,6 +107,7 @@ function LeaveMessagePage() {
       }
       return adapter
     } catch (err) {
+      console.error('[ERROR]', err)
       setNoMore(true)
     }
   }, [isMobile])

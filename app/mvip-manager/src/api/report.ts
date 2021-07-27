@@ -43,7 +43,7 @@ request.interceptors.request.use((req: any) => {
 })
 
 request.interceptors.response.use((res: AxiosResponse<any>) => {
-  if (res.data && res.data.code === 0) {
+  if (res.data && (res.data.code === 0 || res.data.code === 200)) {
     return Promise.resolve(res.data)
   } else {
     errorMessage('当前网络异常，请稍后重试', 0)
