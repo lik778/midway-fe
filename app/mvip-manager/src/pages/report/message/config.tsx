@@ -11,7 +11,7 @@ import { SearchListConfig } from '../components/search-list'
 
 type Item = LeaveMessageListData
 
-export const formatTime = (unixTime: number) => dayjs(unixTime * 1000).format('YYYY-MM-DD HH:ss')
+export const formatTime = (unixTime: number) => dayjs(unixTime * 1000).format('YYYY-MM-DD HH:mm:ss')
 
 export const LeaveMessageSearchListConfig = ({
   form,
