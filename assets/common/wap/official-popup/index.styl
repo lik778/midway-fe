@@ -9,10 +9,12 @@
 }
 
 .official-popup-container
+  box-sizing: border-box
   display: flex
   justify-content: space-between
   align-items: center
-  width: 80vw
+  width: 352px
+  max-width: 95vw
   padding: 15px
   position: fixed
   top: 100px
@@ -24,17 +26,16 @@
   border-radius: 8px
   box-shadow 0 0 10px 0 rgba(0,0,0,0.14)
   .left
-    width: 40px
-    height: 40px
+    width: 45px
+    height: 45px
     margin-right 5px
-    background-color:  blue
   .center
     font-size: 14px
     font-weight: bold
     .red
       color: #f46
   .right
-    padding: 0 15px
+    padding: 0 20px
     margin-left 5px
     line-height: 30px
     font-size: 14px

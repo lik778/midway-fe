@@ -6,19 +6,23 @@ if !isSem
       .bottom-box
         a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
           img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
-          span.aboutus-text.only-oneline 公司地址： #{ company.address }
+          span.aboutus-text.only-oneline 公司地址：
+            span.aboutus-info #{ company.address }
           .more
         a.aboutus-item(href="tel:" + phone.content)
           img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
-          span.aboutus-text.only-oneline 联系电话：#{ phone.content }
+          span.aboutus-text.only-oneline 联系电话2：
+            span.aboutus-info #{ phone.content }
           span.copy-data.phone(data-value=phone.content) 点击拨打
         if phone2.content
           a.aboutus-item(href="tel:" + phone2.content)
             img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
-            span.aboutus-text.only-oneline 联系电话2：#{ phone2.content }
+            span.aboutus-text.only-oneline 联系电话2：
+              span.aboutus-info #{ phone2.content }
             span.copy-data.phone(data-value=phone2.content) 点击拨打
         if weChat.content
           .aboutus-item
             img.aboutus-icon(src="//file.baixing.net/202105/436dfb09de131dedfe9ebaaee31474a5.png", alt="wechat logo")
-            span.aboutus-text.only-oneline 微信号码：#{ weChat.content }
+            span.aboutus-text.only-oneline 微信号码：
+              span.aboutus-info #{ weChat.content }
             span.copy-data#wechat(data-value=weChat.content) 点击复制

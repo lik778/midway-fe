@@ -1,5 +1,5 @@
 .products
-  margin 0 15px 20px
+  margin 0 15px 
   *
     box-sizing border-box
   .product
@@ -16,7 +16,7 @@
     &-content
       width calc(100% - 180px)
       height 120px
-      padding 24px 20px 22px
+      padding 18px 18px 0 12px
       position relative
       color #333
       font-size 14px
@@ -26,29 +26,28 @@
           height 0
           position absolute
           top 12px
-          border 10px solid transparent
+          border 8px solid transparent
       &.left
         .taigger
-          border-left 15px solid #fff
+          border-left 12px solid #fff
           right 0
           transform translateX(100%)
       &.right
         .taigger
-          border-right 15px solid #fff
+          border-right 12px solid #fff
           left 0
           transform translateX(-100%)
-    &-title
-      margin-bottom 30px
-      overflow hidden
+    &-title 
+      margin-bottom 18px
       white-space nowrap
-      text-overflow ellipsis
-    &-see-btn
-      width 115px
-      height 32px
-      margin 0 auto
-      line-height 30px
-      text-align center
-      font-size 12px
-      color $color-main
-      border-radius 16px
-      border 1px solid $color-main
+      text-overflow ellipsis 
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+    &-line
+      margin-bottom: 10px
+      border-bottom 2px dotted rgba(221, 221, 221, 1)
+    &-desc
+      font-size: 12px;
+      color: #666666;
+      line-height: 18px;
