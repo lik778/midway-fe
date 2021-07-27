@@ -10,7 +10,7 @@ import { useApi } from '@/hooks/api'
 import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
-import { getCookie, getLast24Hours, getLastWeek, getLastMonth, formatTimeRange } from '@/utils'
+import { getCookie, getLast24Hours, getTheDay, getLastWeek, getLastMonth, formatRange } from '@/utils'
 
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
@@ -66,7 +66,7 @@ function LeaveMessagePage() {
   }, [from, uid])
 
   const defaultQueries = useMemo(() => {
-    const [timeStart, timeEnd] = formatTimeRange(range)
+    const [timeStart, timeEnd] = formatRange(range)
     return {
       timeStart,
       timeEnd,
@@ -134,7 +134,7 @@ function LeaveMessagePage() {
         // console.log('shouldLoadMore: ', shouldLoadMore)
         if (shouldLoadMore && !loadMore && !noMore) {
           setLoadMore(true)
-          const [timeStart, timeEnd] = formatTimeRange(range)
+          const [timeStart, timeEnd] = formatRange(range)
           const lists = await refreshList({
             timeStart,
             timeEnd,
@@ -176,7 +176,7 @@ function LeaveMessagePage() {
     }
     if (range) {
       setRange(range)
-      const [timeStart, timeEnd] = formatTimeRange(range)
+      const [timeStart, timeEnd] = formatRange(range)
       refreshList({
         timeStart,
         timeEnd,
@@ -204,11 +204,11 @@ function LeaveMessagePage() {
 
   // 手机端选择日期后重新刷新列表
   const onSelectDate = (date: any) => {
-    const range = getLast24Hours(date)
+    const range = getTheDay(date)
     setPage(1)
     setDataSource([])
     setRange(range)
-    const [timeStart, timeEnd] = formatTimeRange(range)
+    const [timeStart, timeEnd] = formatRange(range)
     refreshList({
       timeStart,
       timeEnd,
@@ -220,7 +220,7 @@ function LeaveMessagePage() {
   // PC端选择日期后重刷新列表
   const queryList = useCallback(() => {
     if (range) {
-      const [timeStart, timeEnd] = formatTimeRange(range)
+      const [timeStart, timeEnd] = formatRange(range)
       setPage(1)
       setDataSource([])
       refreshList({
@@ -291,9 +291,40 @@ function LeaveMessagePage() {
           {range.length === 0 ? (
             <Calendar
               fullscreen={false}
-              headerRender={undefined}
               defaultValue={undefined}
-              onSelect={onSelectDate}
+              dateCellRender={date => <div className="date-catcher" onClick={() => onSelectDate(date)} />}
+              headerRender={({ value, onChange }) => {
+                const year = value.year()
+                const month = value.month()
+                const prevYear = () => onChange(value.clone().year(year - 1))
+                const prevMonth = () => onChange(value.clone().month(month - 1))
+                const nextYear = () => onChange(value.clone().year(year + 1))
+                const nextMonth = () => onChange(value.clone().month(month + 1))
+                return (
+                  <div className="ant-picker-header">
+                    <button type="button" className="ant-picker-header-super-prev-btn" onClick={prevYear}>
+                      <span className="ant-picker-super-prev-icon"></span>
+                    </button>
+                    <button type="button" className="ant-picker-header-prev-btn" onClick={prevMonth}>
+                      <span className="ant-picker-prev-icon"></span>
+                    </button>
+                    <div className="ant-picker-header-view">
+                      <span className="ant-picker-year-btn">
+                        {year}年
+                      </span>
+                      <span className="ant-picker-month-btn">
+                        {month + 1}月
+                      </span>
+                    </div>
+                    <button type="button" className="ant-picker-header-next-btn" onClick={nextMonth}>
+                      <span className="ant-picker-next-icon"></span>
+                    </button>
+                    <button type="button" className="ant-picker-header-super-next-btn" onClick={nextYear}>
+                      <span className="ant-picker-super-next-icon"></span>
+                    </button>
+                  </div>
+                )
+              }}
             />
           ) : $cards('custom')}
         </TabPane>
@@ -313,7 +344,7 @@ function LeaveMessagePage() {
 type CardProps = {
   item: LeaveMessageListData,
   uid: string,
-  from: string
+  from: string | null
 }
 function Card (props: CardProps) {
   const { item, uid, from } = props

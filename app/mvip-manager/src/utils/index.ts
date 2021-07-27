@@ -98,8 +98,16 @@ export const getLastWeek = () => [
 export const getLast24Hours = (anchor?: any) => {
   anchor = anchor || moment()
   return [
-    moment(anchor.format('YYYY-MM-DD')).subtract(1, 'days'),
-    moment(anchor.format('YYYY-MM-DD'))
+    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'day'),
+    moment(anchor.clone().format('YYYY-MM-DD'))
+  ]
+}
+
+export const getTheDay = (anchor?: any) => {
+  anchor = anchor || moment()
+  return [
+    moment(anchor.clone().format('YYYY-MM-DD')),
+    moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
   ]
 }
 
@@ -121,6 +129,15 @@ export const formatTimeRange = (dates: any[]) => {
   return [
     String(start.unix()),
     String(end.add(1, 'day').subtract(1, 'second').unix())
+  ]
+}
+
+export const formatRange = (dates: any[]) => {
+  if (!dates || !dates.length) return []
+  const [start, end] = dates
+  return [
+    String(start.unix()),
+    String(end.unix())
   ]
 }
 
