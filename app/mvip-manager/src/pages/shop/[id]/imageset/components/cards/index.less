@@ -1,10 +1,17 @@
 .cards-con {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 36px;
   margin-bottom: 24px;
 
+  .padding-card {
+    width: 220px;
+    height: 216px;
+    flex-shrink: 0;
+  }
+
+  .error-image-card,
   .image-card,
   .album-card {
     position: relative;
@@ -18,31 +25,39 @@
     box-shadow: 0 0 20px 0px rgba(0,0,0,.06);
     overflow: hidden;
     cursor: pointer;
+    user-select: none;
 
+    &.error-image-card,
     &.image-card {
       height: 170px;
     }
 
     .selection {
       position: absolute;
-      display: flex;
-      justify-content: space-between;
       padding: 8px 12px;
       width: 100%;
-      height: 50px;
+      height: 100%;
       background-image: linear-gradient(
         180deg,
-        rgba(0,0,0,0.26) 0%,
-        rgba(0,0,0,0.08) 76%,
-        rgba(0,0,0,0.00) 100%
+        rgba(0,0,0,0.26) 0px,
+        rgba(0,0,0,0.08) 40px,
+        rgba(0,0,0,0.00) 50px
       );
 
-      // &:hover {
-      //   .anticon-down-con {
-      //     opacity: 1;
-      //   }
-      // }
+      &.auto-hide {
+        opacity: 0;
+        transition: .35s;
+      }
+      &:hover {
+        opacity: 1;
+      }
 
+      .action-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 16px;
+      }
       .anticon-down-con {
         position: relative;
         padding: 5px;
@@ -110,6 +125,43 @@
       max-height: 170px;
       object-fit: cover;
       object-position: top;
+    }
+    .mask {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 56px;
+      line-height: 56px;
+      text-align: center;
+      background: rgba(0,0,0,.55);
+      color: white;
+
+      &.full {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: .5em;
+        height: 100%;
+        line-height: 26px;
+        font-size: 16px;
+
+        .anticon {
+          top: 0;
+          margin-right: 0;
+        }
+        .reason {
+          font-size: 12px;
+          color: #ddd;
+        }
+      }
+
+      .anticon {
+        position: relative;
+        margin-right: 6px;
+        top: 6px;
+      }
     }
 
     .header {
@@ -189,10 +241,10 @@
         color: white;
 
         &.anticon-left {
-          left: 10vw;
+          left: 50px;
         }
         &.anticon-right {
-          right: 10vw;
+          right: 50px;
         }
       }
     }

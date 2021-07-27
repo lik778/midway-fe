@@ -70,7 +70,7 @@ export class SemApiService {
     }
   }
 
-  private setGetUserInfoHeaders(cookies: any, domain: string): HeaderAuthParams {
+  private setGetUserInfoHeaders(cookies: any, domain: string): Partial<HeaderAuthParams> {
     return {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',

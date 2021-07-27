@@ -72,7 +72,7 @@ export class SiteService {
     return domain
   }
 
-  private setGetUserInfoHeaders(cookies: any, domain: string): HeaderAuthParams {
+  private setGetUserInfoHeaders(cookies: any, domain: string): Partial<HeaderAuthParams> {
     /**切换domain.根据后端分支和模板类型选择 */
     return {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
