@@ -57,7 +57,7 @@ export default function InlineForm(props: Props) {
   let countArrayLen = 0
   let formItems = items.map((item, formItemIdx) => {
     const { type = 'input' } = item
-    const key = item.name || item.type
+    const key = item.key || item.name || item.type || item.label
     const allProps = { type, item, form, key }
     if (type === 'null') {
       countNullLen += 1
