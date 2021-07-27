@@ -4,7 +4,6 @@ import { throttle } from 'lodash'
 import { PhoneFilled, DownOutlined } from '@ant-design/icons'
 
 import Loading from '@/components/loading'
-import MainTitle from '@/components/main-title'
 import Query from '../components/search-list'
 
 import { useApi } from '@/hooks/api'
@@ -225,7 +224,6 @@ function LeaveMessagePage() {
   const $pcPage = useCallback(() => {
     if (isPC) {
       return <>
-        <MainTitle title="留咨报表" />
         <div className="container">
           <div className='segment'>
             <h2>留咨报表</h2>
