@@ -53,7 +53,7 @@ export const LeaveMessageSearchListConfig = ({
         dataIndex: 'type',
         width: 65,
         key: 'type',
-        render: (_: any, r: Item) => LeaveMessageChannelMap[r.type]
+        render: (_: any, r: Item) => LeaveMessageChannelMap[r.sourceType]
       },
       {
         title: '落地页名称',

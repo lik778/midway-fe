@@ -157,7 +157,7 @@ export interface getLeaveMessageListParams {
 export interface LeaveMessageListData {
   id: string
   time: string
-  type: LeaveMessageChannelType
+  sourceType: LeaveMessageChannelType
   sourceName: string
   sourceUrl: string
   message: string

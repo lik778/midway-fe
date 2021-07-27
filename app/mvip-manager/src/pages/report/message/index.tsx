@@ -343,7 +343,7 @@ function Card (props: CardProps) {
       {item.message}
     </div>
     <div className="source">
-      <span>来源【{LeaveMessageChannelMap[item.type] || '未知'}】</span>{item.sourceName}
+      <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>{item.sourceName}
     </div>
     {shouldFold && (
       <div className="fold-btn" onClick={() => setFold(!fold)}>
