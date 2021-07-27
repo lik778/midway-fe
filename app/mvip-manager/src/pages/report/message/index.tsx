@@ -10,7 +10,7 @@ import { useApi } from '@/hooks/api'
 import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
-import { getCookie, getLast24Hours, getTheDay, getLastWeek, getLastMonth, formatRange } from '@/utils'
+import { getCookie, getLast24Hours, getLastWeek, getLastMonth, formatRange } from '@/utils'
 
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
@@ -40,7 +40,7 @@ function LeaveMessagePage() {
   const [queryForm] = Form.useForm()
   const [query, setQuery] = useState<any>()
   const [page, setPage] = useState(1)
-  const [range, setRange] = useState<any[]>(getLast24Hours())
+  const [range, setRange] = useState<any[]>(getLast24Hours(null, true))
   const [loadMore, setLoadMore] = useState(false)
   const [noMore, setNoMore] = useState(false)
 
@@ -165,13 +165,13 @@ function LeaveMessagePage() {
     let range
     switch (key) {
       case '1day':
-        range = getLast24Hours()
+        range = getLast24Hours(null, true)
         break
       case '7day':
-        range = getLastWeek()
+        range = getLastWeek(null, true)
         break
       case '30day':
-        range = getLastMonth()
+        range = getLastMonth(null, true)
         break
     }
     if (range) {
@@ -189,11 +189,6 @@ function LeaveMessagePage() {
     }
   }
 
-  const handleChangeRange = (e: any) => {
-    const keyVal = e.target.value
-    changeTab(keyVal)
-  }
-
   useEffect(() => {
     if (range) {
       queryForm.setFieldsValue({
@@ -204,7 +199,7 @@ function LeaveMessagePage() {
 
   // 手机端选择日期后重新刷新列表
   const onSelectDate = (date: any) => {
-    const range = getTheDay(date)
+    const range = getLast24Hours(date, true)
     setPage(1)
     setDataSource([])
     setRange(range)
@@ -246,7 +241,7 @@ function LeaveMessagePage() {
               onQueryChange={(query: any) => setQuery(query)}
               config={LeaveMessageSearchListConfig({
                 activeTab,
-                handleChangeRange,
+                changeTab,
                 onSearch: queryList,
                 form: queryForm,
                 dataSource: lists?.result
@@ -256,7 +251,7 @@ function LeaveMessagePage() {
         </div>
       </>
     }
-  }, [isPC, lists, refreshList, activeTab, handleChangeRange])
+  }, [isPC, lists, refreshList, activeTab, changeTab])
 
   const $cards = useCallback(tabKey => {
     if (!activeTab || tabKey !== activeTab) {

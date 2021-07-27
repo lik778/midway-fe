@@ -83,31 +83,40 @@ export const stringify = (params: any): string => JSON.stringify(params)
 
 // 许多图表组件需要一个默认的选中时间，
 // 默认为上一个月
-export const getLastMonth = () => [
-  moment(moment().format('YYYY-MM-DD')).subtract(1, 'months'),
-  moment(moment().format('YYYY-MM-DD'))
-]
+// 给第一个 moment 减去一天而不是给第二个 moment 加一天是因为，
+// 这个值要放回 range-picker 组件进行展示
+export const getLastMonth = (anchor?: any, classic?: boolean) => {
+  anchor = anchor || moment()
+  return classic ? [
+    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'months'),
+    moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+  ] : [
+    moment(moment().format('YYYY-MM-DD')).subtract(1, 'months'),
+    moment(moment().format('YYYY-MM-DD'))
+  ]
+}
 
 // 获取上一周的时间区间
-export const getLastWeek = () => [
-  moment(moment().format('YYYY-MM-DD')).subtract(1, 'weeks'),
-  moment(moment().format('YYYY-MM-DD'))
-]
-
-// 获取过去24小时时间区间
-export const getLast24Hours = (anchor?: any) => {
+export const getLastWeek = (anchor?: any, classic?: boolean) => {
   anchor = anchor || moment()
-  return [
-    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'day'),
+  return classic ? [
+    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'weeks'),
+    moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+  ] : [
+    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'weeks'),
     moment(anchor.clone().format('YYYY-MM-DD'))
   ]
 }
 
-export const getTheDay = (anchor?: any) => {
+// 获取过去24小时时间区间
+export const getLast24Hours = (anchor?: any, classic?: boolean) => {
   anchor = anchor || moment()
-  return [
+  return classic ? [
     moment(anchor.clone().format('YYYY-MM-DD')),
     moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+  ] : [
+    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'day'),
+    moment(anchor.clone().format('YYYY-MM-DD'))
   ]
 }
 
@@ -119,17 +128,6 @@ export const formatDateRange = (dates: any, query: any, startKey = 'startTime', 
   const [start, end] = dates
   query[startKey] = String(start.unix())
   query[endKey] = String(end.add(1, 'day').subtract(1, 'second').unix())
-}
-
-// 格式化 ant date-range 时间值，
-// 约定：选中 01-23 ~ 01-24，即选中了 01-23 和 01-24 两天
-export const formatTimeRange = (dates: any[]) => {
-  if (!dates || !dates.length) return []
-  const [start, end] = dates
-  return [
-    String(start.unix()),
-    String(end.add(1, 'day').subtract(1, 'second').unix())
-  ]
 }
 
 export const formatRange = (dates: any[]) => {

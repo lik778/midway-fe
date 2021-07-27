@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import dayjs from 'dayjs'
-import { Popover, Button, Radio } from 'antd'
+import { Popover, Button } from 'antd'
 
 import { formatDateRange } from '@/utils'
 import { LeaveMessageChannelMap } from '@/constants/report'
@@ -18,11 +18,11 @@ export const LeaveMessageSearchListConfig = ({
   dataSource,
   onSearch,
   activeTab,
-  handleChangeRange,
+  changeTab,
 }: Partial<SearchListConfig> & {
   activeTab: string,
   onSearch: () => void,
-  handleChangeRange: (e: any) => void
+  changeTab: (e: any) => void
 }) => ({
   form,
   dataSource,
@@ -43,13 +43,11 @@ export const LeaveMessageSearchListConfig = ({
       key: 'range-quick-picker',
       type: 'render',
       render() {
-        return (
-          <Radio.Group value={activeTab} onChange={handleChangeRange} >
-            <Radio.Button value="1day" key="1day">今日数据</Radio.Button>
-            <Radio.Button value="7day" key="7day">近7天</Radio.Button>
-            <Radio.Button value="30day" key="30day">近30天</Radio.Button>
-          </Radio.Group >
-        )
+        return <>
+          <Button onClick={() => changeTab('1day')}>今日</Button>
+          <Button onClick={() => changeTab('7day')} style={{marginLeft: 16}}>近7天</Button>
+          <Button onClick={() => changeTab('30day')} style={{marginLeft: 16}}>近30天</Button>
+        </>
       }
     },
     {
