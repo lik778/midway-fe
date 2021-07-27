@@ -1,4 +1,4 @@
-import { postApiData, postApi, upFile } from './base';
+import { postApiData, request, upFile } from './base';
 
 import { ServiceResponse } from '@/interfaces/api';
 import { MidMenuItem } from '@/interfaces/base';
@@ -17,10 +17,5 @@ export const upImageToYoupai = (params: any) => {
 
 // 打点接口
 export const track = (params: any) => {
-  // console.log(params)
-  return postApi(ServicePath.TRACKER, {
-    method: 'post',
-    path: '/',
-    params: JSON.stringify(params)
-  }, {})
+  return request.post(ServicePath.TRACKER, params, {})
 }

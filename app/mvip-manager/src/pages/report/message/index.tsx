@@ -53,7 +53,6 @@ function LeaveMessagePage() {
   }, [from, uid])
 
   useEffect(() => {
-    // console.log('from: ', from, uid)
     if (from && uid) {
       track({
         eventType: TRACK_TYPE,

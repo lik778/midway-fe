@@ -140,7 +140,7 @@ export const getKeywordDetailList:
 // 获取留言列表
 export const getLeaveMessageList:
   (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
-  (params) => postMidway('/api/midway/backend/messageCenter/messageListing', JSON.stringify(params))
+  (params) => postMidway('/api/midway/backend/messageCenter/messageListing', params)
 
 // TODO delete mock data
 // 以下是非 P0 页面的 Mock 数据
