@@ -50,6 +50,10 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
       ...values,
       area: !Array.isArray(values.area) ? Object.keys(values.area).map(k => k) : values.area
     }
+    // @ts-ignore
+    delete requestData.metaCascaderValue
+    // @ts-ignore
+    delete requestData.metaCheckbox
     setUpDataLoading(true)
     const { success, message, data } = await setShopBasicInfoApi(id, requestData)
     if (success) {
