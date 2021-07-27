@@ -1,9 +1,9 @@
 import React from 'react'
 import moment from 'moment'
 import dayjs from 'dayjs'
-import { Popover, Button } from 'antd'
+import { Popover, Button, Radio } from 'antd'
 
-import { getLast24Hours, formatDateRange } from '@/utils'
+import { formatDateRange } from '@/utils'
 import { LeaveMessageChannelMap } from '@/constants/report'
 
 import { LeaveMessageListData } from '@/interfaces/report'
@@ -17,7 +17,13 @@ export const LeaveMessageSearchListConfig = ({
   form,
   dataSource,
   onSearch,
-}: Partial<SearchListConfig> & { onSearch: () => void }) => ({
+  activeTab,
+  handleChangeRange,
+}: Partial<SearchListConfig> & {
+  activeTab: string,
+  onSearch: () => void,
+  handleChangeRange: (e: any) => void
+}) => ({
   form,
   dataSource,
   pagiQueryKeys: {
@@ -29,12 +35,25 @@ export const LeaveMessageSearchListConfig = ({
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
-      value: getLast24Hours(),
       // @ts-ignore
       format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
       disabledDate: (date: moment.Moment) => date > moment().endOf('day'),
     },
     {
+      key: 'range-quick-picker',
+      type: 'render',
+      render() {
+        return (
+          <Radio.Group value={activeTab} onChange={handleChangeRange} >
+            <Radio.Button value="1day" key="1day">今日数据</Radio.Button>
+            <Radio.Button value="7day" key="7day">近7天</Radio.Button>
+            <Radio.Button value="30day" key="30day">近30天</Radio.Button>
+          </Radio.Group >
+        )
+      }
+    },
+    {
+      key: 'search-button',
       type: 'render',
       render: () => <Button type="primary" onClick={onSearch}>查询</Button>
     }

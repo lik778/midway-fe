@@ -18,12 +18,13 @@ export interface SearchListConfig {
 // TODO doc props
 interface Props {
   config: SearchListConfig
+  bindForm?: boolean
   onQuery?: any
   onQueryChange?: (queries: any) => void;
   loading?: boolean
 }
 export default function SearchList (props: Props) {
-  const { config, onQuery, onQueryChange, loading } = props
+  const { bindForm, config, onQuery, onQueryChange, loading } = props
   const { form, dataSource, query, table, pagiQueryKeys } = config
   const { pageKey = 'pageNo', sizeKey = 'pageSize' } = pagiQueryKeys || {}
   const { columns, pagination = {}, ...restTableProps } = table || {}
@@ -140,6 +141,7 @@ export default function SearchList (props: Props) {
       {query && form && (
         <InlineForm
           className="cmpt-search-list-query"
+          bindForm={bindForm}
           form={form}
           items={query}
           fields={fields}

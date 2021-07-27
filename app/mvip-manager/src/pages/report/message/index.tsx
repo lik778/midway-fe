@@ -189,6 +189,19 @@ function LeaveMessagePage() {
     }
   }
 
+  const handleChangeRange = (e: any) => {
+    const keyVal = e.target.value
+    changeTab(keyVal)
+  }
+
+  useEffect(() => {
+    if (range) {
+      queryForm.setFieldsValue({
+        date: range
+      })
+    }
+  }, [range])
+
   // 手机端选择日期后重新刷新列表
   const onSelectDate = (date: any) => {
     const range = getLast24Hours(date)
@@ -206,8 +219,8 @@ function LeaveMessagePage() {
 
   // PC端选择日期后重刷新列表
   const queryList = useCallback(() => {
-    if (query) {
-      const { timeStart, timeEnd } = query
+    if (range) {
+      const [timeStart, timeEnd] = formatTimeRange(range)
       setPage(1)
       setDataSource([])
       refreshList({
@@ -217,7 +230,7 @@ function LeaveMessagePage() {
         size: PAGESIZE
       })
     }
-  }, [query])
+  }, [range])
 
   // ********************************************************* renders
 
@@ -228,9 +241,12 @@ function LeaveMessagePage() {
           <div className='segment'>
             <h2>留咨报表</h2>
             <Query
+              bindForm
               loading={loading}
               onQueryChange={(query: any) => setQuery(query)}
               config={LeaveMessageSearchListConfig({
+                activeTab,
+                handleChangeRange,
                 onSearch: queryList,
                 form: queryForm,
                 dataSource: lists?.result
@@ -240,7 +256,7 @@ function LeaveMessagePage() {
         </div>
       </>
     }
-  }, [isPC, lists, refreshList])
+  }, [isPC, lists, refreshList, activeTab, handleChangeRange])
 
   const $cards = useCallback(tabKey => {
     if (!activeTab || tabKey !== activeTab) {

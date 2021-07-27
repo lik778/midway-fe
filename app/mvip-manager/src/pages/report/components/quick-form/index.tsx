@@ -25,6 +25,7 @@ function themed(styles: any, type: any) {
 }
 
 interface Props {
+  bindForm?: boolean
   fields: any
   onFieldsChange: any
   onValuesChange: any
@@ -39,6 +40,7 @@ interface Props {
 }
 export default function InlineForm(props: Props) {
   const {
+    bindForm,
     fields,
     onFieldsChange,
     onValuesChange,
@@ -109,6 +111,7 @@ export default function InlineForm(props: Props) {
 
   return (
     <Form
+      { ...(bindForm ? { form } : {}) }
       layout='inline'
       className={[
         'inline-form',
