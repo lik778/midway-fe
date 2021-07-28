@@ -77,7 +77,7 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-    console.log(data)
+    // console.log(data)
     return data
   }
 
@@ -98,6 +98,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, query.sem, domain);
     const data = this.setData(originData)
+    
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -270,7 +271,7 @@ export class BaseSiteController {
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
 
-
+    // TODO FIXME
     if (/.html/.test(req.url)) {
       const productId = params.id.split(".")[0]
       const { data: originData } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId }, domain);
@@ -305,7 +306,14 @@ export class BaseSiteController {
       }
 
       const isCn = this.checkCn(HostDomain)
-      return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
+      // console.log('data:', data)
+      return res.render(templateUrl, {
+        title: '产品详情',
+        renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo },
+        isDetail: true,
+        isSem,
+        isCn
+      });
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
@@ -331,7 +339,12 @@ export class BaseSiteController {
       const trackId = this.trackerService.getTrackId(req, res)
       const isSem = this.checkSem(query.sem, query.bannerId)
       const isCn = this.checkCn(HostDomain)
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
+      return res.render(templateUrl, {
+        title: '服务子类',
+        renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo },
+        isSem,
+        isCn
+      });
     }
   }
 

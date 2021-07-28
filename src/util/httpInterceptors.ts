@@ -44,7 +44,6 @@ export class UserGuard implements CanActivate {
             console.log(error)
             return true
         } finally {
-            console.log('error')
             return true 
         }
     }

@@ -48,6 +48,7 @@ block scripts
   :combine(fileName="site-template-3-news-detail-pc.js")
 block append scripts
   script.
+    window.extraContactFormData = { position: 4, id: #{renderData.articleInfo.id} };
     window.contentType = 'article';
     window.trackSrc = 'viewad';
     window.adId = #{renderData.articleInfo.id};

@@ -10,6 +10,11 @@ export const leaveLeads = function() {
             data.contact = $('#tel').val();
             data.content = $('#content').val();
             data.shopName = $('#shop-name').text();
+            if (window.extraContactFormData) {
+                Object
+                    .entries(window.extraContactFormData)
+                    .map(([k, v]) => data[k] = v)
+            }
             if(data.name === '') {
                 alert('请留下您的姓名')
                 return false
@@ -25,7 +30,7 @@ export const leaveLeads = function() {
             if(data.contact.length > 50 ){
                 alert('联系方式最多50个字符')
                 return false
-            }
+            }huuu
             if(data.content.length > 255 ){
                 alert('内容最多255个字符')
                 return false
