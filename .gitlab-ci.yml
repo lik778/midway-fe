@@ -21,9 +21,10 @@ stages:
 
 test-ci-nest-install:
   stage: test-ci-install
-  only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
   only:
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
     changes:
       # 由于 cnpm install 不会改变 package-lock，
       # 如果要新安装依赖，请使用 npm install
@@ -39,9 +40,10 @@ test-ci-nest-install:
 
 test-ci-mvip-install:
   stage: test-ci-install
-  only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
   only:
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
     changes:
       - app/mvip-manager/package.json
   cache:
