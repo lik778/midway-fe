@@ -68,7 +68,7 @@ test-ci-nest-build:
   script:
     - npm run release:dev
   artifacts:
-    name: "nest-install-build"
+    name: "nest-build"
     expire_in: 24 hrs
     paths:
       - dist/
@@ -80,13 +80,14 @@ test-ci-mvip-build:
   cache: 
     key: mvip-install:${CI_PIPELINE_ID}
     paths:
+      - node_modules/
       - app/mvip-manager/node_modules/
     policy: pull
   script:
     - cd app/mvip-manager/
     - npm run build:dev
   artifacts:
-    name: "mvip-install-build"
+    name: "mvip-build"
     expire_in: 24 hrs
     paths:
       - app/mvip-manager/dist/
