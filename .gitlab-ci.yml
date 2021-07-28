@@ -98,6 +98,7 @@ test-ci-release:
   image: docker
   tags: [k8s-dev-build]
   script:
+    - cp -r app/mvip-manager/dist/* dist/public
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
     - docker push $MIDWAY_FE
