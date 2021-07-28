@@ -35,7 +35,7 @@ test-ci-nest-build:
     - npm ci --cache .npm --silence
     - npm run release:dev
   artifacts:
-    name: "nest-build"
+    name: "nest-install-build"
     expire_in: 24 hrs
     paths:
       - dist/
@@ -58,7 +58,7 @@ test-ci-mvip-build:
     - npm ci --cache .npm --silence
     - npm run build:dev
   artifacts:
-    name: "mvip-build"
+    name: "mvip-install-build"
     expire_in: 24 hrs
     paths:
       - app/mvip-manager/dist/
@@ -66,9 +66,6 @@ test-ci-mvip-build:
 test-ci-release:
   stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
-  needs: 
-    - test-ci-nest-install-build
-    - test-ci-mvip-install-build
   image: docker
   tags: [k8s-dev-build]
   script:
