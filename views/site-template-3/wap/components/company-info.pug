@@ -1,19 +1,19 @@
 .company-info
-    .info
-        img.info-logo(src=company.logo, alt="logo")
-        .info-text
-            h3.info-name #{ companyName }
+  .info
+    img.info-logo(src=company.logo, alt="logo")
+    .info-text
+      h3.info-name #{ companyName }
 
-            .info-tag-list
-                .info-tag 百姓认证
-                .info-tag 实力商家
-                .info-tag 品质保障
-                //-.info-tag 贴心服务
-    .desc
-        p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-        img.top-left(src="//file.baixing.net/202105/c13cf5f1df072ead963012489e050499.png", alt="")
-        img.bottom-right(src="//file.baixing.net/202105/2427f22e0a874b4b79b83dc2a0a0c30f.png", alt="")
-        .action-btn-box
-            .action-btn.hide 展开
+      .info-tag-list
+        .info-tag 百姓认证
+        .info-tag 实力商家
+        .info-tag 品质保障
+        //-.info-tag 贴心服务
+  .desc
+    p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+    img.top-left(src="//file.baixing.net/202105/c13cf5f1df072ead963012489e050499.png", alt="")
+    img.bottom-right(src="//file.baixing.net/202105/2427f22e0a874b4b79b83dc2a0a0c30f.png", alt="")
+    .action-btn-box
+      .action-btn.hide 展开
 
 

@@ -1,14 +1,14 @@
 import $ from 'jquery';
-import { eventTracker } from '../../../../common/tracker'
+import { eventTracker } from '../../../../common/tracker';
 
 export const leaveLeads = function() {
     $(document).on('ready',function() {
-        $(".form-item > button").on('click',(e) => {
+        $("#upContactForm").on('click',(e) => {
             e.preventDefault();
             const data = {};
-            data.name = $('#name').val();
-            data.contact = $('#tel').val();
-            data.content = $('#content').val();
+            data.name = $('#contactName').val();
+            data.contact = $('#contactTel').val();
+            data.content = $('#contactContent').val();
             data.shopName = $('#shop-name').text();
             if(data.name === '') {
                 alert('请留下您的姓名')
@@ -20,6 +20,11 @@ export const leaveLeads = function() {
             }
             if(data.contact == ''){
                 alert('请留下您的联系方式')
+                return false
+            }
+            const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/;
+            if(!phoneFliterRules.test(data.contact)){
+                alert('请输入正确的联系方式')
                 return false
             }
             if(data.contact.length > 50 ){
@@ -53,3 +58,5 @@ export const leaveLeads = function() {
         })
     })
 }
+
+

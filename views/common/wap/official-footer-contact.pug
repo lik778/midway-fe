@@ -1,12 +1,12 @@
 mixin official-footer-contact()
   .official-footer-contact-container
     if weChat.content && weChat.content.length > 0
-      a.wechat-box(data-value = weChat.content)
+      .wechat-box(data-value = weChat.content)
         img.icon(src=`//file.baixing.net/202107/f70c14412d26538b6da9c751b2fb7bb5.png`)
         p.text 微信
-    //- if kf53StyleUrl && kf53StyleUrl.length > 0
-    a.online-box(href=kf53StyleUrl)
-      img.icon(src=`//file.baixing.net/202107/81d88888d0b0361f28ffa55364b31bd1.png`)
-      p.text 咨询
+    if kf53StyleUrl && kf53StyleUrl.length > 0
+      a.online-box(href=kf53StyleUrl)
+        img.icon(src=`//file.baixing.net/202107/81d88888d0b0361f28ffa55364b31bd1.png`)
+        p.text 咨询
     include ./contact-phone-btn.pug
     +contactPhoneBtn('#EC2525') 

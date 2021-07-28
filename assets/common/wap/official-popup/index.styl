@@ -1,10 +1,20 @@
 
 @keyframes popup-animate {
-  0%   { 
+  0% { 
     left: -50vw  
   }
-  100%{
+  15% {
     left: 50vw  
+  }
+  98% {
+    left: 50vw
+    opacity: 1
+  }
+  99% {
+    opacity: 0
+  }
+  100% {
+    left: 1000vw
   }
 }
 
@@ -19,7 +29,7 @@
   position: fixed
   top: 100px
   left: -50vw  
-  animation popup-animate 1s 1s forwards
+  animation popup-animate 6s 2s forwards
   transform: translateX(-50%)
   z-index 100
   background-color: #fff
