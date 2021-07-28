@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC, ReactEventHandler } from 'react';
-import { Checkbox } from 'antd'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import { ImageItem, CheckStatusType } from '@/interfaces/shop';
+import AuditFailedIcon from '@/icons/failed'
 import ImgUploadContext from '@/components/img-upload/context'
-import styles from './index.less'
 import { UploadFile } from 'antd/lib/upload/interface';
 import CropModal from '@/components/img-upload/components/crop-modal'
-import { errorMessage } from '@/components/message';
+import { successMessage, errorMessage } from "@/components/message"
+import { reAuditImagesetImage } from '@/api/shop'
+
+import styles from './index.less'
 
 interface Props {
+  shopId: number;
   detail: ImageItem,
   itemHeight?: number
 }
@@ -17,9 +19,9 @@ interface Props {
 let clickCount = 0
 
 const ImgItem: FC<Props> = (props) => {
-  const { detail, itemHeight } = props
+  const { shopId, detail, itemHeight } = props
   const context = useContext(ImgUploadContext)
-  const { checkFileObject, localFileList, handleChangeLocalFileList, handlePreview, initConfig: { maxLength, cropProps } } = context
+  const { localFileList, handleChangeLocalFileList, handlePreview, initConfig: { maxLength, cropProps } } = context
   const [originSize, setOriginSize] = useState<{
     width: number,
     heigth: number
@@ -86,6 +88,22 @@ const ImgItem: FC<Props> = (props) => {
     setCropVisible(false)
   }
 
+  // 申诉图片
+  const reAuditImage = useCallback(async (e: any) => {
+    e.stopPropagation()
+    reAuditImagesetImage(shopId, { id: detail.id })
+      .then((res: any) => {
+        if (res.success) {
+          successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')
+        } else {
+          throw new Error(res.message || '出错啦，请稍后重试')
+        }
+      })
+      .catch((error: any) => {
+        errorMessage(error.message)
+      })
+  }, [detail])
+
   return <>
     <div className={styles['img-item']} style={{
       height: itemHeight
@@ -96,11 +114,16 @@ const ImgItem: FC<Props> = (props) => {
           {`${originSize.width}*${originSize.heigth}`}
         </div>
       }
-      {
-        detail.checkStatus !== 'APPROVE' && <div className={styles["error-tip"]}>{detail.reason}</div>
-      }
+      {detail.checkStatus !== 'APPROVE' && (
+        <div className={styles["error-tip"]}>
+          <AuditFailedIcon />
+          <span>{detail.reason || '图片审核失败'}</span>
+          <span className={styles["re-audit-btn"]} onClick={e => reAuditImage(e)}>点击申诉</span>
+        </div>
+      )}
     </div>
     <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
   </>
 }
+
 export default ImgItem

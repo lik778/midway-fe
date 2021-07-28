@@ -8,7 +8,7 @@ import Cards from './components/cards'
 import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
 import { useUploadModal } from './components/upload-modal'
-import { getImagesetImage, getImagesetAlbum } from '@/api/shop'
+import { getImagesetImage, getImagesetAlbum, getImagesetFailedImage } from '@/api/shop'
 
 import usePrevious from './hooks/previous';
 import { useSelection } from './hooks/selection'
@@ -27,11 +27,17 @@ const ShopArticlePage = (props: any) => {
   const params: RouteParams = useParams();
   const shopId = Number(params.id);
 
+  // tabScope 维护当前页面进入不同文件夹的深度，
+  // 维护方式类似 history.pushState
   const [tabScope, setTabScope] = useState<TabScope>([{ type: 'album', item: null }]);
   const [isScopeAlbum, setIsScopeAlbum] = useState(false);
   const [isScopeImage, setIsScopeImage] = useState(false);
+  const [isScopeAudit, setIsScopeAudit] = useState(false);
   const [curScope, setCurScope] = useState<TabScopeItem>();
   const prevCurScope = usePrevious(curScope)
+
+  const goAlbumScope = () => setTabScope([{ type: 'album', item: null }])
+  const goAuditScope = () => setTabScope([{ type: 'audit', item: null }])
 
   useEffect(() => {
     setCurScope(tabScope[tabScope.length - 1])
@@ -44,10 +50,17 @@ const ShopArticlePage = (props: any) => {
         case 'album':
           setIsScopeAlbum(true)
           setIsScopeImage(false)
+          setIsScopeAudit(false)
           break
         case 'image':
           setIsScopeAlbum(false)
           setIsScopeImage(true)
+          setIsScopeAudit(false)
+          break
+        case 'audit':
+          setIsScopeAlbum(false)
+          setIsScopeImage(false)
+          setIsScopeAudit(true)
           break
       }
     }
@@ -59,6 +72,7 @@ const ShopArticlePage = (props: any) => {
   const pagiQuery = useMemo(() => {
     let page = pagi.current
     let size = pagiConf.pageSize
+    // @ts-ignore
     const isChangeScope = curScope && prevCurScope && (curScope.type !== prevCurScope.type)
     if (isChangeScope) {
       page = 1
@@ -175,10 +189,10 @@ const ShopArticlePage = (props: any) => {
         <ArticleNav
           shopId={shopId}
           tabScope={tabScope}
-          isScopeAlbum={isScopeAlbum}
-          isScopeImage={isScopeImage}
           curScope={curScope}
           goTabScope={goTabScope}
+          goAlbumScope={goAlbumScope}
+          goAuditScope={goAuditScope}
           createAlbum={createAlbum}
           openUpload={openUpload}
         />
@@ -188,6 +202,7 @@ const ShopArticlePage = (props: any) => {
           total={total}
           curScope={curScope}
           isScopeAlbum={isScopeAlbum}
+          isScopeAudit={isScopeAudit}
           selection={selection}
           lists={lists}
           refreshAllAlbumLists={refreshAllAlbumLists}
@@ -202,11 +217,14 @@ const ShopArticlePage = (props: any) => {
           lists={lists}
           tabScope={tabScope}
           curScope={curScope}
+          isScopeAudit={isScopeAudit}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
           selection={selection}
           allAlbumLists={allAlbumLists}
           loading={loading}
+          pagiConf={pagiConf}
+          setPagiConf={setPagiConf}
           refreshAllAlbumLists={refreshAllAlbumLists}
           setSelection={setSelection}
           refresh={refresh}
@@ -260,7 +278,9 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
     let fetchMethod
     if (scope.type === 'album') fetchMethod = fetchAlbumLists
     if (scope.type === 'image') fetchMethod = fetchImageLists
+    if (scope.type === 'audit') fetchMethod = fetchErrorImageLists
     if (!fetchMethod) {
+      console.warn('[WARN] no fetch method in this scope', scope)
       return
     }
     if (scope.type === 'image') {
@@ -272,11 +292,11 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
     }
     /* Query & Fetch */
     setLoading(true)
-    // FIXME type
     fetchMethod(shopId, query)
       .then(res => {
         if (res) {
           const [result, total] = res
+          // @ts-ignore
           const lists = (result || []).filter(notNull)
           setLists(lists)
           setTotal(total || 0)
@@ -306,6 +326,16 @@ async function fetchAlbumLists(shopId: number, querys: any) {
 async function fetchImageLists(shopId: number, querys: any) {
   try {
     const res = await getImagesetImage(shopId, querys)
+    const { result = [], totalRecord = 0 } = res.data.mediaImgBos
+    return [result, totalRecord] as const
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+async function fetchErrorImageLists(shopId: number, querys: any) {
+  try {
+    const res = await getImagesetFailedImage(shopId, querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {

@@ -29,6 +29,7 @@ export default {
       const suffix = item.split('.')[1]
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
+      // FIXME
       const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
       
       if (suffix === 'css') {

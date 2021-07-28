@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Button, Checkbox, Modal } from "antd";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage } from '@/api/shop'
+import { delImagesetAlbum, delImagesetImage, delImagesetFailedImage } from '@/api/shop'
 
-import { CardItem, AlbumItem, TabScopeItem } from "@/interfaces/shop";
+import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop";
 
 import styles from './index.less'
 
@@ -15,6 +15,7 @@ interface SelectionBlockProps {
   lists: CardItem[];
   curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
+  isScopeAudit: boolean;
   refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
@@ -22,13 +23,13 @@ interface SelectionBlockProps {
   refresh: (resetPagi?: boolean) => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, isScopeAlbum, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
+  const { shopId, total, selection, lists, isScopeAlbum, isScopeAudit, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
 
-  // 不包含默认相册的列表项目的 ID
+  // 排除默认相册和正在审核中的项目
   const ids = useMemo(() => {
     const all = isScopeAlbum
-      ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
-      : lists.map(x => x.id)
+    ? lists.filter(x => (x as AlbumItem).type !== 'DEFAULT').map(x => x.id)
+    : lists.filter(x => (x as ImageItem).checkStatus !== 'REAPPLY').map(x => x.id)
     return all
   }, [lists, isScopeAlbum])
 
@@ -36,7 +37,6 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
   useEffect(() => {
-    // 选中时排除默认相册
     const allChecked = ids.every(id => selection.includes(id))
     const noChecked = ids.every(id => !selection.includes(id))
     if (allChecked && ids.length > 0) {
@@ -81,6 +81,8 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         return new Promise((resolve, reject) => {
           const deleteFn = isScopeAlbum
             ? delImagesetAlbum
+            : isScopeAudit
+            ? delImagesetFailedImage
             : delImagesetImage
           const query: any = isScopeAlbum
             ? [...selection]
@@ -104,7 +106,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }, [shopId, isScopeAlbum, selection, curScope, lists, refresh])
+  }, [shopId, isScopeAlbum, isScopeAudit, selection, curScope, lists, refresh])
 
   return (
     <>

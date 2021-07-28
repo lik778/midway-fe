@@ -28,7 +28,7 @@ export function useAlbumSelector(props: Props) {
       onChange={(val: number) => handleSelectAlbum(val)}
     >
       {allAlbumLists.map((x: AlbumNameListItem) => {
-        return <Select.Option value={x.id}>{x.name}</Select.Option>
+        return <Select.Option value={x.id} key={x.id}>{x.name}</Select.Option>
       })}
     </Select>,
     select,

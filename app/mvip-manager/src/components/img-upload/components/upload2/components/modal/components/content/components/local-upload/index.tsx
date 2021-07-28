@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC } from 'react'
 import { Spin } from 'antd'
+import { useParams } from "umi";
 import { UploadFile } from 'antd/lib/upload/interface'
 import ImgUpload from '@/components/img-upload'
 import ImgUploadContext from '@/components/img-upload/context'
-import { ImageItem } from '@/interfaces/shop'
+import { RouteParams, ImageItem } from '@/interfaces/shop'
 import { createImagesetImage } from '@/api/shop'
 import styles from './index.less'
 import ImgItem from '../img-item'
@@ -12,11 +13,16 @@ import { errorMessage } from '@/components/message'
 const LocalUpload: FC = () => {
   const context = useContext(ImgUploadContext)
   const { initConfig: { uploadBtnText, maxSize, aspectRatio, cropProps }, shopCurrent } = context
+
+  const params: RouteParams = useParams();
+  const shopId = Number(params.id);
+
   const [albumList, setAlbumList] = useState<ImageItem[]>([])
   const fileList = useMemo(() => {
     return albumList.map(item => item.imgUrl)
   }, [albumList])
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
+
   // ImgUpload uploadType===1情况下，每次onChange只会操作一个动作
   const handleChange = async (values: string | string[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
     setUpDataLoading(true)
@@ -41,7 +47,7 @@ const LocalUpload: FC = () => {
     <div className={styles['local-upload']}>
       <div className={styles['line']}>
         {
-          albumList.map(item => <ImgItem detail={item} itemHeight={102} key={item.id}></ImgItem>)
+          albumList.map(item => <ImgItem shopId={shopId} detail={item} itemHeight={102} key={item.id}></ImgItem>)
         }
         <ImgUpload uploadType={1} editData={fileList} uploadBtnText={uploadBtnText} maxLength={1000} onChange={handleChange} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
           showRemoveIcon: false,

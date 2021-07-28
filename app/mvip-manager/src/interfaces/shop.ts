@@ -285,6 +285,10 @@ export interface CreateImagesetImageParam {
   mediaCateId?: number; // 不传则上传到默认图库
 }
 
+export interface ReAuditImagesetImageParam {
+  id: number
+}
+
 export type DelImagesetAlbumParam = number[]
 
 export interface DelImagesetImageParam {
@@ -313,9 +317,19 @@ export interface GetImagesetImageRes {
   mediaImgBos: ListRes<ImageItem[]>
 }
 
+export interface GetImagesetFailedImageParam {
+  page: number;
+  size: number;
+}
+
+export interface GetImagesetFailedImageRes {
+  mediaImgBos: ListRes<ImageItem[]>
+}
+
 export interface AlbumNameListItem {
   id: number,
   name: string,
+  type: AlbumType
 }
 
 export interface AlbumImageListItem {
@@ -323,10 +337,6 @@ export interface AlbumImageListItem {
   url: string
   status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
 }
-
-
-
-/* 店铺图集相关定义 Start */
 
 // 默认相册/普通相册：默认相册不能编辑、删除
 export type AlbumType = 'DEFAULT' | 'NORMAL'
@@ -342,14 +352,16 @@ export type AlbumItem = {
 
 
 export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
+export type ImageType = 'NOT_COVER' | 'COVER'
 /**
  * @description 相册图片类型
  * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
  */
 export type ImageItem = {
   id: number,
-  name: string,
+  name?: string,
   imgUrl: string,
+  type: ImageType,
   checkStatus: CheckStatusType,// 状态
   reason: string,// 驳回理由
 }
@@ -359,9 +371,7 @@ export type CardItem = AlbumItem | ImageItem
 // 相册管理目录层级类型
 export type TabScopeItem = {
   item: CardItem | null
-  type: 'album' | 'image'
+  type: 'album' | 'image' | 'audit'
 }
 export type TabScope = TabScopeItem[]
 
-
-/* 店铺图集相关定义 End */
