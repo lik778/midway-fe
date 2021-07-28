@@ -21,6 +21,7 @@ test-ci-nest-build:
   stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
+  image: node:12.2
   cache:
     key: 
       files: 
@@ -43,6 +44,7 @@ test-ci-mvip-build:
   stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
+  image: node:12.2
   cache:
     key: 
       files: 
@@ -65,8 +67,8 @@ test-ci-mvip-build:
 test-ci-release:
   stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
-  when: on_success
   tags: [k8s-dev-build]
+  when: manual
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
