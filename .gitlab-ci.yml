@@ -30,7 +30,7 @@ test-ci-nest-install:
     #   # 如果要新安装依赖，请使用 npm install
     #   - package-lock.json
   cache:
-    key: $CI_COMMIT_REF_SLUG-NEST_INSTALL
+    key: $CI_COMMIT_REF_SLUG-NEST_INSTALL:${CI_PIPELINE_ID}
     paths: 
       - node_modules/
   script:
@@ -47,7 +47,7 @@ test-ci-mvip-install:
     # changes:
     #   - app/mvip-manager/package.json
   cache:
-    key: $CI_COMMIT_REF_SLUG-MVIP_INSTALL
+    key: $CI_COMMIT_REF_SLUG-MVIP_INSTALL:${CI_PIPELINE_ID}
     paths: 
       - app/mvip-manager/node_modules/
   script:
@@ -61,7 +61,7 @@ test-ci-nest-build:
   only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
   cache: 
-    key: $CI_COMMIT_REF_SLUG-NEST_BUILD
+    key: $CI_COMMIT_REF_SLUG-NEST_BUILD:${CI_PIPELINE_ID}
     paths:
       - node_modules/
     policy: pull
@@ -78,9 +78,9 @@ test-ci-mvip-build:
   only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
   cache: 
-    key: $CI_COMMIT_REF_SLUG-MVIP_BUILD
+    key: $CI_COMMIT_REF_SLUG-MVIP_BUILD:${CI_PIPELINE_ID}
     paths:
-      - node_modules/
+      - app/mvip-manager/node_modules/
     policy: pull
   script:
     - cd app/mvip-manager/
