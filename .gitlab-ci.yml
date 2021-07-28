@@ -17,7 +17,7 @@ stages:
   - test2-deploy
   - test-ci-install
   - test-ci-build
-  - test-ci
+  - test-ci-release
 
 test-ci-nest-install:
   stage: test-ci-install
@@ -93,7 +93,7 @@ test-ci-mvip-build:
       - app/mvip-manager/dist/
 
 test-ci-release:
-  stage: test-ci
+  stage: test-ci-release
   only: [feat-speed-up-ci@fenlei/midway-fe]
   image: docker
   tags: [k8s-dev-build]
