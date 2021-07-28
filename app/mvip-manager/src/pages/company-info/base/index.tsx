@@ -21,7 +21,7 @@ import { objToTargetObj } from '@/utils';
 const { Step } = Steps;
 
 interface Props {
-  companyInfo: UserEnterpriseInfo,
+  companyInfo: UserEnterpriseInfo | null,
   setCompanyInfo: (data: UserEnterpriseInfo) => void,
   shopStatus: ShopStatus,
   getShopStatus: () => void
@@ -46,7 +46,7 @@ function CompanyInfoBase(props: Props) {
     const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedFirstCategory, selectedSecondCategory, selectedThirdMetas } = companyInfo
 
     // 做一手转化 转为组件需要的输入值 ShopMetas类型
-    const metas: ShopMetas = [objToTargetObj(selectedFirstCategory)[0], objToTargetObj(selectedSecondCategory)[0], Object.keys(selectedThirdMetas)]
+    const metas: ShopMetas = [objToTargetObj(selectedFirstCategory)[0], objToTargetObj(selectedSecondCategory)[0], selectedThirdMetas ? Object.keys(selectedThirdMetas) : []]
 
     //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
@@ -90,6 +90,7 @@ function CompanyInfoBase(props: Props) {
       }
       return item
     })
+    console.log(newChildren)
     setConfig({ ...config, children: newChildren })
   }
 
@@ -124,11 +125,19 @@ function CompanyInfoBase(props: Props) {
       thirdMetas: values.metas[2],
     }
 
-    const requestData: SaveEnterpriseForShopParams = {
+    const requestData = {
       ...values,
       area: Array.isArray(values.area) ? values.area : Object.keys(values.area).map(k => k),
       ...metas
-    }
+    } as SaveEnterpriseForShopParams
+    // 下面三个是表单里的额外字段，用于保存类目的，避免接口有多余字段，所以删除
+    // @ts-ignore
+    delete requestData.metaCascaderValue
+    // @ts-ignore
+    delete requestData.metaCheckbox
+    // @ts-ignore
+    delete requestData.metas
+
     setLoading(true)
 
     // 一级类目

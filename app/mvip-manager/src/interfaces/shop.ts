@@ -216,7 +216,9 @@ export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
 }
 
 export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
-  area: string[],
+  area:  {
+    [key: string]: string
+  },
   metas: ShopMetas
 }
 

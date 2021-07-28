@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '../../config';
-import { KF53Info, QQItem, UserEnterpriseInfo } from '@/interfaces/user';
+import { KF53Info, QQItem, UserEnterpriseInfo, SaveEnterpriseContactInfoApiParams } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
@@ -81,7 +81,7 @@ function ContactForm(props: any) {
       info.kefuStatus = KFStatus.CLOSE
     }
     setLoading(true)
-    const res = await saveEnterpriseContactInfoApi(info)
+    const res = await saveEnterpriseContactInfoApi(info as SaveEnterpriseContactInfoApiParams)
     setLoading(false)
     if (res?.success) {
       setCompanyInfo(info)

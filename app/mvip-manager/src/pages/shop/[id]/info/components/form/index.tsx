@@ -47,9 +47,9 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
 
   const sumbit = async (values: InitShopBasicInfoParams) => {
     const requestData: UploadShopBasicInfoParams = {
-      ...values,
-      area: !Array.isArray(values.area) ? Object.keys(values.area).map(k => k) : values.area
+      ...values
     }
+    // 下面两个是表单里的额外字段，用于保存类目的，避免接口有多余字段，所以删除
     // @ts-ignore
     delete requestData.metaCascaderValue
     // @ts-ignore
