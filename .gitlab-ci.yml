@@ -57,7 +57,7 @@ test-ci-mvip-build:
   script:
     - cd app/mvip-manager/
     - npm ci --cache .npm --silence
-    - npm run release:dev
+    - npm run build:dev
   artifacts:
     name: "mvip-build"
     expire_in: 24 hrs
