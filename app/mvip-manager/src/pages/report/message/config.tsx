@@ -80,7 +80,7 @@ export const LeaveMessageSearchListConfig = ({
         key: 'sourceName',
         render: (_: any, r: Item) => {
           return <>
-            <Popover content={r.sourceName} title="落地页详情" trigger="hover">
+            <Popover content={r.sourceName} trigger="hover">
               <span className="line-1">{r.sourceName}</span>
             </Popover>
           </>
@@ -101,7 +101,7 @@ export const LeaveMessageSearchListConfig = ({
         key: 'message',
         render: (_: any, r: Item) => {
           return <>
-            <Popover content={r.message} title="落地页详情" trigger="hover">
+            <Popover content={r.message} trigger="hover">
               <span className="line-1">{r.message}</span>
             </Popover>
           </>
