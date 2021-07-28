@@ -29,7 +29,7 @@ test-release:
   cache:
     key: "TEST-REALEASE-DEPENDS"
     paths:
-      - node_modules/
+      - .npm/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
