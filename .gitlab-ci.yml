@@ -33,6 +33,7 @@ test-ci-nest-install:
     key: $CI_COMMIT_REF_SLUG:nest-install
     paths: 
       - node_modules/
+    expire_in: 24 hrs
   script:
     - npm set registry https://registry.npm.taobao.org
     - npm set progress=false
@@ -50,6 +51,7 @@ test-ci-mvip-install:
     key: $CI_COMMIT_REF_SLUG:mvip-install
     paths: 
       - app/mvip-manager/node_modules/
+    expire_in: 24 hrs
   script:
     - cd app/mvip-manager/
     - npm set registry https://registry.npm.taobao.org
