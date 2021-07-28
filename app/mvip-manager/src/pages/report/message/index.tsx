@@ -214,8 +214,8 @@ function LeaveMessagePage() {
 
   // PC端选择日期后重刷新列表
   const queryList = useCallback(() => {
-    if (range) {
-      const [timeStart, timeEnd] = formatRange(range)
+    if (query) {
+      const { timeStart, timeEnd } = query
       setPage(1)
       setDataSource([])
       refreshList({
@@ -225,7 +225,7 @@ function LeaveMessagePage() {
         size: PAGESIZE
       })
     }
-  }, [range])
+  }, [query])
 
   // ********************************************************* renders
 
