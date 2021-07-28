@@ -69,6 +69,7 @@ export const LeaveMessageSearchListConfig = ({
         title: '来源',
         dataIndex: 'type',
         width: 65,
+        align: 'center',
         key: 'type',
         render: (_: any, r: Item) => LeaveMessageChannelMap[r.sourceType]
       },
@@ -89,6 +90,7 @@ export const LeaveMessageSearchListConfig = ({
         title: '落地页详情',
         dataIndex: 'sourceUrl',
         width: 120,
+        align: 'center',
         key: 'sourceUrl',
         render: (_: any, r: Item) => <Button type="link"><a href={r.sourceUrl} target="__blank">查看详情</a></Button>
       },
