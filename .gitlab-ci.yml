@@ -15,11 +15,10 @@ stages:
   - prod-deploy
   - release-test2
   - test2-deploy
-  - test-ci-pre
   - test-ci
 
 test-ci-nest-build:
-  stage: test-ci-pre
+  stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
   image: node:12.2
@@ -42,7 +41,7 @@ test-ci-nest-build:
       - dist/
 
 test-ci-mvip-build:
-  stage: test-ci-pre
+  stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
   tags: [k8s-dev-build]
   image: node:12.2
