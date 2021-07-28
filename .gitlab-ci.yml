@@ -25,10 +25,10 @@ test-ci-nest-install:
   only:
     refs:
       - feat-speed-up-ci@fenlei/midway-fe
-    changes:
-      # 由于 cnpm install 不会改变 package-lock，
-      # 如果要新安装依赖，请使用 npm install
-      - package-lock.json
+    # changes:
+    #   # 由于 cnpm install 不会改变 package-lock，
+    #   # 如果要新安装依赖，请使用 npm install
+    #   - package-lock.json
   cache:
     key: $CI_COMMIT_REF_SLUG-NEST_INSTALL
     paths: 
@@ -44,8 +44,8 @@ test-ci-mvip-install:
   only:
     refs:
       - feat-speed-up-ci@fenlei/midway-fe
-    changes:
-      - app/mvip-manager/package.json
+    # changes:
+    #   - app/mvip-manager/package.json
   cache:
     key: $CI_COMMIT_REF_SLUG-MVIP_INSTALL
     paths: 
