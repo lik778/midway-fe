@@ -67,7 +67,7 @@ test-ci-mvip-build:
 test-ci-release:
   stage: test-ci
   only: [feat-speed-up-ci@fenlei/midway-fe]
-  needs: [test-ci-mvip-build, test-ci-nest-build]
+  needs: [test-ci-nest-build, test-ci-mvip-build]
   tags: [k8s-dev-build]
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
