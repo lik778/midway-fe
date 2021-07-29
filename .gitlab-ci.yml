@@ -30,7 +30,7 @@ nest-install:
       - package-lock.json
   image: node:12.2
   cache:
-    key: $CI_COMMIT_REF_SLUG:nest-install
+    key: midway-fe:nest-install
     paths: 
       - node_modules/
   script:
@@ -52,7 +52,7 @@ mvip-install:
       - app/mvip-manager/package.json
   image: node:12.2
   cache:
-    key: $CI_COMMIT_REF_SLUG:mvip-install
+    key: midway-fe:mvip-install
     paths: 
       - app/mvip-manager/node_modules/
   script:
@@ -72,7 +72,7 @@ nest-build:
     - k8s-dev-build
   image: node:12.2
   cache: 
-    key: $CI_COMMIT_REF_SLUG:nest-install
+    key: midway-fe:nest-install
     paths:
       - node_modules/
     policy: pull
@@ -94,7 +94,7 @@ mvip-build:
     - k8s-dev-build
   image: node:12.2
   cache: 
-    key: $CI_COMMIT_REF_SLUG:mvip-install
+    key: midway-fe:mvip-install
     paths:
       - node_modules/
       - app/mvip-manager/node_modules/
