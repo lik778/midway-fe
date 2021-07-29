@@ -7,17 +7,17 @@ variables:
   MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
 
 stages:
-  - test-install
-  - test-build
-  - test-release
-  - test-deploy
+  - install
+  - build
   - release
+  - deploy
+  - prod-release
   - prod-deploy
 
-# ############################################ test-configure-start
+# ############################################ dev-configure-start
 
-test-nest-install:
-  stage: test-install
+nest-install:
+  stage: install
   tags:
     - k8s-dev-build
   only:
@@ -38,8 +38,8 @@ test-nest-install:
     - npm set progress=false
     - npm ci --silence
 
-test-mvip-install:
-  stage: test-install
+mvip-install:
+  stage: install
   tags:
     - k8s-dev-build
   only:
@@ -61,8 +61,8 @@ test-mvip-install:
     - npm set progress=false
     - npm ci --silence
 
-test-nest-build:
-  stage: test-build
+nest-build:
+  stage: build
   only:
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
@@ -83,8 +83,8 @@ test-nest-build:
     paths:
       - dist/
 
-test-mvip-build:
-  stage: test-build
+mvip-build:
+  stage: build
   only:
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
@@ -107,8 +107,8 @@ test-mvip-build:
     paths:
       - app/mvip-manager/dist/
 
-test-release:
-  stage: test-release
+release:
+  stage: release
   only:
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
@@ -122,8 +122,8 @@ test-release:
     - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
     - docker push $MIDWAY_FE
     
-test-deploy:
-  stage: test-deploy
+deploy:
+  stage: deploy
   only:
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
@@ -147,8 +147,8 @@ test-deploy:
 # ############################################ product-configure-start
 # 暂先不动生产环境的 CI/CD，怕弄坏
 
-release:
-  stage: release
+prod-release:
+  stage: prod-release
   only:
     - master@fenlei/midway-fe
 #  tags:
@@ -160,7 +160,7 @@ release:
     - docker push $MIDWAY_FE
     - docker rmi $MIDWAY_FE
 
-deploy:
+prod-deploy:
   stage: prod-deploy
   when: manual
   only:
