@@ -9,44 +9,33 @@ import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseForShopApi } from '@/api/user'
-import { ThirdMetas, SaveEnterpriseForShopParams } from '@/interfaces/user';
+import { InitEnterpriseForShopParams, MetasItem, SaveEnterpriseForShopParams, UserEnterpriseInfo, ShopMetas } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
-import { getThirdCategoryMetas } from '@/api/user';
+import { ShopStatus } from '@/interfaces/shop';
 import { objToTargetObj } from '@/utils';
-
 
 const { Step } = Steps;
 
-function CompanyInfoBase(props: any) {
+interface Props {
+  companyInfo: UserEnterpriseInfo | null,
+  setCompanyInfo: (data: UserEnterpriseInfo) => void,
+  shopStatus: ShopStatus,
+  getShopStatus: () => void
+}
+
+function CompanyInfoBase(props: Props) {
   const { companyInfo, setCompanyInfo, shopStatus, getShopStatus } = props
-  const [enterpriseInfo, setEnterpriseInfo] = useState<SaveEnterpriseForShopParams | null>(null)
+  const [enterpriseInfo, setEnterpriseInfo] = useState<InitEnterpriseForShopParams | null>(null)
   const [currentStep, setCurrentStep] = React.useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
   const [hasEditForm, setHasEditFofrm] = React.useState<boolean>(false);
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(baseInfoForm));
   const steps = ['基础信息', '联系方式']
-  const [thirdMetas, setThirdMetas] = useState<ThirdMetas[] | null>(null)
-
-  //获取三级类目meta
-  const getThirdCategoryMetasFn = async (catogoryName: any) => {
-    const res = await getThirdCategoryMetas(catogoryName);
-    if (res?.success) {
-      const metas = objToTargetObj(res.data, "label")
-      setThirdMetas(metas)
-    }
-  }
-
-  const onChangeCategory = (catogoryName: any, form: any) => {
-    //切换类目后，清空thirdMetas数据
-    form.setFieldsValue({ thirdMetas: [] })
-    getThirdCategoryMetasFn(catogoryName)
-
-  }
 
   //wildcat-form公共组件搞不定的交互，这里去处理config
   const initComponent = async () => {
@@ -54,7 +43,11 @@ function CompanyInfoBase(props: any) {
       setFormLoading(true)
       return
     }
-    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedSecondCategory, thirdMetas, selectedThirdMetas } = companyInfo
+    const { area, companyAddress, serviceArea, companyAlias, companyDescription, companyName, companyYears, employeeCount, promoteImg, selectedFirstCategory, selectedSecondCategory, selectedThirdMetas } = companyInfo
+
+    // 做一手转化 转为组件需要的输入值 ShopMetas类型
+    const metas: ShopMetas = [objToTargetObj(selectedFirstCategory)[0], objToTargetObj(selectedSecondCategory)[0], selectedThirdMetas ? Object.keys(selectedThirdMetas) : []]
+
     //由于接口返回字段和表单字段不一致，所以要字段转换
     setEnterpriseInfo({
       //...companyInfo,
@@ -67,30 +60,19 @@ function CompanyInfoBase(props: any) {
       companyYears,
       employeeCount,
       promoteImg,
-      secondCategory: selectedSecondCategory ? Object.keys(selectedSecondCategory)[0] : "",
-      thirdMetas: selectedThirdMetas ? Object.keys(selectedThirdMetas) : []
+      metas: metas
     })
     setFormLoading(false)
 
-    if (selectedSecondCategory && Object.keys(selectedSecondCategory).length > 0) {
-      getThirdCategoryMetasFn(Object.keys(selectedSecondCategory)[0])
-      return
-      //备注：getThirdCategoryMetasFn里获得thirdMetas后，会effect触发执行updateConfigData,故return掉，防止重复更新
-    }
     updateConfigData()
   }
-
-  useEffect(() => {
-    updateConfigData()
-  }, [thirdMetas])
-
 
   const updateConfigData = () => {
     if (!companyInfo) {
       setFormLoading(true)
       return
     }
-    const { companyNameLock, secondCategories, selectedSecondCategory } = companyInfo
+    const { companyNameLock, firstCategory, secondCategories } = companyInfo
     const newChildren = config.children.map(item => {
       //目的：禁止企业名称改写
       if (companyNameLock && item.name === 'companyName') {
@@ -98,22 +80,20 @@ function CompanyInfoBase(props: any) {
       }
 
       //修改config里类目选择组件的配置信息，并给select加了onChange
-      if (item.name === 'secondCategory') {
-        //item.defaultValue = defaultCategory
-        item.onChange = onChangeCategory
-        item.options = objToTargetObj(secondCategories)
-      }
-
-      //这里options没获取到值
-      if (item.name === 'thirdMetas') {
-        item.options = thirdMetas!
-        //只要thirdMetas数据，则显示
-        item.display = !!(thirdMetas && thirdMetas.length > 0)
+      if (item.type === 'MetaSelect') {
+        const options = objToTargetObj(firstCategory)
+        const secondCategoriesArr = objToTargetObj(secondCategories)
+        if (options.length > 0 && secondCategoriesArr.length > 0) {
+          options[0].children = secondCategoriesArr
+        }
+        item.options = options
       }
       return item
     })
+    console.log(newChildren)
     setConfig({ ...config, children: newChildren })
   }
+
   //会根据企业信息变更，重新渲染大表单
   useEffect(() => {
     initComponent()
@@ -129,21 +109,41 @@ function CompanyInfoBase(props: any) {
     setCurrentStep(currentStep + 1)
   }
 
-  const nextStep = async (values: SaveEnterpriseForShopParams) => {
+  const nextStep = async (values: InitEnterpriseForShopParams) => {
     if (!hasEditForm) {
       next(); return
     }
 
-    //对地区进行处理
-    if (!Array.isArray(values.area)) {
-      values.area = Object.keys(values.area).map(k => k)
+    // metas 相关的值需要自己从metas里取
+    const metas: {
+      firstCategory: string;
+      secondCategory: string;
+      thirdMetas: string[];
+    } = {
+      firstCategory: values.metas[0]?.value || '',
+      secondCategory: values.metas[1]?.value || '',
+      thirdMetas: values.metas[2],
     }
+
+    const requestData = {
+      ...values,
+      area: Array.isArray(values.area) ? values.area : Object.keys(values.area).map(k => k),
+      ...metas
+    } as SaveEnterpriseForShopParams
+    // 下面三个是表单里的额外字段，用于保存类目的，避免接口有多余字段，所以删除
+    // @ts-ignore
+    delete requestData.metaCascaderValue
+    // @ts-ignore
+    delete requestData.metaCheckbox
+    // @ts-ignore
+    delete requestData.metas
+
     setLoading(true)
 
     // 一级类目
     values.firstCategory = companyInfo?.firstCategory && Object.keys(companyInfo?.firstCategory).length > 0 ? Object.keys(companyInfo?.firstCategory)[0] : ''
     //console.log("提交表单数据",values)
-    const { success, message, data } = await saveEnterpriseForShopApi(values)
+    const { success, message, data } = await saveEnterpriseForShopApi(requestData)
     setLoading(false)
     if (success) {
       successMessage('修改基础资料成功')
@@ -184,7 +184,7 @@ function CompanyInfoBase(props: any) {
             } />
         }
         {!formLoading && currentStep == 1 &&
-          <ContactForm {...props} back={() => setCurrentStep(currentStep - 1)} />}
+          <ContactForm back={() => setCurrentStep(currentStep - 1)} />}
       </div>
     </div>
   );

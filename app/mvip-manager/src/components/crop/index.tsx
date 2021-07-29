@@ -64,7 +64,7 @@ const Crop: FC<Props> = (props) => {
           initFlag && <Cropper
             {...cropProps}
             src={url}
-            style={{ width: 800, height: 600 }}
+            style={{ width: 800, height: 500 }}
             preview={`.img-preview-${timestamp}`}
             guides={true}
             autoCropArea={1}
