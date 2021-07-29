@@ -90,7 +90,6 @@ function CompanyInfoBase(props: Props) {
       }
       return item
     })
-    console.log(newChildren)
     setConfig({ ...config, children: newChildren })
   }
 
