@@ -8,7 +8,7 @@ RUN npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
     # npm ci && \
     npm ci --cache .npm --prefer-offline --quiet --no-progress && \
-    npm run release:prod && \
+    npm run build:prod && \
     cd app/mvip-manager/ && \
     npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
@@ -19,4 +19,4 @@ RUN npm set registry https://registry.npm.taobao.org && \
 
 EXPOSE 7001
 
-CMD npm run start:prod
+CMD npm run node:prod
