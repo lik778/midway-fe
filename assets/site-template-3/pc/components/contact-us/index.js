@@ -30,7 +30,7 @@ export const leaveLeads = function() {
             if(data.contact.length > 50 ){
                 alert('联系方式最多50个字符')
                 return false
-            }huuu
+            }
             if(data.content.length > 255 ){
                 alert('内容最多255个字符')
                 return false
