@@ -9,16 +9,11 @@ export interface ButtonItem {
   className?: any;
 }
 
-//这样定义，与实际的select反过来了，后期优化下
 export interface OptionItem {
   key: string;
   value: any;
-}
-
-export interface OptionCheckBox {
-  label: string;
-  value: any;
   disabled?: boolean;
+  children?: OptionItem[]
 }
 
 export interface FormConfig {
@@ -35,7 +30,8 @@ export interface FormConfig {
 export interface CustomerFormItem {
   key: string,
   index: number,// 决定当前这个自定义组件放在第几位 不填就是最后
-  node: ReactNode
+  node: ReactNode,// 自定义的组件
+  hidden?: boolean,// 是否隐藏
 }
 export interface FormItem {
   label: string; // 页面标签
@@ -44,7 +40,7 @@ export interface FormItem {
   required: boolean; // 是否必填
   patternList?: any[]; // 正则
   placeholder?: string; // 提示
-  options?: OptionItem[] | OptionCheckBox[];
+  options?: OptionItem[];
   maxLength?: number
   minLength?: number,
   tip?: string | ReactNode, // 文案说明,
@@ -56,10 +52,10 @@ export interface FormItem {
   disabled?: boolean;
   showCount?: boolean;
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
-  display?: boolean;
   formItemWidth?: number | string,
   className?: string, // 自定义样式,
   labelCol?: ColProps;
+  hidden?: boolean,// 是否隐藏当前项
   children?: FormItem[];// 嵌套表单
 }
 

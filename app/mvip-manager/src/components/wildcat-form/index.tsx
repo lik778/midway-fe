@@ -1,11 +1,12 @@
 import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
-import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
+import { FormItem, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
+import MetasSelect from './components/metas-select'
 import { isEmptyObject } from '@/utils';
 import styles from './index.less'
 
@@ -92,6 +93,10 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
 
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
     return FormItemList.map(item => {
+      // 需要隐藏则返回空
+      if (item.hidden) {
+        return <></>
+      }
       if (isCustomerFormItem(item)) {
         return item.node
       }
@@ -153,7 +158,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>)
       } else if (item.type === FormType.AreaSelect) {
         const value = getEditData(item.name || '');
-        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol}>
           <AreaSelect width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
         </Form.Item>)
       } else if (item.type === FormType.GroupSelect) {
@@ -175,14 +180,19 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
             maxNum={item.maxNum || 0}
             onChange={(newValue) => onChange(newValue, item.name || '')} />
         </Form.Item>)
-      } else if (item.type === FormType.MetaChecbox && item.display) {
-        return (
-          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
-            <CheckboxGroup
-              options={item.options as OptionCheckBox[]}
-            />
-          </Form.Item>
-        )
+      }
+      // else if (item.type === FormType.MetaSelect) {
+      //   return (
+      //     <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+      //       <CheckboxGroup
+      //         options={item.options as OptionCheckBox[]}
+      //       />
+      //     </Form.Item>
+      //   )
+      // }
+      else if (item.type === FormType.MetaSelect) {
+        const value = getEditData(item.name || '');
+        return <MetasSelect item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} ></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
         return (
           <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>

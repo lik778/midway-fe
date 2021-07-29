@@ -5,11 +5,11 @@ import { CascaderOption } from '@/interfaces/base';
 
 interface Props {
   //下面是返回area数据{m30: "上海", m7254: "闵行", m2212: "莘庄"}
-  width?: number,
-  initialValues: string[];
+  width?: number | string,
+  initialValues: { [key: string]: string };
   onChange(values: string[]): void;
 }
-export default (props: any) => {
+export default (props: Props) => {
   const [areas, setAreas] = useState<CascaderOption[]>([]);
   const [selectValue, setSelectValue] = useState<string[]>([]);
   const { initialValues, onChange, width } = props
@@ -28,7 +28,7 @@ export default (props: any) => {
     }
   }
 
-
+  // 仅用于初始值
   useEffect(() => {
     if (initialValues) {
       setSelectValue(Object.keys(initialValues).map((k: string) => initialValues[k]))
@@ -38,7 +38,9 @@ export default (props: any) => {
   const onSelectChange = (list: any, selectedOptions: any) => {
     const map: any = {}
     selectedOptions.forEach((s: any) => map[s.value] = s.label)
+    // 传一个{key:label}对象给上级
     onChange(map)
+    // 同步更新选中值
     setSelectValue(list)
   }
 
@@ -59,7 +61,7 @@ export default (props: any) => {
     setAreas([...areas])
   };
 
-  return (<Cascader style={{ width: `${width}px` }} size='large' options={areas} value={selectValue}
+  return (<Cascader style={{ width: width }} size='large' options={areas} value={selectValue}
     onPopupVisibleChange={onPopupVisibleChange}
     loadData={loadData} onChange={onSelectChange} changeOnSelect />)
 }

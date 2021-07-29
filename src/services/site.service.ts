@@ -61,12 +61,14 @@ export class SiteService {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       domain = 'zmlc2b.shop-test.baixing.cn'
       // domain = 'hongtest1.shop-test.baixing.cn'
+      // domain = 'hongtest1.shop-test1.baixing.cn'
+      // domain = 'hongtest1.shop-test`2.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
       // domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      // domain = 'zmlc2b.shop.baixing.cn'
+      domain = 'zmlc2b.shop.baixing.cn'
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
@@ -76,7 +78,7 @@ export class SiteService {
     return domain
   }
 
-  private setGetUserInfoHeaders(cookies: any, domain: string): HeaderAuthParams {
+  private setGetUserInfoHeaders(cookies: any, domain: string): Partial<HeaderAuthParams> {
     /**切换domain.根据后端分支和模板类型选择 */
     return {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
