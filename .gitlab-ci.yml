@@ -1,6 +1,6 @@
 # README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
 
-image: docker
+image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
