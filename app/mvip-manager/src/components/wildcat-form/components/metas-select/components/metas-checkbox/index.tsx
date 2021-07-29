@@ -59,6 +59,7 @@ const MetasCheckbox: FC<Props> = (props) => {
     if (cascaderValue[1]) {
       if (thirdMates[cascaderValue[1].value]) {
         setShowData(thirdMates[cascaderValue[1].value])
+        setThirdDataLength(thirdMates[cascaderValue[1].value].length)
       } else {
         handleChangeSecondMates(cascaderValue[1].value)
       }
