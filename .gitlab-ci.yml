@@ -117,8 +117,12 @@ release:
   tags:
     - k8s-dev-build
   script:
+    - cp -r app/mvip-manager/dist/* dist/public/
+    - mkdir docker
+    - cp -r dist docker
+    - cp $CI_COMMIT_REF_SLUG.Dockerfile docker
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-    - docker build --pull -t $MIDWAY_FE -f ./$CI_COMMIT_REF_SLUG.Dockerfile .
+    - docker build --pull -t $MIDWAY_FE docker
     - docker push $MIDWAY_FE
     
 deploy:
