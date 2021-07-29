@@ -1,22 +1,5 @@
-FROM node:12
-
-WORKDIR /usr/src
-
-COPY . .
-
-RUN npm set registry https://registry.npm.taobao.org && \
-    npm set progress=false && \
-    # npm ci && \
-    npm ci --cache .npm --prefer-offline --quiet --no-progress && \
-    npm run release:test && \
-    cd app/mvip-manager/ && \
-    npm set registry https://registry.npm.taobao.org && \
-    npm set progress=false && \
-    # npm ci && \
-    npm ci --cache .npm --prefer-offline --quiet --no-progress && \
-    npm run build:test && \
-    cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/
+FROM node:12.2
 
 EXPOSE 7001
 
-CMD npm run start:test
+CMD npm run start:dev
