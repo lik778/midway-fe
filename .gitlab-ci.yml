@@ -130,9 +130,8 @@ test-deploy:
     - test1@fenlei/midway-fe
     - test2@fenlei/midway-fe
   tags:
-    - k8s-dev-build
+    - aliyun-k8s-dev
   cache: {}
-  when: manual
   script:
     - if [ "$CI_COMMIT_REF_SLUG" == "test" ]; then N="test-cat"; else N="bxapplets"; fi
     - kubectl set image -n ${N} deployments --selector app=midway-fe *=$MIDWAY_FE
