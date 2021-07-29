@@ -13,7 +13,7 @@ export class AppController {
   constructor(readonly midwayApiService: SiteService) {}
   @Get('/')
   async home (@Req() req: Request, @Res() res: Response) {
-    res.render('common/home')
+    res.redirect('//shop.baixing.com/vad/')
   }
 
    
