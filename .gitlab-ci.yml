@@ -1,9 +1,6 @@
 # README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
 
-image: registry.gitlab.baixing.cn/arch/base-images/nodejs:latest
-
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+image: node:12.2
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
@@ -104,7 +101,7 @@ test-ci-release:
     - feat-speed-up-ci@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  image: docker
   script:
     - cp -r app/mvip-manager/dist/* dist/public
     - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
@@ -208,7 +205,7 @@ test-release:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  image: docker
   script:
     - cp -r app/mvip-manager/dist/* dist/public
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
@@ -224,7 +221,7 @@ test-deploy:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  image: docker
   script:
     - if [ "$CI_COMMIT_REF_SLUG" == "test" ]; then N="test-cat"; else N="bxapplets"; fi
     - kubectl set image -n ${N} deployments --selector app=midway-fe *=$MIDWAY_FE
