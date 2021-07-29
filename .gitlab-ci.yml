@@ -2,6 +2,9 @@
 
 image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
 
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
   MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
@@ -103,7 +106,6 @@ test-ci-release:
     - k8s-dev-build
   script:
     - cp -r app/mvip-manager/dist/* dist/public
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
     - docker push $MIDWAY_FE
 
