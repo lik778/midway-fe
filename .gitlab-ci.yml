@@ -1,6 +1,6 @@
 # README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
 
-image: node:12.2
+image: registry.gitlab.baixing.cn/arch/base-images/nodejs:latest
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
@@ -99,7 +99,7 @@ test-ci-release:
   stage: test-ci-release
   only:
     - feat-speed-up-ci@fenlei/midway-fe
-  image: docker
+  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
   tags:
     - k8s-dev-build
   script:
@@ -204,7 +204,7 @@ test-release:
     - test@fenlei/midway-fe
     - test1@fenlei/midway-fe
     - test2@fenlei/midway-fe
-  image: docker
+  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
   tags:
     - k8s-dev-build
   script:
