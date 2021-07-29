@@ -1,111 +1,18 @@
 # README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
 
-image: node:12.2
+image: docker
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
   MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
 
 stages:
-  - test-ci-install
-  - test-ci-build
-  - test-ci-release
   - test-install
   - test-build
   - test-release
   - test-deploy
   - release
   - prod-deploy
-
-# ############################################ test-ci-configure-start
-# 专门用来测试 CI 的流程
-
-test-ci-nest-install:
-  stage: test-ci-install
-  tags:
-    - k8s-dev-build
-  only:
-    refs:
-      - feat-speed-up-ci@fenlei/midway-fe
-    changes:
-      - package-lock.json
-  cache:
-    key: $CI_COMMIT_REF_SLUG:nest-install
-    paths: 
-      - node_modules/
-  script:
-    - npm set registry https://registry.npm.taobao.org
-    - npm set progress=false
-    - npm ci --silence
-
-test-ci-mvip-install:
-  stage: test-ci-install
-  tags:
-    - k8s-dev-build
-  only:
-    refs:
-      - feat-speed-up-ci@fenlei/midway-fe
-    changes:
-      - app/mvip-manager/package.json
-  cache:
-    key: $CI_COMMIT_REF_SLUG:mvip-install
-    paths: 
-      - app/mvip-manager/node_modules/
-  script:
-    - cd app/mvip-manager/
-    - npm set registry https://registry.npm.taobao.org
-    - npm set progress=false
-    - npm ci --silence
-
-test-ci-nest-build:
-  stage: test-ci-build
-  only:
-    - feat-speed-up-ci@fenlei/midway-fe
-  tags:
-    - k8s-dev-build
-  cache: 
-    key: $CI_COMMIT_REF_SLUG:nest-install
-    paths:
-      - node_modules/
-    policy: pull
-  script:
-    - npm run release:dev
-  artifacts:
-    expire_in: 24 hrs
-    paths:
-      - dist/
-
-test-ci-mvip-build:
-  stage: test-ci-build
-  only:
-    - feat-speed-up-ci@fenlei/midway-fe
-  tags:
-    - k8s-dev-build
-  cache: 
-    key: $CI_COMMIT_REF_SLUG:mvip-install
-    paths:
-      - node_modules/
-      - app/mvip-manager/node_modules/
-    policy: pull
-  script:
-    - cd app/mvip-manager/
-    - npm run build:dev
-  artifacts:
-    expire_in: 24 hrs
-    paths:
-      - app/mvip-manager/dist/
-
-test-ci-release:
-  stage: test-ci-release
-  only:
-    - feat-speed-up-ci@fenlei/midway-fe
-  tags:
-    - k8s-dev-build
-  image: docker
-  script:
-    - cp -r app/mvip-manager/dist/* dist/public
-    - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
-    - docker push $MIDWAY_FE
 
 # ############################################ test-configure-start
 
@@ -121,6 +28,7 @@ test-nest-install:
       - test2@fenlei/midway-fe
     changes:
       - package-lock.json
+  image: node:12.2
   cache:
     key: $CI_COMMIT_REF_SLUG:nest-install
     paths: 
@@ -142,6 +50,7 @@ test-mvip-install:
       - test2@fenlei/midway-fe
     changes:
       - app/mvip-manager/package.json
+  image: node:12.2
   cache:
     key: $CI_COMMIT_REF_SLUG:mvip-install
     paths: 
@@ -161,6 +70,7 @@ test-nest-build:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
+  image: node:12.2
   cache: 
     key: $CI_COMMIT_REF_SLUG:nest-install
     paths:
@@ -182,6 +92,7 @@ test-mvip-build:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
+  image: node:12.2
   cache: 
     key: $CI_COMMIT_REF_SLUG:mvip-install
     paths:
@@ -205,7 +116,6 @@ test-release:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  image: docker
   script:
     - cp -r app/mvip-manager/dist/* dist/public
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
