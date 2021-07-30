@@ -6,7 +6,7 @@ import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
 import { ImgUploadProps, ImageData, ImageDataAlbumListItem } from './data';
-import Crop from '@/components/crop'
+import { useParams } from 'umi';
 import ImgUploadContext from '@/components/img-upload/context'
 import { ShopInfo } from '@/interfaces/shop';
 import Upload1 from '@/components/img-upload/components/upload1'
@@ -38,6 +38,7 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 // 当前组件不要使用useContext(ImgUploadContext)
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
+  const { id: shopId } = useParams<{ id: string }>()
   const { uploadType, editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
@@ -140,7 +141,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     const newShopListFilter = shopList ? (shopList as ShopInfo[]).filter(item => item.status === 1) : []
     setShopListFilter(newShopListFilter)
     if (newShopListFilter.length > 0) {
-      const newShopCurrent = newShopListFilter[0]
+      let newShopCurrent = newShopListFilter.find(item => item.id === Number(shopId))
+      if (!newShopCurrent) {
+        newShopCurrent = newShopListFilter[0]
+      }
       setShopCurrent(newShopCurrent)
     }
   }, [shopList])
