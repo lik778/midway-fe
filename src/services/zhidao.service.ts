@@ -21,7 +21,7 @@ export class ZhidaoService {
     this.haojingHost = configService.get('haojing');
   }
 
-  private setApiAHeaders(cookies: any, shopId?: string): HeaderAuthParams {
+  private setApiAHeaders(cookies: any, shopId?: string): Partial<HeaderAuthParams> {
     const headers = {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',

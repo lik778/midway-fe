@@ -7,9 +7,7 @@ import { ConnectState } from '@/models/connect'
 import { ShopInfo } from '@/interfaces/shop';
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
 import { ShopBasisType } from '@/enums'
-import styles from './index.less'
-import { getShopBasicInfoApi } from '@/api/shop'
-import { ShopBasicInfo, InitShopBasicInfoParams } from '@/interfaces/shop'
+import { InitShopBasicInfoParams } from '@/interfaces/shop'
 import ShopBasicInfoForm from './components/form'
 
 

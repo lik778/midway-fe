@@ -64,11 +64,11 @@ const ShopCarouselPage = (props: any) => {
         </div>
         <div className={styles["wap"]}>
           <CarouselImg
-            tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸750*304'}
+            tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸750*750'}
             txt={'WAP端轮播图'}
             type={DeviceType.WAP}
             position={1}
-            aspectRatio={750 / 304}
+            aspectRatio={750 / 750}
           />
         </div>
       </div>

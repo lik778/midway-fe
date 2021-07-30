@@ -132,7 +132,7 @@ export const isNotLocalEnv = (): boolean => {
 */
 export const objToTargetObj = <T, K extends keyof T>(obj: T, key = 'key'): any[] => {
   if (!obj) return []
-  return Object.keys(obj).map((k) => ({ [key]: obj[k as K], value: k }))
+  return Object.keys(obj).map((k) => ({ [key]: obj[k as K], key: obj[k as K], value: k }))
 }
 
 /**

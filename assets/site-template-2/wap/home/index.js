@@ -2,14 +2,18 @@ import $ from 'jquery';
 import './index.styl'
 import '../layout/index'
 import '../components/swiper/index'
-import { aboutModule } from '../components/aboutus/index'
+import { initAboutus } from '../components/aboutus/index'
 import { leaveLeads } from '../components/contact-form/index'
 import { initCompanyInfo } from '../components/company-info-home/index'
+import { initProductListHot } from '../components/product-list-hot'
 import { initSem } from '../../../common/wap/contact-form-sem'
+import { initPopup } from '../../../common/wap/official-popup'
 
-aboutModule()
+initAboutus()
 leaveLeads()
 initCompanyInfo()
+initProductListHot()
+initPopup()
 
 // sem下禁止用户二跳 
 $(document).on("ready", function () {

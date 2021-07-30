@@ -29,9 +29,11 @@ export function usePagination(defaultVals: Partial<PaginationSetting>) {
   const [data, setData] = useState<Pagination>(getDefaultData())
 
   const reset = () => {
-    // setConf(getDefaultConf(defaultVals))
     setData(getDefaultData())
   }
+  const resetConf = useCallback((newConf: Partial<PaginationSetting>) => {
+    setConf(Object.assign(conf, newConf))
+  }, [conf])
 
-  return [data, setData, conf, setConf, reset] as const
+  return [data, setData, conf, resetConf, reset] as const
 }

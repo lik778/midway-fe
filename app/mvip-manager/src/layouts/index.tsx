@@ -59,7 +59,11 @@ const Layouts = (props: any) => {
           </Header>
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
             onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
-            { isNull(menuList) && <div style={{ padding: 20 }}><Skeleton active title={false} paragraph={{ rows: 4 }} /></div> }
+            { isNull(menuList) && (
+                <div style={{ padding: 20 }}>
+                  <Skeleton active title={false} paragraph={{ rows: 4 }} />
+                </div>
+            )}
             {
               menuList && menuList.map((subMenu: MidMenuItem) => {
                 return (

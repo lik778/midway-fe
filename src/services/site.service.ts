@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { RequestService } from './request.service';
 import { PageHeaderParams, HeaderAuthParams, ServiceResponse, ShopComponents } from '../interface';
 import { LogService } from './log.service';
-import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY ,COOKIE_CHAOREN_USER_KEY} from '../constant/cookie';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
 import { apiSecret } from 'src/constant';
 export type analyticsParams = {
   ip: string,
@@ -33,14 +33,18 @@ export class SiteService {
     this.midwayPrefixPath = `${host}/api/midway/backend`
     this.analyticsPrefix = `${host}/api/midway/internal`
   }
-  
+
   public shieldCheck(params): Promise<ServiceResponse<any>> {
-    return this.requestService.post(`${this.analyticsPrefix}/waf/check`, params, { 'content-type': 'application/json',
-    'x-api-secret': apiSecret })
+    return this.requestService.post(`${this.analyticsPrefix}/waf/check`, params, {
+      'content-type': 'application/json',
+      'x-api-secret': apiSecret
+    })
   }
   public async shieldGet(params): Promise<ServiceResponse<any>> {
-    return this.requestService.post(`${this.analyticsPrefix}/waf/get`, params, { 'content-type': 'application/json',
-    'x-api-secret': apiSecret })
+    return this.requestService.post(`${this.analyticsPrefix}/waf/get`, params, {
+      'content-type': 'application/json',
+      'x-api-secret': apiSecret
+    })
   }
 
   public getShopName(shopName: string): string {
@@ -53,10 +57,12 @@ export class SiteService {
 
   // 测试环境需要设置domian
   private getDomain(domain: string): string {
-    if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1) {
+    if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1 || domain.indexOf('192.168') !== -1) {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       domain = 'zmlc2b.shop-test.baixing.cn'
       // domain = 'hongtest1.shop-test.baixing.cn'
+      // domain = 'hongtest1.shop-test1.baixing.cn'
+      // domain = 'hongtest1.shop-test`2.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
       // domain = 'shop-test.baixing.cn'
@@ -72,13 +78,13 @@ export class SiteService {
     return domain
   }
 
-  private setGetUserInfoHeaders(cookies: any, domain: string): HeaderAuthParams {
+  private setGetUserInfoHeaders(cookies: any, domain: string): Partial<HeaderAuthParams> {
     /**切换domain.根据后端分支和模板类型选择 */
     return {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
-      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig,'').split('-')[0]) || '',
+      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }

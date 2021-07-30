@@ -2,7 +2,7 @@
 .bx-header-red
   .cm-nav-bar
     background #f2f2f2
-    height 56px
+    height 50px
     line-height 1.4
     overflow hidden
     //position relative
@@ -17,16 +17,18 @@
       //top 0
 
     .bx-nav-logo
-      margin-right 2vw
-      padding 12px 7px
-      .bx-logo
+      padding 0 9px 0 12px
+      .cn-icon
+        height 24px
+      .cm-icon
         height 26px
-        //background url('//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png') no-repeat center center/100%
   .bx-nav-search
-    width 50vw
+    flex 1
     position relative
     .search-form
       margin-bottom 0
+      border-radius: 4px
+      overflow: hidden
       .search-query
         color #fff
         box-sizing border-box
@@ -34,8 +36,8 @@
         border-radius 0
         width 100%
         border 0
-        height 36px
-        line-height 36px
+        height 28px
+        line-height 28px
         padding-left 30px
         padding-right 18px
         outline none
@@ -68,16 +70,18 @@
         color #fff
         position absolute
         left 10px
-        top 12px
+        top 50%
+        transform: translateY(-50%)
         opacity 0.8
 
   .cm-nav-bar-right
-    width 35vw
     display flex
     justify-content flex-end
+    margin-left 17px
     .bx-nav-btnlast-of-type
       padding-right 0
     a.bx-nav-btn
+      width: 30px
       color #fff
       //margin-top 8px
       padding 0 10px

@@ -1,101 +1,75 @@
-  @keyframes animatedTitle {
-  0% {
-    left 100%
-    transform translateX(0)
-  }
-
-  100% {
-    left 0
-    transform translateX(-100%)
-  }
-}
-
 .company-info
-  margin-bottom 15px
-  padding 20px
+  padding 12px 15px 20px
   background-color #fff
   .info
     display flex
     justify-content flex-start
     align-items flex-start
-    margin-bottom 20px
+    margin-bottom 16px
     .info-logo
       width 50px
       height 50px
-      margin-right 12px
+      margin-right 10px
       border-radius 5px
     .info-text
       max-width calc(100% - 62px)
       flex-grow  1
-      .animate
-          position relative
-          overflow hidden
-          white-space nowrap
-          text-align center
-          height 30px
-        .animate-title
-          position absolute
-          display inline-block
-          margin-bottom 7px
-          font-size 18px
-          font-weight bold
-          color #333333
-          animation animatedTitle 5s linear 0s infinite
       .info-name
-          margin-bottom 7px
-          font-size 18px
-
-
+        margin-bottom 5px
+        font-size 18px
+        font-weight: bold;
+        color: #333333;
+        line-height: 26px
       .info-tag-list
         display  flex
         justify-content flex-start
         align-items  center
         .info-tag
-          height 18px
+          height 16px
           padding 0 4px
-          line-height 18px
-          background #EAF0FF
           text-align center
-          border-radius 2px
           font-size 10px
-          color #6483DB
+          color #D19960
+          border-radius: 2px;
+          border: 1px solid #D19960
           &+.info-tag
             margin-left 10px
   .desc
-    padding 14px 22px
+    padding 8px 10px 10px
     position relative
     background #F6F6F6
     border-radius 8px
     font-size 12px
-    color #666666
     line-height 20px
     .desc-text
-      margin-bottom 8px
+      margin-bottom 6px
       overflow hidden
       word-break break-all
+      color #666666
       &.hide
-        height 40px
+        height 60px
     .top-left,.bottom-right
       width 13px
       height 12px
       position absolute
     .top-left
       top  -6px
-      left 10px
+      left 5px
     .bottom-right
-      right 10px
+      right 5px
       bottom -6px
     .action-btn-box
       display flex
       justify-content flex-end
+      margin-right 15px
       .action-btn
         box-sizing border-box
         height 18px
         padding 0 6px
         line-height 16px
         border-radius 2px
-        border 1px solid #FF6536
+        border 1px solid #ed4646
         font-size 12px
-        color #FF6536
+        color #ed4646
         &.hide
           display none
