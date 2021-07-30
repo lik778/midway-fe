@@ -82,6 +82,7 @@ nest-build:
     expire_in: 24 hrs
     paths:
       - dist/
+      - node_modules/
 
 mvip-build:
   stage: build
@@ -106,6 +107,8 @@ mvip-build:
     expire_in: 24 hrs
     paths:
       - app/mvip-manager/dist/
+      - node_modules/
+      - app/mvip-manager/node_modules/
 
 release:
   stage: release
