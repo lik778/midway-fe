@@ -25,4 +25,9 @@ export class ManagementController {
     const managementData = await this.managementService.getManagementData(req, body);
     res.json(managementData)
   }
+
+  @Post('/api/internal')
+  async managementInternalAPI(@Req() req: Request, @Res() res: Response, @Body() body: ApiQeqDTO) {
+    res.json(await this.managementService.requestInternal(req, body))
+  }
 }

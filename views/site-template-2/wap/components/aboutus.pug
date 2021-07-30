@@ -1,41 +1,37 @@
 mixin aboutus(pageType)
-    .aboutus
-        h2.block-title 企业介绍
-            span
-            span
-        a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-            .aboutus-icon
-                img(src="//file.baixing.net/202102/85b0547ecbe60ea1c7b2deb89da745b8.png", alt="address logo")
-            .aboutus-text
-                span 公司地址：
-                    | #{ company.address }
+  .aboutus
+    .aboutus-block-title 联系我们
+    .aboutus-block-content 
+      a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
+        img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
+        span.aboutus-text.only-oneline 公司地址：
+          span.aboutus-info #{ company.address }
+        .more
+      a.aboutus-item(href="tel:" + phone.content)
+        img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
+        span.aboutus-text.only-oneline 联系电话：
+          span.aboutus-info #{ phone.content }
+        span.copy-data.phone(data-value=phone.content) 点击拨打
+      if phone2.content
+        a.aboutus-item(href="tel:" + phone2.content)
+          img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
+          span.aboutus-text.only-oneline 联系电话2：
+            span.aboutus-info #{ phone2.content }
+          span.copy-data.phone(data-value=phone2.content) 点击拨打
+      if weChat.content
         .aboutus-item
-            .aboutus-icon
-                img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
-            .aboutus-text
-                span 联系电话：#{ phone.content }
-        if phone2.content
-            .aboutus-item
-                .aboutus-icon
-                    img(src="//file.baixing.net/202102/248d7666010cbc96823b2d60f26acc47.png", alt="phone logo")
-                .aboutus-text
-                    span 联系电话2：#{ phone2.content }
-        .aboutus-item
-            .aboutus-icon
-                img(src="//file.baixing.net/202102/bb07720be8eacc686f3f1aa80ba28347.png", alt="wechat logo")
-            .aboutus-text
-                span 微信号码：#{ weChat.content || "暂未添加微信号" }
+          img.aboutus-icon(src="//file.baixing.net/202105/436dfb09de131dedfe9ebaaee31474a5.png", alt="wechat logo")
+          span.aboutus-text.only-oneline 微信号码：
+            span.aboutus-info #{ weChat.content }
+          span.copy-data#wechat(data-value=weChat.content) 点击复制
 
-        //-TODO：这里不知道未来还改吗？目前首页特殊要求，不加
-        if pageType != 'home'
-            .aboutus-content
-                //- p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
-                //- p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-                //- #aboutus-click-to-expand.click-to-expand.active 点击展开
 
-                if pageType === 'about'
-                    p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
-                else
-                    p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
-                    p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-                    #aboutus-click-to-expand.click-to-expand.active 点击展开
+      //-TODO：这里不知道未来还改吗？目前首页特殊要求，不加
+      if pageType != 'home'
+        .aboutus-content-box
+          if pageType === 'about'
+            p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
+          else
+            p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+            p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
+            #aboutus-click-to-expand.click-to-expand.active 点击展开

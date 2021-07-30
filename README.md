@@ -67,20 +67,25 @@ mvip-manager                        //后台代码
 ├── tsconfig.json  
 └── typings.d.ts  
 
- ## 【本地开发注意】
- ### 确认domain值
+## 【本地开发注意】
+
+### 确认domain值
  - 不同类型的店铺，后端所在的环境，决定了localhost开发时我们使用哪个domain
 详见 src/services/site.service.ts文件36行
+
 ### 确认是否已模拟cookies
  - 在localhost本地开发环境，开发mvip-manager管理后台时, 前端需要在浏览器Application中复制调试账户cookies里的3个字段
 __c、__u、__t
+
 ### 【测试账号】
 18516566605/baixing123
 
 ## 【views模板层启动】
 - 在midway-fe文件下：npm run dev
+
 ## 【管理后台启动】
 - 在midway-fe/app/mvip-manager下：yarn start
+
 ## 【测试环境】
 代码提交到fenlei对应分支后，
 test分支测试环境：http://shop-test.baixing.cn/management/shop  
@@ -102,6 +107,7 @@ X-Api-User : 226337262
 X-Api-Token : ut60616cfbacfd27.86398476  
 X-Api-Src : web  
 X-Api-Shop-Id : 366  
+
 ## 【Mock数据】
 - 需要有某种店铺的类型及数量：后端打api/midway/internal/ticket/yht/buy接口
 - 需要有店铺Ai权限：买套餐或请求后端协助

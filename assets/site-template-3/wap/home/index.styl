@@ -4,7 +4,7 @@
 @import "../components/home-title"
 @import "../components/contact-us-form"
 @import "../components/product-list"
-@import "../components/user-defined-module"
+@import "../components/user-defined-module-new"
 @import "../components/aboutus"
 @import "../components/news-list-module"
 @import "../components/news-list"
@@ -12,6 +12,8 @@
 @import "../components/company-info"
 // 用于sem投放 禁止外跳 弹窗样式
 @import "../../../common/wap/contact-form-sem"
+// 用于弹出的弹窗
+@import "../../../common/wap/official-popup"
 
 //B2C模板2轮播图高度时特殊的1：1
 .swiper-container
@@ -19,8 +21,37 @@
 
 .contact-us-block
   background-color #fff
-  margin-bottom 15px
+  .contact-us-block-title 
+    padding: 32px 0 30px
+    font-size: 18px;
+    line-height: 18px
+    font-weight: bold;
+    letter-spacing: 1px
+    color: #333333;
+    text-align: center
+    .red
+      color: $color-main
 
+.product-block-title
+  padding:  22px 0 20px
+  position relative
+  text-align: center
+  font-size: 20px;
+  font-weight: bold;
+  color: #333333;
+  line-height: 20px;
+  &::after
+    content ''
+    display: block
+    width: 80px
+    height: 8px
+    position: absolute
+    left: 50%
+    top: 65%
+    transform: translateX(-50%)
+    background-color: rgba(#FFDEE1,.9) 
+    z-index -1
+    
 .product-more-btn
   display block
   height 44px

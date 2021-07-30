@@ -1,0 +1,92 @@
+.page-audit-image .preview-img-con {
+  position: relative;
+  width: 150px;
+}
+.page-audit-image .preview-img-con:hover .mask {
+  opacity: 1;
+}
+.page-audit-image .preview-sm-image {
+  width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  object-position: top;
+}
+.page-audit-image .mask {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  opacity: 0;
+  transition: .35s;
+  cursor: pointer;
+}
+.image-preview-modal {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.image-preview-modal .image-wrapper {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px;
+  width: 100vw;
+  height: 100vh;
+  user-select: none;
+  overflow: hidden;
+  transition-delay: .5s;
+}
+.image-preview-modal .image-wrapper.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image-preview-modal .image-wrapper.active img {
+  width: auto;
+}
+.image-preview-modal .image-wrapper img {
+  width: 0%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  transition: .5s;
+}
+.image-preview-modal .ant-modal {
+  top: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  transition: none;
+}
+.image-preview-modal .ant-modal-content {
+  background: transparent;
+  box-shadow: unset;
+}
+.image-preview-modal .ant-modal-close-x {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 60px 15vw 0 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  line-height: 23px;
+  border: solid 2px white;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}

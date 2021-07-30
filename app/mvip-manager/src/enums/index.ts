@@ -1,6 +1,7 @@
 export enum ShopModuleType {
   PRODUCT = 'product',
-  ARTICLE = 'article'
+  ARTICLE = 'article',
+  IMAGESET = 'imageset'
 }
 
 export enum ProductType {

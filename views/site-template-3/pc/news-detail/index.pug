@@ -4,6 +4,7 @@ block styles
 
 block content
   include ../components/common/base-swiper.pug
+  +baseSwiper('360px')
   if !isSem
     include ../components/common/breadcrumbs.pug
   - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo

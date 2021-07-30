@@ -5,7 +5,7 @@ import { Tabs } from 'antd';
 import CreateJob from '../components/zhidao-create-job';
 import JobList from '../components/zhidao-job-list';
 import BasicMaterial from '../components/basic-material';
-
+import styles from './index.less'
 const { TabPane } = Tabs;
 
 export type ActiveKey = 'job-list' | 'create-job' | 'basic-material'
@@ -31,7 +31,7 @@ const AiZhidaoPage = (props: any) => {
     setActiveKey(key)
   }
 
-  return (<>
+  return (<div className={styles['ai-zhidao']}>
     <MainTitle title="问答AI" />
     <Tabs activeKey={activeKey} onChange={(activeKey) => changeActiveKey(activeKey as ActiveKey)}>
       <TabPane tab="任务列表" key="job-list">
@@ -44,7 +44,7 @@ const AiZhidaoPage = (props: any) => {
         <BasicMaterial {...props} />
       </TabPane>
     </Tabs>
-  </>)
+  </div>)
 }
 
 AiZhidaoPage.wrappers = ['@/wrappers/path-auth']

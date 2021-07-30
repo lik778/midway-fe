@@ -4,8 +4,11 @@ mixin swiper(data, type)
       .swiper-wrapper
         each item in data
           .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
-      if data.length > 1
-        .swiper-pagination
+      if type === 'home'
+        .num-tip #{data.length}张图片
+      else
+        if data.length > 1
+          .swiper-pagination
 
     else
       if type === 'home'

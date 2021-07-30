@@ -4,18 +4,20 @@ import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
 import WildcatForm from '@/components/wildcat-form';
 import { contactForm } from '../../config';
-import { KF53Info, QQItem, UserEnterpriseInfo } from '@/interfaces/user';
+import { KF53Info, QQItem, UserEnterpriseInfo, SaveEnterpriseContactInfoApiParams } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
 import { formUnvalid, isEmptyObject } from '@/utils';
 import genNewUserModal from '../new-user-modal';
 import KF53 from '../kf53';
-import { QQCustomService } from '../qq-custom-service';
+import QQCustomService from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { isNewUserApi } from '@/api/shop';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import styles from './index.less';
+
+
 
 function ContactForm(props: any) {
   const { companyInfo, setCompanyInfo } = props
@@ -31,6 +33,9 @@ function ContactForm(props: any) {
   const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
   // 53客服表单的form
   const kf53Ref = useRef<{ form: FormInstance<any> }>()
+  // 53客服表单的form
+  const QQRef = useRef<{ form: FormInstance<any> }>()
+
 
   const formChange = (changeValue: any, allValues: any) => {
     setHasEditForm(true)
@@ -50,11 +55,10 @@ function ContactForm(props: any) {
   const saveInfo = async () => {
     // 这里的校验是分两段校验的  微笑
     // 校验电话联系人  , 校验53客服
-    await Promise.all([formInstance?.validateFields(),kf53Ref.current?.form.validateFields()])
+    await Promise.all([formInstance?.validateFields(), kf53Ref.current?.form.validateFields(), QQRef.current?.form.validateFields()])
     let qqMap: any = null
     if (qqList.length > 0) {
-      qqMap = {}
-      qqList.forEach(x => qqMap[x.qq] = x.name)
+      qqMap = qqList
     }
     const clonedCompanyInfo = cloneDeepWith(companyInfo)
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
@@ -77,7 +81,7 @@ function ContactForm(props: any) {
       info.kefuStatus = KFStatus.CLOSE
     }
     setLoading(true)
-    const res = await saveEnterpriseContactInfoApi(info)
+    const res = await saveEnterpriseContactInfoApi(info as SaveEnterpriseContactInfoApiParams)
     setLoading(false)
     if (res?.success) {
       setCompanyInfo(info)
@@ -98,7 +102,7 @@ function ContactForm(props: any) {
         <KF53 editDataSource={companyInfo} onChange={KF53Change} ref={kf53Ref} />
       </Form.Item>
       <Form.Item label="QQ客服" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
-        <QQCustomService companyInfo={companyInfo} onChange={QQChange} />
+        <QQCustomService companyInfo={companyInfo} onChange={QQChange} ref={QQRef} />
         <div className={styles['contact-form-btn-box']} >
           <Button disabled={!hasEditForm} loading={loading} className={styles['btn']} type="primary" size="large" onClick={saveInfo}>保存</Button>
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
@@ -108,4 +112,8 @@ function ContactForm(props: any) {
   )
 }
 
-export default connect(userMapStateToProps, userMapDispatchToProps)(ContactForm)
+interface Props {
+  back: () => void
+}
+
+export default connect<any, any, Props>(userMapStateToProps, userMapDispatchToProps)(ContactForm)

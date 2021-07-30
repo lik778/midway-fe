@@ -24,6 +24,11 @@ export const leaveLeads = function () {
                 alert('请留下您的联系方式')
                 return false
             }
+            const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/;
+            if(!phoneFliterRules.test(data.contact)){
+                alert('请输入正确的联系方式')
+                return false
+            }
             if (data.contact.length > 50) {
                 alert('联系方式最多50个字符')
                 return false

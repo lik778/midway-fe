@@ -1,11 +1,12 @@
 import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
-import { FormConfig, FormItem, OptionCheckBox, OptionItem, CustomerFormItem } from '@/components/wildcat-form/interfaces';
+import { FormItem, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
+import MetasSelect from './components/metas-select'
 import { isEmptyObject } from '@/utils';
 import styles from './index.less'
 
@@ -13,22 +14,7 @@ const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
-
-interface Props {
-  config: FormConfig;
-  onInit?(form: any): void;
-  //父传的表单数据
-  editDataSource?: any;
-  submit?(values: any): void;
-  formChange?(changeValue: any, allValues: any): void;
-  className?: string;
-  onClick?: any;
-  loading?: boolean;
-  submitBtn?: ReactNode;
-}
-
-
-const WildcatForm = (props: Props, parentRef: Ref<any>) => {
+const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm();
   const { editDataSource, onInit, loading, config } = props
 
@@ -107,6 +93,10 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
 
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
     return FormItemList.map(item => {
+      // 需要隐藏则返回空
+      if (item.hidden) {
+        return <></>
+      }
       if (isCustomerFormItem(item)) {
         return item.node
       }
@@ -143,7 +133,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
-                  <ImgUpload key={img.text} text={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} />
+                  <ImgUpload uploadType={img.uploadType} key={img.text} uploadBtnText={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
                 </Form.Item>
                 )
               })
@@ -168,7 +158,7 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
         </Form.Item>)
       } else if (item.type === FormType.AreaSelect) {
         const value = getEditData(item.name || '');
-        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol}>
           <AreaSelect width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
         </Form.Item>)
       } else if (item.type === FormType.GroupSelect) {
@@ -190,14 +180,19 @@ const WildcatForm = (props: Props, parentRef: Ref<any>) => {
             maxNum={item.maxNum || 0}
             onChange={(newValue) => onChange(newValue, item.name || '')} />
         </Form.Item>)
-      } else if (item.type === FormType.MetaChecbox && item.display) {
-        return (
-          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
-            <CheckboxGroup
-              options={item.options as OptionCheckBox[]}
-            />
-          </Form.Item>
-        )
+      }
+      // else if (item.type === FormType.MetaSelect) {
+      //   return (
+      //     <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+      //       <CheckboxGroup
+      //         options={item.options as OptionCheckBox[]}
+      //       />
+      //     </Form.Item>
+      //   )
+      // }
+      else if (item.type === FormType.MetaSelect) {
+        const value = getEditData(item.name || '');
+        return <MetasSelect item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} ></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
         return (
           <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>

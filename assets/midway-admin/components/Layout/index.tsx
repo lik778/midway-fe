@@ -21,8 +21,11 @@ export default withRouter((props) => {
           </Header>
           <Menu mode="inline" id="base-menu" defaultSelectedKeys={[menuKey]}>
             <SubMenu key="verify" title="审核">
+              <Menu.Item key="audit-image">
+                <Link to="/audit-image" key="audit-image">图片审核</Link>
+              </Menu.Item>
               <Menu.Item key="verify-word">
-                <Link to="/verify-word" key="verify-word" >词根审核</Link>
+                <Link to="/verify-word" key="verify-word">词根审核</Link>
               </Menu.Item>
             </SubMenu>
             <Menu.Item key="switch-shop-type">

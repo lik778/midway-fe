@@ -41,7 +41,6 @@ lerna-debug.log*
 /app/mvip-manager/npm-debug.log*
 /app/mvip-manager/yarn-error.log
 /app/mvip-manager/yarn.lock
-/app/mvip-manager/package-lock.json
 
 # production
 /app/mvip-manager/dist
