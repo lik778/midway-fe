@@ -44,7 +44,6 @@ export class UpyunController {
     }
   }
 
-
   request_url_scheme(req: Request, with_colon = false) {
     let $return = 'https';
     // let $return = req.protocol === 'https' ? 'https' : 'http';

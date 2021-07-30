@@ -26,8 +26,6 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
 import { AnalyticsController } from './controllers/analytics.controller';
 import { SemController } from './controllers/sem.controller'
 
-
-
 /**
  * 应用程序根模块
  */
