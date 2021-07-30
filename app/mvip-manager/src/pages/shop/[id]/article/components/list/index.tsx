@@ -63,7 +63,7 @@ export default (props: Props) => {
         return <>
           <span style={{
             color: text === AuditStatus.APPROVE ? '#999' :
-              (AuditStatus.REJECT ? '#F1492C' : ''),
+              (text === AuditStatus.REJECT ? '#F1492C' : ''),
             marginRight: 4
           }}>{auditStatusText[text]}</span>
           {
