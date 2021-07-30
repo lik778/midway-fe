@@ -2,56 +2,58 @@ extends ../layout.pug
 include ../components/home-title.pug
 
 block styles
-    :combine(fileName="site-template-3-home-wap.css")
+  :combine(fileName="site-template-3-home-wap.css")
 
 
 block header
-    if !isSem
-        .float-nav
-            include ../components/drawer-nav
+  if !isSem
+    .float-nav
+      include ../components/drawer-nav
             
 block append header
-    include ../components/swiper
-    - const { banner }= renderData
-    +swiper(banner, 'home')
+  include ../components/swiper
+  - const { banner }= renderData
+  +swiper(banner, 'home')
 
 block content
-    //-公司信息
-    include ../components/company-info
+  include ../../../common/wap/official-popup.pug
+  +official-popup({formId:'#contactForm'})
+  //-公司信息
+  include ../components/company-info
 
-    .contact-us-block
-      +home-title('联系我们')
-      include ../components/contact-us-form
+  .contact-us-block
+    .contact-us-block-title 
+      | 联系我们，获取
+      span.red 详细信息
+    include ../components/contact-us-form 
 
-    - productList = renderData.productList.result
-    if productList && productList.length > 0
-        +home-title('服务项目')
-        include ../components/product-list.pug
-        +product-list(productList.slice(0,4))
-    if productList && productList.length >= 4 && productLink
-        a.product-more-btn(href=productLink) 查看更多
+  - productList = renderData.productList.result
+  if productList && productList.length > 0
+    .product-block-title 服务项目
+    include ../components/product-list.pug
+    +product-list(productList.slice(0,4))
 
-    //-TODO：自定义模块
-    - const userDefinedList = renderData.autoConfig
-    if userDefinedList && userDefinedList.length>0
-        include ../components/user-defined-module.pug
-        +user-defined-module('home',userDefinedList)
+  //-TODO：自定义模块
+  - const userDefinedList = renderData.autoConfig
+  if userDefinedList && userDefinedList.length>0
+    include ../components/user-defined-module-new.pug
+    +user-defined-module-new(userDefinedList)
 
-    //-TODO:新闻资讯模块
-    include ../components/news-list-module.pug
+  //-TODO:新闻资讯模块
+  include ../components/news-list-module.pug
 
-    //-关于我们
-    include ../components/aboutus.pug
+  //-关于我们
+  include ../components/aboutus.pug
 
-    //-留言资讯模块
-    include ../components/contact-form.pug
-    
-    //- 用于sem禁止外跳
-    include ../../../common/wap/contact-form-sem.pug
-    +contactFormSem('#F46')
+  //-留言资讯模块
+  include ../components/contact-form.pug
+  
+  //- 用于sem禁止外跳
+  include ../../../common/wap/contact-form-sem.pug
+  +contactFormSem('#F46')
 
 block scripts
-    :combine(fileName="site-template-3-home-wap.js")
+  :combine(fileName="site-template-3-home-wap.js")
 block append scripts
-    script.
-        window.trackSrc = 'home';
+  script.
+      window.trackSrc = 'home';

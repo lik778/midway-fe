@@ -68,7 +68,7 @@ const ShopCarouselPage = (props: any) => {
             txt={'WAP端轮播图'}
             type={DeviceType.WAP}
             position={1}
-            aspectRatio={750 / 304}
+            aspectRatio={750 / 750}
           />
         </div>
       </div>

@@ -2,7 +2,10 @@ header.bx-header-red
    nav.cm-nav-bar
      .cm-nav-bar-left
       a.bx-nav-logo(href="//www.baixing.com/m/")
-        img.cm-icon.bx-logo(src=isCn?"//file.baixing.net/202107/0604b7871a5be0f563e05d6f21cd69eb.png":"//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
+        if isCn
+          img.cn-icon.bx-logo(src="//file.baixing.net/202107/0604b7871a5be0f563e05d6f21cd69eb.png", alt="")
+        else 
+          img.cm-icon.bx-logo(src="//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
      .bx-nav-search
       - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
       form.search-form(action="javascript:return true")
