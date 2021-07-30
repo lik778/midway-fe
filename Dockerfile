@@ -6,15 +6,16 @@ COPY . .
 
 RUN npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
-    # npm ci && \
+    # ! ./dist
     npm ci --cache .npm --prefer-offline --quiet --no-progress && \
     npm run build:prod && \
     cd app/mvip-manager/ && \
     npm set registry https://registry.npm.taobao.org && \
     npm set progress=false && \
-    # npm ci && \
+    # ! ./app/mvip-manager/dist
     npm ci --cache .npm --prefer-offline --quiet --no-progress && \
     npm run build:prod && \
+    # !
     cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/
 
 EXPOSE 7001
