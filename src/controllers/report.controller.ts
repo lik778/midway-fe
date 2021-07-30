@@ -15,7 +15,7 @@ export class ReportController {
   messageReport(@Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
     res.render('report/share', {
       title: '留咨列表',
-      url: `//${ config().hostType.base || 'localhost' }/management/report/message?mobile=${device!=='pc'?1:0}&from=wechat`
+      url: `/management/report/message?mobile=${device!=='pc'?1:0}&from=wechat`
     })
   }
 
