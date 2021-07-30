@@ -14,14 +14,11 @@ const check = async function (fn) {
   }
 }
 
-const cmd = function (command) {
+const cmd = function (...args) {
   return new Promise((resolve, reject) => {
-    exec(command, (error, stdout) => {
-      console.log(error, stdout)
-      if (error) {
-        return reject(error)
-      }
-      return resolve(stdout || '')
+    exec(...args, (error, stdout) => {
+      if (error) return reject(error)
+      if (stdout) return resolve(stdout)
     })
   }).catch(error => {
     console.error(error)
