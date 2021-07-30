@@ -19,8 +19,7 @@
         "node:test1": "cross-env NODE_ENV=test1 node --max-http-header-size=16384 dist/main",
         "node:test2": "cross-env NODE_ENV=test2 node --max-http-header-size=16384 dist/main",
         "node:prod": "cross-env NODE_ENV=production node --max-http-header-size=16384 dist/main",
-        "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-        "release:test1": "node ./build/chore/release.js test1"
+        "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
     },
     "dependencies": {
         "@nestjs/common": "~7.0.0",
