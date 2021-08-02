@@ -10,7 +10,7 @@ import { reAuditImagesetImage } from '@/api/shop'
 import styles from './index.less'
 
 interface Props {
-  shopId: number;
+  shopId?: number;
   detail: ImageItem,
   itemHeight?: number
 }
