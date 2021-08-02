@@ -43,14 +43,28 @@ const ShopBox = (props: Props) => {
   }, [shopInfo])
 
   const versionRejectTip = useMemo(() => {
-    if (versionStatus === 3) {
-      const memo = shopInfo.newestDataVersion?.memo.slice(0, 19)
+    if (versionStatus === 3 || versionStatus === 1) {
+      let title = ''
+      let memo = ''
+      if (versionStatus === 3) {
+        title = '最新修改未通过审核'
+        memo = shopInfo.newestDataVersion!.memo?.slice(0, 19) || ''
+        if (shopInfo.newestDataVersion!.memo && shopInfo.newestDataVersion!.memo.length > 20) {
+          memo += '...'
+        }
+      } else {
+        title = '最新修改待发布'
+        memo = '本次修改需要发布审核后生效，请尽快发布店铺。'
+      }
+
       return <div className={styles['version-reject-tip']}>
         <ExclamationCircleFilled className={styles['icon']} />
         <div className={styles['content']}>
-          <div className={styles['title']}>最新修改未通过审核</div>
-          <div className={styles['text']}>{`${memo ? memo + (memo.length >= 20 ? '...' : '') : ''}`}</div>
-          <div className={styles['text']}>站内信查看详情</div>
+          <div className={styles['title']}>{title}</div>
+          <div className={styles['text']}>{memo}</div>
+          {
+            versionStatus === 3 && <div className={styles['text']}>站内信查看详情</div>
+          }
         </div>
       </div>
     } else {
@@ -64,7 +78,7 @@ const ShopBox = (props: Props) => {
         if (shopInfo.newestDataVersion) {
           switch (shopInfo.newestDataVersion.status) {
             case ShopVersionStatusEnum.INIT:
-              return <></>;
+              return <div className={`${styles['s-status']} ${styles["s-red"]}`}>修改未发布</div>;
             case ShopVersionStatusEnum.VERIFY:
               return <div className={`${styles['s-status']} ${styles["s-red"]}`}>审核中</div>;
             case ShopVersionStatusEnum.MACHINE_REJECT:
