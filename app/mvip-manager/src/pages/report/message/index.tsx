@@ -440,6 +440,6 @@ function Card (props: CardProps) {
   </div>
 }
 
-// LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
+LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
 
 export default LeaveMessagePage
