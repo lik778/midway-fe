@@ -305,7 +305,11 @@ function LeaveMessagePage() {
     // TODO REFACTOR components ListView
     return <div className="cards-con" ref={el => el && (cardsRef.current = el)}>
       {/* TODO refactor uid\from injection better than props */}
-      {dataSource.map((item: LeaveMessageListData) => <Card item={item} uid={uid} from={from} key={item.id} />)}
+      {dataSource.map((item: LeaveMessageListData, idx: number) => {
+        return (
+          <Card item={item} uid={uid} from={from} key={(item.id || item.time) + `-${idx}`} />
+        )
+      })}
       {loadMore && <div className='loading'>加载中...</div>}
       {noMore && <div className='loading'>没有更多啦~</div>}
     </div>
@@ -416,7 +420,7 @@ function Card (props: CardProps) {
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
       <div className="left">
-        <div className="title">{item.name}</div>
+        <div className="title">{item.name || `用户${item.contact}`}</div>
         <div className="date">{formatTime(+item.time)}</div>
       </div>
       <div className="right">
