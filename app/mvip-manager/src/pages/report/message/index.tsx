@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import moment from 'moment'
-import { Tabs, Form, Calendar } from 'antd'
+import { Tabs, Form } from 'antd'
 import { throttle } from 'lodash'
 import { PhoneFilled, DownOutlined } from '@ant-design/icons'
 
@@ -172,8 +172,14 @@ function LeaveMessagePage() {
       case '7day':
         range = getLastWeek(null, true)
         break
-      case '30day':
+      case '1mon':
         range = getLastMonth(null, true)
+        break
+      case '3mon':
+        range = [
+          moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
+          moment(moment().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+        ]
         break
     }
     if (range) {
@@ -200,21 +206,6 @@ function LeaveMessagePage() {
       setQuery({ timeStart, timeEnd })
     }
   }, [range, setQuery])
-
-  // 手机端选择日期后重新刷新列表
-  const onSelectDate = (date: any) => {
-    const range = getLast24Hours(date, true)
-    setPage(1)
-    setDataSource([])
-    setRange(range)
-    const [timeStart, timeEnd] = formatRange(range)
-    refreshList({
-      timeStart,
-      timeEnd,
-      page: 1,
-      size: PAGESIZE
-    })
-  }
 
   // PC端选择日期后重刷新列表
   const queryList = useCallback((searchQuery?: any) => {
@@ -286,7 +277,7 @@ function LeaveMessagePage() {
                 page,
                 form: queryForm,
                 dataSource: lists?.result,
-                setQuery: handleQuickQuery,
+                // setQuery: handleQuickQuery,
                 onSearch: queryList,
                 changePage: handleChangePage,
               })}
@@ -307,7 +298,12 @@ function LeaveMessagePage() {
       {/* TODO refactor uid\from injection better than props */}
       {dataSource.map((item: LeaveMessageListData, idx: number) => {
         return (
-          <Card item={item} uid={uid} from={from} key={(item.id || item.time) + `-${idx}`} />
+          <Card
+            item={item}
+            uid={uid}
+            from={from}
+            key={(item.id || item.time) + `-${idx}`}
+          />
         )
       })}
       {loadMore && <div className='loading'>加载中...</div>}
@@ -318,59 +314,20 @@ function LeaveMessagePage() {
   const $mobilePage = useCallback(() => {
     if (isMobile) {
       return <Tabs centered defaultActiveKey="1day" onChange={changeTab}>
-        <TabPane tab="今日" key="1day">
+        <TabPane tab="今 日" key="1day">
           {isFirstLoad && <Loading prevent toast />}
           {$cards('1day')}
         </TabPane>
-        <TabPane tab="近7日" key="7day">
+        <TabPane tab="近一周" key="7day">
           {isFirstLoad && <Loading prevent toast />}
           {$cards('7day')}
         </TabPane>
-        <TabPane tab="近30日" key="30day">
-          {$cards('30day')}
+        <TabPane tab="近一个月" key="1mon">
+          {$cards('1mon')}
         </TabPane>
-        <TabPane tab="自定义" key="custom">
+        <TabPane tab="近三个月" key="3mon">
           {isFirstLoad && <Loading prevent toast />}
-          {range.length === 0 ? (
-            <Calendar
-              disabledDate={(date: moment.Moment) => date > moment().endOf('day')}
-              fullscreen={false}
-              defaultValue={undefined}
-              dateCellRender={date => <div className="date-catcher" onClick={() => onSelectDate(date)} />}
-              headerRender={({ value, onChange }) => {
-                const year = value.year()
-                const month = value.month()
-                const prevYear = () => onChange(value.clone().year(year - 1))
-                const prevMonth = () => onChange(value.clone().month(month - 1))
-                const nextYear = () => onChange(value.clone().year(year + 1))
-                const nextMonth = () => onChange(value.clone().month(month + 1))
-                return (
-                  <div className="ant-picker-header">
-                    <button type="button" className="ant-picker-header-super-prev-btn" onClick={prevYear}>
-                      <span className="ant-picker-super-prev-icon"></span>
-                    </button>
-                    <button type="button" className="ant-picker-header-prev-btn" onClick={prevMonth}>
-                      <span className="ant-picker-prev-icon"></span>
-                    </button>
-                    <div className="ant-picker-header-view">
-                      <span className="ant-picker-year-btn">
-                        {year}年
-                      </span>
-                      <span className="ant-picker-month-btn">
-                        {month + 1}月
-                      </span>
-                    </div>
-                    <button type="button" className="ant-picker-header-next-btn" onClick={nextMonth}>
-                      <span className="ant-picker-next-icon"></span>
-                    </button>
-                    <button type="button" className="ant-picker-header-super-next-btn" onClick={nextYear}>
-                      <span className="ant-picker-super-next-icon"></span>
-                    </button>
-                  </div>
-                )
-              }}
-            />
-          ) : $cards('custom')}
+          {$cards('3mon')}
         </TabPane>
       </Tabs>
     }

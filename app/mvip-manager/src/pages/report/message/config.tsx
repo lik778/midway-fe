@@ -19,7 +19,7 @@ export const LeaveMessageSearchListConfig = ({
   total,
   page,
   dataSource,
-  setQuery,
+  // setQuery,
   onSearch,
   changePage,
 }: Partial<SearchListConfig> & any
@@ -37,16 +37,24 @@ export const LeaveMessageSearchListConfig = ({
       name: 'date',
       type: 'range-picker',
       ranges: {
-        '今日': [
+        '今 日': [
           moment(moment().format('YYYY-MM-DD')),
           moment(moment().format('YYYY-MM-DD'))
         ],
-        '近7天': getLastWeek(),
-        '近30天': getLastMonth(),
+        '近一周': getLastWeek(),
+        '近一个月': getLastMonth(),
+        '近三个月': [
+          moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
+          moment(moment().format('YYYY-MM-DD'))
+        ],
       },
       // @ts-ignore
       format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day'),
+      disabledDate: (date: moment.Moment) => {
+        const isFuture = date > moment().endOf('day')
+        const isOlderThan3Months = date < moment().subtract(3, 'months')
+        return isFuture || isOlderThan3Months
+      }
     },
     // 暂将快捷按钮移动到 range-picker 中
     // {
