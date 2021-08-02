@@ -9,7 +9,7 @@
         "start:mvip": "cd app/mvip-manager && npm start",
         "start": "npm run dev",
         "dev": "cross-env NODE_ENV=local concurrently  \"webpack -c ./build/webpack.dev.config.js\" \"nest start --watch\"",
-        "build:mvip": "cd app/mvip-manager && npm run build:dev",
+        "build:mvip": "cd app/mvip-manager && npm run build",
         "build:nest": "nest build",
         "build:audit": "webpack -c ./build/webpack.prod.config.js",
         "node:dev": "node --max-http-header-size=16384 dist/main",

@@ -124,6 +124,7 @@ mvip-build:
       - app/mvip-manager/node_modules/
     policy: pull
   script:
+    - export ENV=dev
     - npm run build:mvip
   artifacts:
     expire_in: 24 hrs
