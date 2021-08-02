@@ -1,0 +1,31 @@
+.menu-container {
+  padding: 30px 20px;
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #d8d8d8;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.05);
+    .name {
+      font-size: 14px;
+      color: #333333;
+      line-height: 18px;
+    }
+    .info-icon {
+      color: #1890ff;
+    }
+    &.active {
+      background: #eef6ff;
+      border: 1px solid #096dd9;
+      .name {
+        color: #096dd9;
+      }
+    }
+  }
+}
+.thumbnail {
+  width: 200px;
+}

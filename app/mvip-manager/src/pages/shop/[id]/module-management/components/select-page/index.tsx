@@ -6,28 +6,21 @@ const Option = Select.Option
 
 
 interface Props {
+  pageOptions: {
+    key: PageType,
+    label: string
+  }[],
   page: PageType
   handleChangePage: (value: PageType) => void
 }
 
 const SelectPage: FC<Props> = (props) => {
-  const { page, handleChangePage } = props
-  const [selectOptions] = useState<{
-    key: PageType,
-    label: string
-  }[]>([{
-    key: 'home',
-    label: '首页'
-  }, {
-    key: 'article-detail',
-    label: '文章详情页'
-  }])
-
+  const { pageOptions, page, handleChangePage } = props
   return <div className={styles['container']}>
     <div className={styles['label']}>页面</div>
     <Select className={styles['select']} size="large" onChange={handleChangePage} value={page} >
       {
-        selectOptions.map(item => <Option key={item.key} value={item.key}>{item.label}</Option>)
+        pageOptions.map(item => <Option key={item.key} value={item.key}>{item.label}</Option>)
       }
     </Select>
   </div>
