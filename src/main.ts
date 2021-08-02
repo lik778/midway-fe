@@ -14,7 +14,6 @@ import { LogService } from './services/log.service'
  * 用来启动http服务器，它允许应用程序等待入站http请求
  */
 async function bootstrap() {
-  const log = new LogService()
   // 默认情况下使用@nestjs/plateform-express 包。
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.use(cookieParser());
