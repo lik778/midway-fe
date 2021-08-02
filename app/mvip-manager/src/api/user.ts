@@ -42,8 +42,12 @@ export const getUserVerifyListApi = (): Promise<ServiceResponse<VerifyItem[]>> =
   return postApiData(ServicePath.SHOP, 'midway/backend/user/getVerifyList', {})
 }
 
+//获取二级meta信息
+export const getSecondCategoryMetas = (params: any): Promise<ServiceResponse<any>> => {
+  return postApiData(ServicePath.SHOP, `midway/backend/user/getSecondCategoryMetas?categoryId=${params}`, {})
+}
+
 //获取三级meta信息
-//postApiData至少要有2个参数，只有一个时要加个{}
 export const getThirdCategoryMetas = (params: any): Promise<ServiceResponse<any>> => {
   return postApiData(ServicePath.SHOP, `midway/backend/user/getThirdCategoryMetas?categoryId=${params}`, {})
 }

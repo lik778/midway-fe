@@ -1,6 +1,7 @@
 import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum } from '@/enums/shop';
-
+import { ListRes } from '@/interfaces/base';
+import { ShopMetas } from '@/interfaces/user'
 export interface RouteParams {
   id: string;
 }
@@ -205,14 +206,20 @@ interface ShopBasicInfoParams {
   contactMobile2: string,
   wechat: string,
 }
+
 export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
+  firstCategory: { [key: string]: string };
+  metas: ShopMetas
   area: {
     [key: string]: string
   }
 }
 
 export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
-  area: string[],
+  area:  {
+    [key: string]: string
+  },
+  metas: ShopMetas
 }
 
 // 请求填充参数
@@ -251,3 +258,120 @@ export interface BannerListItem {
   status: number
   weight: number
 }
+
+export interface GetImagesetAlbumParam {
+  page: number;
+  size: number;
+}
+
+export interface CreateImagesetAlbumParam {
+  name: string;
+}
+
+export interface UpdateImagesetAlbumParam {
+  id: number;
+  name?: string;
+  cover?: number;
+}
+
+export interface GetImagesetImageParam {
+  mediaCateId?: number;// 获取图库内所有图片则不传，某个图册则传
+  page: number;
+  size: number;
+}
+
+export interface CreateImagesetImageParam {
+  imgUrl: string;
+  mediaCateId?: number; // 不传则上传到默认图库
+}
+
+export interface ReAuditImagesetImageParam {
+  id: number
+}
+
+export type DelImagesetAlbumParam = number[]
+
+export interface DelImagesetImageParam {
+  ids: number[];
+  mediaCateId: number;
+}
+
+export interface UpdateImagesetImageParam {
+  id: number;
+  mediaCateId: number;
+}
+
+export interface MoveImagesetImageParam {
+  id: number;
+  mediaCateId: number;
+}
+
+export interface GetImagesetAlbumRes {
+  mediaCateBos: {
+    totalRecord: number;
+    result: AlbumItem[]
+  }
+}
+
+export interface GetImagesetImageRes {
+  mediaImgBos: ListRes<ImageItem[]>
+}
+
+export interface GetImagesetFailedImageParam {
+  page: number;
+  size: number;
+}
+
+export interface GetImagesetFailedImageRes {
+  mediaImgBos: ListRes<ImageItem[]>
+}
+
+export interface AlbumNameListItem {
+  id: number,
+  name: string,
+  type: AlbumType
+}
+
+export interface AlbumImageListItem {
+  id: number,
+  url: string
+  status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
+}
+
+// 默认相册/普通相册：默认相册不能编辑、删除
+export type AlbumType = 'DEFAULT' | 'NORMAL'
+
+// 相册
+export type AlbumItem = {
+  id: number,
+  name: string,
+  coverUrl: string,
+  totalImg: number,
+  type: AlbumType
+}
+
+
+export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
+export type ImageType = 'NOT_COVER' | 'COVER'
+/**
+ * @description 相册图片类型
+ * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
+ */
+export type ImageItem = {
+  id: number,
+  name?: string,
+  imgUrl: string,
+  type: ImageType,
+  checkStatus: CheckStatusType,// 状态
+  reason: string,// 驳回理由
+}
+
+export type CardItem = AlbumItem | ImageItem
+
+// 相册管理目录层级类型
+export type TabScopeItem = {
+  item: CardItem | null
+  type: 'album' | 'image' | 'audit'
+}
+export type TabScope = TabScopeItem[]
+

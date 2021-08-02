@@ -28,11 +28,17 @@ export class LogService {
   }
 
   public errorLog(err: any) {
-    if (err.isAxiosError)  {
-      const resError = err.response.data
-      getLogger().error(
-        `request: ${JSON.stringify(err.config)}
-         response: ${JSON.stringify(resError)}`)
+    if (err.isAxiosError) {
+      if (err.response) {
+        const resError = err.response.data
+        getLogger().error(
+          `request: ${JSON.stringify(err.config)}
+           response: ${JSON.stringify(resError)}`)
+      } else {
+        getLogger().error(
+          `request: ${JSON.stringify(err.config)}
+          err: ${JSON.stringify(err.response)}`)
+      }
     } else {
       getLogger().error(err)
     }

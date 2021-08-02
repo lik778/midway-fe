@@ -7,7 +7,7 @@ block styles
 //-使用了统一的header和nav
 block content
 		include ../components/common/base-swiper.pug
-
+		+ baseSwiper('540px')
 		.container
 				//-自身优势
 				- selfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',icon:'//file.baixing.net/202105/c8f81a54a43830099bdc04f4b424da4c.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',icon:'//file.baixing.net/202105/625a56c2569eb767d8770999cbd8dd50.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',icon:'//file.baixing.net/202105/f941fd50013f2f8ef7b51439e45b9079.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',icon:'//file.baixing.net/202105/5dde08cac771ec82db133664d24ddc1d.png'}]
@@ -17,7 +17,7 @@ block content
 				- const { result : proList} = renderData.productList
 				if proList && proList.length > 0
 						+home-title('服务项目')
-						include ../components/home/product-swiper.pug
+						include ../components/home/product-list.pug
 
 				include ../components/home/about-us.pug
 				if !isSem

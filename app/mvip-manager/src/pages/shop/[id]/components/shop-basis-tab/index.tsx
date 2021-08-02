@@ -5,15 +5,15 @@ import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
 import { useParams } from 'umi';
 import { RouteParams, ShopInfo } from '@/interfaces/shop';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
-import { connect } from 'dva';
+import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { ShopStatus } from '@/interfaces/shop';
 interface Props {
   type: ShopBasisType;
-  curShopInfo: ShopInfo | null;
-  shopStatus: ShopStatus | null
-  dispatch?: any;
-  getShopStatus: () => Promise<any>
+  // curShopInfo: ShopInfo | null;
+  // shopStatus: ShopStatus | null
+  // getShopStatus: () => Promise<any>
+  [key: string]: any
 }
 
 const BasisTab = (props: Props) => {
@@ -104,12 +104,20 @@ const BasisTab = (props: Props) => {
     </div>
   );
 }
-//取状态管理里的当前店铺信息，用于判断店铺类型，是否显示SEO设置
-export default connect((state: ConnectState) => {
-  const { curShopInfo, shopStatus } = state[SHOP_NAMESPACE]
+
+const mapStateToProps = (state: any) => {
+  const { curShopInfo, shopStatus } = (state as ConnectState)[SHOP_NAMESPACE]
   return { curShopInfo, shopStatus }
-}, (dispatch) => {
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     ...shopMapDispatchToProps(dispatch),
   }
-})(BasisTab)
+};
+
+//取状态管理里的当前店铺信息，用于判断店铺类型，是否显示SEO设置
+export default connect<any, any, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(BasisTab)

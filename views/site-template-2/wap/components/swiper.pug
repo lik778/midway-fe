@@ -1,4 +1,4 @@
-- const bannerList= renderData.banner
+- const bannerList = renderData.banner
   .swiper-container
     .swiper-wrapper
       if bannerList && bannerList.length > 0
@@ -7,5 +7,7 @@
       else
         .swiper-slide(style="background-image:url(//file.baixing.net/202103/410b62b875216c3267539be22288285f.png)")
         .swiper-slide(style="background-image:url(//file.baixing.net/202103/0e18a589532358323c4946c53d35460c.png)")
+    if bannerList && bannerList.length > 0
+      .num-tip #{bannerList.length}张图片
 
-    .swiper-pagination
+

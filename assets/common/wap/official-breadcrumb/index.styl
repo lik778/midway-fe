@@ -1,0 +1,26 @@
+.breadcrumb
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 11px;
+  flex-wrap: wrap;
+  background-color: #fff
+  .item
+    list-style none
+  a
+    color: #999999;
+    &:last-child
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+
+  .and
+    margin 0 10px
+    display inline-block
+    width 6px
+    height 6px
+    border-top 1px solid #999999;
+    border-right 1px solid #999999;
+    transform rotate(45deg)

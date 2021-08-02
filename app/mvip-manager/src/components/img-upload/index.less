@@ -1,14 +1,24 @@
 .img-upload {
-  display: inline-block;
-
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-feature-settings: "tnum", "tnum";
+  line-height: 1.5715;
   :global {
-    .ant-upload-list-picture-card-container {
-      width    : auto;
+    .ant-upload.ant-upload-select-picture-card {
+      border-color: transparent;
+      width: auto;
       min-width: 104px;
     }
-
-    .ant-upload.ant-upload-select.ant-upload-select-picture-card {
-      width    : auto;
+    .ant-upload.ant-upload-select-picture-card:hover {
+      border-color: transparent;
+    }
+    .ant-upload-list-picture-card-container {
+      width: auto;
       min-width: 104px;
     }
   }

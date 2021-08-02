@@ -4,7 +4,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 
 const validatorArea = (rule: any, val: any) => {
   if (!val || isEmptyObject(val)) {
-    return Promise.reject('请输入企业地址')
+    return Promise.reject('请选择企业地址')
   }
   return Promise.resolve()
 }
@@ -24,9 +24,10 @@ export const ShopBasicInfoForm: FormConfig = {
       minLength: 50, maxLength: 300, patternList: [{ pattern: /^[\s\S]{50,300}$/, message: '50～300个字' }]
     },
     {
-      label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
+      label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 2, text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
       required: true, tip: '图片格式：jpg、jpeg、png，大小不超过1M，图片比例1：1，建议最小尺寸100*100'
     },
+    { formItemWidth: 260, label: '类目', name: 'metas', type: FormType.MetaSelect, required: true },
     {
       label: '电话微信', name: 'phoneAndWX', type: FormType.GroupItem, required: true, children: [
         { label: '联系人', name: 'contactName', type: FormType.Input, required: true, placeholder: '请输入联系人', labelCol: { span: 4 } },

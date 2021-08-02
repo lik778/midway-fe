@@ -12,7 +12,6 @@ mixin news-list(newsList)
             .year-month #{year}/#{month > 9 ? month : `0${month}`}
           .right
             h3.title.only-oneline #{ item.name }
-            p.desc.only-twoline  #{ item.limitText }
-            //-  #{ dateFormat2(item.modifiedTime) }
+            p.desc.only-oneline  #{ item.limitText }
     else
       include ./no-data
