@@ -13,7 +13,7 @@ const Content: FC<Props> = (props) => {
   const { page, componentId, handleChangeModuleName } = props
   return <>
     <CacheComponent visible={page === 'home' && componentId === 'swiper'}>
-      swiper
+      <AboutUs></AboutUs>
     </CacheComponent>
     <CacheComponent visible={page === 'home' && componentId === 'hotProduct'}>
       hotProduct
