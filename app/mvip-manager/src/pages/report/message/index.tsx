@@ -416,7 +416,7 @@ function Card (props: CardProps) {
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
       <div className="left">
-        <div className="title">用户刘女士留言</div>
+        <div className="title">{item.name}</div>
         <div className="date">{formatTime(+item.time)}</div>
       </div>
       <div className="right">
