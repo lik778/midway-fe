@@ -73,14 +73,14 @@ export const LeaveMessageSearchListConfig = ({
               trackWhenChangeTab()
               setQuery(getLast24Hours(null, true))}
             }
-          >今日</Button>
+          >今天</Button>
           <Button
             onClick={() => {
               trackWhenChangeTab()
               setQuery(getLastWeek(null, true))}
             }
             style={{ marginLeft: 14 }}
-          >近一周</Button>
+          >近7天</Button>
           <Button
             onClick={() => {
               trackWhenChangeTab()

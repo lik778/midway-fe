@@ -340,11 +340,11 @@ function LeaveMessagePage() {
   const $mobilePage = useCallback(() => {
     if (isMobile) {
       return <Tabs centered defaultActiveKey="1day" onChange={changeTabWithTrackAtMobile}>
-        <TabPane tab="今 日" key="1day">
+        <TabPane tab="今天" key="1day">
           {isFirstLoad && <Loading prevent toast />}
           {$cards('1day')}
         </TabPane>
-        <TabPane tab="近一周" key="7day">
+        <TabPane tab="近7天" key="7day">
           {isFirstLoad && <Loading prevent toast />}
           {$cards('7day')}
         </TabPane>
