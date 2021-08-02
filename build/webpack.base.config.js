@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { genSiteTemplateEntry } = require('./util');
 const { TB_PAGE_NAMES_B2C_1, TB_PAGE_NAMES_B2B_2, TB_PAGE_NAMES_B2C_3, TB_TYPE_B2C_1, TB_TYPE_B2B_2, TB_TYPE_B2C_3 } = require('./constant');
 const isProd = process.env.NODE_ENV === 'production'
+const isLocal = process.env.NODE_ENV === 'local'
 
 console.log('[BUILD ENV]', process.env.NODE_ENV)
 
@@ -44,7 +45,10 @@ module.exports = {
         test: /\.(ts|tsx)?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'ts-loader'
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: isLocal ? false : true
+          }
         }
       },
       {
@@ -97,10 +101,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: isProd ? '[name].[contenthash].css' : '[name].css',
       chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
-    }),
-    // new HtmlWebpackPlugin({
-    //   filename: path.resolve(__dirname, "../dist/public/midway-admin.html"),
-    //   chunks: ['midway-admin']
-    // })
+    })
   ]
 }

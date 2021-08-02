@@ -78,7 +78,7 @@ audit-build:
     policy: pull
   script:
     - export NODE_ENV=production
-    - npm run build:audit
+    - npm run build:apps
   artifacts:
     expire_in: 24 hrs
     paths:
