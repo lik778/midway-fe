@@ -13,6 +13,8 @@ export class ReportController {
   // 留咨页面分享（专供微信公众号-留咨中心入口使用）
   @Get('/message-share')
   messageReport(@Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    // ! 注意，本地开发要改为：
+    // http://localhost/management/report/message?mobile=1&from=wechat
     res.render('report/share', {
       title: '留咨列表',
       url: `/management/report/message?mobile=${device!=='pc'?1:0}&from=wechat`

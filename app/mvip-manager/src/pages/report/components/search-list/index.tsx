@@ -11,7 +11,8 @@ export interface SearchListConfig {
   table: any
   pagiQueryKeys?: {
     pageKey: string,
-    sizeKey: string
+    sizeKey: string,
+    retTotalKey: string
   }
 }
 
@@ -20,13 +21,17 @@ interface Props {
   config: SearchListConfig
   bindForm?: boolean
   onQuery?: any
-  onQueryChange?: (queries: any) => void;
   loading?: boolean
+  onQueryChange?: (queries: any) => void;
 }
 export default function SearchList (props: Props) {
   const { bindForm, config, onQuery, onQueryChange, loading } = props
   const { form, dataSource, query, table, pagiQueryKeys } = config
-  const { pageKey = 'pageNo', sizeKey = 'pageSize' } = pagiQueryKeys || {}
+  const {
+    pageKey = 'pageNo',
+    sizeKey = 'pageSize',
+    retTotalKey = 'totalElements'
+  } = pagiQueryKeys || {}
   const { columns, pagination = {}, ...restTableProps } = table || {}
 
   const [values, setValues] = useState<any>()
@@ -83,13 +88,16 @@ export default function SearchList (props: Props) {
     } else {
       const params = fields.reduce((h: any, c: any) => {
         const name = c.name[0]
-        const config = query.find((x: QueryConfigItem) => x.name === name)
-        const { format } = config || {}
-        if (format) {
-          const res = format(c.value, h)
-          if (res) h[name] = res
-        } else {
-          h[name] = c.value
+        // ???
+        if (name) {
+          const config = query.find((x: QueryConfigItem) => x.name === name)
+          const { format } = config || {}
+          if (format) {
+            const res = format(c.value, h)
+            if (res) h[name] = res
+          } else {
+            h[name] = c.value
+          }
         }
         return h
       }, {})
@@ -110,27 +118,22 @@ export default function SearchList (props: Props) {
     }
     // TODO REFACTOR 请求函数和返回值解耦
     if (triggerQuery) {
+      console.log('！！！params: ', params)
       const queryRes = onQuery(params)
       const isAsync = queryRes && queryRes.then
       if (isAsync) {
         queryRes.then((data: any) => {
-          const {
-            totalElements = 0,
-            totalRecord = 0,
-          } = data || {}
+          const total = (data || {})[retTotalKey]
           setPaginationCountParams({
             ...paginationCountParams,
-            total: totalElements || totalRecord,
+            total,
           })
         })
       } else {
-        const {
-          totalElements = 0,
-          totalRecord = 0
-        } = queryRes || {}
+        const total = (queryRes || {})[retTotalKey]
         setPaginationCountParams({
           ...paginationCountParams,
-          total: totalElements || totalRecord,
+          total,
         })
       }
     }
@@ -156,7 +159,7 @@ export default function SearchList (props: Props) {
           loading={loading}
           dataSource={indexedDataSource}
           bordered
-          pagination={{
+          pagination={pagination.overwrite ? pagination : {
             ...paginationCountParams,
             ...paginationParams,
             onChange: changePage,

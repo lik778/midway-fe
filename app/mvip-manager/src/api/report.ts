@@ -141,6 +141,36 @@ export const getKeywordDetailList:
 export const getLeaveMessageList:
   (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
   (params) => postMidway('/api/midway/backend/messageCenter/messageListing', params)
+  // (params) => new Promise(resolve => {
+  //   const { timeStart, timeEnd } = params
+  //   console.log('params:', params, new Date(+timeStart*1000), new Date(+timeEnd*1000))
+  //   setTimeout(() => {
+  //     resolve({
+  //       code: 200,
+  //       success: true,
+  //       data: {
+  //         res: {
+  //           pageSize: 10,
+  //           totalPage: 2,
+  //           totalRecord: 20,
+  //           result: Array((params?.page === 1 ? 10 : 1)).fill('').map((x,i) => ({
+  //             id: (params?.page || 0) * 10 + i,
+  //             time: "1627006734",
+  //             type: ['DIANPU', 'ZHIDAO', 'TIEZI', 'FENGMING'][Math.floor(Math.random() * 4)],
+  //             sourceName: Math.random() < .5 ? '我是超长帖子标' : '我是超长帖子标题我是超长帖子标题',
+  //             sourceUrl: 'http://www.baidu.com',
+  //             contact: '18607827312',
+  //             message: Math.random() < .5
+  //               ? '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？泡过水不？'
+  //               : Math.random() < .5
+  //               ? '沿海见：有难度吗？车开了几年了？积尘行不行啊？刮花了没有？有手续吗？底盘怎么样？'
+  //               : '沿海见：有难度吗？',
+  //           }))
+  //         }
+  //       }
+  //     })
+  //   }, 1000)
+  // })
 
 // TODO delete mock data
 // 以下是非 P0 页面的 Mock 数据

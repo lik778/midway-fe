@@ -233,8 +233,8 @@ export function mockData<T>(type: 'data' | 'list', item: T, title?: string, page
 
 /**
  * @description 获取文件base64url
- * @param file 
- * @returns 
+ * @param file
+ * @returns
  */
 export const getFileBase64 = function (file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {

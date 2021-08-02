@@ -8,6 +8,7 @@ import { LeaveMessageChannelMap } from '@/constants/report'
 
 import { LeaveMessageListData } from '@/interfaces/report'
 import { SearchListConfig } from '../components/search-list'
+import { getLast24Hours, getLastWeek, getLastMonth, formatRange } from '@/utils'
 
 type Item = LeaveMessageListData
 
@@ -15,45 +16,54 @@ export const formatTime = (unixTime: number) => dayjs(unixTime * 1000).format('Y
 
 export const LeaveMessageSearchListConfig = ({
   form,
+  total,
+  page,
   dataSource,
+  setQuery,
   onSearch,
-  activeTab,
-  changeTab,
-}: Partial<SearchListConfig> & {
-  activeTab: string,
-  onSearch: () => void,
-  changeTab: (e: any) => void
-}) => ({
+  changePage,
+}: Partial<SearchListConfig> & any
+) => ({
   form,
   dataSource,
   pagiQueryKeys: {
     pageKey: 'page',
-    sizeKey: 'size'
+    sizeKey: 'size',
+    retTotalKey: 'totalRecord'
   },
   query: [
     {
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
+      ranges: {
+        '今日': [
+          moment(moment().format('YYYY-MM-DD')),
+          moment(moment().format('YYYY-MM-DD'))
+        ],
+        '近7天': getLastWeek(),
+        '近30天': getLastMonth(),
+      },
       // @ts-ignore
       format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
       disabledDate: (date: moment.Moment) => date > moment().endOf('day'),
     },
-    {
-      key: 'range-quick-picker',
-      type: 'render',
-      render() {
-        return <>
-          <Button onClick={() => changeTab('1day')}>今日</Button>
-          <Button onClick={() => changeTab('7day')} style={{marginLeft: 16}}>近7天</Button>
-          <Button onClick={() => changeTab('30day')} style={{marginLeft: 16}}>近30天</Button>
-        </>
-      }
-    },
+    // 暂将快捷按钮移动到 range-picker 中
+    // {
+    //   key: 'range-quick-picker',
+    //   type: 'render',
+    //   render() {
+    //     return <>
+    //       <Button onClick={() => setQuery(getLast24Hours(null, true))}>今日</Button>
+    //       <Button onClick={() => setQuery(getLastWeek(null, true))} style={{ marginLeft: 16 }}>近7天</Button>
+    //       <Button onClick={() => setQuery(getLastMonth(null, true))} style={{ marginLeft: 16 }}>近30天</Button>
+    //     </>
+    //   }
+    // },
     {
       key: 'search-button',
       type: 'render',
-      render: () => <Button type="primary" onClick={onSearch}>查询</Button>
+      render: () => <Button type="primary" onClick={() => onSearch()}>查询</Button>
     }
   ],
   table: {
@@ -111,6 +121,11 @@ export const LeaveMessageSearchListConfig = ({
         width: 140,
         key: 'contact'
       },
-    ]
+    ],
+    pagination: {
+      total,
+      current: page,
+      onChange: changePage
+    }
   }
 })

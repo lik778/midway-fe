@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
+import moment from 'moment'
 import { Tabs, Form, Calendar } from 'antd'
 import { throttle } from 'lodash'
 import { PhoneFilled, DownOutlined } from '@ant-design/icons'
@@ -9,6 +10,7 @@ import Query from '../components/search-list'
 import { useApi } from '@/hooks/api'
 import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
+import { errorMessage } from '@/components/message'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
 import { getCookie, getLast24Hours, getLastWeek, getLastMonth, formatRange } from '@/utils'
 
@@ -22,10 +24,7 @@ const TabPane = Tabs.TabPane
 const PAGESIZE = 10
 const TRACK_TYPE = 'shop-mvip-message-page'
 
-// 现在 PC 和手机端页面是一个组件，
-// 后期这玩意儿会越来越难维护...可以尝试拆开
-// 要是把 SearchList 和 QuickForm 放到营销报表之外用的话,
-// 就是毒瘤，快改！
+// 可以的话请把这玩意儿删了
 function LeaveMessagePage() {
 
   // ********************************************************* states
@@ -38,9 +37,11 @@ function LeaveMessagePage() {
   const uid = useMemo(() => getCookie('__u'), [])
 
   const [queryForm] = Form.useForm()
+  const last24Hrs = useMemo(() => getLast24Hours(null, true), [])
   const [query, setQuery] = useState<any>()
   const [page, setPage] = useState(1)
-  const [range, setRange] = useState<any[]>(getLast24Hours(null, true))
+  const [total, setTotal] = useState(0)
+  const [range, setRange] = useState<any[]>(last24Hrs)
   const [loadMore, setLoadMore] = useState(false)
   const [noMore, setNoMore] = useState(false)
 
@@ -51,8 +52,8 @@ function LeaveMessagePage() {
     }
   }, [from, uid])
 
+  // 页面来源打点
   useEffect(() => {
-    // console.log('from: ', from, uid)
     if (from && uid) {
       track({
         eventType: TRACK_TYPE,
@@ -78,11 +79,14 @@ function LeaveMessagePage() {
   const getList = useCallback(async (query: getLeaveMessageListParams) => {
     try {
       const ret: any = await getLeaveMessageList(query)
+      const data = ret?.data?.res
       const isSuccess = ret && (ret.success || ret.code === 200)
-      const items = ret?.data?.res?.result || []
+      const items = data?.result || []
+      const total = data?.totalRecord
 
-      // 移动端留咨 PV 打点，每项都要！
-      // TODO check 不知道客户数量，推算不出有多少请求数量，还得上线康康
+      // 移动端留咨 PV 打点，每项都单独打，业务要求，
+      // 不过现微信后台点开菜单栏的活跃数才几百，
+      // 推测这个接口每日最多千记请求数量，暂时可以接受
       if (items.length) {
         items.map((x: LeaveMessageListData) => {
           trackEvent({
@@ -100,10 +104,8 @@ function LeaveMessagePage() {
       if (!isSuccess || items.length < PAGESIZE) {
         setNoMore(true)
       }
-      const adapter = {
-        ...ret,
-        data: ret?.data?.res
-      }
+      setTotal(total)
+      const adapter = { ...ret, data }
       return adapter
     } catch (err) {
       console.error('[ERROR]', err)
@@ -194,8 +196,10 @@ function LeaveMessagePage() {
       queryForm.setFieldsValue({
         date: range
       })
+      const [timeStart, timeEnd] = formatRange(last24Hrs)
+      setQuery({ timeStart, timeEnd })
     }
-  }, [range])
+  }, [range, setQuery])
 
   // 手机端选择日期后重新刷新列表
   const onSelectDate = (date: any) => {
@@ -213,19 +217,57 @@ function LeaveMessagePage() {
   }
 
   // PC端选择日期后重刷新列表
-  const queryList = useCallback(() => {
-    if (query) {
-      const { timeStart, timeEnd } = query
-      setPage(1)
-      setDataSource([])
-      refreshList({
-        timeStart,
-        timeEnd,
-        page: 1,
-        size: PAGESIZE
-      })
+  const queryList = useCallback((searchQuery?: any) => {
+    const searchWith = searchQuery || query
+    if (searchWith) {
+      const formVals = queryForm.getFieldsValue()
+      const { timeStart, timeEnd } = searchWith
+      if (formVals && formVals.date && timeStart && timeEnd) {
+        setPage(1)
+        setDataSource([])
+        refreshList({
+          timeStart,
+          timeEnd,
+          page: 1,
+          size: PAGESIZE
+        })
+      } else {
+        errorMessage('请填写时间区间')
+      }
     }
+  }, [query, queryForm])
+
+  const handleQueryChange = (newQuery: any) => {
+    const { timeStart, timeEnd } = newQuery || {}
+    if (timeStart && timeEnd) {
+      setQuery(newQuery)
+    }
+  }
+
+  // PC端快速选择日期
+  const handleQuickQuery = useCallback((range: any) => {
+    const [timeStart, timeEnd] = formatRange(range)
+    const searchQuery = { timeStart, timeEnd }
+    setQuery(searchQuery)
+    queryForm.setFieldsValue({
+      date: range
+    })
+    // 暂时禁用选择后自动刷新列表的功能
+    // queryList(searchQuery)
+  }, [queryList])
+
+  const handleChangePage = useCallback((page: number) => {
+    setPage(page)
+    setDataSource([])
+    const { timeStart, timeEnd } = query
+    refreshList({
+      timeStart,
+      timeEnd,
+      page,
+      size: PAGESIZE
+    })
   }, [query])
+
 
   // ********************************************************* renders
 
@@ -238,20 +280,22 @@ function LeaveMessagePage() {
             <Query
               bindForm
               loading={loading}
-              onQueryChange={(query: any) => setQuery(query)}
+              onQueryChange={handleQueryChange}
               config={LeaveMessageSearchListConfig({
-                activeTab,
-                changeTab,
-                onSearch: queryList,
+                total,
+                page,
                 form: queryForm,
-                dataSource: lists?.result
+                dataSource: lists?.result,
+                setQuery: handleQuickQuery,
+                onSearch: queryList,
+                changePage: handleChangePage,
               })}
             />
           </div>
         </div>
       </>
     }
-  }, [isPC, lists, refreshList, activeTab, changeTab])
+  }, [isPC, lists, activeTab, total, loading, handleChangePage])
 
   const $cards = useCallback(tabKey => {
     if (!activeTab || tabKey !== activeTab) {
@@ -285,6 +329,7 @@ function LeaveMessagePage() {
           {isFirstLoad && <Loading prevent toast />}
           {range.length === 0 ? (
             <Calendar
+              disabledDate={(date: moment.Moment) => date > moment().endOf('day')}
               fullscreen={false}
               defaultValue={undefined}
               dateCellRender={date => <div className="date-catcher" onClick={() => onSelectDate(date)} />}
@@ -395,6 +440,6 @@ function Card (props: CardProps) {
   </div>
 }
 
-LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
+// LeaveMessagePage.wrappers = ['@/wrappers/path-auth']
 
 export default LeaveMessagePage
