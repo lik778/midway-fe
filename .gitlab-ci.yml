@@ -16,6 +16,7 @@ stages:
 
 # ############################################ dev-configure-start
 
+# 安装 Nest 以及审核后台相关依赖
 nest-install:
   stage: install
   tags:
@@ -38,6 +39,7 @@ nest-install:
     - npm set progress=false
     - npm ci --silence
 
+# 安装 MVIP 后台相关依赖
 mvip-install:
   stage: install
   tags:
@@ -61,7 +63,8 @@ mvip-install:
     - npm set progress=false
     - npm ci --silence
 
-audit-build:
+# 打包静态资源（店铺+审核后台）
+assets-build:
   stage: build
   only:
     - dev@fenlei/midway-fe
@@ -84,6 +87,7 @@ audit-build:
     paths:
       - dist/
 
+# 打包 Nest
 nest-build:
   stage: build
   only:
@@ -107,6 +111,7 @@ nest-build:
     paths:
       - dist/
 
+# 打包 MVIP 后台
 mvip-build:
   stage: build
   only:
@@ -131,6 +136,7 @@ mvip-build:
     paths:
       - app/mvip-manager/dist/
 
+# Dockerize
 release:
   stage: release
   only:
@@ -145,7 +151,8 @@ release:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE -f ./$CI_COMMIT_REF_SLUG.Dockerfile .
     - docker push $MIDWAY_FE
-    
+
+# 部署
 deploy:
   stage: deploy
   only:
