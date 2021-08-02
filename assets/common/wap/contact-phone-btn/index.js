@@ -35,6 +35,7 @@ export const initPhone = function () {
         if (union400num) {
           footerPhoneBox.removeClass('hide')
           footerPhoneSemBtn.addClass('hide')
+          window.location.href = `tel:${union400num}`
         } else {
           footerPhoneSemBtn.attr('disabled', true)
           footerPhoneSemBtn.attr('loading', true)
