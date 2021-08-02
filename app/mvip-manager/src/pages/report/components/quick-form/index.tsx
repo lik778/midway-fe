@@ -58,7 +58,7 @@ export default function InlineForm(props: Props) {
   let countNullLen = 0
   let countArrayLen = 0
   let formItems = items.map((item, formItemIdx) => {
-    const { type = 'input' } = item
+    const { type = 'input', span, style = {} } = item
     const key = item.key || item.name || item.type || item.label
     const allProps = { type, item, form, key }
     if (type === 'null') {
@@ -92,6 +92,12 @@ export default function InlineForm(props: Props) {
       }
       return colSpanValue
     }
+    const calcColSpanValWithItem = (...args: any) => {
+      return {
+        ...calcColSpanVal(...args),
+        ...(span ? { span } : {})
+      }
+    }
 
     if (!$item) return null
     if (!autoLayout) return $item
@@ -99,10 +105,10 @@ export default function InlineForm(props: Props) {
     return $item instanceof Array ? (
       (() => {
         countArrayLen += $item.length
-        return $item.map((x, i) => <Col {...calcColSpanVal(i)} key={key+i}>{x}</Col>)
+        return $item.map((x, i) => <Col {...calcColSpanValWithItem(i)} style={style} key={key+i}>{x}</Col>)
       })
     ) : (
-      <Col {...calcColSpanVal()} key={key}>{$item}</Col>
+      <Col {...calcColSpanValWithItem()} style={style} key={key}>{$item}</Col>
     )
   })
 

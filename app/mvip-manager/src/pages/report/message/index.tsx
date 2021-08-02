@@ -196,6 +196,31 @@ function LeaveMessagePage() {
       console.warn('[WARN] no range params when changeTab')
     }
   }
+  const trackWhenChangeTab = (key: string) => {
+    // 不同的时间范围 TAB 使用情况 UV 打点
+    trackEvent({
+      eventType: TRACK_TYPE,
+      data: {
+        event_type: 'pc-tab-uv',
+        item_id: key,
+        uid,
+        from,
+      }
+    })
+  }
+  const changeTabWithTrackAtMobile = (key: string) => {
+    // 不同的时间范围 TAB 使用情况 UV 打点
+    trackEvent({
+      eventType: TRACK_TYPE,
+      data: {
+        event_type: 'mobile-tab-uv',
+        item_id: key,
+        uid,
+        from,
+      }
+    })
+    changeTab(key)
+  }
 
   useEffect(() => {
     if (range) {
@@ -277,7 +302,8 @@ function LeaveMessagePage() {
                 page,
                 form: queryForm,
                 dataSource: lists?.result,
-                // setQuery: handleQuickQuery,
+                trackWhenChangeTab,
+                setQuery: handleQuickQuery,
                 onSearch: queryList,
                 changePage: handleChangePage,
               })}
@@ -286,7 +312,7 @@ function LeaveMessagePage() {
         </div>
       </>
     }
-  }, [isPC, lists, activeTab, total, loading, handleChangePage])
+  }, [isPC, lists, activeTab, total, loading, handleChangePage, trackWhenChangeTab])
 
   const $cards = useCallback(tabKey => {
     if (!activeTab || tabKey !== activeTab) {
@@ -313,7 +339,7 @@ function LeaveMessagePage() {
 
   const $mobilePage = useCallback(() => {
     if (isMobile) {
-      return <Tabs centered defaultActiveKey="1day" onChange={changeTab}>
+      return <Tabs centered defaultActiveKey="1day" onChange={changeTabWithTrackAtMobile}>
         <TabPane tab="今 日" key="1day">
           {isFirstLoad && <Loading prevent toast />}
           {$cards('1day')}
@@ -377,7 +403,7 @@ function Card (props: CardProps) {
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
       <div className="left">
-        <div className="title">{item.name || `用户${item.contact}`}</div>
+        <div className="title">{`用户${item.name || item.contact}留言`}</div>
         <div className="date">{formatTime(+item.time)}</div>
       </div>
       <div className="right">

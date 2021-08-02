@@ -19,7 +19,8 @@ export const LeaveMessageSearchListConfig = ({
   total,
   page,
   dataSource,
-  // setQuery,
+  trackWhenChangeTab,
+  setQuery,
   onSearch,
   changePage,
 }: Partial<SearchListConfig> & any
@@ -36,18 +37,18 @@ export const LeaveMessageSearchListConfig = ({
       label: '时间区间',
       name: 'date',
       type: 'range-picker',
-      ranges: {
-        '今 日': [
-          moment(moment().format('YYYY-MM-DD')),
-          moment(moment().format('YYYY-MM-DD'))
-        ],
-        '近一周': getLastWeek(),
-        '近一个月': getLastMonth(),
-        '近三个月': [
-          moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
-          moment(moment().format('YYYY-MM-DD'))
-        ],
-      },
+      // ranges: {
+      //   '今 日': [
+      //     moment(moment().format('YYYY-MM-DD')),
+      //     moment(moment().format('YYYY-MM-DD'))
+      //   ],
+      //   '近一周': getLastWeek(),
+      //   '近一个月': getLastMonth(),
+      //   '近三个月': [
+      //     moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
+      //     moment(moment().format('YYYY-MM-DD'))
+      //   ],
+      // },
       // @ts-ignore
       format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
       disabledDate: (date: moment.Moment) => {
@@ -56,18 +57,50 @@ export const LeaveMessageSearchListConfig = ({
         return isFuture || isOlderThan3Months
       }
     },
-    // 暂将快捷按钮移动到 range-picker 中
-    // {
-    //   key: 'range-quick-picker',
-    //   type: 'render',
-    //   render() {
-    //     return <>
-    //       <Button onClick={() => setQuery(getLast24Hours(null, true))}>今日</Button>
-    //       <Button onClick={() => setQuery(getLastWeek(null, true))} style={{ marginLeft: 16 }}>近7天</Button>
-    //       <Button onClick={() => setQuery(getLastMonth(null, true))} style={{ marginLeft: 16 }}>近30天</Button>
-    //     </>
-    //   }
-    // },
+    {
+      key: 'range-quick-picker',
+      type: 'render',
+      span: 8,
+      style: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center'
+      },
+      render() {
+        return <>
+          <Button
+            onClick={() => {
+              trackWhenChangeTab()
+              setQuery(getLast24Hours(null, true))}
+            }
+          >今日</Button>
+          <Button
+            onClick={() => {
+              trackWhenChangeTab()
+              setQuery(getLastWeek(null, true))}
+            }
+            style={{ marginLeft: 14 }}
+          >近一周</Button>
+          <Button
+            onClick={() => {
+              trackWhenChangeTab()
+              setQuery(getLastMonth(null, true))}
+            }
+            style={{ marginLeft: 14 }}
+          >近一个月</Button>
+          <Button
+            onClick={() => {
+              trackWhenChangeTab()
+              setQuery([
+                moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
+                moment(moment().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+              ])}
+            }
+            style={{ marginLeft: 14 }}
+          >近三个月</Button>
+        </>
+      }
+    },
     {
       key: 'search-button',
       type: 'render',
