@@ -1,7 +1,11 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HappyPack = require('happypack');
+
 const { genSiteTemplateEntry } = require('./util');
 const { TB_PAGE_NAMES_B2C_1, TB_PAGE_NAMES_B2B_2, TB_PAGE_NAMES_B2C_3, TB_TYPE_B2C_1, TB_TYPE_B2B_2, TB_TYPE_B2C_3 } = require('./constant');
+
 const isProd = process.env.NODE_ENV === 'production'
 const isLocal = process.env.NODE_ENV === 'local'
 
@@ -45,10 +49,7 @@ module.exports = {
         test: /\.(ts|tsx)?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'ts-loader',
-          options: {
-            transpileOnly: isLocal ? false : true
-          }
+          loader: 'happypack/loader?id=ts',
         }
       },
       {
@@ -101,6 +102,27 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: isProd ? '[name].[contenthash].css' : '[name].css',
       chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
+    }),
+    new HappyPack({
+      id: 'ts',
+      threads: 4,
+      use: [
+        {
+          path: 'ts-loader',
+          query: {
+            happyPackMode: true,
+            configFile: path.resolve(__dirname, '..', 'tsconfig.json')
+          }
+        }
+      ]
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        diagnosticOptions: {
+          semantic: true,
+          syntactic: true,
+        },
+      },
     })
   ]
 }
