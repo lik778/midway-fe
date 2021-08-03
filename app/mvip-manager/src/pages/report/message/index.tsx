@@ -12,7 +12,7 @@ import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
 import { errorMessage } from '@/components/message'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
-import { getCookie, getLast24Hours, getLastWeek, getLastMonth, formatRange } from '@/utils'
+import { getCookie, formatRange } from '@/utils'
 
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
