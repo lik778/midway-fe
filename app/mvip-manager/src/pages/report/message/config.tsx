@@ -1,14 +1,12 @@
 import React from 'react'
 import moment from 'moment'
 import dayjs from 'dayjs'
-import { Popover, Button } from 'antd'
+import { Popover, Radio } from 'antd'
 
-import { formatDateRange } from '@/utils'
 import { LeaveMessageChannelMap } from '@/constants/report'
 
 import { LeaveMessageListData } from '@/interfaces/report'
 import { SearchListConfig } from '../components/search-list'
-import { getLast24Hours, getLastWeek, getLastMonth, formatRange } from '@/utils'
 
 type Item = LeaveMessageListData
 
@@ -19,9 +17,8 @@ export const LeaveMessageSearchListConfig = ({
   total,
   page,
   dataSource,
-  trackWhenChangeTab,
-  setQuery,
-  onSearch,
+  activeTab,
+  switchTab,
   changePage,
 }: Partial<SearchListConfig> & any
 ) => ({
@@ -32,31 +29,8 @@ export const LeaveMessageSearchListConfig = ({
     sizeKey: 'size',
     retTotalKey: 'totalRecord'
   },
+  autoLayout: false,
   query: [
-    {
-      label: '时间区间',
-      name: 'date',
-      type: 'range-picker',
-      // ranges: {
-      //   '今 日': [
-      //     moment(moment().format('YYYY-MM-DD')),
-      //     moment(moment().format('YYYY-MM-DD'))
-      //   ],
-      //   '近一周': getLastWeek(),
-      //   '近一个月': getLastMonth(),
-      //   '近三个月': [
-      //     moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
-      //     moment(moment().format('YYYY-MM-DD'))
-      //   ],
-      // },
-      // @ts-ignore
-      format: (...args) => formatDateRange(...args, 'timeStart', 'timeEnd'),
-      disabledDate: (date: moment.Moment) => {
-        const isFuture = date > moment().endOf('day')
-        const isOlderThan3Months = date < moment().subtract(3, 'months')
-        return isFuture || isOlderThan3Months
-      }
-    },
     {
       key: 'range-quick-picker',
       type: 'render',
@@ -67,44 +41,13 @@ export const LeaveMessageSearchListConfig = ({
         alignItems: 'center'
       },
       render() {
-        return <>
-          <Button
-            onClick={() => {
-              trackWhenChangeTab()
-              setQuery(getLast24Hours(null, true))}
-            }
-          >今天</Button>
-          <Button
-            onClick={() => {
-              trackWhenChangeTab()
-              setQuery(getLastWeek(null, true))}
-            }
-            style={{ marginLeft: 14 }}
-          >近7天</Button>
-          <Button
-            onClick={() => {
-              trackWhenChangeTab()
-              setQuery(getLastMonth(null, true))}
-            }
-            style={{ marginLeft: 14 }}
-          >近一个月</Button>
-          <Button
-            onClick={() => {
-              trackWhenChangeTab()
-              setQuery([
-                moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
-                moment(moment().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
-              ])}
-            }
-            style={{ marginLeft: 14 }}
-          >近三个月</Button>
-        </>
+        return <Radio.Group onChange={switchTab} value={activeTab} key="range-quick-picker">
+          <Radio.Button value='3years'>默认</Radio.Button>
+          <Radio.Button value='1mon' style={{ marginLeft: 14 }}>近一个月</Radio.Button>
+          <Radio.Button value='3mon' style={{ marginLeft: 14 }}>近三个月</Radio.Button>
+          <Radio.Button value='6mon' style={{ marginLeft: 14 }}>近半年</Radio.Button>
+        </Radio.Group>
       }
-    },
-    {
-      key: 'search-button',
-      type: 'render',
-      render: () => <Button type="primary" onClick={() => onSearch()}>查询</Button>
     }
   ],
   table: {

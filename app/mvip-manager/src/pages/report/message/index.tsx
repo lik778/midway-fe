@@ -37,11 +37,14 @@ function LeaveMessagePage() {
   const uid = useMemo(() => getCookie('__u'), [])
 
   const [queryForm] = Form.useForm()
-  const last24Hrs = useMemo(() => getLast24Hours(null, true), [])
+  const last3Years = useMemo(() => [
+    moment(moment().format('YYYY-MM-DD')).subtract(3, 'years'),
+    moment(moment().format('YYYY-MM-DD')).endOf('day')
+  ], [])
   const [query, setQuery] = useState<any>()
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
-  const [range, setRange] = useState<any[]>(last24Hrs)
+  const [range, setRange] = useState<any[]>(last3Years)
   const [loadMore, setLoadMore] = useState(false)
   const [noMore, setNoMore] = useState(false)
 
@@ -114,7 +117,7 @@ function LeaveMessagePage() {
   }, [isMobile])
 
   const [lists, loading, refreshList] = useApi<ReportListResData<LeaveMessageListData[]> | null, getLeaveMessageListParams | null>(null, getList, defaultQueries)
-  const [activeTab, setActiveTab] = useState<string>('1day')
+  const [activeTab, setActiveTab] = useState<string>('3years')
   const [dataSource, setDataSource] = useState<LeaveMessageListData[]>([])
   useEffect(() => {
     if (lists && dataSource.length === 0) {
@@ -166,19 +169,28 @@ function LeaveMessagePage() {
     setActiveTab(key)
     let range
     switch (key) {
-      case '1day':
-        range = getLast24Hours(null, true)
-        break
-      case '7day':
-        range = getLastWeek(null, true)
+      case '3years':
+        range = [
+          moment(moment().format('YYYY-MM-DD')).subtract(3, 'years'),
+          moment(moment().format('YYYY-MM-DD')).endOf('day')
+        ]
         break
       case '1mon':
-        range = getLastMonth(null, true)
+        range = [
+          moment(moment().format('YYYY-MM-DD')).subtract(1, 'months'),
+          moment(moment().format('YYYY-MM-DD')).endOf('day')
+        ]
         break
       case '3mon':
         range = [
           moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
-          moment(moment().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+          moment(moment().format('YYYY-MM-DD')).endOf('day')
+        ]
+        break
+      case '6mon':
+        range = [
+          moment(moment().format('YYYY-MM-DD')).subtract(6, 'months'),
+          moment(moment().format('YYYY-MM-DD')).endOf('day')
         ]
         break
     }
@@ -196,17 +208,21 @@ function LeaveMessagePage() {
       console.warn('[WARN] no range params when changeTab')
     }
   }
-  const trackWhenChangeTab = (key: string) => {
-    // 不同的时间范围 TAB 使用情况 UV 打点
-    trackEvent({
-      eventType: TRACK_TYPE,
-      data: {
-        event_type: 'pc-tab-uv',
-        item_id: key,
-        uid,
-        from,
-      }
-    })
+  const changeTabWithTrackAtPC = (e: any) => {
+    const key = e.target.value
+    if (key) {
+      // 不同的时间范围 TAB 使用情况 UV 打点
+      trackEvent({
+        eventType: TRACK_TYPE,
+        data: {
+          event_type: 'pc-tab-uv',
+          item_id: key,
+          uid,
+          from,
+        }
+      })
+      changeTab(key)
+    }
   }
   const changeTabWithTrackAtMobile = (key: string) => {
     // 不同的时间范围 TAB 使用情况 UV 打点
@@ -227,7 +243,7 @@ function LeaveMessagePage() {
       queryForm.setFieldsValue({
         date: range
       })
-      const [timeStart, timeEnd] = formatRange(last24Hrs)
+      const [timeStart, timeEnd] = formatRange(last3Years)
       setQuery({ timeStart, timeEnd })
     }
   }, [range, setQuery])
@@ -284,7 +300,6 @@ function LeaveMessagePage() {
     })
   }, [query])
 
-
   // ********************************************************* renders
 
   const $pcPage = useCallback(() => {
@@ -302,8 +317,8 @@ function LeaveMessagePage() {
                 page,
                 form: queryForm,
                 dataSource: lists?.result,
-                trackWhenChangeTab,
-                setQuery: handleQuickQuery,
+                activeTab,
+                switchTab: changeTabWithTrackAtPC,
                 onSearch: queryList,
                 changePage: handleChangePage,
               })}
@@ -312,7 +327,7 @@ function LeaveMessagePage() {
         </div>
       </>
     }
-  }, [isPC, lists, activeTab, total, loading, handleChangePage, trackWhenChangeTab])
+  }, [isPC, lists, activeTab, total, loading, handleChangePage])
 
   const $cards = useCallback(tabKey => {
     if (!activeTab || tabKey !== activeTab) {
@@ -339,21 +354,21 @@ function LeaveMessagePage() {
 
   const $mobilePage = useCallback(() => {
     if (isMobile) {
-      return <Tabs centered defaultActiveKey="1day" onChange={changeTabWithTrackAtMobile}>
-        <TabPane tab="今天" key="1day">
+      return <Tabs centered defaultActiveKey="3years" onChange={changeTabWithTrackAtMobile}>
+        <TabPane tab="默认" key="3years">
           {isFirstLoad && <Loading prevent toast />}
-          {$cards('1day')}
-        </TabPane>
-        <TabPane tab="近7天" key="7day">
-          {isFirstLoad && <Loading prevent toast />}
-          {$cards('7day')}
+          {$cards('3years')}
         </TabPane>
         <TabPane tab="近一个月" key="1mon">
+          {isFirstLoad && <Loading prevent toast />}
           {$cards('1mon')}
         </TabPane>
         <TabPane tab="近三个月" key="3mon">
-          {isFirstLoad && <Loading prevent toast />}
           {$cards('3mon')}
+        </TabPane>
+        <TabPane tab="近半年" key="6mon">
+          {isFirstLoad && <Loading prevent toast />}
+          {$cards('6mon')}
         </TabPane>
       </Tabs>
     }

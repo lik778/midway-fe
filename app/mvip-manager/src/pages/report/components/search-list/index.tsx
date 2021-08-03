@@ -8,6 +8,7 @@ export interface SearchListConfig {
   form: any
   dataSource: any
   query: any
+  autoLayout: boolean
   table: any
   pagiQueryKeys?: {
     pageKey: string,
@@ -26,7 +27,7 @@ interface Props {
 }
 export default function SearchList (props: Props) {
   const { bindForm, config, onQuery, onQueryChange, loading } = props
-  const { form, dataSource, query, table, pagiQueryKeys } = config
+  const { form, dataSource, query, table, pagiQueryKeys, autoLayout } = config
   const {
     pageKey = 'pageNo',
     sizeKey = 'pageSize',
@@ -146,6 +147,7 @@ export default function SearchList (props: Props) {
           className="cmpt-search-list-query"
           bindForm={bindForm}
           form={form}
+          autoLayout={autoLayout}
           items={query}
           fields={fields}
           onFieldsChange={(newFields: any) => setFields(newFields)}
