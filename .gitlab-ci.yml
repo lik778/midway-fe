@@ -29,7 +29,7 @@ nest-install:
       - test2@fenlei/midway-fe
     # changes:
     #   - package-lock.json
-  image: node:12.2
+  image: node:12.22-alpine
   cache:
     key: midway-fe:nest-install
     policy: push
@@ -53,7 +53,7 @@ mvip-install:
       - test2@fenlei/midway-fe
     # changes:
     #   - app/mvip-manager/package.json
-  image: node:12.2
+  image: node:12.22-alpine
   cache:
     key: midway-fe:mvip-install
     policy: push
@@ -75,7 +75,7 @@ nest-build:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  image: node:12.2
+  image: node:12.22-alpine
   cache: 
     key: midway-fe:nest-install
     policy: pull
@@ -101,7 +101,7 @@ mvip-build:
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
-  image: node:12.2
+  image: node:12.22-alpine
   cache: 
     key: midway-fe:mvip-install
     policy: pull

@@ -1,4 +1,4 @@
-FROM node:12.2
+FROM node:12.22-alpine
 
 COPY . .
 COPY /app/mvip-manager/dist/ /dist/public
