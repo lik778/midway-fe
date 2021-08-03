@@ -22,4 +22,9 @@ const config = {
 }
 
 const env = process.env.NODE_ENV || DEVELOPMENT_ENV
+
+/* 勿删，Docker 调试用 */
+console.log('[ENV CONFIG & FALLBACK]', process.env.NODE_ENV, env)
+/* 勿删，Docker 调试用 */
+
 export default () => config[env]

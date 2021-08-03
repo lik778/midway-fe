@@ -9,4 +9,5 @@ RUN npm set registry https://registry.npm.taobao.org && \
 
 EXPOSE 7001
 
-CMD npm run node:dev
+CMD export NODE_ENV=test2 && \
+    npm run node:dev
