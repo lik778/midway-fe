@@ -65,31 +65,7 @@ mvip-install:
     - npm set progress=false
     - npm ci --silence
 
-# 打包静态资源（店铺+审核后台）
-assets-build:
-  stage: build
-  only:
-    - dev@fenlei/midway-fe
-    - test@fenlei/midway-fe
-    - test1@fenlei/midway-fe
-    - test2@fenlei/midway-fe
-  tags:
-    - k8s-dev-build
-  image: node:12.2
-  cache: 
-    key: midway-fe:nest-install
-    policy: pull
-    paths:
-      - node_modules/
-  script:
-    - export NODE_ENV=production
-    - npm run build:apps
-  artifacts:
-    expire_in: 24 hrs
-    paths:
-      - dist/
-
-# 打包 Nest
+# 打包 Nest 以及静态资源（店铺+审核后台）
 nest-build:
   stage: build
   only:
@@ -108,6 +84,8 @@ nest-build:
   script:
     - export NODE_ENV=$CI_COMMIT_REF_SLUG
     - npm run build:nest
+    - export NODE_ENV=production
+    - npm run build:apps
   artifacts:
     expire_in: 24 hrs
     paths:
