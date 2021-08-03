@@ -1,6 +1,7 @@
 FROM node:12.2
 
-COPY . .
+COPY /dist /dist
+COPY /app/mvip-manager/dist/ /dist/public
 
 EXPOSE 7001
 
