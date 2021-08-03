@@ -3,7 +3,7 @@ html
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0')
     meta(http-equiv='X-UA-Compatible', content='ie=edge')
-    - companyName = renderData.basic.company?renderData.basic.company.name:''
+    - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
     title #{ companyName || "" }
     //- meta(name='keywords' content=renderData.meta.keywords || "")
     //- meta(name='description' content=renderData.meta.description || "")
