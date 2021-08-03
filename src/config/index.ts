@@ -6,7 +6,7 @@ import test2Config from './test2'
 import prodConfig from './prod'
 
 export const LOCAL_ENV = 'local'
-export const DEVELOPMENT_ENV = 'development'
+export const DEVELOPMENT_ENV = 'dev'
 export const TEST_ENV = 'test'
 export const TEST1_ENV = 'test1'
 export const TEST2_ENV = 'test2'
