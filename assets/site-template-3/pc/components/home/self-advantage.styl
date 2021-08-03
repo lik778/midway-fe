@@ -1,17 +1,18 @@
 .self-advantage
 	width 1220px
-	margin 0 auto 80px
+	margin 0 auto 60px
 	display flex
 	justify-content space-around
 	.advanItem
 		flex-direction column
 		display flex
-		justify-content center
+		justify-content flex-start
 		align-items center
 		img
 			width 260px
 			height 195px
 			margin 0 auto
+			border-radius 2px
 		.title
 			color #333333
 			font-size 16px
@@ -28,3 +29,9 @@
 			font-size 12px
 			width 218px
 			line-height 20px
+			overflow hidden
+			text-overflow ellipsis
+			display -webkit-box
+			-webkit-box-orient vertical
+			-webkit-line-clamp 3
+			word-break break-all

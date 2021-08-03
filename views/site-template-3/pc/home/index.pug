@@ -23,8 +23,8 @@ block content
 
 				//- include ../components/home/about-us.pug
 				include ../components/home/about-us-new.pug
-				//- if !isSem
-				//- 	include ../components/home/viewPhone.pug
+				if !isSem
+					//- include ../components/home/viewPhone.pug
 
 				//-自定义模块
 				- const { autoConfig } = renderData

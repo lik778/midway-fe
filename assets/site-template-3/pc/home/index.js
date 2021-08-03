@@ -3,9 +3,8 @@ import './index.styl';
 import '../layout/index';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
-import { viewPhone } from '../components/home/viewPhone';
-import { initSem } from '../../../common/pc/contact-form-sem'
-import { aboutUsNew } from '../components/home/about-us-new'
+import { viewPhone } from '../components/home/viewPhoneNew';
+import { initSem } from '../../../common/pc/contact-form-sem';
 
 
 leaveLeads()
@@ -40,5 +39,9 @@ $(document).on('ready', function () {
       gotoOtherPageA: $('.products a,.about-us-bgc a,.new-center .news-data-box a')
     })
   }
+      // 点击显示电话号码
+      $('.bottom-right').on('click', function () {
+        $('.showphone').text('3057')
+      })
 })
 

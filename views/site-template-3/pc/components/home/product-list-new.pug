@@ -3,8 +3,8 @@ mixin item(item)
   a.product(href=item.urlSuffix)
     .product-img
       img(src= item.headImg || defaultImg)
-    .product-desc
-      p.only-oneline #{ item.name }
+    .product-desc.only-oneline.
+      #{ item.name }
 
 #product-list-box
   each p in proList.slice(0,12)
