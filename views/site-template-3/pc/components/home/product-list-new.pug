@@ -5,7 +5,6 @@ mixin item(item)
       img(src= item.headImg || defaultImg)
     .product-desc
       p.only-oneline #{ item.name }
-      .vad-btn 查看详情
 
 #product-list-box
   each p in proList.slice(0,12)

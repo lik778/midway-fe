@@ -5,10 +5,12 @@ import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { viewPhone } from '../components/home/viewPhone';
 import { initSem } from '../../../common/pc/contact-form-sem'
+import { aboutUsNew } from '../components/home/about-us-new'
 
 
 leaveLeads()
 viewPhone()
+aboutUsNew()
 
 $(document).on('ready', function () {
   new Swiper('#banner-list .swiper-container', {

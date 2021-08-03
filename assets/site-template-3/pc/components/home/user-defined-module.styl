@@ -11,20 +11,22 @@
     .user-defined-item-img
       width: 595px
       height: 222px
+      border 1px dashed black
     .user-defined-item-content
       width: 625px
       height: 222px
       padding: 50px 107px 0 75px
       position relative
-      background-color: #F9F9F9
+      background-color: #F9F9F9 
       .triangle 
         position: absolute;
         top: 50%;
         transform: translateY( -50%);
         border: 10px solid transparent;
+        z-index 999
         &.left
           right: -15px
-          border-left: 15px solid #f9f9f9;
+          border-left: 15px solid #ffffff;
           border-right: 0;
         &.right
           left: -15px
