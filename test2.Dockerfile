@@ -4,4 +4,4 @@ COPY . .
 
 EXPOSE 7001
 
-CMD npm run node:test2
+CMD npm run node:dev
