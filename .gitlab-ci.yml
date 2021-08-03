@@ -27,11 +27,12 @@ nest-install:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-    changes:
-      - package-lock.json
+    # changes:
+    #   - package-lock.json
   image: node:12.2
   cache:
     key: midway-fe:nest-install
+    policy: push
     paths: 
       - node_modules/
   script:
@@ -50,11 +51,12 @@ mvip-install:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-    changes:
-      - app/mvip-manager/package.json
+    # changes:
+    #   - app/mvip-manager/package.json
   image: node:12.2
   cache:
     key: midway-fe:mvip-install
+    policy: push
     paths: 
       - app/mvip-manager/node_modules/
   script:
@@ -76,9 +78,9 @@ assets-build:
   image: node:12.2
   cache: 
     key: midway-fe:nest-install
+    policy: pull
     paths:
       - node_modules/
-    policy: pull
   script:
     - export NODE_ENV=production
     - npm run build:apps
@@ -100,9 +102,9 @@ nest-build:
   image: node:12.2
   cache: 
     key: midway-fe:nest-install
+    policy: pull
     paths:
       - node_modules/
-    policy: pull
   script:
     - export NODE_ENV=$CI_COMMIT_REF_SLUG
     - npm run build:nest
@@ -124,9 +126,9 @@ mvip-build:
   image: node:12.2
   cache: 
     key: midway-fe:mvip-install
+    policy: pull
     paths:
       - app/mvip-manager/node_modules/
-    policy: pull
   script:
     - export ENV=dev
     - npm run build:mvip
