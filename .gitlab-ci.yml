@@ -23,7 +23,7 @@ nest-install:
     - k8s-dev-build
   only:
     refs:
-      - feat-speed-up-ci@/fenlei/midway-fe
+      - feat-speed-up-ci@fenlei/midway-fe
       - dev@fenlei/midway-fe
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
@@ -48,7 +48,7 @@ mvip-install:
     - k8s-dev-build
   only:
     refs:
-      - feat-speed-up-ci@/fenlei/midway-fe
+      - feat-speed-up-ci@fenlei/midway-fe
       - dev@fenlei/midway-fe
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
@@ -72,7 +72,7 @@ nest-build:
   stage: build
   only:
     refs:
-      - feat-speed-up-ci@/fenlei/midway-fe
+      - feat-speed-up-ci@fenlei/midway-fe
       - dev@fenlei/midway-fe
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
@@ -101,7 +101,7 @@ mvip-build:
   stage: build
   only:
     refs:
-      - feat-speed-up-ci@/fenlei/midway-fe
+      - feat-speed-up-ci@fenlei/midway-fe
       - dev@fenlei/midway-fe
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
@@ -126,7 +126,7 @@ mvip-build:
 release:
   stage: release
   only:
-    - feat-speed-up-ci@/fenlei/midway-fe
+    - feat-speed-up-ci@fenlei/midway-fe
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
     - test1@fenlei/midway-fe
@@ -143,7 +143,7 @@ release:
 deploy:
   stage: deploy
   only:
-    - feat-speed-up-ci@/fenlei/midway-fe
+    - feat-speed-up-ci@fenlei/midway-fe
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
     - test1@fenlei/midway-fe
