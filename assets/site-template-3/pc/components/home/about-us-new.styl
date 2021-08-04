@@ -41,6 +41,8 @@
             width 48px
             height 48px
             margin-right 16px
+            border-radius 4px
+            overflow hidden
           .left-title
             // line-height 26px
             font-size 26px
@@ -49,8 +51,9 @@
           margin-left 16px
           display flex
           .tag
+            box-sizing border-box
             padding 5px 9px
-            line-height 24px
+            line-height 14px
             text-align center
             border 1px solid #DCBD9D
             border-radius 2px
@@ -58,6 +61,7 @@
             font-size 14px
             margin-right 12px
       .content-right-body
+        position relative
         width 654px
         height 144px
         .body-content
@@ -68,7 +72,10 @@
           display -webkit-box
           overflow hidden
         .view-detail
-          display inline-block
+          display none
+          position absolute
+          right 263px
+          bottom 0
           color #FF4365
           font-size 14px
       .content-right-bottom

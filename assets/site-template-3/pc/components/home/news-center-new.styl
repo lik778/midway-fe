@@ -38,15 +38,20 @@
 				.news-date__year
 					// line-height 14px
 					font-size 14px
-					color #666
+					color #999
 			.item-card
 				width 525px
 				.item-title
-					width: 400px
+					width 400px
 					margin-bottom 16px
 					color #333333
 					font-weight 600
 					font-size 16px
+					-webkit-line-clamp 1
+					-webkit-box-orient vertical
+					display -webkit-box
+					overflow hidden
+					text-overflow: ellipsis
 				.item-content
 					-webkit-line-clamp 1
 					-webkit-box-orient vertical
@@ -66,7 +71,7 @@
 		color #666666
 		border none
 		cursor pointer
-		margin-bottom 80px
+		margin-bottom 60px
 		border 1px solid #DDDDDD
 		border-radius: 4px
 		.set-color
