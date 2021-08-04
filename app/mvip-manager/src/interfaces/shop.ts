@@ -16,6 +16,21 @@ export interface CreateProductApiParams extends CreateArticleApiParams {
   headImg?: string;
 }
 
+export interface ProductListItem {
+  cateName: string
+  content: string
+  contentCateId: number
+  contentImg: string[]
+  headImg: string
+  id: number
+  memo: string
+  name: string
+  price: string
+  status: number
+  tags: string[]
+  urlSuffix: string
+}
+
 export interface CreateArticleApiParams {
   id?: number;
   contentCateId: number;
@@ -25,6 +40,20 @@ export interface CreateArticleApiParams {
   price: number | string;
   shopId?: number;
   tags: string[];
+}
+
+export interface ArticleListItem {
+  cateName: string
+  content: string
+  contentCateId: number
+  contentImg: string
+  id: number
+  memo: string
+  name: string
+  source: number
+  status: number
+  tags: string[]
+  urlSuffix: string
 }
 
 export interface HandleApiParams {
@@ -217,7 +246,7 @@ export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
 }
 
 export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
-  area:  {
+  area: {
     [key: string]: string
   },
   metas: ShopMetas

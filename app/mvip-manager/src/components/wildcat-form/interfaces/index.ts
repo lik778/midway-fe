@@ -3,6 +3,8 @@ import { ColProps } from 'antd'
 import { ReactNode } from 'react'
 import { ExpandShowUploadListInterface } from '@/components/img-upload/data'
 import { CropProps } from '@/components/crop/data'
+import { FormLayout } from 'antd/lib/form/Form'
+
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -23,6 +25,7 @@ export interface FormConfig {
   width?: number | string;
   labelAlign?: 'left' | 'right',
   useLabelCol?: ColProps;
+  layout?: FormLayout,
   // 有些组件确实不适合封装 但是也要放在表单里管理 则写自定义的组件进去
   customerFormItemList?: CustomerFormItem[]
 }

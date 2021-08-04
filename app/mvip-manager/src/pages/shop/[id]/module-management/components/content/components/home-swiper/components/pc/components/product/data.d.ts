@@ -1,5 +1,5 @@
+import { ProductListItem } from '@/interfaces/shop'
 export interface Detail {
-  name: string,
-  tags: string[],
-  img: string
+  banner: string,
+  productIds: ProductListItem[]
 }
