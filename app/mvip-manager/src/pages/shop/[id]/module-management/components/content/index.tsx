@@ -3,6 +3,7 @@ import { PageType, ComponentId } from '../../data'
 import styles from './index.less'
 import CacheComponent from '@/components/cache-component'
 import HomeAboutUs from './components/home-about-us'
+import CustomModule from './components/home-custom'
 import HomeSwiper from './components/home-swiper'
 
 interface Props {
@@ -21,7 +22,7 @@ const Content: FC<Props> = (props) => {
       hotProduct
     </CacheComponent>
     <CacheComponent visible={page === 'home' && componentId === 'customer'}>
-      customer
+      <CustomModule />
     </CacheComponent>
     <CacheComponent visible={page === 'home' && componentId === 'aboutUs'}>
       <HomeAboutUs></HomeAboutUs>

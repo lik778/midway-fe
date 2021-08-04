@@ -26,7 +26,7 @@ const ModuleManagement = () => {
 
   useEffect(() => {
     // 切换页面的时候 将左侧组件选择恢复到第一个
-    setComponentId(menuConfig[page as PageType][0].id)
+    setComponentId(menuConfig[page as PageType][2].id)
   }, [page])
 
   // 组件选择器 key keyof PageType 类型定义会报错
