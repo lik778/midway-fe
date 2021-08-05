@@ -90,7 +90,7 @@ function LeaveMessagePage() {
       // 移动端留咨 PV 打点，每项都单独打，业务要求，
       // 不过现微信后台点开菜单栏的活跃数才几百，
       // 推测这个接口每日最多千记请求数量，暂时可以接受
-      if (items.length) {
+      if (isMobile && items.length) {
         items.map((x: LeaveMessageListData) => {
           trackEvent({
             eventType: TRACK_TYPE,
