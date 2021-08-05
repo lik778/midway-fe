@@ -14,15 +14,16 @@ const FormItem = Form.Item
 interface Props {
   index: number,
   item: CustomerSetChildListItem,
-  onDel: (item: CustomerSetChildListItem) => void
   key: string,
+  moduleID: number
   total: number
+  onDel: (item: CustomerSetChildListItem) => void
 }
 
 const fontNumber = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 
 const SubForm = (props: Props, parentRef: Ref<any>) => {
-  const { item, index, onDel, total } = props
+  const { item, index, onDel, total, moduleID } = props
 
   const ref = useRef<{ form: FormInstance | undefined }>({ form: undefined })
   useImperativeHandle(parentRef, () => ({
@@ -38,7 +39,11 @@ const SubForm = (props: Props, parentRef: Ref<any>) => {
       })
     }
   }
-  const [config, setConfig] = useState<FormConfig>(() => CustomSetFormConfigFn(item.key, imageChange))
+  const [config, setConfig] = useState<FormConfig>(() => CustomSetFormConfigFn({
+    key: item.key,
+    moduleID,
+    imageChange
+  }))
   const [editDataSource, setEditDataSource] = useState(() => ({
     ...item,
     fontColor: item.fontColor || 0

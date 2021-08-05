@@ -199,6 +199,7 @@ const CustomModule = () => {
           item={item}
           index={index}
           key={`subform-${moduleID}-${item.key}`}
+          moduleID={moduleID}
           total={subformVals.length}
           ref={ref => forms.current[index] = ref}
           onDel={handleDelSubform}
