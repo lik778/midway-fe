@@ -6,7 +6,7 @@ block styles
 
 block official-breadcrumbs
     include ../../../common/wap/official-red-breadcrumb.pug
-    - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name||'',url:'#'}]
+    - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName||'',url:'#'}]
     +breadcrumb(breadcrumbList)
 
 block append header
