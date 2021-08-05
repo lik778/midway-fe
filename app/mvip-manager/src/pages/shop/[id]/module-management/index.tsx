@@ -2,81 +2,188 @@ import React, { FC, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'umi';
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
 import { ShopBasisType } from '@/enums'
-import { PageType, ComponentId, MenuItemConfig } from './data'
+import { PageType, ComponentId, PageItemOption, MenuItemOption } from './data'
 import SelectPage from './components/select-page'
 import Menu from './components/menu'
 import Content from './components/content'
 import styles from './index.less'
+import { mockData } from '@/utils';
+
 
 const ModuleManagement = () => {
-  const [page, setPage] = useState<PageType>('home')
-  const [componentId, setComponentId] = useState<ComponentId>('aboutUs')
+  const [moduleOptions, setModuleOptions] = useState<any[]>([])
+  const [page, setPage] = useState<PageType>()
+  const [componentId, setComponentId] = useState<ComponentId>()
 
   // 页面选择器配置
-  const [pageOptions] = useState<{
-    key: PageType,
-    label: string
-  }[]>([{
-    key: 'home',
-    label: '首页'
-  }, {
-    key: 'article-detail',
-    label: '文章详情页'
-  }])
-
-  useEffect(() => {
-    // 切换页面的时候 将左侧组件选择恢复到第一个
-    setComponentId(menuConfig[page as PageType][2].id)
-  }, [page])
+  const [pageOptions, setPageOptions] = useState<PageItemOption[]>([])
 
   // 组件选择器 key keyof PageType 类型定义会报错
-  const [menuConfig, setMenuConfig] = useState<{
-    [key: string]: MenuItemConfig[]
-  }>({
-    'home': [{
-      id: 'swiper',
-      name: '轮播图/产品',
-      thumbnail: '//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'
-    }, {
-      id: 'hotProduct',
-      name: '热门产品',
-      thumbnail: '//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'
-    }, {
-      id: 'customer',
-      name: '自定义模块',
-      thumbnail: '//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'
-    }, {
-      id: 'aboutUs',
-      name: '关于我们',
-      thumbnail: '//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'
-    }],
-    'article-detail': [{
-      id: 'swiper',
-      name: '轮播图',
-      thumbnail: '//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png'
-    }]
-  })
+  const [menuOptions, setMenuOptions] = useState<{
+    [key in PageType]: MenuItemOption[]
+  }>({} as any)
+
+  const getComponentInit = async () => {
+    const res = await mockData('data', [
+      {
+        "position": "homePage",
+        "name": "首页",
+        "infoList": [
+          {
+            "pageModule": "banner",
+            "name": "轮播图",
+            "max": 5
+          },
+          {
+            "pageModule": "productRecommend",
+            "name": "热门产品",
+            "max": 12
+          },
+          {
+            "pageModule": "autoConfig",
+            "name": "自定义模块",
+            "max": null
+          },
+          {
+            "pageModule": "about",
+            "name": "关于我们",
+            "max": 4
+          }
+        ]
+      },
+      {
+        "position": "productListPage",
+        "name": "产品中心",
+        "infoList": [
+          {
+            "pageModule": "productRecommend",
+            "name": "右侧产品推荐",
+            "max": 6
+          },
+          {
+            "pageModule": "articleRecommend",
+            "name": "右侧文章推荐",
+            "max": 9
+          }
+        ]
+      },
+      {
+        "position": "articleListPage",
+        "name": "新闻资讯",
+        "infoList": [
+          {
+            "pageModule": "productRecommend",
+            "name": "右侧产品推荐",
+            "max": 6
+          }
+        ]
+      },
+      {
+        "position": "articleInfoPage",
+        "name": "新闻详情",
+        "infoList": [
+          {
+            "pageModule": "banner",
+            "name": "轮播图",
+            "max": 5
+          },
+          {
+            "pageModule": "productRecommend",
+            "name": "右侧产品推荐",
+            "max": 6
+          },
+          {
+            "pageModule": "articleRecommend",
+            "name": "右侧文章推荐",
+            "max": 9
+          }
+        ]
+      },
+      {
+        "position": "aboutPage",
+        "name": "关于我们",
+        "infoList": [
+          {
+            "pageModule": "about",
+            "name": "关于我们",
+            "max": null
+          }
+        ]
+      }
+    ])
+    setModuleOptions(res.data)
+  }
+
+  const initPageOptions = () => {
+    setPageOptions(moduleOptions.map(item => ({
+      key: item.position,
+      label: item.name
+    })))
+  }
+
+  const initMenuOptions = () => {
+    const menuOptions: {
+      [key in PageType]: MenuItemOption[]
+    } = {} as any
+    moduleOptions.forEach(item => {
+      menuOptions[item.position as PageType] = item.infoList.map((cItem: any) => ({
+        id: cItem.pageModule,
+        name: cItem.name,
+        thumbnail: cItem.name,
+        max: cItem.max
+      }))
+    })
+    setMenuOptions(menuOptions)
+  }
+
+  const initComponent = () => {
+    initPageOptions()
+    initMenuOptions()
+    setPage(moduleOptions.length > 0 ? moduleOptions[0].position : 'homePage')
+    setComponentId(moduleOptions.length > 0 && moduleOptions[0].infoList && moduleOptions[0].infoList.length > 0 ? moduleOptions[0].infoList[0].pageModule : 'banner')
+  }
+
+  // 切换页面的时候 将左侧组件选择恢复到第一个
+  useEffect(() => {
+    if (menuOptions[page as PageType]) {
+      setComponentId(menuOptions[page as PageType][0].id)
+    }
+  }, [page])
+
+  // 获得数据后初始化组件数据
+  useEffect(() => {
+    initComponent()
+  }, [moduleOptions])
+
+  // 获取组件信息
+  useEffect(() => {
+    getComponentInit()
+  }, [])
 
   // 更新左侧名称
   const handleChangeModuleName = (name: string) => {
-    const componentConfig = menuConfig[page].find(item => item.id === componentId)
+    const componentConfig = menuOptions[page!].find(item => item.id === componentId)
     componentConfig!.name = name
-    setMenuConfig({ ...menuConfig })
+    setMenuOptions({ ...menuOptions })
   }
 
   return <>
     <BasisHeader type={ShopBasisType.MODULE} />
     <div className={`${styles['module-management-container']} container`}>
       <div className={styles['module-management-content']}>
-        <SelectPage pageOptions={pageOptions} handleChangePage={setPage} page={page}></SelectPage>
-        <div className={styles['line']}>
-          <div className={styles['menu']}>
-            <Menu page={page} componentId={componentId} menuConfig={menuConfig} handleChangeComponent={setComponentId}></Menu>
+        {
+          page && <SelectPage pageOptions={pageOptions} handleChangePage={setPage} page={page}></SelectPage>
+        }
+        {
+          page && componentId && <div className={styles['line']}>
+            <div className={styles['menu']}>
+              <Menu page={page} componentId={componentId} menuOptions={menuOptions} handleChangeComponent={setComponentId}></Menu>
+            </div>
+            <div className={styles['content']}>
+              <Content page={page} componentId={componentId} handleChangeModuleName={handleChangeModuleName}></Content>
+            </div>
           </div>
-          <div className={styles['content']}>
-            <Content page={page} componentId={componentId} handleChangeModuleName={handleChangeModuleName}></Content>
-          </div>
-        </div>
+        }
       </div>
     </div>
   </>

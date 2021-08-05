@@ -15,19 +15,19 @@ interface Props {
 const Content: FC<Props> = (props) => {
   const { page, componentId, handleChangeModuleName } = props
   return <>
-    <CacheComponent visible={page === 'home' && componentId === 'swiper'}>
+    <CacheComponent visible={page === 'homePage' && componentId === 'banner'}>
       <HomeSwiper></HomeSwiper>
     </CacheComponent>
-    <CacheComponent visible={page === 'home' && componentId === 'hotProduct'}>
+    <CacheComponent visible={page === 'homePage' && componentId === 'productRecommend'}>
       hotProduct
     </CacheComponent>
-    <CacheComponent visible={page === 'home' && componentId === 'customer'}>
-      <CustomModule />
+    <CacheComponent visible={page === 'homePage' && componentId === 'autoConfig'}>
+      customer
     </CacheComponent>
-    <CacheComponent visible={page === 'home' && componentId === 'aboutUs'}>
+    <CacheComponent visible={page === 'homePage' && componentId === 'about'}>
       <HomeAboutUs></HomeAboutUs>
     </CacheComponent>
-    <CacheComponent visible={page === 'article-detail' && componentId === 'swiper'}>
+    <CacheComponent visible={page === 'articleInfoPage' && componentId === 'banner'}>
       swiper
     </CacheComponent>
   </>

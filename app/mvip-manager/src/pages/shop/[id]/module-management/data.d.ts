@@ -1,9 +1,16 @@
-export type PageType = 'home' | 'product' | 'product-detail' | 'article' | 'article-detail' | 'about'
+export type PageType = 'homePage' | 'productListPage' | 'articleListPage' | 'articleInfoPage' | 'aboutPage'
 
-export type ComponentId = 'swiper' | 'hotProduct' | 'customer' | 'aboutUs'
+export type ComponentId = 'banner' | 'productRecommend' | 'autoConfig' | 'about' | 'articleRecommend'
 
-export interface MenuItemConfig {
+
+export interface PageItemOption {
+  key: PageType,
+  label: string
+}
+export interface MenuItemOption {
   id: ComponentId,
   name: string,
-  thumbnail: string
+  thumbnail: string,
+  max?: number,
 }
+

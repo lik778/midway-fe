@@ -14,13 +14,27 @@ const CacheComponent: FC<Props> = (props) => {
       setInit(true)
     }
   }, [visible])
+
+  const getDecoratedChildren = () => {
+    return React.Children.map(children, child => {
+      if (!React.isValidElement(child)) {
+        return null
+      }
+      const childProps = {
+        ...child.props,
+        visible: visible
+      }
+      return React.cloneElement(child, childProps)
+    })
+  }
+
   return <>
     {
       init && <div className={`${styles['cache-component-container']} ${className}`} style={{
         display: visible ? 'block' : 'none'
       }}>
         {
-          children
+          getDecoratedChildren()
         }
       </div>
     }

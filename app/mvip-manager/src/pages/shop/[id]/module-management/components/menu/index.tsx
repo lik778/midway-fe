@@ -2,22 +2,22 @@ import React, { FC, useState, useEffect } from 'react';
 import { useMemo } from 'react';
 import { Popover } from 'antd'
 import { PageType, ComponentId } from '../../data'
-import { MenuItemConfig } from '../../data'
+import { MenuItemOption } from '../../data'
 import styles from './index.less'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 interface Props {
   page: PageType,
   componentId: ComponentId
-  menuConfig: {
-    [key: string]: MenuItemConfig[]
+  menuOptions: {
+    [key in PageType]: MenuItemOption[]
   }
   handleChangeComponent: (componentId: ComponentId) => void
 }
 
 const Menu: FC<Props> = (props) => {
-  const { page, componentId, menuConfig, handleChangeComponent } = props
+  const { page, componentId, menuOptions, handleChangeComponent } = props
 
-  const menuList = useMemo(() => menuConfig[page || 'home'], [page])
+  const menuList = useMemo(() => menuOptions[page] || [], [page, menuOptions])
 
   const handleClickPosition = (thumbnail: string) => {
     window.open(thumbnail, '_block')

@@ -7,7 +7,6 @@ import { ConnectState } from '@/models/connect';
 import styles from './index.less'
 import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
-import { useMemo } from 'react';
 
 interface Props {
   [key: string]: any

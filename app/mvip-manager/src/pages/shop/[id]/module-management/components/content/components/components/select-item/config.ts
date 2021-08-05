@@ -5,13 +5,12 @@ export const selectItemConfig: {
   [key: string]: ConfigItem
 } = {
   'home-swiper': {
-    name: 'productIds',
+    name: 'productList',
     label: '轮播产品',
-    btnText: '添加产品',
-    tip: '（最多可添加5个产品）',
+    type: 'product',
     required: true,
     maxLength: 5,
-    ajaxApi: getProductListApi,
+    ajaxApi: getProductListApi as any,
     rules: [{ required: true, message: '请选择轮播产品' }]
   }
 }
