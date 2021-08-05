@@ -87,8 +87,18 @@ export class BaseSiteController {
     return data
   }
 
+  private createParams(isSem, isCn) {
+    return {
+      semKeyWordFlag: isSem ? 1 : 0,
+      cnKeyWordFlag: isCn ? 1 : 0
+    }
+  }
+
+
   @Get('/')
   public async home(@Query() query, @Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     // 当参数里添加sem 则说明要切换为sem页
     let shopName = ''
     const domain = req.hostname
@@ -102,7 +112,7 @@ export class BaseSiteController {
       shopName = HostShopName
     }
     const userInfo = await this.getUserInfo(req, domain)
-    const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, query.sem, domain);
+    const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, this.createParams(isSem, isCn), domain);
     const data = this.setData(originData)
     // 打点
     const shopId = data.basic.shop.id
@@ -124,19 +134,20 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
-    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
-    const isCn = this.checkCn(HostDomain)
+
     return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, });
   }
 
   @Get('/n')
   async listing(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1;
-    const { data: originData } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage }, domain);
+    const { data: originData } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData)
 
     // 打点
@@ -159,21 +170,22 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
-    const isCn = this.checkCn(HostDomain)
+
     return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
 
   @Get('/n-:id')
   async newschild(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
 
     if (/.html/.test(req.url)) {
       const newsId = params.id.split(".")[0]
-      const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId }, domain);
+      const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId, ...this.createParams(isSem, isCn) }, domain);
       const data = this.setData(originData)
 
       // 打点
@@ -196,17 +208,16 @@ export class BaseSiteController {
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
-      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+
       if (isSem) {
         if (data.articleInfo && data.articleInfo.content) {
           data.articleInfo.content = this.replaceMobile(data.articleInfo.content)
         }
       }
-      const isCn = this.checkCn(HostDomain)
       return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
     } else {
       const currentPage = query.page || 1;
-      const { data: originData } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
+      const { data: originData } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0, ...this.createParams(isSem, isCn) }, domain);
       const data = this.setData(originData)
 
       // 打点
@@ -228,8 +239,6 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
-      const isCn = this.checkCn(HostDomain)
       return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
     }
   }
@@ -237,11 +246,13 @@ export class BaseSiteController {
   @Get('/p')
   async product(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1
-    const { data: originData } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5 }, domain);
+    const { data: originData } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData)
     // 打点
     const shopId = data.basic.shop.id
@@ -263,15 +274,14 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-
-    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
-    const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
 
   @Get('/p-:id')
   async productchild(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
@@ -279,7 +289,7 @@ export class BaseSiteController {
 
     if (/.html/.test(req.url)) {
       const productId = params.id.split(".")[0]
-      const { data: originData } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId }, domain);
+      const { data: originData } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId, ...this.createParams(isSem, isCn) }, domain);
       const data = this.setData(originData)
 
       // 打点
@@ -302,7 +312,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
 
-      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+
       // 如果是sem情况下需要对数据做联系方式过滤
       if (isSem) {
         if (data.productInfo && data.productInfo.content) {
@@ -310,11 +320,10 @@ export class BaseSiteController {
         }
       }
 
-      const isCn = this.checkCn(HostDomain)
       return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
     } else {
       const currentPage = query.page || 1;
-      const { data: originData } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0 }, domain);
+      const { data: originData } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0, ...this.createParams(isSem, isCn) }, domain);
       const data = this.setData(originData)
       // 打点
       const shopId = data.basic.shop.id
@@ -335,8 +344,6 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      const isSem = this.checkSem(query.sem, query.bannerId, query.account)
-      const isCn = this.checkCn(HostDomain)
       return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
     }
   }
@@ -345,10 +352,12 @@ export class BaseSiteController {
   @Get('/about')
   async about(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
-    const { data: originData } = await this.midwayApiService.getAboutPageData(shopName, device, domain);
+    const { data: originData } = await this.midwayApiService.getAboutPageData(shopName, device, this.createParams(isSem, isCn), domain);
     const data = this.setData(originData)
 
     // 打点
@@ -372,7 +381,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+
     // 如果是sem情况下需要对数据做联系方式过滤
     if (isSem) {
       if (data.basic && data.basic.company && data.basic.company.about) {
@@ -380,7 +389,6 @@ export class BaseSiteController {
       }
     }
 
-    const isCn = this.checkCn(HostDomain)
     return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
 
@@ -398,6 +406,8 @@ export class BaseSiteController {
   @Get('/search')
   async search(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
@@ -406,7 +416,8 @@ export class BaseSiteController {
     const searchKey = query.key || ''
     const searchType = query.type || 'product'
     const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
-      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum]
+      keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum],
+      ...this.createParams(isSem, isCn)
     }, domain);
 
     // 这里做统一处理
@@ -432,8 +443,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
-    const isCn = this.checkCn(HostDomain)
+
     return res.render(templateUrl, {
       title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn,
     })

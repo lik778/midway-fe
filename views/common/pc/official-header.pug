@@ -18,7 +18,7 @@ mixin officialHeader(headerOption)
       include ./official-red-search.pug
       if isHome
         include ./official-red-breadcrumb.pug
-        - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name,url:'#'}]
+        - breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
         +breadcrumb(breadcrumbList)
     else 
       include ./official-white-topbar.pug
