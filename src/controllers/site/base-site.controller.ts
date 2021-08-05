@@ -60,7 +60,7 @@ export class BaseSiteController {
   }
 
   // 对数据做兼容 ， 防止报错
-  private setData(data) {
+  private setData(data, isSem, isCn) {
     if (!data.basic.company) {
       data.basic.company = {
         name: '',
@@ -73,7 +73,10 @@ export class BaseSiteController {
       }
     }
     data.basic.company.about = data.basic.company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
-
+    // 如果是sem情况下需要对数据做联系方式过滤
+    if (isSem) {
+      data.basic.company.about = this.replaceMobile(data.basic.company.about)
+    }
     data.autoConfig = data.autoConfig && data.autoConfig.length > 0 ? data.autoConfig : [{ mainModuleTitle: '企业优势', subModuleBos: [{ fontColor: 0, title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' }, { fontColor: 0, title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' }, { fontColor: 0, title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' }, { fontColor: 0, title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }] }]
     //红白头开关
     // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
@@ -113,7 +116,7 @@ export class BaseSiteController {
     }
     const userInfo = await this.getUserInfo(req, domain)
     const { data: originData } = await this.midwayApiService.getHomePageData(shopName, device, this.createParams(isSem, isCn), domain);
-    const data = this.setData(originData)
+    const data = this.setData(originData, isSem, isCn)
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -148,7 +151,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1;
     const { data: originData } = await this.midwayApiService.getNewsPageData(shopName, device, { page: currentPage, ...this.createParams(isSem, isCn) }, domain);
-    const data = this.setData(originData)
+    const data = this.setData(originData, isSem, isCn)
 
     // 打点
     const shopId = data.basic.shop.id
@@ -186,7 +189,7 @@ export class BaseSiteController {
     if (/.html/.test(req.url)) {
       const newsId = params.id.split(".")[0]
       const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId, ...this.createParams(isSem, isCn) }, domain);
-      const data = this.setData(originData)
+      const data = this.setData(originData, isSem, isCn)
 
       // 打点
       const shopId = data.basic.shop.id
@@ -218,7 +221,7 @@ export class BaseSiteController {
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0, ...this.createParams(isSem, isCn) }, domain);
-      const data = this.setData(originData)
+      const data = this.setData(originData, isSem, isCn)
 
       // 打点
       const shopId = data.basic.shop.id
@@ -253,7 +256,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1
     const { data: originData } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5, ...this.createParams(isSem, isCn) }, domain);
-    const data = this.setData(originData)
+    const data = this.setData(originData, isSem, isCn)
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -290,7 +293,7 @@ export class BaseSiteController {
     if (/.html/.test(req.url)) {
       const productId = params.id.split(".")[0]
       const { data: originData } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId, ...this.createParams(isSem, isCn) }, domain);
-      const data = this.setData(originData)
+      const data = this.setData(originData, isSem, isCn)
 
       // 打点
       const shopId = data.basic.shop.id
@@ -324,7 +327,7 @@ export class BaseSiteController {
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0, ...this.createParams(isSem, isCn) }, domain);
-      const data = this.setData(originData)
+      const data = this.setData(originData, isSem, isCn)
       // 打点
       const shopId = data.basic.shop.id
       this.trackerService.point(req, res, {
@@ -358,7 +361,7 @@ export class BaseSiteController {
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
     const { data: originData } = await this.midwayApiService.getAboutPageData(shopName, device, this.createParams(isSem, isCn), domain);
-    const data = this.setData(originData)
+    const data = this.setData(originData, isSem, isCn)
 
     // 打点
     const shopId = data.basic.shop.id
@@ -381,13 +384,6 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-
-    // 如果是sem情况下需要对数据做联系方式过滤
-    if (isSem) {
-      if (data.basic && data.basic.company && data.basic.company.about) {
-        data.basic.company.about = this.replaceMobile(data.basic.company.about)
-      }
-    }
 
     return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
   }
@@ -421,7 +417,7 @@ export class BaseSiteController {
     }, domain);
 
     // 这里做统一处理
-    const data = this.setSearchData(this.setData(originData), device, currentPage, searchType, searchKey)
+    const data = this.setSearchData(this.setData(originData, isSem, isCn), device, currentPage, searchType, searchKey)
 
     // 打点
     const shopId = data.basic.shop.id
