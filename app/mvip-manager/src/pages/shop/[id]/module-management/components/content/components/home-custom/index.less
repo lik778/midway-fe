@@ -1,5 +1,5 @@
 .container {
-  padding: 30px 20px 0;
+  padding: 15px 20px 50px;
   width: 920px;
 
   .title-form-container {
@@ -21,6 +21,16 @@
       }
     }
   }
+  .form-item-with-dedent {
+    position: relative;
+    margin-bottom: 0;
+
+    :global {
+      .ant-col {
+        padding: 0;
+      }
+    }
+  }
   .add-btn {
     width: 120px;
     height: 40px;
@@ -30,10 +40,19 @@
     border: 1px solid #096dd9;
   }
   .submit-btn {
+    display: block;
     width: 120px;
     height: 40px;
     margin-left: 134px;
     border-color: #096dd9;
     background: #096dd9;
   }
+}
+.info-icon {
+  position: absolute;
+  top: 7px;
+  left: 70px;
+  font-size: 14px;
+  color: #1890ff;
+  cursor: pointer;
 }

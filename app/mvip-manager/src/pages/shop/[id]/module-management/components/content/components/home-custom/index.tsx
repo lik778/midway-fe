@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useParams } from 'umi'
-import { FormInstance, Spin, Form, Button } from 'antd';
+import { FormInstance, Spin, Form, Button, Tabs, Switch, Popover } from 'antd';
 
 import { errorMessage, successMessage } from '@/components/message';
-import InputLen from '@/components/input-len';
 import SubForm from './components/subform/index'
+import InputLen from '@/components/input-len';
 import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
 
 import { CustomerSetChildListItem } from '@/interfaces/shop';
@@ -13,6 +13,7 @@ import styles from './index.less'
 import { useCallback } from 'react';
 
 const FormItem = Form.Item
+const TabPane = Tabs.TabPane
 const notNull = (x: any): boolean => !!x
 const emptySubformVal = {
   title: '',
@@ -27,74 +28,75 @@ const getEmptySubformVal = (key: string) => ({
 
 type FormWithVals = { form: FormInstance, item: CustomerSetChildListItem }
 
-interface Props {
-  mainModuleId: number
-}
-const CustomModule: FC<Props> = (props) => {
-  const { mainModuleId } = props
-  const { id } = useParams<{ id: string }>()
+const CustomModule = () => {
+
+  /***************************************************** States */
+
+  const { id: shopId } = useParams<{ id: string }>()
 
   const [pageInitLoading, setPageInitLoading] = useState(false)
   const [formLoading, setFormLoading] = useState(false)
 
-  const [keyCount, setKeyCount] = useState(0)
+  const [formRenderKey, setFormRenderKey] = useState(0)
   const forms = useRef<FormWithVals[]>([])
   const [form] = Form.useForm()
+  const [moduleID, setModuleID] = useState(1)
 
   const [subformVals, setSubformVals] = useState<CustomerSetChildListItem[]>([])
   const [delKey, setDelKey] = useState<number[]>([])
 
   // 初始化表单
-  const initCustomModuleData = async () => {
+  const initModuleData = async () => {
     setPageInitLoading(true)
-    const res = await getCustomerSetApi(Number(id), mainModuleId)
+    const res = await getCustomerSetApi(Number(shopId), moduleID)
     if (res.success) {
       if (res.data) {
         const { mainModuleTitle, subModuleBos } = res.data
-        setSubformVals(paddingChildList(subModuleBos))
+        setSubformVals(
+          paddingChildList(subModuleBos || [])
+        )
         form.setFieldsValue({
-          title: mainModuleTitle,
+          title: mainModuleTitle || '',
         })
       }
     }
     setPageInitLoading(false)
   }
-
   useEffect(() => {
-    if (mainModuleId) {
-      initCustomModuleData()
-    } else {
-      setSubformVals(paddingChildList([]))
+    if (moduleID) {
+      initModuleData()
     }
-  }, [mainModuleId])
+  }, [moduleID])
 
   // 初始化表单时需要给子模块填充数据
   const paddingChildList = (module: CustomerSetChildListItem[]): CustomerSetChildListItem[] => {
-    let nowKey = keyCount
+    let nowKey = formRenderKey
 
     const defaultChildListLen = 2
     const shouldPad = module.length > defaultChildListLen
     const padLen = shouldPad ? 0 : (defaultChildListLen - module.length)
-    const getPadList = () => Array(padLen).fill('').map(_ => getEmptySubformVal(`key${++nowKey}`))
+    const getPadList = () => Array(padLen).fill('').map(_ => getEmptySubformVal(`key-${moduleID}-${++nowKey}`))
 
     const newSubformVals = module.map(item => ({
       ...item,
-      key: `key${++nowKey}`
+      key: `key-${moduleID}-${++nowKey}`
     })).concat(getPadList())
 
-    setKeyCount(nowKey)
+    setFormRenderKey(nowKey)
     return newSubformVals
   }
 
+  /***************************************************** Interaction Fns */
+
   // 新增子模块
   const handleAddSubform = useCallback(() => {
-    let newKey = keyCount + 1
+    let newKey = formRenderKey + 1
     setSubformVals([
       ...subformVals,
-      getEmptySubformVal(`key${newKey}`)
+      getEmptySubformVal(`key-${moduleID}-${newKey}`)
     ])
-    setKeyCount(newKey)
-  }, [subformVals, keyCount])
+    setFormRenderKey(newKey)
+  }, [subformVals, formRenderKey])
 
   // 删除子模块
   const handleDelSubform = (delItem: CustomerSetChildListItem) => {
@@ -105,34 +107,34 @@ const CustomModule: FC<Props> = (props) => {
   }
 
   // 表单及子表单统一校验
-  const validateForm = useCallback(async () => await Promise.all([
+  const validateForm = async () => await Promise.all([
     form.validateFields(),
     ...forms.current.filter(notNull).map((item) => item.form.validateFields())
-  ]), [form])
+  ])
 
   // 提交表单
-  const sumbit = useCallback(async () => {
+  const sumbit = async () => {
     try {
       setFormLoading(true)
       await validateForm()
       const title = form.getFieldValue('title')
+      const show = form.getFieldValue('show')
       const values = forms.current.filter(notNull).map(item => {
         return {
           ...item.form.getFieldsValue(),
           id: item.item.id
         }
       })
-      const res = await setCustomerSetApi(Number(id), {
-        mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
+      const res = await setCustomerSetApi(Number(shopId), {
+        mainModuleId: moduleID,
         mainModuleTitle: title,
+        show,
         subModuleVos: values,
         subModulesToDelete: delKey
       })
       if (res.success) {
         successMessage(res.message || '保存成功')
-        if (mainModuleId) {
-          initCustomModuleData()
-        }
+        initModuleData()
         setDelKey([])
       } else {
         errorMessage(res.message || '保存失败，请稍后再试！')
@@ -143,60 +145,93 @@ const CustomModule: FC<Props> = (props) => {
     } finally {
       setFormLoading(false)
     }
-  }, [id])
+  }
+
+  // 切换 Tabs 时切换模块
+  const changeModule = (tab: string) => {
+    // form.setFieldsValue({})
+    // setSubformVals(paddingChildList([]))
+    setModuleID(+tab)
+  }
+
+  /***************************************************** Renders */
+
+  const renderForm = () => {
+    return <>
+      <Form form={form} name={`form-${moduleID}`} className={styles['title-form-container']}>
+        <FormItem
+          className={styles['form-item']}
+          label={<span className={styles['form-label']}>是否在前端展现</span>}
+          labelCol={{ span: 3 }}>
+          <FormItem name='show' className={styles['form-item-with-dedent']}>
+            <Switch defaultChecked />
+          </FormItem>
+          <Popover
+            title='示例图片'
+            placement="right"
+            trigger="hover"
+            content={<img className={styles['thumbnail']} src={`//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png`} />}>
+            <span className={styles['info-icon']}>查看示例</span>
+          </Popover>
+        </FormItem>
+        <FormItem
+          className={styles['form-item']}
+          label={<span className={styles['form-label']}>模块标题</span>}
+          name='title'
+          labelCol={{ span: 3 }}
+          required
+          rules={[
+            { required: true, message: '请输入模块标题' },
+            { type: 'string', min: 2, max: 20, message: '2~20个字' }
+          ]}>
+          <InputLen
+            className={styles['form-input']}
+            width={280}
+            minLength={2}
+            maxLength={20}
+            showCount
+            placeholder="例如：企业优势、服务流程"
+          />
+        </FormItem>
+      </Form>
+      {subformVals.map((item, index) => (
+        <SubForm
+          item={item}
+          index={index}
+          key={`subform-${moduleID}-${item.key}`}
+          total={subformVals.length}
+          ref={ref => forms.current[index] = ref}
+          onDel={handleDelSubform}
+        />
+      ))}
+      {subformVals.length < 10 && (
+        <Button
+          className={`${styles['add-btn']}`}
+          type="primary"
+          onClick={handleAddSubform}
+        >+增加子模块</Button>
+      )}
+      <Button
+        className={`${styles['submit-btn']}`}
+        loading={formLoading}
+        disabled={formLoading}
+        type="primary"
+        onClick={sumbit}
+      >保存</Button>
+    </>
+  }
 
   return <>
     <Spin spinning={pageInitLoading}>
       <div className={styles['container']}>
-
-        <Form form={form} name={`form${id}`} className={styles['title-form-container']}>
-          <FormItem
-            className={styles['form-item']}
-            name='title'
-            label={<span className={styles['form-label']}>模块标题</span>}
-            labelCol={{ span: 3 }}
-            required={true}
-            rules={[
-              { required: true, message: '请输入模块标题' },
-              { type: 'string', min: 2, max: 6, message: '2~6个字' }
-            ]}>
-            <InputLen
-              className={styles['form-input']}
-              width={280}
-              maxLength={6}
-              minLength={2}
-              showCount={true}
-              placeholder="例如：企业优势、服务流程"
-            />
-          </FormItem>
-        </Form>
-
-        {subformVals.map((item, index) => (
-          <SubForm
-            item={item}
-            index={index}
-            key={item.key}
-            total={subformVals.length}
-            ref={ref => forms.current[index] = ref}
-            onDel={handleDelSubform}
-          />
-        ))}
-        {subformVals.length < 10 && (
-          <Button
-            className={`${styles['add-btn']}`}
-            type="primary"
-            onClick={handleAddSubform}
-          >+增加子模块</Button>
-        )}
-
-        <Button
-          className={`${styles['submit-btn']}`}
-          loading={formLoading}
-          disabled={formLoading}
-          type="primary"
-          onClick={sumbit}
-        >保存</Button>
-
+        <Tabs defaultActiveKey="1" onChange={changeModule}>
+          <TabPane tab="自定义模块一" key="1">
+            {String(moduleID) === '1' && renderForm()}
+          </TabPane>
+          <TabPane tab="自定义模块二" key="2">
+            {String(moduleID) === '2' && renderForm()}
+          </TabPane>
+        </Tabs>
       </div>
     </Spin>
   </>

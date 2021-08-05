@@ -50,7 +50,7 @@ const SubForm = (props: Props, parentRef: Ref<any>) => {
     <FormItem
       className={styles['form-item']}
       label={<span className={styles['form-label']}>子模块{fontNumber[index]}</span>}
-      required={true}
+      required
       labelCol={{ span: 3 }}>
       <WildcatForm
         ref={ref}

@@ -5,7 +5,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 export const CustomSetFormConfigFn:
   (key: string | number, imageChange: (...arg: any) => any) => FormConfig =
   (key, imageChange) => ({
-    name: `CustomSetForm${key}`,
+    name: `CustomModuleSubForm${key}`,
     width: 690,
     useLabelCol: { span: 4 },
     children: [
@@ -17,8 +17,8 @@ export const CustomSetFormConfigFn:
         placeholder: '例如：品质优秀',
         formItemWidth: '100%',
         minLength: 2,
-        maxLength: 8,
-        patternList: [{ pattern: /^[\s\S]{2,8}$/, message: '2～8个字' }],
+        maxLength: 20,
+        patternList: [{ pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }],
         showCount: true
       },
       {
@@ -26,10 +26,10 @@ export const CustomSetFormConfigFn:
         name: 'content',
         type: FormType.Textarea,
         required: true,
-        placeholder: '请输入简介，30～50个字',
-        minLength: 30,
-        maxLength: 50,
-        patternList: [{ pattern: /^[\s\S]{30,50}$/, message: '30～50个字' }]
+        placeholder: '请输入简介，20～120个字',
+        minLength: 20,
+        maxLength: 120,
+        patternList: [{ pattern: /^[\s\S]{20,120}$/, message: '20～120个字' }]
       },
       {
         label: '上传图片',

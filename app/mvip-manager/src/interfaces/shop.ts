@@ -175,6 +175,7 @@ export interface CustomerSetChildListItem {
 export interface CustomerSetListItem {
   mainModuleId?: number,
   mainModuleTitle: string,
+  show: boolean,
   subModuleBos: CustomerSetChildListItem[]
 }
 

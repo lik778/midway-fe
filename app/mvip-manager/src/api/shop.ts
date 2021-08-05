@@ -175,6 +175,7 @@ export const getCustomerSetApi = (shopId: number, id: number): Promise<ServiceRe
 export const setCustomerSetApi = (shopId: number, requestData: {
   mainModuleId?: number,
   mainModuleTitle: string,
+  show: boolean,
   subModuleVos: CustomerSetChildListItem[],
   subModulesToDelete: number[]
 }): Promise<ServiceResponse<never>> => {
