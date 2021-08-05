@@ -12,7 +12,7 @@ import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
 import { errorMessage } from '@/components/message'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
-import { getCookie, formatRange } from '@/utils'
+import { getCookie, formatRange, decodeHTMLCodeSafe } from '@/utils'
 
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
@@ -429,7 +429,7 @@ function Card (props: CardProps) {
       </div>
     </div>
     <div className="message line-2" ref={el => checkEllipses(el)}>
-      {item.message}
+      {decodeHTMLCodeSafe(item.message)}
     </div>
     <div className="source">
       <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>{item.sourceName}

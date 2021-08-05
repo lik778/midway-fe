@@ -244,3 +244,13 @@ export const getFileBase64 = function (file: Blob): Promise<string | ArrayBuffer
     reader.onerror = error => reject(error);
   });
 }
+
+const $decodeHTMLCodeContainer = document.createElement('a')
+export const decodeHTMLCodeSafe = (message: string) => {
+  try {
+    $decodeHTMLCodeContainer.innerHTML = message
+    return $decodeHTMLCodeContainer.innerText
+  } catch (err) {
+    return message
+  }
+}

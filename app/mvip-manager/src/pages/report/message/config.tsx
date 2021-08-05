@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { Popover, Radio } from 'antd'
 
 import { LeaveMessageChannelMap } from '@/constants/report'
+import { decodeHTMLCodeSafe } from '@/utils'
 
 import { LeaveMessageListData } from '@/interfaces/report'
 import { SearchListConfig } from '../components/search-list'
@@ -91,9 +92,12 @@ export const LeaveMessageSearchListConfig = ({
         minWidth: 440,
         key: 'message',
         render: (_: any, r: Item) => {
+          const renderText = r.name
+            ? decodeHTMLCodeSafe(`${r.name}: ${r.message}`)
+            : decodeHTMLCodeSafe(r.message)
           return <>
-            <Popover content={r.name ? `${r.name}: ${r.message}` : r.message} trigger="hover">
-              <span className="line-1">{r.name ? `${r.name}: ${r.message}` : r.message}</span>
+            <Popover content={renderText} trigger="hover">
+              <span className="line-1">{renderText}</span>
             </Popover>
           </>
         }
