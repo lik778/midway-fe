@@ -39,13 +39,14 @@ const HomeSwiper: FC<Props> = (props) => {
   return <Spin spinning={loadingShopModel}>
     <div className={styles['home-swiper-container']}>
       {
-        curShopInfo && <div className={styles['component-box']}>
+        curShopInfo && <> <div className={styles['component-box']}>
           <PcSwiper ref={pcRef} curShopInfo={curShopInfo}></PcSwiper>
           <WapSwiper ref={wapRef} curShopInfo={curShopInfo}></WapSwiper>
         </div>
+          <Button className={styles['btn']}
+            size="large" onClick={handleClickSubmit}>保存</Button>
+        </>
       }
-      <Button className={styles['btn']}
-        size="large" onClick={handleClickSubmit}>保存</Button>
     </div>
   </Spin>
 }

@@ -1,4 +1,9 @@
 import { ListRes } from '@/interfaces/base';
+import { ServiceResponse } from '@/interfaces/api';
+
+import {
+  ArticleListItem, GetContentApiParams, ProductListItem,
+} from '@/interfaces/shop';
 
 export type ConfigItemType = 'product' | 'article'
 
@@ -13,7 +18,10 @@ export interface ConfigItem {
   type: ConfigItemType,// 列表是文章还是产品
   required: boolean,// 是否必填
   maxLength: number,// 做多添加
-  ajaxApi: (...arg: any) => Promise<ListRes<any>>,// 请求列表的参数
+  ajaxApi: (shopId: number, params: GetContentApiParams) => Promise<ServiceResponse<{
+    productList: ListRes<ProductListItem[]>,
+    articleList: ListRes<ArticleListItem[]>,
+  }>>,// 请求列表的参数
   rules?: any[]// 校验规则
 }
 

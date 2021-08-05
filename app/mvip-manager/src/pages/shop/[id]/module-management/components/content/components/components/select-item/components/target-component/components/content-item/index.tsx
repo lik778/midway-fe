@@ -17,7 +17,7 @@ const ContentItem: FC<Props> = (props) => {
       <div className={styles['text-box']}>
         <div className={styles['name']}>{content.name}</div>
         {
-          type === 'product' && <div className={styles['price']}>{(content as SelectProductListItem).price}</div>
+          type === 'product' && <div className={styles['price']}>{(content as SelectProductListItem).price || '暂无价格'}</div>
         }
       </div>
     </div>
