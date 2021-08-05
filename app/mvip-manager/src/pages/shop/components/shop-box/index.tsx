@@ -63,7 +63,7 @@ const ShopBox = (props: Props) => {
           <div className={styles['title']}>{title}</div>
           <div className={styles['text']}>{memo}</div>
           {
-            versionStatus === 3 && <div className={styles['text']}>站内信查看详情</div>
+            versionStatus === 3 && <> <div className={styles['text']}>站内信查看详情</div><div className={styles['text']}>本次审核结果不影响之前已上线内容。</div></>
           }
         </div>
       </div>
