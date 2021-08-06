@@ -5,8 +5,8 @@
         .contact-us__title #{ companyName || '暂未添加公司名称' }
         p.contact-us__detail 公司地址：#{ company.address || '暂未添加地址' }
         p.contact-us__detail 服务热线：#{ phone.content }
-        if phone2.content
-          p.contact-us__detail 服务热线2： #{ phone2.content }
+        //- if phone2.content
+        //-   p.contact-us__detail 服务热线2： #{ phone2.content }
         p.contact-us__detail 微信号：#{ weChat.content || '暂未添加微信号'}
         .baidu-map-wrapper
           a#baidu-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")

@@ -1,10 +1,5 @@
 .about-us-bgc
   .about-us-content
-    .content-left
-      audio.audio
-        <source src="#" type="#">
-      span.ico-video
-        img(src="//file.baixing.net/202108/f911950bc7679d0a83235a02bbd9a36e.png")
     .content-right
       .content-right-title
         .right-title-left
@@ -26,4 +21,15 @@
             p.phoneNumber-slice.active #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) }
             p.phoneNumber-full.none #{ phone.content }
         .bottom-right 查看完整电话
-          
+    .content-left
+      - Src = renderData.src
+      - var conpany = Src || '//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png'
+      - var url = /\.(png|jpg|gif|jpeg|webp)$/
+      if url.test(conpany)
+        img.audio(src="//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png")
+      else
+        audio(src=conpany) 
+          <source src="#" type="#">
+        span.ico-video
+          img(src="//file.baixing.net/202108/f911950bc7679d0a83235a02bbd9a36e.png")
+        

@@ -16,7 +16,7 @@ block content
                 .point 
                     .littlePoint 
                     .largePoint
-                h2 热门产品
+                .h2 热门产品
                 .point 
                     .largePoint 
                     .littlePoint
@@ -28,11 +28,11 @@ block content
             .point 
                 .littlePoint 
                 .largePoint
-            h2 关于我们
+            .h2 关于我们
             .point 
                 .largePoint  
                 .littlePoint
-        include ../components/home/about-us.pug
+        include ../components/home/about-us-new.pug
 
         - const userDefinedList = renderData.autoConfig
         if userDefinedList && userDefinedList.length>0
@@ -46,13 +46,14 @@ block content
                 .point 
                     .littlePoint
                     .largePoint
-                h2 产品分类
+                .h2 产品分类
                 .point 
                     .largePoint
                     .littlePoint
-            include ../components/home/product-catogeries.pug
-            include ../components/home/product-list.pug
-            +product-list('nothot', productList)
+            .product-catogeries-list
+              include ../components/home/product-catogeries-new.pug 
+              include ../components/home/product-list-new.pug
+              +product-list('nothot', productList)
 
         - articleList = renderData.articleList.result
         - const { articleRecommend } = renderData
@@ -62,7 +63,7 @@ block content
                 .point 
                     .littlePoint
                     .largePoint
-                h2 新闻中心
+                .h2 新闻中心
                 .point
                     .largePoint
                     .littlePoint
@@ -77,7 +78,7 @@ block content
             .point
                 .littlePoint
                 .largePoint
-            h2 联系我们
+            .h2 联系我们
             .point
                 .largePoint
                 .littlePoint
