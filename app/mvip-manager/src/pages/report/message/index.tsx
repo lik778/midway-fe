@@ -414,6 +414,8 @@ function Card (props: CardProps) {
     }
   }, [item.id])
 
+  const displayMessage = decodeHTMLCodeSafe(item.message)
+
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
       <div className="left">
@@ -429,7 +431,11 @@ function Card (props: CardProps) {
       </div>
     </div>
     <div className="message" ref={el => checkEllipses(el)}>
-      {decodeHTMLCodeSafe(item.message)}
+      {displayMessage && (
+        <span className="message-content">
+          {displayMessage}
+        </span>
+      )}
       {item.contact && (
         <div className="phone-number">手机号码：{item.contact}</div>
       )}

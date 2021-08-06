@@ -113,6 +113,8 @@ export const LeaveMessageSearchListConfig = ({
           const contact = r.contact || ''
           // TODO REFACTOR 如果内容不足4长度则不会隐藏
           const displayContact = contact.replace(/\d{4}$/, '****')
+          const alwaysDisplayContent = displayContact.replace(/\*+$/, '')
+          const [_dontcare, lastFour] = contact.split(alwaysDisplayContent)
           const display = (e: any) => {
             const $target = e.target
             if (hideContactBinded) {
@@ -124,7 +126,7 @@ export const LeaveMessageSearchListConfig = ({
               delete hideContactBinded.target
               hideContactBinded = null
             }
-            $target.innerText = contact
+            $target.innerText = lastFour
 
             /* 当一个单元格已经打开时，拦截点击事件，防止冒泡到触发隐藏单元格事件 */
             const catchEvt = (e: any) => e.stopPropagation()
@@ -132,7 +134,7 @@ export const LeaveMessageSearchListConfig = ({
             $target.addEventListener('click', catchEvt, true)
 
             hideContactBinded = () => {
-              $target.innerText = displayContact
+              $target.innerText = '****'
               $target.removeEventListener('mousedown', catchEvt, true)
               $target.removeEventListener('click', catchEvt, true)
             }
@@ -140,7 +142,10 @@ export const LeaveMessageSearchListConfig = ({
             window.addEventListener('mousedown', hideContactBinded)
           }
           return <>
-            <span className="contact" onClick={display}>{displayContact}</span>
+            <span className="contact">
+              {alwaysDisplayContent}
+              {lastFour && <span className="star" onClick={display}>****</span>}
+            </span>
           </>
         }
       },

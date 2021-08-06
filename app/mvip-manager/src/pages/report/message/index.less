@@ -1,7 +1,11 @@
 .page-report {
   .contact {
     padding: 3px 5px;
-    cursor: pointer;
+
+    .star {
+      color: #1677FF;
+      cursor: pointer;
+    }
   }
 }
 .page-report.share {
@@ -117,7 +121,7 @@
         font-size: 14px;
         color: #333;
         line-height: 22px;
-        height: 40px;
+        height: 26px;
         overflow: hidden;
 
         .transparent {
@@ -127,7 +131,7 @@
           opacity: 0;
           z-index: -1;
         }
-        .phone-number {
+        .message-content + .phone-number {
           margin-top: 8px;
         }
       }
@@ -153,7 +157,7 @@
       .fold-btn {
         box-sizing: border-box;
         position: absolute;
-        bottom: 45px;
+        bottom: 53px;
         right: 8px;
         width: 6em;
         height: 22px;
