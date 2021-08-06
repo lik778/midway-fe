@@ -30,6 +30,10 @@ export default defineConfig({
       "target": "http://localhost:7001",
       "changeOrigin": true
     },
+    "/tracker/*": {
+      "target": "http://localhost:7001",
+      "changeOrigin": true
+    },
     "/upyun/*": {
       "target": "http://localhost:7001",
       "changeOrigin": true

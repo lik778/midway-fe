@@ -10,6 +10,11 @@ export const leaveLeads = function() {
             data.contact = $('#contactTel').val();
             data.content = $('#contactContent').val();
             data.shopName = $('#shop-name').text();
+            if (window.extraContactFormData) {
+                Object
+                    .entries(window.extraContactFormData)
+                    .map(([k, v]) => data[k] = v)
+            }
             if(data.name === '') {
                 alert('请留下您的姓名')
                 return false

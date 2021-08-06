@@ -1,6 +1,7 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import config from './config';
+
 // 引入的service
 import { SiteService } from './services/site.service';
 import { RequestService } from './services/request.service';
@@ -11,6 +12,7 @@ import { ManagementService } from './services/management.service';
 import { ReportService } from './services/report.service';
 import { ZhidaoService } from './services/zhidao.service';
 import { SemApiService } from './services/sem.service';
+
 // 引入controller
 import { ManagementController } from './controllers/management.controller';
 import { AppController } from './controllers/app.controller';
@@ -26,8 +28,6 @@ import { SiteCommonController } from './controllers/site/site-common.controller'
 import { AnalyticsController } from './controllers/analytics.controller';
 import { SemController } from './controllers/sem.controller'
 
-
-
 /**
  * 应用程序根模块
  */
@@ -39,6 +39,7 @@ import { SemController } from './controllers/sem.controller'
     }), HttpModule],
   controllers: [
     AppController,
+    ReportController,
     AdminController,
     ManagementController,
     SitemapController,
@@ -48,7 +49,6 @@ import { SemController } from './controllers/sem.controller'
     B2cSiteController,
     UpyunController,
     TrackerController,
-    ReportController,
     ZhidaoController,
     SemController
   ],
