@@ -414,6 +414,20 @@ function Card (props: CardProps) {
     }
   }, [item.id])
 
+  const trackJump = useCallback(() => {
+    if (item.id && uid && from) {
+      track({
+        eventType: TRACK_TYPE,
+        data: {
+          event_type: 'mobile-item-jump-to-source',
+          item_id: item.id,
+          uid,
+          from,
+        }
+      })
+    }
+  }, [item.id])
+
   const displayMessage = decodeHTMLCodeSafe(item.message)
 
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
@@ -441,7 +455,7 @@ function Card (props: CardProps) {
       )}
     </div>
     <div className="bottom-con">
-      <a href={item.sourceUrl} target="_blank">
+      <a href={item.sourceUrl} target="_blank" onClick={trackJump}>
         <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
         {item.sourceName}
       </a>
