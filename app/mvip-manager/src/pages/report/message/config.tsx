@@ -130,11 +130,13 @@ export const LeaveMessageSearchListConfig = ({
 
             /* 当一个单元格已经打开时，拦截点击事件，防止冒泡到触发隐藏单元格事件 */
             const catchEvt = (e: any) => e.stopPropagation()
+            $target.classList.add('hide-color')
             $target.addEventListener('mousedown', catchEvt, true)
             $target.addEventListener('click', catchEvt, true)
 
             hideContactBinded = () => {
               $target.innerText = '****'
+              $target.classList.remove('hide-color')
               $target.removeEventListener('mousedown', catchEvt, true)
               $target.removeEventListener('click', catchEvt, true)
             }
