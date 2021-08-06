@@ -15,7 +15,7 @@ export default {
   haojing: 'http://wulei.baixing.cn',
   haojingDomain: 'baixing.cn',
   hostType: {
-    prefix: ':shopName.shop.baixing.:domain',
-    base: 'shop.baixing.:domain'
+    prefix: ':shopName.shop-dev.baixing.:domain',
+    base: 'shop-dev.baixing.:domain'
   }
 }

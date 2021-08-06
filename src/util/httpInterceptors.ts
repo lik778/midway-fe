@@ -8,13 +8,14 @@ import { LogService } from 'src/services/log.service'
 export class UserGuard implements CanActivate {
     constructor(
         private readonly requestService: RequestService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly logService: LogService
     ) {}
     async canActivate(context: ExecutionContext): Promise<any> {
         const req = context.switchToHttp().getRequest();
         const ip = req.headers['x-forwarded-for'];
         const url = `${req.url}`
-        new LogService().errorLog(`headers:${req.headers}`)
+        this.logService.errorLog(`headers:${req.headers}`)
         const params = {
             ip:  ip,
             jumpUrl: url

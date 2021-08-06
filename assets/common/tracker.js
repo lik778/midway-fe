@@ -9,9 +9,10 @@ const BANNER_ID_QIHU = 2195
 const BANNER_ID_BAIDU = 2005
 const BANNER_ID_SM = 2241
 const BANNER_ID_BW = [2237]
+const BANNER_ID_BW_PLUS = [2282]
 const BANNER_ID_FM = [BANNER_ID_SOGOU, BANNER_ID_QIHU, BANNER_ID_BAIDU, BANNER_ID_SM]
 const BANNER_ID_QC = [2280]
-const isValidBannerID = id => [...BANNER_ID_FM, ...BANNER_ID_BW, ...BANNER_ID_QC, BANNER_ID_AICAIGOU, BANNER_ID_SHANTOU].includes(+id)
+const isValidBannerID = id => [...BANNER_ID_FM, ...BANNER_ID_BW, ...BANNER_ID_BW_PLUS, ...BANNER_ID_QC, BANNER_ID_AICAIGOU, BANNER_ID_SHANTOU].includes(+id)
 
 let host = 'localhost'
 try {
