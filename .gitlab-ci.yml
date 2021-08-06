@@ -158,7 +158,7 @@ deploy:
     - >
       if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then
         CONTEXT="bxapplets"
-      if [ "$CI_COMMIT_REF_SLUG" == "dev" ]; then
+      elif [ "$CI_COMMIT_REF_SLUG" == "dev" ]; then
         CONTEXT="cat"
       elif [ "$CI_COMMIT_REF_SLUG" == "test" ]; then
         CONTEXT="test-cat"
@@ -167,8 +167,8 @@ deploy:
       elif [ "$CI_COMMIT_REF_SLUG" == "test2" ]; then
         CONTEXT="test-bxapplets"
       fi
-    - echo "[CONTEXT] "$CONTEXT
-    - kubectl set image -n $CONTEXT deployments --selector app=midway-fe *=$MIDWAY_FE
+      echo "[CONTEXT] "$CONTEXT;
+      kubectl set image -n $CONTEXT deployments --selector app=midway-fe *=$MIDWAY_FE;
 
 # ############################################ product-configure-start
 # 暂先不动生产环境的 CI/CD，怕弄坏
