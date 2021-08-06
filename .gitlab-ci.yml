@@ -157,17 +157,16 @@ deploy:
   script:
     - >
       if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then
-        CONTEXT="bxapplets"
+        kubectl set image -n bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE;
       elif [ "$CI_COMMIT_REF_SLUG" == "dev" ]; then
-        CONTEXT="cat"
+        kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE;
       elif [ "$CI_COMMIT_REF_SLUG" == "test" ]; then
-        CONTEXT="test-cat"
+        kubectl set image -n test-cat deployments --selector app=midway-fe *=$MIDWAY_FE;
       elif [ "$CI_COMMIT_REF_SLUG" == "test1" ]; then
-        CONTEXT="bxapplets"
+        kubectl set image -n bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE;
       elif [ "$CI_COMMIT_REF_SLUG" == "test2" ]; then
-        CONTEXT="test-bxapplets"
-      fi
-      kubectl set image -n $CONTEXT deployments --selector app=midway-fe *=$MIDWAY_FE;
+        kubectl set image -n test-bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE;
+      fi;
 
 # ############################################ product-configure-start
 # 暂先不动生产环境的 CI/CD，怕弄坏
