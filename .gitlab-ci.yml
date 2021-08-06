@@ -156,6 +156,8 @@ deploy:
   dependencies: []
   script:
     - >
+      if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then
+        CONTEXT="bxapplets"
       if [ "$CI_COMMIT_REF_SLUG" == "dev" ]; then
         CONTEXT="cat"
       elif [ "$CI_COMMIT_REF_SLUG" == "test" ]; then
