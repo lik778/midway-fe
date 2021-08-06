@@ -167,7 +167,6 @@ deploy:
       elif [ "$CI_COMMIT_REF_SLUG" == "test2" ]; then
         CONTEXT="test-bxapplets"
       fi
-      echo "[CONTEXT] "$CONTEXT;
       kubectl set image -n $CONTEXT deployments --selector app=midway-fe *=$MIDWAY_FE;
 
 # ############################################ product-configure-start
