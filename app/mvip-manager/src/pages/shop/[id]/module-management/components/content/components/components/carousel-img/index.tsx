@@ -44,14 +44,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   // 获取店铺id
   const params: RouteParams = useParams();
 
-  // 将提交的函数放到上层控制
-  useImperativeHandle(parentRef, () => ({
-    handleUpData,
-    upDataLoading: upDataLoading,
-    getDataLoading: getDataLoading,
-    disabled: upDataLoading || getDataLoading
-  }))
-
   useEffect(() => {
     getBannerList()
   }, [])
@@ -176,7 +168,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   // 提交函数 单个move还是从弹窗中选择了多个图, 
   // 分自动更新还是手动更新，对应的数据源不同
   // 自动更新需要传 nowBannerList nowDelBannerIds
-  const handleUpData = async (type: 'move' | 'all', nowBannerList?: BannerListItem[], nowDelBannerIds?: number[]) => {
+  const handleUpData = useCallback(async (type: 'move' | 'all', nowBannerList?: BannerListItem[], nowDelBannerIds?: number[]) => {
     // 当手动控制更新 则判断是否有修改过顺序等信息
     if (!autoUpdata && !changeFlag) {
       console.log('没有修改')
@@ -202,7 +194,13 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       setChangeFlag(false)
     }
     await getBannerList()
-  }
+  }, [changeFlag, bannerList, delBannerIds])
+
+  // 将提交的函数放到上层控制
+  useImperativeHandle(parentRef, () => ({
+    handleUpData,
+    disabled: upDataLoading || getDataLoading
+  }), [upDataLoading, getDataLoading, handleUpData])
 
   const renderIcons: ActionBtnListItem[] = useMemo(() => {
     return [

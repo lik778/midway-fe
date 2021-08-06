@@ -3,11 +3,11 @@ import { Form } from 'antd'
 import TargetComponent from './components/target-component'
 import { selectItemConfig } from './config'
 import styles from './index.less'
-import { ConfigItem } from './data'
+import { ConfigItem, ConfigKey } from './data'
 
 interface Props {
   className?: string,
-  configKey: string
+  configKey: ConfigKey
 }
 
 const SelectItem: FC<Props> = (props) => {

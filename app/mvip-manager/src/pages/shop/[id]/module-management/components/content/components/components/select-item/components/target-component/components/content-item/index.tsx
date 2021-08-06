@@ -5,10 +5,32 @@ import styles from './index.less'
 interface Props {
   type: ConfigItemType,
   content: SelectProductListItem | SelectArticleListItem
+  actionConfig?: {
+    delete: boolean,
+    select: boolean
+  },
+  selectNum?: number,
+  handleChangeSelect?: (selected: boolean, content: SelectProductListItem | SelectArticleListItem) => void
+  handleClickDelete?: (content: SelectProductListItem | SelectArticleListItem) => void
 }
 
 const ContentItem: FC<Props> = (props) => {
-  const { type, content } = props
+  const { type, content, actionConfig, selectNum, handleChangeSelect, handleClickDelete } = props
+  const [localActionConfig, setLocalActionConfig] = useState(() => {
+    const localActionConfig = {
+      delete: false,
+      select: false
+    }
+    return {
+      ...localActionConfig,
+      ...(actionConfig || {})
+    }
+  })
+
+  const handleClickSelect = () => {
+    handleChangeSelect!(!Boolean(selectNum), content)
+  }
+
   return <div className={styles['content-container']}>
     <div className={styles['content']}>
       {
@@ -22,7 +44,21 @@ const ContentItem: FC<Props> = (props) => {
       </div>
     </div>
     <div className={styles['action']}>
-      这里是操作
+      {
+        localActionConfig.select && <>
+          {
+            selectNum && <div className={`${styles['select-box']} ${styles['selected']}`} onClick={handleClickSelect}>
+              {selectNum}
+            </div>
+          }
+          {
+            !selectNum && <div className={styles['select-box']} onClick={handleClickSelect}></div>
+          }
+        </>
+      }
+      {
+        localActionConfig.delete && <div className={styles['delete']} onClick={() => { handleClickDelete!(content) }}>删除</div>
+      }
     </div>
   </div>
 }

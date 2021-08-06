@@ -17,22 +17,24 @@ const HomeSwiper: FC<Props> = (props) => {
 
   const pcRef = useRef<{
     handleUpData: () => Promise<void>,
-    disabled: boolean
+    disabledFc: () => boolean,
   }>({
     handleUpData: async () => { },
-    disabled: false
+    disabledFc: () => false
   })
 
   const wapRef = useRef<{
     handleUpData: (type: 'all') => Promise<void>,
-    disabled: boolean
+    disabled: boolean,
   }>({
     handleUpData: async () => { },
     disabled: false
   })
 
   const handleClickSubmit = () => {
-    if (pcRef.current.disabled || wapRef.current.disabled) return
+    if (pcRef.current.disabledFc() || wapRef.current.disabled) {
+      return
+    }
     Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
   }
 

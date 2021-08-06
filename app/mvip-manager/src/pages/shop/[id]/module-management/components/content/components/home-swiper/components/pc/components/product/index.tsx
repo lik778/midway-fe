@@ -7,7 +7,8 @@ import { Detail } from './data'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import styles from './index.less'
 import SelectItem from '../../../../../components/select-item'
-import { } from 'react';
+import { ConfigKey } from '../../../../../components/select-item/data'
+
 import { mockData } from '@/utils';
 interface Props {
   setSwiperType: (swiperType: 'swiper' | 'product') => void
@@ -28,7 +29,7 @@ const Product = (props: Props, parentRef: Ref<any>) => {
     config.customerFormItemList = [{
       index: 2,
       key: 'productList',
-      node: <SelectItem key='productList' configKey='home-swiper'></SelectItem>
+      node: <SelectItem key='productList' configKey='homePage-banner'></SelectItem>
     }]
     return config
   });
@@ -39,14 +40,14 @@ const Product = (props: Props, parentRef: Ref<any>) => {
       "backGroundImg": "http://img6.baixing.net/eea2df034c49dbd09a7d0079dde980e4.jpg_sv1",
       "productList": [
         {
-          "id": 2120,
+          "id": 2075,
           "name": "dfas",
           "price": "面议",
           "headImg": "http://img5.baixing.net/dc03a3ea825652047f4cc43e420e46dc.png_sv1",
           "urlSuffix": "http://shop.baixing.cn/dfjasidfjjs/p-2120.html"
         },
         {
-          "id": 2124,
+          "id": 2070,
           "name": "抗日游行1",
           "price": "面议",
           "headImg": "http://img6.baixing.net/5b9c77aac2d80436484c7935ccfd000a.png_sv1",
@@ -67,7 +68,8 @@ const Product = (props: Props, parentRef: Ref<any>) => {
   }, [])
 
   const handleSubmit = async () => {
-    console.log(formRef.current.form?.getFieldsValue())
+
+    await formRef.current.form?.validateFields()
     setUpDataLoading(true)
     const res = await mockData('data', null)
     setUpDataLoading(false)
@@ -78,7 +80,7 @@ const Product = (props: Props, parentRef: Ref<any>) => {
     disabled: upDataLoading
   }))
 
-  return <div className={styles["about-us-container"]}>
+  return <div className={styles["product-container"]}>
     <WildcatForm
       ref={formRef}
       editDataSource={detail}

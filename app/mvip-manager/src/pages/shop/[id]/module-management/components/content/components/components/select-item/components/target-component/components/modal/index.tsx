@@ -6,6 +6,8 @@ import styles from './index.less'
 import { RouteParams } from '@/interfaces/shop';
 import { ArticleListItem, ProductListItem } from '@/interfaces/shop';
 import ContentItem from '../content-item'
+import ScrollBox from '@/components/scroll-box'
+import { errorMessage } from '@/components/message';
 
 interface Props {
   value?: SelectProductListItem[] | SelectArticleListItem[]; // Form.Item提供
@@ -19,10 +21,11 @@ const SelectModal: FC<Props> = (props) => {
   // 获取店铺id
   const params: RouteParams = useParams();
   const { value, onChange, modalVisible, componentConfig, setModalVisible } = props
+  const [localValue, setLocalValue] = useState<SelectProductListItem[] | SelectArticleListItem[]>([])
   const typeText = ConfigItemTypeText[componentConfig.type]
   const [dataList, setDataList] = useState<ProductListItem[] | ArticleListItem[]>([])
   const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
   const [modalTitle] = useState(<div className={styles['modal-title-container']} key="title">
@@ -30,13 +33,31 @@ const SelectModal: FC<Props> = (props) => {
     <span className={styles['tip']}>（最多可添加{componentConfig.maxLength}个{typeText}）</span>
   </div>)
 
+  // 将暂存的数据拷贝一份到弹窗里，点击提交再更新到表单
+  // 每次弹出选择框重置选项
+  useEffect(() => {
+    setLocalValue([...(value || [])])
+  }, [value, modalVisible])
+
+
+  const localValueObj = useMemo(() => {
+    const localValueObj: {
+      [key: string]: number
+    } = {};
+    (localValue || []).forEach((item, index) => {
+      localValueObj[item.id] = index + 1
+    })
+    return localValueObj
+  }, [localValue])
+
   const getDataList = async () => {
-    if (page > total) return
+    if (page > totalPage) return
     setGetDataLoading(true)
     const res = await componentConfig.ajaxApi(Number(params.id), { page, contentCateId: 0, size: 10 })
     if (res?.success) {
       setDataList([...dataList, ...((componentConfig.type === 'product' ? res.data.productList.result : res.data.articleList.result) || [])] as any[])
-      setTotal((componentConfig.type === 'product' ? res.data.productList.totalRecord : res.data.articleList.totalRecord) || 0)
+      setTotalPage((componentConfig.type === 'product' ? res.data.productList.totalPage : res.data.articleList.totalPage) || 0)
+      setPage((page) => page + 1)
     }
     setGetDataLoading(false)
   }
@@ -45,6 +66,27 @@ const SelectModal: FC<Props> = (props) => {
     getDataList()
   }, [])
 
+  const actionConfig = {
+    delete: false,
+    select: true
+  }
+
+  const handleChangeSelect = (selected: boolean, content: SelectProductListItem | SelectArticleListItem) => {
+    if (selected) {
+      if (componentConfig.maxLength > localValue.length) {
+        setLocalValue([...(localValue || []), content])
+      } else {
+        errorMessage(`最多可添加${componentConfig.maxLength}个${typeText}`)
+      }
+    } else {
+      setLocalValue((localValue || []).filter(item => item.id !== content.id))
+    }
+  }
+
+  const handleClickSubmit = () => {
+    onChange!(localValue)
+    setModalVisible(false)
+  }
 
   return <Modal
     className={styles['select-item-modal']}
@@ -68,15 +110,17 @@ const SelectModal: FC<Props> = (props) => {
           </>
         }
         {
-          dataList.length > 0 && <div className={styles['content-list']}>
-            {
-              dataList.map((item: any) => <ContentItem type={componentConfig.type} content={item}></ContentItem>)
-            }
-          </div>
+          dataList.length > 0 && <ScrollBox className={styles['scroll-box']} scrollY={true} handleScrollToLower={getDataList}>
+            <div className={styles['content-list']}>
+              {
+                dataList.map((item: ProductListItem | ArticleListItem) => <ContentItem type={componentConfig.type} content={item} actionConfig={actionConfig} selectNum={localValueObj[item.id]} handleChangeSelect={handleChangeSelect} key={item.id}></ContentItem>)
+              }
+            </div>
+          </ScrollBox>
         }
         <div className={styles['footer']}>
-          <div className={styles['tip']}>已选择{value ? value.length + 1 : 0}个{typeText}</div>
-          <Button className={styles['updata-btn']}>提交</Button>
+          <div className={styles['tip']}>已选择{localValue.length}个{typeText}</div>
+          <Button className={styles['updata-btn']} onClick={handleClickSubmit}>提交</Button>
         </div>
       </div>
     </Spin>

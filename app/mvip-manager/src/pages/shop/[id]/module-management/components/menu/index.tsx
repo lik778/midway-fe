@@ -6,18 +6,18 @@ import { MenuItemOption } from '../../data'
 import styles from './index.less'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 interface Props {
-  page: PageType,
-  componentId: ComponentId
+  position: PageType,
+  pageModule: ComponentId
   menuOptions: {
     [key in PageType]: MenuItemOption[]
   }
-  handleChangeComponent: (componentId: ComponentId) => void
+  handleChangeComponent: (pageModule: ComponentId) => void
 }
 
 const Menu: FC<Props> = (props) => {
-  const { page, componentId, menuOptions, handleChangeComponent } = props
+  const { position, pageModule, menuOptions, handleChangeComponent } = props
 
-  const menuList = useMemo(() => menuOptions[page] || [], [page, menuOptions])
+  const menuList = useMemo(() => menuOptions[position] || [], [position, menuOptions])
 
   const handleClickPosition = (thumbnail: string) => {
     window.open(thumbnail, '_block')
@@ -26,7 +26,7 @@ const Menu: FC<Props> = (props) => {
   return <div className={styles['menu-container']}>
     {
       menuList.map(item => {
-        return <div className={`${styles['item']} ${componentId === item.id ? styles['active'] : ''}`} key={item.id} onClick={() => handleChangeComponent(item.id)}>
+        return <div className={`${styles['item']} ${pageModule === item.id ? styles['active'] : ''}`} key={item.id} onClick={() => handleChangeComponent(item.id)}>
           <span className={styles['name']}> {item.name}</span>
           <Popover placement="right" title='所处位置' content={
             <img className={styles['thumbnail']} src={item.thumbnail}></img>

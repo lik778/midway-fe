@@ -1,8 +1,8 @@
-import React, {  forwardRef, Ref, useImperativeHandle } from 'react';
+import React, { forwardRef, Ref, useImperativeHandle } from 'react';
 import { ShopInfo } from '@/interfaces/shop';
 import { ShopBasisType, DeviceType, ProductType } from '@/enums';
 import styles from './index.less'
-import CarouselImg from '../components/carousel-img'
+import CarouselImg from '../../../components/carousel-img'
 interface Props {
   curShopInfo: ShopInfo // model里传过来
 }
@@ -10,6 +10,7 @@ interface Props {
 // 这个组件可以抹去，但是防止b2b与b2c之间真的有区别，所以还是保留着
 const WapSwiper = (props: Props, parentRef: Ref<any>) => {
   const { curShopInfo } = props
+
   return <div className={styles['wap-container']}>
     <CarouselImg
       ref={parentRef}

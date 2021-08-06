@@ -2,7 +2,7 @@ import React, { forwardRef, Ref, useImperativeHandle } from 'react';
 import { ShopInfo } from '@/interfaces/shop';
 import { ShopBasisType, DeviceType, ProductType } from '@/enums';
 import styles from './index.less'
-import CarouselImg from '../../../components/carousel-img'
+import CarouselImg from '../../../../../components/carousel-img'
 interface Props {
 }
 

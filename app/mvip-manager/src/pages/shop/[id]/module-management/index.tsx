@@ -12,8 +12,8 @@ import { mockData } from '@/utils';
 
 const ModuleManagement = () => {
   const [moduleOptions, setModuleOptions] = useState<any[]>([])
-  const [page, setPage] = useState<PageType>()
-  const [componentId, setComponentId] = useState<ComponentId>()
+  const [position, setPosition] = useState<PageType>()
+  const [pageModule, setComponentId] = useState<ComponentId>()
 
   // 页面选择器配置
   const [pageOptions, setPageOptions] = useState<PageItemOption[]>([])
@@ -139,16 +139,16 @@ const ModuleManagement = () => {
   const initComponent = () => {
     initPageOptions()
     initMenuOptions()
-    setPage(moduleOptions.length > 0 ? moduleOptions[0].position : 'homePage')
+    setPosition(moduleOptions.length > 0 ? moduleOptions[0].position : 'homePage')
     setComponentId(moduleOptions.length > 0 && moduleOptions[0].infoList && moduleOptions[0].infoList.length > 0 ? moduleOptions[0].infoList[0].pageModule : 'banner')
   }
 
   // 切换页面的时候 将左侧组件选择恢复到第一个
   useEffect(() => {
-    if (menuOptions[page as PageType]) {
-      setComponentId(menuOptions[page as PageType][0].id)
+    if (menuOptions[position as PageType]) {
+      setComponentId(menuOptions[position as PageType][0].id)
     }
-  }, [page])
+  }, [position])
 
   // 获得数据后初始化组件数据
   useEffect(() => {
@@ -162,7 +162,7 @@ const ModuleManagement = () => {
 
   // 更新左侧名称
   const handleChangeModuleName = (name: string) => {
-    const componentConfig = menuOptions[page!].find(item => item.id === componentId)
+    const componentConfig = menuOptions[position!].find(item => item.id === pageModule)
     componentConfig!.name = name
     setMenuOptions({ ...menuOptions })
   }
@@ -172,15 +172,15 @@ const ModuleManagement = () => {
     <div className={`${styles['module-management-container']} container`}>
       <div className={styles['module-management-content']}>
         {
-          page && <SelectPage pageOptions={pageOptions} handleChangePage={setPage} page={page}></SelectPage>
+          position && <SelectPage pageOptions={pageOptions} handleChangePosition={setPosition} position={position}></SelectPage>
         }
         {
-          page && componentId && <div className={styles['line']}>
+          position && pageModule && <div className={styles['line']}>
             <div className={styles['menu']}>
-              <Menu page={page} componentId={componentId} menuOptions={menuOptions} handleChangeComponent={setComponentId}></Menu>
+              <Menu position={position} pageModule={pageModule} menuOptions={menuOptions} handleChangeComponent={setComponentId}></Menu>
             </div>
             <div className={styles['content']}>
-              <Content page={page} componentId={componentId} handleChangeModuleName={handleChangeModuleName}></Content>
+              <Content position={position} pageModule={pageModule} handleChangeModuleName={handleChangeModuleName}></Content>
             </div>
           </div>
         }

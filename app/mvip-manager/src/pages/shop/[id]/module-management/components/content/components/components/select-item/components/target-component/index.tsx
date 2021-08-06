@@ -13,7 +13,7 @@ interface Props {
 
 const TargetComponent: FC<Props> = (props) => {
   const { componentConfig, value, onChange } = props
-  const [modalVisible, setModalVisible] = useState<boolean>(true)
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
   useEffect(() => {
     console.log(value)
   }, [value])
@@ -29,7 +29,7 @@ const TargetComponent: FC<Props> = (props) => {
       </Button>
       <div className={styles['tip']}>（最多可添加{componentConfig.maxLength}个{ConfigItemTypeText[componentConfig.type]}）</div>
     </div>
-    <SelectList value={value} componentConfig={componentConfig}></SelectList>
+    <SelectList value={value} onChange={onChange} componentConfig={componentConfig}></SelectList>
     <SelectModal value={value} onChange={onChange} modalVisible={modalVisible} componentConfig={componentConfig} setModalVisible={setModalVisible}></SelectModal>
   </>
 }

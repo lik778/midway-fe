@@ -33,10 +33,12 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
     disabled: false
   })
 
+
+  // 这里写disabledFc是因为当前组件更新一次以后没有再更新（ref不触发页面更新），所以swiperRef.current.disabled || productRef.current.disabled是第一次刷新组件的值，写出函数，swiperRef.current.disabled是对子组件ref的引用，所以能获取到最新值
   useImperativeHandle(parentRef, () => ({
     handleUpData: handleUpData,
-    disabled: swiperRef.current.disabled || productRef.current.disabled
-  }))
+    disabledFc: () => swiperRef.current.disabled || productRef.current.disabled,
+  }), [swiperType])
 
   const handleUpData = () => {
     if (swiperType === 'product') {
