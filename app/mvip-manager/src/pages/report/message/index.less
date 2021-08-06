@@ -1,3 +1,9 @@
+.page-report {
+  .contact {
+    padding: 3px 5px;
+    cursor: pointer;
+  }
+}
 .page-report.share {
   display: flex;
   flex-direction: column;
@@ -46,7 +52,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     padding: 12px;
     height: 100%;
     background: #f9f9f9;
@@ -63,7 +69,7 @@
 
     .card {
       position: relative;
-      padding: 10px 18px;
+      padding: 10px 18px 48px;
       width: 352px;
       background: white;
       border-radius: 8px;
@@ -103,12 +109,6 @@
           a {
             color: white;
           }
-          .anticon {
-            position: relative;
-            top: 2px;
-            font-size: 14px;
-            transform: rotateY(180deg);
-          }
         }
       }
       .message {
@@ -116,8 +116,9 @@
         margin-top: 18px;
         font-size: 14px;
         color: #333;
-        line-height: 20px;
+        line-height: 22px;
         height: 40px;
+        overflow: hidden;
 
         .transparent {
           position: absolute;
@@ -126,22 +127,21 @@
           opacity: 0;
           z-index: -1;
         }
+        .phone-number {
+          margin-top: 8px;
+        }
       }
-      .source {
-        margin-top: 14px;
-        font-size: 12px;
-        color: #999;
-      }
-      .fold-btn {
+      .bottom-con {
         position: absolute;
         bottom: 0;
         left: 0;
+        padding: 0 17px;
         width: 100%;
-        height: 36px;
+        height: 40px;
         border-bottom-left-radius: inherit;
         border-bottom-right-radius: inherit;
-        line-height: 36px;
-        text-align: center;
+        line-height: 40px;
+        text-align: left;
         background: white;
         box-shadow: 0 -2px 10px rgba(0,0,0,3%);
 
@@ -149,6 +149,20 @@
           color: #999;
           transition: .3s ease-in;
         }
+      }
+      .fold-btn {
+        box-sizing: border-box;
+        position: absolute;
+        bottom: 45px;
+        right: 8px;
+        width: 6em;
+        height: 22px;
+        line-height: 22px;
+        background: white;
+        font-size: 12px;
+        color: #1677ff;
+        text-align: center;
+        text-indent: -10px;
       }
     }
     .card.unfold {
@@ -188,5 +202,4 @@
     height: 100%;
     z-index: 9;
   }
-
 }

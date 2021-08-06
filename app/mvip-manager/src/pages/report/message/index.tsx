@@ -2,7 +2,6 @@ import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import moment from 'moment'
 import { Tabs, Form } from 'antd'
 import { throttle } from 'lodash'
-import { PhoneFilled, DownOutlined } from '@ant-design/icons'
 
 import Loading from '@/components/loading'
 import Query from '../components/search-list'
@@ -418,28 +417,33 @@ function Card (props: CardProps) {
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
       <div className="left">
-        <div className="title">{`用户${item.name || item.contact}留言`}</div>
+        <div className="title">{`用户${item.name}`}</div>
         <div className="date">{formatTime(+item.time)}</div>
       </div>
       <div className="right">
-        <div className="phone-btn">
-          <PhoneFilled />
-          <a href={`tel:${item.contact}`} onClick={trackTel}>{item.contact}</a>
-        </div>
+        {item.contact && (
+          <div className="phone-btn">
+            <a href={`tel:${item.contact}`} onClick={trackTel}>立即联系</a>
+          </div>
+        )}
       </div>
     </div>
-    <div className="message line-2" ref={el => checkEllipses(el)}>
+    <div className="message" ref={el => checkEllipses(el)}>
       {decodeHTMLCodeSafe(item.message)}
+      {item.contact && (
+        <div className="phone-number">手机号码：{item.contact}</div>
+      )}
     </div>
-    <div className="source">
-      <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>{item.sourceName}
+    <div className="bottom-con">
+      <a href={item.sourceUrl} target="_blank">
+        <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
+        {item.sourceName}
+      </a>
     </div>
-    {shouldFold && (
-      <div className="fold-btn" onClick={() => setFold(!fold)}>
-        <DownOutlined />
-      </div>
+    {(shouldFold && fold) && (
+      <span className="fold-btn" onClick={() => setFold(!fold)}>展开更多</span>
     )}
-  </div>
+</div>
 }
 
 LeaveMessagePage.wrappers = ['@/wrappers/path-auth']

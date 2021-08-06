@@ -12,6 +12,8 @@ type Item = LeaveMessageListData
 
 export const formatTime = (unixTime: number) => dayjs(unixTime * 1000).format('YYYY-MM-DD HH:mm:ss')
 
+let hideContactBinded: any = null
+
 export const LeaveMessageSearchListConfig = ({
   form,
   total,
@@ -106,7 +108,41 @@ export const LeaveMessageSearchListConfig = ({
         title: '联系方式',
         dataIndex: 'contact',
         width: 140,
-        key: 'contact'
+        key: 'contact',
+        render: (_: any, r: Item) => {
+          const contact = r.contact || ''
+          // TODO REFACTOR 如果内容不足4长度则不会隐藏
+          const displayContact = contact.replace(/\d{4}$/, '****')
+          const display = (e: any) => {
+            const $target = e.target
+            if (hideContactBinded) {
+              // 跨单元格选中时先隐藏上一个已打开的单元格
+              if (hideContactBinded.target !== $target) {
+                hideContactBinded()
+              }
+              window.removeEventListener('mousedown', hideContactBinded)
+              delete hideContactBinded.target
+              hideContactBinded = null
+            }
+            $target.innerText = contact
+
+            /* 当一个单元格已经打开时，拦截点击事件，防止冒泡到触发隐藏单元格事件 */
+            const catchEvt = (e: any) => e.stopPropagation()
+            $target.addEventListener('mousedown', catchEvt, true)
+            $target.addEventListener('click', catchEvt, true)
+
+            hideContactBinded = () => {
+              $target.innerText = displayContact
+              $target.removeEventListener('mousedown', catchEvt, true)
+              $target.removeEventListener('click', catchEvt, true)
+            }
+            hideContactBinded.target = $target
+            window.addEventListener('mousedown', hideContactBinded)
+          }
+          return <>
+            <span className="contact" onClick={display}>{displayContact}</span>
+          </>
+        }
       },
     ],
     pagination: {
