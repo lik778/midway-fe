@@ -26,6 +26,9 @@ const TRACK_TYPE = 'shop-mvip-message-page'
 // 可以的话请把这玩意儿删了
 function LeaveMessagePage() {
 
+  // 暂时隐藏留咨入口，等数据洗完再开放
+  return null
+
   // ********************************************************* states
 
   const params = useMemo(() => new URLSearchParams(window.location.search), [])
