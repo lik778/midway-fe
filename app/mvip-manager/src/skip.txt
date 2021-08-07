@@ -1,0 +1,3 @@
+改变此文件，跳过 CI 中的 mvip-build 阶段
+
+sadfsadf
