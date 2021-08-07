@@ -1,3 +1,0 @@
-改变此文件，重新触发 CI 中的 mvip-build 阶段
-
-adsfasdf
