@@ -7,7 +7,7 @@ const isLocal = process.env.NODE_ENV === 'local'
 
 console.log('[BUILD ENV]', process.env.NODE_ENV)
 
-const assign = (...args) => Object.assign(args.filter(x => x))
+const assign = (...args) => Object.assign(...args.filter(x => x))
 
 // tips: path.resolve(__dirname, '..', 'assets/common/index.js') 这里面的代码是搜索通打点的，
 // 每次更新一个模板，都需要添加
