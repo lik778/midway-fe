@@ -78,11 +78,9 @@ nest-build:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
+  except:
     changes:
-      - assets/**/*
-      - src/**/*
-      - views/**/*
-      - nest-cli.json
+      - src/skip.txt
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
@@ -108,12 +106,8 @@ nest-build-skipped:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-  except:
     changes:
-      - assets/**/*
-      - src/**/*
-      - views/**/*
-      - nest-cli.json
+      - src/skip.txt
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
@@ -139,8 +133,9 @@ mvip-build:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
+  except:
     changes:
-      - app/mvip-manager/src/**/*
+      - app/mvip-manager/src/skip.txt
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
@@ -162,9 +157,8 @@ mvip-build-skipped:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-  except:
     changes:
-      - app/mvip-manager/src/**/*
+      - app/mvip-manager/src/skip.txt
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
