@@ -1,4 +1,5 @@
 # README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
+# 由于 Gitlab 版本的限制，用不了多缓存，所以缓存的实现有些别扭
 
 image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
 
@@ -87,13 +88,8 @@ nest-build:
   image: node:12.22-alpine
   cache: 
     key: midway-fe:nest-install
-    policy: pull
     paths:
       - node_modules/
-  cache: 
-    key: midway-fe:nest-build
-    policy: push
-    paths:
       - dist/
   script:
     - if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then ENV="dev"; else ENV="$CI_COMMIT_REF_SLUG"; fi
@@ -122,7 +118,7 @@ nest-build-skipped:
     - k8s-dev-build
   image: node:12.22-alpine
   cache: 
-    key: midway-fe:nest-build
+    key: midway-fe:nest-install
     policy: pull
     paths:
       - dist/
@@ -150,13 +146,8 @@ mvip-build:
   image: node:12.22-alpine
   cache: 
     key: midway-fe:mvip-install
-    policy: pull
     paths:
       - app/mvip-manager/node_modules/
-  cache: 
-    key: midway-fe:mvip-build
-    policy: push
-    paths:
       - app/mvip-manager/dist/
   script:
     - export ENV=dev
@@ -178,7 +169,7 @@ mvip-build-skipped:
     - k8s-dev-build
   image: node:12.22-alpine
   cache: 
-    key: midway-fe:mvip-build
+    key: midway-fe:mvip-install
     policy: pull
     paths:
       - app/mvip-manager/dist/
