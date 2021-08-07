@@ -111,10 +111,10 @@ mvip-build:
     - k8s-dev-build
   image: node:12.22-alpine
   cache: 
-    - key: midway-fe:mvip-install
-      policy: pull
-      paths:
-        - app/mvip-manager/node_modules/
+    key: midway-fe:mvip-install
+    policy: pull
+    paths:
+      - app/mvip-manager/node_modules/
   script:
     - export ENV=dev
     - npm run build:mvip
