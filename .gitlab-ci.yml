@@ -77,6 +77,11 @@ nest-build:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
+    changes:
+      - assets/**/*
+      - src/**/*
+      - views/**/*
+      - nest-cli.json
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
@@ -85,6 +90,11 @@ nest-build:
     policy: pull
     paths:
       - node_modules/
+  cache: 
+    key: midway-fe:nest-build
+    policy: push
+    paths:
+      - dist/
   script:
     - if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then ENV="dev"; else ENV="$CI_COMMIT_REF_SLUG"; fi
     - echo "[ENV] "$ENV
@@ -92,6 +102,32 @@ nest-build:
     - npm run build:nest
     - export NODE_ENV=production
     - npm run build:apps
+
+nest-build-skipped:
+  stage: build
+  only:
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
+      - dev@fenlei/midway-fe
+      - test@fenlei/midway-fe
+      - test1@fenlei/midway-fe
+      - test2@fenlei/midway-fe
+  except:
+    changes:
+      - assets/**/*
+      - src/**/*
+      - views/**/*
+      - nest-cli.json
+  tags:
+    - k8s-dev-build
+  image: node:12.22-alpine
+  cache: 
+    key: midway-fe:nest-build
+    policy: pull
+    paths:
+      - dist/
+  script:
+    - echo "nest build skipped"
   artifacts:
     expire_in: 24 hrs
     paths:
@@ -107,6 +143,8 @@ mvip-build:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
+    changes:
+      - app/mvip-manager/src/**/*
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
@@ -115,9 +153,37 @@ mvip-build:
     policy: pull
     paths:
       - app/mvip-manager/node_modules/
+  cache: 
+    key: midway-fe:mvip-build
+    policy: push
+    paths:
+      - app/mvip-manager/dist/
   script:
     - export ENV=dev
     - npm run build:mvip
+
+mvip-build-skipped:
+  stage: build
+  only:
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
+      - dev@fenlei/midway-fe
+      - test@fenlei/midway-fe
+      - test1@fenlei/midway-fe
+      - test2@fenlei/midway-fe
+  except:
+    changes:
+      - app/mvip-manager/src/**/*
+  tags:
+    - k8s-dev-build
+  image: node:12.22-alpine
+  cache: 
+    key: midway-fe:mvip-build
+    policy: pull
+    paths:
+      - app/mvip-manager/dist/
+  script:
+    - echo "mvip build skipped"
   artifacts:
     expire_in: 24 hrs
     paths:
