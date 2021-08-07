@@ -96,6 +96,10 @@ nest-build:
     - npm run build:nest
     - export NODE_ENV=production
     - npm run build:apps
+  artifacts:
+    expire_in: 24 hrs
+    paths:
+      - dist/
 
 nest-build-skipped:
   stage: build
@@ -147,6 +151,10 @@ mvip-build:
   script:
     - export ENV=dev
     - npm run build:mvip
+  artifacts:
+    expire_in: 24 hrs
+    paths:
+      - app/mvip-manager/dist/
 
 mvip-build-skipped:
   stage: build
