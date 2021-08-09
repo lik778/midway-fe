@@ -4,7 +4,7 @@ html
         meta(name='viewport', content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
         meta(http-equiv='X-UA-Compatible', content='ie=edge')
         meta(name='format-detection', content='telephone=no')
-        - companyName = renderData.basic.company?renderData.basic.company.name:''
+        - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
         title #{ companyName || "" }
         //- title #{ renderData.meta.title || "" }
         //- meta(name='keywords', content=renderData.meta.keywords || "")

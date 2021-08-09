@@ -1,6 +1,7 @@
 import {
   Response,
   ReportListResponse,
+  ManagementListResponse,
   CateFlowOverviewData,
   CateFlowChartParams,
   CateFlowChartData,
@@ -12,7 +13,11 @@ import {
   BaxFlowDetailParams,
   KeywordOverviewData,
   KeywordDetailListData,
-  KeywordDetailListParams, SummaryOverviewData, FlowChartData,
+  KeywordDetailListParams,
+  SummaryOverviewData,
+  FlowChartData,
+  getLeaveMessageListParams,
+  LeaveMessageListData
 } from '@/interfaces/report';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { errorMessage } from '@/components/message';
@@ -38,7 +43,7 @@ request.interceptors.request.use((req: any) => {
 })
 
 request.interceptors.response.use((res: AxiosResponse<any>) => {
-  if (res.data && res.data.code === 0) {
+  if (res.data && (res.data.code === 0 || res.data.code === 200)) {
     return Promise.resolve(res.data)
   } else {
     errorMessage('当前网络异常，请稍后重试', 0)
@@ -53,19 +58,23 @@ request.interceptors.response.use((res: AxiosResponse<any>) => {
 
 type Method = 'post' | 'get'
 
-const REPORT_URL_PREFIX = '/report/api'
+const REPORT_PREFIX = '/report/api'
+const MANAGEMENT_PREFIX = '/management/api'
 
-const createRequest = (method: Method): ((path: string, params?: any) => Response<any>) => {
-  return (path: string, params?: any): Response<any> => {
-    return request.post(REPORT_URL_PREFIX, {
+const createRequest = (method: Method, BASE_URL: string): ((path: string, params?: any, headers?: any) => Response<any>) => {
+  return (path: string, params?: any, headers?: any): Response<any> => {
+    return request.post(BASE_URL, {
       method,
       path,
       params: method === 'post' ? params : null
+    }, {
+      headers
     })
   }
 }
-const post = createRequest('post')
-const get = createRequest('get')
+const post = createRequest('post', REPORT_PREFIX)
+const get = createRequest('get', REPORT_PREFIX)
+const postMidway = createRequest('post', MANAGEMENT_PREFIX)
 
 /* 业务 API 定义 */
 
@@ -127,6 +136,11 @@ export const getKeywordOverview:
 export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ReportListResponse<KeywordDetailListData[]> =
   (params) => post('/keyword/detail', params)
+
+// 获取留言列表
+export const getLeaveMessageList:
+  (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
+  (params) => postMidway('/api/midway/backend/messageCenter/messageListing', params)
 
 // TODO delete mock data
 // 以下是非 P0 页面的 Mock 数据

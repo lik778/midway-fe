@@ -12,6 +12,10 @@ export class SiteCommonController {
     public async leads(@Req() req: Request, @Param() params, @UserAgent('device') device,
         @Res() res: Response, @Body() body: LeadsReqDTO) {
         const domain = req.hostname 
+        /**
+         * restParams
+         * @param.position 页面所在位置：1首页；2文章列表；3文章详情；4文章分类；5产品列表；6产品详情；7产品分类；8关于我们；9搜索结果；
+         */
         const { shopName, ...restParams } = body
         const resData = await this.midwayApiService.leaveLeads(shopName, device, restParams, domain)
         res.json(resData)

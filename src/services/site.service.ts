@@ -68,7 +68,7 @@ export class SiteService {
       domain = 'shop-test.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      // domain = 'zmlc2b.shop.baixing.cn'
+      domain = 'zmlc2b.shop.baixing.cn'
       // domain = 'agui.shop.baixing.cn'
 
       /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
@@ -105,48 +105,54 @@ export class SiteService {
   }
 
   public getHomePageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/home/?semKeyWordFlag=${params}`, {},
+    return this.requestService.post(`${this.prefixPath}/home/?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, {},
       this.setPageHeaders(shopName, device, domain));
   }
   //服务内容列表
   public getProductPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/product/list`, params,
+    return this.requestService.post(`${this.prefixPath}/product/list?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
   //服务内容子分类
   public getProductCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/product/cateList`, params,
+    return this.requestService.post(`${this.prefixPath}/product/cateList?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
   //服务内容详情页
   public getProductDetailData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/product/detail`, params,
+    return this.requestService.post(`${this.prefixPath}/product/detail?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
   //新闻列表
   public getNewsPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/article/list`, params,
+    return this.requestService.post(`${this.prefixPath}/article/list?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
   //新闻列表子分类
   public getNewsCateData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/article/cateList`, params,
+    return this.requestService.post(`${this.prefixPath}/article/cateList?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
   //新闻详情页
   public getNewsDetailData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/article/detail`, params,
+    return this.requestService.post(`${this.prefixPath}/article/detail?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
   //关于我们页面
-  public getAboutPageData(shopName: string, device: string, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/about/`, {},
+  public getAboutPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.prefixPath}/about/?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, {},
+      this.setPageHeaders(shopName, device, domain));
+  }
+
+  // 搜索聚合页
+  public getSearchPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
+    return this.requestService.post(`${this.prefixPath}/home/search?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
       this.setPageHeaders(shopName, device, domain));
   }
 
@@ -155,14 +161,6 @@ export class SiteService {
     return this.requestService.post(`${this.prefixPath}/home/message`, params,
       this.setPageHeaders(shopName, device, domain));
   }
-
-  // 搜索聚合页
-  // TODO;
-  public getSearchPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    return this.requestService.post(`${this.prefixPath}/home/search`, params,
-      this.setPageHeaders(shopName, device, domain));
-  }
-
 
   // 获取400号码
   public getPhone400Number(shopName: string, device: string, domain: string): Promise<any> {
