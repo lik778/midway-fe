@@ -25,6 +25,7 @@ function themed(styles: any, type: any) {
 }
 
 interface Props {
+  bindForm?: boolean
   fields: any
   onFieldsChange: any
   onValuesChange: any
@@ -39,6 +40,7 @@ interface Props {
 }
 export default function InlineForm(props: Props) {
   const {
+    bindForm,
     fields,
     onFieldsChange,
     onValuesChange,
@@ -56,8 +58,8 @@ export default function InlineForm(props: Props) {
   let countNullLen = 0
   let countArrayLen = 0
   let formItems = items.map((item, formItemIdx) => {
-    const { type = 'input' } = item
-    const key = item.name || item.type
+    const { type = 'input', span, style = {} } = item
+    const key = item.key || item.name || item.type || item.label
     const allProps = { type, item, form, key }
     if (type === 'null') {
       countNullLen += 1
@@ -71,6 +73,8 @@ export default function InlineForm(props: Props) {
       type === 'render'
         ? item.render instanceof Array
           ? item.render.filter(Boolean)
+          : item.render instanceof Function
+          ? item.render()
           : item.render
         : getFormItemInstance(allProps)
 
@@ -88,6 +92,12 @@ export default function InlineForm(props: Props) {
       }
       return colSpanValue
     }
+    const calcColSpanValWithItem = (...args: any) => {
+      return {
+        ...calcColSpanVal(...args),
+        ...(span ? { span } : {})
+      }
+    }
 
     if (!$item) return null
     if (!autoLayout) return $item
@@ -95,18 +105,19 @@ export default function InlineForm(props: Props) {
     return $item instanceof Array ? (
       (() => {
         countArrayLen += $item.length
-        return $item.map((x, i) => <Col {...calcColSpanVal(i)} key={key+i}>{x}</Col>)
+        return $item.map((x, i) => <Col {...calcColSpanValWithItem(i)} style={style} key={key+i}>{x}</Col>)
       })
     ) : (
-      <Col {...calcColSpanVal()} key={key}>{$item}</Col>
+      <Col {...calcColSpanValWithItem()} style={style} key={key}>{$item}</Col>
     )
   })
 
   // 过滤空子项并降维
-  formItems = formItems.filter(Boolean)  .reduce((p, c) => p.concat(c), [])
+  formItems = formItems.filter(Boolean).reduce((p, c) => p.concat(c), [])
 
   return (
     <Form
+      { ...(bindForm ? { form } : {}) }
       layout='inline'
       className={[
         'inline-form',

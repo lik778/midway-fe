@@ -20,6 +20,7 @@ export const request = axios.create({
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res?.data)
 }, (err: AxiosError) => {
+  // console.error('[REQ ERROR]', err)
   return Promise.resolve(err.response && err.response.data)
 })
 
