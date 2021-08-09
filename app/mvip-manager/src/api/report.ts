@@ -13,7 +13,7 @@ import {
   BaxFlowDetailParams,
   KeywordOverviewData,
   KeywordDetailListData,
-  KeywordDetailListParams, SummaryOverviewData, FlowChartData, MailBoxListItem, MailBoxListApiParams
+  KeywordDetailListParams, SummaryOverviewData, FlowChartData, MailBoxListItem, MailBoxListApiParams,
   getLeaveMessageListParams,
   LeaveMessageListData
 } from '@/interfaces/report';
@@ -135,18 +135,15 @@ export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ReportListResponse<KeywordDetailListData[]> =
   (params) => post('/keyword/detail', params)
 
-<<<<<<< HEAD
 // 获取站内信
 export const getMailBoxListApi:
   (params: MailBoxListApiParams) => ReportListResponse<MailBoxListItem[]> =
   (params) => post('', params)
 
-=======
 // 获取留言列表
 export const getLeaveMessageList:
   (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
   (params) => postMidway('/api/midway/backend/messageCenter/messageListing', params)
->>>>>>> master
 
 // TODO delete mock data
 // 以下是非 P0 页面的 Mock 数据
