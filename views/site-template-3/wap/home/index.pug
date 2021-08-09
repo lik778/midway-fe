@@ -33,11 +33,11 @@ block content
     include ../components/product-list.pug
     +product-list(productList.slice(0,4))
 
-  //-TODO：自定义模块
-  - const userDefinedList = renderData.autoConfig
-  if userDefinedList && userDefinedList.length>0
+  //-自定义模块
+  - const { autoConfig } = renderData
+  if autoConfig && autoConfig[0]
     include ../components/user-defined-module-new.pug
-    +user-defined-module-new(userDefinedList)
+    +user-defined-module-new(autoConfig[0])
 
   //-TODO:新闻资讯模块
   include ../components/news-list-module.pug
