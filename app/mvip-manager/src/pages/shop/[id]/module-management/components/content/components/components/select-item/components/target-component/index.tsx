@@ -14,9 +14,6 @@ interface Props {
 const TargetComponent: FC<Props> = (props) => {
   const { componentConfig, value, onChange } = props
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  useEffect(() => {
-    console.log(value)
-  }, [value])
 
   const handleClickBtn = () => {
     setModalVisible(true)

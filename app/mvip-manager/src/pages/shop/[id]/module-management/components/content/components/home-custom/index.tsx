@@ -163,8 +163,8 @@ const CustomModule = () => {
           className={styles['form-item']}
           label={<span className={styles['form-label']}>是否在前端展现</span>}
           labelCol={{ span: 3 }}>
-          <FormItem name='show' className={styles['form-item-with-dedent']}>
-            <Switch defaultChecked />
+          <FormItem name='show' className={styles['form-item-with-dedent']} valuePropName="checked">
+            <Switch />
           </FormItem>
           <Popover
             title='示例图片'

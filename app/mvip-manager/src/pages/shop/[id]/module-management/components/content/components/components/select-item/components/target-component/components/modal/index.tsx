@@ -5,7 +5,8 @@ import { ConfigItem, SelectProductListItem, SelectArticleListItem, ConfigItemTyp
 import styles from './index.less'
 import { RouteParams } from '@/interfaces/shop';
 import { ArticleListItem, ProductListItem } from '@/interfaces/shop';
-import ContentItem from '../content-item'
+import ProductItem from '../product-item'
+import ArticleItem from '../article-item'
 import ScrollBox from '@/components/scroll-box'
 import { errorMessage } from '@/components/message';
 
@@ -111,11 +112,20 @@ const SelectModal: FC<Props> = (props) => {
         }
         {
           dataList.length > 0 && <ScrollBox className={styles['scroll-box']} scrollY={true} handleScrollToLower={getDataList}>
-            <div className={styles['content-list']}>
-              {
-                dataList.map((item: ProductListItem | ArticleListItem) => <ContentItem type={componentConfig.type} content={item} actionConfig={actionConfig} selectNum={localValueObj[item.id]} handleChangeSelect={handleChangeSelect} key={item.id}></ContentItem>)
-              }
-            </div>
+            {
+              componentConfig.type === 'product' && <div className={styles['product-content-list']}>
+                {
+                  (dataList as ProductListItem[]).map(item => <ProductItem type={componentConfig.type} content={item} actionConfig={actionConfig} selectNum={localValueObj[item.id]} handleChangeSelect={handleChangeSelect} key={item.id}></ProductItem>)
+                }
+              </div>
+            }
+            {
+              componentConfig.type === 'article' && <div className={styles['article-content-list']}>
+                {
+                  (dataList as ArticleListItem[]).map(item => <ArticleItem type={componentConfig.type} content={item} actionConfig={actionConfig} selectNum={localValueObj[item.id]} handleChangeSelect={handleChangeSelect} key={item.id}></ArticleItem>)
+                }
+              </div>
+            }
           </ScrollBox>
         }
         <div className={styles['footer']}>

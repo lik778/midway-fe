@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { ConfigItem, SelectArticleListItem, SelectProductListItem, ConfigItemType } from '../../../../data';
-import ContentItem from '../content-item'
+import ProductItem from '../product-item'
+import ArticleItem from '../article-item'
 import styles from './index.less'
 
 interface Props {
@@ -18,12 +19,22 @@ const List: FC<Props> = (props) => {
 
   return <>
     {
-      value && value.length > 0 && <div className={styles['list-container']}>
+      componentConfig.type === 'product' && value && value.length > 0 && <div className={styles['product-list-container']}>
         {
-          value.map((item: SelectArticleListItem | SelectProductListItem) => <ContentItem type={componentConfig.type} content={item} key={item.id} actionConfig={{
+          (value as SelectProductListItem[]).map((item) => <ProductItem type={componentConfig.type} content={item} key={item.id} actionConfig={{
             delete: true,
             select: false
-          }} handleClickDelete={handleClickDelete}></ContentItem>)
+          }} handleClickDelete={handleClickDelete}></ProductItem>)
+        }
+      </div>
+    }
+    {
+      componentConfig.type === 'article' && value && value.length > 0 && <div className={styles['article-list-container']}>
+        {
+          value.map((item: SelectArticleListItem) => <ArticleItem type={componentConfig.type} content={item} key={item.id} actionConfig={{
+            delete: true,
+            select: false
+          }} handleClickDelete={handleClickDelete}></ArticleItem>)
         }
       </div>
     }

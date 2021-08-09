@@ -32,34 +32,22 @@ const ContentItem: FC<Props> = (props) => {
   }
 
   return <div className={styles['content-container']}>
-    <div className={styles['content']}>
-      {
-        type === 'product' && <img className={styles['img']} src={(content as SelectProductListItem).headImg}></img>
-      }
-      <div className={styles['text-box']}>
-        <div className={styles['name']}>{content.name}</div>
+    {
+      localActionConfig.select && <>
         {
-          type === 'product' && <div className={styles['price']}>{(content as SelectProductListItem).price || '暂无价格'}</div>
+          selectNum && <div className={`${styles['select-box']} ${styles['selected']}`} onClick={handleClickSelect}>
+            {selectNum}
+          </div>
         }
-      </div>
-    </div>
-    <div className={styles['action']}>
-      {
-        localActionConfig.select && <>
-          {
-            selectNum && <div className={`${styles['select-box']} ${styles['selected']}`} onClick={handleClickSelect}>
-              {selectNum}
-            </div>
-          }
-          {
-            !selectNum && <div className={styles['select-box']} onClick={handleClickSelect}></div>
-          }
-        </>
-      }
-      {
-        localActionConfig.delete && <div className={styles['delete']} onClick={() => { handleClickDelete!(content) }}>删除</div>
-      }
-    </div>
+        {
+          !selectNum && <div className={styles['select-box']} onClick={handleClickSelect}></div>
+        }
+      </>
+    }
+    <div>文章名称</div>
+    {
+      localActionConfig.delete && <div className={styles['delete']} onClick={() => { handleClickDelete!(content) }}>删除</div>
+    }
   </div>
 }
 

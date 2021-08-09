@@ -141,6 +141,8 @@ const ModuleManagement = () => {
     initMenuOptions()
     setPosition(moduleOptions.length > 0 ? moduleOptions[0].position : 'homePage')
     setComponentId(moduleOptions.length > 0 && moduleOptions[0].infoList && moduleOptions[0].infoList.length > 0 ? moduleOptions[0].infoList[0].pageModule : 'banner')
+    // setPosition('productListPage')
+    // setComponentId('articleRecommend')
   }
 
   // 切换页面的时候 将左侧组件选择恢复到第一个
