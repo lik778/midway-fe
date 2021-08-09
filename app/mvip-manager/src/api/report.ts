@@ -137,7 +137,7 @@ export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ReportListResponse<KeywordDetailListData[]> =
   (params) => post('/keyword/detail', params)
 
-// 获取留言列表
+// 获取留咨列表
 export const getLeaveMessageList:
   (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
   (params) => postMidway('/api/midway/backend/messageCenter/messageListing', params)

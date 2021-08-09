@@ -160,7 +160,7 @@ export interface LeaveMessageListData {
   time: string
   sourceType: LeaveMessageChannelType
   sourceName: string
-  sourceUrl: string
+  sourceUrl?: string
   message: string
   contact: string
 }

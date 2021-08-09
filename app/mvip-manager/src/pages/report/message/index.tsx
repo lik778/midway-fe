@@ -11,7 +11,7 @@ import { track } from '@/api/common'
 import { getLeaveMessageList } from '@/api/report'
 import { errorMessage } from '@/components/message'
 import { LeaveMessageSearchListConfig, formatTime } from './config'
-import { getCookie, formatRange, decodeHTMLCodeSafe } from '@/utils'
+import { getCookie, formatRange, decodeHTMLCodeSafe, isValidURL } from '@/utils'
 
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
@@ -25,9 +25,6 @@ const TRACK_TYPE = 'shop-mvip-message-page'
 
 // 可以的话请把这玩意儿删了
 function LeaveMessagePage() {
-
-  // 暂时隐藏留咨入口，等数据洗完再开放
-  return null
 
   // ********************************************************* states
 
@@ -432,6 +429,7 @@ function Card (props: CardProps) {
   }, [item.id])
 
   const displayMessage = decodeHTMLCodeSafe(item.message)
+  const isValid = isValidURL(item.sourceUrl || '')
 
   return <div className={"card " + (fold ? '' : 'unfold')} key={item.id}>
     <div className="header">
@@ -458,10 +456,17 @@ function Card (props: CardProps) {
       )}
     </div>
     <div className="bottom-con">
-      <a href={item.sourceUrl} target="_blank" onClick={trackJump}>
-        <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
-        {item.sourceName}
-      </a>
+      {isValid ? (
+        <a href={item.sourceUrl} target="_blank" onClick={trackJump}>
+          <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
+          {item.sourceName}
+        </a>
+      ):(
+          <a className="disabled" href="" onClick={e => e.stopPropagation()}>
+          <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
+          {item.sourceName}
+        </a>
+      )}
     </div>
     {(shouldFold && fold) && (
       <span className="fold-btn" onClick={() => setFold(!fold)}>展开更多</span>
