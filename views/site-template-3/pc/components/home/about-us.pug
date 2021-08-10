@@ -8,13 +8,4 @@
 			a.view-more(href=aboutLink) 查看更多
 		.about-us-picture
 			.pic-border
-			- const video = company.about.video
-			- const hasVideo = video
-			if hasVideo
-				.video-con
-					.video-wrapper
-						video(src=video.url, loop, preload, controls)
-					.video-cover
-						.picture(style="background: url(\""+video.cover+"\")")
-			else
-				.picture
+			.picture
