@@ -5,8 +5,7 @@ import { ConfigItem, SelectProductListItem, SelectArticleListItem, ConfigItemTyp
 import styles from './index.less'
 import { RouteParams } from '@/interfaces/shop';
 import { ArticleListItem, ProductListItem } from '@/interfaces/shop';
-import ProductItem from '../product-item'
-import ArticleItem from '../article-item'
+import ContentItem from '../content-item'
 import ScrollBox from '@/components/scroll-box'
 import { errorMessage } from '@/components/message';
 
@@ -112,20 +111,15 @@ const SelectModal: FC<Props> = (props) => {
         }
         {
           dataList.length > 0 && <ScrollBox className={styles['scroll-box']} scrollY={true} handleScrollToLower={getDataList}>
-            {
-              componentConfig.type === 'product' && <div className={styles['product-content-list']}>
-                {
-                  (dataList as ProductListItem[]).map(item => <ProductItem type={componentConfig.type} content={item} actionConfig={actionConfig} selectNum={localValueObj[item.id]} handleChangeSelect={handleChangeSelect} key={item.id}></ProductItem>)
-                }
-              </div>
-            }
-            {
-              componentConfig.type === 'article' && <div className={styles['article-content-list']}>
-                {
-                  (dataList as ArticleListItem[]).map(item => <ArticleItem type={componentConfig.type} content={item} actionConfig={actionConfig} selectNum={localValueObj[item.id]} handleChangeSelect={handleChangeSelect} key={item.id}></ArticleItem>)
-                }
-              </div>
-            }
+            <div className={styles[`${componentConfig.type}-content-list`]}>
+              {
+                dataList.map((item: SelectArticleListItem | SelectProductListItem, index: number) => <ContentItem index={index} type={componentConfig.type} content={item} key={item.id} actionConfig={{
+                  delete: false,
+                  select: true,
+                  draggable: false
+                }} handleChangeSelect={handleChangeSelect} selectNum={localValueObj[item.id]}></ContentItem>)
+              }
+            </div>
           </ScrollBox>
         }
         <div className={styles['footer']}>

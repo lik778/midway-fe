@@ -19,20 +19,11 @@ const Menu: FC<Props> = (props) => {
 
   const menuList = useMemo(() => menuOptions[position] || [], [position, menuOptions])
 
-  const handleClickPosition = (thumbnail: string) => {
-    window.open(thumbnail, '_block')
-  }
-
   return <div className={styles['menu-container']}>
     {
       menuList.map(item => {
         return <div className={`${styles['item']} ${pageModule === item.id ? styles['active'] : ''}`} key={item.id} onClick={() => handleChangeComponent(item.id)}>
           <span className={styles['name']}> {item.name}</span>
-          <Popover placement="right" title='所处位置' content={
-            <img className={styles['thumbnail']} src={item.thumbnail}></img>
-          } trigger="hover">
-            <ExclamationCircleFilled className={styles['info-icon']} onClick={() => handleClickPosition(item.thumbnail)}></ExclamationCircleFilled>
-          </Popover>
         </div>
       })
     }

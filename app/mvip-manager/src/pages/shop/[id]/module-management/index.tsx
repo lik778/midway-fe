@@ -142,6 +142,7 @@ const ModuleManagement = () => {
     setPosition(moduleOptions.length > 0 ? moduleOptions[0].position : 'homePage')
     setComponentId(moduleOptions.length > 0 && moduleOptions[0].infoList && moduleOptions[0].infoList.length > 0 ? moduleOptions[0].infoList[0].pageModule : 'banner')
     // setPosition('productListPage')
+    // setComponentId('productRecommend')
     // setComponentId('articleRecommend')
   }
 
