@@ -1,10 +1,11 @@
 import $ from 'jquery';
-import './index.styl';
-import '../layout/index';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { viewPhone } from '../components/home/viewPhone';
 import { initSem } from '../../../common/pc/contact-form-sem'
+
+import './index.styl';
+import '../layout/index';
 
 leaveLeads()
 viewPhone()
@@ -16,8 +17,9 @@ $(document).on('ready', function () {
     loop: true,
     speed: 1000,
     autoplay: {
-      delay: 4000,
-      waitForTransition: true
+      delay: 5000,
+      waitForTransition: true,
+      pauseOnMouseEnter: true
     },
     pagination: {
       el: '#banner-list .swiper-pagination',

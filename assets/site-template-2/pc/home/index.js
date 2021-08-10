@@ -19,6 +19,8 @@ $(document).on('ready', function () {
 		loopedSlides: 5,
 		autoplay: {
 			delay: 5000,
+      waitForTransition: true,
+      pauseOnMouseEnter: true
 		},
 		navigation: {
 			nextEl: '.swiper-button-next',
