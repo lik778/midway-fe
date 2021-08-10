@@ -14,7 +14,7 @@ const FormItem = Form.Item
 
 interface Props {
   id: number,
-  shopBasicInfoParams: InitShopBasicInfoParams | null,
+  shopBasicInfoParams: InitShopBasicInfoParams | {},
   getDataLoading: boolean
   onChange: () => void
 }
@@ -29,7 +29,8 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     if (!shopBasicInfoParams) {
       return
     }
-    const { firstCategory } = shopBasicInfoParams
+    // 这里的shopBasicInfoParams可以为空对象 表示初始值为空
+    const { firstCategory } = shopBasicInfoParams as InitShopBasicInfoParams
     const newChildren = config.children.map(item => {
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {

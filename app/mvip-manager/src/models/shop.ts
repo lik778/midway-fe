@@ -41,13 +41,12 @@ export const shopMapDispatchToProps = (dispatch: Dispatch): any => {
   return {
     getShopStatus: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_STATUS_ACTION) }),
     setShopStatus: (payload: ShopStatus) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_STATUS_ACTION), payload }),
-    getShopList: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_LIST_ACTION) }),
+    getShopList: (data?: { reloadList?: boolean }) => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_LIST_ACTION), data: data || {} }),
     setShopList: (payload: ShopInfo[]) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_LIST_ACTION), payload }),
     setCurShopInfo: (shopInfo: ShopInfo) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_CUR_SHOP_INFO_ACTION), payload: shopInfo }),
     getCurShopInfo: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_CUR_SHOP_INFO_ACTION) }),
     getShopTotal: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_TOTAL_ACTION) }),
     setShopTotal: (payload: number) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_TOTAL_ACTION), payload })
-
   }
 }
 
@@ -71,7 +70,7 @@ export default <Model>{
       const { put, select } = effects
       const shopModelState: ShopModelState = yield select((state: any) => state[SHOP_NAMESPACE])
       const { shopList, shopTotal } = shopModelState
-      if (isNull(shopList)) {
+      if (isNull(shopList) || action?.data?.reloadList) {
         const { success, message, data } = yield getShopListApi()
         if (success) {
           yield put({ type: SET_SHOP_LIST_ACTION, payload: data.result })
