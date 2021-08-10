@@ -67,7 +67,7 @@ const Crop: FC<Props> = (props) => {
             style={{ width: 800, height: 500 }}
             preview={`.img-preview-${timestamp}`}
             guides={true}
-            autoCropArea={1}
+            autoCropArea={0.8}
             movable={true} // 是否允许移动图片
             zoomTo={1}
             viewMode={2}

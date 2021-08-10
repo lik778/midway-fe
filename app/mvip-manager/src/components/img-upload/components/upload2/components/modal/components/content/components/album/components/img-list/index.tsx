@@ -50,6 +50,8 @@ const ImgList: FC<Props> = (props) => {
       size: 16,
       mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined
     })
+    // (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes>
+    // (shopId: number, params: GetImagesetImageParam) => Promise<ServiceResponse<GetImagesetImageRes>>
     setGetDataLoading(false)
     if (!res.success) {
       errorMessage(res.message)

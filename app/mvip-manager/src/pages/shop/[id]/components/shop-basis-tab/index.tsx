@@ -93,7 +93,9 @@ const BasisTab = (props: Props) => {
   }, [curShopInfo, shopStatus])
 
   useEffect(() => {
-    getShopStatus()
+    if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
+      getShopStatus()
+    }
   }, [])
 
   const handleClick = (e: { key: any; }) => { setCurrent(e.key) };

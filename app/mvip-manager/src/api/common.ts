@@ -5,8 +5,8 @@ import { MidMenuItem } from '@/interfaces/base';
 import { ServicePath } from '@/enums/index'
 
 // 获取左侧菜单
-export const getMenuApi = (): Promise<ServiceResponse<{ menuList: MidMenuItem[] }>> => {
-  return postApiData(ServicePath.SHOP, 'midway/menu/getMenuList')
+export const getMenuApi = () => {
+  return postApiData<{ menuList: MidMenuItem[] }>(ServicePath.SHOP, 'midway/menu/getMenuList')
 }
 
 export const upImageToYoupai = (params: any) => {

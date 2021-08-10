@@ -1,5 +1,5 @@
 import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
-import { AppSourceEnum } from '@/enums/shop';
+import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
 import { ShopMetas } from '@/interfaces/user'
 export interface RouteParams {
@@ -163,6 +163,12 @@ export interface RenewShopParams {
   shopId: number;
 }
 
+export interface NewestDataVersion {
+  id: number,
+  status: ShopVersionStatusEnum,
+  memo: string
+}
+
 export interface ShopInfo {
   about: string;
   copyRight: string;
@@ -182,6 +188,7 @@ export interface ShopInfo {
   thumb: string;
   type: string;
   usrId: number;
+  newestDataVersion: NewestDataVersion | null
 }
 
 export interface CustomerListItem {
@@ -405,3 +412,34 @@ export type TabScopeItem = {
 }
 export type TabScope = TabScopeItem[]
 
+
+/* 店铺图集相关定义 End */
+
+
+export interface ShopProductListItem {
+  cateName: string
+  content: string
+  contentCateId: number
+  contentImg: string[]
+  id: number
+  memo: string
+  name: string
+  price: string
+  status: number
+  tags: string[]
+  urlSuffix: string
+}
+
+export interface ShopArticleListItem {
+  cateName: string
+  content: string
+  contentCateId: number
+  contentImg: string
+  id: number
+  memo: string
+  name: string
+  source: number
+  status: number
+  tags: string[]
+  urlSuffix: string
+}
