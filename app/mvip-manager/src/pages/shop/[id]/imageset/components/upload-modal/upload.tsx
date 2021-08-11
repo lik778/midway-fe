@@ -100,6 +100,8 @@ export function useUpload(props: Props) {
     // 给上传增加一个测试开关
     // @ts-ignore
     if (window._quickUpload) {
+      // @ts-ignore
+      window._quickUploadFile = file
       return true
     }
     const maxSize = 3
