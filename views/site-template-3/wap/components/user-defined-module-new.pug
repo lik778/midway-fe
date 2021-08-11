@@ -1,14 +1,12 @@
-
-mixin user-defined-module-new(userDefinedModuleList)
+mixin user-defined-module-new(configItem)
   - const defaultImg = ['//file.baixing.net/202107/00042d82d26996a834f634da24f4c4ed.png','//file.baixing.net/202107/a01c46433402abc2764a73159dbf46dc.png','//file.baixing.net/202107/b713e1c02612812f0972bcea65cb58bd.png','//file.baixing.net/202107/4c4c8531457a49f12b432243a20d6fce.png','//file.baixing.net/202107/ed8b66237a86e68c23f369854fe6fcc0.png','//file.baixing.net/202107/eabfa36d86e81cd4eb1031f3ace065a6.png','//file.baixing.net/202107/7665f5e7a4f21c9d1e864408b3ede10a.png','//file.baixing.net/202107/4a17dbc06030214723ec295899c63d65.png','//file.baixing.net/202107/eb3969456c6b4995d648a175a1a091a2.png','//file.baixing.net/202107/9250dd40e68112fbc54ebaef9c8006ff.png']
-  each userDefinedModule in userDefinedModuleList
-    .user-defined-module-container
-      - const {subModuleBos,mainModuleTitle} = userDefinedModule
-      .module-title #{mainModuleTitle}
-      each item,index in subModuleBos
-        .user-defined-item
-          img.img(src=item.urlImg ?item.urlImg: defaultImg[index])
-          .content 
-            .title #{ item.title }
-            .line 
-            .desc #{ item.content }
+  .user-defined-module-container
+    - const {subModuleBos,mainModuleTitle} = configItem
+    .module-title #{mainModuleTitle}
+    each item,index in subModuleBos
+      .user-defined-item
+        img.img(src=item.urlImg ?item.urlImg: defaultImg[index])
+        .content 
+          .title #{ item.title }
+          .line 
+          .desc #{ item.content }

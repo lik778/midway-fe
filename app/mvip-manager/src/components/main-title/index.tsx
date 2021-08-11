@@ -12,7 +12,7 @@ const style = {
 
 export default (props: Props) => {
   return (
-    <div style={style}>
+    <div className="page-main-title" style={style}>
       <div>{ props.title }</div>
     </div>
   );

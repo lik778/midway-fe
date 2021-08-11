@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Modal, Form, Input } from "antd";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
+import { createImagesetAlbumApi, updateImagesetAlbumApi } from "@/api/shop";
 
 import { AlbumItem } from "@/interfaces/shop";
 
@@ -61,10 +61,10 @@ export function useCreateAlbumModal(props: Props) {
         let params: any = {}
         if (isEditing) {
           params.id = defaultVals.id
-          post = updateImagesetAlbum
+          post = updateImagesetAlbumApi
           successMsg = "编辑成功"
         } else {
-          post = createImagesetAlbum
+          post = createImagesetAlbumApi
           successMsg = "创建成功"
         }
         post(shopId, { ...formvals, ...params })

@@ -4,15 +4,35 @@ import { Table, notification } from 'antd'
 import InlineForm from '@/pages/report/components/quick-form'
 import { QueryConfigItem } from '@/pages/report/components/quick-form/interface'
 
+export interface SearchListConfig {
+  form: any
+  dataSource: any
+  query: any
+  autoLayout: boolean
+  table: any
+  pagiQueryKeys?: {
+    pageKey: string,
+    sizeKey: string,
+    retTotalKey: string
+  }
+}
+
 // TODO doc props
 interface Props {
-  config: any
-  onQuery: any
+  config: SearchListConfig
+  bindForm?: boolean
+  onQuery?: any
   loading?: boolean
+  onQueryChange?: (queries: any) => void;
 }
 export default function SearchList (props: Props) {
-  const { config, onQuery, loading } = props
-  const { form, dataSource, query, table } = config
+  const { bindForm, config, onQuery, onQueryChange, loading } = props
+  const { form, dataSource, query, table, pagiQueryKeys, autoLayout } = config
+  const {
+    pageKey = 'pageNo',
+    sizeKey = 'pageSize',
+    retTotalKey = 'totalElements'
+  } = pagiQueryKeys || {}
   const { columns, pagination = {}, ...restTableProps } = table || {}
 
   const [values, setValues] = useState<any>()
@@ -25,7 +45,7 @@ export default function SearchList (props: Props) {
   const [isValid, setIsValid] = useState<boolean>(true)
   const [queryParams, setQueryParams] = useState(null)
   const [indexedDataSource, setIndexedDataSource] = useState(dataSource)
-  const [paginationParams, setPaginationParams] = useState({ current: 1, pageSize: 10 })
+  const [paginationParams, setPaginationParams] = useState({ [pageKey]: 1, [sizeKey]: 10 })
   const [paginationCountParams, setPaginationCountParams] = useState({
     total: 0,
     showSizeChanger: false,
@@ -34,13 +54,13 @@ export default function SearchList (props: Props) {
   const changePage = (val: number) => {
     setPaginationParams({
       ...paginationParams,
-      current: val,
+      [pageKey]: val,
     })
   }
-  const changePageSize = (current: number, size: number) => {
+  const changePageSize = (_: any, size: number) => {
     setPaginationParams({
       ...paginationParams,
-      pageSize: size,
+      [sizeKey]: size,
     })
   }
 
@@ -64,17 +84,21 @@ export default function SearchList (props: Props) {
     setIsValid(!itemHasError)
     if (itemHasError) {
       // TODO 显示校验错误的逻辑
+      console.log('[WARN]', itemHasError)
       // notification.error({ message: JSON.stringify(itemHasError.errors[0]) })
     } else {
       const params = fields.reduce((h: any, c: any) => {
         const name = c.name[0]
-        const config = query.find((x: QueryConfigItem) => x.name === name)
-        const { format } = config || {}
-        if (format) {
-          const res = format(c.value, h)
-          if (res) h[name] = res
-        } else {
-          h[name] = c.value
+        // ???
+        if (name) {
+          const config = query.find((x: QueryConfigItem) => x.name === name)
+          const { format } = config || {}
+          if (format) {
+            const res = format(c.value, h)
+            if (res) h[name] = res
+          } else {
+            h[name] = c.value
+          }
         }
         return h
       }, {})
@@ -83,39 +107,47 @@ export default function SearchList (props: Props) {
   }, [changeFieldsCount])
 
   useEffect(() => {
+    onQueryChange && onQueryChange(queryParams)
+  }, [queryParams])
+
+  useEffect(() => {
     const triggerQuery = isValid && queryParams && onQuery
     const params = {
       ...(queryParams || {}),
-      pageNo: paginationParams.current,
-      pageSize: paginationParams.pageSize,
+      [pageKey]: paginationParams[pageKey],
+      [sizeKey]: paginationParams[sizeKey],
     }
+    // TODO REFACTOR 请求函数和返回值解耦
     if (triggerQuery) {
+      console.log('！！！params: ', params)
       const queryRes = onQuery(params)
-      const isAsync = queryRes.then
+      const isAsync = queryRes && queryRes.then
       if (isAsync) {
         queryRes.then((data: any) => {
-          const { totalElements = 0 } = data || {}
+          const total = (data || {})[retTotalKey]
           setPaginationCountParams({
             ...paginationCountParams,
-            total: totalElements,
+            total,
           })
         })
       } else {
-        const { totalElements = 0 } = queryRes || {}
+        const total = (queryRes || {})[retTotalKey]
         setPaginationCountParams({
           ...paginationCountParams,
-          total: totalElements,
+          total,
         })
       }
     }
-  }, [queryParams, paginationParams])
+  }, [queryParams, paginationParams[pageKey], paginationParams[sizeKey]])
 
   return (
     <div className="cmpt-search-list">
       {query && form && (
         <InlineForm
           className="cmpt-search-list-query"
+          bindForm={bindForm}
           form={form}
+          autoLayout={autoLayout}
           items={query}
           fields={fields}
           onFieldsChange={(newFields: any) => setFields(newFields)}
@@ -126,9 +158,10 @@ export default function SearchList (props: Props) {
         <Table
           className="cmpt-search-list-table"
           columns={columns}
+          loading={loading}
           dataSource={indexedDataSource}
           bordered
-          pagination={{
+          pagination={pagination.overwrite ? pagination : {
             ...paginationCountParams,
             ...paginationParams,
             onChange: changePage,

@@ -3,7 +3,8 @@ import {
   BaxProductType,
   CateProductType,
   DisplayType,
-  PlatformType
+  PlatformType,
+  LeaveMessageChannelType
 } from '@/enums/report';
 
 /* 请求类型 */
@@ -22,7 +23,18 @@ export interface ReportListResData<T> {
   result: T;
 }
 
+export interface ManagementListResData<T> {
+  res: {
+    result: T,
+    pageSize: number,
+    totalPage: number,
+    totalRecord: number
+  }
+}
+
 export type ReportListResponse<T> = Response<ReportListResData<T>>
+
+export type ManagementListResponse<T> = Response<ManagementListResData<T>>
 
 /* 业务数据类型约束 */
 
@@ -95,7 +107,7 @@ export interface BaxFlowChartParams extends BaseParams {
   product: BaxProductType;
 }
 
-export interface BaxFlowChartData  extends FlowChartData {
+export interface BaxFlowChartData extends FlowChartData {
   shows: number;
 }
 
@@ -133,4 +145,34 @@ export interface KeywordDetailListData {
   ranking: number;
   url: string;
   isExcellentWord: boolean;
+}
+
+
+export interface MailBoxListItem {
+  id: number
+  text: string
+  url: string
+}
+
+export interface MailBoxListApiParams {
+  page: number
+  size: number
+}
+
+export interface getLeaveMessageListParams {
+  timeStart: string;
+  timeEnd: string;
+  page: number;
+  size: number;
+}
+
+export interface LeaveMessageListData {
+  id: string
+  name: string
+  time: string
+  sourceType: LeaveMessageChannelType
+  sourceName: string
+  sourceUrl: string
+  message: string
+  contact: string
 }

@@ -50,6 +50,12 @@ const BasisTab = (props: Props) => {
       label: "基础资料设置",
       key: ShopBasisType.INFO,
       display: false,
+    },
+    {
+      link: `/shop/${params.id}/${ShopBasisType.MODULE}`,
+      label: "模块管理",
+      key: ShopBasisType.MODULE,
+      display: true,
     }
   ]
 
@@ -87,7 +93,9 @@ const BasisTab = (props: Props) => {
   }, [curShopInfo, shopStatus])
 
   useEffect(() => {
-    getShopStatus()
+    if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
+      getShopStatus()
+    }
   }, [])
 
   const handleClick = (e: { key: any; }) => { setCurrent(e.key) };

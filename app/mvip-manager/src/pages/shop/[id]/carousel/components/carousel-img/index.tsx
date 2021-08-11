@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useMemo } from "react";
+import React, { FC, useCallback, useState, useEffect, useMemo, Ref, useImperativeHandle } from "react";
 import _ from "lodash";
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { changeBannerOrderApi, createBannerApi, getBannerListApi, deleteBannerApi } from '@/api/shop';
@@ -12,8 +12,10 @@ import { ActionBtnListItem } from '@/components/img-upload/data';
 import { UploadFile } from "antd/lib/upload/interface";
 import { Spin } from 'antd'
 import styles from './index.less'
+import { forwardRef } from "react";
 
 interface Props {
+  autoUpdata?: boolean, // 是否操作后自动更新数据
   type: DeviceType,
   position: number,
   txt: string,
@@ -21,9 +23,13 @@ interface Props {
   aspectRatio: number
 }
 
-export default (props: Props) => {
-  const { type, txt, tip, position, aspectRatio } = props
+const CarouselItem = (props: Props, parentRef: Ref<any>) => {
+  const { autoUpdata = true, type, txt, tip, position, aspectRatio } = props
   const [bannerList, setBannerList] = useState<BannerListItem[]>([])
+  // 当前banner是否被修改过
+  const [changeFlag, setChangeFlag] = useState<boolean>(false)
+  // 需要删除的bannerId
+  const [delBannerIds, setDelBannerIds] = useState<number[]>([])
   const editData = useMemo(() => {
     if (bannerList.length === 0) {
       return ''
@@ -42,6 +48,11 @@ export default (props: Props) => {
     getBannerList()
   }, [])
 
+  // 将提交的函数放到上层控制
+  useImperativeHandle(parentRef, () => ({
+    handleUpData
+  }))
+
   const getBannerList = async () => {
     setGetDataLoading(true)
     const res = await getBannerListApi(Number(params.id), {
@@ -59,10 +70,12 @@ export default (props: Props) => {
     setGetDataLoading(false)
   }
 
-  const createBannerImg = async (url: string, maxWeightNum?: number) => {
+  const createBannerImg = async (url: string) => {
     setUpDataLoading(true)
-    const maxWeight = maxWeightNum || (bannerList.length
-      ? Math.max(...bannerList.map(x => +x.weight))
+    // 原有逻辑是权重控制排序
+    // 现在每次修改都会更具图片id排次序所以可以忽略了权重
+    const maxWeight = (bannerList.length
+      ? Math.max(...bannerList.map(x => +x.weight || 0))
       : 0) + 1
     const res = await createBannerApi(Number(params.id), {
       url,
@@ -100,7 +113,6 @@ export default (props: Props) => {
   }
 
   // 目前可以同时操纵多个图片 可同时新增删除
-
   const handleChange = async (values: string | string[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
     // oldFileList 对应bannerLiet的文件 ，且顺序相同。
     // 找到fileList与oldFileList的交集a。
@@ -108,54 +120,86 @@ export default (props: Props) => {
     // 删除oldFileList中不存在于a的项
     // 新增localValues中不存在id的项
 
-    // 这里是因为图片组件的values传值问题
-    let localValues: { id?: number, url: string }[] = []
-    if (typeof values === 'string') {
-      if (values.length !== 0) {
-        localValues.push({
-          url: values,
-        })
-      }
-    } else {
-      localValues = values.map(item => ({
-        url: item
-      }))
-    }
+    let localValues: { id?: number, url: string, preview: string }[] = fileList.map(item => ({
+      url: item.url!,
+      preview: item.preview!
+    }))
+
     const localBannerList = [...bannerList]
+    const newBannerList: BannerListItem[] = []
     localValues.forEach(item => {
       const index = localBannerList.findIndex(oItem => oItem.displayImgUrl === item.url)
       if (index !== -1) {
         const dItem = localBannerList.splice(index, 1)[0]
-        item.id = dItem.id
+        newBannerList.push(dItem)
+      } else {
+        newBannerList.push({
+          ...item,
+          displayImgUrl: item.preview,
+          hrefUrl: '',
+          imgUrl: item.url,
+          position: NaN,
+          status: NaN,
+          weight: NaN,
+          id: NaN
+        })
       }
     })
-    // 这里的ids会混入删除接口传进来的空，所以下面要过滤
-    const ids = await Promise.all([...localValues.map(item => {
-      if (item.id) {
-        return Promise.resolve(item.id)
-      } else {
-        return createBannerImg(item.url)
-      }
-    }), ...localBannerList.map(item => deleteBannerImg(item.id))])
-    await handleOrdersChange(ids.filter(item => typeof item === 'number') as number[])
-    await getBannerList()
+    const newDelBannerIds = [...new Set([...delBannerIds, ...localBannerList.filter(item => item.id).map(item => item.id)])]
+    if (autoUpdata) {
+      handleUpData('all', newBannerList, newDelBannerIds)
+    } else {
+      setBannerList(newBannerList)
+      setDelBannerIds(newDelBannerIds)
+      setChangeFlag(true)
+    }
   }
 
+  // 移动事件
   const handleMove = useCallback(async (file: UploadFile, fileList: UploadFile[], order: number) => {
     const newBannerList = [...bannerList]
     const index = fileList.findIndex(item => item.uid === file.uid)
-    const item1 = newBannerList[index]
+    const item = newBannerList[index]
     newBannerList[index] = newBannerList[index + order]
-    newBannerList[index + order] = item1
-    setBannerList(newBannerList)
-    await handleOrdersChange(newBannerList.map(x => x.id))
-    await getBannerList()
+    newBannerList[index + order] = item
+    if (autoUpdata) {
+      handleUpData('move', newBannerList, [])
+    } else {
+      setBannerList(newBannerList)
+      setChangeFlag(true)
+    }
   }, [bannerList])
 
-  // // 移动，正数向后移动，负数向前移动
-  // const  = useDebounce(handleMoveA,
-  //   500
-  // )
+  // 提交函数 单个move还是从弹窗中选择了多个图, 
+  // 分自动更新还是手动更新，对应的数据源不同
+  // 自动更新需要传 nowBannerList nowDelBannerIds
+  const handleUpData = async (type: 'move' | 'all', nowBannerList?: BannerListItem[], nowDelBannerIds?: number[]) => {
+    // 当手动控制更新 则判断是否有修改过顺序等信息
+    if (!autoUpdata && !changeFlag) {
+      console.log('没有修改')
+      return
+    }
+    if (type === 'move') {
+      await handleOrdersChange((autoUpdata ? nowBannerList! : bannerList).map(x => x.id))
+    } else if (type === 'all') {
+      // 这里的ids会混入删除接口传进来的空，所以下面要过滤
+      const ids = await Promise.all([...(autoUpdata ? nowBannerList! : bannerList).map(item => {
+        if (item.id) {
+          return Promise.resolve(item.id)
+        } else {
+          return createBannerImg(item.imgUrl)
+        }
+      }), ...(autoUpdata ? nowDelBannerIds! : delBannerIds).map(item => deleteBannerImg(item))])
+      await handleOrdersChange(ids.filter(item => typeof item === 'number') as number[])
+      // 进行一次全量数据更新后需要置空删除标识符
+      setDelBannerIds([])
+    }
+    // 重置修改标识
+    if (!autoUpdata) {
+      setChangeFlag(false)
+    }
+    await getBannerList()
+  }
 
   const renderIcons: ActionBtnListItem[] = useMemo(() => {
     return [
@@ -203,3 +247,5 @@ export default (props: Props) => {
     </div >
   );
 }
+
+export default forwardRef(CarouselItem)

@@ -16,6 +16,7 @@ export enum ShopBasisType {
   CUSTOMER = 'customer',
   SEO = 'seo',
   INFO = 'info',
+  MODULE = 'module-management'
 }
 
 export enum ShopTDKType {
@@ -35,6 +36,7 @@ export enum AuditStatus {
   APPROVE, // 审核通过
   REJECT, // 审核驳回
   DELETED, // 已删除
+  VERIFY,// 审核中
 }
 
 export enum ArticleSource {
@@ -113,7 +115,8 @@ export enum AiTaskAction {
 export enum ServicePath {
   SHOP = '/management/api',
   ZHIDAO = '/zhidao/api',
-  REPORT = '/report/api'
+  REPORT = '/report/api',
+  TRACKER = '/tracker'
 }
 
 

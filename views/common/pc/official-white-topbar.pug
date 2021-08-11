@@ -4,7 +4,7 @@
 			a.left(href="https://www.baixing.com" target="_blank")
 				img(src="//file.baixing.net/202105/3252caa19b257e704b3e63ce31c5216f.png", alt="logo")
 			include ./official-white-breadcrumb.pug
-			- breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: company.name,url:'#'}]
+			- breadcrumbList = [{text:'首页',url:'//www.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
 			+breadcrumb(breadcrumbList)
 		.right 
 			.search 

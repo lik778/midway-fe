@@ -9,6 +9,9 @@ block content
     include ../components/home/swiper.pug
 
     .container
+        //-自定义模块数据
+        - const { autoConfig } = renderData
+
         - hotProductList = renderData.productRecommend
         if hotProductList && hotProductList.length>0
             .block-title
@@ -34,10 +37,10 @@ block content
                 .littlePoint
         include ../components/home/about-us-new.pug
 
-        - const userDefinedList = renderData.autoConfig
-        if userDefinedList && userDefinedList.length>0
+        //-自定义模块1（即之前的企业优势模块）
+        if autoConfig && autoConfig[0]
             include ../components/home/user-defined-module.pug
-            +user-defined-module(userDefinedList)
+            +user-defined-module(autoConfig[0])
 
         - productList = renderData.productList.result
         if productList && productList.length>0
@@ -91,4 +94,5 @@ block scripts
     :combine(fileName="site-template-2-home-pc.js")
 block append scripts
     script.
+        window.extraContactFormData = { position: 1 };
         window.trackSrc = 'home';

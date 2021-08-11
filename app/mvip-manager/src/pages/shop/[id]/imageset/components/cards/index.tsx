@@ -12,7 +12,7 @@ import {
 import { debounce } from 'lodash'
 
 import { successMessage, errorMessage } from "@/components/message"
-import { reAuditImagesetImage, delImagesetAlbum, delImagesetImage, delImagesetFailedImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
+import { reAuditImagesetImageApi, delImagesetAlbumApi, delImagesetImageApi, delImagesetFailedImageApi, setImagesetAlbumCoverApi, moveImagesetImageApi } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
@@ -192,7 +192,7 @@ export default function Cards(props: CardsProps) {
     const info = totalImg === 0
       ? `相册删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, [id], info, () => {
+    await delCallback(delImagesetAlbumApi, [id], info, () => {
       setSelection(selection.filter(x => x !== id))
       refreshAllAlbumLists()
       // TODO 在选区删除时也这么判断一下，现在是 refresh(true)
@@ -205,8 +205,8 @@ export default function Cards(props: CardsProps) {
     e.stopPropagation()
     const { id } = image
     const delMethod = curScope?.type === 'image'
-      ? delImagesetImage
-      : delImagesetFailedImage
+      ? delImagesetImageApi
+      : delImagesetFailedImageApi
     const info = `图片删除后无法恢复，确认删除？`
     await delCallback(delMethod, { ids: [id], mediaCateId: curScope?.item?.id }, info, () => {
       setSelection(selection.filter(x => x !== id))
@@ -221,7 +221,7 @@ export default function Cards(props: CardsProps) {
     if (!curScope) {
       return
     }
-    reAuditImagesetImage(shopId, { id: image.id })
+    reAuditImagesetImageApi(shopId, { id: image.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('申诉成功')
@@ -249,7 +249,7 @@ export default function Cards(props: CardsProps) {
       exclude: curScope.item ? [curScope?.item?.id] : []
     })
     const resetRefreshPagi = lists.length === 1
-    moveImagesetImage(shopId, { id, mediaCateId: album.id })
+    moveImagesetImageApi(shopId, { id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功');
@@ -271,7 +271,7 @@ export default function Cards(props: CardsProps) {
       setSetCoverItem(image)
       const { id } = image
       const { item } = curScope
-      setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
+      setImagesetAlbumCoverApi(shopId, { id, mediaCateId: item.id })
         .then((res: any) => {
           if (res.success) {
             successMessage('设置成功');
@@ -449,6 +449,7 @@ export default function Cards(props: CardsProps) {
         onCancel={closePreviewModal}
       >
         <div className={"image-wrapper " + ((previewModal && previewItem) ? 'active' : '')}>
+          <LoadingOutlined />
           <img src={previewItem.imgUrl} alt="预览图片" />
           {prev && <LeftOutlined title="上一张" onClick={() => previewImage(prev as ImageItem)} />}
           {next && <RightOutlined title="下一张" onClick={() => previewImage(next as ImageItem)} />}

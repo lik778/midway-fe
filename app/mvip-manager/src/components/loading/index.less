@@ -5,14 +5,34 @@
   text-align: center;
   position: relative;
   background: #fff;
+
+  &.prevent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none;
+    z-index: 99
+  }
+
+  &.toast {
+    background: transparent;
+
+    .inner {
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,15%);
+      background: rgba(255,255,255,96%);
+    }
+  }
+
   .inner {
     position: absolute;
-    width: 100%;
-    height: 120px;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
+    padding: 40px;
+    width: 140px;
+    height: 140px;
     margin: auto;
   }
 }

@@ -207,7 +207,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
 
   return (
     <>
-      <Form form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
+      <Form layout={config.layout || 'horizontal'} form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
         onFinish={props.submit} onValuesChange={props.formChange} className={`${styles['form-styles']} ${props.className}`} labelAlign={config.labelAlign || 'right'}>
         {
           creatForm(FormItemList)

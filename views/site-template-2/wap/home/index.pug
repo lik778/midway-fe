@@ -19,10 +19,11 @@ block content
       - hotProductList = renderData.productRecommend.slice(0,8)
       +product-list-hot( hotProductList)
 
-  - const userDefinedList = renderData.autoConfig
-  if userDefinedList && userDefinedList.length>0
+  //-自定义模块1（即之前的企业优势模块）
+  - const { autoConfig } = renderData
+  if autoConfig && autoConfig[0]
     include ../components/user-defined-module-new.pug
-    +user-defined-module-new(userDefinedList)
+    +user-defined-module-new(autoConfig[0])
 
   if !isSem
     include ../components/aboutus.pug
@@ -47,4 +48,5 @@ block scripts
   :combine(fileName="site-template-2-home-wap.js")
 block append scripts
   script.
+    window.extraContactFormData = { position: 1 };
     window.trackSrc = 'home';

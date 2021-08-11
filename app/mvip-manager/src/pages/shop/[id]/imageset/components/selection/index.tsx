@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Button, Checkbox, Modal } from "antd";
 
 import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage, delImagesetFailedImage } from '@/api/shop'
+import { delImagesetAlbumApi, delImagesetImageApi, delImagesetFailedImageApi } from '@/api/shop'
 
 import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop";
 
@@ -80,10 +80,10 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       onOk() {
         return new Promise((resolve, reject) => {
           const deleteFn = isScopeAlbum
-            ? delImagesetAlbum
+            ? delImagesetAlbumApi
             : isScopeAudit
-            ? delImagesetFailedImage
-            : delImagesetImage
+            ? delImagesetFailedImageApi
+            : delImagesetImageApi
           const query: any = isScopeAlbum
             ? [...selection]
             : { ids: [...selection], mediaCateId: curScope?.item?.id }

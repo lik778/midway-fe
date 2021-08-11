@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { Spin } from 'antd';
 import './index.less';
 
-export default () => {
+type Props = {
+  toast?: boolean
+  prevent?: boolean
+}
+export default (props: Props) => {
+  const { prevent, toast } = props
   return (
-    <div className="management-common-loading">
+    <div className={"management-common-loading" + ' ' + (prevent ? 'prevent' : '') + ' ' + (toast ? 'toast' : '')}>
       <div className="inner">
         <Spin size="large"/>
         <p>加载中...</p>

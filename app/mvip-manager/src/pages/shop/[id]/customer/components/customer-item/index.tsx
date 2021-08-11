@@ -1,22 +1,23 @@
-import React, { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { useParams } from 'umi'
-import { FormInstance, Spin, Form, Button, Input } from 'antd';
-import MainTitle from '@/components/main-title';
-import { CustomerSetChildListItem, CustomerSetListItem } from '@/interfaces/shop';
-import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
-import styles from './index.less'
-import CustomerSetForm from './components/form/index'
+import { FormInstance, Spin, Form, Button } from 'antd';
+
 import { errorMessage, successMessage } from '@/components/message';
+import InputLen from '@/components/input-len';
+import CustomerSetForm from './components/form/index'
 import form from './components/form/index';
 import { mockData } from '@/utils';
-import InputLen from '@/components/input-len';
+import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
+
+import { CustomerSetChildListItem, CustomerSetListItem } from '@/interfaces/shop';
+
+import styles from './index.less'
 const FormItem = Form.Item
 
 interface Props {
   mainModuleId: number
   onSave: () => void
 }
-
 const CustomerSet: FC<Props> = (props) => {
   const { id } = useParams<{ id: string }>()
   const { mainModuleId, onSave } = props
@@ -124,10 +125,14 @@ const CustomerSet: FC<Props> = (props) => {
   }
 
   /** 当出现错误reture false */
-  const validateForm = async () => await Promise.all([form.validateFields(), ...forms.current.filter(item => item).map((item) => item.form.validateFields())])
+  const validateForm = async () => await Promise.all([
+    form.validateFields(),
+    ...forms.current.filter(item => item).map((item) => item.form.validateFields())
+  ])
 
   const sumbit = async () => {
     try {
+      setUpDataLoading(true)
       await validateForm()
       const values = forms.current.filter(item => item).map(item => {
         return {
@@ -136,7 +141,6 @@ const CustomerSet: FC<Props> = (props) => {
         }
       })
       const title = form.getFieldValue('title')
-      setUpDataLoading(true)
       const res = await setCustomerSetApi(Number(id), {
         mainModuleId: isNaN(mainModuleId) ? undefined : mainModuleId,
         mainModuleTitle: title,
@@ -153,17 +157,18 @@ const CustomerSet: FC<Props> = (props) => {
       } else {
         errorMessage(res.message || '保存失败，请稍后再试！')
       }
-      setUpDataLoading(false)
     } catch (e) {
       errorMessage('必填项不能为空')
+      console.error(e)
+    } finally {
       setUpDataLoading(false)
-      console.log(e)
     }
   }
 
   return <>
     <Spin spinning={getDataLoading}>
       <div className={styles['container']}>
+
         <Form form={form} name={`form${id}`} className={styles['title-form-container']}>
           <FormItem className={styles['form-item']} label={<span className={styles['form-label']} >
             模块标题
@@ -171,15 +176,16 @@ const CustomerSet: FC<Props> = (props) => {
             <InputLen width={280} className={styles['form-input']} maxLength={6} minLength={2} showCount={true} placeholder="例如：企业优势、服务流程" />
           </FormItem>
         </Form>
-        {
-          dataList.map((item, index) => <CustomerSetForm item={item} index={index} key={item.key} total={dataList.length} ref={(ref) => forms.current[index] = ref} onDel={handleDeleteItem} />)
-        }
-        {
-          dataList.length < 10 && <Button className={`${styles['add-btn']}`} type="primary" onClick={handleClickAdd}>+增加子模块</Button>
-        }
+
+        {dataList.map((item, index) => (
+          <CustomerSetForm item={item} index={index} key={item.key} total={dataList.length} ref={ref => forms.current[index] = ref} onDel={handleDeleteItem} />
+        ))}
+        {dataList.length < 10 && (
+          <Button className={`${styles['add-btn']}`} type="primary" onClick={handleClickAdd}>+增加子模块</Button>
+        )}
+
         <div>
-          <Button className={`${styles['submit-btn']}`} loading={upDataLoading} disabled={upDataLoading}
-            type="primary" onClick={sumbit}>保存</Button>
+          <Button className={`${styles['submit-btn']}`} loading={upDataLoading} disabled={upDataLoading} type="primary" onClick={sumbit}>保存</Button>
         </div>
       </div>
     </Spin>

@@ -1,4 +1,4 @@
-import { postApiData, setShopHeader } from './base'
+import { postApiData, getApiData, setShopHeader } from './base'
 import {
   GetContentApiParams,
   CreateProductApiParams,
@@ -18,38 +18,44 @@ import {
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
   GetImagesetFailedImageParam, GetImagesetFailedImageRes,
   GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem,
-  ReAuditImagesetImageParam
+  ReAuditImagesetImageParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion, ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo, ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam, ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam
 } from '@/interfaces/shop';
-import { ServiceResponse } from '@/interfaces/api';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
 
-type ShopAPIReturn<T> = Promise<ServiceResponse<T>>
-
 // 店铺初始信息
-export const getCreateShopStatusApi = (): Promise<ServiceResponse<ShopStatus>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/init', {})
+export const getCreateShopStatusApi = () => {
+  return postApiData<ShopStatus>(ServicePath.SHOP, 'midway/backend/shop/init', {})
 }
 
 // 创建店铺
-export const createShopApi = (params: CreateShopParams): Promise<ServiceResponse<any>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/create', params)
+export const createShopApi = (params: CreateShopParams) => {
+  return postApiData<any>(ServicePath.SHOP, 'midway/backend/shop/create', params)
 }
 
 // 店铺续费
-export const renewShopApi = (params: RenewShopParams): Promise<ServiceResponse<any>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/renew', params)
+export const renewShopApi = (params: RenewShopParams) => {
+  return postApiData<any>(ServicePath.SHOP, 'midway/backend/shop/renew', params)
 }
 
 // 更新店铺
-export const updateShopApi = (params: ShopInfo): Promise<ServiceResponse<any>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/update', params)
+export const updateShopApi = (params: ShopInfo) => {
+  return postApiData<any>(ServicePath.SHOP, 'midway/backend/shop/update', params)
+}
+
+// 更新店铺
+export const updateShopVersionApi = (versionId: number, shopId: number) => {
+  return postApiData<NewestDataVersion>(ServicePath.SHOP, 'midway/backend/dataVersion/submit', {
+    id: versionId,
+    shopId
+  }, setShopHeader(shopId))
+  // return getApi(`midway/backend/dataVersion/submit?id=${versionId}&shopId=${shopId}`, {})
 }
 
 // 获取店铺列表
-export const getShopListApi = (): Promise<ServiceResponse<ShopInfo>> => {
+export const getShopListApi = () => {
   // tips: // 这里的params写死，因为用户店铺不会超过1000个
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/listing', { page: 1, size: 1000 })
+  return postApiData<ShopInfo>(ServicePath.SHOP, 'midway/backend/shop/listing', { page: 1, size: 1000 })
 }
 
 // 基础配置
@@ -69,8 +75,8 @@ export const changeBannerOrderApi = (shopId: number, ids: number[]) => {
 }
 
 // 创建banner
-export const createBannerApi = (shopId: number, params: ImgItemParam): ShopAPIReturn<number> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/banner/create', params, setShopHeader(shopId))
+export const createBannerApi = (shopId: number, params: ImgItemParam) => {
+  return postApiData<number>(ServicePath.SHOP, 'midway/backend/banner/create', params, setShopHeader(shopId))
 }
 
 // 删除banner
@@ -84,8 +90,8 @@ export const getShopInfoApi = (shopId: number) => {
 }
 
 // banner 列表
-export const getBannerListApi = (shopId: number, params: ImgListParam): Promise<ServiceResponse<ListRes<BannerListItem[]>>> => {
-  return postApiData(ServicePath.SHOP, `midway/backend/banner/listing`, params, setShopHeader(shopId))
+export const getBannerListApi = (shopId: number, params: ImgListParam) => {
+  return postApiData<ListRes<BannerListItem[]>>(ServicePath.SHOP, `midway/backend/banner/listing`, params, setShopHeader(shopId))
 }
 
 // 获取tdk List
@@ -99,7 +105,10 @@ export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
 }
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/product/list', params, setShopHeader(shopId))
+  return postApiData<{
+    productList: ListRes<ShopProductListItem[]>,
+    cateList: any
+  }>(ServicePath.SHOP, 'midway/backend/product/list', params, setShopHeader(shopId))
 }
 
 export const createProductApi = (shopId: number, params: CreateProductApiParams) => {
@@ -114,9 +123,12 @@ export const deleteProductApi = (shopId: number, params: HandleApiParams) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/product/delete', params, setShopHeader(shopId))
 }
 
-// api: 获取店铺产品列表
+// api: 获取店铺文章列表
 export const getArticleListApi = (shopId: number, params: GetContentApiParams) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/article/list', params, setShopHeader(shopId))
+  return postApiData<{
+    articleList: ListRes<ShopArticleListItem[]>,
+    cateList: any
+  }>(ServicePath.SHOP, 'midway/backend/article/list', params, setShopHeader(shopId))
 }
 
 export const createArticleApi = (shopId: number, params: CreateArticleApiParams) => {
@@ -162,28 +174,29 @@ export const isNewUserApi = () => {
 }
 
 /** 获取所有自定义模块列表 */
-export const getCustomerModuleListApi = (shopId: number,): Promise<ServiceResponse<{ mainModuleBos: CustomerListItem[] }>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleList', {}, setShopHeader(shopId))
+export const getCustomerModuleListApi = (shopId: number) => {
+  return postApiData<{ mainModuleBos: CustomerListItem[] }>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleList', {}, setShopHeader(shopId))
 }
 
 /** 获取某个自定义设置 */
-export const getCustomerSetApi = (shopId: number, id: number): Promise<ServiceResponse<CustomerSetListItem>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id }, setShopHeader(shopId))
+export const getCustomerSetApi = (shopId: number, id: number) => {
+  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id }, setShopHeader(shopId))
 }
 
 /** 保存某个自定义设置 */
 export const setCustomerSetApi = (shopId: number, requestData: {
   mainModuleId?: number,
   mainModuleTitle: string,
+  show: boolean,
   subModuleVos: CustomerSetChildListItem[],
   subModulesToDelete: number[]
-}): Promise<ServiceResponse<never>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
+}) => {
+  return postApiData<never>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
 }
 
 /** 获取店铺基础信息设置 */
-export const getShopBasicInfoApi = (shopId: number): Promise<ServiceResponse<ShopBasicInfo>> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/shop/getShopEnterprise', {}, setShopHeader(shopId))
+export const getShopBasicInfoApi = (shopId: number) => {
+  return postApiData<ShopBasicInfo>(ServicePath.SHOP, 'midway/backend/shop/getShopEnterprise', {}, setShopHeader(shopId))
 }
 
 /** 设置店铺基础信息设置 */
@@ -192,82 +205,100 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
 }
 
 // 获取相册列表
-export const getImagesetAlbum:
-  (shopId: number, params: GetImagesetAlbumParam) => ShopAPIReturn<GetImagesetAlbumRes> =
-  (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
+export const getImagesetAlbumApi =
+  (shopId: number, params: GetImagesetAlbumParam) => postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
 
 // 创建店铺相册
-export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumParam) => {
+export const createImagesetAlbumApi = (shopId: number, params: CreateImagesetAlbumParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(shopId))
 }
 
 // 修改店铺相册
-export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumParam) => {
+export const updateImagesetAlbumApi = (shopId: number, params: UpdateImagesetAlbumParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params, setShopHeader(shopId))
 }
 
 // 删除店铺相册
-export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
+export const delImagesetAlbumApi = (shopId: number, params: DelImagesetAlbumParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params, setShopHeader(shopId))
 }
 
 // 获取相册图片列表
-export const getImagesetImage:
-  (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes> =
-  (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
+export const getImagesetImageApi =
+  (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
 
 // 获取申诉列表（审核失败和审核中的图片）
-export const getImagesetFailedImage:
-  (shopId: number, params: GetImagesetFailedImageParam) => ShopAPIReturn<GetImagesetFailedImageRes> =
-  (shopId, params) => postApiData(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(shopId))
+export const getImagesetFailedImageApi = (shopId: number, params: GetImagesetFailedImageParam) => postApiData<GetImagesetFailedImageRes>(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(shopId))
 
 // 相册图片申诉
-export const reAuditImagesetImage = (shopId: number, params: ReAuditImagesetImageParam) => {
+export const reAuditImagesetImageApi = (shopId: number, params: ReAuditImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/reapply', params, setShopHeader(shopId))
 }
 
 // 新增相册图片
-export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam): ShopAPIReturn<ImageItem> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
+export const createImagesetImageApi = (shopId: number, params: CreateImagesetImageParam) => {
+  return postApiData<ImageItem>(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
 }
 
 // 删除相册图片
-export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) => {
+export const delImagesetImageApi = (shopId: number, params: DelImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delete', params, setShopHeader(shopId))
 }
 
 // 删除相册图片（专用来删除审核失败的图片）
-export const delImagesetFailedImage = (shopId: number, params: Pick<DelImagesetImageParam, 'ids'>) => {
+export const delImagesetFailedImageApi = (shopId: number, params: Pick<DelImagesetImageParam, 'ids'>) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/deleteFailed', params, setShopHeader(shopId))
 }
 
 // 更新相册图片
-export const setImagesetAlbumCover = (shopId: number, params: UpdateImagesetImageParam) => {
+export const setImagesetAlbumCoverApi = (shopId: number, params: UpdateImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(shopId))
 }
 
 // 移动相册图片到其它相册
-export const moveImagesetImage = (shopId: number, params: MoveImagesetImageParam) => {
+export const moveImagesetImageApi = (shopId: number, params: MoveImagesetImageParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(shopId))
 }
 
 // 获取百姓网相册名称列表 URl
-export const getBaixingAlbum = (shopId: number, params: GetImagesetAlbumParam): ShopAPIReturn<GetImagesetAlbumRes> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', params, setShopHeader(shopId))
+export const getBaixingAlbumApi = (shopId: number, params: GetImagesetAlbumParam) => {
+  return postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', params, setShopHeader(shopId))
 }
 
 // 获取我的相册名称列表 URl
-export const getAlbumNameList = (shopId: number): ShopAPIReturn<AlbumNameListItem[]> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', {}, setShopHeader(shopId))
+export const getAlbumNameListApi = (shopId: number) => {
+  return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', {}, setShopHeader(shopId))
 }
 
 // 获取百姓网相册名称列表 URl
-export const getBaixingAlbumNameList = (shopId: number): ShopAPIReturn<AlbumNameListItem[]> => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', {}, setShopHeader(shopId))
+export const getBaixingAlbumNameListApi = (shopId: number) => {
+  return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', {}, setShopHeader(shopId))
 }
 
 // 获取相册图片列表
-export const getBaixingImagesetImage:
-  (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes> =
-  (shopId, params) => postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/baiXingListing', params, setShopHeader(shopId))
+export const getBaixingImagesetImageApi = (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/baiXingListing', params, setShopHeader(shopId))
 
+/** 模块管理 开始 */
+// 获取模块信息
+export const getModuleInitInfoApi = (shopId: number) => getApiData<ModuleInitPage[]>(ServicePath.SHOP, 'midway/backend/module/init', {}, setShopHeader(shopId))
+
+// 获取模块信息 T = ModuleProductSwiper | ModuleProductInfo | ModuleArticleInfo | ModuleHomeABoutInfo | ModuleABoutABoutInfo
+export const getModuleInfoApi = <T>(shopId: number, params: ModuleRequestParam) => getApiData<T>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+// 修改模块数据
+// 修改banner 产品模块配置
+export const setModuleBannerInfoApi = (shopId: number, params: ModuleProductSwiperParam) => getApiData<ModuleProductSwiper>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+// 修改推荐产品
+export const setModuleProductInfoApi = (shopId: number, params: ModuleProductInfoParam) => getApiData<ModuleProductInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+// 修改推荐文章
+export const setModuleArticleInfoApi = (shopId: number, params: ModuleArticleInfoParam) => getApiData<ModuleArticleInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+// 修改关于我们模块 首页
+export const setModuleHomeABoutInfoApi = (shopId: number, params: ModuleHomeABoutInfoParam) => getApiData< ModuleHomeABoutInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+// 修改关于我们模块 关于我们页面
+export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutInfoParam) => getApiData<ModuleABoutABoutInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+/** 模块管理 结束 */

@@ -1,43 +1,82 @@
-.shop-box{
+.shop-box {
   width: 220px;
   height: 380px;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   background: #ffffff;
   position: relative;
   margin-right: 36px;
-  margin-top:24px;
-  .s-img{
+  margin-top: 24px;
+  .s-img {
     position: relative;
     width: 200px;
     height: 220px;
     margin: 15px 10px;
     cursor: pointer;
-    img{
+    &:hover {
+      .version-reject-tip {
+        opacity: 1;
+      }
+    }
+    .version-reject-tip {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 200px;
+      padding: 12px 10px;
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      opacity: 0;
+      transition: all 0.2s;
+      background: rgba(#fff, 0.94);
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.14);
+      .icon {
+        width: 30px;
+        color: #f1492c;
+        font-size: 20px;
+      }
+      .content {
+        width: 170px;
+        .title {
+          margin-bottom: 5px;
+          font-size: 12px;
+          font-weight: bold;
+          color: #333333;
+          line-height: 20px;
+        }
+        .text {
+          font-size: 12px;
+          color: #666666;
+          line-height: 16px;
+        }
+      }
+    }
+    img {
       width: 200px;
       height: 220px;
     }
     .s-status {
-      width: 60px;
       height: 24px;
+      padding: 0 12px;
       position: absolute;
       right: 0;
       bottom: 0;
-      font-size:12px;
+      font-size: 12px;
       color: #ffffff;
       text-align: center;
       line-height: 24px;
     }
-    .s-active{
-      background: #6ACE2D;
+    .s-green {
+      background: #6ace2d;
     }
-    .s-offline{
-      background:#F1492C ;
+    .s-red {
+      background: #f1492c;
     }
-    .s-expired {
+    .s-gray {
       background: #999;
     }
   }
-  .s-title{
+  .s-title {
     margin: 10px 10px 25px;
     display: flex;
     justify-content: space-between;
@@ -47,28 +86,40 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-       -webkit-line-clamp: 2;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       width: 170px;
       margin-top: 0;
       color: rgba(0, 0, 0, 0.85);
       font-weight: bold;
     }
-    a:hover{
-      color: #096DD9;
+    a:hover {
+      color: #096dd9;
     }
-    .s-edit{
+    .s-edit {
       cursor: pointer;
       width: 16px;
       height: 16px;
-      background: url('//file.baixing.net/202103/fb474d06f491aaa00ffe2c27abe443c2.png') no-repeat;
+      background: url("//file.baixing.net/202103/fb474d06f491aaa00ffe2c27abe443c2.png")
+        no-repeat;
       background-size: cover;
+    }
+    .submit {
+      display: inline-block;
+      width: 48px;
+      margin-left: 2px;
+      line-height: 24px;
+      text-align: center;
+      background-color: #096dd9;
+      font-size: 12px;
+      color: #ffffff;
+      white-space: nowrap;
     }
   }
 
-  .s-btn{
+  .s-btn {
     position: absolute;
-    left:0;
+    left: 0;
     right: 0;
     bottom: 0;
     background: #f2f2f2;
@@ -82,14 +133,14 @@
       text-align: center;
       padding: 3px 0px;
     }
-    span:hover{
-      color:#096DD9;
+    span:hover {
+      color: #096dd9;
     }
     span:first-child {
-      border-right: 1px solid #D9D9D9;
+      border-right: 1px solid #d9d9d9;
     }
   }
-  .dead-time{
+  .dead-time {
     width: 100%;
     font-size: 12px;
     color: #666666;
@@ -99,8 +150,8 @@
     .renew-btn {
       cursor: pointer;
       float: right;
-      color: #096DD9;
-      border: 1px solid #096DD9;
+      color: #096dd9;
+      border: 1px solid #096dd9;
       padding: 0px 5px;
       margin-right: 10px;
     }

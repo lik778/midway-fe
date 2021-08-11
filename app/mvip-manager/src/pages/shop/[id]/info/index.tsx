@@ -16,14 +16,12 @@ const CustomerSet: FC<{ curShopInfo: ShopInfo | null, loadingShopModel: boolean 
   const { curShopInfo, loadingShopModel } = props
 
   const { id } = useParams<{ id: string }>()
-  const initShopBasicInfoParams = useMemo<InitShopBasicInfoParams | null>(() => {
+  const initShopBasicInfoParams = useMemo<InitShopBasicInfoParams | {} | null>(() => {
     if (curShopInfo) {
       if (curShopInfo.about && curShopInfo.about.length > 0) {
         return JSON.parse(curShopInfo.about) as InitShopBasicInfoParams
       } else {
-        // 这里是因为当null的时候显示组件 
-        // 后面about一定会存在 但是现在先把兼容保留
-        return {} as InitShopBasicInfoParams
+        return {}
       }
     } else {
       return null

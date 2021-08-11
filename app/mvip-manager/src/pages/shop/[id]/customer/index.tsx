@@ -8,6 +8,7 @@ import { ShopBasisType } from '@/enums'
 import styles from './index.less'
 import { getCustomerModuleListApi } from '@/api/shop'
 import { CustomerSetListItem, CustomerListItem } from '@/interfaces/shop'
+
 const CustomerSet: FC = () => {
   const { id } = useParams<{ id: string }>()
   const [dataList, setDataList] = useState<CustomerListItem[]>([])

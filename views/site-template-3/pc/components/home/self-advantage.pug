@@ -1,7 +1,8 @@
-.self-advantage
-	each item in selfAdvantage
-		.advanItem
-			img(src = item.icon )
-			.title #{ item.title }
-			//- .selfAdvan-line 
-			.content #{ item.content }  
+mixin self-advantage(configItem)
+	.self-advantage
+		each item in configItem
+			.advanItem
+				img(src = item.icon )
+				.title #{ item.title }
+				//- .selfAdvan-line 
+				.content #{ item.content }
