@@ -15,7 +15,7 @@ block content
     include ../components/common/breadcrumbs.pug
   .container.clearfix
     include ../components/product-detail/company-top.pug
-    - productRecommendList = renderData.productRecommend.slice(0,5)
+    - productRecommendList = renderData.productRecommend.productList.slice(0,5)
     include ../components/product-detail/product-recom.pug
 
     .main

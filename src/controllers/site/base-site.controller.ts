@@ -87,8 +87,66 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-    console.log(data.basic.company)
-    return data
+    
+    
+    data.productRecommend =  {
+      "name": "服务推荐",
+      "productList": [
+        {
+          "id": 2120,
+          "name": "dfas",
+          "price": "面议",
+          "content": "sdfasfsadfsadfasdfasdfasdfsdfasfsadfsadfasdfasdfasdfsdfasfsadfsad",
+          "headImg": "http://img5.baixing.net/dc03a3ea825652047f4cc43e420e46dc.png_sv1",
+          "urlSuffix": "http://shop.baixing.cn/dfjasidfjjs/p-2120.html",
+          "createdTime": 1626775349
+        },
+        {
+          "id": 2124,
+          "name": "抗日游行1",
+          "price": "面议",
+          "content": "阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥地阿斯顿发啥",
+          "headImg": "http://img6.baixing.net/5b9c77aac2d80436484c7935ccfd000a.png_sv1",
+          "urlSuffix": "http://shop.baixing.cn/version/p-2124.html",
+          "createdTime": 1626860849
+        }
+      ]
+    }
+    data.articleRecommend = {
+      "name": "文章推荐",
+      "articleList": [
+        {
+          "id": 941,
+          "name": "test",
+          "limitText": "test abc haha 1000000000000test abc haha 1000000000000test a",
+          "urlSuffix": "http://shop.baixing.cn/ccshop1/n-941.html",
+          "createdTime": 1609844416,
+          "modifiedTime": 1609844416
+        },
+        {
+          "id": 928,
+          "name": "哈哈",
+          "limitText": "修复检测发帖点时区分产品线和产品线档位bug修复检测发帖点时区分产品线和产品线档位bug修复检测发帖点时区分产品线和产品",
+          "urlSuffix": "http://shop.baixing.cn/ccshop1/n-928.html",
+          "createdTime": 1609134564,
+          "modifiedTime": 1609134564
+        },
+        {
+          "id": 1016,
+          "name": "真好吃11",
+          "limitText": "大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大寿大大寿大寿大寿大寿大寿大寿大寿大寿大",
+          "urlSuffix": "http://shop.baixing.cn/ccshop1/n-1016.html",
+          "createdTime": 1612172469,
+          "modifiedTime": 1612172469
+        }
+      ]
+    }
+    data.basic.aboutModule = {
+      "name": "关于我们",
+      "tags": ['最佳品质','实力商家','品质保证'],
+      "media": null
+    }
+    return data 
   }
 
   private createParams(isSem, isCn) {

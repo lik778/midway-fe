@@ -25,7 +25,7 @@ block content
 						+home-title('所有项目')
 						//- include ../components/home/product-list.pug
 						include ../components/home/product-list-new.pug
-
+				
 				//- include ../components/home/about-us.pug
 				include ../components/home/about-us-new.pug
 				if !isSem
@@ -38,7 +38,7 @@ block content
 
 				//-新闻资讯
 				- articleList = renderData.articleList.result
-				- const { articleRecommend } = renderData
+				- const { articleList: articleRecommend } = renderData.articleRecommend
 				if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
 						+home-title('新闻资讯')
 						//- include ../components/home/news-center.pug
