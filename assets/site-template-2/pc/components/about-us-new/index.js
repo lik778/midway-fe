@@ -4,6 +4,7 @@ export const aboutUs = function () {
   $(document).on('ready', function () {
     var nowWord = $('.body-content').text().length
     var newWord
+    
     if (nowWord > 250) {
       $('.view-detail').css('display', 'block')
       newWord =  $('.body-content').text().slice(0,250) + '....'
