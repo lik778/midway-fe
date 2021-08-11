@@ -11,7 +11,7 @@ mixin swiper(data, type)
               .video-cover
                 img(src=item.displayImgUrl)
           else
-            .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
+            .swiper-slide(style=`background-image:url("${item.displayImgUrl}")`)
       if type === 'home'
         .num-tip #{data.length}张图片
       else

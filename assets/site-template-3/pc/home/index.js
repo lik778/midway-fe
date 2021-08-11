@@ -14,10 +14,10 @@ $(document).on('ready', function () {
 
   // 轮播图初始化
   new Swiper('#banner-list .swiper-container', {
-    loop: true,
-    speed: 1000,
+    // loop: true,
+    // speed: 1000,
     autoplay: {
-      delay: 5000,
+      delay: 5000 * 1000,
       waitForTransition: true,
       pauseOnMouseEnter: true
     },

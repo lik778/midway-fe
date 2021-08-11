@@ -1,6 +1,8 @@
 mixin baseSwiper(height)
   - const bannerList = renderData.banner
   - const hasBannerList = bannerList && bannerList.length > 0
+  pre
+    #{JSON.stringify(renderData.banner)}
   #banner-list(style="height:"+height)
     .swiper-container.swiper-specil-size
       .swiper-wrapper
@@ -10,7 +12,7 @@ mixin baseSwiper(height)
             if isVideo
               .swiper-slide
                 .video-wrapper
-                  video(src=item.hrefUrl, loop, preload)
+                  video(src=item.hrefUrl, loop, preload, controls)
                 .video-cover
                   img(src=item.displayImgUrl)
             else
