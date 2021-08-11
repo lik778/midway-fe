@@ -22,14 +22,14 @@
             p.phoneNumber-full.none #{ phone.content }
         .bottom-right 查看完整电话
     .content-left
-      - const video = company.video
-      - const hasVideo = video
-      if hasVideo
+      - const videoUrl = company.videoUrl
+      - const videoCover = company.videoCover
+      if videoUrl
         .video-con
           .video-wrapper
-            video(src=video.url, loop, preload, controls)
+            video(src=videoUrl, loop, preload, controls)
           .video-cover
-            img.picture(src=video.cover)
+            img.picture(src=videoCover)
       else
         - Src = renderData.src
         - var conpany = Src || '//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png'
