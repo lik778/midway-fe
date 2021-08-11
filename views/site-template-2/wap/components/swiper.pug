@@ -8,7 +8,7 @@
           if isVideo
             .swiper-slide
               .video-wrapper
-                video(src=item.hrefUrl, loop, preload)
+                video(src=item.hrefUrl, loop, preload, controls)
               .video-cover
                 img(src=item.displayImgUrl)
           else
