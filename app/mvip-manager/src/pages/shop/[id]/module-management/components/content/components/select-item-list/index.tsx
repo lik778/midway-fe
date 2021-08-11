@@ -45,52 +45,9 @@ const AboutUs: FC<Props> = (props) => {
 
   const getDetail = async () => {
     setGetDataLoading(true)
-    // const res = await getModuleInfoApi<ModuleArticleInfo | ModuleProductInfo>(Number(params.id), {
-    //   position, pageModule
-    // })
-    const res = await mockData<ModuleArticleInfo | ModuleProductInfo>('data', {
-      "name": `${type === 'product' ? '产品' : '文章'}详情`,
-      "productList": [
-        {
-          "id": 2120,
-          "name": "dfas",
-          "price": "面议",
-          "headImg": "http://img5.baixing.net/dc03a3ea825652047f4cc43e420e46dc.png_sv1",
-          "urlSuffix": "http://shop.baixing.cn/dfjasidfjjs/p-2120.html"
-        },
-        {
-          "id": 2124,
-          "name": "抗日游行1",
-          "price": "面议",
-          "headImg": "http://img6.baixing.net/5b9c77aac2d80436484c7935ccfd000a.png_sv1",
-          "urlSuffix": "http://shop.baixing.cn/version/p-2124.html"
-        },
-        {
-          "id": 2125,
-          "name": "抗日游行",
-          "price": "面议",
-          "headImg": "http://img6.baixing.net/8f6230f586c0937a27f83c3155f97325.png_sv1",
-          "urlSuffix": "http://shop.baixing.cn/version/p-2125.html"
-        }
-      ],
-      "articleList": [
-        {
-          "id": 1586,
-          "name": "抗日游行",
-          "urlSuffix": "http://b2bcc4.shop.baixing.cn/n-1586.html"
-        },
-        {
-          "id": 1584,
-          "name": "抗日游行1",
-          "urlSuffix": "http://b2bcc4.shop.baixing.cn/n-1584.html"
-        },
-        {
-          "id": 1599,
-          "name": "抗日游行",
-          "urlSuffix": "http://b2bcc4.shop.baixing.cn/n-1599.html"
-        }
-      ]
-    } as any)
+    const res = await getModuleInfoApi<ModuleArticleInfo | ModuleProductInfo>(Number(params.id), {
+      position, pageModule
+    })
     setDetail(res.data)
     setGetDataLoading(false)
   }
@@ -99,18 +56,20 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = async (values: ModuleArticleInfoParam | ModuleProductInfoParam) => {
+  const handleSubmit = async (values: ModuleArticleInfo | ModuleProductInfo) => {
     console.log(values)
     setUpDataLoading(true)
     let res
     if (type === "product") {
       res = await setModuleProductInfoApi(Number(params.id), {
-        ...(values as ModuleProductInfoParam),
+        ...values,
+        productIdList: (values as ModuleProductInfo).productList.map(item => item.id),
         position, pageModule
       })
     } else {
       res = await setModuleArticleInfoApi(Number(params.id), {
-        ...(values as ModuleArticleInfoParam),
+        ...values,
+        articleIdList: (values as ModuleArticleInfo).articleList.map(item => item.id),
         position, pageModule
       })
     }

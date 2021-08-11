@@ -8,6 +8,7 @@ import styles from './index.less'
 import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
 import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
+import { successMessage } from '@/components/message';
 
 interface Props {
   position: ModulePageType,
@@ -34,11 +35,12 @@ const HomeSwiper: FC<Props> = (props) => {
     disabled: false
   })
 
-  const handleClickSubmit = () => {
+  const handleClickSubmit = async () => {
     if (pcRef.current.disabledFc() || wapRef.current.disabled) {
       return
     }
-    Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
+    const a = await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
+    console.log(a)
   }
 
   return <Spin spinning={loadingShopModel}>
@@ -46,7 +48,7 @@ const HomeSwiper: FC<Props> = (props) => {
       {
         curShopInfo && <> <div className={styles['component-box']}>
           <PcSwiper ref={pcRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></PcSwiper>
-          <WapSwiper ref={wapRef} curShopInfo={curShopInfo}></WapSwiper>
+          <WapSwiper ref={wapRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></WapSwiper>
         </div>
           <Button className={styles['btn']}
             size="large" onClick={handleClickSubmit}>保存</Button>

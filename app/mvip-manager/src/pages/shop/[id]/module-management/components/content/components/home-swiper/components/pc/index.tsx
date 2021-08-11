@@ -1,10 +1,12 @@
 import React, { FC, useState, Ref, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import { useParams } from 'umi';
 import { Button, Radio, RadioChangeEvent, Form } from 'antd'
 import { ShopInfo } from '@/interfaces/shop';
 import { Detail } from './data'
 import styles from './index.less'
 import CatchComponent from '@/components/cache-component'
 import SwiperComponent from './components/swiper'
+import { setModuleBannerInfoApi } from '@/api/shop'
 import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 import ProductComponent from './components/product'
 import { mockData } from '@/utils';
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const PcSwiper = (props: Props, parentRef: Ref<any>) => {
+  const params = useParams<{ id: string }>()
   const { curShopInfo, position, pageModule } = props
   const [swiperType, setSwiperType] = useState<'swiper' | 'product'>(curShopInfo.type === ProductType.B2B ? 'product' : 'swiper')
 
@@ -43,11 +46,19 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
     disabledFc: () => swiperRef.current.disabled || productRef.current.disabled,
   }), [swiperType])
 
+  // 保存轮播图需要单独再打个接口
+  const handleSubmitNoProduct = async () => {
+    const res = await setModuleBannerInfoApi(Number(params.id), {
+      bannerProduct: false,
+      position, pageModule
+    })
+  }
+
   const handleUpData = () => {
     if (swiperType === 'product') {
       productRef.current.handleUpData()
     } else {
-      swiperRef.current.handleUpData('all')
+      Promise.all([handleSubmitNoProduct(), swiperRef.current.handleUpData('all')])
     }
   }
 
@@ -59,13 +70,15 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
     <Form.Item className={styles['radio-group-item']} label={'电脑端'}>
       <Radio.Group name="radiogroup" value={swiperType} onChange={handleChangeSwiperType}>
         <Radio value={'swiper'}>轮播图</Radio>
-        <Radio value={'product'}>轮播产品</Radio>
+        {
+          curShopInfo.type === ProductType.B2B && <Radio value={'product'}>轮播产品</Radio>
+        }
       </Radio.Group>
     </Form.Item>
     {
       swiperType && <>
         <CatchComponent visible={swiperType === 'swiper'}>
-          <SwiperComponent ref={swiperRef}></SwiperComponent>
+          <SwiperComponent ref={swiperRef} position={position} pageModule={pageModule}></SwiperComponent>
         </CatchComponent>
         <CatchComponent visible={swiperType === 'product'}>
           <ProductComponent ref={productRef} setSwiperType={setSwiperType} position={position} pageModule={pageModule}></ProductComponent>

@@ -53,6 +53,7 @@ const SelectModal: FC<Props> = (props) => {
   const getDataList = async () => {
     if (page > totalPage) return
     setGetDataLoading(true)
+    // TODO;
     const res = await componentConfig.ajaxApi(Number(params.id), { page, contentCateId: 0, size: 10 })
     if (res?.success) {
       setDataList([...dataList, ...((componentConfig.type === 'product' ? res.data.productList.result : res.data.articleList.result) || [])] as any[])
@@ -65,11 +66,6 @@ const SelectModal: FC<Props> = (props) => {
   useEffect(() => {
     getDataList()
   }, [])
-
-  const actionConfig = {
-    delete: false,
-    select: true
-  }
 
   const handleChangeSelect = (selected: boolean, content: SelectProductListItem | SelectArticleListItem) => {
     if (selected) {
