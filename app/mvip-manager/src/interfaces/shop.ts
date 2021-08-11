@@ -10,6 +10,7 @@ export interface RouteParams {
 export interface GetContentApiParams {
   page: number;
   size: number;
+  onlyApprove?: boolean;
   contentCateId: number;
 }
 
@@ -493,7 +494,14 @@ export interface ModuleProductSwiper {
   bannerProduct: boolean
 }
 
-export interface ModuleProductSwiperParam extends ModuleRequestParam, ModuleProductSwiper { }
+export interface ModuleProductSwiperParam extends ModuleRequestParam, ModuleProductSwiper {
+  productIdList: number[]
+}
+
+export interface ModuleProductSwiperNoParam extends ModuleRequestParam {
+  bannerProduct: boolean
+}
+
 
 export interface ModuleProductInfo {
   name: string,
