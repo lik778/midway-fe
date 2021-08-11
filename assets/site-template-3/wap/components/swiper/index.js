@@ -40,6 +40,14 @@ if (hasBannerVideo) {
     $bannerVideos[idx].play()
     swiper.autoplay.stop()
   }
+  // FIXME 视频点击不了
+  ;[...$bannerVideos].map(($video) => {
+    $video.addEventListener('click', () => {
+      $video.paused
+        ? swiper.autoplay.stop()
+        : swiper.autoplay.start()
+    })
+  })
   ;[...$bannerVideoCovers].map(($cover, idx) => {
     $cover.addEventListener('click', evt => {
       play(idx)

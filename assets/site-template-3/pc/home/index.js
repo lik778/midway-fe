@@ -13,11 +13,12 @@ viewPhone()
 $(document).on('ready', function () {
 
   // 轮播图初始化
-  new Swiper('#banner-list .swiper-container', {
-    // loop: true,
-    // speed: 1000,
+  const swiper = new Swiper('#banner-list .swiper-container', {
+    loop: true,
+    speed: 1000,
+    centeredSlides: true,
     autoplay: {
-      delay: 5000 * 1000,
+      delay: 5000,
       waitForTransition: true,
       pauseOnMouseEnter: true
     },
@@ -30,7 +31,10 @@ $(document).on('ready', function () {
       prevEl: '#banner-list .swiper-button-prev',
     },
     on: {
-      autoplay: () => pauseAllBannerVideo()
+      slideChange: () => {
+        pauseAllBannerVideo()
+        swiper.autoplay.start()
+      }
     }
   })
 
@@ -47,12 +51,15 @@ $(document).on('ready', function () {
   const hasBannerVideo = $bannerVideos.length > 0
   if (hasBannerVideo) {
     // 点击封面或视频播放视频
-    const play = idx => $bannerVideos[idx].play()
+    const play = idx => {
+      swiper.autoplay.stop()
+      $bannerVideos[idx].play()
+    }
     ;[...$bannerVideos].map($video => {
       $video.addEventListener('click', () => {
         $video.paused
-          ? $video.play()
-          : $video.pause()
+          ? swiper.autoplay.stop()
+          : swiper.autoplay.start()
       })
     })
     ;[...$bannerVideoCovers].map(($cover, idx) => {

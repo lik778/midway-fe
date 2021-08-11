@@ -7,7 +7,7 @@ mixin swiper(data, type)
           if isVideo
             .swiper-slide
               .video-wrapper
-                video(src=item.hrefUrl, loop, preload)
+                video(src=item.hrefUrl, loop, preload, controls)
               .video-cover
                 img(src=item.displayImgUrl)
           else
@@ -17,7 +17,6 @@ mixin swiper(data, type)
       else
         if data.length > 1
           .swiper-pagination
-
     else
       if type === 'home'
         .swiper-wrapper
