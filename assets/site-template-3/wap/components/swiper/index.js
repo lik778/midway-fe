@@ -1,8 +1,7 @@
 import Swiper from 'swiper'
-import $ from 'jquery'
 
 new Swiper('.swiper-container', {
-  speed:1000,
+  speed: 1000,
   centeredSlides: true,
   autoplay: {
     delay: 3000,
@@ -16,8 +15,8 @@ new Swiper('.swiper-container', {
   },
   //前进后退按钮
   navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
+    nextEl: '.swiper-container .swiper-button-next',
+    prevEl: '.swiper-container .swiper-button-prev',
   },
   on: {
     autoplay: () => pauseAllBannerVideo()
@@ -53,5 +52,3 @@ if (hasBannerVideo) {
   document.querySelector('.swiper-container .swiper-button-next').addEventListener('click', pauseAllBannerVideo)
   document.querySelector('.swiper-container .swiper-button-prev').addEventListener('click', pauseAllBannerVideo)
 }
-
-
