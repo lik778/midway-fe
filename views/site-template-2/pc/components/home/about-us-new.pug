@@ -1,0 +1,44 @@
+.about-us-bgc
+  .about-us-content
+    .content-right
+      .content-right-title
+        .right-title-left
+          img(src=company.logo || defaultLogo)
+          p.left-title #{ companyName }
+        .right-title-right
+          - var tag = ['最佳品质','实力商家','品质保证']
+          each item in tag
+            p.tag= item
+      .content-right-body
+        .body-content
+          | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+        a.view-detail(href=aboutLink) 查看详情
+      .content-right-bottom
+        .bottom-left
+          img(src="//file.baixing.net/202108/e9cd4572f5363e55005f0e8616be31c3.png")
+          .phone
+            .service-hot 服务热线
+            p.phoneNumber-slice.active #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) }
+            p.phoneNumber-full.none #{ phone.content }
+        .bottom-right 查看完整电话
+    .content-left
+      - const video = company.video
+      - const hasVideo = video
+      if hasVideo
+        .video-con
+          .video-wrapper
+            video(src=video.url, loop, preload, controls)
+          .video-cover
+            img.picture(src=video.cover)
+      else
+        - Src = renderData.src
+        - var conpany = Src || '//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png'
+        - var url = /\.(png|jpg|gif|jpeg|webp)$/
+        if url.test(conpany)
+          img.audio(src="//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png")
+        else
+          audio(src=conpany) 
+            <source src="#" type="#">
+          span.ico-video
+            img(src="//file.baixing.net/202108/f911950bc7679d0a83235a02bbd9a36e.png")
+        
