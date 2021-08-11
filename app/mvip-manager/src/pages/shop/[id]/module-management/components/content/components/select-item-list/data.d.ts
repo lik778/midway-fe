@@ -1,4 +1,5 @@
-import { ComponentId } from '../../../../data';
+import { ModuleComponentId } from '@/interfaces/shop'
+
 import { SelectProductListItem, SelectArticleListItem } from '../components/select-item/data'
 export interface Detail {
   name: string,
@@ -8,7 +9,7 @@ export interface Detail {
 
 export interface RequestData {
   name: string,
-  position: ComponentId,
+  position: ModuleComponentId,
   productIdList?: number[]
   articleIdList?: number[]
 }

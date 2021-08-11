@@ -2,6 +2,7 @@ import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
 import { ShopMetas } from '@/interfaces/user'
+
 export interface RouteParams {
   id: string;
 }
@@ -94,7 +95,7 @@ export interface ModifyNavItem {
 export interface ImgItemParam {
   type: number;
   url: string;
-  position: number;
+  position: ModulePageType;
   weight: number;
 }
 
@@ -107,7 +108,7 @@ export interface ImgListParam {
   size: number;
   status: number;
   type: number;
-  position: number;
+  position: ModulePageType;
 }
 
 export interface CreateContentCateApiParams {
@@ -291,7 +292,7 @@ export interface BannerListItem {
   hrefUrl: string
   id: number
   imgUrl: string
-  position: number
+  position: ModulePageType
   status: number
   weight: number
 }
@@ -443,3 +444,90 @@ export interface ShopArticleListItem {
   tags: string[]
   urlSuffix: string
 }
+
+/** 店铺模块管理相关 开始 */
+export type ModulePageType = 'homePage' | 'productListPage' | 'articleListPage' | 'articleInfoPage' | 'aboutPage'
+
+export type ModuleComponentId = 'banner' | 'productRecommend' | 'autoConfig' | 'about' | 'articleRecommend'
+
+export interface ModuleInitPage {
+  position: ModulePageType,
+  name: string,
+  infoList: ModuleInitComponent[]
+}
+
+export interface ModuleInitComponent {
+  pageModule: string,
+  name: string,
+  max: number
+}
+
+export interface ModuleSelectProductListItem {
+  id: number,
+  name: string,
+  price: string,
+  headImg: string,
+  urlSuffix: string
+  createdTime: number,
+  [key: string]: any
+}
+
+export interface ModuleSelectArticleListItem {
+  id: number,
+  name: string,
+  urlSuffix: string
+  createdTime: number,
+  modifiedTime: number
+  [key: string]: any
+}
+
+export interface ModuleRequestParam {
+  position: ModulePageType,
+  pageModule: ModuleComponentId,
+}
+
+export interface ModuleProductSwiper {
+  backGroundImg: string,
+  productList: ModuleSelectProductListItem[],
+  /** 判断是选择了店铺还是 */
+  bannerProduct: boolean
+}
+
+export interface ModuleProductSwiperParam extends ModuleRequestParam, ModuleProductSwiper { }
+
+export interface ModuleProductInfo {
+  name: string,
+  productList: ModuleSelectProductListItem[]
+}
+
+export interface ModuleProductInfoParam extends ModuleRequestParam {
+  name: string,
+  productIdList: number[]
+}
+
+export interface ModuleArticleInfo {
+  name: string,
+  articleList: ModuleSelectArticleListItem[]
+}
+
+export interface ModuleArticleInfoParam extends ModuleRequestParam {
+  name: string,
+  articleIdList: number[]
+}
+
+
+export interface ModuleHomeABoutInfo {
+  name: string,
+  tags: string[],
+  media: string
+}
+
+export interface ModuleHomeABoutInfoParam extends ModuleRequestParam, ModuleHomeABoutInfo { }
+
+export interface ModuleABoutABoutInfo {
+  backImg: string,
+}
+
+export interface ModuleABoutABoutInfoParam extends ModuleRequestParam, ModuleABoutABoutInfo { }
+
+/** 店铺模块管理相关 结束 */

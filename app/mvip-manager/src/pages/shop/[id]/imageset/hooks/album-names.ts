@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
-import { getAlbumNameList } from '@/api/shop'
+import { getAlbumNameListApi } from '@/api/shop'
 
 import { AlbumNameListItem } from "@/interfaces/shop";
 
@@ -40,7 +40,7 @@ export default function useAllAlbumNames(shopId: number) {
 
 async function fetchAlbumNameLists(shopId: number) {
   try {
-    const res = await getAlbumNameList(shopId)
+    const res = await getAlbumNameListApi(shopId)
     return [res.data, res.data.length] as const
   } catch(err) {
     throw new Error(err)

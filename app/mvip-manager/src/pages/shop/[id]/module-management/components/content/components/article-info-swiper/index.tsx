@@ -2,18 +2,20 @@ import React, { FC, useState, useEffect, useRef, } from 'react';
 import { Spin, Button } from 'antd'
 import { connect } from 'dva';
 import { SHOP_NAMESPACE } from '@/models/shop';
-import { ShopInfo } from '@/interfaces/shop';
+import { ShopInfo, ModuleABoutABoutInfo, ModulePageType, ModuleComponentId } from '@/interfaces/shop'
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
 import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
 
 interface Props {
+  position: ModulePageType,
+  pageModule: ModuleComponentId
   [key: string]: any
 }
 
 const HomeSwiper: FC<Props> = (props) => {
-  const { curShopInfo, loadingShopModel } = props
+  const { curShopInfo, loadingShopModel, position, pageModule } = props
 
   const pcRef = useRef<{
     handleUpData: (type: 'all') => Promise<void>,
@@ -42,8 +44,8 @@ const HomeSwiper: FC<Props> = (props) => {
     <div className={styles['home-swiper-container']}>
       {
         curShopInfo && <> <div className={styles['component-box']}>
-          <PcSwiper ref={pcRef} curShopInfo={curShopInfo}></PcSwiper>
-          <WapSwiper ref={wapRef} curShopInfo={curShopInfo}></WapSwiper>
+          <PcSwiper ref={pcRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></PcSwiper>
+          <WapSwiper ref={wapRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></WapSwiper>
         </div>
           <Button className={styles['btn']}
             size="large" onClick={handleClickSubmit}>保存</Button>

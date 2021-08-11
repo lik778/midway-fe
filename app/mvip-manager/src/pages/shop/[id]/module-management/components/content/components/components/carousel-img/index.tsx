@@ -13,11 +13,11 @@ import { UploadFile } from "antd/lib/upload/interface";
 import { Spin } from 'antd'
 import styles from './index.less'
 import { forwardRef } from "react";
-
+import { ModulePageType } from '@/interfaces/shop'
 interface Props {
   autoUpdata?: boolean, // 是否操作后自动更新数据
   type: DeviceType,
-  position: number,
+  position: ModulePageType,
   txt: string,
   tip: string,
   aspectRatio: number
@@ -133,7 +133,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
           displayImgUrl: item.preview,
           hrefUrl: '',
           imgUrl: item.url,
-          position: NaN,
+          position,
           status: NaN,
           weight: NaN,
           id: NaN

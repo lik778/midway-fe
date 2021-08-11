@@ -1,24 +1,28 @@
 import React, { FC, useState, useEffect } from 'react';
+import { useParams } from 'umi';
 import { Button, Row, Col, Spin } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { selectItemFrom } from './config'
-import { PageType, ComponentId } from '../../../../data'
 import { Detail } from './data'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import SelectItem from '../components/select-item'
 import { ConfigItemType, ConfigKey } from '../components/select-item/data'
+import { ModuleArticleInfo, ModuleProductInfo, ModulePageType, ModuleComponentId, ModuleArticleInfoParam, ModuleProductInfoParam } from '@/interfaces/shop'
+import { getModuleInfoApi, setModuleProductInfoApi, setModuleArticleInfoApi } from '@/api/shop'
 import styles from './index.less'
 import { mockData } from '@/utils';
+import { successMessage } from '@/components/message';
 interface Props {
-  position: PageType,
-  pageModule: ComponentId,
+  position: ModulePageType,
+  pageModule: ModuleComponentId,
   type: ConfigItemType,
   configKey: ConfigKey
 }
 
 const AboutUs: FC<Props> = (props) => {
+  const params = useParams<{ id: string }>()
   const { position, pageModule, type, configKey } = props
-  const [detail, setDetail] = useState<Detail>({
+  const [detail, setDetail] = useState<ModuleArticleInfo | ModuleProductInfo>({
     name: '',
     productList: [],
     articleList: []
@@ -41,7 +45,10 @@ const AboutUs: FC<Props> = (props) => {
 
   const getDetail = async () => {
     setGetDataLoading(true)
-    const res = await mockData<Detail>('data', {
+    // const res = await getModuleInfoApi<ModuleArticleInfo | ModuleProductInfo>(Number(params.id), {
+    //   position, pageModule
+    // })
+    const res = await mockData<ModuleArticleInfo | ModuleProductInfo>('data', {
       "name": `${type === 'product' ? '产品' : '文章'}详情`,
       "productList": [
         {
@@ -83,7 +90,7 @@ const AboutUs: FC<Props> = (props) => {
           "urlSuffix": "http://b2bcc4.shop.baixing.cn/n-1599.html"
         }
       ]
-    })
+    } as any)
     setDetail(res.data)
     setGetDataLoading(false)
   }
@@ -92,8 +99,23 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = (values: Detail) => {
+  const handleSubmit = async (values: ModuleArticleInfoParam | ModuleProductInfoParam) => {
     console.log(values)
+    setUpDataLoading(true)
+    let res
+    if (type === "product") {
+      res = await setModuleProductInfoApi(Number(params.id), {
+        ...(values as ModuleProductInfoParam),
+        position, pageModule
+      })
+    } else {
+      res = await setModuleArticleInfoApi(Number(params.id), {
+        ...(values as ModuleArticleInfoParam),
+        position, pageModule
+      })
+    }
+    setUpDataLoading(false)
+    successMessage(res.message)
   }
 
   return <div className={styles["home-hot-product-container"]}>

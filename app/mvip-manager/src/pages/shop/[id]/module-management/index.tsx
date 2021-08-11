@@ -2,7 +2,9 @@ import React, { FC, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'umi';
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
 import { ShopBasisType } from '@/enums'
-import { PageType, ComponentId, PageItemOption, MenuItemOption } from './data'
+import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
+import { getModuleInitInfoApi } from '@/api/shop'
+import { PageItemOption, MenuItemOption } from './data'
 import SelectPage from './components/select-page'
 import Menu from './components/menu'
 import Content from './components/content'
@@ -11,19 +13,22 @@ import { mockData } from '@/utils';
 
 
 const ModuleManagement = () => {
+  const params = useParams<{ id: string }>()
   const [moduleOptions, setModuleOptions] = useState<any[]>([])
-  const [position, setPosition] = useState<PageType>()
-  const [pageModule, setComponentId] = useState<ComponentId>()
+  const [position, setPosition] = useState<ModulePageType>()
+  const [pageModule, setComponentId] = useState<ModuleComponentId>()
 
   // 页面选择器配置
   const [pageOptions, setPageOptions] = useState<PageItemOption[]>([])
 
-  // 组件选择器 key keyof PageType 类型定义会报错
+  // 组件选择器 key keyof ModulePageType 类型定义会报错
   const [menuOptions, setMenuOptions] = useState<{
-    [key in PageType]: MenuItemOption[]
+    [key in ModulePageType]: MenuItemOption[]
   }>({} as any)
 
   const getComponentInit = async () => {
+    // TODO;
+    // const res = await getModuleInitInfoApi(Number(params.id))
     const res = await mockData('data', [
       {
         "position": "homePage",
@@ -123,10 +128,10 @@ const ModuleManagement = () => {
 
   const initMenuOptions = () => {
     const menuOptions: {
-      [key in PageType]: MenuItemOption[]
+      [key in ModulePageType]: MenuItemOption[]
     } = {} as any
     moduleOptions.forEach(item => {
-      menuOptions[item.position as PageType] = item.infoList.map((cItem: any) => ({
+      menuOptions[item.position as ModulePageType] = item.infoList.map((cItem: any) => ({
         id: cItem.pageModule,
         name: cItem.name,
         thumbnail: cItem.name,
@@ -148,8 +153,8 @@ const ModuleManagement = () => {
 
   // 切换页面的时候 将左侧组件选择恢复到第一个
   useEffect(() => {
-    if (menuOptions[position as PageType]) {
-      setComponentId(menuOptions[position as PageType][0].id)
+    if (menuOptions[position as ModulePageType]) {
+      setComponentId(menuOptions[position as ModulePageType][0].id)
     }
   }, [position])
 

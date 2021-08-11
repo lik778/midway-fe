@@ -5,16 +5,19 @@ import { Detail } from './data'
 import styles from './index.less'
 import CatchComponent from '@/components/cache-component'
 import SwiperComponent from './components/swiper'
+import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 import ProductComponent from './components/product'
 import { mockData } from '@/utils';
 import { ProductType } from '@/enums';
 
 interface Props {
+  position: ModulePageType,
+  pageModule: ModuleComponentId
   curShopInfo: ShopInfo
 }
 
 const PcSwiper = (props: Props, parentRef: Ref<any>) => {
-  const { curShopInfo } = props
+  const { curShopInfo, position, pageModule } = props
   const [swiperType, setSwiperType] = useState<'swiper' | 'product'>(curShopInfo.type === ProductType.B2B ? 'product' : 'swiper')
 
   const swiperRef = useRef<{
@@ -65,7 +68,7 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
           <SwiperComponent ref={swiperRef}></SwiperComponent>
         </CatchComponent>
         <CatchComponent visible={swiperType === 'product'}>
-          <ProductComponent ref={productRef} setSwiperType={setSwiperType}></ProductComponent>
+          <ProductComponent ref={productRef} setSwiperType={setSwiperType} position={position} pageModule={pageModule}></ProductComponent>
         </CatchComponent>
       </>
     }

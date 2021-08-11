@@ -1,14 +1,11 @@
-export type PageType = 'homePage' | 'productListPage' | 'articleListPage' | 'articleInfoPage' | 'aboutPage'
-
-export type ComponentId = 'banner' | 'productRecommend' | 'autoConfig' | 'about' | 'articleRecommend'
-
+import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
 
 export interface PageItemOption {
-  key: PageType,
+  key: ModulePageType,
   label: string
 }
 export interface MenuItemOption {
-  id: ComponentId,
+  id: ModuleComponentId,
   name: string,
   thumbnail: string,
   max?: number,

@@ -1,17 +1,17 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useMemo } from 'react';
 import { Popover } from 'antd'
-import { PageType, ComponentId } from '../../data'
+import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
 import { MenuItemOption } from '../../data'
 import styles from './index.less'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 interface Props {
-  position: PageType,
-  pageModule: ComponentId
+  position: ModulePageType,
+  pageModule: ModuleComponentId
   menuOptions: {
-    [key in PageType]: MenuItemOption[]
+    [key in ModulePageType]: MenuItemOption[]
   }
-  handleChangeComponent: (pageModule: ComponentId) => void
+  handleChangeComponent: (pageModule: ModuleComponentId) => void
 }
 
 const Menu: FC<Props> = (props) => {

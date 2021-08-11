@@ -7,7 +7,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import { mockData } from '@/utils';
 import { ImageItem } from '@/interfaces/shop';
 import styles from './index.less'
-import { getImagesetImage, getBaixingImagesetImage } from '@/api/shop'
+import { getImagesetImageApi, getBaixingImagesetImageApi } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
 import ScrollBox from '@/components/scroll-box'
@@ -45,7 +45,7 @@ const ImgList: FC<Props> = (props) => {
     if (albumTypeDetail.page > albumTypeDetail.total) return
     if (getDataLoading) return
     setGetDataLoading(true)
-    const res = await (tabKey === '百姓图库' ? getBaixingImagesetImage : getImagesetImage)(shopCurrent!.id, {
+    const res = await (tabKey === '百姓图库' ? getBaixingImagesetImageApi : getImagesetImageApi)(shopCurrent!.id, {
       page: albumTypeDetail.page,
       size: 16,
       mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined

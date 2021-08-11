@@ -1,17 +1,17 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Select } from 'antd'
-import { PageType } from '../../data'
+import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
 import styles from './index.less'
 const Option = Select.Option
 
 
 interface Props {
   pageOptions: {
-    key: PageType,
+    key: ModulePageType,
     label: string
   }[],
-  position: PageType
-  handleChangePosition: (value: PageType) => void
+  position: ModulePageType
+  handleChangePosition: (value: ModulePageType) => void
 }
 
 const SelectPage: FC<Props> = (props) => {

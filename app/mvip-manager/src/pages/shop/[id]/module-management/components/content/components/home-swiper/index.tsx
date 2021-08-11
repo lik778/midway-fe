@@ -7,13 +7,16 @@ import { ConnectState } from '@/models/connect';
 import styles from './index.less'
 import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
+import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 
 interface Props {
+  position: ModulePageType,
+  pageModule: ModuleComponentId
   [key: string]: any
 }
 
 const HomeSwiper: FC<Props> = (props) => {
-  const { curShopInfo, loadingShopModel } = props
+  const { curShopInfo, loadingShopModel, position, pageModule } = props
 
   const pcRef = useRef<{
     handleUpData: () => Promise<void>,
@@ -42,7 +45,7 @@ const HomeSwiper: FC<Props> = (props) => {
     <div className={styles['home-swiper-container']}>
       {
         curShopInfo && <> <div className={styles['component-box']}>
-          <PcSwiper ref={pcRef} curShopInfo={curShopInfo}></PcSwiper>
+          <PcSwiper ref={pcRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></PcSwiper>
           <WapSwiper ref={wapRef} curShopInfo={curShopInfo}></WapSwiper>
         </div>
           <Button className={styles['btn']}

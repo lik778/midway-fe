@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
-import { PageType, ComponentId } from '../../data'
+
+import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
 import styles from './index.less'
 import CacheComponent from '@/components/cache-component'
 import HomeAboutUs from './components/home-about-us'
@@ -10,8 +11,8 @@ import HomeCustom from './components/home-custom'
 import ArticleInfoSwiper from './components/article-info-swiper'
 
 interface Props {
-  position: PageType,
-  pageModule: ComponentId
+  position: ModulePageType,
+  pageModule: ModuleComponentId
   handleChangeModuleName: (componentName: string) => void
 }
 
@@ -19,7 +20,7 @@ const Content: FC<Props> = (props) => {
   const { position, pageModule, handleChangeModuleName } = props
   return <>
     <CacheComponent visible={position === 'homePage' && pageModule === 'banner'}>
-      <HomeSwiper></HomeSwiper>
+      <HomeSwiper position={position} pageModule={pageModule}></HomeSwiper>
     </CacheComponent>
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'productRecommend'}>
@@ -29,9 +30,9 @@ const Content: FC<Props> = (props) => {
     <CacheComponent visible={position === 'homePage' && pageModule === 'autoConfig'}>
       <HomeCustom></HomeCustom>
     </CacheComponent>
-    
+
     <CacheComponent visible={position === 'homePage' && pageModule === 'about'}>
-      <HomeAboutUs></HomeAboutUs>
+      <HomeAboutUs position={position} pageModule={pageModule}></HomeAboutUs>
     </CacheComponent>
 
     <CacheComponent visible={position === 'productListPage' && pageModule === 'productRecommend'}>
@@ -47,7 +48,7 @@ const Content: FC<Props> = (props) => {
     </CacheComponent>
 
     <CacheComponent visible={position === 'articleInfoPage' && pageModule === 'banner'}>
-      <ArticleInfoSwiper></ArticleInfoSwiper>
+      <ArticleInfoSwiper position={position} pageModule={pageModule}></ArticleInfoSwiper>
     </CacheComponent>
 
     <CacheComponent visible={position === 'articleInfoPage' && pageModule === 'productRecommend'}>
@@ -59,7 +60,7 @@ const Content: FC<Props> = (props) => {
     </CacheComponent>
 
     <CacheComponent visible={position === 'aboutPage' && pageModule === 'about'}>
-      <AboutAboutUs></AboutAboutUs>
+      <AboutAboutUs position={position} pageModule={pageModule}></AboutAboutUs>
     </CacheComponent>
   </>
 }

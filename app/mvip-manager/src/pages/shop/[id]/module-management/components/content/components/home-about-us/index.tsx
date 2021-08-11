@@ -1,18 +1,23 @@
 import React, { FC, useState, useEffect } from 'react';
+import { useParams } from 'umi';
 import { Button, Row, Col, Spin } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { aboutUsForm } from './config'
-import { Detail } from './data'
+import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId } from '@/interfaces/shop'
+import { getModuleInfoApi, setModuleHomeABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
+import { successMessage } from '@/components/message';
 
 interface Props {
-
+  position: ModulePageType,
+  pageModule: ModuleComponentId
 }
 
 const AboutUs: FC<Props> = (props) => {
-  const { } = props
-  const [detail, setDetail] = useState<Detail>({
+  const params = useParams<{ id: string }>()
+  const { position, pageModule } = props
+  const [detail, setDetail] = useState<ModuleHomeABoutInfo>({
     name: '',
     tags: [],
     media: ''
@@ -21,20 +26,21 @@ const AboutUs: FC<Props> = (props) => {
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
-
-
   const getDetail = async () => {
     setGetDataLoading(true)
-    const res = await mockData<Detail>('data', {
-      "name": "成磊测试",
-      "tags": [
-        "a",
-        "b",
-        "c",
-        "d"
-      ],
-      "media": ""
+    const res = await getModuleInfoApi<ModuleHomeABoutInfo>(Number(params.id), {
+      position, pageModule
     })
+    // const res = await mockData<Detail>('data', {
+    //   "name": "成磊测试",
+    //   "tags": [
+    //     "a",
+    //     "b",
+    //     "c",
+    //     "d"
+    //   ],
+    //   "media": ""
+    // })
     setDetail(res.data)
     setGetDataLoading(false)
   }
@@ -43,8 +49,15 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = (values: Detail) => {
+  const handleSubmit = async (values: ModuleHomeABoutInfo) => {
     console.log(values)
+    setUpDataLoading(true)
+    const res = await setModuleHomeABoutInfoApi(Number(params.id), {
+      ...values,
+      position, pageModule
+    })
+    setUpDataLoading(false)
+    successMessage(res.message)
   }
 
   return <div className={styles["about-us-container"]}>
