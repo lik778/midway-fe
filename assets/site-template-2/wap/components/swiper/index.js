@@ -1,6 +1,6 @@
 import Swiper from 'swiper'
 
-new Swiper('.swiper-container', {
+const swiper = new Swiper('.swiper-container', {
   speed: 1000,
   centeredSlides: true,
   autoplay: {
@@ -18,7 +18,10 @@ new Swiper('.swiper-container', {
     nextEl: '.swiper-container .swiper-button-next',
     prevEl: '.swiper-container .swiper-button-prev',
   }, on: {
-    autoplay: () => pauseAllBannerVideo()
+    slideChange: () => {
+      pauseAllBannerVideo()
+      swiper.autoplay.start()
+    }
   }
 })
 
@@ -32,23 +35,28 @@ function pauseAllBannerVideo() {
 const hasBannerVideo = $bannerVideos.length > 0
 if (hasBannerVideo) {
   // 点击封面或视频播放视频
-  const play = idx => $bannerVideos[idx].play()
-    ;[...$bannerVideos].map($video => {
-      $video.addEventListener('click', () => {
-        $video.paused
-          ? $video.play()
-          : $video.pause()
-      })
+  const play = idx => {
+    swiper.autoplay.stop()
+    $bannerVideos[idx].play()
+  }
+  ;[...$bannerVideos].map($video => {
+    $video.addEventListener('click', () => {
+      $video.paused
+        ? swiper.autoplay.stop()
+        : swiper.autoplay.start()
     })
-    ;[...$bannerVideoCovers].map(($cover, idx) => {
-      $cover.addEventListener('click', evt => {
-        play(idx)
-        $cover.remove()
-        evt.stopPropagation()
-      })
+  })
+  ;[...$bannerVideoCovers].map(($cover, idx) => {
+    $cover.addEventListener('click', evt => {
+      play(idx)
+      $cover.remove()
+      evt.stopPropagation()
     })
+  })
   // 切换轮播时暂停视频
-  document.querySelector('.swiper-container .swiper-button-next').addEventListener('click', pauseAllBannerVideo)
-  document.querySelector('.swiper-container .swiper-button-prev').addEventListener('click', pauseAllBannerVideo)
+  const $next = document.querySelector('.swiper-container .swiper-button-next')
+  $next && $next.addEventListener('click', pauseAllBannerVideo)
+  const $prev = document.querySelector('.swiper-container .swiper-button-prev')
+  $prev && $prev.addEventListener('click', pauseAllBannerVideo)
 }
 

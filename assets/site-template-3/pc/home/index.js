@@ -70,8 +70,10 @@ $(document).on('ready', function () {
       })
     })
     // 切换轮播时暂停视频
-    document.querySelector('#banner-list .swiper-button-next').addEventListener('click', pauseAllBannerVideo)
-    document.querySelector('#banner-list .swiper-button-prev').addEventListener('click', pauseAllBannerVideo)
+    const $next = document.querySelector('#banner-list .swiper-button-next')
+    $next && $next.addEventListener('click', pauseAllBannerVideo)
+    const $prev = document.querySelector('#banner-list .swiper-button-prev')
+    $prev && $prev.addEventListener('click', pauseAllBannerVideo)
   }
 
   /* 关于我们视频初始化 */
