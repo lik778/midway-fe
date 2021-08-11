@@ -142,6 +142,8 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
 
+    console.log('data:', data)
+    
     return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, });
   }
 
