@@ -3,11 +3,32 @@
 #banner-list
   .swiper-container
     width 100%
+    height 100%
     .swiper-wrapper
+      height 100%
       .swiper-slide
+        position relative
         img
-          height 360px
           width 100%
+          height 100%
+        .video-cover
+          position absolute
+          top 0
+          left 0
+          width 100%
+          z-index 9
+          cursor pointer
+        .video-wrapper 
+          width 100%
+          text-align center
+          video
+            cursor pointer
+            z-index 9
+        img,
+        video,
+        .video-cover,
+        .video-wrapper
+          height 100%
 
     .swiper-pagination-bullet-active
         background $color-main

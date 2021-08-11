@@ -9,22 +9,31 @@
       background-size 100% 100%
       background-position center
       background-repeat no-repeat
-      /* Center slide text vertically */
-      display -webkit-box
-      display -ms-flexbox
-      display -webkit-flex
       display flex
-      -webkit-box-pack center
-      -ms-flex-pack center
-      -webkit-justify-content center
       justify-content center
-      -webkit-box-align center
-      -ms-flex-align center
-      -webkit-align-items center
       align-items center
-      //img
-      //  height 152px
-      //  width 100%
+      .video-cover
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        z-index 9
+        cursor pointer
+        img
+          width 100%
+          height 100%
+      .video-wrapper 
+        display flex
+        justify-content center
+        align-items center
+        width 100%
+        height 100%
+        video
+          max-width 100%
+          heigh 100%
+          cursor pointer
+          z-index 9
   .swiper-pagination-bullet-active
     background-color $color-main
   .num-tip

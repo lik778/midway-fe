@@ -6,28 +6,86 @@ import { leaveLeads } from '../components/contact-us';
 import { viewPhone } from '../components/home/viewPhone';
 import { initSem } from '../../../common/pc/contact-form-sem'
 
-
 leaveLeads()
 viewPhone()
 
 $(document).on('ready', function () {
+
+  // 轮播图初始化
   new Swiper('#banner-list .swiper-container', {
     loop: true,
     speed: 1000,
     autoplay: {
-      delay: 3000,
+      delay: 4000,
       waitForTransition: true
     },
     pagination: {
       el: '#banner-list .swiper-pagination',
       clickable: true,
     },
-
     navigation: {
       nextEl: '#banner-list .swiper-button-next',
       prevEl: '#banner-list .swiper-button-prev',
     },
-  });
+    on: {
+      autoplay: () => pauseAllBannerVideo()
+    }
+  })
+
+  /* 轮播视频初始化 */
+
+  const $bannerVideos = document.querySelectorAll('#banner-list video')
+  const $bannerVideoCovers = [...$bannerVideos].map($video => {
+    return $video.parentElement.parentElement.querySelector('.video-cover')
+  })
+  function pauseAllBannerVideo () {
+    [...$bannerVideos].map(x => x.pause())
+  }
+
+  const hasBannerVideo = $bannerVideos.length > 0
+  if (hasBannerVideo) {
+    // 点击封面或视频播放视频
+    const play = idx => $bannerVideos[idx].play()
+    ;[...$bannerVideos].map($video => {
+      $video.addEventListener('click', () => {
+        $video.paused
+          ? $video.play()
+          : $video.pause()
+      })
+    })
+    ;[...$bannerVideoCovers].map(($cover, idx) => {
+      $cover.addEventListener('click', evt => {
+        play(idx)
+        $cover.remove()
+        evt.stopPropagation()
+      })
+    })
+    // 切换轮播时暂停视频
+    document.querySelector('#banner-list .swiper-button-next').addEventListener('click', pauseAllBannerVideo)
+    document.querySelector('#banner-list .swiper-button-prev').addEventListener('click', pauseAllBannerVideo)
+  }
+
+  /* 关于我们视频初始化 */
+
+  const $aboutUsVideo = document.querySelector('.about-us-picture video')
+  const hasAboutVideo = $aboutUsVideo
+  const $aboutUsVideoCovers = hasAboutVideo
+    ? $aboutUsVideo.parentElement.parentElement.querySelector('.video-cover')
+    : null
+  if (hasAboutVideo) {
+    // 点击封面或视频播放视频
+    $aboutUsVideo.addEventListener('click', () => {
+      $aboutUsVideo.paused
+        ? $aboutUsVideo.play()
+        : $aboutUsVideo.pause()
+    })
+    $aboutUsVideoCovers.addEventListener('click', evt => {
+      $aboutUsVideo.play()
+      $aboutUsVideoCovers.remove()
+      evt.stopPropagation()
+    })
+  }
+
   // sem部分链接需要禁止二跳
   if (isSem) {
     initSem({
