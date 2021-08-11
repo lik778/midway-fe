@@ -1,11 +1,13 @@
 import React, { FC, forwardRef, Ref, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
-import { Form, FormInstance, Input, Radio } from 'antd'
-import { CustomerSetFormConfigFn } from './config'
+import { Form, FormInstance } from 'antd'
+
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import WildcatForm from '@/components/wildcat-form';
-import styles from './index.less'
-import PreviewItem from '../preview/index'
+import { CustomerSetFormConfigFn } from './config';
+
 import { CustomerSetChildListItem } from '@/interfaces/shop';
+
+import styles from './index.less'
 
 const FormItem = Form.Item
 
@@ -63,9 +65,9 @@ const CustomerSetForm = (props: Props, parentRef: Ref<any>) => {
         formChange={formChange}
       />
     </FormItem>
-    {
-      total > 2 && <div className={styles['form-delete']} onClick={() => onDel(item)}>删除</div>
-    }
+    {total > 2 && (
+      <div className={styles['form-delete']} onClick={() => onDel(item)}>删除</div>
+    )}
   </div>
 }
 

@@ -9,6 +9,9 @@ block content
     include ../components/home/swiper.pug
 
     .container
+        //-自定义模块数据
+        - const { autoConfig } = renderData
+
         - hotProductList = renderData.productRecommend
         if hotProductList && hotProductList.length>0
             .block-title
@@ -16,7 +19,7 @@ block content
                 .point 
                     .littlePoint 
                     .largePoint
-                h2 热门产品
+                .h2 热门产品
                 .point 
                     .largePoint 
                     .littlePoint
@@ -28,16 +31,16 @@ block content
             .point 
                 .littlePoint 
                 .largePoint
-            h2 关于我们
+            .h2 关于我们
             .point 
                 .largePoint  
                 .littlePoint
-        include ../components/home/about-us.pug
+        include ../components/home/about-us-new.pug
 
-        - const userDefinedList = renderData.autoConfig
-        if userDefinedList && userDefinedList.length>0
+        //-自定义模块1（即之前的企业优势模块）
+        if autoConfig && autoConfig[0]
             include ../components/home/user-defined-module.pug
-            +user-defined-module(userDefinedList)
+            +user-defined-module(autoConfig[0])
 
         - productList = renderData.productList.result
         if productList && productList.length>0
@@ -46,13 +49,14 @@ block content
                 .point 
                     .littlePoint
                     .largePoint
-                h2 产品分类
+                .h2 产品分类
                 .point 
                     .largePoint
                     .littlePoint
-            include ../components/home/product-catogeries.pug
-            include ../components/home/product-list.pug
-            +product-list('nothot', productList)
+            .product-catogeries-list
+              include ../components/home/product-catogeries-new.pug 
+              include ../components/home/product-list-new.pug
+              +product-list('nothot', productList)
 
         - articleList = renderData.articleList.result
         - const { articleRecommend } = renderData
@@ -62,7 +66,7 @@ block content
                 .point 
                     .littlePoint
                     .largePoint
-                h2 新闻中心
+                .h2 新闻中心
                 .point
                     .largePoint
                     .littlePoint
@@ -77,7 +81,7 @@ block content
             .point
                 .littlePoint
                 .largePoint
-            h2 联系我们
+            .h2 联系我们
             .point
                 .largePoint
                 .littlePoint

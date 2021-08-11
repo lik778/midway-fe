@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react'
 import { Button, Modal } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { reAuditImagesetImage, createImagesetImage, delImagesetImage } from '@/api/shop'
+import { reAuditImagesetImageApi, createImagesetImageApi, delImagesetImageApi } from '@/api/shop'
 import { successMessage, errorMessage } from "@/components/message"
 import { useAlbumSelector } from '../album-selector'
 import { useUpload, UploadItem } from './upload'
@@ -96,7 +96,7 @@ export function useUploadModal(props: Props) {
       try {
         const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
         const res: any = await Promise.race([
-          createImagesetImage(shopId, query),
+          createImagesetImageApi(shopId, query),
           new Promise((resove, reject) => {
             setTimeout(() => {
               reject(new Error('上传超时，点击删除'))
@@ -134,7 +134,7 @@ export function useUploadModal(props: Props) {
     if (findUploaded && findUploaded.imageID !== UPLOAD_RES_MAP_DEFAULT_ID) {
       // dont care is delete done or not ...
       const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
-      delImagesetImage(shopId, query)
+      delImagesetImageApi(shopId, query)
         .then(res => {
           if (res.success) {
             const findIDX = uploadedLists.current.findIndex(x => x === findUploaded)
@@ -148,7 +148,7 @@ export function useUploadModal(props: Props) {
   // 申诉图片
   const reAuditImage = async (image: UploadResMap | undefined) => {
     if (image) {
-      reAuditImagesetImage(shopId, { id: image.imageID })
+      reAuditImagesetImageApi(shopId, { id: image.imageID })
         .then((res: any) => {
           if (res.success) {
             successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')

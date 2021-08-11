@@ -1,23 +1,25 @@
 .item-p
 	position relative
 	float left
-	width 288px
-	height 280px
-	margin 0 20px 20px 0
+	width 287px
+	// height 280px
+	margin-right 10px
 	background-color #fff
 	border 1px solid transparent
+	&:nth-child(-n+4)
+		margin-bottom 10px
 	&:nth-child(4n)
 		margin-right 0
-	&:hover
-		border 1px solid #FF2D38
-		p
-			display none
-		.show-desc
-			display block
+	// &:hover
+	// 	border 1px solid #FF2D38
+	// 	p
+	// 		display none
+	// 	.show-desc
+	// 		display block
 	img
 		height 193px
 		width 100%
-
+		border-radius 4px
 	.hot-icon
 		height 36px
 		width auto
@@ -28,8 +30,8 @@
 		font-size 16px
 		color #333
 		text-align justify
-		margin 18px 19px
-		line-height 25px
+		margin 19.6px 16px
+		// line-height 25px
 
 	.show-desc
 		display none
@@ -40,6 +42,7 @@
 		background-color #FF2D38
 		color #fff
 		margin 28px 70px
+
 
 
 

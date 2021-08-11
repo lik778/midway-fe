@@ -1,13 +1,21 @@
 mixin product-list(type,productList)
 	.product-list.clearfix
 		if productList && productList.length >0
-			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,12)
-				a.item-p(href=item.urlSuffix target="_blank")
-					img(src=item.headImg || defaultImg)
-					if type == 'hot'
-						img.hot-icon(src="//file.baixing.net/202106/7e6d0360e8932f2e31bda4b5b1c8e5b3.png")
-					p.only-twoline #{ item.name }
-					.show-desc 查看详情
+			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,6)
+				if type == 'hot'
+					a.item-p(href=item.urlSuffix target="_blank")
+						img(src=item.headImg || defaultImg)
+						//- if type == 'hot'
+						//- 	img.hot-icon(src="//file.baixing.net/202106/7e6d0360e8932f2e31bda4b5b1c8e5b3.png")
+						p.only-oneline #{ item.name }
+						//- .show-desc 查看详情
+				else 
+					a.item-p.margin-rg(href=item.urlSuffix target="_blank")
+						img(src=item.headImg || defaultImg)
+						//- if type == 'hot'
+						//- 	img.hot-icon(src="//file.baixing.net/202106/7e6d0360e8932f2e31bda4b5b1c8e5b3.png")
+						p.only-oneline #{ item.name }
+						//- .show-desc 查看详情					
 
 
 

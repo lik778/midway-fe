@@ -1,10 +1,12 @@
 .contact-us
   display flex
-
+  width 1220px
+  margin-left -17px
   &__address
     width 435px
+    height 526px
     background-color #fff
-    padding 90px 50px 50px
+    padding 68px 59px 0px
     margin-right 16px
     color #666
     box-sizing border-box
@@ -25,7 +27,7 @@
     width 100%
   #baidu-map
     width 100%
-    height 230px
+    height 227px
     cursor pointer
     color #3A50CB
     display flex
@@ -60,9 +62,11 @@
       color rgba(#5062C8, 0.7)
 
   &__message
-    flex 1
+    box-sizing border-box
+    height 526px
+    width 769px
     background-color #fff
-    padding 50px
+    padding 50px 0 0 50px
   &__form
     position relative
     .form-group
@@ -74,7 +78,7 @@
 
       .form-item
         flex 1
-        padding-right: 30px
+        // padding-right 15px
         &__label
           margin-bottom 8px
           color #333333
@@ -87,7 +91,7 @@
               content '*'
               position absolute
               color red
-              right -10px
+              right -13px
               top 0
 
         input,
@@ -97,18 +101,23 @@
           font-size 16px
           color #999999
           width 100%
-          padding 15px
+          padding 15px 0 15px 15px
         textarea
           resize vertical
-          min-height 200px
+          width 664px
+          height 120px
+        input 
+          width 320px
+          height 50px
 
         button
           background #FF2D38
           font-size 16px
           color #FFFFFF
           border none
-          padding 10px 50px
+          padding 9px 59px
           cursor pointer
+          line-height 22px
     .result-msg
       display none
       width 160px

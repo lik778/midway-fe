@@ -8,7 +8,7 @@ import Cards from './components/cards'
 import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
 import { useUploadModal } from './components/upload-modal'
-import { getImagesetImage, getImagesetAlbum, getImagesetFailedImage } from '@/api/shop'
+import { getImagesetImageApi, getImagesetAlbumApi, getImagesetFailedImageApi } from '@/api/shop'
 
 import usePrevious from './hooks/previous';
 import { useSelection } from './hooks/selection'
@@ -315,7 +315,7 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
 
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {
-    const res = await getImagesetAlbum(shopId, querys)
+    const res = await getImagesetAlbumApi(shopId, querys)
     const { result = [], totalRecord = 0 } = res.data.mediaCateBos
     return [result, totalRecord] as const
   } catch (err) {
@@ -325,7 +325,7 @@ async function fetchAlbumLists(shopId: number, querys: any) {
 
 async function fetchImageLists(shopId: number, querys: any) {
   try {
-    const res = await getImagesetImage(shopId, querys)
+    const res = await getImagesetImageApi(shopId, querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {
@@ -335,7 +335,7 @@ async function fetchImageLists(shopId: number, querys: any) {
 
 async function fetchErrorImageLists(shopId: number, querys: any) {
   try {
-    const res = await getImagesetFailedImage(shopId, querys)
+    const res = await getImagesetFailedImageApi(shopId, querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {

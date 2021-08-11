@@ -1,6 +1,6 @@
 .user-defined-list
   width 1220px
-  margin 0 auto 80px
+  margin 0 auto 60px
   *
     box-sizing: border-box
   .user-defined-item
@@ -16,23 +16,24 @@
       height: 222px
       padding: 50px 107px 0 75px
       position relative
-      background-color: #F9F9F9
+      background-color: #F9F9F9 
       .triangle 
         position: absolute;
         top: 50%;
         transform: translateY( -50%);
         border: 10px solid transparent;
+        z-index 999
         &.left
           right: -15px
-          border-left: 15px solid #f9f9f9;
+          border-left: 15px solid #ffffff;
           border-right: 0;
         &.right
           left: -15px
           border-left: 0;
-          border-right: 15px solid #f9f9f9;
+          border-right: 15px solid #ffffff;
       .title
         margin-bottom 16px
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bold;
         color: #333333;
       .line
@@ -44,3 +45,5 @@
         font-size: 14px;
         color: #666666;
         word-break: break-word;
+        letter-spacing 1px
+        line-height 26px

@@ -87,6 +87,7 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
+    console.log(data.basic.company)
     return data
   }
 

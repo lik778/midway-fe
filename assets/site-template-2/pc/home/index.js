@@ -4,9 +4,9 @@ import $ from 'jquery';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { initSem } from '../../../common/pc/contact-form-sem'
-
+import { aboutUs } from '../components/about-us-new'
 leaveLeads()
-
+aboutUs()
 $(document).on('ready', function () {
 	// 轮播图
 	new Swiper('#banner-container .swiper-container', {
@@ -29,9 +29,9 @@ $(document).on('ready', function () {
 					const slideProgress = this.slides[i].progress;
 					let modify = 1;
 					if (Math.abs(slideProgress) > 1) {
-						modify = (Math.abs(slideProgress) - 1) * 0.4 + 1;
+						modify = (Math.abs(slideProgress) - 1) * 0.39 + 1;
 					}
-					const translate = slideProgress * modify * 130 + 'px';
+					const translate = slideProgress * modify * 115 + 'px';
 					const scale = 1 - Math.abs(slideProgress) / 4;
 					const zIndex = 999 - Math.abs(Math.round(10 * slideProgress));
 					slide.transform('translateX(' + translate + ') scale(' + scale + ')');
@@ -63,5 +63,12 @@ $(document).on('ready', function () {
 			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
 		})
 	}
+			// 新闻模块
+	// var nowWord = $('.item-card .item-content').text().length
+	// var newWord
+	// if (nowWord > 44) {
+	// 	newWord = $('.item-card .item-content').text().slice(1,44) + '.......'
+	// }
+	// $('.item-card .item-content').text(newWord)
 })
 

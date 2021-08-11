@@ -1,0 +1,13 @@
+//-单个产品结构
+mixin item(item)
+  a.product(href=item.urlSuffix)
+    .product-img
+      img(src= item.headImg || defaultImg)
+    .product-desc.only-oneline.
+      #{ item.name }
+
+#product-list-box
+  each p in proList.slice(0,12)
+    +item(p)
+
+

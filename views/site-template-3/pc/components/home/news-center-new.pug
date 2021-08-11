@@ -1,0 +1,18 @@
+mixin news-box(title,newsList) 
+	if newsList && newsList.length > 0
+		.news-box
+			each item in newsList.slice(0, 4)
+				//-这里需要后端给文章的图片和内容
+				a(href=item.urlSuffix)
+					.item-card
+						.item-title.only-oneline #{ item.name }
+						.left-img
+							- dateObj = new Date(item.modifiedTime * 1000)
+							- date = dateObj.getDate()
+							- year = dateObj.getFullYear()
+							- month = dateObj.getMonth() + 1
+							.news-date__year #{year}/#{month > 9 ? month : `0${month}`}/#{date > 9 ? date : `0${date}`}
+						.item-content.only-oneline.
+							#{ item.limitText }
+	a.show-more-btn(href= newsLink || "#")
+		apan.set-color 查看更多文章

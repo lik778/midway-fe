@@ -50,6 +50,12 @@ const BasisTab = (props: Props) => {
       label: "基础资料设置",
       key: ShopBasisType.INFO,
       display: false,
+    },
+    {
+      link: `/shop/${params.id}/${ShopBasisType.MODULE}`,
+      label: "模块管理",
+      key: ShopBasisType.MODULE,
+      display: true,
     }
   ]
 

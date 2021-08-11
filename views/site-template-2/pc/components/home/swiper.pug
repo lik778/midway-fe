@@ -9,19 +9,22 @@
           if bannerList.length == 1
             a.swiper-slide(href=bannerList[0].urlSuffix)
               img(src=bannerList[0].headImg)
-              p #{ bannerList[0].name }
+              p.only-oneline #{ bannerList[0].name }
             .swiper-slide
               img(src=defaultImg)
+              p.only-oneline &nbsp;&nbsp;
           else
             each item in bannerList.slice(0,5)
               a.swiper-slide(href=item.urlSuffix)
                 img(src=item.headImg || defaultImg)
-                p #{ item.name }
+                p.only-oneline #{ item.name }
         else
           .swiper-slide
             img(src=defaultImg)
+            p.only-oneline &nbsp;&nbsp;
           .swiper-slide
             img(src=defaultImg)
+            p.only-oneline &nbsp;&nbsp;
     .swiper-pagination
     .swiper-button-next
     .swiper-button-prev

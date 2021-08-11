@@ -5,7 +5,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import { UploadFile } from 'antd/lib/upload/interface';
 import CropModal from '@/components/img-upload/components/crop-modal'
 import { successMessage, errorMessage } from "@/components/message"
-import { reAuditImagesetImage } from '@/api/shop'
+import { reAuditImagesetImageApi } from '@/api/shop'
 
 import styles from './index.less'
 
@@ -91,7 +91,7 @@ const ImgItem: FC<Props> = (props) => {
   // 申诉图片
   const reAuditImage = useCallback(async (e: any) => {
     e.stopPropagation()
-    reAuditImagesetImage(shopId, { id: detail.id })
+    reAuditImagesetImageApi(shopId, { id: detail.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')
