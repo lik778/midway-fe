@@ -3,12 +3,15 @@
   .swiper-container
     .swiper-wrapper
       if hasBannerList
-        each item in bannerList
+        each item, idx in bannerList
           - const isVideo = item.hrefUrl
           if isVideo
             .swiper-slide
               .video-wrapper
-                video(src=item.hrefUrl, loop, preload, controls)
+                if idx === 0
+                  video(src=item.hrefUrl, loop, preload, controls, muted)
+                else
+                  video(src=item.hrefUrl, loop, preload, controls)
               .video-cover
                 img(src=item.displayImgUrl)
           else
