@@ -1,9 +1,20 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { message } from 'antd';
 
-export function createRequest (apiBase: string) {
+export interface ServiceResponse<T> {
+  code: number;
+  data: T;
+  success: boolean;
+  message: string;
+  requestId: string;
+  timestamp: string;
+  exception: string;
+  exceptionClass: string;
+}
+
+
+export function createRequest() {
   const request = axios.create({
-    baseURL: apiBase,
     timeout: 10000,
     responseType: "json",
     withCredentials: true,
@@ -13,14 +24,10 @@ export function createRequest (apiBase: string) {
   })
 
   request.interceptors.response.use((res: AxiosResponse) => {
-    if (res?.data.success) {
-      return Promise.resolve(res?.data.data)
-    } else {
-      message.error(res?.data.message);
-    }
+    return Promise.resolve(res?.data)
   }, (err: AxiosError) => {
-    const errorInfo = err.response && err.response.data && err.response.data.message || '出错了'
-    message.error(errorInfo);
+    // console.error('[REQ ERROR]', err)
+    return Promise.resolve(err.response && err.response.data)
   })
 
   return request
@@ -28,8 +35,12 @@ export function createRequest (apiBase: string) {
 
 const BASE_URL = '/management/api'
 
-const request = createRequest(BASE_URL)
+const request = createRequest()
 
-export const postApi = (path: string, params: any): Promise<any> => {
-  return request.post('', { method: 'post', path: path, params: JSON.stringify(params) });
+export const postApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
+  return request.post(config.baseURL || BASE_URL, { method: 'post', path: path, params: JSON.stringify(params) });
+}
+
+export const getApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
+  return request.post(config.baseURL || BASE_URL, { method: 'get', path, params });
 }
