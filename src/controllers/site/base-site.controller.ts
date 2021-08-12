@@ -142,8 +142,6 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
 
-    console.log('data:', data)
-    
     return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, });
   }
 
@@ -413,7 +411,6 @@ export class BaseSiteController {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
-    console.log(query)
     const currentPage = query.page || 1
     const searchKey = query.key || ''
     const searchType = query.type || 'product'
