@@ -10,9 +10,11 @@
           each item in tag
             p.tag= item
       .content-right-body
+        - aboutText = company.about?company.about.replace(/\n/g, '<br/>').slice(0,220):'暂时还未上传公司简介哦...'
         .body-content
-          | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-        a.view-detail(href=aboutLink) 查看详情
+          | !{ aboutText.length === 220?aboutText+'...':aboutText }
+          if aboutText.length === 220
+            a.view-detail(href=aboutLink) 查看详情
       .content-right-bottom
         .bottom-left
           img(src="//file.baixing.net/202108/e9cd4572f5363e55005f0e8616be31c3.png")
