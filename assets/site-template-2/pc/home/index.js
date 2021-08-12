@@ -10,8 +10,8 @@ leaveLeads()
 aboutUs()
 
 $(document).on('ready', function () {
-	// 轮播图
-	new Swiper('#banner-container .swiper-container', {
+	// 轮播产品
+	new Swiper('#banner-container  .swiper-container', {
 		watchSlidesProgress: true,
 		slidesPerView: 'auto',
 		centeredSlides: true,
@@ -55,8 +55,26 @@ $(document).on('ready', function () {
 		}
 	});
 
-	/* 关于我们视频初始化 */
+	// 轮播图
+	new Swiper('#banner-list .swiper-container', {
+		loop: true,
+		speed: 1000,
+		autoplay: {
+			delay: 3000,
+			waitForTransition: true
+		},
+		pagination: {
+			el: '#banner-list .swiper-pagination',
+			clickable: true,
+		},
 
+		navigation: {
+			nextEl: '#banner-list .swiper-button-next',
+			prevEl: '#banner-list .swiper-button-prev',
+		},
+	});
+
+	/* 关于我们视频初始化 */
 	const $aboutUsVideo = document.querySelector('.about-us-content video')
 	const hasAboutVideo = $aboutUsVideo
 	const $aboutUsVideoCovers = hasAboutVideo
