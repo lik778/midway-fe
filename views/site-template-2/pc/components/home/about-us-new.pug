@@ -26,9 +26,9 @@
       - var conpany = Src || '//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png'
       - var url = /\.(png|jpg|gif|jpeg|webp)$/
       if url.test(conpany)
-        img.audio(src="//file.baixing.net/202108/5e98bee7f5ba178fa55a8e5554585e69.png")
+        img.audio(src=renderData.basic.aboutModule.media)
       else
-        audio(src=conpany) 
+        video(src=conpany) 
           <source src="#" type="#">
         span.ico-video
           img(src="//file.baixing.net/202108/f911950bc7679d0a83235a02bbd9a36e.png")

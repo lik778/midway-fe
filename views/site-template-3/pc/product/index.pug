@@ -21,9 +21,9 @@ block content
             - console.log(currentPathname) 
         //-侧边栏
         .sidebar
-            - const { articleList } = renderData 
+            - const { articleList,name } = renderData.articleRecommend
             include ../components/sidebar/cateList.pug
-            +side-cateList('新闻资讯123456', articleList.result)
+            +side-cateList(name, articleList)
             include ../components/sidebar/products.pug
 
 block scripts

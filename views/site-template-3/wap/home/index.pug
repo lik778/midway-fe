@@ -12,7 +12,7 @@ block header
             
 block append header
   include ../components/swiper
-  - const { banner }= renderData
+  - const banner = renderData.banner.bannerList
   +swiper(banner, 'home')
 
 block content
