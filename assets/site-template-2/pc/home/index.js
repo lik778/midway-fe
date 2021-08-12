@@ -4,8 +4,10 @@ import $ from 'jquery';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { initSem } from '../../../common/pc/contact-form-sem'
+import { aboutUs } from '../components/about-us-new'
 
 leaveLeads()
+aboutUs()
 
 $(document).on('ready', function () {
 	// 轮播图
@@ -17,6 +19,8 @@ $(document).on('ready', function () {
 		loopedSlides: 5,
 		autoplay: {
 			delay: 5000,
+      waitForTransition: true,
+      pauseOnMouseEnter: true
 		},
 		navigation: {
 			nextEl: '.swiper-button-next',
@@ -51,6 +55,21 @@ $(document).on('ready', function () {
 		}
 	});
 
+	/* 关于我们视频初始化 */
+
+	const $aboutUsVideo = document.querySelector('.about-us-content video')
+	const hasAboutVideo = $aboutUsVideo
+	const $aboutUsVideoCovers = hasAboutVideo
+		? $aboutUsVideo.parentElement.parentElement.querySelector('.video-cover')
+		: null
+	if (hasAboutVideo) {
+		// 点击封面播放视频
+		$aboutUsVideoCovers.addEventListener('click', evt => {
+			$aboutUsVideo.play()
+			$aboutUsVideoCovers.remove()
+			evt.stopPropagation()
+		})
+	}
 
 	// sem需要禁止部分内容二跳
 	// tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653

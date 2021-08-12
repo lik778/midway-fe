@@ -1,7 +1,7 @@
 # README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
-# 由于 Gitlab 版本的限制，用不了多缓存，所以缓存的实现有些别扭
 
-image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+# 由于 Gitlab 版本的限制，用不了多缓存，所以缓存的实现有些别扭
+# 如果想要跳过 nest-build 或 mvip-build 阶段，请分别修改 src/skip.txt 及 app/mvip-manager/src/skip.txt 文件
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
@@ -55,7 +55,7 @@ mvip-install:
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
     changes:
-      - app/mvip-manager/package.json
+      - app/mvip-manager/package-lock.json
   image: node:12.22-alpine
   cache:
     key: midway-fe:mvip-install
@@ -78,17 +78,17 @@ nest-build:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-  except:
-    changes:
-      - src/skip.txt
+  # except:
+  #   changes:
+  #     - src/skip.txt
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
-  cache: 
+  cache:
     key: midway-fe:nest-install
     paths:
       - node_modules/
-      - dist/
+      # - dist/
   script:
     - if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then ENV="dev"; else ENV="$CI_COMMIT_REF_SLUG"; fi
     - echo "[ENV] "$ENV
@@ -101,31 +101,30 @@ nest-build:
     paths:
       - dist/
 
-nest-build-skipped:
-  stage: build
-  only:
-    refs:
-      - feat-speed-up-ci@fenlei/midway-fe
-      - dev@fenlei/midway-fe
-      - test@fenlei/midway-fe
-      - test1@fenlei/midway-fe
-      - test2@fenlei/midway-fe
-    changes:
-      - src/skip.txt
-  tags:
-    - k8s-dev-build
-  image: node:12.22-alpine
-  cache: 
-    key: midway-fe:nest-install
-    policy: pull
-    paths:
-      - dist/
-  script:
-    - echo "nest build skipped"
-  artifacts:
-    expire_in: 24 hrs
-    paths:
-      - dist/
+# nest-build-skipped:
+#   stage: build
+#   only:
+#     refs:
+#       - feat-speed-up-ci@fenlei/midway-fe
+#       - dev@fenlei/midway-fe
+#       - test@fenlei/midway-fe
+#       - test1@fenlei/midway-fe
+#       - test2@fenlei/midway-fe
+#     changes:
+#       - src/skip.txt
+#   tags:
+#     - k8s-dev-build
+#   cache: 
+#     key: midway-fe:nest-install
+#     policy: pull
+#     paths:
+#       - dist/
+#   script:
+#     - echo "nest build skipped"
+#   artifacts:
+#     expire_in: 24 hrs
+#     paths:
+#       - dist/
 
 # 打包 MVIP 后台
 mvip-build:
@@ -137,17 +136,17 @@ mvip-build:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-  except:
-    changes:
-      - app/mvip-manager/src/skip.txt
+  # except:
+  #   changes:
+  #     - app/mvip-manager/src/skip.txt
   tags:
     - k8s-dev-build
   image: node:12.22-alpine
-  cache: 
+  cache:
     key: midway-fe:mvip-install
     paths:
       - app/mvip-manager/node_modules/
-      - app/mvip-manager/dist/
+      # - app/mvip-manager/dist/
   script:
     - export ENV=dev
     - npm run build:mvip
@@ -156,43 +155,51 @@ mvip-build:
     paths:
       - app/mvip-manager/dist/
 
-mvip-build-skipped:
-  stage: build
-  only:
-    refs:
-      - feat-speed-up-ci@fenlei/midway-fe
-      - dev@fenlei/midway-fe
-      - test@fenlei/midway-fe
-      - test1@fenlei/midway-fe
-      - test2@fenlei/midway-fe
-    changes:
-      - app/mvip-manager/src/skip.txt
-  tags:
-    - k8s-dev-build
-  image: node:12.22-alpine
-  cache: 
-    key: midway-fe:mvip-install
-    policy: pull
-    paths:
-      - app/mvip-manager/dist/
-  script:
-    - echo "mvip build skipped"
-  artifacts:
-    expire_in: 24 hrs
-    paths:
-      - app/mvip-manager/dist/
+# mvip-build-skipped:
+#   stage: build
+#   only:
+#     refs:
+#       - feat-speed-up-ci@fenlei/midway-fe
+#       - dev@fenlei/midway-fe
+#       - test@fenlei/midway-fe
+#       - test1@fenlei/midway-fe
+#       - test2@fenlei/midway-fe
+#     changes:
+#       - app/mvip-manager/src/skip.txt
+#   tags:
+#     - k8s-dev-build
+#   cache: 
+#     key: midway-fe:mvip-install
+#     policy: pull
+#     paths:
+#       - app/mvip-manager/dist/
+#   script:
+#     - echo "mvip build skipped"
+#   artifacts:
+#     expire_in: 24 hrs
+#     paths:
+#       - app/mvip-manager/dist/
 
 # Dockerize
 release:
   stage: release
   only:
-    - feat-speed-up-ci@fenlei/midway-fe
     - dev@fenlei/midway-fe
     - test@fenlei/midway-fe
     - test1@fenlei/midway-fe
     - test2@fenlei/midway-fe
   tags:
     - k8s-dev-build
+  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  # cache:
+  #   - key: midway-fe:nest-install
+  #     policy: pull
+  #     paths:
+  #       - dist/
+  #   - key: midway-fe:mvip-install
+  #     policy: pull
+  #     paths:
+  #       - app/mvip-manager/dist/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then ENV="dev"; else ENV="$CI_COMMIT_REF_SLUG"; fi
@@ -234,8 +241,9 @@ prod-release:
   stage: prod-release
   only:
     - master@fenlei/midway-fe
-#  tags:
-#    - k8s-dev-build
+  #  tags:
+  #    - k8s-dev-build
+  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
   cache: {}
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn

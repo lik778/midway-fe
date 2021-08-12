@@ -13,9 +13,7 @@ import {
   BaxFlowDetailParams,
   KeywordOverviewData,
   KeywordDetailListData,
-  KeywordDetailListParams,
-  SummaryOverviewData,
-  FlowChartData,
+  KeywordDetailListParams, SummaryOverviewData, FlowChartData, MailBoxListItem, MailBoxListApiParams,
   getLeaveMessageListParams,
   LeaveMessageListData
 } from '@/interfaces/report';
@@ -137,6 +135,11 @@ export const getKeywordDetailList:
   (params: KeywordDetailListParams) => ReportListResponse<KeywordDetailListData[]> =
   (params) => post('/keyword/detail', params)
 
+// 获取站内信
+export const getMailBoxListApi:
+  (params: MailBoxListApiParams) => ReportListResponse<MailBoxListItem[]> =
+  (params) => post('', params)
+
 // 获取留言列表
 export const getLeaveMessageList:
   (params: getLeaveMessageListParams) => ManagementListResponse<LeaveMessageListData[]> =
@@ -162,7 +165,7 @@ export const getPublishData = (params: any): Promise<any> => {
     resolve({
       code: 200,
       data: {
-        result: Array(10).fill('').map((x,i) => ({
+        result: Array(10).fill('').map((x, i) => ({
           key: i,
           date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
           counts: [
@@ -182,7 +185,7 @@ export const getPublishDetails = (params: any): Promise<any> => {
     resolve({
       code: 200,
       data: {
-        result: Array(10).fill('').map((x,i) => ({
+        result: Array(10).fill('').map((x, i) => ({
           key: i,
           date: String(20210101 + i).replace(/^(\d{4})(\d{2})/, '$1-$2-'),
           tiezi: ~~(Math.random() * 100),
@@ -207,3 +210,5 @@ export const getRemainCapital = (params: any): Promise<any> => {
     })
   })
 }
+
+

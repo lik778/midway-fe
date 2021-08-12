@@ -4,6 +4,27 @@
   background: #fff;
   min-height: calc(100vh - 160px);
   margin: 16px;
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .add-btn {
+      height: 40px;
+      padding: 0 28px;
+      line-height: 40px;
+      font-size: 14px;
+      color: #ffffff;
+    }
+    .add-tip {
+      margin-left: 16px;
+      font-size: 14px;
+      color: #999999;
+      line-height: 20px;
+      .tip-shopping {
+        color: #ff8d19;
+      }
+    }
+  }
   .shop-list {
     display: flex;
     flex-wrap: wrap;
@@ -28,8 +49,8 @@
         font-weight: bold;
         color: #096dd9;
       }
-      &:nth-child(n+2):before {
-        content: '';
+      &:nth-child(n + 2):before {
+        content: "";
         display: inline-block;
         width: 2px;
         height: 14px;

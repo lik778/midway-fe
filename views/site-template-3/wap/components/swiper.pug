@@ -3,13 +3,20 @@ mixin swiper(data, type)
     if data && data.length > 0
       .swiper-wrapper
         each item in data
-          .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
+          - const isVideo = item.hrefUrl
+          if isVideo
+            .swiper-slide
+              .video-wrapper
+                video(src=item.hrefUrl, loop, preload, controls)
+              .video-cover
+                img(src=item.displayImgUrl)
+          else
+            .swiper-slide(style=`background-image:url("${item.displayImgUrl}")`)
       if type === 'home'
         .num-tip #{data.length}张图片
       else
         if data.length > 1
           .swiper-pagination
-
     else
       if type === 'home'
         .swiper-wrapper
