@@ -34,6 +34,15 @@ function pauseAllBannerVideo() {
 }
 const hasBannerVideo = $bannerVideos.length > 0
 if (hasBannerVideo) {
+
+  // 过2.5秒自动播放视频
+  const $firstBannerVideoCover = $bannerVideoCovers[0]
+  setTimeout(() => {
+    $firstBannerVideoCover.remove()
+    swiper.autoplay.stop()
+    play(0)
+  }, 2500)
+
   // 点击封面或视频播放视频
   const play = idx => {
     swiper.autoplay.stop()
