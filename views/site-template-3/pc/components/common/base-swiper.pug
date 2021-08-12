@@ -1,5 +1,5 @@
 mixin baseSwiper(height)
-  - const bannerList = renderData.banner
+  - const {bannerList} = renderData.banner
   - const hasBannerList = bannerList && bannerList.length > 0
   #banner-list(style="height:"+height)
     .swiper-container.swiper-specil-size
@@ -22,6 +22,6 @@ mixin baseSwiper(height)
           .swiper-slide
             img(src="//file.baixing.net/202103/1ae6440e16ffe7ec601da2c2468f7fba.png")
 
-      //- .swiper-pagination
-      //- .swiper-button-next
-      //- .swiper-button-prev
+      .swiper-pagination
+      .swiper-button-next
+      .swiper-button-prev

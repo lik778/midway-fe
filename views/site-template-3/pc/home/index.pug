@@ -9,13 +9,14 @@ block content
 		include ../components/common/base-swiper.pug
 		+baseSwiper('540px')
 		.container
-				+home-title('服务资质')
 				//-自定义模块数据
 				- const { autoConfig } = renderData
 				//-自定义模块2（即之前的自身优势模块）
 				include ../components/home/self-advantage.pug
+				+home-title(autoConfig[1]&&autoConfig[1].mainModuleTitle||'服务资质')
+
 				- defaultSelfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',icon:'//file.baixing.net/202105/c8f81a54a43830099bdc04f4b424da4c.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',icon:'//file.baixing.net/202105/625a56c2569eb767d8770999cbd8dd50.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',icon:'//file.baixing.net/202105/f941fd50013f2f8ef7b51439e45b9079.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',icon:'//file.baixing.net/202105/5dde08cac771ec82db133664d24ddc1d.png'}]
-				- selfAdvantage = autoConfig[0].subModuleBos || defaultSelfAdvantage
+				- selfAdvantage = autoConfig[1]?autoConfig[1].subModuleBos : defaultSelfAdvantage
 				+self-advantage(selfAdvantage)
 
 				//-服务项目
@@ -33,7 +34,7 @@ block content
 					//- include ../components/home/viewPhone.pug
 
 				//-自定义模块1（即之前的企业优势模块）
-				if autoConfig && autoConfig[0]
+				if autoConfig && autoConfig[0] &&autoConfig[0].show
 					include ../components/home/user-defined-module.pug
 					+user-defined-module(autoConfig[0])
 
