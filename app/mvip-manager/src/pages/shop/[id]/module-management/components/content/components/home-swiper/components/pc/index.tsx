@@ -1,6 +1,7 @@
 import React, { FC, useState, Ref, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useParams } from 'umi';
 import { Button, Radio, RadioChangeEvent, Form } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import { ShopInfo } from '@/interfaces/shop';
 import { Detail } from './data'
 import styles from './index.less'
@@ -11,7 +12,6 @@ import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 import ProductComponent from './components/product'
 import { mockData } from '@/utils';
 import { ProductType } from '@/enums';
-
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId
@@ -69,10 +69,24 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
   return <div className={styles['pc-container']}>
     <Form.Item className={styles['radio-group-item']} label={'电脑端'}>
       <Radio.Group name="radiogroup" value={swiperType} onChange={handleChangeSwiperType}>
-        <Radio value={'swiper'}>轮播图</Radio>
+        <Radio value={'swiper'}>
+          <span className={styles['radio-content']}>
+            <span className={styles['text']}>轮播图</span>
+            <QuestionCircleOutlined className={styles['icon']} />
+            <img className={styles['img']} src="//file.baixing.net/202108/55b3c7fdd0b145dff356be54220b5c2a.png" alt="" />
+          </span>
+        </Radio>
+
         {
-          curShopInfo.type === ProductType.B2B && <Radio value={'product'}>轮播产品</Radio>
+          curShopInfo.type === ProductType.B2B && <Radio value={'product'}>
+            <span className={styles['radio-content']}>
+              <span className={styles['text']}>轮播产品</span>
+              <QuestionCircleOutlined className={styles['icon']} />
+              <img className={styles['img']} src="//file.baixing.net/202108/1891225dcc8535535ebd8785f1808d9f.png" alt="" />
+            </span>
+          </Radio>
         }
+
       </Radio.Group>
     </Form.Item>
     {

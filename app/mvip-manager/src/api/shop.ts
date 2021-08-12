@@ -191,7 +191,7 @@ export const setCustomerSetApi = (shopId: number, requestData: {
   subModuleVos: CustomerSetChildListItem[],
   subModulesToDelete: number[]
 }) => {
-  return postApiData<never>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
+  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
 }
 
 /** 获取店铺基础信息设置 */

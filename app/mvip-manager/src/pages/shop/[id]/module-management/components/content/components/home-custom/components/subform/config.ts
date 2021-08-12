@@ -3,8 +3,8 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 
 export const CustomSetFormConfigFn:
-  (Args: { key: string | number, imageChange: (...arg: any) => any, moduleID: number }) => FormConfig =
-  ({ key, imageChange, moduleID }) => ({
+  (Args: { key: string | number, moduleID: number }) => FormConfig =
+  ({ key, moduleID }) => ({
     name: `CustomModuleSubForm${key}`,
     width: 690,
     useLabelCol: { span: 4 },
@@ -38,30 +38,21 @@ export const CustomSetFormConfigFn:
         type: FormType.ImgUpload,
         images: [
           // 不同的自定义模块裁剪参数不一样
-          moduleID === 1 ? {
+          {
             uploadType: 2,
             text: '',
             name: 'urlImg',
             maxSize: 3,
             rule: [{ required: true, message: `请上传图片` }],
-            cropProps: { aspectRatio: 595 / 222 },
-            aspectRatio: 595 / 222
-          } : {
-            uploadType: 2,
-            text: '',
-            name: 'urlImg',
-            maxSize: 3,
-            rule: [{ required: true, message: `请上传图片` }],
-            cropProps: { aspectRatio: 400 / 300 },
-            aspectRatio: 400 / 300
+            cropProps: { aspectRatio: moduleID === 1 ? 595 / 222 : 400 / 300 },
+            aspectRatio: moduleID === 1 ? 595 / 222 : 400 / 300
           }
         ],
         required: true,
         tip: moduleID === 1
-          ? '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸595*222，上传图片后，请选择合适的字体颜色。'
-          : '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸400*300，上传图片后，请选择合适的字体颜色。',
+          ? '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸595*222。'
+          : '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸400*300。',
         imagesTipPosition: 'right',
-        onChange: imageChange
       },
     ]
   })
