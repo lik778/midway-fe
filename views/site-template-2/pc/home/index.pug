@@ -3,7 +3,6 @@ extends ../layout
 block styles
     :combine(fileName="site-template-2-home-pc.css")
 
-
 //-使用了统一的header和nav
 block content
     include ../components/home/swiper.pug
@@ -41,8 +40,10 @@ block content
             include ../components/home/user-defined-module.pug
             +user-defined-module(autoConfig[0]) 
 
-        - productList = renderData.productList.result
-        if productList && productList.length>0
+        //- 变量名 "productLists" 会报一个编译时错误，很奇怪
+        //- 暂时先换个名字
+        - productLists = renderData.productList.result
+        if productLists && productLists.length>0
             .block-title
                 //- img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",style="width:283px",alt="产品分类")
                 .point 

@@ -68,6 +68,11 @@ export function useUpload(props: Props) {
 
   // 同步本地 fileList 和 Ant Upload 中的 fileList
   const handleChange = async (e: any) => {
+    // 给上传增加一个测试开关
+    // @ts-ignore
+    if (window._quickUpload) {
+      return
+    }
     const { uid, status } = e.file
     // 读取到图片的预览地址
     if (status === 'done') {
@@ -92,6 +97,13 @@ export function useUpload(props: Props) {
 
   // 检测图片是否符合格式及大小限制
   const checkImage = (file: RcFile) => {
+    // 给上传增加一个测试开关
+    // @ts-ignore
+    if (window._quickUpload) {
+      // @ts-ignore
+      window._quickUploadFile = file
+      return true
+    }
     const maxSize = 3
     if (!file) {
       return false
