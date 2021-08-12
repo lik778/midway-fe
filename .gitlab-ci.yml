@@ -86,6 +86,7 @@ nest-build:
   image: node:12.22-alpine
   cache:
     key: midway-fe:nest-install
+    policy: pull
     paths:
       - node_modules/
       # - dist/
@@ -144,6 +145,7 @@ mvip-build:
   image: node:12.22-alpine
   cache:
     key: midway-fe:mvip-install
+    policy: pull
     paths:
       - app/mvip-manager/node_modules/
       # - app/mvip-manager/dist/
