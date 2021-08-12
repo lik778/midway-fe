@@ -1,125 +1,257 @@
-image: docker
+# README: https://www.processon.com/diagraming/610222b5637689719d2e94a7
 
-# before_script:
-#   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+# 由于 Gitlab 版本的限制，用不了多缓存，所以缓存的实现有些别扭
+# 如果想要跳过 nest-build 或 mvip-build 阶段，请分别修改 src/skip.txt 及 app/mvip-manager/src/skip.txt 文件
 
 variables:
   REGISTRY_BASE: registry.gitlab.baixing.cn/fenlei/midway-fe
   MIDWAY_FE: registry.gitlab.baixing.cn/fenlei/midway-fe:${CI_PIPELINE_ID}
 
 stages:
-  - release-dev
-  - dev-deploy
-  - release-test
-  - test-deploy
-  - release-test1
-  - test1-deploy
+  - install
+  - build
   - release
+  - deploy
+  - prod-release
   - prod-deploy
-  - release-test2
-  - test2-deploy
 
-cache:
-  key: fenlei-midway-fe
-  paths:
-    - .npm/
-    - node_modules/
+# ############################################ dev-configure-start
 
-release-dev:
-  stage: release-dev
-  only:
-    - dev@fenlei/midway-fe
+# 安装 Nest 以及审核后台相关依赖
+nest-install:
+  stage: install
   tags:
     - k8s-dev-build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-    - docker build --pull -t $MIDWAY_FE -f ./dev.Dockerfile .
-    - docker push $MIDWAY_FE
-
-dev-deploy:
-  stage: dev-deploy
-  when: manual
   only:
-    - dev@fenlei/midway-fe
-  tags:
-    - aliyun-k8s-dev
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
+      - dev@fenlei/midway-fe
+      - test@fenlei/midway-fe
+      - test1@fenlei/midway-fe
+      - test2@fenlei/midway-fe
+    changes:
+      - package-lock.json
+  image: node:12.22-alpine
+  cache:
+    key: midway-fe:nest-install
+    policy: push
+    paths: 
+      - node_modules/
   script:
-    - kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE
+    - npm set registry https://registry.npm.taobao.org
+    - npm set progress=false
+    - npm ci --silence
 
-release-test:
-  stage: release-test
-  only:
-    - test@fenlei/midway-fe
+# 安装 MVIP 后台相关依赖
+mvip-install:
+  stage: install
   tags:
     - k8s-dev-build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-    - docker build --pull -t $MIDWAY_FE -f ./test.Dockerfile .
-    - docker push $MIDWAY_FE
-
-test-deploy:
-  stage: test-deploy
   only:
-    - test@fenlei/midway-fe
-  tags:
-    - aliyun-k8s-dev
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
+      - dev@fenlei/midway-fe
+      - test@fenlei/midway-fe
+      - test1@fenlei/midway-fe
+      - test2@fenlei/midway-fe
+    changes:
+      - app/mvip-manager/package-lock.json
+  image: node:12.22-alpine
+  cache:
+    key: midway-fe:mvip-install
+    policy: push
+    paths: 
+      - app/mvip-manager/node_modules/
   script:
-    - kubectl set image -n test-cat deployments --selector app=midway-fe *=$MIDWAY_FE
+    - cd app/mvip-manager/
+    - npm set registry https://registry.npm.taobao.org
+    - npm set progress=false
+    - npm ci --silence
 
-release-test1:
-  stage: release-test1
+# 打包 Nest 以及静态资源（店铺+审核后台）
+nest-build:
+  stage: build
   only:
-  - test1@fenlei/midway-fe
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
+      - dev@fenlei/midway-fe
+      - test@fenlei/midway-fe
+      - test1@fenlei/midway-fe
+      - test2@fenlei/midway-fe
+  # except:
+  #   changes:
+  #     - src/skip.txt
   tags:
-  - k8s-dev-build
+    - k8s-dev-build
+  image: node:12.22-alpine
+  cache:
+    key: midway-fe:nest-install
+    paths:
+      - node_modules/
+      # - dist/
   script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-  - docker build --pull -t $MIDWAY_FE -f ./test1.Dockerfile .
-  - docker push $MIDWAY_FE
+    - if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then ENV="dev"; else ENV="$CI_COMMIT_REF_SLUG"; fi
+    - echo "[ENV] "$ENV
+    - export NODE_ENV=$ENV
+    - npm run build:nest
+    - export NODE_ENV=production
+    - npm run build:apps
+  artifacts:
+    expire_in: 24 hrs
+    paths:
+      - dist/
 
-test1-deploy:
-  stage: test1-deploy
+# nest-build-skipped:
+#   stage: build
+#   only:
+#     refs:
+#       - feat-speed-up-ci@fenlei/midway-fe
+#       - dev@fenlei/midway-fe
+#       - test@fenlei/midway-fe
+#       - test1@fenlei/midway-fe
+#       - test2@fenlei/midway-fe
+#     changes:
+#       - src/skip.txt
+#   tags:
+#     - k8s-dev-build
+#   cache: 
+#     key: midway-fe:nest-install
+#     policy: pull
+#     paths:
+#       - dist/
+#   script:
+#     - echo "nest build skipped"
+#   artifacts:
+#     expire_in: 24 hrs
+#     paths:
+#       - dist/
+
+# 打包 MVIP 后台
+mvip-build:
+  stage: build
   only:
-  - test1@fenlei/midway-fe
+    refs:
+      - feat-speed-up-ci@fenlei/midway-fe
+      - dev@fenlei/midway-fe
+      - test@fenlei/midway-fe
+      - test1@fenlei/midway-fe
+      - test2@fenlei/midway-fe
+  # except:
+  #   changes:
+  #     - app/mvip-manager/src/skip.txt
   tags:
-  - aliyun-k8s-dev
+    - k8s-dev-build
+  image: node:12.22-alpine
+  cache:
+    key: midway-fe:mvip-install
+    paths:
+      - app/mvip-manager/node_modules/
+      # - app/mvip-manager/dist/
   script:
-  - kubectl set image -n bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE
+    - export ENV=dev
+    - npm run build:mvip
+  artifacts:
+    expire_in: 24 hrs
+    paths:
+      - app/mvip-manager/dist/
 
-release-test2:
-  stage: release-test2
-  only:
-  - test2@fenlei/midway-fe
-  tags:
-  - k8s-dev-build
-  script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
-  - docker build --pull -t $MIDWAY_FE -f ./test2.Dockerfile .
-  - docker push $MIDWAY_FE
+# mvip-build-skipped:
+#   stage: build
+#   only:
+#     refs:
+#       - feat-speed-up-ci@fenlei/midway-fe
+#       - dev@fenlei/midway-fe
+#       - test@fenlei/midway-fe
+#       - test1@fenlei/midway-fe
+#       - test2@fenlei/midway-fe
+#     changes:
+#       - app/mvip-manager/src/skip.txt
+#   tags:
+#     - k8s-dev-build
+#   cache: 
+#     key: midway-fe:mvip-install
+#     policy: pull
+#     paths:
+#       - app/mvip-manager/dist/
+#   script:
+#     - echo "mvip build skipped"
+#   artifacts:
+#     expire_in: 24 hrs
+#     paths:
+#       - app/mvip-manager/dist/
 
-test2-deploy:
-  stage: test2-deploy
-  only:
-  - test2@fenlei/midway-fe
-  tags:
-  - aliyun-k8s-dev
-  script:
-  - kubectl set image -n test-bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE
-
-
+# Dockerize
 release:
   stage: release
   only:
+    - dev@fenlei/midway-fe
+    - test@fenlei/midway-fe
+    - test1@fenlei/midway-fe
+    - test2@fenlei/midway-fe
+  tags:
+    - k8s-dev-build
+  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  # cache:
+  #   - key: midway-fe:nest-install
+  #     policy: pull
+  #     paths:
+  #       - dist/
+  #   - key: midway-fe:mvip-install
+  #     policy: pull
+  #     paths:
+  #       - app/mvip-manager/dist/
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
+    - if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then ENV="dev"; else ENV="$CI_COMMIT_REF_SLUG"; fi
+    - echo "[ENV] "$ENV
+    - docker build -t $MIDWAY_FE -f ./${ENV}.Dockerfile .
+    - docker push $MIDWAY_FE
+
+# 部署
+deploy:
+  stage: deploy
+  only:
+    - feat-speed-up-ci@fenlei/midway-fe
+    - dev@fenlei/midway-fe
+    - test@fenlei/midway-fe
+    - test1@fenlei/midway-fe
+    - test2@fenlei/midway-fe
+  tags:
+    - aliyun-k8s-dev
+  cache: {}
+  dependencies: []
+  script:
+    - >
+      if [ "$CI_COMMIT_REF_SLUG" == "feat-speed-up-ci" ]; then
+        kubectl set image -n bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE;
+      elif [ "$CI_COMMIT_REF_SLUG" == "dev" ]; then
+        kubectl set image -n cat deployments --selector app=midway-fe *=$MIDWAY_FE;
+      elif [ "$CI_COMMIT_REF_SLUG" == "test" ]; then
+        kubectl set image -n test-cat deployments --selector app=midway-fe *=$MIDWAY_FE;
+      elif [ "$CI_COMMIT_REF_SLUG" == "test1" ]; then
+        kubectl set image -n bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE;
+      elif [ "$CI_COMMIT_REF_SLUG" == "test2" ]; then
+        kubectl set image -n test-bxapplets deployments --selector app=midway-fe *=$MIDWAY_FE;
+      fi;
+
+# ############################################ product-configure-start
+# 暂先不动生产环境的 CI/CD，怕弄坏
+
+prod-release:
+  stage: prod-release
+  only:
     - master@fenlei/midway-fe
-#  tags:
-#    - k8s-dev-build
+  #  tags:
+  #    - k8s-dev-build
+  image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  cache: {}
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.baixing.cn
     - docker build --pull -t $MIDWAY_FE .
     - docker push $MIDWAY_FE
     - docker rmi $MIDWAY_FE
 
-deploy:
+prod-deploy:
   stage: prod-deploy
   when: manual
   only:
