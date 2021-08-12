@@ -35,18 +35,16 @@ export const getApi = (url: string, params: any): Promise<any> => {
 }
 
 export const getApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
-  const p = JSON.stringify(params)
   return postApi<T>(servicePath, {
     method: 'get', path: `/api/${path}`,
-    params: p,
+    params,
   }, headers)
 }
 
 export const postApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
-  const p = JSON.stringify(params)
   return postApi<T>(servicePath, {
     method: 'post', path: `/api/${path}`,
-    params: p,
+    params,
   }, headers)
 }
 

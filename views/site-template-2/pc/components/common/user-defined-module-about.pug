@@ -1,5 +1,6 @@
 mixin user-defined-module-about(userDefinedModuleList)
     each userDefinedModule in userDefinedModuleList
+      if userDefinedModule.show
         .user-defined-about
             .user-defined-about-subtitle #{ userDefinedModule.mainModuleTitle }
             .user-defined-about-list

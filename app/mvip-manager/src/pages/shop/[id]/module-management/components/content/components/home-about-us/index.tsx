@@ -31,16 +31,6 @@ const AboutUs: FC<Props> = (props) => {
     const res = await getModuleInfoApi<ModuleHomeABoutInfo>(Number(params.id), {
       position, pageModule
     })
-    // const res = await mockData<Detail>('data', {
-    //   "name": "成磊测试",
-    //   "tags": [
-    //     "a",
-    //     "b",
-    //     "c",
-    //     "d"
-    //   ],
-    //   "media": ""
-    // })
     setDetail(res.data)
     setGetDataLoading(false)
   }
@@ -51,9 +41,11 @@ const AboutUs: FC<Props> = (props) => {
 
   const handleSubmit = async (values: ModuleHomeABoutInfo) => {
     console.log(values)
+    // 因为tag组件默认传出来的是 逗号拼接的string
     setUpDataLoading(true)
     const res = await setModuleHomeABoutInfoApi(Number(params.id), {
       ...values,
+      tags: Array.isArray(values.tags) ? values.tags : (values.tags as any).split(','),
       position, pageModule
     })
     setUpDataLoading(false)

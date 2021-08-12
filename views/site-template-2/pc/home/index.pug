@@ -11,36 +11,35 @@ block content
     .container
         //-自定义模块数据
         - const { autoConfig } = renderData
-
-        - hotProductList = renderData.productRecommend
+        - const { productList: hotProductList, name } = renderData.productRecommend
         if hotProductList && hotProductList.length>0
             .block-title
                 //- img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
                 .point 
                     .littlePoint 
                     .largePoint
-                .h2 热门产品
+                .h2 #{ name || '热门产品'}
                 .point 
                     .largePoint 
                     .littlePoint
             include ../components/home/product-list.pug
             +product-list('hot', hotProductList)
-
+        - const { name: aboutUsTitle, tags } = renderData.basic.aboutModule
         .block-title
             //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
             .point 
                 .littlePoint 
                 .largePoint
-            .h2 关于我们
+            .h2 #{ aboutUsTitle || '关于我们'}
             .point 
-                .largePoint  
+                .largePoint
                 .littlePoint
         include ../components/home/about-us-new.pug
 
         //-自定义模块1（即之前的企业优势模块）
-        if autoConfig && autoConfig[0]
+        if autoConfig && autoConfig[0].show
             include ../components/home/user-defined-module.pug
-            +user-defined-module(autoConfig[0])
+            +user-defined-module(autoConfig[0]) 
 
         - productList = renderData.productList.result
         if productList && productList.length>0
@@ -59,7 +58,8 @@ block content
               +product-list('nothot', productList)
 
         - articleList = renderData.articleList.result
-        - const { articleRecommend } = renderData
+        - const { articleList: articleRecommend } = renderData.articleRecommend
+        - const { name: title } = renderData.articleRecommend || '文章推荐'
         if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
             .block-title
                 //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
@@ -73,7 +73,7 @@ block content
             include ../components/home/news-center.pug
             .new-center.clearfix
                 +news-box('新闻资讯', articleList)
-                +news-box('推荐文章', articleRecommend)
+                +news-box(title, articleRecommend)
 
 
         .block-title

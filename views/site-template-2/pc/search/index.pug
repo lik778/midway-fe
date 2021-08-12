@@ -31,7 +31,7 @@ block content
     if !isSem
       .sidebar
         //- TODO; 未确认到底用哪个字段
-        - const { articleRecommend } = renderData
+        - const { articleList: articleRecommend } = renderData.articleRecommend
         include ../components/sidebar/cateList.pug
         +side-cateList('新闻资讯', articleRecommend)
         //- include ../components/sidebar/news-list.pug

@@ -33,6 +33,10 @@ export class BaseSiteController {
   }
 
   private checkSem(sem: string | undefined, bannerId: string | undefined, account: string) {
+    // tapd https://www.tapd.cn/20095111/prong/stories/view/1120095111001038855
+    // 恢复小微权益  所以不接收sem参数，代码里关于sem的判断暂时不删除，留着备用
+    return undefined
+
     // 投放页改成店铺首页
     // 1.先判断bannerid是否包含凤鸣id：
     // a.无bannerid的按KA要求页面显示（400电话样式）；
@@ -87,7 +91,6 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-    console.log(data.basic.company)
     return data
   }
 

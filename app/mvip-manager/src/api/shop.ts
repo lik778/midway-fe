@@ -18,7 +18,7 @@ import {
   GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
   GetImagesetFailedImageParam, GetImagesetFailedImageRes,
   GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem,
-  ReAuditImagesetImageParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion, ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo, ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam, ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam
+  ReAuditImagesetImageParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion, ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo, ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam, ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -287,18 +287,18 @@ export const getModuleInfoApi = <T>(shopId: number, params: ModuleRequestParam) 
 
 // 修改模块数据
 // 修改banner 产品模块配置
-export const setModuleBannerInfoApi = (shopId: number, params: ModuleProductSwiperParam) => getApiData<ModuleProductSwiper>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+export const setModuleBannerInfoApi = (shopId: number, params: ModuleProductSwiperParam | ModuleProductSwiperNoParam) => postApiData<ModuleProductSwiper>(ServicePath.SHOP, 'midway/backend/module/update/banner', params, setShopHeader(shopId))
 
 // 修改推荐产品
-export const setModuleProductInfoApi = (shopId: number, params: ModuleProductInfoParam) => getApiData<ModuleProductInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+export const setModuleProductInfoApi = (shopId: number, params: ModuleProductInfoParam) => postApiData<ModuleProductInfo>(ServicePath.SHOP, 'midway/backend/module/update/productRecomend', params, setShopHeader(shopId))
 
 // 修改推荐文章
-export const setModuleArticleInfoApi = (shopId: number, params: ModuleArticleInfoParam) => getApiData<ModuleArticleInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+export const setModuleArticleInfoApi = (shopId: number, params: ModuleArticleInfoParam) => postApiData<ModuleArticleInfo>(ServicePath.SHOP, 'midway/backend/module/update/articleRecomend', params, setShopHeader(shopId))
 
 // 修改关于我们模块 首页
-export const setModuleHomeABoutInfoApi = (shopId: number, params: ModuleHomeABoutInfoParam) => getApiData< ModuleHomeABoutInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+export const setModuleHomeABoutInfoApi = (shopId: number, params: ModuleHomeABoutInfoParam) => postApiData<ModuleHomeABoutInfo>(ServicePath.SHOP, 'midway/backend/module/update/homeAbout', params, setShopHeader(shopId))
 
 // 修改关于我们模块 关于我们页面
-export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutInfoParam) => getApiData<ModuleABoutABoutInfo>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutInfoParam) => postApiData<ModuleABoutABoutInfo>(ServicePath.SHOP, 'midway/backend/module/update/about', params, setShopHeader(shopId))
 
 /** 模块管理 结束 */

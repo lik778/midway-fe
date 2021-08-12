@@ -51,12 +51,13 @@ const CustomModule = () => {
     const res = await getCustomerSetApi(Number(shopId), moduleID)
     if (res.success) {
       if (res.data) {
-        const { mainModuleTitle, subModuleBos } = res.data
+        const { mainModuleTitle, subModuleBos, show } = res.data
         setSubformVals(
           paddingChildList(subModuleBos || [])
         )
         form.setFieldsValue({
           title: mainModuleTitle || '',
+          show
         })
       }
     }
@@ -182,13 +183,13 @@ const CustomModule = () => {
           required
           rules={[
             { required: true, message: '请输入模块标题' },
-            { type: 'string', min: 2, max: 20, message: '2~20个字' }
+            { type: 'string', min: 2, max: 6, message: '2~6个字' }
           ]}>
           <InputLen
             className={styles['form-input']}
             width={280}
             minLength={2}
-            maxLength={20}
+            maxLength={6}
             showCount
             placeholder="例如：企业优势、服务流程"
           />

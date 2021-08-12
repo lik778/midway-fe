@@ -61,7 +61,7 @@ const ContentItem: FC<Props> = (props) => {
           {
             localActionConfig.delete && <img className={styles['delete']} src="//file.baixing.net/202108/46964751270fa2badbdefc08a4577ad0.png" onClick={() => { handleClickDelete!(content) }}></img>
           }
-          <img className={styles['img']} src={content.headImg}></img>
+          <img className={styles['img']} src={content.headImg||'//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}></img>
         </div>
         <div className={styles['text-box']}>
           <div className={styles['name']}>{content.name}</div>
