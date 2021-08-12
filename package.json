@@ -14,7 +14,7 @@
         "build:apps": "webpack -c ./build/webpack.prod.config.js",
         "node:dev": "node --max-http-header-size=16384 dist/main",
         "build:prod": "cross-env NODE_ENV=production nest build && cross-env NODE_ENV=production  webpack -c ./build/webpack.prod.config.js",
-        "node:prod": "export NODE_ENV=production node --max-http-header-size=16384 dist/main",
+        "node:prod": "cross-env NODE_ENV=production node --max-http-header-size=16384 dist/main",
         "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
         "test:test1": "git branch -D test1 | git checkout master | git pull origin master | git checkout -b test1 | git merge feat-speed-up-ci | git push -f origin test1 | git checkout feat-speed-up-ci"
     },
