@@ -1,10 +1,9 @@
 {
+  "name": "mvip-manager",
   "private": true,
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
-    "build:dev": "cross-env ENV=dev umi build",
-    "build:test": "cross-env ENV=test umi build",
     "build:prod": "cross-env ENV=production umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
@@ -26,6 +25,7 @@
     "@ant-design/pro-layout": "^5.0.12",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.27",
+    "axios": "^0.21.1",
     "classname": "0.0.0",
     "dayjs": "^1.9.6",
     "echarts": "^4.0.3",
@@ -36,13 +36,14 @@
     "prettier": "^1.19.1",
     "rc-tween-one": "^2.7.3",
     "react": "^16.14.0",
+    "react-cropper": "^2.1.8",
     "react-dom": "^16.12.0",
     "umi": "^3.2.27",
     "yorkie": "^2.0.0"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
-    "@types/lodash": "^4.14.170",
+    "@types/lodash": "^4.14.167",
     "cross-env": "^7.0.3"
   }
 }

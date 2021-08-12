@@ -1,8 +1,8 @@
-- const { productRecommend.productList: proRec } = renderData
+- const { productList: proRec, name: Protitle} = renderData.productRecommend
 if proRec && proRec.length > 0
     .product-recommend
         .pro-title
-            h4 产品推荐
+            h4 #{ Protitle || '产品推荐'}
         .pro-box
             each item in proRec
                 a.pro-box-product(href=item.urlSuffix)

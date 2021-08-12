@@ -39,8 +39,7 @@ const HomeSwiper: FC<Props> = (props) => {
     if (pcRef.current.disabledFc() || wapRef.current.disabled) {
       return
     }
-    const a = await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
-    console.log(a)
+    await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
   }
 
   return <Spin spinning={loadingShopModel}>

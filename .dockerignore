@@ -1,6 +1,5 @@
 node_modules
 **/**/node_modules
-npm-debug.log
+*.js.map
+*.log
 *.md
-**/**/dist
-dist

@@ -1,8 +1,9 @@
-- const { productList: pr } = renderData.productRecommend
+- const { productList: pr, name } = renderData.productRecommend
+
 if pr && pr.length > 0
   .sidebar-item
     .sidebar-item__title
-      span 服务推荐
+      span #{ name || '服务推荐' }
     #product-swiper.sidebar-item__content
       .swiper-container
         .swiper-wrapper

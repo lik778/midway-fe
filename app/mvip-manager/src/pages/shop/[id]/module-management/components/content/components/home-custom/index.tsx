@@ -7,7 +7,7 @@ import SubForm from './components/subform/index'
 import InputLen from '@/components/input-len';
 import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
 
-import { CustomerSetChildListItem } from '@/interfaces/shop';
+import { CustomerSetChildListItem, CustomerSetListItem } from '@/interfaces/shop';
 
 import styles from './index.less'
 import { useCallback } from 'react';
@@ -29,9 +29,6 @@ const getEmptySubformVal = (key: string) => ({
 type FormWithVals = { form: FormInstance, item: CustomerSetChildListItem }
 
 const CustomModule = () => {
-
-  /***************************************************** States */
-
   const { id: shopId } = useParams<{ id: string }>()
 
   const [pageInitLoading, setPageInitLoading] = useState(false)
@@ -45,27 +42,34 @@ const CustomModule = () => {
   const [subformVals, setSubformVals] = useState<CustomerSetChildListItem[]>([])
   const [delKey, setDelKey] = useState<number[]>([])
 
+  const initModuleData = (data: CustomerSetListItem) => {
+    const { mainModuleTitle, subModuleBos, show } = data
+    setSubformVals(
+      paddingChildList(subModuleBos || [])
+    )
+    form.setFieldsValue({
+      title: mainModuleTitle || '',
+      show: show || true
+    })
+  }
+
   // 初始化表单
-  const initModuleData = async () => {
+  const getModuleData = async () => {
     setPageInitLoading(true)
     const res = await getCustomerSetApi(Number(shopId), moduleID)
     if (res.success) {
       if (res.data) {
-        const { mainModuleTitle, subModuleBos, show } = res.data
-        setSubformVals(
-          paddingChildList(subModuleBos || [])
-        )
-        form.setFieldsValue({
-          title: mainModuleTitle || '',
-          show
-        })
+        initModuleData(res.data)
+      } else {
+        // 如果没有请求到则给默认值
+        initModuleData({} as CustomerSetListItem)
       }
     }
     setPageInitLoading(false)
   }
   useEffect(() => {
     if (moduleID) {
-      initModuleData()
+      getModuleData()
     }
   }, [moduleID])
 
@@ -135,7 +139,7 @@ const CustomModule = () => {
       })
       if (res.success) {
         successMessage(res.message || '保存成功')
-        initModuleData()
+        initModuleData(res.data)
         setDelKey([])
       } else {
         errorMessage(res.message || '保存失败，请稍后再试！')
@@ -150,9 +154,9 @@ const CustomModule = () => {
 
   // 切换 Tabs 时切换模块
   const changeModule = (tab: string) => {
-    // form.setFieldsValue({})
-    // setSubformVals(paddingChildList([]))
     setModuleID(+tab)
+    // 防止点击删除却没有点保存，切换了tab点击保存却删除了非当前tab的数据
+    setDelKey([])
   }
 
   /***************************************************** Renders */
@@ -167,13 +171,8 @@ const CustomModule = () => {
           <FormItem name='show' className={styles['form-item-with-dedent']} valuePropName="checked">
             <Switch />
           </FormItem>
-          <Popover
-            title='示例图片'
-            placement="right"
-            trigger="hover"
-            content={<img className={styles['thumbnail']} src={`//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png`} />}>
-            <span className={styles['info-icon']}>查看示例</span>
-          </Popover>
+          <span className={styles['info-icon']}>查看示例</span>
+          <img className={styles['info-img']} src={String(moduleID) === '1' ? "//file.baixing.net/202108/22098f43ec8b45bb97d38e6e3ec911c2.png" : "//file.baixing.net/202108/c4d48216f70064ef3eaeeb03d573c544.png"} alt="" />
         </FormItem>
         <FormItem
           className={styles['form-item']}
@@ -226,7 +225,7 @@ const CustomModule = () => {
   return <>
     <Spin spinning={pageInitLoading}>
       <div className={styles['container']}>
-        <Tabs defaultActiveKey="1" onChange={changeModule}>
+        <Tabs className={styles['tabs']} defaultActiveKey="1" onChange={changeModule}>
           <TabPane tab="自定义模块一" key="1">
             {String(moduleID) === '1' && renderForm()}
           </TabPane>

@@ -3,21 +3,29 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { genSiteTemplateEntry } = require('./util');
 const { TB_PAGE_NAMES_B2C_1, TB_PAGE_NAMES_B2B_2, TB_PAGE_NAMES_B2C_3, TB_TYPE_B2C_1, TB_TYPE_B2B_2, TB_TYPE_B2C_3 } = require('./constant');
 const isProd = process.env.NODE_ENV === 'production'
+const isLocal = process.env.NODE_ENV === 'local'
+
+console.log('[BUILD ENV]', process.env.NODE_ENV)
+
+const assign = (...args) => Object.assign(...args.filter(x => x))
 
 // tips: path.resolve(__dirname, '..', 'assets/common/index.js') 这里面的代码是搜索通打点的，
 // 每次更新一个模板，都需要添加
 module.exports = {
-  entry: Object.assign({
-    'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx'),
-    'sem-home-pc': [
-      path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
-      path.resolve(__dirname, '..', 'assets/common/index.js')
-    ],
-    'sem-home-wap': [
-      path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js'),
-      path.resolve(__dirname, '..', 'assets/common/index.js')
-    ]
-  },
+  entry: assign(
+    {
+      'midway-admin': path.resolve(__dirname, '..', 'assets/midway-admin/main.tsx')
+    },
+    {
+      'sem-home-pc': [
+        path.resolve(__dirname, '..', 'assets/sem/pc/home/index.js'),
+        path.resolve(__dirname, '..', 'assets/common/index.js')
+      ],
+      'sem-home-wap': [
+        path.resolve(__dirname, '..', 'assets/sem/wap/home/index.js'),
+        path.resolve(__dirname, '..', 'assets/common/index.js')
+      ]
+    },
     genSiteTemplateEntry(TB_TYPE_B2C_1, TB_PAGE_NAMES_B2C_1, [
       path.resolve(__dirname, '..', 'assets/common/index.js')
     ]),
@@ -42,7 +50,10 @@ module.exports = {
         test: /\.(ts|tsx)?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'ts-loader'
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: isLocal ? false : true
+          }
         }
       },
       {
@@ -95,10 +106,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: isProd ? '[name].[contenthash].css' : '[name].css',
       chunkFilename: isProd ? '[id].[contenthash].css' : '[id].css',
-    }),
-    // new HtmlWebpackPlugin({
-    //   filename: path.resolve(__dirname, "../dist/public/midway-admin.html"),
-    //   chunks: ['midway-admin']
-    // })
+    })
   ]
 }

@@ -411,7 +411,6 @@ export class BaseSiteController {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
-    console.log(query)
     const currentPage = query.page || 1
     const searchKey = query.key || ''
     const searchType = query.type || 'product'

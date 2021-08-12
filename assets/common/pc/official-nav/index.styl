@@ -1,52 +1,123 @@
-.official-nav-item
+// .official-nav-item
+//   display flex
+//   position relative
+//   margin-left 34px
+//   //hover后展示下拉列表
+//   &:hover
+//     .nav-dropdown
+//       display flex
+//   .text
+//     font-size 16px
+//   .down-arrow
+//     display inline-block
+//     margin 0 2px 6px 9px
+//     width 6px
+//     height 6px
+//     border-top 2px solid #666
+//     border-right 2px solid #666
+//     transform translateY(4px) rotate(135deg)
+//   .nav-dropdown
+//     display none
+//     position absolute
+//     left 0
+//     background-color #fff
+//     top calc(100%)
+//     z-index 9999
+//     line-height 1
+//     flex-direction column
+//     box-shadow 0 4px 10px rgba(#000, 0.2);
+//     width 170px
+//     &::after
+//       content ''
+//       width 15px
+//       height 15px
+//       background-color #fff
+//       position absolute
+//       top -5px
+//       left 15%
+//       transform rotate(45deg)
+//       box-shadow 0 4px 10px rgba(#000, 0.2)
+//       z-index -1
+//     >a
+//       display block
+//       box-sizing border-box
+//       padding 14px 20px
+//       color #333
+//       line-height 16px
+//       background #fff
+//       width 100%
+//       &.nav-active
+//         color #f46
+//       &:hover
+//         background #F7F7F7
+
+ .nav-right
   display flex
-  position relative
-  margin-left 34px
-  //hover后展示下拉列表
-  &:hover
-    .nav-dropdown
-      display flex
-  .text
-    font-size 16px
-  .down-arrow
-    display inline-block
-    margin 0 2px 6px 9px
-    width 6px
-    height 6px
-    border-top 2px solid #666
-    border-right 2px solid #666
-    transform translateY(4px) rotate(135deg)
-  .nav-dropdown
-    display none
-    position absolute
-    left 0
-    background-color #fff
-    top calc(100%)
-    z-index 9999
-    line-height 1
-    flex-direction column
-    box-shadow 0 4px 10px rgba(#000, 0.2);
-    width 170px
-    &::after
-      content ''
-      width 15px
-      height 15px
-      background-color #fff
-      position absolute
-      top -5px
-      left 15%
-      transform rotate(45deg)
-      box-shadow 0 4px 10px rgba(#000, 0.2)
-      z-index -1
-    >a
+  align-items center
+  .nav-item
+    position relative
+    margin-left 30px
+    //hover后展示下拉列表
+    &:hover
+      .nav-dropdown
+        display flex
+    > a
       display block
-      box-sizing border-box
-      padding 14px 20px
       color #333
-      line-height 16px
-      background #fff
-      width 100%
+      line-height 40px
+      padding 0 20px
+      &:hover 
+        color #fff !important
+        border-radius 20px
+        background-color #f46
+        .down-arrow
+          border-color #fff
+      .down-arrow
+        display inline-block
+        margin 0 2px 6px 9px
+        width 8px
+        height 8px
+        border-top 1px solid #666
+        border-right 1px solid #666
+        transform rotate(135deg)
       &.nav-active
-        color #f46
-      &:hover
-        background #F7F7F7
+        color #fff !important
+        border-radius 20px
+        background-color #f46
+        .down-arrow
+          border-color #fff
+
+   
+    .nav-dropdown
+      display none
+      width 170px
+      padding-top: 14px
+      position absolute
+      left 0
+      top 99%
+      z-index 9999
+      line-height 1
+      flex-direction column
+      &::after
+        content ''
+        width 15px
+        height 15px
+        background-color #fff
+        position absolute
+        top 6px
+        left 15%
+        transform rotate(45deg)
+        box-shadow 0 4px 10px rgba(#000, 0.2)
+        z-index -1
+      .nav-dropdown-box
+        box-shadow 0 4px 10px rgba(#000, 0.2);
+        >a
+          display block
+          box-sizing border-box
+          padding 14px 20px
+          color #333
+          line-height 16px
+          background #fff
+          width 100%
+          &:hover
+            background #F7F7F7

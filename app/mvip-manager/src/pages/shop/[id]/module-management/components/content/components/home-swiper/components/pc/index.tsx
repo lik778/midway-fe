@@ -1,6 +1,7 @@
 import React, { FC, useState, Ref, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useParams } from 'umi';
-import { Button, Radio, RadioChangeEvent, Form } from 'antd'
+import { Spin, Button, Radio, RadioChangeEvent, Form } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import { ShopInfo } from '@/interfaces/shop';
 import { Detail } from './data'
 import styles from './index.less'
@@ -11,7 +12,6 @@ import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 import ProductComponent from './components/product'
 import { mockData } from '@/utils';
 import { ProductType } from '@/enums';
-
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId
@@ -22,6 +22,7 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
   const params = useParams<{ id: string }>()
   const { curShopInfo, position, pageModule } = props
   const [swiperType, setSwiperType] = useState<'swiper' | 'product'>(curShopInfo.type === ProductType.B2B ? 'product' : 'swiper')
+  const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
   const swiperRef = useRef<{
     handleUpData: (type: 'all') => Promise<void>,
@@ -48,10 +49,12 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
 
   // 保存轮播图需要单独再打个接口
   const handleSubmitNoProduct = async () => {
+    setUpDataLoading(true)
     const res = await setModuleBannerInfoApi(Number(params.id), {
       bannerProduct: false,
       position, pageModule
     })
+    setUpDataLoading(false)
   }
 
   const handleUpData = () => {
@@ -69,17 +72,33 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
   return <div className={styles['pc-container']}>
     <Form.Item className={styles['radio-group-item']} label={'电脑端'}>
       <Radio.Group name="radiogroup" value={swiperType} onChange={handleChangeSwiperType}>
-        <Radio value={'swiper'}>轮播图</Radio>
+        <Radio value={'swiper'}>
+          <span className={styles['radio-content']}>
+            <span className={styles['text']}>轮播图</span>
+            <QuestionCircleOutlined className={styles['icon']} />
+            <img className={styles['img']} src="//file.baixing.net/202108/55b3c7fdd0b145dff356be54220b5c2a.png" alt="" />
+          </span>
+        </Radio>
+
         {
-          curShopInfo.type === ProductType.B2B && <Radio value={'product'}>轮播产品</Radio>
+          curShopInfo.type === ProductType.B2B && <Radio value={'product'}>
+            <span className={styles['radio-content']}>
+              <span className={styles['text']}>轮播产品</span>
+              <QuestionCircleOutlined className={styles['icon']} />
+              <img className={styles['img']} src="//file.baixing.net/202108/1891225dcc8535535ebd8785f1808d9f.png" alt="" />
+            </span>
+          </Radio>
         }
+
       </Radio.Group>
     </Form.Item>
     {
       swiperType && <>
-        <CatchComponent visible={swiperType === 'swiper'}>
-          <SwiperComponent ref={swiperRef} position={position} pageModule={pageModule}></SwiperComponent>
-        </CatchComponent>
+        <Spin spinning={upDataLoading}>
+          <CatchComponent visible={swiperType === 'swiper'}>
+            <SwiperComponent ref={swiperRef} position={position} pageModule={pageModule}></SwiperComponent>
+          </CatchComponent>
+        </Spin>
         <CatchComponent visible={swiperType === 'product'}>
           <ProductComponent ref={productRef} setSwiperType={setSwiperType} position={position} pageModule={pageModule}></ProductComponent>
         </CatchComponent>

@@ -1,12 +1,13 @@
-FROM node:12
-
-WORKDIR /usr/src
-
-COPY . .
-
-RUN npm set registry https://registry.npm.taobao.org && npm install && npm run release:test1 && cd app/mvip-manager/ && npm install && npm run build:test \
-    && cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/
+FROM node:12.22-alpine
 
 EXPOSE 7001
 
-CMD npm run start:test1
+CMD export NODE_ENV=test1 && \
+    npm run node:dev
+
+COPY app/mvip-manager/dist/ dist/public
+COPY . .
+
+RUN npm set registry https://registry.npm.taobao.org && \
+    npm set progress=false && \
+    npm ci --production

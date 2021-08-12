@@ -31,23 +31,14 @@ const SubForm = (props: Props, parentRef: Ref<any>) => {
     item
   }))
 
-  // 上传图片被删除后需要重置字体颜色为黑色
-  const imageChange = (value: string | undefined) => {
-    if (!value) {
-      ref.current.form?.setFieldsValue({
-        fontColor: 0
-      })
-    }
-  }
   const [config, setConfig] = useState<FormConfig>(() => CustomSetFormConfigFn({
     key: item.key,
-    moduleID,
-    imageChange
+    moduleID
   }))
-  const [editDataSource, setEditDataSource] = useState(() => ({
+
+  const [editDataSource, setEditDataSource] = useState({
     ...item,
-    fontColor: item.fontColor || 0
-  }))
+  })
 
   const showDeleteBtn = useMemo(() => total > 2, [total])
 

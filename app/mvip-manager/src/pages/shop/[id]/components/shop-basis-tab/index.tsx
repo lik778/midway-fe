@@ -29,23 +29,12 @@ const BasisTab = (props: Props) => {
       display: true,
     },
     {
-      link: `/shop/${params.id}/${ShopBasisType.CAROUSEL}`,
-      label: "轮播图设置",
-      key: ShopBasisType.CAROUSEL,
-      display: true,
-    }, {
-      link: `/shop/${params.id}/${ShopBasisType.CUSTOMER}`,
-      label: "自定义设置",
-      key: ShopBasisType.CUSTOMER,
-      display: true,
-    },
-    {
       link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
       label: "SEO设置",
       key: ShopBasisType.SEO,
       display: false,
     }, {
-      // TODO 基础资料设置只有游龙工单申请过，加入白名单的用户才能使用
+      // tip: 基础资料设置只有游龙工单申请过，加入白名单的用户才能使用
       link: `/shop/${params.id}/${ShopBasisType.INFO}`,
       label: "基础资料设置",
       key: ShopBasisType.INFO,

@@ -1,9 +1,9 @@
 //- 新闻资讯
-- const { articleList: articleRecommend } = renderData.articleRecommend
+- const { articleList: articleRecommend, name: newTitle } = renderData.articleRecommend
 if articleRecommend && articleRecommend.length > 0
   .sidebar-item
     .sidebar-item__title
-      span 新闻资讯
+      span #{ newTitle || '新闻资讯'}
     .sidebar-item__content
       .side-news-list
         each item in articleRecommend.slice(0, 8)

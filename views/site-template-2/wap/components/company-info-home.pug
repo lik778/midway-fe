@@ -3,11 +3,13 @@
     img.info-logo(src=company.logo, alt="logo")
     .info-text
       h3.info-name #{ companyName }
-
+      - tags = renderData.basic.aboutModule.tags
       .info-tag-list
-        .info-tag 百姓认证
-        .info-tag 实力商家
-        .info-tag 品质保障
+        each item in tags
+          p.info-tag= item
+        //- .info-tag 百姓认证
+        //- .info-tag 实力商家
+        //- .info-tag 品质保障
         //-.info-tag 贴心服务
   .desc
     p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
