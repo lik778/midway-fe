@@ -9,7 +9,7 @@
           - var tag = ['最佳品质','实力商家','品质保证']
           each item in tag
             p.tag= item
-      .content-right-body
+      .content-right-body(data-d=company.about)
         - aboutText = company.about?company.about.replace(/\n/g, ' ').slice(0,220):'暂时还未上传公司简介哦...'
         .body-content
           | !{ aboutText.length === 220?aboutText+'...':aboutText }
