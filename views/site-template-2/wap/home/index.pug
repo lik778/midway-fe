@@ -5,7 +5,9 @@ block styles
 block header
   include ../components/header
   include ../components/swiper
+  - tags = renderData.basic.aboutModule.tags  
   include ../components/company-info-home
+  +company-info-home(tags)
   if !isSem
       include ../components/nav
 
