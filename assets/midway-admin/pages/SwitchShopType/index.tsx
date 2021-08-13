@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Table, Button, Tooltip, Select, Input, Form, message } from 'antd';
+import { useState } from 'react';
+import { Table, Button, Input, Form, message } from 'antd';
 import { SearchShopListItem } from '../../interfaces/switchShopType'
 import { getShopListApi, setShopTypeApi } from '../../api/switchShopType'
 import { GetShopListParams } from '../../interfaces/switchShopType'
 import { ShopTypeText } from '../../constants/switchShopType'
 import { ShopType } from '../../enums/switchShopType';
+
 const SwitchShopType = () => {
   const [form] = Form.useForm<GetShopListParams>();
   const [dataList, setDataList] = useState<SearchShopListItem[]>([])
@@ -30,31 +31,33 @@ const SwitchShopType = () => {
       setGetDataLoading(true)
       const res = await getShopListApi(values)
       setGetDataLoading(false)
-      setDataList(res)
+      setDataList(res.data)
     } else {
       message.error('请至少输入一个搜索项！')
     }
   }
 
   const handleSetShopType = async (record: SearchShopListItem) => {
-    console.log('handleSetShopType:', record);
     setUploadLoading(true)
     const res = await setShopTypeApi({
       id: record.shopId
     })
-    message.success('操作成功')
-
-    const newDataList = dataList.map(item => {
-      if (item.shopId === record.shopId) {
-        return {
-          ...item,
-          type: record.type === ShopType.B2B ? ShopType.B2C : ShopType.B2B
+    if (res.success) {
+      const newDataList = dataList.map(item => {
+        if (item.shopId === record.shopId) {
+          return {
+            ...item,
+            type: record.type === ShopType.B2B ? ShopType.B2C : ShopType.B2B
+          }
+        } else {
+          return item
         }
-      } else {
-        return item
-      }
-    })
-    setDataList(newDataList)
+      })
+      setDataList(newDataList)
+      message.success(res.message)
+    } else {
+      message.error(res.message)
+    }
     setUploadLoading(false)
   }
 

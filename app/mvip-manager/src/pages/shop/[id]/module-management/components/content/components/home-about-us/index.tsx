@@ -3,25 +3,40 @@ import { useParams } from 'umi';
 import { Button, Row, Col, Spin } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { aboutUsForm } from './config'
-import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId } from '@/interfaces/shop'
+import { ConnectState } from '@/models/connect';
+import { SHOP_NAMESPACE } from '@/models/shop';
+import { connect } from 'dva';
+import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId, ShopInfo } from '@/interfaces/shop'
 import { getModuleInfoApi, setModuleHomeABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
 import { successMessage } from '@/components/message';
+import { useMemo } from 'react';
+import { ShopIndustryType } from '@/enums';
 
 interface Props {
   position: ModulePageType,
-  pageModule: ModuleComponentId
+  pageModule: ModuleComponentId,
+  curShopInfo?: ShopInfo | null
 }
 
 const AboutUs: FC<Props> = (props) => {
   const params = useParams<{ id: string }>()
-  const { position, pageModule } = props
+  const { position, pageModule, curShopInfo } = props
   const [detail, setDetail] = useState<ModuleHomeABoutInfo>({
     name: '',
     tags: [],
     media: ''
   })
+
+  const config = useMemo(() => {
+    // ShopIndustryType
+    if (curShopInfo && curShopInfo.type) {
+      return aboutUsForm(curShopInfo.type)
+    } else {
+      return aboutUsForm(ShopIndustryType.SALE)
+    }
+  }, [curShopInfo])
 
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
@@ -57,7 +72,7 @@ const AboutUs: FC<Props> = (props) => {
       <WildcatForm
         editDataSource={detail}
         submit={handleSubmit}
-        config={aboutUsForm}
+        config={config}
         submitBtn={
           <Row className={styles["about-us-submit-box"]}>
             <Col span={2}></Col>
@@ -74,4 +89,7 @@ const AboutUs: FC<Props> = (props) => {
   </div>
 }
 
-export default AboutUs
+export default connect((state: ConnectState) => {
+  const { curShopInfo } = state[SHOP_NAMESPACE]
+  return { curShopInfo }
+})(AboutUs)
