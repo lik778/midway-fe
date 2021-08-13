@@ -1,9 +1,9 @@
-mixin about-us-new(type,mediaImg)
+mixin about-us-new(tags,mediaImg)
   .about-us-bgc
     .about-us-content
       .content-left
         .img-left
-          img(src=mediaImg, alt="")
+          img(src=mediaImg||'//file.baixing.net/202108/ec6a5de033cd956ea192ddb15d2515a0.png', alt="")
         //-  视频 
         //- video.audio
         //-   <source src="#" type="#">
@@ -16,7 +16,7 @@ mixin about-us-new(type,mediaImg)
             p.left-title 上海小猫咪爱宠医院
           .right-title-right
             
-            each item in type
+            each item in tags
               p.tag= item
         .content-right-body
           .body-content

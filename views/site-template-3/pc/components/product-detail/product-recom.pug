@@ -1,5 +1,5 @@
 .product-recom
-	.product-recom-title 产品推荐
+	.product-recom-title #{productRecommendName||'产品推荐'} 
 	.product-recom-list
 		if productRecommendList && productRecommendList.length >0
 			each item in productRecommendList

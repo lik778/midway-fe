@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { eventTracker } from '../../../../common/tracker'
+import { eventTracker } from '../../../../../common/tracker'
 export const aboutUs = function () {
   $(document).on('ready', function () {
     $(".bottom-right").on('click',() => {
