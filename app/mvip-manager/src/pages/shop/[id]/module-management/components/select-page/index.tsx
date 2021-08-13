@@ -18,11 +18,13 @@ const SelectPage: FC<Props> = (props) => {
   const { pageOptions, position, handleChangePosition } = props
   return <div className={styles['container']}>
     <div className={styles['label']}>页面</div>
-    <Select className={styles['select']} size="large" onChange={handleChangePosition} value={position} >
-      {
-        pageOptions.map(item => <Option key={item.key} value={item.key}>{item.label}</Option>)
-      }
-    </Select>
+    {
+      position && pageOptions && pageOptions.length > 0 && <Select className={styles['select']} size="large" onChange={handleChangePosition} value={position} >
+        {
+          pageOptions.map(item => <Option key={item.key} value={item.key}>{item.label}</Option>)
+        }
+      </Select>
+    }
   </div>
 }
 

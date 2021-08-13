@@ -43,13 +43,14 @@ const CustomModule = () => {
   const [delKey, setDelKey] = useState<number[]>([])
 
   const initModuleData = (data: CustomerSetListItem) => {
+
     const { mainModuleTitle, subModuleBos, show } = data
     setSubformVals(
       paddingChildList(subModuleBos || [])
     )
     form.setFieldsValue({
       title: mainModuleTitle || '',
-      show: show || true
+      show: typeof show === 'boolean' ? show : true
     })
   }
 
