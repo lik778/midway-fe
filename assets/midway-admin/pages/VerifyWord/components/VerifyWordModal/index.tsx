@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { message, Form, Input, Button, Collapse, Modal } from 'antd';
 import './index.styl';
-import { AiTaskStatus, VerifyAction } from '../../enums/verify';
-import { VerifyWordItem } from '../../interfaces/verify';
-import { verifyWordApi } from '../../api/verify';
+import { AiTaskStatus, VerifyAction } from '../../../../enums/verify';
+import { VerifyWordItem } from '../../../../interfaces/verify';
+import { verifyWordApi } from '../../../../api/verify';
 import { useState } from 'react';
 
 const { Panel } = Collapse;
