@@ -1,15 +1,10 @@
-import { createRequest } from '../api/base'
-
-const request = createRequest('/management/api/internal')
-
-export const postApi = (path: string, params: any): Promise<any> => {
-  return request.post('', { method: 'post', path: path, params: JSON.stringify(params) });
-}
+import { postApi } from '../api/base'
 
 export const getAuditImageList = params => {
-  return postApi('/api/midway/internal/mediaImg/imgReapply', params)
+  return postApi('/api/midway/internal/mediaImg/imgReapply', params, { baseURL: '/management/api/internal' })
 }
 
 export const auditImage = params => {
-  return postApi('/api/midway/internal/mediaImg/humainCheck', params)
+  return postApi('/api/midway/internal/mediaImg/humainCheck', params, { baseURL: '/management/api/internal' })
 }
+ 
