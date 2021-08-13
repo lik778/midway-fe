@@ -54,6 +54,9 @@ if (hasBannerVideo) {
         ? swiper.autoplay.stop()
         : swiper.autoplay.start()
     })
+    $video.onplay = () => {
+      swiper.autoplay.stop()
+    }
   })
   ;[...$bannerVideoCovers].map(($cover, idx) => {
     $cover.addEventListener('click', evt => {
