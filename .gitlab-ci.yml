@@ -31,7 +31,7 @@ nest-install:
       - test2@fenlei/midway-fe
     changes:
       - package-lock.json
-  image: node:12.22-alpine
+  image: registry.gitlab.baixing.cn/arch/base-images/nodejs:14.16.0
   cache:
     key: midway-fe:nest-install
     policy: push
@@ -40,7 +40,7 @@ nest-install:
   script:
     - npm set registry https://registry.npm.taobao.org
     - npm set progress=false
-    - npm ci --silence
+    - npm ci --silence --unsafe-perm=true
 
 # 安装 MVIP 后台相关依赖
 mvip-install:
@@ -56,7 +56,7 @@ mvip-install:
       - test2@fenlei/midway-fe
     changes:
       - app/mvip-manager/package-lock.json
-  image: node:12.22-alpine
+  image: registry.gitlab.baixing.cn/arch/base-images/nodejs:14.16.0
   cache:
     key: midway-fe:mvip-install
     policy: push
@@ -66,7 +66,7 @@ mvip-install:
     - cd app/mvip-manager/
     - npm set registry https://registry.npm.taobao.org
     - npm set progress=false
-    - npm ci --silence
+    - npm ci --silence --unsafe-perm=true
 
 # 打包 Nest 以及静态资源（店铺+审核后台）
 nest-build:
@@ -83,9 +83,10 @@ nest-build:
   #     - src/skip.txt
   tags:
     - k8s-dev-build
-  image: node:12.22-alpine
+  image: registry.gitlab.baixing.cn/arch/base-images/nodejs:14.16.0
   cache:
     key: midway-fe:nest-install
+    policy: pull
     paths:
       - node_modules/
       # - dist/
@@ -141,9 +142,10 @@ mvip-build:
   #     - app/mvip-manager/src/skip.txt
   tags:
     - k8s-dev-build
-  image: node:12.22-alpine
+  image: registry.gitlab.baixing.cn/arch/base-images/nodejs:14.16.0
   cache:
     key: midway-fe:mvip-install
+    policy: pull
     paths:
       - app/mvip-manager/node_modules/
       # - app/mvip-manager/dist/
