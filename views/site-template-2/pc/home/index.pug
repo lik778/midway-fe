@@ -17,12 +17,12 @@ block content
             .point 
                 .littlePoint 
                 .largePoint
-            .h2 #{autoConfig[1]&&autoConfig[1].mainModuleTitle||'服务资质'}
+            .h2 #{autoConfig[1]&&autoConfig[1].show?autoConfig[1].mainModuleTitle:'服务资质'}
             .point 
                 .largePoint
                 .littlePoint
-        - defaultSelfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',icon:'//file.baixing.net/202105/c8f81a54a43830099bdc04f4b424da4c.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',icon:'//file.baixing.net/202105/625a56c2569eb767d8770999cbd8dd50.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',icon:'//file.baixing.net/202105/f941fd50013f2f8ef7b51439e45b9079.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',icon:'//file.baixing.net/202105/5dde08cac771ec82db133664d24ddc1d.png'}]
-        - selfAdvantage = autoConfig[1]?autoConfig[1].subModuleBos : defaultSelfAdvantage
+        - defaultSelfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',urlImg:'//file.baixing.net/202105/c8f81a54a43830099bdc04f4b424da4c.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',urlImg:'//file.baixing.net/202105/625a56c2569eb767d8770999cbd8dd50.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',urlImg:'//file.baixing.net/202105/f941fd50013f2f8ef7b51439e45b9079.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',urlImg:'//file.baixing.net/202105/5dde08cac771ec82db133664d24ddc1d.png'}]
+        - selfAdvantage = autoConfig[1]&&autoConfig[1].show?autoConfig[1].subModuleBos : defaultSelfAdvantage
         +self-advantage(selfAdvantage)
 
         - const { productList: hotProductList, name } = renderData.productRecommend
@@ -37,17 +37,18 @@ block content
                     .littlePoint
             include ../components/home/product-list.pug
             +product-list('hot', hotProductList)
-        - const { name: aboutUsTitle, tags } = renderData.basic.aboutModule
+        - const { name: aboutUsTitle, tags, media } = renderData.basic.aboutModule
         .block-title
             //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
             .point 
-                .littlePoint 
+                .littlePoint
                 .largePoint
             .h2 #{ aboutUsTitle || '关于我们'}
             .point 
                 .largePoint
                 .littlePoint
         include ../components/home/about-us-new.pug
+        +about-Us-New(tags,media)
 
         //-自定义模块1（即之前的企业优势模块）
         if autoConfig && autoConfig[0] &&autoConfig[0].show
@@ -64,13 +65,13 @@ block content
                     .littlePoint
                     .largePoint
                 .h2 产品分类
-                .point 
+                .point
                     .largePoint
                     .littlePoint
             .product-catogeries-list
               include ../components/home/product-catogeries-new.pug 
               include ../components/home/product-list-new.pug
-              +product-list('nothot', productList)
+              +product-list('nothot', productLists)
 
         - articleList = renderData.articleList.result
         - const { articleList: articleRecommend } = renderData.articleRecommend
