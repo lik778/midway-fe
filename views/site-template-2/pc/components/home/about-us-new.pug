@@ -12,7 +12,7 @@ mixin about-Us-New(type,mediaImg)
             each item in type
               p.tag= item
         .content-right-body
-          - aboutText = company.about?company.about.replace(/\n/g, ' ').slice(0,220):'暂时还未上传公司简介哦...'
+          - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
           .body-content
             | !{ aboutText.length === 220?aboutText+'...':aboutText }
             if aboutText.length === 220
