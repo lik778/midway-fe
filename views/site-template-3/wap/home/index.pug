@@ -26,9 +26,9 @@ block content
       span.red 详细信息
     include ../components/contact-us-form 
 
-  - productList = renderData.productList.result
+  - const { productList , name: allTitle } = renderData.productRecommend
   if productList && productList.length > 0
-    .product-block-title 服务项目
+    .product-block-title #{allTitle||"服务项目"}
     include ../components/product-list.pug
     +product-list(productList.slice(0,4))
 
