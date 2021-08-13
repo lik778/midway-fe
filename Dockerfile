@@ -1,4 +1,4 @@
-FROM node:12
+FROM registry.gitlab.baixing.cn/arch/base-images/nodejs:14.16.0
 
 WORKDIR /usr/src
 
