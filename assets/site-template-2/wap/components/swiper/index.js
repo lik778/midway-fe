@@ -54,8 +54,8 @@ if (hasBannerVideo) {
         ? swiper.autoplay.stop()
         : swiper.autoplay.start()
     })
-    if ($video.onplay) {
-      $video.onplay = () => swiper.autoplay.stop()
+    $video.onplay = () => {
+      swiper.autoplay.stop()
     }
   })
   ;[...$bannerVideoCovers].map(($cover, idx) => {
