@@ -20,9 +20,9 @@ block content
             +pagination(totalPage, currentPage, `${currentPathname}`)
         //-侧边栏
         .sidebar
-            - const { articleList,name } = renderData.articleRecommend
+            - const { articleList,name: articleRecommendName } = renderData.articleRecommend
             include ../components/sidebar/cateList.pug
-            +side-cateList(name, articleList)
+            +side-cateList(articleRecommendName, articleList)
             include ../components/sidebar/products.pug
 
 block scripts
