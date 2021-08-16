@@ -1,4 +1,4 @@
-export const upyunConfig = {
+export const upyunImgConfig = {
   "policy": {
     // bucket 回调的值
     "bucket": "bximg",
@@ -20,4 +20,19 @@ export const upyunConfig = {
   "operator": "node",
   "password": "ZhanglinZuiShuai!",
   "imageHost": undefined
+}
+
+export const upyunVideoConfig = {
+  policy: {
+    "bucket": "bxmedia",
+    "save-key": "/{filemd5}{.suffix}",
+    "allow-file-type": 'mp4,mov'
+  },
+  form_api_secret: "9sMCIBryAo8INghVqfOQXtsvTNI=",
+  operator: "node",
+  password: "ZhanglinZuiShuai!",
+  operateHost: 'http://p0.api.upyun.com',
+  operateMethod: '/pretreatment/',
+  notify_url: "TODO",
+  host: 'http://bxmedia.baixing.net'
 }

@@ -1,6 +1,5 @@
 import { postApiData, request, upFile } from './base';
 
-import { ServiceResponse } from '@/interfaces/api';
 import { MidMenuItem } from '@/interfaces/base';
 import { ServicePath } from '@/enums/index'
 
@@ -11,6 +10,12 @@ export const getMenuApi = () => {
 
 export const upImageToYoupai = (params: any) => {
   return upFile(window.__upyunImgConfig?.uploadUrl, {
+    data: params
+  })
+}
+
+export const upVideoToYoupai = (params: any) => {
+  return upFile(window.__upyunVideoConfig?.uploadUrl, {
     data: params
   })
 }

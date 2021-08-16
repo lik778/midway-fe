@@ -1,5 +1,5 @@
-import { getUpyunImgConfigUpyun } from './api/upyun'
-import { UpyunImgConfig } from '@/interfaces/haojing';
+import { getUpyunImgConfigUpyun, getUpyunVideoConfigUpyun } from './api/upyun'
+import { UpyunImgConfig, UpyunVideoConfig } from '@/interfaces/haojing';
 import { enableMapSet } from 'immer';
 import '@/styles/report.less';
 import '@/styles/common.less';
@@ -8,6 +8,7 @@ import { inIframe, insertStyle, notInIframe } from '@/utils';
 declare global {
   interface Window {
     __upyunImgConfig: UpyunImgConfig;
+    __upyunVideoConfig: UpyunVideoConfig;
   }
 }
 
@@ -36,8 +37,15 @@ declare global {
   }
   if (notInIframe()) {
     // 配置从镐京里提出来到node层
-    const upyunConfig = await getUpyunImgConfigUpyun()
-    window.__upyunImgConfig = upyunConfig
+    const [
+      upyunImgConfig,
+      upyunVideoConfig
+    ] = await Promise.all([
+      getUpyunImgConfigUpyun(),
+      getUpyunVideoConfigUpyun()
+    ])
+    window.__upyunImgConfig = upyunImgConfig
+    window.__upyunVideoConfig = upyunVideoConfig
   }
 
 })()

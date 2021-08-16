@@ -1,20 +1,23 @@
 // 必须引入crypto
+// eslint-disable-next-line
 const crypto = require('crypto');
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { upyunConfig } from '../config/upyun'
+import { upyunImgConfig, upyunVideoConfig } from '../config/upyun'
 import { md5 } from '../util/common'
-import { LOCAL_ENV, DEVELOPMENT_ENV, TEST_ENV, PRODUCTION_ENV } from '../config/index'
 
 @Controller('/upyun')
 export class UpyunController {
 
+  /**
+   * 获取又拍云上传图片配置 bucket bximg
+   */
   @Get('/upyunImgConfig')
   async getUpyunImgConfig(@Req() req: Request, @Res() res: Response) {
     const vendor = 'upyun'
     const customPolicy = []
     const imageSuffix = '#up'
-    const imgConfig = upyunConfig
+    const imgConfig = upyunImgConfig
     const uploadPolicy = {
       ...imgConfig['policy'],
       "expiration": new Date().getTime() + 3600 * 1000, customPolicy
@@ -36,6 +39,31 @@ export class UpyunController {
     })
   }
 
+  /**
+   * 获取又拍云上传视频配置 bucket bxmedia
+   */
+  @Get('/upyunVideoConfig')
+  async upyunVideoConfig(@Req() req: Request, @Res() res: Response) {
+    const videoConfig = upyunVideoConfig
+    const uploadPolicy = {
+      ...videoConfig['policy'],
+      "expiration": new Date().getTime() + 3600 * 1000
+    }
+    const { encodedUploadPolicy, uploadSignature } = this.genUpyunSignature(uploadPolicy, videoConfig['form_api_secret'])
+    const uploadParams = {
+      'policy': encodedUploadPolicy,
+      'signature': uploadSignature,
+    }
+    res.json({
+      'uploadUrl': `${this.request_url_scheme(req)}://v0.api.upyun.com/${videoConfig.policy.bucket}/`,
+      'uploadParams': uploadParams,
+      'vendorName': 'upyun',
+      'suffix': '#videoup',
+      'fileKey': 'file',
+      'host': videoConfig.host ? `${this.request_url_scheme(req)}://${videoConfig.host}` : null
+    })
+  }
+
   genUpyunSignature(uploadPolicy, formApiSecret) {
     const encodedUploadPolicy = Buffer.from(JSON.stringify(uploadPolicy)).toString('base64');
     return {
@@ -46,22 +74,6 @@ export class UpyunController {
 
   request_url_scheme(req: Request, with_colon = false) {
     let $return = 'https';
-    // let $return = req.protocol === 'https' ? 'https' : 'http';
-    // const env = process.env.NODE_ENV || DEVELOPMENT_ENV
-    // 下面的逻辑是镐京里的逻辑 但是这些字段在前端没有体现，所以现在改为直接判断当前请求的协议类型
-    // if (env === PRODUCTION_ENV) {
-    //   if (req.headers['X-eBay-Request-Proto'] == 'HTTPS') {
-    //     $return = 'https';
-    //   } else if (req.headers["HTTP_X_EBAY_REQUEST_PROTO"]
-    //     && req.headers["HTTP_X_EBAY_REQUEST_PROTO"] == 'HTTPS'
-    //   ) {
-    //     $return = 'https';
-    //   }
-    // } else { // 线下
-    // if (isset($GLOBALS['_SERVER']['HTTPS']) && $GLOBALS['_SERVER']['HTTPS'] == 'on') {
-    // $return = 'https';
-    // }
-    // }
     if (with_colon) $return += ':';
     return $return;
   }
