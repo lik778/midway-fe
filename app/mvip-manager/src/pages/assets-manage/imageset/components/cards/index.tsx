@@ -496,7 +496,6 @@ export default function Cards(props: CardsProps) {
 /**
  * 图片预览模态框
  */
-
 type PreviewModalProps = {
   lists: CardItem[]
   previewItem: ImageItem|undefined
@@ -513,6 +512,22 @@ function PreviewModal(props: PreviewModalProps) {
   const targetIDX = lists.findIndex(x => x === target)
   const prev = lists[targetIDX - 1]
   const next = lists[targetIDX + 1]
+
+  useEffect(() => {
+    const handlePreview = (e: any) => {
+      if ((e?.code === 'ArrowLeft') && prev) {
+        previewImage(prev as ImageItem)
+      }
+      if ((e?.code === 'ArrowRight') && next) {
+        previewImage(next as ImageItem)
+      }
+    }
+    window.addEventListener('keyup', handlePreview)
+    return () => {
+      window.removeEventListener('keyup', handlePreview)
+    }
+  }, [prev, next])
+
   return (
     <Modal
       wrapClassName="image-preview-modal"
