@@ -24,12 +24,7 @@ export default (props: Props) => {
       link: ShopModuleType.ARTICLE,
       label: "文章模块",
       key: ShopModuleType.ARTICLE,
-    },
-    {
-      link: ShopModuleType.IMAGESET,
-      label: "图片管理",
-      key: ShopModuleType.IMAGESET
-    },
+    }
   ];
 
   return (

@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useParams } from "umi";
 import { Pagination } from "antd";
 
-import ContentHeader from "../components/content-header";
 import ArticleNav from './components/nav'
 import Cards from './components/cards'
 import SelectionBlock from './components/selection'
@@ -15,7 +14,6 @@ import { useSelection } from './hooks/selection'
 import { usePagination } from './hooks/pagination'
 import useAllAlbumNames from './hooks/album-names'
 
-import { ShopModuleType } from "@/enums";
 import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop";
 
 import styles from './index.less';
@@ -25,7 +23,9 @@ const ShopArticlePage = (props: any) => {
   /***************************************************** States */
 
   const params: RouteParams = useParams();
-  const shopId = Number(params.id);
+  // const shopId = Number(params.id);
+  // 暂时写死，用来调试
+  const shopId = 411
 
   // tabScope 维护当前页面进入不同文件夹的深度，
   // 维护方式类似 history.pushState
@@ -181,8 +181,6 @@ const ShopArticlePage = (props: any) => {
 
   return (
     <>
-      {/* 页头 */}
-      <ContentHeader {...props} type={ShopModuleType.IMAGESET} />
       {/* 内容 */}
       <div className={`container ${styles["container"]}`}>
         {/* 页面内导航栏 */}
@@ -343,6 +341,6 @@ async function fetchErrorImageLists(shopId: number, querys: any) {
   }
 }
 
-ShopArticlePage.wrappers = ['@/wrappers/path-auth']
+// ShopArticlePage.wrappers = ['@/wrappers/path-auth']
 
 export default ShopArticlePage

@@ -57,29 +57,37 @@ const Layouts = (props: any) => {
           <Header className="sideHeader">
             <div className="logo"></div>
           </Header>
-          <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
-            onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
-            { isNull(menuList) && (
+          <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys} onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
+            {isNull(menuList) && (
                 <div style={{ padding: 20 }}>
                   <Skeleton active title={false} paragraph={{ rows: 4 }} />
                 </div>
             )}
-            {
-              menuList && menuList.map((subMenu: MidMenuItem) => {
-                return (
-                  <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
-                           className={subMenu.key}>
-                    { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
-                      return (
-                        <Menu.Item key={menu.key}>
-                          <Link to={menu.path || ''}>{ menu.menuName }</Link>
-                        </Menu.Item>
-                      )
-                    }) }
-                  </SubMenu>
-                )
-              })
-            }
+            {menuList && menuList.map((subMenu: MidMenuItem) => {
+              return (
+                <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName} className={subMenu.key}>
+                  { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
+                    return (
+                      <Menu.Item key={menu.key}>
+                        <Link to={menu.path || ''}>{ menu.menuName }</Link>
+                      </Menu.Item>
+                    )
+                  }) }
+                </SubMenu>
+              )
+            })}
+            {/* 测试用素材管理菜单栏 */}
+            <SubMenu style={{ marginBottom: '10px' }} key="assets-manage" title="素材管理" className="assets-manage">
+              <Menu.Item key="assets-img">
+                <Link to="/assets-manage/imageset">图片管理</Link>
+              </Menu.Item>
+              <Menu.Item key="assets-video">
+                <Link to="/assets-manage/videoset">视频管理</Link>
+              </Menu.Item>
+              <Menu.Item key="assets-reapply">
+                <Link to="/assets-manage/reapply-list">申诉列表</Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1240 : '' }}>
