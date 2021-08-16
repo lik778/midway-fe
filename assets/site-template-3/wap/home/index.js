@@ -13,7 +13,6 @@ initAboutus()
 leaveLeads1()
 leaveLeads()
 initCompanyInfo()
-initPopup()
 
 // sem下禁止用户二跳 
 $(document).on("ready", function () {

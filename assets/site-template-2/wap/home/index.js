@@ -12,7 +12,6 @@ initAboutus()
 leaveLeads()
 initCompanyInfo()
 initProductListHot()
-initPopup()
 
 // sem下禁止用户二跳 
 $(document).on("ready", function () {
