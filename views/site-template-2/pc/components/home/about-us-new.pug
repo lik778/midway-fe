@@ -11,8 +11,8 @@ mixin about-Us-New(type,mediaImg)
           //- - var tag = ['最佳品质','实力商家','品质保证']
           each item in type
             p.tag= item
-      .content-right-body
-        - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,270):'暂时还未上传公司简介哦...'
+      .content-right-body(data-d=company.about)
+        - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
         .body-content
           | !{ aboutText.length === 270?aboutText+'...':aboutText }
           if aboutText.length === 270

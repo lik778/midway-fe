@@ -65,7 +65,7 @@ const ContentItem: FC<Props> = (props) => {
         </div>
         <div className={styles['text-box']}>
           <div className={styles['name']}>{content.name}</div>
-          <div className={styles['price']}>{(content as SelectProductListItem).price || '暂无价格'}</div>
+          <div className={styles['price']}>价格：{(content as SelectProductListItem).price || '暂无价格'}</div>
         </div>
       </div>
     }
