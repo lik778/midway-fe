@@ -31,12 +31,13 @@ export default {
       const cdnPath = config().cdnPath;
 
       const assetsName = isLocal ? item : readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-
-      if (suffix === 'css') {
-        retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
-      }
-      if (suffix === 'js') {
-        retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
+      if(assetsName){
+        if (suffix === 'css') {
+          retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
+        }
+        if (suffix === 'js') {
+          retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
+        }
       }
     })
     return retAssets
