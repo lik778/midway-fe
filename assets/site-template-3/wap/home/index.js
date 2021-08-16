@@ -7,7 +7,6 @@ import { leaveLeads1 } from '../components/contact-us-form/index'
 import { leaveLeads } from '../components/contact-form/index'
 import { initCompanyInfo } from '../components/company-info/index'
 import { initSem } from '../../../common/wap/contact-form-sem'
-import { initPopup } from '../../../common/wap/official-popup'
 
 
 initAboutus()
