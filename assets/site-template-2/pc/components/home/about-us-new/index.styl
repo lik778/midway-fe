@@ -1,151 +1,158 @@
 .about-us-bgc
+  box-sizing border-box 
   width 1190px
   display flex
+  justify-content center
+  align-items flex-start
   height 360px
+  padding 59px 36px 51px 30px
   background url("//file.baixing.net/202108/55178a98c73c9d27db933bce8121e310.png") no-repeat center center/100%
   background-size cover
-  margin 0 0 60px -1px
-  .about-us-content
-    display flex
-    justify-content center
-    // align-items center
-    margin 58px 0 0 38px
-    .content-left
-      position relative
-      width 432px
-      height 243px
-      margin-top 0
-      border-radius 7px
-      overflow hidden
-      .audio
+  margin 0 0 0 -1px
+  // .about-us-content
+  //   display flex
+  //   justify-content center
+  //   // align-items center
+  //   margin 58px 0 0 38px
+  .content-left
+    position relative
+    width 432px
+    height 243px
+    margin-top 0
+    border-radius 7px
+    overflow hidden
+    .audio
+      width 100%
+      height 100%
+      object-fit: cover
+    audio
+      width 100%
+      height 100%
+    .ico-video
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%,-50%)
+      width 54px
+      height 54px
+      img
         width 100%
         height 100%
-        object-fit: cover
-      audio
+    .video-cover
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+      z-index 9
+      cursor pointer
+      img
         width 100%
         height 100%
-      .ico-video
-        position absolute
-        top 50%
-        left 50%
-        transform translate(-50%,-50%)
-        width 54px
-        height 54px
-        img
-          width 100%
-          height 100%
-      .video-cover
-        position absolute
-        top 0
-        left 0
-        width 100%
-        height 100%
-        z-index 9
+    .video-wrapper 
+      display flex
+      justify-content center
+      align-items center
+      width 100%
+      height 100%
+      video
+        max-width 100%
+        heigh 100%
         cursor pointer
-        img
-          width 100%
-          height 100%
-      .video-wrapper 
+        z-index 9
+  .content-right
+    // height 243px
+    width 656px
+    display flex
+    flex-direction column
+    justify-content flex-start
+    padding 0 36px 0 0
+    margin-top -6px
+    .content-right-title
+      display flex
+      justify-content flex-start
+      align-items center
+      margin-bottom 12px
+      .right-title-left
         display flex
         justify-content center
         align-items center
-        width 100%
-        height 100%
-        video
-          max-width 100%
-          heigh 100%
-          cursor pointer
-          z-index 9
-    .content-right
-      height 243px
-      display flex
-      flex-direction column
-      justify-content flex-start
-      padding 10px 42px 0 0
-      .content-right-title
-        display flex
-        justify-content flex-start
-        align-items center
-        margin-bottom 12px
-        .right-title-left
-          display flex
-          justify-content center
-          align-items center
-          img
-            width 46px
-            height 46px
-            margin-right 16px
-            border-radius 4px
-            overflow hidden
-          .left-title
-            // line-height 26px
-            font-size 20px
-            font-weight bold
-        .right-title-right
-          margin-left 16px
-          display flex
-          .tag
-            box-sizing border-box
-            padding 5px 9px
-            line-height 14px
-            text-align center
-            border 1px solid #D19960
-            border-radius 2px
-            color #D19960
-            font-size 14px
-            margin-right 12px
-      .content-right-body
-        position relative
-        width 654px
-        height 144px
-        .body-content
-          height 120px
-          color #666666
-          line-height 24px
-          font-size 14px
-        .view-detail
-          display inline
-          color #FF4365
-          font-size 14px
-      .content-right-bottom
-        height 46px
-        display flex
-        align-items center
-        margin-top 10px
-        .bottom-left
-          display flex
-          justify-content center
-          align-items center
-          img
-            width 78.1px
-            height 46.2px
-          .phone
-            margin-left 13px
-            text-align left
-            .active
-              font-size 24px
-              color #FF4365
-              font-weight bold
-            .service-hot
-              margin-bottom  4px
-              font-size 14px
-              color #333333
-              font-weight bold
-            .service-tel
-              font-size 24px
-              color #FF4365
-              font-weight bold
-        .bottom-right
-          width 160px
-          height 44px
-          margin-left 58px
-          background-color #ED4646
+        img
+          width 50px
+          height 46px
+          margin-right 16px
           border-radius 4px
-          color #FFFFFF
-          line-height 44px
-          font-size 16px
+          overflow hidden
+        .left-title
+          // line-height 26px
+          font-size 20px
+          font-weight bold
+      .right-title-right
+        margin-left 16px
+        display flex
+        .tag
+          box-sizing border-box
+          padding 5px 9px
+          line-height 14px
           text-align center
-          cursor pointer
+          border 1px solid #D19960
+          border-radius 2px
+          color #D19960
+          font-size 14px
+          margin-right 12px
+    .content-right-body
+      position relative
+      width 656px
+      height 120px
+      .body-content
+        height 120px
+        color #666666
+        line-height 24px
+        font-size 14px
+      .view-detail
+        display inline
+        color #FF4365
+        font-size 14px
+    .content-right-bottom
+      height 40px
+      display flex
+      align-items center
+      margin-top 38px
+      .bottom-left
+        display flex
+        justify-content center
+        align-items center
+        img
+          width 63px
+          height 37px
+        .phone
+          margin-left 13px
+          padding-left 0
+          text-align left
+          .active
+            font-size 20px
+            color #FF4365
+            font-weight bold
+          .service-hot
+            margin-bottom 1px
+            font-size 12px
+            color #333333
+            font-weight bold
+          .service-tel
+            font-size 24px
+            color #FF4365
+            font-weight bold
+      .bottom-right
+        width 160px
+        height 40px
+        margin-left 20px
+        background-color #ED4646
+        border-radius 4px
+        color #FFFFFF
+        line-height 40px
+        font-size 14px
+        text-align center
+        cursor pointer
 
 .about-us-bgc
   .video-wrapper

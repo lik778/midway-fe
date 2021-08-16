@@ -1,37 +1,42 @@
 .self-advantage
-	margin 0 auto 60px
-	display flex
-	justify-content center
-	.advanItem
-		flex-direction column
-		display flex
-		justify-content flex-start
-		align-items center
-		margin: 0 20px
-		img
-			width 260px
-			height 195px
-			margin 0 auto
-			border-radius 2px
-		.title
-			color #333333
-			font-size 16px
-			margin 20px auto 10px
-			font-weight bold
-		.selfAdvan-line
-			width 20px
-			height 2px
-			background-color $color-main
-			margin 0px auto 15px
-		.content
-			color #999999
-			text-align center
-			font-size 12px
-			width 218px
-			line-height 20px
-			overflow hidden
-			text-overflow ellipsis
-			display -webkit-box
-			-webkit-box-orient vertical
-			-webkit-line-clamp 3
-			word-break break-all
+  width 1189px
+  margin 0 auto
+  display flex
+  justify-content flex-start
+  flex-wrap wrap
+  .advanItem
+    width 260px
+    flex-direction column
+    display flex
+    justify-content flex-start
+    align-items center
+    margin: 0 20px
+    &:nth-child(4n)
+      margin-right 0
+    img
+      width 260px
+      height 195px
+      margin 0 auto
+      border-radius 2px
+    .title
+      color #333333
+      font-size 16px
+      margin 20px auto 10px
+      font-weight bold
+    .selfAdvan-line
+      width 20px
+      height 2px
+      background-color $color-main
+      margin 0px auto 15px
+    .content
+      color #999999
+      text-align center
+      font-size 12px
+      width 218px
+      line-height 20px
+      overflow hidden
+      text-overflow ellipsis
+      display -webkit-box
+      -webkit-box-orient vertical
+      -webkit-line-clamp 3
+      word-break break-all
