@@ -7,13 +7,11 @@ import { leaveLeads } from '../components/contact-form/index'
 import { initCompanyInfo } from '../components/company-info-home/index'
 import { initProductListHot } from '../components/product-list-hot'
 import { initSem } from '../../../common/wap/contact-form-sem'
-import { initPopup } from '../../../common/wap/official-popup'
 
 initAboutus()
 leaveLeads()
 initCompanyInfo()
 initProductListHot()
-initPopup()
 
 // sem下禁止用户二跳 
 $(document).on("ready", function () {
