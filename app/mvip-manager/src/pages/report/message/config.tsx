@@ -1,9 +1,10 @@
 import React from 'react'
 import dayjs from 'dayjs'
 import { Popover, Radio } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import { LeaveMessageChannelMap } from '@/constants/report'
-import { decodeHTMLCodeSafe } from '@/utils'
+import { decodeHTMLCodeSafe, isValidURL } from '@/utils'
 
 import { LeaveMessageListData } from '@/interfaces/report'
 import { SearchListConfig } from '../components/search-list'
@@ -90,7 +91,26 @@ export const LeaveMessageSearchListConfig = ({
         dataIndex: 'sourceUrl',
         width: 120,
         key: 'sourceUrl',
-        render: (_: any, r: Item) => <a href={r.sourceUrl} target="__blank">查看详情</a>
+        render: (_: any, r: Item) => {
+          const sourceUrl = r.sourceUrl || ''
+          const isValid = isValidURL(sourceUrl)
+          if (isValid) {
+            return <a href={r.sourceUrl} target="__blank">查看详情</a>
+          } else {
+            return (
+              <Popover
+                content={() => (
+                  <span>
+                    <span style={{ color: 'red' }}><ExclamationCircleOutlined /></span>
+                    <span style={{ marginLeft: 8 }}>暂时不支持查看</span>
+                  </span>
+                )}
+                trigger="hover">
+                <a className="disabled" href="#" onClick={e => e.stopPropagation()}>查看详情</a>
+              </Popover>
+            )
+          }
+        }
       },
       {
         title: '留咨内容',
