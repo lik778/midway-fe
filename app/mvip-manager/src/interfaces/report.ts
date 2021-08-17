@@ -107,7 +107,7 @@ export interface BaxFlowChartParams extends BaseParams {
   product: BaxProductType;
 }
 
-export interface BaxFlowChartData  extends FlowChartData {
+export interface BaxFlowChartData extends FlowChartData {
   shows: number;
 }
 
@@ -145,6 +145,18 @@ export interface KeywordDetailListData {
   ranking: number;
   url: string;
   isExcellentWord: boolean;
+}
+
+
+export interface MailBoxListItem {
+  id: number
+  text: string
+  url: string
+}
+
+export interface MailBoxListApiParams {
+  page: number
+  size: number
 }
 
 export interface getLeaveMessageListParams {

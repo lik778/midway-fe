@@ -12,7 +12,7 @@ leaveLeads()
 viewPhone()
 
 $(document).on('ready', function () {
-  new Swiper('#banner-list .swiper-container', {
+  const swiper = new Swiper('#banner-list .swiper-container', {
     //spaceBetween: 30,
     loop: true,
     speed: 1500,
@@ -32,7 +32,50 @@ $(document).on('ready', function () {
       nextEl: '#banner-list .swiper-button-next',
       prevEl: '#banner-list .swiper-button-prev',
     },
-  });
+    on: {
+      slideChange: () => {
+        pauseAllBannerVideo()
+        swiper.autoplay.start()
+      }
+    }
+  })
+
+  /* 轮播视频初始化 */
+
+  const $bannerVideos = document.querySelectorAll('#banner-list video')
+  const $bannerVideoCovers = [...$bannerVideos].map($video => {
+    return $video.parentElement.parentElement.querySelector('.video-cover')
+  })
+  function pauseAllBannerVideo() {
+    [...$bannerVideos].map(x => x.pause())
+  }
+
+  const hasBannerVideo = $bannerVideos.length > 0
+  if (hasBannerVideo) {
+    // 点击封面播放视频
+    const play = idx => {
+      $bannerVideos[idx].play()
+      swiper.autoplay.stop()
+    }
+    ;[...$bannerVideos].map($video => {
+      $video.addEventListener('click', () => {
+        $video.paused
+          ? swiper.autoplay.stop()
+          : swiper.autoplay.start()
+      })
+    })
+    ;[...$bannerVideoCovers].map(($cover, idx) => {
+      $cover.addEventListener('click', evt => {
+        play(idx)
+        $cover.remove()
+        evt.stopPropagation()
+      })
+    })
+    // 切换轮播时暂停视频
+    document.querySelector('#banner-list .swiper-button-next').addEventListener('click', pauseAllBannerVideo)
+    document.querySelector('#banner-list .swiper-button-prev').addEventListener('click', pauseAllBannerVideo)
+  }
+
   // sem部分链接需要禁止二跳
   if (isSem) {
     initSem({

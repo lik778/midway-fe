@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Table } from 'antd';
+import { Table, Popover } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons'
 import MyModal from '@/components/modal';
 import { deleteProductApi } from '@/api/shop';
-import { RouteParams } from '@/interfaces/shop';
+import { RouteParams, ShopProductListItem } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { auditStatusText } from '@/constants';
 import { errorMessage, successMessage } from '@/components/message';
@@ -40,34 +41,54 @@ export default (props: Props) => {
   }
 
   const confirmDelete = async () => {
-      const res  = await deleteProductApi(Number(params.id), { id: actionId })
-      if (res?.success) {
-        successMessage(res.message);
-        location.reload()
-      } else {
-        errorMessage(res.message);
-      }
+    const res = await deleteProductApi(Number(params.id), { id: actionId })
+    if (res?.success) {
+      successMessage(res.message);
+      location.reload()
+    } else {
+      errorMessage(res.message);
+    }
   }
   const columns = [
     { title: '序号', dataIndex: 'key', key: 'key' },
-    { title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
+    {
+      title: '封面', dataIndex: 'headImg', key: 'headImg', render: (text: string) => {
         return (
-          <div style={{ width: 60, height: 40, textAlign: 'center', overflow: 'hidden', backgroundColor: '#f0f2f5'}}>
-            <img   height={40} src={`${text ? text : '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}`} alt="" />
+          <div style={{ width: 60, height: 40, textAlign: 'center', overflow: 'hidden', backgroundColor: '#f0f2f5' }}>
+            <img height={40} src={`${text ? text : '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}`} alt="" />
           </div>
         )
-      }},
-    { title: `${type}名称`, dataIndex: 'name', key: 'name',
+      }
+    },
+    {
+      title: `${type}名称`, dataIndex: 'name', key: 'name',
       render: (text: string, record: any) => <a className="article-action-btn" href={record.urlSuffix} target="_blank">{text}</a>
     },
     { title: '价格', dataIndex: 'price', key: 'price' },
     { title: `${type}分组`, dataIndex: 'cateName', key: 'cateName' },
-    { title: '审核结果', dataIndex: 'status', key: 'status',
-    render: (text: AuditStatus) => {
-      return <span style={{  color: text === AuditStatus.APPROVE ? '#999' :
-          (AuditStatus.REJECT ? '#F1492C' : '')}}>{ auditStatusText[text] }</span>
-    }},
-    { title: '操作', dataIndex: '', key: 'x',
+    {
+      title: '审核结果', dataIndex: 'status', key: 'status',
+      render: (text: AuditStatus, record: ShopProductListItem) => {
+        return <>
+          <span style={{
+            color: text === AuditStatus.APPROVE ? '#999' :
+              (text === AuditStatus.REJECT ? '#F1492C' : ''),
+            marginRight: 4
+          }}>{auditStatusText[text]}</span>
+          {
+            text === AuditStatus.REJECT && <Popover trigger="hover" placement="top" title="审核信息" content={<div style={{
+              maxWidth: 200
+            }}>{record.memo}</div>}>
+              <ExclamationCircleFilled style={{
+                color: '#F1492C',
+              }} />
+            </Popover>
+          }
+        </>
+      }
+    },
+    {
+      title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
           <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a>
@@ -79,10 +100,10 @@ export default (props: Props) => {
 
   return (
     <div>
-      { total === null && <Loading /> }
+      {total === null && <Loading />}
       {
         total === 0 && <div className="no-list-data">
-          <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png"  />
+          <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
           <p>暂无服务内容，你可以新建服务</p>
         </div>
       }
@@ -93,9 +114,10 @@ export default (props: Props) => {
             content="删除后无法恢复，确认删除？"
             onCancel={() => setVisibleDeleteDialog(false)}
             onOk={() => confirmDelete()}
-            visible={visibleDeleteDialog}/>
+            visible={visibleDeleteDialog} />
           <Table rowKey="id" columns={columns} loading={loading} dataSource={dataSource} pagination={{
-            showSizeChanger: false,  current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']}} />
+            showSizeChanger: false, current: page, onChange, total: total || 0, hideOnSinglePage: dataSource.length < 10, position: ['bottomCenter']
+          }} />
         </div>
       }
     </div>)

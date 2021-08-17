@@ -18,13 +18,12 @@ export default () => {
   const [previewModal, setPreviewModal] = useState(false);
 
   const getLists = async (page?: number) => {
-    // console.log(form.getFieldsValue())
     setLoading(true)
     page = page || 1
     // const queryData = form.getFieldsValue()
-    const lists = await getAuditImageList({ page, size: 999 })
+    const res = await getAuditImageList({ page, size: 999 })
+    setLists((res.data as any[]).map(x => ({ ...x, key: x.id })))
     setLoading(false)
-    setLists(lists.map(x => ({ ...x, key: x.id })))
   }
 
   useEffect(() => {
@@ -47,17 +46,18 @@ export default () => {
       reason: '',
       checkResult: 1
     })
-    try {
-      const isPass = res.checkStatus === 'APPROVE'
+    if (res.success) {
+      const isPass = (res.data as any).checkStatus === 'APPROVE'
       if (isPass) {
         message.success('操作成功')
         getLists()
       } else {
-        message.success('出错了，请稍后重试~')
+        message.error('出错了，请稍后重试~')
       }
-    } finally {
-      setLoading(false)
+    } else {
+      message.error(res.message)
     }
+    setLoading(false)
   }
   const notPassImage = async (item: ImageItem) => {
     setLoading(true)
@@ -66,17 +66,18 @@ export default () => {
       reason: '',
       checkResult: 4
     })
-    try {
-      const isPass = res.checkStatus === 'REJECT_BYHUMAN'
+    if (res.success) {
+      const isPass = (res.data as any).checkStatus === 'REJECT_BYHUMAN'
       if (isPass) {
         message.success('操作成功')
         getLists()
       } else {
-        message.success('出错了，请稍后重试~')
+        message.error('出错了，请稍后重试~')
       }
-    } finally {
-      setLoading(false)
+    } else {
+      message.error(res.message)
     }
+    setLoading(false)
   }
 
   const columns = [
@@ -97,7 +98,7 @@ export default () => {
       }
     },
     { title: '违规原因', dataIndex: 'reason', key: 'reason' },
-    { 
+    {
       title: '审核操作',
       render: (_, item: ImageItem) => {
         return <>

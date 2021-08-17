@@ -10,6 +10,7 @@ export const auditStatusText: any = {
   [AuditStatus.APPROVE]: '审核通过',
   [AuditStatus.REJECT]: '审核驳回',
   [AuditStatus.DELETED]: '已删除',
+  [AuditStatus.VERIFY]: '审核中',
 }
 
 export const ArticleSourceText: any = {

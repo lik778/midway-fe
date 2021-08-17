@@ -4,8 +4,8 @@ import { join } from 'path';
 import * as util from './util';
 import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
-
 import scriptFallbackFunctionSouce from './simple-resouce-reload'
+const isLocal = process.env.NODE_ENV === 'local'
 
 /* CDN 资源加载出错时的简单回退至加载源站，没有考虑加载顺序 */
 
@@ -29,14 +29,15 @@ export default {
       const suffix = item.split('.')[1]
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
-      // FIXME
-      const assetsName = readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-      
-      if (suffix === 'css') {
-        retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
-      }
-      if (suffix === 'js') {
-        retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
+
+      const assetsName = isLocal ? item : readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
+      if(assetsName){
+        if (suffix === 'css') {
+          retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
+        }
+        if (suffix === 'js') {
+          retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
+        }
       }
     })
     return retAssets

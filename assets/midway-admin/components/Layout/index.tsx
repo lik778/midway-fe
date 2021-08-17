@@ -7,8 +7,12 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const routerKey = {
+  '/audit-image': 'audit-image',
   '/verify-word': 'verify-word',
-  '/switch-shop-type': 'switch-shop-type'
+  '/switch-shop-type': 'switch-shop-type',
+  '/store-whitelist': 'store-whitelist',
+  '/clean-cache': 'clean-cache',
+  '/modify-the-store': 'modify-the-store'
 }
 export default withRouter((props) => {
   const menuKey = routerKey[props.location.pathname]
@@ -31,6 +35,17 @@ export default withRouter((props) => {
             <Menu.Item key="switch-shop-type">
               <Link to="/switch-shop-type" key="switch-shop-type">模板切换</Link>
             </Menu.Item>
+            <SubMenu key="common-function" title="常用功能">
+              <Menu.Item key="modify-the-store">
+                <Link to="/modify-the-store" key="modify-the-store">修改店铺名称</Link>
+              </Menu.Item>
+              <Menu.Item key="store-whitelist">
+                <Link to="/store-whitelist" key="store-whitelist">添加多店铺权限</Link>
+              </Menu.Item>
+              <Menu.Item key="clean-cache">
+                <Link to="/clean-cache" key="clean-cache">清53kf缓存</Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout">

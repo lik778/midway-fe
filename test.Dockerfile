@@ -1,12 +1,13 @@
-FROM node:12
-
-WORKDIR /usr/src
-
-COPY . .
-
-RUN npm set registry https://registry.npm.taobao.org && npm install && npm run release:test && cd app/mvip-manager/ && npm install && npm run build:test \
-    && cp -r /usr/src/app/mvip-manager/dist/* /usr/src/dist/public/
+FROM registry.gitlab.baixing.cn/arch/base-images/nodejs:14.16.0
 
 EXPOSE 7001
 
-CMD npm run start:test
+CMD export NODE_ENV=test && \
+    npm run node:dev
+
+COPY app/mvip-manager/dist/ dist/public
+COPY . .
+
+RUN npm set registry https://registry.npm.taobao.org && \
+    npm set progress=false && \
+    npm ci --production

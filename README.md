@@ -136,3 +136,7 @@ X-Api-Shop-Id : 366
 - 在`build/constant.js`添加新模板的内容，序号则和文件夹里的`n`保持一致，`TB_PAGE_NAMES_${B2X}_n`则是这个模板所有页面文件夹的名称（作为wabpack打包入口）
 - 在`webpack.base.config.js`的entry入口里添加`genSiteTemplateEntry(TB_TYPE_${B2X}_n, TB_PAGE_NAMES_${B2X}_n)`
 - 需要打点的页面方法可以参考`assets/common/pc/customer-service/index/js`
+
+## CI相关说明
+
+CI 文件以及说明文档见 `.gitlab.yml`
