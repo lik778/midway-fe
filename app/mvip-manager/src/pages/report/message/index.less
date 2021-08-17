@@ -1,4 +1,10 @@
 .page-report {
+
+  a.disabled {
+    color: #999;
+    user-select: none;
+    cursor: not-allowed;
+  }
   .contact {
     padding: 3px 5px;
 
@@ -18,6 +24,12 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+
+  a.disabled {
+    color: #666;
+    user-select: none;
+    pointer-events: none;
+  }
 
   .ant-tabs {
     display: flex;

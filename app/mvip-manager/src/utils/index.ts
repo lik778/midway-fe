@@ -254,3 +254,8 @@ export const decodeHTMLCodeSafe = (message: string) => {
     return message
   }
 }
+
+// 简单判断字符串是不是合法的 URL
+export const isValidURL = (url: string) => {
+  return /(^https?)|(^\/\/)/.test(url)
+}
