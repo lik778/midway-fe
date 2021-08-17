@@ -3,13 +3,13 @@ import { Checkbox, Result } from "antd"
 import { DeleteOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import CardListPage from '../imageset'
+import CardListPage from '../card-list-page'
 import { getImagesetFailedImage, delImagesetFailedImage, reAuditImagesetImage } from '@/api/shop'
 
 import { CardItem, ImageItem } from "@/interfaces/shop"
-import { CustomCardItemProps } from '../imageset/components/cards'
+import { CustomCardItemProps } from '../card-list-page/components/cards'
 
-import styles from '../imageset/components/cards/index.less'
+import styles from '../card-list-page/components/cards/index.less'
 
 // 资源管理申诉列表页
 const AssetsMangeAuditListPage = () => {

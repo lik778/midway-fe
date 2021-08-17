@@ -79,7 +79,7 @@ const Layouts = (props: any) => {
             {/* 测试用素材管理菜单栏 */}
             <SubMenu style={{ marginBottom: '10px' }} key="assets-manage" title="素材管理" className="assets-manage">
               <Menu.Item key="assets-img">
-                <Link to="/assets-manage/imageset">图片管理</Link>
+                <Link to="/assets-manage/card-list-page">图片管理</Link>
               </Menu.Item>
               <Menu.Item key="assets-video">
                 <Link to="/assets-manage/videoset">视频管理</Link>
