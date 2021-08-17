@@ -496,6 +496,13 @@ export default function Cards(props: CardsProps) {
 /**
  * 图片预览模态框
  */
+
+declare global {
+  interface Window {
+    __page_imageset_preview_modal_keycatch_tick: any | null;
+  }
+}
+
 type PreviewModalProps = {
   lists: CardItem[]
   previewItem: ImageItem|undefined
@@ -505,10 +512,27 @@ type PreviewModalProps = {
 }
 function PreviewModal(props: PreviewModalProps) {
   const { lists, previewItem, previewModal, closePreviewModal, previewImage } = props
+  const clear = () => {
+    if (window.__page_imageset_preview_modal_keycatch_tick) {
+      window.removeEventListener('keyup', window.__page_imageset_preview_modal_keycatch_tick)
+      window.__page_imageset_preview_modal_keycatch_tick = null
+    }
+  }
   if (!previewItem) {
+    clear()
     return null
   }
+  if (lists && lists.length === 0) {
+    clear()
+    return null
+  }
+
   const target = lists.find(x => x.id === previewItem.id)
+  if (!target) {
+    clear()
+    return null
+  }
+
   const targetIDX = lists.findIndex(x => x === target)
   const prev = lists[targetIDX - 1]
   const next = lists[targetIDX + 1]
@@ -523,10 +547,12 @@ function PreviewModal(props: PreviewModalProps) {
       }
     }
     window.addEventListener('keyup', handlePreview)
+    window.__page_imageset_preview_modal_keycatch_tick = handlePreview
     return () => {
       window.removeEventListener('keyup', handlePreview)
+      window.__page_imageset_preview_modal_keycatch_tick = null
     }
-  }, [prev, next])
+  }, [lists, prev, next])
 
   return (
     <Modal
