@@ -75,9 +75,13 @@ export const LeaveMessageSearchListConfig = ({
         key: 'sourceName',
         render: (_: any, r: Item) => {
           return <>
-            <Popover content={r.sourceName} trigger="hover">
-              <span className="line-1">{r.sourceName || '-'}</span>
-            </Popover>
+            {r.sourceName ? (
+              <Popover content={r.sourceName} trigger="hover">
+                <span className="line-1">{r.sourceName || '-'}</span>
+              </Popover>
+            ):(
+              <span className="line-1">-</span>
+            )}
           </>
         }
       },
