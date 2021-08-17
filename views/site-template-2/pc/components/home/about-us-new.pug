@@ -14,8 +14,8 @@ mixin about-Us-New(type,mediaImg)
       .content-right-body(data-d=company.about)
         - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
         .body-content
-          | !{ aboutText.length === 270?aboutText+'...':aboutText }
-          if aboutText.length === 270
+          | !{ aboutText.length === 220?aboutText+'...':aboutText }
+          if aboutText.length === 220
             a.view-detail(href=aboutLink) 查看详情
       .content-right-bottom
         .bottom-left
