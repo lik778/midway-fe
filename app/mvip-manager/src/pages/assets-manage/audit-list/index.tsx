@@ -3,20 +3,26 @@ import { Checkbox, Result } from "antd"
 import { DeleteOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import CardListPage from '../card-list-page'
+import CardListPage from '../card-list-page/index'
 import { getImagesetFailedImage, delImagesetFailedImage, reAuditImagesetImage } from '@/api/shop'
 
-import { CardItem, ImageItem } from "@/interfaces/shop"
-import { CustomCardItemProps } from '../card-list-page/components/cards'
+import { TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
+import { CustomCardItemProps } from '../card-list-page/components/cards/index'
 
 import styles from '../card-list-page/components/cards/index.less'
 
 // 资源管理申诉列表页
 const AssetsMangeAuditListPage = () => {
 
-  /***************************************************** Renders */
+  const selectionDeleteFn = (shopId: number, curScope?: TabScopeItem) => {
+    if (!curScope) return null
+    const fn = delImagesetFailedImage
+    const ret = async (query: any) => fn(shopId, query)
+    ret.getQuery = (selection: number[]) => ({ ids: [...selection], mediaCateId: curScope?.item?.id })
+    return ret
+  }
 
-  const emptyTip = useMemo(() => (
+  const emptyTip = useCallback(({}) => (
     <Result
       title="当前没有申诉中的图片哦~"
       style={{ margin: 'auto' }}
@@ -27,7 +33,7 @@ const AssetsMangeAuditListPage = () => {
     <CardListPage
       customScope={{ type: 'audit', item: null }}
       fetchListFn={fetchErrorImageLists}
-      selectionDeleteFn={delImagesetFailedImage}
+      selectionDeleteFn={selectionDeleteFn}
       cardItem={ErrorCardItemWithAuditItemLoading}
       emptyTip={emptyTip}
     />

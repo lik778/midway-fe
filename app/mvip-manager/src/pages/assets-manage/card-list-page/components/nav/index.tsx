@@ -16,12 +16,18 @@ interface Props {
   openUpload: (defaultVal?: number) => void
 }
 export default (props: Props) => {
-  const { curScope, createAlbum, openUpload } = props;
+  const { curScope, tabScope, goTabScope, createAlbum, openUpload } = props;
 
   const isScopeAlbum = curScope && curScope.type === 'album'
 
   // 目前只处理了单层文件夹的结构
   const lastScopeName = curScope?.item?.name || ''
+
+  // 前往图片管理页面
+  const goImageList = () => {
+    history.replace('/assets-manage/image-list')
+    goTabScope(tabScope[0])
+  }
 
   return (
     <>
@@ -29,7 +35,7 @@ export default (props: Props) => {
         {/* left actions */}
         {(
           <Breadcrumb separator=">">
-            <Breadcrumb.Item onClick={() => history.push('/assets-manage/imageset')}>
+            <Breadcrumb.Item onClick={() => goImageList()}>
               <a>相册管理</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>{lastScopeName}</Breadcrumb.Item>
