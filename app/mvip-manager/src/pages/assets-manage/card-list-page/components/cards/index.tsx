@@ -12,7 +12,7 @@ import {
 import { debounce } from 'lodash'
 
 import { successMessage, errorMessage } from "@/components/message"
-import { delImagesetAlbum, delImagesetImage, delImagesetFailedImage, setImagesetAlbumCover, moveImagesetImage } from '@/api/shop'
+import { delImagesetImage, delImagesetFailedImage, moveImagesetImage } from '@/api/shop'
 import { useSelectAlbumListsModal } from '../select-album-modal'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
@@ -64,7 +64,6 @@ export default function Cards(props: CardsProps) {
   } = props;
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
-  const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
   const [previewItem, setPreviewItem] = useState<ImageItem | undefined>();
   const [previewModal, setPreviewModal] = useState(false);
@@ -135,8 +134,6 @@ export default function Cards(props: CardsProps) {
   }, [])
 
   /***************************************************** Interaction Fns */
-
-  const stopEvent = (e: any) => e.stopPropagation()
 
   const previewImage = (image: ImageItem) => {
     setPreviewItem(image)
@@ -228,72 +225,8 @@ export default function Cards(props: CardsProps) {
       })
   }, [shopId, selection, curScope, lists, refresh])
 
-  // 设置封面图片
-  const setCoverImage = useCallback(async (e: any, image: ImageItem) => {
-    e.stopPropagation()
-    if (curScope && curScope.item) {
-      setSetCoverItem(image)
-      const { id } = image
-      const { item } = curScope
-      setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
-        .then((res: any) => {
-          if (res.success) {
-            successMessage('设置成功');
-          } else {
-            throw new Error(res.message || "出错啦，请稍后重试");
-          }
-        })
-        .catch((error: any) => {
-          errorMessage(error.message)
-        })
-        .finally(() => {
-          setSetCoverItem(null)
-        })
-    } else {
-      console.warn('[WARN] Empty Scope in function setCoverImage')
-    }
-  }, [curScope])
-
   /***************************************************** Renders */
 
-  const ImageCard = useCallback((card: ImageItem) => {
-    const { id, imgUrl } = card;
-    const isChecked = isScopeImage && selection.find((y: number) => y === id);
-    const inSetCoverLoading = setCoverItem && setCoverItem.id === id
-    return (
-      <div className={styles["image-card"]} key={`image-card-${id}`} onClick={() => previewImage(card)}>
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
-          <div className={styles["action-wrapper"]}>
-            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
-            <div className={styles["anticon-down-con"]}>
-              <div className={styles["anticon-down"]}>
-                <DownOutlined />
-              </div>
-              <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
-                <div className={styles["anticon-down-item"]}>
-                  <PartitionOutlined />
-                  <span>移动</span>
-                </div>
-                <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
-                  <DeleteOutlined />
-                  <span>删除</span>
-                </div>
-                <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
-                  {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
-                  <span>设为封面</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {(!loading && imgUrl) && (
-          <img className={styles["cover"]} src={imgUrl} alt="cover" />
-        )}
-      </div>
-    );
-  }, [selection, loading, setCoverItem])
-
-  // 根据文件夹类型的不同渲染不同的卡片
   const renderCard = (card: CardItem) => {
     if (cardItem) {
       return cardItem({
@@ -308,9 +241,8 @@ export default function Cards(props: CardsProps) {
         moveImage,
         delImage
       })
-    }
-    if (isScopeImage) {
-      return ImageCard(card as ImageItem)
+    } else {
+      return null
     }
     console.error('[ERR] Error TabScope Rendered')
   }

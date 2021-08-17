@@ -4,6 +4,7 @@ import { Button, Result } from "antd"
 import { getImagesetAlbum, getImagesetImage, delImagesetAlbum, delImagesetImage } from '@/api/shop'
 import CardListPage from '../card-list-page/index'
 import AlbumCardWrapper from './album-card/index'
+import ImageCardWrapper from './image-card/index'
 
 import { TabScope, TabScopeItem, } from "@/interfaces/shop"
 
@@ -41,6 +42,25 @@ const AssetsMangeImageListPage = () => {
 
   /***************************************************** Renders */
 
+  const customCardItem = useMemo(() => {
+    if (isScopeAlbum) {
+      return AlbumCardWrapper
+    }
+    if (isScopeImage) {
+      return ImageCardWrapper
+    }
+    return PaddingHooks
+  }, [isScopeAlbum, isScopeImage])
+
+  const fetchListFn = useMemo(() => {
+    if (isScopeAlbum) {
+      return fetchAlbumLists
+    }
+    if (isScopeImage) {
+      return fetchImageLists
+    }
+  }, [isScopeAlbum, isScopeImage])
+
   // 空列表提示
   const emptyTip = useCallback(({ curScope, createAlbum, openUpload }) => {
     let info, $extra
@@ -66,13 +86,18 @@ const AssetsMangeImageListPage = () => {
       customScope={{ type: 'album', item: null }}
       isScopeAlbum={isScopeAlbum}
       isScopeImage={isScopeImage}
-      fetchListFn={isScopeAlbum ? fetchAlbumLists : fetchImageLists}
+      fetchListFn={fetchListFn}
       selectionDeleteFn={selectionDeleteFn}
       handleScopeChange={handleScopeChange}
-      cardItem={isScopeAlbum ? AlbumCardWrapper : null}
+      cardItem={customCardItem}
       emptyTip={emptyTip}
     />
   )
+}
+
+function PaddingHooks () {
+  const [_, __] = useState('for padding')
+  return null
 }
 
 /**

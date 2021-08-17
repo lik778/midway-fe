@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState } from 'react'
 import { Checkbox, Modal } from "antd"
 import { DeleteOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
@@ -14,6 +14,8 @@ import DEFAULT_ALBUM_COVER from './default-album-cover.png'
 
 export default function AlbumCardWrapper(props: any) {
   const { goTabScope, createAlbum, refreshAllAlbumLists } = props
+
+  const [_, __] = useState('for padding')
 
   // 查看相册详情
   const goAlbumScope = (album: AlbumItem) => goTabScope({ type: 'image', item: album })
