@@ -1,7 +1,6 @@
 import React from 'react'
 import dayjs from 'dayjs'
 import { Popover, Radio } from 'antd'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import { LeaveMessageChannelMap } from '@/constants/report'
 import { decodeHTMLCodeSafe, isValidURL } from '@/utils'
@@ -97,18 +96,7 @@ export const LeaveMessageSearchListConfig = ({
           if (isValid) {
             return <a href={r.sourceUrl} target="__blank">查看详情</a>
           } else {
-            return (
-              <Popover
-                content={() => (
-                  <span>
-                    <span style={{ color: 'red' }}><ExclamationCircleOutlined /></span>
-                    <span style={{ marginLeft: 8 }}>暂时不支持查看</span>
-                  </span>
-                )}
-                trigger="hover">
-                <a className="disabled" href="#" onClick={e => e.stopPropagation()}>查看详情</a>
-              </Popover>
-            )
+            return <a className="disabled" href="#" onClick={e => e.stopPropagation()}>查看详情</a>
           }
         }
       },
