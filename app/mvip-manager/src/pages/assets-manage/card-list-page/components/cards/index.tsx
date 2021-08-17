@@ -20,13 +20,13 @@ import { PaginationSetting } from '../../hooks/pagination'
 
 import styles from "./index.less"
 
-import DEFAULT_ALBUM_COVER from '../../statics/default-album-cover.png'
-
 export type CustomCardItemProps = {
   card: CardItem
   selection: any[]
   loading: boolean
-  refresh: () => any
+  lists: CardItem[]
+  refresh: (resetPagi?: boolean) => void
+  setSelection: (ids: number[]) => void
   previewImage: (image: ImageItem) => any
   handleSelectCard: (e: any, card: CardItem) => any
   moveImage: (e: any, image: ImageItem) => any
@@ -45,7 +45,6 @@ interface CardsProps {
   loading: boolean;
   pagiConf: any;
   setPagiConf: (conf: Partial<PaginationSetting>) => void;
-  refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   setSelection: (ids: number[]) => void;
   unselect: (id: number | number[]) => void;
@@ -60,7 +59,7 @@ export default function Cards(props: CardsProps) {
 
   const {
     shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf,
-    setPagiConf, refreshAllAlbumLists, setSelection, select, unselect, goTabScope, refresh,
+    setPagiConf, setSelection, select, unselect, goTabScope, refresh,
     emptyTip, cardItem
   } = props;
 
@@ -101,6 +100,7 @@ export default function Cards(props: CardsProps) {
       }
       const countInPage = result * 2
       if (pagiConf.pageSize !== countInPage) {
+        // FIXME 100ms 会导致空列表提示一闪而过
         debounce(() => {
           setPagiConf({
             pageSize: countInPage,
@@ -146,18 +146,6 @@ export default function Cards(props: CardsProps) {
     setPreviewItem(undefined)
     setPreviewModal(false)
   }
-  const handleEditAlbum = async (e: any, album: AlbumItem) => {
-    e.stopPropagation()
-    editAlbum(album)
-  }
-
-  // 查看相册详情
-  const goAlbumScope = (album: AlbumItem) => {
-    goTabScope({
-      type: 'image',
-      item: album
-    })
-  }
 
   // 选中/取消选中卡片
   const handleSelectCard = (e: any, card: CardItem) => {
@@ -199,21 +187,6 @@ export default function Cards(props: CardsProps) {
       }
     })
   }, [lists])
-
-  // 删除相册
-  const delAlbum = useCallback(async (e: any, album: AlbumItem) => {
-    e.stopPropagation()
-    const { id, totalImg } = album
-    const info = totalImg === 0
-      ? `相册删除后无法恢复，确认删除？`
-      : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, [id], info, () => {
-      setSelection(selection.filter(x => x !== id))
-      refreshAllAlbumLists()
-      // TODO 在选区删除时也这么判断一下，现在是 refresh(true)
-      refresh(lists.length === 1)
-    })
-  }, [selection, lists, refresh])
 
   // 删除图片
   const delImage = useCallback(async (e: any, image: ImageItem) => {
@@ -283,45 +256,6 @@ export default function Cards(props: CardsProps) {
 
   /***************************************************** Renders */
 
-  const AlbumCard = useCallback((card: AlbumItem) => {
-    const { id, name, coverUrl, totalImg, type } = card;
-    const isDefaultAlbum = type === 'DEFAULT'
-    const isChecked = isScopeAlbum && selection.find((y: number) => y === id);
-    return (
-      <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => goAlbumScope(card)}>
-        {!isDefaultAlbum && (
-          <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => goAlbumScope(card)}>
-            <div className={styles["action-wrapper"]}>
-              <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
-              <div className={styles["anticon-down-con"]}>
-                <div className={styles["anticon-down"]}>
-                  <DownOutlined />
-                </div>
-                <div className={styles["down-actions"]}>
-                  <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
-                    <EditOutlined />
-                    <span>编辑</span>
-                  </div>
-                  <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
-                    <DeleteOutlined />
-                    <span>删除</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        <img className={styles["cover"]} src={coverUrl || DEFAULT_ALBUM_COVER} alt="cover" />
-        <div className={styles["header"]}>
-          <span className={styles["name"]} title={name}>{name}</span>
-          <span>
-            <span>{totalImg}</span> 张
-          </span>
-        </div>
-      </div>
-    );
-  }, [selection])
-
   const ImageCard = useCallback((card: ImageItem) => {
     const { id, imgUrl } = card;
     const isChecked = isScopeImage && selection.find((y: number) => y === id);
@@ -366,15 +300,14 @@ export default function Cards(props: CardsProps) {
         card,
         selection,
         loading,
+        lists,
+        setSelection,
         refresh,
         previewImage,
         handleSelectCard,
         moveImage,
         delImage
       })
-    }
-    if (isScopeAlbum) {
-      return AlbumCard(card as AlbumItem)
     }
     if (isScopeImage) {
       return ImageCard(card as ImageItem)

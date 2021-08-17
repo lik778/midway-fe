@@ -228,7 +228,7 @@ const CardListPage = (props: CardsListPageProps) => {
           goTabScope={goTabScope}
           select={select}
           unselect={unselect}
-          cardItem={cardItem && cardItem({ refresh })}
+          cardItem={cardItem && cardItem({ refresh, goTabScope, createAlbum, refreshAllAlbumLists })}
           emptyTip={renderCardListEmptyTip}
         />
         {/* 分页 */}

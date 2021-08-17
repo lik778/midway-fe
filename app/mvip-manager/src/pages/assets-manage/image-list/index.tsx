@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { Button, Result } from "antd"
 
-import CardListPage from '../card-list-page/index'
 import { getImagesetAlbum, getImagesetImage, delImagesetAlbum, delImagesetImage } from '@/api/shop'
+import CardListPage from '../card-list-page/index'
+import AlbumCardWrapper from './album-card/index'
 
-import { TabScope, TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
+import { TabScope, TabScopeItem, } from "@/interfaces/shop"
 
 // 资源管理 - 图集页面
 const AssetsMangeImageListPage = () => {
@@ -63,15 +64,20 @@ const AssetsMangeImageListPage = () => {
   return (
     <CardListPage
       customScope={{ type: 'album', item: null }}
+      isScopeAlbum={isScopeAlbum}
+      isScopeImage={isScopeImage}
       fetchListFn={isScopeAlbum ? fetchAlbumLists : fetchImageLists}
       selectionDeleteFn={selectionDeleteFn}
       handleScopeChange={handleScopeChange}
+      cardItem={isScopeAlbum ? AlbumCardWrapper : null}
       emptyTip={emptyTip}
-      isScopeAlbum={isScopeAlbum}
-      isScopeImage={isScopeImage}
     />
   )
 }
+
+/**
+ * API 请求
+ */
 
 async function fetchAlbumLists(shopId: number, querys: any) {
   try {

@@ -34,7 +34,7 @@ const AssetsMangeAuditListPage = () => {
       customScope={{ type: 'audit', item: null }}
       fetchListFn={fetchErrorImageLists}
       selectionDeleteFn={selectionDeleteFn}
-      cardItem={ErrorCardItemWithAuditItemLoading}
+      cardItem={ErrorCardWrapper}
       emptyTip={emptyTip}
     />
   )
@@ -50,8 +50,8 @@ async function fetchErrorImageLists(shopId: number, querys: any) {
   }
 }
 
-// cardItem 高阶组件，额外扩展了调用申诉接口的 loading 状态
-function ErrorCardItemWithAuditItemLoading(props: any) {
+
+function ErrorCardWrapper(props: any) {
   const { refresh } = props
   const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem | null>()
 
