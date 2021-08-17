@@ -1,12 +1,16 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Button, Checkbox, Modal } from "antd";
+import React, { useEffect, useState, useCallback, useMemo } from "react"
+import { Button, Checkbox, Modal } from "antd"
 
-import { successMessage, errorMessage } from "@/components/message";
-import { delImagesetAlbum, delImagesetImage, delImagesetFailedImage } from '@/api/shop'
+import { successMessage, errorMessage } from "@/components/message"
 
-import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop";
+import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop"
 
 import styles from './index.less'
+
+export type DeleteMethod = null | {
+  (selection: number[]): any
+  getQuery: (selection: any) => any
+}
 
 interface SelectionBlockProps {
   shopId: number;
@@ -15,7 +19,7 @@ interface SelectionBlockProps {
   lists: CardItem[];
   curScope: TabScopeItem | undefined;
   isScopeAlbum: boolean;
-  isScopeAudit: boolean;
+  deleteFn: DeleteMethod;
   refreshAllAlbumLists: () => void;
   select: (id: number | number[]) => void;
   unselect: (id: number | number[]) => void;
@@ -23,7 +27,10 @@ interface SelectionBlockProps {
   refresh: (resetPagi?: boolean) => void;
 }
 export default function SelectionBlock(props: SelectionBlockProps) {
-  const { shopId, total, selection, lists, isScopeAlbum, isScopeAudit, curScope, refreshAllAlbumLists, select, unselect, setSelection, refresh } = props
+  const {
+    shopId, total, selection, lists, isScopeAlbum, curScope,
+    deleteFn, refreshAllAlbumLists, select, unselect, setSelection, refresh
+  } = props
 
   // 排除默认相册和正在审核中的项目
   const ids = useMemo(() => {
@@ -65,6 +72,10 @@ export default function SelectionBlock(props: SelectionBlockProps) {
   // 批量删除卡片
   const deleteSelectionCards = useCallback((e: any) => {
     e.stopPropagation()
+    if (!deleteFn) {
+      console.warn('[WARN] no deleteFn provided')
+      return
+    }
     // 批量删除时必定重新刷新页面分页参数，
     // 因为不知道删了啥，删了之后这也还存不存在
     const resetFreshPage = true
@@ -79,15 +90,8 @@ export default function SelectionBlock(props: SelectionBlockProps) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          const deleteFn = isScopeAlbum
-            ? delImagesetAlbum
-            : isScopeAudit
-            ? delImagesetFailedImage
-            : delImagesetImage
-          const query: any = isScopeAlbum
-            ? [...selection]
-            : { ids: [...selection], mediaCateId: curScope?.item?.id }
-          deleteFn(shopId, query)
+          const query = deleteFn.getQuery(selection)
+          deleteFn(query)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功');
@@ -106,7 +110,7 @@ export default function SelectionBlock(props: SelectionBlockProps) {
         })
       }
     })
-  }, [shopId, isScopeAlbum, isScopeAudit, selection, curScope, lists, refresh])
+  }, [shopId, selection, curScope, lists, refresh, deleteFn])
 
   return (
     <>

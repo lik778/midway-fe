@@ -1,13 +1,16 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useParams } from "umi";
-import { Pagination } from "antd";
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import { useParams } from "umi"
+import { Pagination, Button, Result } from "antd"
 
-import ArticleNav from './components/nav'
+import PageNav from './components/nav'
 import Cards from './components/cards'
 import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
 import { useUploadModal } from './components/upload-modal'
-import { getImagesetImage, getImagesetAlbum, getImagesetFailedImage } from '@/api/shop'
+import {
+  getImagesetImage, getImagesetAlbum,
+  delImagesetAlbum, delImagesetImage
+} from '@/api/shop'
 
 import usePrevious from './hooks/previous';
 import { useSelection } from './hooks/selection'
@@ -15,29 +18,35 @@ import { usePagination } from './hooks/pagination'
 import useAllAlbumNames from './hooks/album-names'
 
 import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop";
+import { DeleteMethod as SelectionBlockDeleteMethod } from './components/selection'
+import { CustomCardItemProps } from './components/cards'
 
 import styles from './index.less';
 
-const ShopArticlePage = (props: any) => {
+type CardsListPageProps = {
+  customScope ?: TabScopeItem
+  fetchListFn ?: any
+  selectionDeleteFn ?: any
+  cardItem ?: (props: any) => (props: CustomCardItemProps) => JSX.Element
+  emptyTip ?: JSX.Element
+}
+const CardListPage = (props: CardsListPageProps) => {
 
   /***************************************************** States */
 
+  const { customScope, fetchListFn, selectionDeleteFn, cardItem, emptyTip } = props
   const params: RouteParams = useParams();
   // const shopId = Number(params.id);
-  // 暂时写死，用来调试
-  const shopId = 411
+  // FIXME 暂时写死，用来调试
+  const shopId = 3863
 
   // tabScope 维护当前页面进入不同文件夹的深度，
   // 维护方式类似 history.pushState
-  const [tabScope, setTabScope] = useState<TabScope>([{ type: 'album', item: null }]);
+  const [tabScope, setTabScope] = useState<TabScope>([customScope || { type: 'album', item: null }]);
   const [isScopeAlbum, setIsScopeAlbum] = useState(false);
   const [isScopeImage, setIsScopeImage] = useState(false);
-  const [isScopeAudit, setIsScopeAudit] = useState(false);
   const [curScope, setCurScope] = useState<TabScopeItem>();
   const prevCurScope = usePrevious(curScope)
-
-  const goAlbumScope = () => setTabScope([{ type: 'album', item: null }])
-  const goAuditScope = () => setTabScope([{ type: 'audit', item: null }])
 
   useEffect(() => {
     setCurScope(tabScope[tabScope.length - 1])
@@ -50,17 +59,10 @@ const ShopArticlePage = (props: any) => {
         case 'album':
           setIsScopeAlbum(true)
           setIsScopeImage(false)
-          setIsScopeAudit(false)
           break
         case 'image':
           setIsScopeAlbum(false)
           setIsScopeImage(true)
-          setIsScopeAudit(false)
-          break
-        case 'audit':
-          setIsScopeAlbum(false)
-          setIsScopeImage(false)
-          setIsScopeAudit(true)
           break
       }
     }
@@ -81,9 +83,8 @@ const ShopArticlePage = (props: any) => {
     return { page, size }
   }, [pagi.current, pagiConf.pageSize, curScope])
   const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames(shopId)
-  // TODO fix type
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
-  const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, curScope)
+  const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, curScope, fetchListFn)
 
   // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
   const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
@@ -179,18 +180,64 @@ const ShopArticlePage = (props: any) => {
 
   const [$UploadModal, openUpload] = useUploadModal({ shopId, createAlbum, refresh, allAlbumLists, curScope })
 
+  // 选择区域的删除函数
+  const selectionDeleteMethod = useMemo<SelectionBlockDeleteMethod>(() => {
+    if (!curScope) {
+      return null
+    }
+    let deleteFn: Function
+    if (selectionDeleteFn) {
+      deleteFn = selectionDeleteFn
+    } else {
+      deleteFn = isScopeAlbum
+        ? delImagesetAlbum
+        : delImagesetImage
+    }
+    const ret = async (query: any) => await deleteFn(shopId, query)
+    ret.getQuery = (selection: number[]) => {
+      return isScopeAlbum
+        ? [...selection]
+        : { ids: [...selection], mediaCateId: curScope?.item?.id }
+    }
+    return ret
+  }, [shopId, curScope, isScopeAlbum, selectionDeleteFn])
+
+  // 空列表提示（目前至少有一个默认相册）
+  const renderCardListEmptyTip = useMemo(() => {
+    if (emptyTip) {
+      return emptyTip
+    }
+    if (!(isScopeAlbum || isScopeImage)) {
+      return null
+    }
+    let info, $extra
+    if (isScopeAlbum) {
+      info = "没有找到相册，快新建一个吧~"
+      $extra = <Button type="primary" onClick={() => createAlbum()}>新建相册</Button>
+    }
+    if (isScopeImage) {
+      info = "当前相册还没有图片，快上传一些吧~"
+      $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传图片</Button>
+    }
+    return (
+      <Result
+        className={styles['card-list-empty-info']}
+        title={info}
+        extra={$extra}
+      />
+    )
+  }, [isScopeAlbum, isScopeImage, emptyTip, curScope, createAlbum])
+
   return (
     <>
       {/* 内容 */}
       <div className={`container ${styles["container"]}`}>
         {/* 页面内导航栏 */}
-        <ArticleNav
+        <PageNav
           shopId={shopId}
           tabScope={tabScope}
           curScope={curScope}
           goTabScope={goTabScope}
-          goAlbumScope={goAlbumScope}
-          goAuditScope={goAuditScope}
           createAlbum={createAlbum}
           openUpload={openUpload}
         />
@@ -200,7 +247,6 @@ const ShopArticlePage = (props: any) => {
           total={total}
           curScope={curScope}
           isScopeAlbum={isScopeAlbum}
-          isScopeAudit={isScopeAudit}
           selection={selection}
           lists={lists}
           refreshAllAlbumLists={refreshAllAlbumLists}
@@ -208,6 +254,7 @@ const ShopArticlePage = (props: any) => {
           unselect={unselect}
           setSelection={setSelection}
           refresh={refresh}
+          deleteFn={selectionDeleteMethod}
         />
         {/* 图片/相册展示区 */}
         <Cards
@@ -215,7 +262,6 @@ const ShopArticlePage = (props: any) => {
           lists={lists}
           tabScope={tabScope}
           curScope={curScope}
-          isScopeAudit={isScopeAudit}
           isScopeAlbum={isScopeAlbum}
           isScopeImage={isScopeImage}
           selection={selection}
@@ -229,8 +275,8 @@ const ShopArticlePage = (props: any) => {
           goTabScope={goTabScope}
           select={select}
           unselect={unselect}
-          editAlbum={createAlbum}
-          openUpload={openUpload}
+          cardItem={cardItem && cardItem({ refresh })}
+          emptyTip={renderCardListEmptyTip}
         />
         {/* 分页 */}
         {lists.length > 0 && (
@@ -253,7 +299,7 @@ const ShopArticlePage = (props: any) => {
   );
 }
 
-function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
+function useLists(shopId: number, query: any, scope: TabScopeItem | undefined, fetchListFn: any) {
   const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -274,9 +320,12 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
       return
     }
     let fetchMethod
-    if (scope.type === 'album') fetchMethod = fetchAlbumLists
-    if (scope.type === 'image') fetchMethod = fetchImageLists
-    if (scope.type === 'audit') fetchMethod = fetchErrorImageLists
+    if (fetchListFn) {
+      fetchMethod = fetchListFn
+    } else {
+      if (scope.type === 'album') fetchMethod = fetchAlbumLists
+      if (scope.type === 'image') fetchMethod = fetchImageLists
+    }
     if (!fetchMethod) {
       console.warn('[WARN] no fetch method in this scope', scope)
       return
@@ -306,7 +355,7 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined) {
       .finally(() => {
         setLoading(false)
       })
-  }, [shopId, query, requestTime])
+  }, [shopId, fetchListFn, query, requestTime])
 
   return [lists, total, loading, refresh, setLists, setTotal] as const
 }
@@ -331,16 +380,6 @@ async function fetchImageLists(shopId: number, querys: any) {
   }
 }
 
-async function fetchErrorImageLists(shopId: number, querys: any) {
-  try {
-    const res = await getImagesetFailedImage(shopId, querys)
-    const { result = [], totalRecord = 0 } = res.data.mediaImgBos
-    return [result, totalRecord] as const
-  } catch (err) {
-    throw new Error(err)
-  }
-}
+// CardListPage.wrappers = ['@/wrappers/path-auth']
 
-// ShopArticlePage.wrappers = ['@/wrappers/path-auth']
-
-export default ShopArticlePage
+export default CardListPage

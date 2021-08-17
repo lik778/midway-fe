@@ -1,57 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { Breadcrumb, Button, Radio } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react"
+import { history } from 'umi'
+import { Breadcrumb, Button, Radio } from "antd"
+import { PlusOutlined } from "@ant-design/icons"
 
-import { TabScope, TabScopeItem } from "@/interfaces/shop";
+import { TabScope, TabScopeItem } from "@/interfaces/shop"
 
-import styles from "./index.less";
+import styles from "./index.less"
 
 interface Props {
-  shopId: number;
-  tabScope: TabScope;
-  curScope?: TabScopeItem;
-  goAlbumScope: () => void;
-  goAuditScope: () => void;
-  goTabScope: (scope: TabScopeItem) => void;
-  createAlbum: () => void;
-  openUpload: (defaultVal?: number) => void;
+  shopId: number
+  tabScope: TabScope
+  curScope?: TabScopeItem
+  goTabScope: (scope: TabScopeItem) => void
+  createAlbum: () => void
+  openUpload: (defaultVal?: number) => void
 }
 export default (props: Props) => {
-  const { shopId, tabScope, curScope, goAlbumScope, goAuditScope, goTabScope, createAlbum, openUpload } = props;
+  const { curScope, createAlbum, openUpload } = props;
 
   const isScopeAlbum = curScope && curScope.type === 'album'
-  const isScopeImage = curScope && curScope.type === 'image'
-  const isScopeAudit = curScope && curScope.type === 'audit'
 
-  const curScopeType = curScope ? curScope.type : ''
+  // 目前只处理了单层文件夹的结构
   const lastScopeName = curScope?.item?.name || ''
-
-  const handleNav = (e: any) => {
-    const value = e.target.value
-    if (value === 'album') {
-      if (!isScopeAlbum) goAlbumScope()
-    }
-    if (value === 'audit') {
-      if (!isScopeAudit) goAuditScope()
-    }
-  }
-
-  const showRadioNav = isScopeAlbum || isScopeAudit
-  const showBreadNav = !showRadioNav
 
   return (
     <>
       <div className={styles["nav-container"]}>
         {/* left actions */}
-        {showRadioNav && (
-          <Radio.Group value={curScopeType} onChange={handleNav}>
-            <Radio.Button value="album">相册管理</Radio.Button>
-            <Radio.Button value="audit">申诉记录</Radio.Button>
-          </Radio.Group>
-        )}
-        {showBreadNav && (
+        {(
           <Breadcrumb separator=">">
-            <Breadcrumb.Item onClick={goAlbumScope}>
+            <Breadcrumb.Item onClick={() => history.push('/assets-manage/imageset')}>
               <a>相册管理</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>{lastScopeName}</Breadcrumb.Item>

@@ -151,7 +151,7 @@ export function useUploadModal(props: Props) {
       reAuditImagesetImage(shopId, { id: image.imageID })
         .then((res: any) => {
           if (res.success) {
-            successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')
+            successMessage('申诉成功，请到资源管理 / 申诉记录查看进度')
           } else {
             throw new Error(res.message || '出错啦，请稍后重试')
           }
