@@ -92,18 +92,7 @@ const AssetsMangeImageListPage = () => {
     lists.filter(x => (x as AlbumItem).type !== 'DEFAULT')
   ), [isScopeAlbum])
 
-  /***************************************************** Renders */
-
-  const customCardItem = useMemo(() => {
-    if (isScopeAlbum) {
-      return AlbumCardWrapper
-    }
-    if (isScopeImage) {
-      return ImageCardWrapper
-    }
-    return PaddingHooks
-  }, [isScopeAlbum, isScopeImage])
-
+  // 获取列表
   const fetchListFn = useMemo(() => {
     if (isScopeAlbum) {
       return fetchAlbumLists
@@ -112,6 +101,19 @@ const AssetsMangeImageListPage = () => {
       return fetchImageLists
     }
     return null
+  }, [isScopeAlbum, isScopeImage])
+
+  /***************************************************** Renders */
+
+  // 自定义卡片
+  const customCardItem = useMemo(() => {
+    if (isScopeAlbum) {
+      return AlbumCardWrapper
+    }
+    if (isScopeImage) {
+      return ImageCardWrapper
+    }
+    return PaddingHooks
   }, [isScopeAlbum, isScopeImage])
 
   // 页头

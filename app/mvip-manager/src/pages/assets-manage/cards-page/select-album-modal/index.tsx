@@ -1,11 +1,11 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import { Button, Select, Modal } from "antd";
+import React, { useMemo, useState, useCallback } from 'react'
+import { Button, Select, Modal } from "antd"
 
-import { AlbumNameListItem } from "@/interfaces/shop";
+import { AlbumNameListItem } from "@/interfaces/shop"
 
-import styles from './index.less';
+import styles from './index.less'
 
-let albumSelectResolver: any = null
+let albumSelectResolver: ((select: AlbumNameListItem | PromiseLike<AlbumNameListItem>) => void) | null = null
 
 type Props = {
   allAlbumLists: AlbumNameListItem[]
@@ -14,8 +14,8 @@ export default function useSelectAlbumListsModal(props: Props) {
   const { allAlbumLists } = props
   const [exclude, setExclude] = useState<number[]>([])
   const displayLists = useMemo(() => allAlbumLists.filter(x => !exclude.includes(x.id)), [exclude])
-  const [select, setSelect] = useState<AlbumNameListItem | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [select, setSelect] = useState<AlbumNameListItem>()
+  const [visible, setVisible] = useState(false)
 
   const selectAlbum = async (args: { exclude: number[] }): Promise<AlbumNameListItem> => {
     const { exclude = [] } = args
@@ -32,7 +32,7 @@ export default function useSelectAlbumListsModal(props: Props) {
     target && setSelect(target)
   }
   const handleConfirmSelectAlbum = () => {
-    albumSelectResolver && albumSelectResolver(select)
+    albumSelectResolver && albumSelectResolver(select as AlbumNameListItem)
     setVisible(false)
   }
 
@@ -50,9 +50,14 @@ export default function useSelectAlbumListsModal(props: Props) {
         placeholder="请选择一个相册"
         onChange={(val: number) => handleSelectAlbum(val)}
       >
-        {displayLists.map((x: AlbumNameListItem) => {
-          return <Select.Option value={x.id}>{x.name}</Select.Option>
-        })}
+        {displayLists.map((x: AlbumNameListItem, idx: number) => (
+          <Select.Option
+            value={x.id}
+            key={String(x.id) + idx}
+          >
+            {x.name}
+          </Select.Option>
+        ))}
       </Select>
       <div>
         <Button

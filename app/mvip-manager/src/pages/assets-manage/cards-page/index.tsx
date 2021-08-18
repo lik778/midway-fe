@@ -205,7 +205,7 @@ const CardsPage = (props: CardsPageProps) => {
   )
 
   // 页头
-  const renderNavBar = useMemo(() => (
+  const $pageNav = useMemo(() => (
     pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload, selectAlbum })
   ), [tabScope, curScope, goTabScope, createAlbum, openUpload])
 
@@ -225,20 +225,20 @@ const CardsPage = (props: CardsPageProps) => {
     <>
       {/* 内容 */}
       <div className={`container ${styles["container"]}`}>
-        {/* 页面内导航栏 */}
-        {renderNavBar}
-        {/* 选框区 */}
+        {/* 导航栏 */}
+        {$pageNav}
+        {/* 选框栏 */}
         <SelectionBar
           total={total}
           curScope={curScope}
           selection={selection}
           lists={lists}
-          excludes={excludes}
           select={select}
           unselect={unselect}
+          excludes={excludes}
           setSelection={setSelection}
-          refresh={refresh}
           deleteFn={selectionDeleteMethod}
+          refresh={refresh}
         />
         {/* 卡片展示区 */}
         <CardList
