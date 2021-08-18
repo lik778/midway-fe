@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Checkbox, Modal } from "antd"
 import { PartitionOutlined, DeleteOutlined, LoadingOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
 import { moveImagesetImage, delImagesetImage, setImagesetAlbumCover } from '@/api/shop'
+
+import AlbumNamesContext from '../../context/album-names'
 
 import { ImageItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
@@ -12,7 +14,7 @@ import styles from './index.less'
 
 export default function ImageCardWrapper(props: any) {
   const { curScope, lists, selection, setSelection, refresh, selectAlbum } = props
-
+  const { } = useContext(AlbumNamesContext)
   const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
   // 设置封面图片

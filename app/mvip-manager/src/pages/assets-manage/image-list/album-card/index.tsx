@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Checkbox, Modal } from "antd"
 import { DeleteOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
 import { delImagesetAlbum } from '@/api/shop'
+
+import AlbumNamesContext from '../../context/album-names'
 
 import { AlbumItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
@@ -15,8 +17,8 @@ import DEFAULT_ALBUM_COVER from './default-album-cover.png'
 const createNewScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
 
 export default function AlbumCardWrapper(props: any) {
-  const { lists, selection, setSelection, goTabScope, createAlbum, refreshAllAlbumLists, refresh } = props
-
+  const { lists, selection, setSelection, goTabScope, createAlbum, refresh } = props
+  const { refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const [_, __] = useState('for padding')
 
   // 查看相册详情
@@ -76,8 +78,7 @@ export default function AlbumCardWrapper(props: any) {
       ...props,
       delAlbum,
       intoScope,
-      handleEditAlbum,
-      refreshAllAlbumLists
+      handleEditAlbum
     } as AlbumCardProps)
   )
 }

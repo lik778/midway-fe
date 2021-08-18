@@ -17,6 +17,13 @@ import { CustomCardItemProps } from './cards-container'
 
 import styles from './index.less'
 
+declare global {
+  interface Window {
+    _mvip_imageset_ticktime: number
+    _mvip_imageset_tick: NodeJS.Timeout | undefined
+  }
+}
+
 export type PageNavProps = {
   tabScope: TabScope
   curScope: TabScopeItem
@@ -31,7 +38,6 @@ export type DeleteBatchProps = {
   lists: CardItem[]
   refresh: (resetPagi?: boolean) => void
   setSelection: (selection: number[]) => void
-  refreshAllAlbumLists: () => void
 }
 
 export type EmptyTipProps = {
@@ -109,31 +115,22 @@ const CardsPage = (props: CardsPageProps) => {
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
   // 请求时间指数避退
   useEffect(() => {
-    // @ts-ignore
     const canRefresh = (curScope && curScope.type === 'album') &&
       lists.length === 0 &&
       allAlbumLists.length > 0
     if (canRefresh) {
-      // @ts-ignore
       window._mvip_imageset_ticktime = window._mvip_imageset_ticktime || 500
-      // @ts-ignore
       if (window._mvip_imageset_ticktime < 5 * 1000) {
-        // @ts-ignore
         if (window._mvip_imageset_tick) {
-          // @ts-ignore
           window.clearTimeout(window._mvip_imageset_tick)
         }
-        // @ts-ignore
         window._mvip_imageset_tick = setTimeout(() => {
-          // @ts-ignore
           window._mvip_imageset_ticktime = window._mvip_imageset_ticktime * 2
           refresh()
-        // @ts-ignore
-      }, window._mvip_imageset_ticktime)
+        }, window._mvip_imageset_ticktime)
       }
     }
-    // @ts-ignore
-    return () => window.clearTimeout(window._mvip_imageset_tick)
+    return () => window._mvip_imageset_tick && window.clearTimeout(window._mvip_imageset_tick)
   }, [lists, allAlbumLists, curScope])
 
   const [selection, setSelection, select, unselect] = useSelection({ excludeFilter: selectionExcludeFilter })
@@ -194,9 +191,8 @@ const CardsPage = (props: CardsPageProps) => {
       lists,
       refresh,
       setSelection,
-      refreshAllAlbumLists,
     })
-  ), [curScope, selection, lists, refresh, setSelection, refreshAllAlbumLists, deleteBatch])
+  ), [curScope, selection, lists, refresh, setSelection, deleteBatch])
 
   // 选框区域扩展按钮
   const $selectionBarActions = useMemo(() => {
@@ -233,7 +229,6 @@ const CardsPage = (props: CardsPageProps) => {
     goTabScope,
     setSelection,
     createAlbum,
-    refreshAllAlbumLists,
     selectAlbum
   })
 

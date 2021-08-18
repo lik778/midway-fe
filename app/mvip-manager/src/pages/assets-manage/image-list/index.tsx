@@ -26,7 +26,7 @@ const AssetsMangeImageListPageContexted = () => {
 const AssetsMangeImageListPage = () => {
 
   /***************************************************** States */
-  const { lists: allAlbumLists } = useContext(AlbumNamesContext)
+  const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const selectionExcludeFilter = useMemo(() => (x: number) => defaultAlbumIDs.includes(x), [defaultAlbumIDs])
 
@@ -50,7 +50,7 @@ const AssetsMangeImageListPage = () => {
   const deleteBatch = useCallback((props: DeleteBatchProps) => {
     const {
       curScope, selection,
-      refresh, setSelection, refreshAllAlbumLists
+      refresh, setSelection
     } = props
 
     return (e: any) => {
@@ -98,7 +98,7 @@ const AssetsMangeImageListPage = () => {
         }
       })
     }
-  }, [isScopeAlbum])
+  }, [isScopeAlbum, refreshAllAlbumLists])
 
   // 全选时不需要选择默认相册
   const selectAllFrom = useCallback((lists: CardItem[]) => (
@@ -185,6 +185,7 @@ const AssetsMangeImageListPage = () => {
 // 由于组件切换时状态有顺序和数量相等限制，
 // 暂时用一个组件用来填充
 function PaddingHooks(props: any) {
+  const {} = useContext(AlbumNamesContext)
   const [_, __] = useState('for padding')
   return (props: CustomCardItemProps) => {
     return null
