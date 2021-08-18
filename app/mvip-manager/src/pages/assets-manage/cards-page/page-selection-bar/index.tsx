@@ -27,7 +27,7 @@ export default function SelectionBar(props: SelectionBarProps) {
     if (!curScope) {
       return ''
     } else {
-      return curScope.label + curScope.countLabel
+      return curScope.countLabel + curScope.label
     }
   }, [curScope])
 
