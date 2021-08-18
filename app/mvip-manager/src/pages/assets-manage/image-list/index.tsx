@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useContext } from 'react'
 import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
@@ -8,16 +8,27 @@ import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
 import CardsPage from '../cards-page/index'
 
-import { AlbumNamesContextProvider } from '../context/album-names'
+import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-names'
 
 import { TabScope, CardItem, AlbumItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
 import { CustomCardItemProps } from '../cards-page/cards-container/index'
 
+const AssetsMangeImageListPageContexted = () => {
+  return (
+    <AlbumNamesContextProvider>
+      <AssetsMangeImageListPage />
+    </AlbumNamesContextProvider>
+  )
+}
+
 // 资源管理 - 相册列表
 const AssetsMangeImageListPage = () => {
 
   /***************************************************** States */
+  const { lists: allAlbumLists } = useContext(AlbumNamesContext)
+  const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
+  const selectionExcludeFilter = useMemo(() => (x: number) => defaultAlbumIDs.includes(x), [defaultAlbumIDs])
 
   const [isScopeAlbum, setIsScopeAlbum] = useState(false)
   const [isScopeImage, setIsScopeImage] = useState(false)
@@ -89,8 +100,8 @@ const AssetsMangeImageListPage = () => {
     }
   }, [isScopeAlbum])
 
-  // 排除默认相册
-  const selectAllExcludes = useCallback((lists: CardItem[]) => (
+  // 全选时不需要选择默认相册
+  const selectAllFrom = useCallback((lists: CardItem[]) => (
     lists.filter(x => (x as AlbumItem).type !== 'DEFAULT')
   ), [isScopeAlbum])
 
@@ -157,18 +168,17 @@ const AssetsMangeImageListPage = () => {
   }, [isScopeAlbum, isScopeImage])
 
   return (
-    <AlbumNamesContextProvider>
       <CardsPage
         defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
         pageNav={pageNav}
         fetchListFn={fetchListFn}
         deleteBatch={deleteBatch}
-        selectAllExcludes={selectAllExcludes}
+        selectAllFrom={selectAllFrom}
+        selectionExcludeFilter={selectionExcludeFilter}
         tabScopeChange={tabScopeChange}
         cardItem={customCardItem}
         emptyTip={emptyTip}
       />
-    </AlbumNamesContextProvider>
   )
 }
 
@@ -205,6 +215,6 @@ async function fetchImageLists(querys: any) {
   }
 }
 
-// AssetsMangeImageListPage.wrappers = ['@/wrappers/path-auth']
+// AssetsMangeImageListPageContexted.wrappers = ['@/wrappers/path-auth']
 
-export default AssetsMangeImageListPage
+export default AssetsMangeImageListPageContexted

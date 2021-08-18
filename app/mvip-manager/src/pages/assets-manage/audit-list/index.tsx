@@ -62,8 +62,8 @@ const AssetsMangeAuditListPage = () => {
     }
   }, [])
 
-  // 排除正在审核中的项目
-  const selectAllExcludes = useCallback((lists: CardItem[]) => (
+  // 全选时排除正在审核中的项目
+  const selectAllFrom = useCallback((lists: CardItem[]) => (
     lists.filter(x => (x as ImageItem).checkStatus !== 'REAPPLY')
   ), [])
 
@@ -99,7 +99,7 @@ const AssetsMangeAuditListPage = () => {
       fetchListFn={fetchErrorImageLists}
       deleteBatch={deleteBatch}
       cardItem={ErrorCardWrapper}
-      selectAllExcludes={selectAllExcludes}
+      selectAllFrom={selectAllFrom}
       emptyTip={emptyTip}
     />
   )

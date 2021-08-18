@@ -5,14 +5,14 @@ type Selection = SelectionItem[]
 
 type Props = {
   // 排除选中（传入 SelectionItem，返回 true 则代表排除该项）
-  excludeFn?: (select: SelectionItem) => boolean;
+  excludeFilter?: (select: SelectionItem) => boolean;
 }
-export default function useSelection(props?: Props) {
+export default function useSelection(props: Props = {}) {
 
   /***************************************************** States */
 
-  const { excludeFn = (_: SelectionItem) => true } = props || {}
-  const flipExcludeFn = useCallback((x: SelectionItem) => !excludeFn(x), [excludeFn])
+  const { excludeFilter = (_: SelectionItem) => false } = props
+  const flipExcludeFilter = useCallback((x: SelectionItem) => !excludeFilter(x), [excludeFilter])
   const [selection, setSelection] = useState<Selection>([])
 
   /***************************************************** Interactions */
@@ -23,18 +23,18 @@ export default function useSelection(props?: Props) {
     const results = [
       ...selection,
       ...newItems.filter(item => !selection.find(x => x === item))
-    ].filter(flipExcludeFn)
+    ].filter(flipExcludeFilter)
     setSelection(results)
-  }, [selection, flipExcludeFn])
+  }, [selection, flipExcludeFilter])
 
   // 移除选取
   const unselect = useCallback((removeItem: SelectionItem | SelectionItem[]) => {
     const removeItems = Array.isArray(removeItem) ? removeItem : [removeItem]
     const results = selection
       .filter(x => !removeItems.includes(x))
-      .filter(flipExcludeFn)
+      .filter(flipExcludeFilter)
     setSelection(results)
-  }, [selection, flipExcludeFn])
+  }, [selection, flipExcludeFilter])
 
   return [
     selection,

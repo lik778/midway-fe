@@ -10,7 +10,8 @@ interface SelectionBarProps {
   selection: number[]
   lists: CardItem[]
   curScope: TabScopeItem | undefined
-  excludes?: (cards: CardItem[]) => CardItem[]
+  // 仅当前项目计入计算
+  selectFrom?: (cards: CardItem[]) => CardItem[]
   select: (id: number | number[]) => void
   unselect: (id: number | number[]) => void
   actions: JSX.Element[] | null
@@ -18,7 +19,7 @@ interface SelectionBarProps {
 export default function SelectionBar(props: SelectionBarProps) {
   const {
     total, selection, lists, curScope,
-    select, unselect, excludes,
+    select, unselect, selectFrom,
     actions
   } = props
 
@@ -32,8 +33,8 @@ export default function SelectionBar(props: SelectionBarProps) {
 
   // 排除某些项目的选中
   const ids = useMemo(() => {
-    return excludes
-      ? excludes(lists).map(x => x.id)
+    return selectFrom
+      ? selectFrom(lists).map(x => x.id)
       : lists.map(x => x.id)
   }, [lists])
 

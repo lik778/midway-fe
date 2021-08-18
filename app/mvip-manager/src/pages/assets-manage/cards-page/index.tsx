@@ -45,10 +45,14 @@ type CardsPageProps = {
   tabScopeChange?: (tabScope: TabScope) => void
   fetchListFn: ((query: any) => any) | null
   deleteBatch: (props: DeleteBatchProps) => (e: any) => void
-  selectAllExcludes?: (items: CardItem[]) => CardItem[]
+  // 选框栏全选时仅计算当前项目
+  selectAllFrom: (items: CardItem[]) => CardItem[]
+  // useSelection hook 的排除选中
+  selectionExcludeFilter?: (select: number) => boolean
   cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
   pageNav: (props: PageNavProps) => JSX.Element
   emptyTip: (props: EmptyTipProps) => JSX.Element
+  children?: any
 }
 
 const CardsPage = (props: CardsPageProps) => {
@@ -57,7 +61,7 @@ const CardsPage = (props: CardsPageProps) => {
 
   const {
     defaultScope,
-    tabScopeChange, fetchListFn, deleteBatch, selectAllExcludes,
+    tabScopeChange, fetchListFn, deleteBatch, selectAllFrom, selectionExcludeFilter,
     pageNav, cardItem, emptyTip,
   } = props
 
@@ -86,7 +90,6 @@ const CardsPage = (props: CardsPageProps) => {
     return { page, size }
   }, [pagi.current, pagiConf.pageSize, curScope])
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
-  const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const [lists, total, loading, refreshLists] = useLists(pagiQuery, curScope, fetchListFn)
 
   // 刷新列表可以重置分页后刷新或就地刷新
@@ -133,9 +136,7 @@ const CardsPage = (props: CardsPageProps) => {
     return () => window.clearTimeout(window._mvip_imageset_tick)
   }, [lists, allAlbumLists, curScope])
 
-  const [selection, setSelection, select, unselect] = useSelection({
-    excludeFn: x => defaultAlbumIDs.includes(x)
-  })
+  const [selection, setSelection, select, unselect] = useSelection({ excludeFilter: selectionExcludeFilter })
 
   // 层级变换时重置选取
   useEffect(() => {
@@ -250,7 +251,7 @@ const CardsPage = (props: CardsPageProps) => {
           lists={lists}
           select={select}
           unselect={unselect}
-          excludes={selectAllExcludes}
+          selectFrom={selectAllFrom}
           actions={$selectionBarActions}
         />
         {/* 卡片展示区 */}
@@ -287,6 +288,8 @@ const CardsPage = (props: CardsPageProps) => {
       {$CreateAlbumModal}
       {/* 创建/编辑相册模态框 */}
       {$selectAlbumModal}
+      {/*  */}
+      {props.children}
     </>
   )
 }
