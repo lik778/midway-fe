@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useContext } from 'react'
 import { Pagination, Button } from "antd"
 
 import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
-import { useUploadModal } from './upload-modal'
+import useUploadModal from './upload-modal'
 import useCreateAlbumModal from './create-album-modal/index'
 import useSelectAlbumListsModal from './select-album-modal/index'
 
 import usePrevious from '@/hooks/previous'
 import useSelection from '@/hooks/selection'
 import usePagination from '@/hooks/pagination'
-import useAllAlbumNames from './hooks/album-names'
+import AlbumNamesContext from '../context/album-names'
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem, AlbumNameListItem } from "@/interfaces/shop"
+import { TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from './cards-container'
 
 import styles from './index.less'
@@ -56,8 +56,8 @@ const CardsPage = (props: CardsPageProps) => {
   /***************************************************** States */
 
   const {
-    defaultScope, tabScopeChange,
-    fetchListFn, deleteBatch, selectAllExcludes,
+    defaultScope,
+    tabScopeChange, fetchListFn, deleteBatch, selectAllExcludes,
     pageNav, cardItem, emptyTip,
   } = props
 
@@ -85,11 +85,11 @@ const CardsPage = (props: CardsPageProps) => {
     }
     return { page, size }
   }, [pagi.current, pagiConf.pageSize, curScope])
-  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames()
+  const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const [lists, total, loading, refreshLists] = useLists(pagiQuery, curScope, fetchListFn)
 
-  // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
+  // 刷新列表可以重置分页后刷新或就地刷新
   const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
     if (resetPage) {
       if (pagi.current !== 1) {
@@ -171,7 +171,7 @@ const CardsPage = (props: CardsPageProps) => {
 
   /***************************************************** Renders */
 
-  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
 
   const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ refresh })
 
@@ -183,7 +183,7 @@ const CardsPage = (props: CardsPageProps) => {
     }
   }, [createOrEditAlbum])
 
-  const [$UploadModal, openUpload] = useUploadModal({ createAlbum, refresh, allAlbumLists })
+  const [$UploadModal, openUpload] = useUploadModal({ createAlbum, refresh })
 
   // 选择区域的删除函数
   const selectionDeleteMethod = useMemo(() => (
@@ -258,7 +258,6 @@ const CardsPage = (props: CardsPageProps) => {
           lists={lists}
           curScope={curScope}
           selection={selection}
-          allAlbumLists={allAlbumLists}
           loading={loading}
           pagiConf={pagiConf}
           setPagiConf={setPagiConf}

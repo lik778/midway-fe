@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
@@ -7,6 +7,8 @@ import NavBar from './page-nav/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
 import CardsPage from '../cards-page/index'
+
+import { AlbumNamesContextProvider } from '../context/album-names'
 
 import { TabScope, CardItem, AlbumItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
@@ -155,16 +157,18 @@ const AssetsMangeImageListPage = () => {
   }, [isScopeAlbum, isScopeImage])
 
   return (
-    <CardsPage
-      defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
-      pageNav={pageNav}
-      fetchListFn={fetchListFn}
-      deleteBatch={deleteBatch}
-      selectAllExcludes={selectAllExcludes}
-      tabScopeChange={tabScopeChange}
-      cardItem={customCardItem}
-      emptyTip={emptyTip}
-    />
+    <AlbumNamesContextProvider>
+      <CardsPage
+        defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
+        pageNav={pageNav}
+        fetchListFn={fetchListFn}
+        deleteBatch={deleteBatch}
+        selectAllExcludes={selectAllExcludes}
+        tabScopeChange={tabScopeChange}
+        cardItem={customCardItem}
+        emptyTip={emptyTip}
+      />
+    </AlbumNamesContextProvider>
   )
 }
 

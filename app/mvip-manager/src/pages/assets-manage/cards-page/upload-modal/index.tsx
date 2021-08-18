@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react'
+import React, { useRef, useEffect, useCallback, useState, useMemo, useContext } from 'react'
 import { Button, Modal } from "antd"
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
 
@@ -7,7 +7,7 @@ import { successMessage, errorMessage } from "@/components/message"
 import { useAlbumSelector } from '../album-selector'
 import { useUpload, UploadItem } from './upload'
 
-import { AlbumNameListItem } from "@/interfaces/shop"
+import AlbumNamesContext from '../../context/album-names'
 
 import styles from './index.less'
 
@@ -26,17 +26,23 @@ type UploadResMap = {
 }
 
 type Props = {
-  allAlbumLists: AlbumNameListItem[]
   refresh: () => void
   createAlbum: () => void
 }
 
-export function useUploadModal(props: Props) {
+export default function useUploadModal(props: Props) {
 
   /***************************************************** States */
-  const { allAlbumLists, refresh, createAlbum } = props
+  const { refresh, createAlbum } = props
   const [visible, setVisible] = useState(false)
-  const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
+  const { lists: allAlbumLists } = useContext(AlbumNamesContext)
+
+  const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
+  useEffect(() => {
+    if (selectedAlbum) {
+      setLists([])
+    }
+  }, [selectedAlbum])
 
   const handleCreateAlbum = () => createAlbum()
 
@@ -67,12 +73,6 @@ export function useUploadModal(props: Props) {
   })
 
   const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
-
-  useEffect(() => {
-    if (selectedAlbum) {
-      setLists([])
-    }
-  }, [selectedAlbum])
 
   const open = (defaultVal?: number) => {
     setAlbumByID(defaultVal)
@@ -271,7 +271,7 @@ export function useUploadModal(props: Props) {
       {/* Selector */}
       <div>
         <span>上传到：</span>
-        {$AlbumSelector}
+        {$albumSelector}
         <Button className={styles["create-album-btn"]} type="text" size="small" onClick={handleCreateAlbum}>
           新增相册
         </Button>

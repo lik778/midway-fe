@@ -24,7 +24,7 @@ const getDefaultData = () => {
   }
 }
 
-export default function usePagination(defaultVals: Partial<PaginationSetting>) {
+export default function usePagination(defaultVals: Partial<PaginationSetting> = {}) {
   const [conf, setConf] = useState<PaginationSetting>(getDefaultConf(defaultVals))
   const [data, setData] = useState<Pagination>(getDefaultData())
 

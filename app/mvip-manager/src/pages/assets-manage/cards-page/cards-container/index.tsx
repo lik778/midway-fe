@@ -3,7 +3,7 @@ import { Spin, Modal } from "antd"
 import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons"
 import { debounce } from 'lodash'
 
-import { TabScopeItem, CardItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
+import { TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
 import { PaginationSetting } from '@/hooks/pagination'
 
 import styles from "./index.less"
@@ -24,7 +24,6 @@ interface CardsContainerProps {
   lists: CardItem[]
   selection: any[]
   curScope: TabScopeItem | undefined
-  allAlbumLists: AlbumNameListItem[]
   loading: boolean
   pagiConf: any
   setPagiConf: (conf: Partial<PaginationSetting>) => void
@@ -41,7 +40,7 @@ export default function CardsContainer(props: CardsContainerProps) {
   /***************************************************** States */
 
   const {
-    lists, selection, curScope, allAlbumLists, loading, pagiConf,
+    lists, selection, curScope, loading, pagiConf,
     setPagiConf, setSelection, select, unselect, refresh,
     emptyTip, cardItem
   } = props

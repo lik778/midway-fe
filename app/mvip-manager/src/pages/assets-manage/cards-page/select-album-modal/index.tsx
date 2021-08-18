@@ -1,5 +1,7 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useContext } from 'react'
 import { Button, Select, Modal } from "antd"
+
+import AlbumNamesContext from '../../context/album-names'
 
 import { AlbumNameListItem } from "@/interfaces/shop"
 
@@ -7,11 +9,8 @@ import styles from './index.less'
 
 let albumSelectResolver: ((select: AlbumNameListItem | PromiseLike<AlbumNameListItem>) => void) | null = null
 
-type Props = {
-  allAlbumLists: AlbumNameListItem[]
-}
-export default function useSelectAlbumListsModal(props: Props) {
-  const { allAlbumLists } = props
+export default function useSelectAlbumListsModal() {
+  const { lists: allAlbumLists } = useContext(AlbumNamesContext)
   const [exclude, setExclude] = useState<number[]>([])
   const displayLists = useMemo(() => allAlbumLists.filter(x => !exclude.includes(x.id)), [exclude])
   const [select, setSelect] = useState<AlbumNameListItem>()
