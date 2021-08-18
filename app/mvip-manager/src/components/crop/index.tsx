@@ -17,7 +17,7 @@ const Crop: FC<Props> = (props) => {
   const { cropProps, url, handleCropSuccess } = props
   /** 因为mac弹窗出来的时候可能dom节点还没渲染好，所以裁剪块会缩小在左上角，所以延时等弹窗渲染完毕 */
   const [initFlag, setInitFlag] = useState<boolean>(false)
-  const [updataLoading, setUpdataLoading] = useState<boolean>(false)
+  const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [cropper, setCropper] = useState<Cropper>();
   const [timestamp] = useState<number>(() => new Date().getTime())
   // 初始化 或者替换图片时需要恢复图片位置
@@ -38,7 +38,7 @@ const Crop: FC<Props> = (props) => {
     cropper.getCroppedCanvas().toBlob(async (blob) => {
       // 创建formData数据,因为图片上传的请求支持格式
       if (!blob) return
-      setUpdataLoading(true)
+      setUpDataLoading(true)
       const base64 = cropper.getCroppedCanvas().toDataURL(blob.type)
       const suffix = blob?.type.split('/')[1] || 'png'
       const formData = new FormData()
@@ -47,7 +47,7 @@ const Crop: FC<Props> = (props) => {
       formData.append('file', blob, `${new Date().getDate()}-${Math.random()}.${suffix}`)
       const res = await upImageToYoupai(formData)
       handleCropSuccess(res.data.url, base64)
-      setUpdataLoading(false)
+      setUpDataLoading(false)
     }/*, 'image/png' */);
   };
 
@@ -92,7 +92,7 @@ const Crop: FC<Props> = (props) => {
         <div className={styles["preview-box"]}>
           <div className={`${styles["img-preview"]} img-preview-${timestamp}`} />
         </div>
-        <Button size="large" type="primary" onClick={handleConfirmCropper} disabled={updataLoading} loading={updataLoading}>确认裁剪</Button>
+        <Button size="large" type="primary" onClick={handleConfirmCropper} disabled={upDataLoading} loading={upDataLoading}>确认裁剪</Button>
       </div>
     </div>
   </Spin>

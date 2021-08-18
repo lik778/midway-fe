@@ -179,8 +179,8 @@ export const getCustomerModuleListApi = (shopId: number) => {
 }
 
 /** 获取某个自定义设置 */
-export const getCustomerSetApi = (shopId: number, id: number) => {
-  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id }, setShopHeader(shopId))
+export const getCustomerSetApi = (shopId: number, id: string) => {
+  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id: Number(id) }, setShopHeader(shopId))
 }
 
 /** 保存某个自定义设置 */
