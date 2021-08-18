@@ -27,7 +27,7 @@ type CardsListPageProps = {
   isScopeAlbum?: boolean
   isScopeImage?: boolean
   selectionDeleteFn: null | ((shopId: number, curScope: TabScopeItem | undefined) => SelectionBlockDeleteMethod)
-  cardItem?: (props: any) => (props: CustomCardItemProps) => JSX.Element | null
+  cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
   emptyTip: (props: {
     curScope?: TabScopeItem,
     createAlbum?: any,

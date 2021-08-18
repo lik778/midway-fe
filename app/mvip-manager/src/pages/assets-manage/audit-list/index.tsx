@@ -6,7 +6,7 @@ import { successMessage, errorMessage } from "@/components/message"
 import CardListPage from '../card-list-page/index'
 import { getImagesetFailedImage, delImagesetFailedImage, reAuditImagesetImage } from '@/api/shop'
 
-import { TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
+import { TabScopeItem, ImageItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../card-list-page/components/cards/index'
 
 import styles from '../card-list-page/components/cards/index.less'

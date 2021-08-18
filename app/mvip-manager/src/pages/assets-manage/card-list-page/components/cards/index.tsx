@@ -51,7 +51,7 @@ interface CardsProps {
   goTabScope: (scope: TabScopeItem) => void;
   refresh: (resetPagi?: boolean) => void;
   emptyTip: JSX.Element | null
-  cardItem?: (props: CustomCardItemProps) => JSX.Element
+  cardItem?: (props: CustomCardItemProps) => (JSX.Element | null)
 }
 export default function Cards(props: CardsProps) {
 

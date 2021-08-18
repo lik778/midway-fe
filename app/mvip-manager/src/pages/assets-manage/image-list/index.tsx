@@ -7,6 +7,7 @@ import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
 
 import { TabScope, TabScopeItem, } from "@/interfaces/shop"
+import { CustomCardItemProps } from '../card-list-page/components/cards/index'
 
 // 资源管理 - 图集页面
 const AssetsMangeImageListPage = () => {
@@ -95,9 +96,13 @@ const AssetsMangeImageListPage = () => {
   )
 }
 
-function PaddingHooks () {
+// 由于组件切换时状态有顺序和数量相等限制，
+// 暂时用一个组件用来填充
+function PaddingHooks(props: any) {
   const [_, __] = useState('for padding')
-  return null
+  return (props: CustomCardItemProps) => {
+    return null
+  }
 }
 
 /**
