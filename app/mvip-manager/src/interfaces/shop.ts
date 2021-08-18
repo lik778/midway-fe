@@ -31,6 +31,7 @@ export interface ProductListItem {
   status: number
   tags: string[]
   urlSuffix: string
+  createdTime: number
 }
 
 export interface CreateArticleApiParams {
@@ -56,6 +57,7 @@ export interface ArticleListItem {
   status: number
   tags: string[]
   urlSuffix: string
+  createdTime: number
 }
 
 export interface HandleApiParams {

@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { SelectProductListItem, SelectArticleListItem, ConfigItemType } from '../../../../data';
 import styles from './index.less'
-
+import { formatTime } from '@/utils/index'
 interface Props {
   index: number,
   type: ConfigItemType,
@@ -61,7 +61,7 @@ const ContentItem: FC<Props> = (props) => {
           {
             localActionConfig.delete && <img className={styles['delete']} src="//file.baixing.net/202108/46964751270fa2badbdefc08a4577ad0.png" onClick={() => { handleClickDelete!(content) }}></img>
           }
-          <img className={styles['img']} src={content.headImg||'//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}></img>
+          <img className={styles['img']} src={content.headImg || '//file.baixing.net/202011/722f557a62889f098f7843fd3481e22b.png'}></img>
         </div>
         <div className={styles['text-box']}>
           <div className={styles['name']}>{content.name}</div>
@@ -84,7 +84,7 @@ const ContentItem: FC<Props> = (props) => {
           </>
         }
         <div className={styles['name']}>{content.name}</div>
-        <div className={styles['time']}>文章时间</div>
+        <div className={styles['time']}>{formatTime(content.createdTime)}</div>
         {
           localActionConfig.delete && <div className={styles['delete']} onClick={() => { handleClickDelete!(content) }}>删除</div>
         }
