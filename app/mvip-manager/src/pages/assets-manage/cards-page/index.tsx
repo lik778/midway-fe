@@ -214,8 +214,20 @@ const CardsPage = (props: CardsPageProps) => {
 
   // 页头
   const renderNavBar = useMemo(() => (
-    pageNav({ shopId, tabScope, curScope, goTabScope, createAlbum, openUpload })
+    pageNav({ shopId, tabScope, curScope, goTabScope, createAlbum, openUpload, selectAlbum })
   ), [shopId, tabScope, curScope, goTabScope, createAlbum, openUpload])
+
+  const renderCardItem = cardItem && cardItem({
+    curScope,
+    lists,
+    selection,
+    refresh,
+    goTabScope,
+    setSelection,
+    createAlbum,
+    refreshAllAlbumLists,
+    selectAlbum
+  })
 
   return (
     <>
@@ -250,7 +262,7 @@ const CardsPage = (props: CardsPageProps) => {
           refresh={refresh}
           select={select}
           unselect={unselect}
-          cardItem={cardItem && cardItem({ curScope, refresh, goTabScope, createAlbum, refreshAllAlbumLists, selectAlbum })}
+          cardItem={renderCardItem}
           emptyTip={renderCardListEmptyTip}
         />
         {/* 分页 */}

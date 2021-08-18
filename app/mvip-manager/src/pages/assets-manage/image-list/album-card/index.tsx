@@ -15,51 +15,18 @@ import DEFAULT_ALBUM_COVER from './default-album-cover.png'
 const createNewScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
 
 export default function AlbumCardWrapper(props: any) {
-  const { goTabScope, createAlbum, refreshAllAlbumLists } = props
+  const { lists, selection, setSelection, goTabScope, createAlbum, refreshAllAlbumLists, refresh } = props
 
   const [_, __] = useState('for padding')
 
   // 查看相册详情
-  const goAlbumScope = (album: AlbumItem) => goTabScope(createNewScope(album))
+  const intoScope = (album: AlbumItem) => goTabScope(createNewScope(album))
 
   // 编辑相册名称
   const handleEditAlbum = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
     createAlbum(album)
   }
-
-  return (props: CustomCardItemProps) => (
-    AlbumCard({
-      ...props,
-      goAlbumScope,
-      handleEditAlbum,
-      refreshAllAlbumLists
-    } as AlbumCardProps)
-  )
-}
-
-type AlbumCardProps = CustomCardItemProps & {
-  card: AlbumItem
-  goAlbumScope: (album: AlbumItem) => any
-  handleEditAlbum: (e: any, album: AlbumItem) => any
-  refreshAllAlbumLists: () => any
-}
-
-function AlbumCard(props: AlbumCardProps) {
-  const {
-    card, lists, selection,
-    refresh, setSelection, handleSelectCard, goAlbumScope, handleEditAlbum,
-    refreshAllAlbumLists
-  } = props
-
-  const { id, name, coverUrl, totalImg, type } = card
-  const isDefaultAlbum = type === 'DEFAULT'
-  const isChecked = selection.find((y: number) => y === id)
-
-  const stopEvent = (e: any) => e.stopPropagation()
-
-  // FIXME 暂时写死，用来调试
-  const shopId = 3863
 
   // 删除确认 Modal
   const delCallback = async (api: any, query: any, info: string, callback?: () => void) => {
@@ -70,7 +37,7 @@ function AlbumCard(props: AlbumCardProps) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          api(shopId, query)
+          api(3863, query)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')
@@ -104,10 +71,41 @@ function AlbumCard(props: AlbumCardProps) {
     })
   }
 
+  return (props: CustomCardItemProps) => (
+    AlbumCard({
+      ...props,
+      delAlbum,
+      intoScope,
+      handleEditAlbum,
+      refreshAllAlbumLists
+    } as AlbumCardProps)
+  )
+}
+
+type AlbumCardProps = CustomCardItemProps & {
+  card: AlbumItem
+  intoScope: (album: AlbumItem) => any
+  handleEditAlbum: (e: any, album: AlbumItem) => any
+  delAlbum: (e: any, album: AlbumItem) => any
+}
+
+function AlbumCard(props: AlbumCardProps) {
+  const {
+    card, selection,
+    handleSelectCard, intoScope, handleEditAlbum,
+    delAlbum,
+  } = props
+
+  const { id, name, coverUrl, totalImg, type } = card
+  const isDefaultAlbum = type === 'DEFAULT'
+  const isChecked = selection.find((y: number) => y === id)
+
+  const stopEvent = (e: any) => e.stopPropagation()
+
   return (
-    <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => goAlbumScope(card)}>
+    <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => intoScope(card)}>
       {!isDefaultAlbum && (
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => goAlbumScope(card)}>
+        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => intoScope(card)}>
           <div className={styles["action-wrapper"]}>
             <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
             <div className={styles["anticon-down-con"]}>

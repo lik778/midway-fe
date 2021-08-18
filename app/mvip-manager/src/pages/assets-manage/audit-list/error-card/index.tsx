@@ -11,7 +11,7 @@ import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 import styles from './index.less'
 
 export default function ErrorCardWrapper(props: any) {
-  const { refresh } = props
+  const { lists, selection, setSelection, refresh } = props
   const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem | null>()
 
   // FIXME 暂时写死，用来调试
@@ -40,47 +40,11 @@ export default function ErrorCardWrapper(props: any) {
       })
   }
 
-  const cardItem = useCallback((props: CustomCardItemProps) => {
-    return ErrorCardItem({
-      ...props,
-      auditLoadingItem,
-      reAuditImage,
-      card: props.card
-    } as ErrorCardItemProps)
-  }, [auditLoadingItem])
-
-  return cardItem
-}
-
-// 自定义申诉列表的卡片
-type ErrorCardItemProps = CustomCardItemProps & {
-  card: ImageItem,
-  auditLoadingItem: ImageItem | null
-  reAuditImage: (e: any, image: ImageItem) => any
-}
-function ErrorCardItem(props: ErrorCardItemProps) {
-  const {
-    lists, curScope, card, selection, loading, auditLoadingItem,
-    handleSelectCard, previewImage, setSelection, refresh, reAuditImage
-  } = props
-
-  const { id, imgUrl, checkStatus, reason } = card
-  const shortReasonMatch = (reason || '').match(/\[(.+)\]/)
-  const shortReason = shortReasonMatch ? shortReasonMatch[1] : '审核驳回'
-  const isChecked = selection.find((y: number) => y === id)
-  const inAudit = checkStatus === 'REAPPLY'
-  const inAuditLoading = auditLoadingItem && auditLoadingItem.id === id
-  const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
-  const showCoverInfo = inAudit || rejected
-  const showReapplyBtn = rejected && checkStatus !== 'REJECT_BYHUMAN'
-
-  const stopEvent = (e: any) => e.stopPropagation()
-
   // 删除图片
-  const delImage = async (e: any, image: ImageItem) => {
+  const delImage = (e: any, image: ImageItem) => {
     e.stopPropagation()
     const { id } = image
-    await Modal.confirm({
+    Modal.confirm({
       title: '确认删除',
       content: `图片删除后无法恢复，确认删除？`,
       width: 532,
@@ -91,7 +55,7 @@ function ErrorCardItem(props: ErrorCardItemProps) {
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')
-                setSelection(selection.filter(x => x !== id))
+                setSelection(selection.filter((x: number) => x !== id))
                 refresh(lists.length === 1)
                 resolve(res.success)
               } else {
@@ -106,6 +70,44 @@ function ErrorCardItem(props: ErrorCardItemProps) {
       }
     })
   }
+
+  const cardItem = (props: CustomCardItemProps) => {
+    return ErrorCardItem({
+      ...props,
+      auditLoadingItem,
+      reAuditImage,
+      delImage,
+      card: props.card
+    } as ErrorCardItemProps)
+  }
+
+  return cardItem
+}
+
+// 自定义申诉列表的卡片
+type ErrorCardItemProps = CustomCardItemProps & {
+  card: ImageItem,
+  auditLoadingItem: ImageItem | null
+  reAuditImage: (e: any, image: ImageItem) => any
+  delImage: (e: any, image: ImageItem) => any
+}
+function ErrorCardItem(props: ErrorCardItemProps) {
+  const {
+    card, loading, auditLoadingItem, selection,
+    handleSelectCard, previewImage, reAuditImage, delImage
+  } = props
+
+  const { id, imgUrl, checkStatus, reason } = card
+  const shortReasonMatch = (reason || '').match(/\[(.+)\]/)
+  const shortReason = shortReasonMatch ? shortReasonMatch[1] : '审核驳回'
+  const isChecked = selection.find((y: number) => y === id)
+  const inAudit = checkStatus === 'REAPPLY'
+  const inAuditLoading = auditLoadingItem && auditLoadingItem.id === id
+  const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
+  const showCoverInfo = inAudit || rejected
+  const showReapplyBtn = rejected && checkStatus !== 'REJECT_BYHUMAN'
+
+  const stopEvent = (e: any) => e.stopPropagation()
 
   return (
     <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card)}>

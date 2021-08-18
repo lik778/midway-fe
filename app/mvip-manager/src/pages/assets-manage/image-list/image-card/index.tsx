@@ -5,13 +5,13 @@ import { PartitionOutlined, DeleteOutlined, LoadingOutlined, DownOutlined, EditO
 import { successMessage, errorMessage } from "@/components/message"
 import { moveImagesetImage, delImagesetImage, setImagesetAlbumCover } from '@/api/shop'
 
-import { ImageItem, AlbumItem } from "@/interfaces/shop"
+import { ImageItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 
 import styles from './index.less'
 
 export default function ImageCardWrapper(props: any) {
-  const { curScope } = props
+  const { curScope, lists, selection, setSelection, refresh, selectAlbum } = props
 
   const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
@@ -39,35 +39,6 @@ export default function ImageCardWrapper(props: any) {
         setSetCoverItem(null)
       })
   }
-
-  return (props: CustomCardItemProps) => (
-    ImageCard({
-      ...props,
-      setCoverImage,
-      setCoverItem
-    } as ImageCardProps)
-  )
-}
-
-type ImageCardProps = CustomCardItemProps & {
-  card: ImageItem
-  setCoverItem: ImageItem | null | undefined
-  setCoverImage: (e: any, image: ImageItem) => void
-  selectAlbum: (arg: any) => AlbumItem
-}
-
-function ImageCard(props: ImageCardProps) {
-  const {
-    lists, curScope, card, selection, setCoverItem, loading,
-    handleSelectCard, previewImage, setSelection, refresh,
-    setCoverImage, selectAlbum,
-  } = props
-
-  const { id, imgUrl } = card
-  const isChecked = selection.find((y: number) => y === id)
-  const inSetCoverLoading = setCoverItem && setCoverItem.id === id
-
-  const stopEvent = (e: any) => e.stopPropagation()
 
   // 移动图片
   const moveImage = async (e: any, image: ImageItem) => {
@@ -122,6 +93,38 @@ function ImageCard(props: ImageCardProps) {
       }
     })
   }
+
+  return (props: CustomCardItemProps) => (
+    ImageCard({
+      ...props,
+      setCoverImage,
+      setCoverItem,
+      moveImage,
+      delImage,
+    } as ImageCardProps)
+  )
+}
+
+type ImageCardProps = CustomCardItemProps & {
+  card: ImageItem
+  setCoverItem: ImageItem | null | undefined
+  setCoverImage: (e: any, image: ImageItem) => void
+  moveImage: (arg: any, image: ImageItem) => void
+  delImage: (arg: any, image: ImageItem) => void
+}
+
+function ImageCard(props: ImageCardProps) {
+  const {
+    card, selection, setCoverItem, loading,
+    handleSelectCard, previewImage,
+    setCoverImage, moveImage, delImage
+  } = props
+
+  const { id, imgUrl } = card
+  const isChecked = selection.find((y: number) => y === id)
+  const inSetCoverLoading = setCoverItem && setCoverItem.id === id
+
+  const stopEvent = (e: any) => e.stopPropagation()
 
   return (
     <div className={styles["image-card"]} key={`image-card-${id}`} onClick={() => previewImage(card)}>

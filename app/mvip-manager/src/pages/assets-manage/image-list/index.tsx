@@ -117,7 +117,7 @@ const AssetsMangeImageListPage = () => {
   // 页头
   const pageNav = useCallback((props: PageNavProps) => {
     const {
-      shopId, tabScope, curScope,
+      shopId, tabScope, curScope, selectAlbum,
       goTabScope, createAlbum, openUpload
     } = props
     return (
@@ -128,6 +128,7 @@ const AssetsMangeImageListPage = () => {
         goTabScope={goTabScope}
         createAlbum={createAlbum}
         openUpload={openUpload}
+        selectAlbum={selectAlbum}
       />
     )
   }, [])
