@@ -10,7 +10,7 @@ import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId, ShopInfo } from
 import { getModuleInfoApi, setModuleHomeABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
-import { successMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 import { useMemo } from 'react';
 import { ShopIndustryType } from '@/enums';
 
@@ -63,8 +63,12 @@ const AboutUs: FC<Props> = (props) => {
       tags: Array.isArray(values.tags) ? values.tags : (values.tags as any).split(','),
       position, pageModule
     })
+    if (res.success) {
+      successMessage(res.message)
+    } else {
+      errorMessage(res.message)
+    }
     setUpDataLoading(false)
-    successMessage(res.message)
   }
 
   return <div className={styles["about-us-container"]}>

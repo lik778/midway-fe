@@ -33,12 +33,14 @@ export interface SelectProductListItem {
   price: string,
   headImg: string,
   urlSuffix: string
+  createdTime: number,
   [key: string]: any
 }
 
 export interface SelectArticleListItem {
   id: number,
   name: string,
+  createdTime: number,
   urlSuffix: string
   [key: string]: any
 }

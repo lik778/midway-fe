@@ -11,7 +11,7 @@ import { ModuleArticleInfo, ModuleProductInfo, ModulePageType, ModuleComponentId
 import { getModuleInfoApi, setModuleProductInfoApi, setModuleArticleInfoApi } from '@/api/shop'
 import styles from './index.less'
 import { mockData } from '@/utils';
-import { successMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId,
@@ -73,8 +73,12 @@ const AboutUs: FC<Props> = (props) => {
         position, pageModule
       })
     }
+    if (res.success) {
+      successMessage(res.message)
+    } else {
+      errorMessage(res.message)
+    }
     setUpDataLoading(false)
-    successMessage(res.message)
   }
 
   return <div className={styles["home-hot-product-container"]}>

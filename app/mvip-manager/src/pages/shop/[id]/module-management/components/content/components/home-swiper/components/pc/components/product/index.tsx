@@ -71,9 +71,9 @@ const Product = (props: Props, parentRef: Ref<any>) => {
       position, pageModule
     })
     if (res.success) {
-      successMessage('保存成功')
+      successMessage(res.message)
     } else {
-      errorMessage(`上传失败: ${res.message}`)
+      errorMessage(res.message)
       return null
     }
     setUpDataLoading(false)
