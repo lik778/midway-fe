@@ -23,6 +23,7 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
   const { id, shopBasicInfoParams, getDataLoading, onChange } = props
 
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(ShopBasicInfoForm));
+  const [phoneTipShow, setphoneTipShow] = useState(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
 
   const updateConfigData = () => {
@@ -66,21 +67,25 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     setUpDataLoading(false)
   }
 
-  const formChange = (...arg: any) => {
-    //console.log(arg)  
+  const formChange = (value: any) => {
+    //手机正则
+    var landlinePtn = /(^(0\d{2,3}-?)?\d{7,8}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
+    setphoneTipShow(value.contactMobile && landlinePtn.test(value.contactMobile))
   }
+
 
   return (
     <Spin spinning={upDataLoading}>
-      <div className="container">
+      <div className={`container ${styles['shop-container']}`}>
         <WildcatForm
           editDataSource={shopBasicInfoParams}
           submit={sumbit}
           config={config}
           formChange={formChange}
         />
+        <span className={phoneTipShow ? styles['phone-block'] : styles['phone-none']}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
       </div>
-    </Spin>)
+    </Spin >)
 }
 
 export default forwardRef(ShopBasicInfoSetForm)
