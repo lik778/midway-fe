@@ -203,8 +203,6 @@ export interface CustomerSetChildListItem {
   title: string,
   content: string,
   urlImg: string,
-  /** 0 :黑色   1 ：白色 */
-  fontColor: 0 | 1,
   /** 自用字段 因为是数字 一定要保证唯一 */
   key: string
 }
