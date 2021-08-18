@@ -345,7 +345,7 @@ export interface AlbumImageListItem {
   status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
 }
 
-// 默认相册/普通相册：默认相册不能编辑、删除
+// 相册类型（默认相册不能编辑、删除）
 export type AlbumType = 'DEFAULT' | 'NORMAL'
 
 // 相册
@@ -357,23 +357,39 @@ export type AlbumItem = {
   type: AlbumType
 }
 
-
+/**
+ * DEFAULT(0, "初始化")
+ * APPROVE(1, "审核通过")
+ * REJECT_BYMACHINE(2, "机审驳回")
+ * REAPPLY(3, "申诉中")
+ * REJECT_BYHUMAN(4, "人审驳回")
+ */
 export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
 export type ImageType = 'NOT_COVER' | 'COVER'
-/**
- * @description 相册图片类型
- * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
- */
+
+// 相册图片类型
 export type ImageItem = {
   id: number,
   name?: string,
   imgUrl: string,
   type: ImageType,
-  checkStatus: CheckStatusType,// 状态
-  reason: string,// 驳回理由
+  checkStatus: CheckStatusType,
+  reason: string,
 }
 
-export type CardItem = AlbumItem | ImageItem
+export type VideoType = 'NOT_COVER' | 'COVER'
+
+// 相册图片类型
+export type VideoItem = {
+  id: number,
+  name?: string,
+  imgUrl: string,
+  type: VideoType,
+  checkStatus: CheckStatusType,
+  reason: string,
+}
+
+export type CardItem = AlbumItem | ImageItem | VideoItem
 
 // 相册管理目录层级类型
 type TabScopeItemBase = {
@@ -382,7 +398,7 @@ type TabScopeItemBase = {
 export type TabScopeItem = (
   TabScopeItemBase & {
     type: 'album',
-    label: '相册',
+    label: '相册' | '视频',
     countLabel: '个'
   }
 ) | (

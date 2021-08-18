@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react"
 import { history } from 'umi'
-import { Breadcrumb, Button, Radio } from "antd"
+import { Breadcrumb, Button } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 
-import { TabScope, TabScopeItem } from "@/interfaces/shop"
+import { PageNavProps } from '../../cards-page/index'
 
 import styles from "./index.less"
 
-interface NavProps {
-  shopId: number
-  tabScope: TabScope
-  curScope?: TabScopeItem
-  goTabScope: (scope: TabScopeItem) => void
-  createAlbum: () => void
-  openUpload: (defaultVal?: number) => void
-}
-export default (props: NavProps) => {
-  const { curScope, tabScope, goTabScope, createAlbum, openUpload } = props;
+export default (props: PageNavProps) => {
+  const {
+    curScope, tabScope,
+    goTabScope, createAlbum, openUpload
+  } = props
 
   const isScopeAlbum = curScope && curScope.type === 'album'
 
@@ -64,5 +59,5 @@ export default (props: NavProps) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}

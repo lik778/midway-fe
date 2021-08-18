@@ -3,14 +3,16 @@ import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
 import { getImagesetAlbum, getImagesetImage, delImagesetAlbum, delImagesetImage } from '@/api/shop'
+import NavBar from './page-nav/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
 import CardsPage from '../cards-page/index'
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
+import { TabScope, CardItem, AlbumItem } from "@/interfaces/shop"
+import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
 import { CustomCardItemProps } from '../cards-page/cards-container/index'
 
-// 资源管理 - 图集页面
+// 资源管理 - 相册列表
 const AssetsMangeImageListPage = () => {
 
   /***************************************************** States */
@@ -31,16 +33,8 @@ const AssetsMangeImageListPage = () => {
     }
   }
 
-  // 选择区域的删除函数
-  const deleteBatch = useCallback((props: {
-    shopId: number
-    curScope: TabScopeItem | undefined
-    selection: number[]
-    lists: CardItem[]
-    refresh: (resetPagi?: boolean) => void
-    setSelection: (selection: number[]) => void
-    refreshAllAlbumLists: () => void
-  }) => {
+  // 批量删除
+  const deleteBatch = useCallback((props: DeleteBatchProps) => {
     const {
       shopId, curScope, selection,
       refresh, setSelection, refreshAllAlbumLists
@@ -96,7 +90,7 @@ const AssetsMangeImageListPage = () => {
   // 排除默认相册
   const excludes = useCallback((lists: CardItem[]) => (
     lists.filter(x => (x as AlbumItem).type !== 'DEFAULT')
-  ),[isScopeAlbum])
+  ), [isScopeAlbum])
 
   /***************************************************** Renders */
 
@@ -120,8 +114,27 @@ const AssetsMangeImageListPage = () => {
     return null
   }, [isScopeAlbum, isScopeImage])
 
+  // 页头
+  const pageNav = useCallback((props: PageNavProps) => {
+    const {
+      shopId, tabScope, curScope,
+      goTabScope, createAlbum, openUpload
+    } = props
+    return (
+      <NavBar
+        shopId={shopId}
+        tabScope={tabScope}
+        curScope={curScope}
+        goTabScope={goTabScope}
+        createAlbum={createAlbum}
+        openUpload={openUpload}
+      />
+    )
+  }, [])
+
   // 空列表提示
-  const emptyTip = useCallback(({ curScope, createAlbum, openUpload }) => {
+  const emptyTip = useCallback((props: EmptyTipProps) => {
+    const { curScope, createAlbum, openUpload } = props
     let info, $extra
     if (isScopeAlbum) {
       info = "没有找到相册，快新建一个吧~"
@@ -143,6 +156,7 @@ const AssetsMangeImageListPage = () => {
   return (
     <CardsPage
       defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
+      pageNav={pageNav}
       fetchListFn={fetchListFn}
       deleteBatch={deleteBatch}
       excludes={excludes}

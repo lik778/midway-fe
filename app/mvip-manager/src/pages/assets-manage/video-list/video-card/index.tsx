@@ -5,21 +5,21 @@ import { PartitionOutlined, DeleteOutlined, LoadingOutlined, DownOutlined, EditO
 import { successMessage, errorMessage } from "@/components/message"
 import { setImagesetAlbumCover } from '@/api/shop'
 
-import { ImageItem } from "@/interfaces/shop"
+import { VideoItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 
 import styles from './index.less'
 
-export default function ImageCardWrapper(props: any) {
+export default function VideoCardWrapper(props: any) {
   const { curScope } = props
 
-  const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
+  const [setCoverItem, setSetCoverItem] = useState<VideoItem | null>()
 
   // FIXME 暂时写死，用来调试
   const shopId = 3863
 
   // 设置封面图片
-  const setCoverImage = async (e: any, image: ImageItem) => {
+  const setCoverImage = async (e: any, image: VideoItem) => {
     e.stopPropagation()
     setSetCoverItem(image)
     const { id } = image
@@ -41,21 +41,21 @@ export default function ImageCardWrapper(props: any) {
   }
 
   return (props: CustomCardItemProps) => (
-    ImageCard({
+    VideoCard({
       ...props,
       setCoverImage,
       setCoverItem
-    } as ImageCardProps)
+    } as VideoCardProps)
   )
 }
 
-type ImageCardProps = CustomCardItemProps & {
-  card: ImageItem
-  setCoverImage: (e: any, image: ImageItem) => void
-  setCoverItem: ImageItem | null | undefined
+type VideoCardProps = CustomCardItemProps & {
+  card: VideoItem
+  setCoverImage: (e: any, image: VideoItem) => void
+  setCoverItem: VideoItem | null | undefined
 }
 
-function ImageCard(props: ImageCardProps) {
+function VideoCard(props: VideoCardProps) {
   const {
     card, selection, setCoverItem, loading,
     handleSelectCard, previewImage, moveImage, delImage,

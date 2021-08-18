@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useParams } from "umi"
 import { Pagination } from "antd"
 
-import NavBar from './page-nav'
 import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
 import { useCreateAlbumModal } from './create-album-modal'
@@ -18,26 +17,40 @@ import { CustomCardItemProps } from './cards-container'
 
 import styles from './index.less'
 
+export type PageNavProps = {
+  shopId: number
+  tabScope: TabScope
+  curScope: TabScopeItem
+  goTabScope: (scope: TabScopeItem) => void
+  createAlbum: (newAlbum?: any) => void
+  openUpload: (defaultVal: number) => void
+}
+
+export type DeleteBatchProps = {
+  shopId: number
+  curScope: TabScopeItem
+  selection: number[]
+  lists: CardItem[]
+  refresh: (resetPagi?: boolean) => void
+  setSelection: (selection: number[]) => void
+  refreshAllAlbumLists: () => void
+}
+
+export type EmptyTipProps = {
+  curScope: TabScopeItem,
+  createAlbum: (newAlbum?: any) => void
+  openUpload: (defaultVal: number) => void
+}
+
 type CardsPageProps = {
   defaultScope: TabScopeItem
   tabScopeChange?: (tabScope: TabScope) => void
   fetchListFn: ((shopId: number, query: any) => any) | null
-  deleteBatch: (props: {
-    shopId: number
-    curScope: TabScopeItem
-    selection: number[]
-    lists: CardItem[]
-    refresh: (resetPagi?: boolean) => void
-    setSelection: (selection: number[]) => void
-    refreshAllAlbumLists: () => void
-  }) => (e: any) => void
+  deleteBatch: (props: DeleteBatchProps) => (e: any) => void
   excludes?: (items: CardItem[]) => CardItem[]
   cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
-  emptyTip: (props: {
-    curScope: TabScopeItem,
-    createAlbum?: any,
-    openUpload?: any
-  }) => JSX.Element
+  pageNav: (props: PageNavProps) => JSX.Element
+  emptyTip: (props: EmptyTipProps) => JSX.Element
 }
 
 const CardsPage = (props: CardsPageProps) => {
@@ -46,7 +59,8 @@ const CardsPage = (props: CardsPageProps) => {
 
   const {
     defaultScope, tabScopeChange,
-    fetchListFn, deleteBatch, cardItem, emptyTip, excludes
+    fetchListFn, deleteBatch, excludes,
+    pageNav, cardItem, emptyTip,
   } = props
   const params: RouteParams = useParams()
   // const shopId = Number(params.id)
@@ -194,19 +208,17 @@ const CardsPage = (props: CardsPageProps) => {
     [emptyTip, curScope, createAlbum, openUpload]
   )
 
+  // 页头
+  const renderNavBar = useMemo(() => (
+    pageNav({ shopId, tabScope, curScope, goTabScope, createAlbum, openUpload })
+  ), [shopId, tabScope, curScope, goTabScope, createAlbum, openUpload])
+
   return (
     <>
       {/* 内容 */}
       <div className={`container ${styles["container"]}`}>
         {/* 页面内导航栏 */}
-        <NavBar
-          shopId={shopId}
-          tabScope={tabScope}
-          curScope={curScope}
-          goTabScope={goTabScope}
-          createAlbum={createAlbum}
-          openUpload={openUpload}
-        />
+        {renderNavBar}
         {/* 选框区 */}
         <SelectionBar
           total={total}

@@ -3,24 +3,18 @@ import { Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
 import { getImagesetFailedImage, delImagesetFailedImage } from '@/api/shop'
+import NavBar from './page-nav/index'
 import ErrorCardWrapper from './error-card/index'
 import CardsPage from '../cards-page/index'
 
-import { TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
+import { CardItem, ImageItem } from "@/interfaces/shop"
+import { PageNavProps, DeleteBatchProps } from '../cards-page/index'
 
-// 资源管理申诉列表页
+// 资源管理 - 申诉列表
 const AssetsMangeAuditListPage = () => {
 
-  // 选择区域的删除函数
-  const deleteBatch = useCallback((props: {
-    shopId: number
-    curScope: TabScopeItem | undefined
-    selection: number[]
-    lists: CardItem[]
-    refresh: (resetPagi?: boolean) => void
-    setSelection: (selection: number[]) => void
-    refreshAllAlbumLists: () => void
-  }) => {
+  // 批量删除
+  const deleteBatch = useCallback((props: DeleteBatchProps) => {
     const {
       shopId, curScope, selection,
       refresh, setSelection, refreshAllAlbumLists
@@ -73,8 +67,26 @@ const AssetsMangeAuditListPage = () => {
     lists.filter(x => (x as ImageItem).checkStatus !== 'REAPPLY')
   ), [])
 
+  // 页头
+  const pageNav = useCallback((props: PageNavProps) => {
+    const {
+      shopId, tabScope, curScope,
+      goTabScope, createAlbum, openUpload
+    } = props
+    return (
+      <NavBar
+        shopId={shopId}
+        tabScope={tabScope}
+        curScope={curScope}
+        goTabScope={goTabScope}
+        createAlbum={createAlbum}
+        openUpload={openUpload}
+      />
+    )
+  }, [])
+
   // 空列表提示
-  const emptyTip = useCallback(({}) => (
+  const emptyTip = useCallback(() => (
     <Result
       title="当前没有申诉中的图片哦~"
       style={{ margin: 'auto' }}
@@ -84,6 +96,7 @@ const AssetsMangeAuditListPage = () => {
   return (
     <CardsPage
       defaultScope={{ item: null, type: 'audit', label: '资源', countLabel: '项' }}
+      pageNav={pageNav}
       fetchListFn={fetchErrorImageLists}
       deleteBatch={deleteBatch}
       cardItem={ErrorCardWrapper}
