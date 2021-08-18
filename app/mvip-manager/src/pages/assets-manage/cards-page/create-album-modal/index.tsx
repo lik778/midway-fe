@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Button, Modal, Form, Input } from "antd";
+import React, { useEffect, useState, useCallback } from 'react'
+import { Button, Modal, Form, Input } from "antd"
 
-import { successMessage, errorMessage } from "@/components/message";
-import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop";
+import { successMessage, errorMessage } from "@/components/message"
+import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop"
 
-import { AlbumItem } from "@/interfaces/shop";
+import { AlbumItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
 let createAlbumResover: ((isDone: boolean | PromiseLike<boolean>) => void) | null = null
 
 type Props = {
-  shopId: number;
-  refresh: () => void;
+  shopId: number
+  refresh: () => void
 }
 export function useCreateAlbumModal(props: Props) {
 
@@ -20,11 +20,11 @@ export function useCreateAlbumModal(props: Props) {
 
   const { shopId, refresh } = props
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const [defaultVals, setDefaultVals] = useState<any>({})
   const [isEditing, setIsEditing] = useState(false)
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // 打开模态框
   const openModal = useCallback(async (album?: AlbumItem): Promise<boolean> => {
@@ -55,7 +55,7 @@ export function useCreateAlbumModal(props: Props) {
   const createAlbum = useCallback(async () => {
     form.validateFields()
       .then(formvals => {
-        setLoading(true);
+        setLoading(true)
         let post = null
         let successMsg = ''
         let params: any = {}
@@ -70,24 +70,24 @@ export function useCreateAlbumModal(props: Props) {
         post(shopId, { ...formvals, ...params })
           .then(res => {
             if (res.success) {
-              successMessage(successMsg);
-              refresh();
-              setVisible(false);
-              form.resetFields();
+              successMessage(successMsg)
+              refresh()
+              setVisible(false)
+              form.resetFields()
               setDefaultVals({})
               createAlbumResover && createAlbumResover(true)
             } else {
-              throw new Error(res.message || "出错啦，请稍后重试");
+              throw new Error(res.message || "出错啦，请稍后重试")
             }
           })
           .catch(error => {
-            errorMessage(error.message);
+            errorMessage(error.message)
             createAlbumResover && createAlbumResover(false)
           })
           .finally(() => {
-            setLoading(false);
+            setLoading(false)
             createAlbumResover && createAlbumResover(false)
-          });
+          })
       })
   }, [createAlbumResover])
 
