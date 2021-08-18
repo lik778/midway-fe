@@ -82,7 +82,7 @@ const Layouts = (props: any) => {
                 <Link to="/assets-manage/image-list">图片管理</Link>
               </Menu.Item>
               <Menu.Item key="assets-video">
-                <Link to="/assets-manage/videoset">视频管理</Link>
+                <Link to="/assets-manage/video-list">视频管理</Link>
               </Menu.Item>
               <Menu.Item key="assets-reapply">
                 <Link to="/assets-manage/audit-list">申诉列表</Link>
