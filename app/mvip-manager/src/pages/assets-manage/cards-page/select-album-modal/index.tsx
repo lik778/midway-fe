@@ -10,7 +10,7 @@ let albumSelectResolver: any = null
 type Props = {
   allAlbumLists: AlbumNameListItem[]
 }
-export function useSelectAlbumListsModal(props: Props) {
+export default function useSelectAlbumListsModal(props: Props) {
   const { allAlbumLists } = props
   const [exclude, setExclude] = useState<number[]>([])
   const displayLists = useMemo(() => allAlbumLists.filter(x => !exclude.includes(x.id)), [exclude])

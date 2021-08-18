@@ -14,7 +14,7 @@ type Props = {
   shopId: number
   refresh: () => void
 }
-export function useCreateAlbumModal(props: Props) {
+export default function useCreateAlbumModal(props: Props) {
 
   /***************************************************** States */
 

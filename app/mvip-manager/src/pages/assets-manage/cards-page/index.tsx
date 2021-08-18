@@ -4,8 +4,9 @@ import { Pagination } from "antd"
 
 import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
-import { useCreateAlbumModal } from './create-album-modal'
 import { useUploadModal } from './upload-modal'
+import useCreateAlbumModal from './create-album-modal/index'
+import useSelectAlbumListsModal from './select-album-modal/index'
 
 import usePrevious from '@/hooks/previous'
 import useSelection from '@/hooks/selection'
@@ -23,6 +24,7 @@ export type PageNavProps = {
   curScope: TabScopeItem
   goTabScope: (scope: TabScopeItem) => void
   createAlbum: (newAlbum?: any) => void
+  selectAlbum: (arg: any) => AlbumItem
   openUpload: (defaultVal: number) => void
 }
 
@@ -177,6 +179,8 @@ const CardsPage = (props: CardsPageProps) => {
 
   /***************************************************** Renders */
 
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists: [] })
+
   const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
 
   // 创建或编辑相册后重新拉取所有相册列表
@@ -246,7 +250,7 @@ const CardsPage = (props: CardsPageProps) => {
           refresh={refresh}
           select={select}
           unselect={unselect}
-          cardItem={cardItem && cardItem({ curScope, refresh, goTabScope, createAlbum, refreshAllAlbumLists })}
+          cardItem={cardItem && cardItem({ curScope, refresh, goTabScope, createAlbum, refreshAllAlbumLists, selectAlbum })}
           emptyTip={renderCardListEmptyTip}
         />
         {/* 分页 */}
@@ -266,6 +270,7 @@ const CardsPage = (props: CardsPageProps) => {
       {$UploadModal}
       {/* 创建/编辑相册模态框 */}
       {$CreateAlbumModal}
+      {$selectAlbumModal}
     </>
   )
 }

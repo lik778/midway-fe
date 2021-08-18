@@ -1,26 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
-import { Spin, Button, Result, Checkbox, Modal } from "antd"
-import {
-  LeftOutlined,
-  RightOutlined,
-  PartitionOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  DownOutlined,
-  LoadingOutlined
-} from "@ant-design/icons"
+import { Spin, Modal } from "antd"
+import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons"
 import { debounce } from 'lodash'
 
-import { successMessage, errorMessage } from "@/components/message"
-import { delImagesetImage, delImagesetFailedImage, moveImagesetImage } from '@/api/shop'
-import { useSelectAlbumListsModal } from '../select-album-modal'
-
-import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
-import { PaginationSetting } from '../../hooks/pagination'
+import { TabScopeItem, CardItem, ImageItem, AlbumNameListItem } from "@/interfaces/shop"
+import { PaginationSetting } from '@/hooks/pagination'
 
 import styles from "./index.less"
 
 export type CustomCardItemProps = {
+  curScope: TabScopeItem
   card: CardItem
   selection: any[]
   loading: boolean
@@ -29,8 +18,6 @@ export type CustomCardItemProps = {
   setSelection: (ids: number[]) => void
   previewImage: (image: ImageItem) => any
   handleSelectCard: (e: any, card: CardItem) => any
-  moveImage: (e: any, image: ImageItem) => any
-  delImage: (e: any, image: ImageItem) => any
 }
 
 interface CardsContainerProps {
@@ -59,8 +46,6 @@ export default function CardsContainer(props: CardsContainerProps) {
     setPagiConf, setSelection, select, unselect, refresh,
     emptyTip, cardItem
   } = props
-
-  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
   const [previewItem, setPreviewItem] = useState<ImageItem | undefined>()
   const [previewModal, setPreviewModal] = useState(false)
@@ -152,81 +137,12 @@ export default function CardsContainer(props: CardsContainerProps) {
     }
   }
 
-  /***************************************************** API Calls */
-
-  // 删除确认 Modal
-  const delCallback = useCallback(async (api: any, query: any, info: string, callback?: () => void) => {
-    Modal.confirm({
-      title: '确认删除',
-      content: info,
-      width: 532,
-      onCancel() { },
-      onOk() {
-        return new Promise((resolve, reject) => {
-          api(shopId, query)
-            .then((res: any) => {
-              if (res.success) {
-                successMessage('删除成功')
-                callback && callback()
-                resolve(res.success)
-              } else {
-                throw new Error(res.message || "出错啦，请稍后重试")
-              }
-            })
-            .catch((error: any) => {
-              errorMessage(error.message)
-              setTimeout(reject, 1000)
-            })
-        })
-      }
-    })
-  }, [lists])
-
-  // 删除图片
-  const delImage = useCallback(async (e: any, image: ImageItem) => {
-    e.stopPropagation()
-    const { id } = image
-    const delMethod = curScope?.type === 'image'
-      ? delImagesetImage
-      : delImagesetFailedImage
-    const info = `图片删除后无法恢复，确认删除？`
-    await delCallback(delMethod, { ids: [id], mediaCateId: curScope?.item?.id }, info, () => {
-      setSelection(selection.filter(x => x !== id))
-      refresh(lists.length === 1)
-    })
-  }, [selection, lists, curScope, refresh])
-
-  // 移动图片
-  const moveImage = useCallback(async (e: any, image: ImageItem) => {
-    e.stopPropagation()
-    if (!curScope) {
-      return
-    }
-    const { id } = image
-    const album = await selectAlbum({
-      exclude: curScope.item ? [curScope?.item?.id] : []
-    })
-    const resetRefreshPagi = lists.length === 1
-    moveImagesetImage(shopId, { id, mediaCateId: album.id })
-      .then((res: any) => {
-        if (res.success) {
-          successMessage('移动成功')
-          setSelection(selection.filter(x => x !== id))
-          refresh(resetRefreshPagi)
-        } else {
-          throw new Error(res.message || "出错啦，请稍后重试")
-        }
-      })
-      .catch((error: any) => {
-        errorMessage(error.message)
-      })
-  }, [shopId, selection, curScope, lists, refresh])
-
   /***************************************************** Renders */
 
   const renderCard = (card: CardItem) => {
-    if (cardItem) {
+    if (cardItem && curScope) {
       return cardItem({
+        curScope,
         card,
         selection,
         loading,
@@ -234,14 +150,11 @@ export default function CardsContainer(props: CardsContainerProps) {
         setSelection,
         refresh,
         previewImage,
-        handleSelectCard,
-        moveImage,
-        delImage
+        handleSelectCard
       })
     } else {
       return null
     }
-    console.error('[ERR] Error TabScope Rendered')
   }
 
   // 填充 flex 布局中未满的区域
@@ -272,7 +185,6 @@ export default function CardsContainer(props: CardsContainerProps) {
         closePreviewModal={closePreviewModal}
         previewImage={previewImage}
       />
-      {$selectAlbumModal}
     </>
   )
 }
