@@ -37,10 +37,7 @@ interface CardsProps {
   shopId: number;
   lists: CardItem[];
   selection: any[];
-  tabScope: TabScope;
   curScope: TabScopeItem | undefined;
-  isScopeAlbum: boolean;
-  isScopeImage: boolean;
   allAlbumLists: AlbumNameListItem[];
   loading: boolean;
   pagiConf: any;
@@ -58,7 +55,7 @@ export default function Cards(props: CardsProps) {
   /***************************************************** States */
 
   const {
-    shopId, lists, selection, tabScope, curScope, isScopeAlbum, isScopeImage, allAlbumLists, loading, pagiConf,
+    shopId, lists, selection, curScope, allAlbumLists, loading, pagiConf,
     setPagiConf, setSelection, select, unselect, goTabScope, refresh,
     emptyTip, cardItem
   } = props;

@@ -213,16 +213,12 @@ const CardListPage = (props: CardsListPageProps) => {
         <Cards
           shopId={shopId}
           lists={lists}
-          tabScope={tabScope}
           curScope={curScope}
-          isScopeAlbum={isScopeAlbum}
-          isScopeImage={isScopeImage}
           selection={selection}
           allAlbumLists={allAlbumLists}
           loading={loading}
           pagiConf={pagiConf}
           setPagiConf={setPagiConf}
-          refreshAllAlbumLists={refreshAllAlbumLists}
           setSelection={setSelection}
           refresh={refresh}
           goTabScope={goTabScope}

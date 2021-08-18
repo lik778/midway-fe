@@ -1,0 +1,149 @@
+// TODO 合并重复结构及样式
+
+.error-image-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 220px;
+  height: 170px;
+  border: 1px solid #D9D9D9;
+  background: #FFFFFF;
+  box-shadow: 0 0 20px 0px rgba(0,0,0,.06);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+
+  .selection {
+    position: absolute;
+    padding: 8px 12px;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+      180deg,
+      rgba(0,0,0,0.26) 0px,
+      rgba(0,0,0,0.08) 40px,
+      rgba(0,0,0,0.00) 50px
+    );
+
+    &.auto-hide {
+      opacity: 0;
+      transition: .35s;
+    }
+    &:hover {
+      opacity: 1;
+    }
+
+    .action-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 16px;
+    }
+    .anticon-down-con {
+      position: relative;
+      padding: 5px;
+      margin: -5px -5px 0 0;
+      height: 26px;
+      filter: drop-shadow(0 0 1px #D9D9D9);
+      // opacity: 0;
+      // transition: .25s;
+
+      &:hover .down-actions {
+        top: calc(100% - 5px);
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+
+    .anticon-down {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      line-height: 19px;
+      background: white;
+      border-radius: 1px;
+      font-size: 12px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .down-actions {
+      position: absolute;
+      top: calc(120% - 5px);
+      right: 0;
+      width: 100px;
+      background: white;
+      border-radius: 2px;
+      opacity: 0;
+      transition: .25s;
+      pointer-events: none;
+
+      .anticon-down-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 15px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        cursor: pointer;
+
+        &:hover {
+          color: #096DD9;
+        }
+        &:active {
+          background: #f3f3f3;
+        }
+      }
+    }
+  }
+
+  .cover {
+    flex-grow: 1;
+    height: auto;
+    max-height: 170px;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .mask {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 56px;
+    line-height: 56px;
+    text-align: center;
+    background: rgba(0,0,0,.55);
+    color: white;
+
+    &.full {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: .5em;
+      height: 100%;
+      line-height: 26px;
+      font-size: 16px;
+
+      .anticon {
+        top: 0;
+        margin-right: 0;
+      }
+      .reason {
+        font-size: 12px;
+        color: #ddd;
+      }
+    }
+
+    .anticon {
+      position: relative;
+      margin-right: 6px;
+      top: 6px;
+    }
+  }
+}
