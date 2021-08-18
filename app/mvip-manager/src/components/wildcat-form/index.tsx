@@ -52,7 +52,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
     }
   }, [config])
 
-  /** 暴露变量、方法给父组件 */
+  /** 暴露变量、方法给父组件 */ 
   useImperativeHandle(parentRef, () => ({
     form
   }));

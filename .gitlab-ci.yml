@@ -193,6 +193,9 @@ release:
   tags:
     - k8s-dev-build
   image: registry.gitlab.baixing.cn/arch/base-images/docker:latest
+  variables:
+    GIT_DEPTH: 1
+    GIT_CLEAN_FLAGS: none
   # cache:
   #   - key: midway-fe:nest-install
   #     policy: pull

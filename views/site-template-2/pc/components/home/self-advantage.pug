@@ -1,6 +1,6 @@
 mixin self-advantage(configItem)
 	.self-advantage
-		each item in configItem
+		each item in configItem.slice(0,8)
 			.advanItem
 				img(src = item.urlImg )
 				.title #{ item.title }
