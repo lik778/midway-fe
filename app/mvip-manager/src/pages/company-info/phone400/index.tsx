@@ -25,7 +25,7 @@ function CompanyInfoPhone400(props: any) {
   const [detail, setDetail] = useState<Phone400Detail | null>(null)
   const [enterpriseInfo, setEnterpriseInfo] = useState<FormSourceData | null>(null)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(zhidaoInfoForm));
-  const [updataLoading, setUpdataLoading] = useState<boolean>(false);
+  const [upDataLoading, setUpdataLoading] = useState<boolean>(false);
 
   const getFormData = async () => {
     setGetDataLoading(true)
@@ -93,7 +93,7 @@ function CompanyInfoPhone400(props: any) {
               submitBtn={
                 <Row className="save-base-info-box">
                   <Col span={3}></Col>
-                  <Col style={{ paddingLeft: 16 }}><Button loading={updataLoading} className="btn"
+                  <Col style={{ paddingLeft: 16 }}><Button loading={upDataLoading} className="btn"
                     type="primary" size="large" htmlType="submit">保存</Button></Col>
                 </Row>
               }

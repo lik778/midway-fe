@@ -3,12 +3,12 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 
 export const CustomSetFormConfigFn:
-  (Args: { key: string | number, moduleID: number }) => FormConfig =
+  (Args: { key: string | number, moduleID: string }) => FormConfig =
   ({ key, moduleID }) => {
-    const titleMax = moduleID === 1 ? 20 : 16
-    const contentMax = moduleID === 1 ? 120 : 50
-    const aspectRatio = moduleID === 1 ? 595 / 222 : 400 / 300
-    const imageTip = moduleID === 1 ? '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸595*222。'
+    const titleMax = moduleID === "1" ? 20 : 16
+    const contentMax = moduleID === "1" ? 120 : 50
+    const aspectRatio = moduleID === "1" ? 595 / 222 : 400 / 300
+    const imageTip = moduleID === "1" ? '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸595*222。'
       : '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸400*300。'
     return {
       name: `CustomModuleSubForm${key}`,
