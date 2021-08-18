@@ -63,14 +63,14 @@ const AssetsMangeAuditListPage = () => {
   }, [])
 
   // 排除正在审核中的项目
-  const excludes = useCallback((lists: CardItem[]) => (
+  const selectAllExcludes = useCallback((lists: CardItem[]) => (
     lists.filter(x => (x as ImageItem).checkStatus !== 'REAPPLY')
   ), [])
 
   // 页头
   const pageNav = useCallback((props: PageNavProps) => {
     const {
-      tabScope, curScope, selectAlbum,
+      tabScope, curScope,
       goTabScope, createAlbum, openUpload
     } = props
     return (
@@ -80,7 +80,6 @@ const AssetsMangeAuditListPage = () => {
         goTabScope={goTabScope}
         createAlbum={createAlbum}
         openUpload={openUpload}
-        selectAlbum={selectAlbum}
       />
     )
   }, [])
@@ -100,7 +99,7 @@ const AssetsMangeAuditListPage = () => {
       fetchListFn={fetchErrorImageLists}
       deleteBatch={deleteBatch}
       cardItem={ErrorCardWrapper}
-      excludes={excludes}
+      selectAllExcludes={selectAllExcludes}
       emptyTip={emptyTip}
     />
   )

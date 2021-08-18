@@ -1,26 +1,25 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react"
-import { Button, Checkbox, Modal } from "antd"
+import { Checkbox } from "antd"
 
 import { CardItem, TabScopeItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
 interface SelectionBarProps {
-  total: number;
-  selection: any[];
-  lists: CardItem[];
-  curScope: TabScopeItem | undefined;
-  deleteFn: (e: any) => void;
+  total: number
+  selection: number[]
+  lists: CardItem[]
+  curScope: TabScopeItem | undefined
   excludes?: (cards: CardItem[]) => CardItem[]
-  select: (id: number | number[]) => void;
-  unselect: (id: number | number[]) => void;
-  setSelection: (ids: number[]) => void;
-  refresh: (resetPagi?: boolean) => void;
+  select: (id: number | number[]) => void
+  unselect: (id: number | number[]) => void
+  actions: JSX.Element[] | null
 }
 export default function SelectionBar(props: SelectionBarProps) {
   const {
     total, selection, lists, curScope,
-    deleteFn, select, unselect, setSelection, refresh, excludes,
+    select, unselect, excludes,
+    actions
   } = props
 
   const scopeLabel = useMemo(() => {
@@ -78,16 +77,7 @@ export default function SelectionBar(props: SelectionBarProps) {
             （共选中 <span className={styles["count-num"]}>{selection.length}</span> {scopeLabel}）
           </span>
         )}
-        {(selection.length > 0) && (
-          <Button className={styles["clear-selection-btn"]} type="text" size="small" onClick={() => setSelection([])}>
-            清除选中
-          </Button>
-        )}
-        {(selection.length > 0) && (
-          <Button className={styles["delete-all-btn"]} type="text" size="small" onClick={(e) => deleteFn(e)}>
-            批量删除
-          </Button>
-        )}
+        {actions}
         <span className={styles["count-info"]}>
           {total === 0 && (
             <span>暂无数据</span>
@@ -98,5 +88,5 @@ export default function SelectionBar(props: SelectionBarProps) {
         </span>
       </div>
     </>
-  );
+  )
 }

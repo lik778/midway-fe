@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
-import { Pagination } from "antd"
+import { Pagination, Button } from "antd"
 
 import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
@@ -22,7 +22,6 @@ export type PageNavProps = {
   curScope: TabScopeItem
   goTabScope: (scope: TabScopeItem) => void
   createAlbum: (newAlbum?: any) => void
-  selectAlbum: (args: { exclude: number[] }) => Promise<AlbumNameListItem>
   openUpload: (defaultVal: number) => void
 }
 
@@ -46,7 +45,7 @@ type CardsPageProps = {
   tabScopeChange?: (tabScope: TabScope) => void
   fetchListFn: ((query: any) => any) | null
   deleteBatch: (props: DeleteBatchProps) => (e: any) => void
-  excludes?: (items: CardItem[]) => CardItem[]
+  selectAllExcludes?: (items: CardItem[]) => CardItem[]
   cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
   pageNav: (props: PageNavProps) => JSX.Element
   emptyTip: (props: EmptyTipProps) => JSX.Element
@@ -58,7 +57,7 @@ const CardsPage = (props: CardsPageProps) => {
 
   const {
     defaultScope, tabScopeChange,
-    fetchListFn, deleteBatch, excludes,
+    fetchListFn, deleteBatch, selectAllExcludes,
     pageNav, cardItem, emptyTip,
   } = props
 
@@ -198,6 +197,21 @@ const CardsPage = (props: CardsPageProps) => {
     })
   ), [curScope, selection, lists, refresh, setSelection, refreshAllAlbumLists, deleteBatch])
 
+  // 选框区域扩展按钮
+  const $selectionBarActions = useMemo(() => {
+    if (selection.length === 0) {
+      return null
+    }
+    return [
+      <Button type="text" size="small" onClick={() => setSelection([])} key="clear-btn">
+        清除选中
+      </Button>,
+      <Button type="text" size="small" onClick={(e) => selectionDeleteMethod(e)} key="delete-btn">
+        批量删除
+      </Button>
+    ]
+  }, [selection])
+
   // 空列表提示
   const renderCardListEmptyTip = useMemo(
     () => emptyTip && emptyTip({ curScope, createAlbum, openUpload }),
@@ -206,9 +220,10 @@ const CardsPage = (props: CardsPageProps) => {
 
   // 页头
   const $pageNav = useMemo(() => (
-    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload, selectAlbum })
+    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload })
   ), [tabScope, curScope, goTabScope, createAlbum, openUpload])
 
+  // 自定义卡片
   const renderCardItem = cardItem && cardItem({
     curScope,
     lists,
@@ -235,10 +250,8 @@ const CardsPage = (props: CardsPageProps) => {
           lists={lists}
           select={select}
           unselect={unselect}
-          excludes={excludes}
-          setSelection={setSelection}
-          deleteFn={selectionDeleteMethod}
-          refresh={refresh}
+          excludes={selectAllExcludes}
+          actions={$selectionBarActions}
         />
         {/* 卡片展示区 */}
         <CardList
@@ -273,6 +286,7 @@ const CardsPage = (props: CardsPageProps) => {
       {$UploadModal}
       {/* 创建/编辑相册模态框 */}
       {$CreateAlbumModal}
+      {/* 创建/编辑相册模态框 */}
       {$selectAlbumModal}
     </>
   )

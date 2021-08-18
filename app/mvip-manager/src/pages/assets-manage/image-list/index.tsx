@@ -88,7 +88,7 @@ const AssetsMangeImageListPage = () => {
   }, [isScopeAlbum])
 
   // 排除默认相册
-  const excludes = useCallback((lists: CardItem[]) => (
+  const selectAllExcludes = useCallback((lists: CardItem[]) => (
     lists.filter(x => (x as AlbumItem).type !== 'DEFAULT')
   ), [isScopeAlbum])
 
@@ -119,7 +119,7 @@ const AssetsMangeImageListPage = () => {
   // 页头
   const pageNav = useCallback((props: PageNavProps) => {
     const {
-      tabScope, curScope, selectAlbum,
+      tabScope, curScope,
       goTabScope, createAlbum, openUpload
     } = props
     return (
@@ -129,7 +129,6 @@ const AssetsMangeImageListPage = () => {
         goTabScope={goTabScope}
         createAlbum={createAlbum}
         openUpload={openUpload}
-        selectAlbum={selectAlbum}
       />
     )
   }, [])
@@ -161,7 +160,7 @@ const AssetsMangeImageListPage = () => {
       pageNav={pageNav}
       fetchListFn={fetchListFn}
       deleteBatch={deleteBatch}
-      excludes={excludes}
+      selectAllExcludes={selectAllExcludes}
       tabScopeChange={tabScopeChange}
       cardItem={customCardItem}
       emptyTip={emptyTip}
