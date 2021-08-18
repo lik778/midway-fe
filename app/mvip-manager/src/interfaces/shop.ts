@@ -2,6 +2,7 @@ import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
 import { ShopMetas } from '@/interfaces/user'
+import { AuditStatus } from '@/enums';
 
 export interface RouteParams {
   id: string;
@@ -28,7 +29,7 @@ export interface ProductListItem {
   memo: string
   name: string
   price: string
-  status: number
+  status: AuditStatus
   tags: string[]
   urlSuffix: string
   createdTime: number
@@ -54,7 +55,7 @@ export interface ArticleListItem {
   memo: string
   name: string
   source: number
-  status: number
+  status: AuditStatus
   tags: string[]
   urlSuffix: string
   createdTime: number
