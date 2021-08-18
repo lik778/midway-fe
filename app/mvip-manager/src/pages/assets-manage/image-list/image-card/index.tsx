@@ -15,16 +15,13 @@ export default function ImageCardWrapper(props: any) {
 
   const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
-  // FIXME 暂时写死，用来调试
-  const shopId = 3863
-
   // 设置封面图片
   const setCoverImage = async (e: any, image: ImageItem) => {
     e.stopPropagation()
     setSetCoverItem(image)
     const { id } = image
     const { item } = curScope
-    setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
+    setImagesetAlbumCover({ id, mediaCateId: item.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('设置成功')
@@ -48,7 +45,7 @@ export default function ImageCardWrapper(props: any) {
       exclude: curScope.item ? [curScope?.item?.id] : []
     })
     const resetRefreshPagi = lists.length === 1
-    moveImagesetImage(3863, { id, mediaCateId: album.id })
+    moveImagesetImage({ id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功')
@@ -74,7 +71,7 @@ export default function ImageCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetImage(3863, { ids: [id], mediaCateId: curScope!.item!.id })
+          delImagesetImage({ ids: [id], mediaCateId: curScope!.item!.id })
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')

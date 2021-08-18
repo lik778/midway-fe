@@ -1,15 +1,15 @@
-import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react';
-import { Button, Modal } from "antd";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react'
+import { Button, Modal } from "antd"
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
 
 import { reAuditImagesetImage, createImagesetImage, delImagesetImage } from '@/api/shop'
 import { successMessage, errorMessage } from "@/components/message"
 import { useAlbumSelector } from '../album-selector'
 import { useUpload, UploadItem } from './upload'
 
-import { ImageItem,  AlbumNameListItem, TabScopeItem } from "@/interfaces/shop";
+import { AlbumNameListItem } from "@/interfaces/shop"
 
-import styles from './index.less';
+import styles from './index.less'
 
 const MAX_UPLOAD_COUNT = 15
 const UPLOAD_RES_MAP_DEFAULT_ID = -1
@@ -17,27 +17,25 @@ const getID = (): string => String(Math.random()).slice(-6) + +new Date()
 
 // 保存 UploadItem 和 上传结果的关系
 type UploadResMap = {
-  uid: string;
-  imageID: number;
-  inChibi: boolean;
-  chibiFailed: boolean;
-  status: string;
-  error: string;
+  uid: string
+  imageID: number
+  inChibi: boolean
+  chibiFailed: boolean
+  status: string
+  error: string
 }
 
 type Props = {
-  shopId: number;
-  curScope?: TabScopeItem;
   allAlbumLists: AlbumNameListItem[]
-  refresh: () => void;
-  createAlbum: () => void;
+  refresh: () => void
+  createAlbum: () => void
 }
 
 export function useUploadModal(props: Props) {
 
   /***************************************************** States */
-  const { shopId, curScope, allAlbumLists, refresh, createAlbum } = props
-  const [visible, setVisible] = useState(false);
+  const { allAlbumLists, refresh, createAlbum } = props
+  const [visible, setVisible] = useState(false)
   const [$AlbumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
 
   const handleCreateAlbum = () => createAlbum()
@@ -96,7 +94,7 @@ export function useUploadModal(props: Props) {
       try {
         const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
         const res: any = await Promise.race([
-          createImagesetImage(shopId, query),
+          createImagesetImage(query),
           new Promise((resove, reject) => {
             setTimeout(() => {
               reject(new Error('上传超时，点击删除'))
@@ -134,7 +132,7 @@ export function useUploadModal(props: Props) {
     if (findUploaded && findUploaded.imageID !== UPLOAD_RES_MAP_DEFAULT_ID) {
       // dont care is delete done or not ...
       const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
-      delImagesetImage(shopId, query)
+      delImagesetImage(query)
         .then(res => {
           if (res.success) {
             const findIDX = uploadedLists.current.findIndex(x => x === findUploaded)
@@ -148,7 +146,7 @@ export function useUploadModal(props: Props) {
   // 申诉图片
   const reAuditImage = async (image: UploadResMap | undefined) => {
     if (image) {
-      reAuditImagesetImage(shopId, { id: image.imageID })
+      reAuditImagesetImage({ id: image.imageID })
         .then((res: any) => {
           if (res.success) {
             successMessage('申诉成功，请到资源管理 / 申诉记录查看进度')

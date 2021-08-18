@@ -14,16 +14,13 @@ export default function ErrorCardWrapper(props: any) {
   const { lists, selection, setSelection, refresh } = props
   const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem | null>()
 
-  // FIXME 暂时写死，用来调试
-  const shopId = 3863
-
   /***************************************************** API Calls */
 
   // 申诉图片
   const reAuditImage = async (e: any, image: ImageItem) => {
     setAuditLoadingItem(image)
     e.stopPropagation()
-    reAuditImagesetImage(shopId, { id: image.id })
+    reAuditImagesetImage({ id: image.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('申诉成功')
@@ -51,7 +48,7 @@ export default function ErrorCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetFailedImage(3863, { ids: [id] })
+          delImagesetFailedImage({ ids: [id] })
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')

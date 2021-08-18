@@ -36,7 +36,7 @@ const AssetsMangeImageListPage = () => {
   // 批量删除
   const deleteBatch = useCallback((props: DeleteBatchProps) => {
     const {
-      shopId, curScope, selection,
+      curScope, selection,
       refresh, setSelection, refreshAllAlbumLists
     } = props
 
@@ -65,7 +65,7 @@ const AssetsMangeImageListPage = () => {
             const query = isScopeAlbum
               ? [...selection]
               : { ids: [...selection], mediaCateId: curScope?.item?.id }
-            deleteFn(shopId, query as any)
+            deleteFn(query as any)
               .then((res: any) => {
                 if (res.success) {
                   successMessage('删除成功');
@@ -117,12 +117,11 @@ const AssetsMangeImageListPage = () => {
   // 页头
   const pageNav = useCallback((props: PageNavProps) => {
     const {
-      shopId, tabScope, curScope, selectAlbum,
+      tabScope, curScope, selectAlbum,
       goTabScope, createAlbum, openUpload
     } = props
     return (
       <NavBar
-        shopId={shopId}
         tabScope={tabScope}
         curScope={curScope}
         goTabScope={goTabScope}
@@ -181,9 +180,9 @@ function PaddingHooks(props: any) {
  * API 请求
  */
 
-async function fetchAlbumLists(shopId: number, querys: any) {
+async function fetchAlbumLists(querys: any) {
   try {
-    const res = await getImagesetAlbum(shopId, querys)
+    const res = await getImagesetAlbum(querys)
     const { result = [], totalRecord = 0 } = res.data.mediaCateBos
     return [result, totalRecord] as const
   } catch (err) {
@@ -191,9 +190,9 @@ async function fetchAlbumLists(shopId: number, querys: any) {
   }
 }
 
-async function fetchImageLists(shopId: number, querys: any) {
+async function fetchImageLists(querys: any) {
   try {
-    const res = await getImagesetImage(shopId, querys)
+    const res = await getImagesetImage(querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {

@@ -5,7 +5,7 @@ import { getAlbumNameList } from '@/api/shop'
 import { AlbumNameListItem } from "@/interfaces/shop";
 
 // 获取相册钩子
-function useAlbumLists(shopId: number, query: any = {}) {
+function useAlbumLists(query: any = {}) {
   const [lists, setLists] = useState<AlbumNameListItem[]>([])
   const [total, setTotal] = useState(0)
   const [requestTime, setRequestTime] = useState(+new Date())
@@ -15,10 +15,7 @@ function useAlbumLists(shopId: number, query: any = {}) {
   const refresh = () => setRequestTime(+new Date())
 
   useEffect(() => {
-    if (!shopId) {
-      return
-    }
-    fetchAlbumNameLists(shopId)
+    fetchAlbumNameLists()
       .then(([result, total]) => {
         // console.log(result, total, pagination, requestTime)
         setLists(result.filter(notNull))
@@ -27,20 +24,20 @@ function useAlbumLists(shopId: number, query: any = {}) {
       .catch(error => {
         console.error(error)
       })
-  }, [shopId, query, requestTime])
+  }, [query, requestTime])
 
   return [lists, total, refresh, setLists, setTotal] as const
 }
 
-export default function useAllAlbumNames(shopId: number) {
+export default function useAllAlbumNames() {
   const query = useMemo(() => ({}), [])
-  const [lists, total, refresh, setLists, setTotal] = useAlbumLists(shopId, query)
+  const [lists, total, refresh, setLists, setTotal] = useAlbumLists(query)
   return [lists, total, refresh, setLists, setTotal] as const
 }
 
-async function fetchAlbumNameLists(shopId: number) {
+async function fetchAlbumNameLists() {
   try {
-    const res = await getAlbumNameList(shopId)
+    const res = await getAlbumNameList()
     return [res.data, res.data.length] as const
   } catch(err) {
     throw new Error(err)

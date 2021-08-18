@@ -203,77 +203,93 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/setShopEnterprise', params, setShopHeader(shopId))
 }
 
-// 获取相册列表
-export const getImagesetAlbum =
-  (shopId: number, params: GetImagesetAlbumParam) => postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
-
-// 创建店铺相册
-export const createImagesetAlbum = (shopId: number, params: CreateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(shopId))
-}
-
-// 修改店铺相册
-export const updateImagesetAlbum = (shopId: number, params: UpdateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params, setShopHeader(shopId))
-}
-
-// 删除店铺相册
-export const delImagesetAlbum = (shopId: number, params: DelImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params, setShopHeader(shopId))
-}
-
-// 获取相册图片列表
-export const getImagesetImage =
-  (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
-
-// 获取申诉列表（审核失败和审核中的图片）
-export const getImagesetFailedImage = (shopId: number, params: GetImagesetFailedImageParam) => postApiData<GetImagesetFailedImageRes>(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(shopId))
-
-// 相册图片申诉
-export const reAuditImagesetImage = (shopId: number, params: ReAuditImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/reapply', params, setShopHeader(shopId))
-}
-
-// 新增相册图片
-export const createImagesetImage = (shopId: number, params: CreateImagesetImageParam) => {
-  return postApiData<ImageItem>(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
-}
-
-// 删除相册图片
-export const delImagesetImage = (shopId: number, params: DelImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delete', params, setShopHeader(shopId))
-}
-
-// 删除相册图片（专用来删除审核失败的图片）
-export const delImagesetFailedImage = (shopId: number, params: Pick<DelImagesetImageParam, 'ids'>) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/deleteFailed', params, setShopHeader(shopId))
-}
-
-// 更新相册图片
-export const setImagesetAlbumCover = (shopId: number, params: UpdateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(shopId))
-}
-
-// 移动相册图片到其它相册
-export const moveImagesetImage = (shopId: number, params: MoveImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(shopId))
-}
+/**
+ * 图片上传模态框相关接口
+ */
 
 // 获取百姓网相册名称列表 URl
 export const getBaixingAlbum = (shopId: number, params: GetImagesetAlbumParam) => {
   return postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', params, setShopHeader(shopId))
 }
 
-// 获取我的相册名称列表 URl
-export const getAlbumNameList = (shopId: number) => {
-  return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', {}, setShopHeader(shopId))
-}
+// 获取相册图片列表
+export const getBaixingImagesetImage = (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/baiXingListing', params, setShopHeader(shopId))
 
 // 获取百姓网相册名称列表 URl
 export const getBaixingAlbumNameList = (shopId: number) => {
   return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', {}, setShopHeader(shopId))
 }
 
+/**
+ * 资源管理图集页面相关接口
+ */
+
+// 获取相册列表
+export const getImagesetAlbum = (params: GetImagesetAlbumParam) => {
+  return postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(3863))
+}
+
+// 获取我的相册名称列表 URl
+export const getAlbumNameList = () => {
+  return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', {}, setShopHeader(3863))
+}
+
+// 创建店铺相册
+export const createImagesetAlbum = (params: CreateImagesetAlbumParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(3863))
+}
+
+// 修改店铺相册
+export const updateImagesetAlbum = (params: UpdateImagesetAlbumParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params, setShopHeader(3863))
+}
+
+// 删除店铺相册
+export const delImagesetAlbum = (params: DelImagesetAlbumParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params, setShopHeader(3863))
+}
+
 // 获取相册图片列表
-export const getBaixingImagesetImage = (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/baiXingListing', params, setShopHeader(shopId))
+export const getImagesetImage = (params: GetImagesetImageParam) => {
+  return postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(3863))
+}
+
+// 相册图片申诉
+export const reAuditImagesetImage = (params: ReAuditImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/reapply', params, setShopHeader(3863))
+}
+
+// 新增相册图片
+export const createImagesetImage = (params: CreateImagesetImageParam) => {
+  return postApiData<ImageItem>(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(3863))
+}
+
+// 删除相册图片
+export const delImagesetImage = (params: DelImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delete', params, setShopHeader(3863))
+}
+
+// 更新相册图片
+export const setImagesetAlbumCover = (params: UpdateImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(3863))
+}
+
+// 移动相册图片到其它相册
+export const moveImagesetImage = (params: MoveImagesetImageParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(3863))
+}
+
+/**
+ * 资源管理审核页面相关接口
+ */
+
+// 获取申诉列表（审核失败和审核中的图片）
+export const getImagesetFailedImage = (params: GetImagesetFailedImageParam) => {
+  return postApiData<GetImagesetFailedImageRes>(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(3863))
+}
+
+// 删除相册图片（专用来删除审核失败的图片）
+export const delImagesetFailedImage = (params: Pick<DelImagesetImageParam, 'ids'>) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/deleteFailed', params, setShopHeader(3863))
+}
 

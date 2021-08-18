@@ -16,7 +16,7 @@ const AssetsMangeAuditListPage = () => {
   // 批量删除
   const deleteBatch = useCallback((props: DeleteBatchProps) => {
     const {
-      shopId, curScope, selection,
+      curScope, selection,
       refresh, setSelection, refreshAllAlbumLists
     } = props
 
@@ -40,7 +40,7 @@ const AssetsMangeAuditListPage = () => {
         onOk() {
           return new Promise((resolve, reject) => {
             const query = { ids: [...selection], mediaCateId: curScope?.item?.id }
-            delImagesetFailedImage(shopId, query as any)
+            delImagesetFailedImage(query as any)
               .then((res: any) => {
                 if (res.success) {
                   successMessage('删除成功');
@@ -70,12 +70,11 @@ const AssetsMangeAuditListPage = () => {
   // 页头
   const pageNav = useCallback((props: PageNavProps) => {
     const {
-      shopId, tabScope, curScope, selectAlbum,
+      tabScope, curScope, selectAlbum,
       goTabScope, createAlbum, openUpload
     } = props
     return (
       <NavBar
-        shopId={shopId}
         tabScope={tabScope}
         curScope={curScope}
         goTabScope={goTabScope}
@@ -107,9 +106,9 @@ const AssetsMangeAuditListPage = () => {
   )
 }
 
-async function fetchErrorImageLists(shopId: number, querys: any) {
+async function fetchErrorImageLists(querys: any) {
   try {
-    const res = await getImagesetFailedImage(shopId, querys)
+    const res = await getImagesetFailedImage(querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {

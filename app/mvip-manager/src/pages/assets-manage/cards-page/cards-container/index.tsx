@@ -21,7 +21,6 @@ export type CustomCardItemProps = {
 }
 
 interface CardsContainerProps {
-  shopId: number
   lists: CardItem[]
   selection: any[]
   curScope: TabScopeItem | undefined
@@ -42,7 +41,7 @@ export default function CardsContainer(props: CardsContainerProps) {
   /***************************************************** States */
 
   const {
-    shopId, lists, selection, curScope, allAlbumLists, loading, pagiConf,
+    lists, selection, curScope, allAlbumLists, loading, pagiConf,
     setPagiConf, setSelection, select, unselect, refresh,
     emptyTip, cardItem
   } = props

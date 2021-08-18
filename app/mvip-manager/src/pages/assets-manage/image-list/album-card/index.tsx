@@ -37,7 +37,7 @@ export default function AlbumCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          api(3863, query)
+          api(query)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')
@@ -64,7 +64,7 @@ export default function AlbumCardWrapper(props: any) {
       ? `相册删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
     await delCallback(delImagesetAlbum, [id], info, () => {
-      setSelection(selection.filter(x => x !== id))
+      setSelection(selection.filter((x: number) => x !== id))
       refreshAllAlbumLists()
       // TODO 在选区删除时也这么判断一下，现在那边是 refresh(true)
       refresh(lists.length === 1)

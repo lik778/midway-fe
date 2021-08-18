@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
-import { useParams } from "umi"
 import { Pagination } from "antd"
 
 import CardList from './cards-container'
@@ -13,23 +12,21 @@ import useSelection from '@/hooks/selection'
 import usePagination from '@/hooks/pagination'
 import useAllAlbumNames from './hooks/album-names'
 
-import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
+import { TabScope, TabScopeItem, CardItem, AlbumItem, AlbumNameListItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from './cards-container'
 
 import styles from './index.less'
 
 export type PageNavProps = {
-  shopId: number
   tabScope: TabScope
   curScope: TabScopeItem
   goTabScope: (scope: TabScopeItem) => void
   createAlbum: (newAlbum?: any) => void
-  selectAlbum: (arg: any) => AlbumItem
+  selectAlbum: (args: { exclude: number[] }) => Promise<AlbumNameListItem>
   openUpload: (defaultVal: number) => void
 }
 
 export type DeleteBatchProps = {
-  shopId: number
   curScope: TabScopeItem
   selection: number[]
   lists: CardItem[]
@@ -47,7 +44,7 @@ export type EmptyTipProps = {
 type CardsPageProps = {
   defaultScope: TabScopeItem
   tabScopeChange?: (tabScope: TabScope) => void
-  fetchListFn: ((shopId: number, query: any) => any) | null
+  fetchListFn: ((query: any) => any) | null
   deleteBatch: (props: DeleteBatchProps) => (e: any) => void
   excludes?: (items: CardItem[]) => CardItem[]
   cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
@@ -64,10 +61,6 @@ const CardsPage = (props: CardsPageProps) => {
     fetchListFn, deleteBatch, excludes,
     pageNav, cardItem, emptyTip,
   } = props
-  const params: RouteParams = useParams()
-  // const shopId = Number(params.id)
-  // FIXME 暂时写死，用来调试
-  const shopId = 3863
 
   // tabScope 维护当前页面内文件夹的层级关系
   const [tabScope, setTabScope] = useState<TabScope>([defaultScope])
@@ -93,9 +86,9 @@ const CardsPage = (props: CardsPageProps) => {
     }
     return { page, size }
   }, [pagi.current, pagiConf.pageSize, curScope])
-  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames(shopId)
+  const [allAlbumLists, allAlbumListsTotal, refreshAllAlbumLists] = useAllAlbumNames()
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
-  const [lists, total, loading, refreshLists] = useLists(shopId, pagiQuery, curScope, fetchListFn)
+  const [lists, total, loading, refreshLists] = useLists(pagiQuery, curScope, fetchListFn)
 
   // 刷新列表可以就地刷新或重置分页（重置分页后会自动刷新）
   const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
@@ -181,7 +174,7 @@ const CardsPage = (props: CardsPageProps) => {
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
-  const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
+  const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ refresh })
 
   // 创建或编辑相册后重新拉取所有相册列表
   const createAlbum = useCallback(async (album?: AlbumItem) => {
@@ -191,12 +184,11 @@ const CardsPage = (props: CardsPageProps) => {
     }
   }, [createOrEditAlbum])
 
-  const [$UploadModal, openUpload] = useUploadModal({ shopId, createAlbum, refresh, allAlbumLists, curScope })
+  const [$UploadModal, openUpload] = useUploadModal({ createAlbum, refresh, allAlbumLists })
 
   // 选择区域的删除函数
   const selectionDeleteMethod = useMemo(() => (
     deleteBatch({
-      shopId,
       curScope,
       selection,
       lists,
@@ -204,7 +196,7 @@ const CardsPage = (props: CardsPageProps) => {
       setSelection,
       refreshAllAlbumLists,
     })
-  ), [shopId, curScope, selection, lists, refresh, setSelection, refreshAllAlbumLists, deleteBatch])
+  ), [curScope, selection, lists, refresh, setSelection, refreshAllAlbumLists, deleteBatch])
 
   // 空列表提示
   const renderCardListEmptyTip = useMemo(
@@ -214,8 +206,8 @@ const CardsPage = (props: CardsPageProps) => {
 
   // 页头
   const renderNavBar = useMemo(() => (
-    pageNav({ shopId, tabScope, curScope, goTabScope, createAlbum, openUpload, selectAlbum })
-  ), [shopId, tabScope, curScope, goTabScope, createAlbum, openUpload])
+    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload, selectAlbum })
+  ), [tabScope, curScope, goTabScope, createAlbum, openUpload])
 
   const renderCardItem = cardItem && cardItem({
     curScope,
@@ -250,7 +242,6 @@ const CardsPage = (props: CardsPageProps) => {
         />
         {/* 卡片展示区 */}
         <CardList
-          shopId={shopId}
           lists={lists}
           curScope={curScope}
           selection={selection}
@@ -288,10 +279,9 @@ const CardsPage = (props: CardsPageProps) => {
 }
 
 function useLists(
-  shopId: number,
   query: any,
   scope: TabScopeItem | undefined,
-  fetchListFn: ((shopId: number, query: any) => any) | null
+  fetchListFn: ((query: any) => any) | null
 ) {
   const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
@@ -310,7 +300,7 @@ function useLists(
   useEffect(() => {
 
     /* Gaurds */
-    if (!shopId || !scope) {
+    if (!scope) {
       return
     }
     if (!fetchListFn) {
@@ -327,7 +317,7 @@ function useLists(
 
     /* Query & Fetch */
     setLoading(true)
-    fetchListFn(shopId, query)
+    fetchListFn(query)
       .then((res: any) => {
         if (res) {
           const [result, total] = res
@@ -343,7 +333,7 @@ function useLists(
         setLoading(false)
       })
 
-  }, [shopId, query, requestTime, fetchListFn])
+  }, [query, requestTime, fetchListFn])
 
   return [lists, total, loading, refresh, setLists, setTotal] as const
 }

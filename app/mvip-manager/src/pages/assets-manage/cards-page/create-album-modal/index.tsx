@@ -11,14 +11,13 @@ import styles from './index.less'
 let createAlbumResover: ((isDone: boolean | PromiseLike<boolean>) => void) | null = null
 
 type Props = {
-  shopId: number
   refresh: () => void
 }
 export default function useCreateAlbumModal(props: Props) {
 
   /***************************************************** States */
 
-  const { shopId, refresh } = props
+  const { refresh } = props
 
   const [form] = Form.useForm()
   const [defaultVals, setDefaultVals] = useState<any>({})
@@ -67,7 +66,7 @@ export default function useCreateAlbumModal(props: Props) {
           post = createImagesetAlbum
           successMsg = "创建成功"
         }
-        post(shopId, { ...formvals, ...params })
+        post({ ...formvals, ...params })
           .then(res => {
             if (res.success) {
               successMessage(successMsg)
