@@ -12,13 +12,15 @@ import styles from './index.less'
 
 import DEFAULT_ALBUM_COVER from './default-album-cover.png'
 
+const createNewScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
+
 export default function AlbumCardWrapper(props: any) {
   const { goTabScope, createAlbum, refreshAllAlbumLists } = props
 
   const [_, __] = useState('for padding')
 
   // 查看相册详情
-  const goAlbumScope = (album: AlbumItem) => goTabScope({ type: 'image', item: album })
+  const goAlbumScope = (album: AlbumItem) => goTabScope(createNewScope(album))
 
   // 编辑相册名称
   const handleEditAlbum = async (e: any, album: AlbumItem) => {

@@ -33,37 +33,37 @@ export type CustomCardItemProps = {
   delImage: (e: any, image: ImageItem) => any
 }
 
-interface CardsProps {
-  shopId: number;
-  lists: CardItem[];
-  selection: any[];
-  curScope: TabScopeItem | undefined;
-  allAlbumLists: AlbumNameListItem[];
-  loading: boolean;
-  pagiConf: any;
-  setPagiConf: (conf: Partial<PaginationSetting>) => void;
-  select: (id: number | number[]) => void;
-  setSelection: (ids: number[]) => void;
-  unselect: (id: number | number[]) => void;
-  goTabScope: (scope: TabScopeItem) => void;
-  refresh: (resetPagi?: boolean) => void;
+interface CardsContainerProps {
+  shopId: number
+  lists: CardItem[]
+  selection: any[]
+  curScope: TabScopeItem | undefined
+  allAlbumLists: AlbumNameListItem[]
+  loading: boolean
+  pagiConf: any
+  setPagiConf: (conf: Partial<PaginationSetting>) => void
+  select: (id: number | number[]) => void
+  setSelection: (ids: number[]) => void
+  unselect: (id: number | number[]) => void
+  refresh: (resetPagi?: boolean) => void
   emptyTip: JSX.Element | null
   cardItem?: (props: CustomCardItemProps) => (JSX.Element | null)
 }
-export default function Cards(props: CardsProps) {
+
+export default function CardsContainer(props: CardsContainerProps) {
 
   /***************************************************** States */
 
   const {
     shopId, lists, selection, curScope, allAlbumLists, loading, pagiConf,
-    setPagiConf, setSelection, select, unselect, goTabScope, refresh,
+    setPagiConf, setSelection, select, unselect, refresh,
     emptyTip, cardItem
-  } = props;
+  } = props
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
-  const [previewItem, setPreviewItem] = useState<ImageItem | undefined>();
-  const [previewModal, setPreviewModal] = useState(false);
+  const [previewItem, setPreviewItem] = useState<ImageItem | undefined>()
+  const [previewModal, setPreviewModal] = useState(false)
 
   const [countInLine, setCountInLine] = useState(0)
   const cardsRef = useRef<HTMLElement | undefined>()
@@ -111,7 +111,7 @@ export default function Cards(props: CardsProps) {
     }
   }, [countInLine])
 
-  const saveCardsRef = useCallback((el: HTMLElement) => {
+  const saveCardsContainerRef = useCallback((el: HTMLElement) => {
     cardsRef.current = el
     checkMaxCountInLine(cardsRef.current.offsetWidth)
   }, [checkMaxCountInLine])
@@ -166,11 +166,11 @@ export default function Cards(props: CardsProps) {
           api(shopId, query)
             .then((res: any) => {
               if (res.success) {
-                successMessage('删除成功');
+                successMessage('删除成功')
                 callback && callback()
                 resolve(res.success)
               } else {
-                throw new Error(res.message || "出错啦，请稍后重试");
+                throw new Error(res.message || "出错啦，请稍后重试")
               }
             })
             .catch((error: any) => {
@@ -210,11 +210,11 @@ export default function Cards(props: CardsProps) {
     moveImagesetImage(shopId, { id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
-          successMessage('移动成功');
+          successMessage('移动成功')
           setSelection(selection.filter(x => x !== id))
           refresh(resetRefreshPagi)
         } else {
-          throw new Error(res.message || "出错啦，请稍后重试");
+          throw new Error(res.message || "出错啦，请稍后重试")
         }
       })
       .catch((error: any) => {
@@ -259,7 +259,7 @@ export default function Cards(props: CardsProps) {
   return (
     <>
       <Spin spinning={loading}>
-        <div className={styles["cards-con"]} ref={el => el && saveCardsRef(el)}>
+        <div className={styles["cards-con"]} ref={el => el && saveCardsContainerRef(el)}>
           {lists.map((x: any) => renderCard(x))}
           {renderFlexPadding()}
           {(lists.length === 0 && !loading) && emptyTip}
@@ -283,7 +283,7 @@ export default function Cards(props: CardsProps) {
 
 declare global {
   interface Window {
-    __page_imageset_preview_modal_keycatch_tick: any | null;
+    __page_imageset_preview_modal_keycatch_tick: any | null
   }
 }
 

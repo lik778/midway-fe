@@ -3,7 +3,7 @@ import { useParams } from "umi"
 import { Pagination, Button, Result } from "antd"
 
 import PageNav from './components/nav'
-import Cards from './components/cards'
+import CardList from './components/cards'
 import SelectionBlock from './components/selection'
 import { useCreateAlbumModal } from './components/create-album-modal'
 import { useUploadModal } from './components/upload-modal'
@@ -14,22 +14,27 @@ import { usePagination } from './hooks/pagination'
 import useAllAlbumNames from './hooks/album-names'
 
 import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
-import { DeleteMethod as SelectionBlockDeleteMethod } from './components/selection'
 import { CustomCardItemProps } from './components/cards'
 
 import styles from './index.less'
 
 type CardsListPageProps = {
-  // TODO type customScope required
-  customScope?: TabScopeItem
-  handleScopeChange?: any
-  fetchListFn?: any
-  isScopeAlbum?: boolean
-  isScopeImage?: boolean
-  selectionDeleteFn: null | ((shopId: number, curScope: TabScopeItem | undefined) => SelectionBlockDeleteMethod)
+  defaultScope: TabScopeItem
+  tabScopeChange?: (tabScope: TabScope) => void
+  fetchListFn: ((shopId: number, query: any) => any) | null
+  deleteBatch: (props: {
+    shopId: number
+    curScope: TabScopeItem
+    selection: number[]
+    lists: CardItem[]
+    refresh: (resetPagi?: boolean) => void
+    setSelection: (selection: number[]) => void
+    refreshAllAlbumLists: () => void
+  }) => (e: any) => void
+  excludes?: (items: CardItem[]) => CardItem[]
   cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
   emptyTip: (props: {
-    curScope?: TabScopeItem,
+    curScope: TabScopeItem,
     createAlbum?: any,
     openUpload?: any
   }) => JSX.Element
@@ -39,8 +44,8 @@ const CardListPage = (props: CardsListPageProps) => {
   /***************************************************** States */
 
   const {
-    customScope, handleScopeChange, fetchListFn, isScopeAlbum, isScopeImage,
-    selectionDeleteFn, cardItem, emptyTip
+    defaultScope, tabScopeChange,
+    fetchListFn, deleteBatch, cardItem, emptyTip, excludes
   } = props
   const params: RouteParams = useParams()
   // const shopId = Number(params.id)
@@ -48,13 +53,13 @@ const CardListPage = (props: CardsListPageProps) => {
   const shopId = 3863
 
   // tabScope 维护当前页面内文件夹的层级关系
-  const [tabScope, setTabScope] = useState<TabScope>([customScope || { type: 'album', item: null }])
-  const [curScope, setCurScope] = useState<TabScopeItem>()
-  const prevCurScope = usePrevious(curScope)
+  const [tabScope, setTabScope] = useState<TabScope>([defaultScope])
+  const [curScope, setCurScope] = useState<TabScopeItem>(defaultScope)
+  const prevCurScope = usePrevious(curScope, null)
   useEffect(() => {
     const lastScope = tabScope[tabScope.length - 1]
     lastScope && setCurScope(lastScope)
-    handleScopeChange && handleScopeChange(tabScope)
+    tabScopeChange && tabScopeChange(tabScope)
   }, [tabScope])
 
   const [pagi, setPagi, pagiConf, setPagiConf, resetPagi] = usePagination({
@@ -170,10 +175,17 @@ const CardListPage = (props: CardsListPageProps) => {
   const [$UploadModal, openUpload] = useUploadModal({ shopId, createAlbum, refresh, allAlbumLists, curScope })
 
   // 选择区域的删除函数
-  const selectionDeleteMethod = useMemo(
-    () => selectionDeleteFn && selectionDeleteFn(shopId, curScope),
-    [shopId, curScope, selectionDeleteFn]
-  )
+  const selectionDeleteMethod = useMemo(() => (
+    deleteBatch({
+      shopId,
+      curScope,
+      selection,
+      lists,
+      refresh,
+      setSelection,
+      refreshAllAlbumLists,
+    })
+  ), [shopId, curScope, selection, lists, refresh, setSelection, refreshAllAlbumLists, deleteBatch])
 
   // 空列表提示
   const renderCardListEmptyTip = useMemo(
@@ -196,21 +208,19 @@ const CardListPage = (props: CardsListPageProps) => {
         />
         {/* 选框区 */}
         <SelectionBlock
-          shopId={shopId}
           total={total}
-          isScopeAlbum={isScopeAlbum}
           curScope={curScope}
           selection={selection}
           lists={lists}
-          refreshAllAlbumLists={refreshAllAlbumLists}
+          excludes={excludes}
           select={select}
           unselect={unselect}
           setSelection={setSelection}
           refresh={refresh}
           deleteFn={selectionDeleteMethod}
         />
-        {/* 图片/相册展示区 */}
-        <Cards
+        {/* 卡片展示区 */}
+        <CardList
           shopId={shopId}
           lists={lists}
           curScope={curScope}
@@ -221,7 +231,6 @@ const CardListPage = (props: CardsListPageProps) => {
           setPagiConf={setPagiConf}
           setSelection={setSelection}
           refresh={refresh}
-          goTabScope={goTabScope}
           select={select}
           unselect={unselect}
           cardItem={cardItem && cardItem({ curScope, refresh, goTabScope, createAlbum, refreshAllAlbumLists })}
@@ -248,7 +257,12 @@ const CardListPage = (props: CardsListPageProps) => {
   )
 }
 
-function useLists(shopId: number, query: any, scope: TabScopeItem | undefined, fetchListFn: any) {
+function useLists(
+  shopId: number,
+  query: any,
+  scope: TabScopeItem | undefined,
+  fetchListFn: ((shopId: number, query: any) => any) | null
+) {
   const [lists, setLists] = useState<CardItem[]>([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -264,13 +278,13 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined, f
   }
 
   useEffect(() => {
+
     /* Gaurds */
     if (!shopId || !scope) {
       return
     }
-    let fetchMethod = fetchListFn
-    if (!fetchMethod) {
-      console.warn('[WARN] no fetch method provided')
+    if (!fetchListFn) {
+      // console.warn('[WARN] no fetch method provided')
       return
     }
     if (scope.type === 'image') {
@@ -280,25 +294,26 @@ function useLists(shopId: number, query: any, scope: TabScopeItem | undefined, f
         query.mediaCateId = scope.item!.id
       }
     }
+
     /* Query & Fetch */
     setLoading(true)
-    fetchMethod(shopId, query)
-      .then(res => {
+    fetchListFn(shopId, query)
+      .then((res: any) => {
         if (res) {
           const [result, total] = res
-          // @ts-ignore
           const lists = (result || []).filter(notNull)
           setLists(lists)
           setTotal(total || 0)
         }
       })
-      .catch(error => {
+      .catch((error: Error) => {
         console.error(error)
       })
       .finally(() => {
         setLoading(false)
       })
-  }, [shopId, fetchListFn, query, requestTime])
+
+  }, [shopId, query, requestTime, fetchListFn])
 
   return [lists, total, loading, refresh, setLists, setTotal] as const
 }

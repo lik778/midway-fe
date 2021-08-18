@@ -41,16 +41,12 @@ export default function ErrorCardWrapper(props: any) {
   }
 
   const cardItem = useCallback((props: CustomCardItemProps) => {
-    if (typeof auditLoadingItem === 'undefined') {
-      return null
-    } else {
-      return ErrorCardItem({
-        ...props,
-        auditLoadingItem,
-        reAuditImage,
-        card: props.card
-      } as ErrorCardItemProps)
-    }
+    return ErrorCardItem({
+      ...props,
+      auditLoadingItem,
+      reAuditImage,
+      card: props.card
+    } as ErrorCardItemProps)
   }, [auditLoadingItem])
 
   return cardItem

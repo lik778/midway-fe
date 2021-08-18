@@ -376,10 +376,28 @@ export type ImageItem = {
 export type CardItem = AlbumItem | ImageItem
 
 // 相册管理目录层级类型
-export type TabScopeItem = {
+type TabScopeItemBase = {
   item: CardItem | null
-  type: 'album' | 'image' | 'audit'
 }
+export type TabScopeItem = (
+  TabScopeItemBase & {
+    type: 'album',
+    label: '相册',
+    countLabel: '个'
+  }
+) | (
+  TabScopeItemBase & {
+    type: 'image',
+    label: '图片',
+    countLabel: '张'
+  }
+) | (
+  TabScopeItemBase & {
+    type: 'audit',
+    label: '资源',
+    countLabel: '项'
+  }
+)
 export type TabScope = TabScopeItem[]
 
 

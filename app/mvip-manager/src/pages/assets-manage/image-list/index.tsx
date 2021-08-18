@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react'
-import { Button, Result } from "antd"
+import { Button, Modal, Result } from "antd"
 
+import { successMessage, errorMessage } from "@/components/message"
 import { getImagesetAlbum, getImagesetImage, delImagesetAlbum, delImagesetImage } from '@/api/shop'
 import CardListPage from '../card-list-page/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
 
-import { TabScope, TabScopeItem, } from "@/interfaces/shop"
+import { TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../card-list-page/components/cards/index'
 
 // 资源管理 - 图集页面
@@ -16,7 +17,7 @@ const AssetsMangeImageListPage = () => {
 
   const [isScopeAlbum, setIsScopeAlbum] = useState(false)
   const [isScopeImage, setIsScopeImage] = useState(false)
-  const handleScopeChange = (tabScope: TabScope) => {
+  const tabScopeChange = (tabScope: TabScope) => {
     const lastScope = tabScope[tabScope.length - 1]
     switch (lastScope.type) {
       case 'album':
@@ -31,15 +32,71 @@ const AssetsMangeImageListPage = () => {
   }
 
   // 选择区域的删除函数
-  const selectionDeleteFn = useCallback((shopId: number, curScope?: TabScopeItem) => {
-    if (!curScope) return null
-    const fn = isScopeAlbum ? delImagesetAlbum : delImagesetImage
-    const ret = async (query: any) => fn(shopId, query)
-    ret.getQuery = (selection: number[]) => isScopeAlbum
-      ? [...selection]
-      : ({ ids: [...selection], mediaCateId: curScope?.item?.id })
-    return ret
-  }, [isScopeAlbum, isScopeImage])
+  const deleteBatch = useCallback((props: {
+    shopId: number
+    curScope: TabScopeItem | undefined
+    selection: number[]
+    lists: CardItem[]
+    refresh: (resetPagi?: boolean) => void
+    setSelection: (selection: number[]) => void
+    refreshAllAlbumLists: () => void
+  }) => {
+    const {
+      shopId, curScope, selection,
+      refresh, setSelection, refreshAllAlbumLists
+    } = props
+
+    return (e: any) => {
+      e.stopPropagation()
+      if (!curScope) {
+        return
+      }
+      // 批量删除时必定重新刷新页面分页参数，
+      // 因为不知道删了啥，删了之后这也还存不存在
+      const resetFreshPage = true
+      const count = selection.length
+      const info = count === 0
+        ? `删除后无法恢复，确认删除？`
+        : `本次预计删除 ${count} ${isScopeAlbum ? '个相册' : '张图片'}，删除后无法恢复，确认删除？`
+      Modal.confirm({
+        title: '确认删除',
+        content: info,
+        width: 532,
+        onCancel() { },
+        onOk() {
+          return new Promise((resolve, reject) => {
+            const deleteFn = isScopeAlbum
+              ? delImagesetAlbum
+              : delImagesetImage
+            const query = isScopeAlbum
+              ? [...selection]
+              : { ids: [...selection], mediaCateId: curScope?.item?.id }
+            deleteFn(shopId, query as any)
+              .then((res: any) => {
+                if (res.success) {
+                  successMessage('删除成功');
+                  setSelection([])
+                  refresh(resetFreshPage)
+                  refreshAllAlbumLists()
+                  resolve(res.success)
+                } else {
+                  throw new Error(res.message || "出错啦，请稍后重试");
+                }
+              })
+              .catch((error: any) => {
+                errorMessage(error.message)
+                setTimeout(reject, 1000)
+              })
+          })
+        }
+      })
+    }
+  }, [isScopeAlbum])
+
+  // 排除默认相册
+  const excludes = useCallback((lists: CardItem[]) => (
+    lists.filter(x => (x as AlbumItem).type !== 'DEFAULT')
+  ),[isScopeAlbum])
 
   /***************************************************** Renders */
 
@@ -60,6 +117,7 @@ const AssetsMangeImageListPage = () => {
     if (isScopeImage) {
       return fetchImageLists
     }
+    return null
   }, [isScopeAlbum, isScopeImage])
 
   // 空列表提示
@@ -84,12 +142,11 @@ const AssetsMangeImageListPage = () => {
 
   return (
     <CardListPage
-      customScope={{ type: 'album', item: null }}
-      isScopeAlbum={isScopeAlbum}
-      isScopeImage={isScopeImage}
+      defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
       fetchListFn={fetchListFn}
-      selectionDeleteFn={selectionDeleteFn}
-      handleScopeChange={handleScopeChange}
+      deleteBatch={deleteBatch}
+      excludes={excludes}
+      tabScopeChange={tabScopeChange}
       cardItem={customCardItem}
       emptyTip={emptyTip}
     />
