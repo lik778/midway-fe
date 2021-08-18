@@ -7,7 +7,7 @@ type Props = {
   // 排除选中（传入 SelectionItem，返回 true 则代表排除该项）
   excludeFn?: (select: SelectionItem) => boolean;
 }
-export function useSelection(props?: Props) {
+export default function useSelection(props?: Props) {
 
   /***************************************************** States */
 

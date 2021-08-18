@@ -3,12 +3,12 @@ import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
 import { getImagesetAlbum, getImagesetImage, delImagesetAlbum, delImagesetImage } from '@/api/shop'
-import CardListPage from '../card-list-page/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
+import CardsPage from '../cards-page/index'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
-import { CustomCardItemProps } from '../card-list-page/components/cards/index'
+import { CustomCardItemProps } from '../cards-page/cards-container/index'
 
 // 资源管理 - 图集页面
 const AssetsMangeImageListPage = () => {
@@ -141,7 +141,7 @@ const AssetsMangeImageListPage = () => {
   }, [isScopeAlbum, isScopeImage])
 
   return (
-    <CardListPage
+    <CardsPage
       defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
       fetchListFn={fetchListFn}
       deleteBatch={deleteBatch}

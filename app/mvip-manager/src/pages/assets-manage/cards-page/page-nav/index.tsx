@@ -7,7 +7,7 @@ import { TabScope, TabScopeItem } from "@/interfaces/shop"
 
 import styles from "./index.less"
 
-interface Props {
+interface NavProps {
   shopId: number
   tabScope: TabScope
   curScope?: TabScopeItem
@@ -15,7 +15,7 @@ interface Props {
   createAlbum: () => void
   openUpload: (defaultVal?: number) => void
 }
-export default (props: Props) => {
+export default (props: NavProps) => {
   const { curScope, tabScope, goTabScope, createAlbum, openUpload } = props;
 
   const isScopeAlbum = curScope && curScope.type === 'album'

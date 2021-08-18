@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react"
 import { Button, Checkbox, Modal } from "antd"
 
-import { successMessage, errorMessage } from "@/components/message"
-
-import { CardItem, AlbumItem, ImageItem, TabScopeItem } from "@/interfaces/shop"
+import { CardItem, TabScopeItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
-interface SelectionBlockProps {
+interface SelectionBarProps {
   total: number;
   selection: any[];
   lists: CardItem[];
@@ -19,7 +17,7 @@ interface SelectionBlockProps {
   setSelection: (ids: number[]) => void;
   refresh: (resetPagi?: boolean) => void;
 }
-export default function SelectionBlock(props: SelectionBlockProps) {
+export default function SelectionBar(props: SelectionBarProps) {
   const {
     total, selection, lists, curScope,
     deleteFn, select, unselect, setSelection, refresh, excludes,

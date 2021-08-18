@@ -6,7 +6,7 @@ import { successMessage, errorMessage } from "@/components/message"
 import { setImagesetAlbumCover } from '@/api/shop'
 
 import { ImageItem } from "@/interfaces/shop"
-import { CustomCardItemProps } from '../../card-list-page/components/cards/index'
+import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 
 import styles from './index.less'
 

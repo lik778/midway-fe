@@ -4,7 +4,7 @@ import { Modal, Result } from "antd"
 import { successMessage, errorMessage } from "@/components/message"
 import { getImagesetFailedImage, delImagesetFailedImage } from '@/api/shop'
 import ErrorCardWrapper from './error-card/index'
-import CardListPage from '../card-list-page/index'
+import CardsPage from '../cards-page/index'
 
 import { TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
 
@@ -82,7 +82,7 @@ const AssetsMangeAuditListPage = () => {
   ), [])
 
   return (
-    <CardListPage
+    <CardsPage
       defaultScope={{ item: null, type: 'audit', label: '资源', countLabel: '项' }}
       fetchListFn={fetchErrorImageLists}
       deleteBatch={deleteBatch}

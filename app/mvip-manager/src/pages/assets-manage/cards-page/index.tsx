@@ -1,24 +1,24 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useParams } from "umi"
-import { Pagination, Button, Result } from "antd"
+import { Pagination } from "antd"
 
-import PageNav from './components/nav'
-import CardList from './components/cards'
-import SelectionBlock from './components/selection'
-import { useCreateAlbumModal } from './components/create-album-modal'
-import { useUploadModal } from './components/upload-modal'
+import NavBar from './page-nav'
+import CardList from './cards-container'
+import SelectionBar from './page-selection-bar'
+import { useCreateAlbumModal } from './create-album-modal'
+import { useUploadModal } from './upload-modal'
 
-import usePrevious from './hooks/previous'
-import { useSelection } from './hooks/selection'
-import { usePagination } from './hooks/pagination'
+import usePrevious from '@/hooks/previous'
+import useSelection from '@/hooks/selection'
+import usePagination from '@/hooks/pagination'
 import useAllAlbumNames from './hooks/album-names'
 
 import { RouteParams, TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
-import { CustomCardItemProps } from './components/cards'
+import { CustomCardItemProps } from './cards-container'
 
 import styles from './index.less'
 
-type CardsListPageProps = {
+type CardsPageProps = {
   defaultScope: TabScopeItem
   tabScopeChange?: (tabScope: TabScope) => void
   fetchListFn: ((shopId: number, query: any) => any) | null
@@ -39,7 +39,8 @@ type CardsListPageProps = {
     openUpload?: any
   }) => JSX.Element
 }
-const CardListPage = (props: CardsListPageProps) => {
+
+const CardsPage = (props: CardsPageProps) => {
 
   /***************************************************** States */
 
@@ -198,7 +199,7 @@ const CardListPage = (props: CardsListPageProps) => {
       {/* 内容 */}
       <div className={`container ${styles["container"]}`}>
         {/* 页面内导航栏 */}
-        <PageNav
+        <NavBar
           shopId={shopId}
           tabScope={tabScope}
           curScope={curScope}
@@ -207,7 +208,7 @@ const CardListPage = (props: CardsListPageProps) => {
           openUpload={openUpload}
         />
         {/* 选框区 */}
-        <SelectionBlock
+        <SelectionBar
           total={total}
           curScope={curScope}
           selection={selection}
@@ -318,6 +319,6 @@ function useLists(
   return [lists, total, loading, refresh, setLists, setTotal] as const
 }
 
-// CardListPage.wrappers = ['@/wrappers/path-auth']
+// CardsPage.wrappers = ['@/wrappers/path-auth']
 
-export default CardListPage
+export default CardsPage
