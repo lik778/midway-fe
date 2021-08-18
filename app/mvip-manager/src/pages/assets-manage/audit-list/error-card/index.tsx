@@ -40,28 +40,35 @@ export default function ErrorCardWrapper(props: any) {
       })
   }
 
-  const cardItem = useCallback((props: CustomCardItemProps) => (
-    ErrorCardItem({
-      ...props,
-      auditLoadingItem,
-      reAuditImage
-    })
-  ), [auditLoadingItem])
+  const cardItem = useCallback((props: CustomCardItemProps) => {
+    if (typeof auditLoadingItem === 'undefined') {
+      return null
+    } else {
+      return ErrorCardItem({
+        ...props,
+        auditLoadingItem,
+        reAuditImage,
+        card: props.card
+      } as ErrorCardItemProps)
+    }
+  }, [auditLoadingItem])
 
   return cardItem
 }
 
 // 自定义申诉列表的卡片
-function ErrorCardItem(props: CustomCardItemProps & {
-  auditLoadingItem: ImageItem | null | undefined
+type ErrorCardItemProps = CustomCardItemProps & {
+  card: ImageItem,
+  auditLoadingItem: ImageItem | null
   reAuditImage: (e: any, image: ImageItem) => any
-}) {
+}
+function ErrorCardItem(props: ErrorCardItemProps) {
   const {
     card, selection, loading, auditLoadingItem,
-    previewImage, handleSelectCard, moveImage, delImage, reAuditImage
+    handleSelectCard, previewImage, delImage, reAuditImage
   } = props
 
-  const { id, imgUrl, checkStatus, reason } = card as ImageItem
+  const { id, imgUrl, checkStatus, reason } = card
   const shortReasonMatch = (reason || '').match(/\[(.+)\]/)
   const shortReason = shortReasonMatch ? shortReasonMatch[1] : '审核驳回'
   const isChecked = selection.find((y: number) => y === id)
@@ -74,7 +81,7 @@ function ErrorCardItem(props: CustomCardItemProps & {
   const stopEvent = (e: any) => e.stopPropagation()
 
   return (
-    <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card as ImageItem)}>
+    <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card)}>
       {showCoverInfo && (
         <div className={styles["mask"] + ' ' + (rejected ? styles['full'] : '')}>
           {rejected && <AuditFailedIcon />}
@@ -83,21 +90,21 @@ function ErrorCardItem(props: CustomCardItemProps & {
         </div>
       )}
       {!inAudit && (
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card as ImageItem)}>
+        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
           <div className={styles["action-wrapper"]}>
             <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
             <div className={styles["anticon-down-con"]}>
               <div className={styles["anticon-down"]}>
                 <DownOutlined />
               </div>
-              <div className={styles["down-actions"]} onClick={e => moveImage(e, card as ImageItem)}>
+              <div className={styles["down-actions"]}>
                 {showReapplyBtn && (
-                  <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card as ImageItem)}>
+                  <div className={styles["anticon-down-item"]} onClick={e => reAuditImage(e, card)}>
                     {inAuditLoading ? <LoadingOutlined /> : <ReApplyIcon />}
                     <span>申诉</span>
                   </div>
                 )}
-                <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card as ImageItem)}>
+                <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
                   <DeleteOutlined />
                   <span>删除</span>
                 </div>

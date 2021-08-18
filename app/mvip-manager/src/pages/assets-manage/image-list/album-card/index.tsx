@@ -32,24 +32,27 @@ export default function AlbumCardWrapper(props: any) {
       goAlbumScope,
       handleEditAlbum,
       refreshAllAlbumLists
-    })
+    } as AlbumCardProps)
   )
 }
 
-function AlbumCard(props: CustomCardItemProps & {
+type AlbumCardProps = CustomCardItemProps & {
+  card: AlbumItem
   goAlbumScope: (album: AlbumItem) => any
   handleEditAlbum: (e: any, album: AlbumItem) => any
   refreshAllAlbumLists: () => any
-}) {
+}
+
+function AlbumCard(props: AlbumCardProps) {
   const {
     card, lists, selection,
     refresh, setSelection, handleSelectCard, goAlbumScope, handleEditAlbum,
     refreshAllAlbumLists
   } = props
 
-  const { id, name, coverUrl, totalImg, type } = card as AlbumItem;
+  const { id, name, coverUrl, totalImg, type } = card
   const isDefaultAlbum = type === 'DEFAULT'
-  const isChecked = selection.find((y: number) => y === id);
+  const isChecked = selection.find((y: number) => y === id)
 
   const stopEvent = (e: any) => e.stopPropagation()
 
@@ -68,11 +71,11 @@ function AlbumCard(props: CustomCardItemProps & {
           api(shopId, query)
             .then((res: any) => {
               if (res.success) {
-                successMessage('删除成功');
+                successMessage('删除成功')
                 callback && callback()
                 resolve(res.success)
               } else {
-                throw new Error(res.message || "出错啦，请稍后重试");
+                throw new Error(res.message || "出错啦，请稍后重试")
               }
             })
             .catch((error: any) => {
@@ -100,9 +103,9 @@ function AlbumCard(props: CustomCardItemProps & {
   }
 
   return (
-    <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => goAlbumScope(card as AlbumItem)}>
+    <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => goAlbumScope(card)}>
       {!isDefaultAlbum && (
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => goAlbumScope(card as AlbumItem)}>
+        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => goAlbumScope(card)}>
           <div className={styles["action-wrapper"]}>
             <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
             <div className={styles["anticon-down-con"]}>
@@ -110,11 +113,11 @@ function AlbumCard(props: CustomCardItemProps & {
                 <DownOutlined />
               </div>
               <div className={styles["down-actions"]}>
-                <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card as AlbumItem)}>
+                <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
                   <EditOutlined />
                   <span>编辑</span>
                 </div>
-                <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card as AlbumItem)}>
+                <div className={styles["anticon-down-item"]} onClick={e => delAlbum(e, card)}>
                   <DeleteOutlined />
                   <span>删除</span>
                 </div>

@@ -27,9 +27,9 @@ export default function ImageCardWrapper(props: any) {
     setImagesetAlbumCover(shopId, { id, mediaCateId: item.id })
       .then((res: any) => {
         if (res.success) {
-          successMessage('设置成功');
+          successMessage('设置成功')
         } else {
-          throw new Error(res.message || "出错啦，请稍后重试");
+          throw new Error(res.message || "出错啦，请稍后重试")
         }
       })
       .catch((error: any) => {
@@ -45,48 +45,48 @@ export default function ImageCardWrapper(props: any) {
       ...props,
       setCoverImage,
       setCoverItem
-    })
+    } as ImageCardProps)
   )
 }
 
-function ImageCard(props: CustomCardItemProps & {
+type ImageCardProps = CustomCardItemProps & {
+  card: ImageItem
   setCoverImage: (e: any, image: ImageItem) => void
   setCoverItem: ImageItem | null | undefined
-}) {
+}
+
+function ImageCard(props: ImageCardProps) {
   const {
     card, selection, setCoverItem, loading,
     handleSelectCard, previewImage, moveImage, delImage,
     setCoverImage,
   } = props
 
-  // FIXME 暂时写死，用来调试
-  const shopId = 3863
-
-  const { id, imgUrl } = card as ImageItem;
-  const isChecked = selection.find((y: number) => y === id);
+  const { id, imgUrl } = card
+  const isChecked = selection.find((y: number) => y === id)
   const inSetCoverLoading = setCoverItem && setCoverItem.id === id
 
   const stopEvent = (e: any) => e.stopPropagation()
 
   return (
-    <div className={styles["image-card"]} key={`image-card-${id}`} onClick={() => previewImage(card as ImageItem)}>
-      <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card as ImageItem)}>
+    <div className={styles["image-card"]} key={`image-card-${id}`} onClick={() => previewImage(card)}>
+      <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
         <div className={styles["action-wrapper"]}>
-          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card as ImageItem)} onClick={e => stopEvent(e)} />
+          <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
           <div className={styles["anticon-down-con"]}>
             <div className={styles["anticon-down"]}>
               <DownOutlined />
             </div>
-            <div className={styles["down-actions"]} onClick={e => moveImage(e, card as ImageItem)}>
+            <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
               <div className={styles["anticon-down-item"]}>
                 <PartitionOutlined />
                 <span>移动</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card as ImageItem)}>
+              <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card as ImageItem)}>
+              <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
                 {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
                 <span>设为封面</span>
               </div>
