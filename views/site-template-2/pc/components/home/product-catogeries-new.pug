@@ -4,7 +4,7 @@
 		//- if p && p.length > 0
 			//- if p.length >= 5
 		a.all-category(href= productLink || "#") 所有分类
-		each item,index in p.slice(0,5)
+		each item,index in p.slice(0,8)
 			a(href= item.urlSuffix) #{ item.name }
 			if index != 4
 				.border-bot
