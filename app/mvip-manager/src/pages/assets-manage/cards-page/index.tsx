@@ -179,7 +179,7 @@ const CardsPage = (props: CardsPageProps) => {
 
   /***************************************************** Renders */
 
-  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists: [] })
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal({ allAlbumLists })
 
   const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ shopId, refresh })
 
