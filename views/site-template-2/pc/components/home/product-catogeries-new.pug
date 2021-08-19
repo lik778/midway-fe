@@ -6,7 +6,7 @@
 		a.all-category(href= productLink || "#") 所有分类
 		each item,index in p.slice(0,8)
 			a(href= item.urlSuffix) #{ item.name }
-			if index != 4
+			if index < p.length - 1
 				.border-bot
 
 
