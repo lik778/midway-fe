@@ -289,10 +289,10 @@ export default function useUploadModal(props: Props) {
       {/* Tips */}
       {!showActions && (
         <div className={styles['tips-con']}>
-          <h4 className={styles["tip-header"]}>{directoryLabel}上传规范</h4>
-          <div className={styles["tip"]}>1.{directoryLabel}不要包含<span className={styles["highlight"]}>水印、二维码、联系方式</span>等信息</div>
-          <div className={styles["tip"]}>2.{directoryLabel}不要上传<span className={styles["highlight"]}>国家领导人的头像</span></div>
-          <div className={styles["tip"]}>3.{directoryLabel}不能含有<span className={styles["highlight"]}>违法相关信息</span>（例如：黄、赌、毒等违法信息）</div>
+          <h4 className={styles["tip-header"]}>{subDirectoryLabel}上传规范</h4>
+          <div className={styles["tip"]}>1.{subDirectoryLabel}不要包含<span className={styles["highlight"]}>水印、二维码、联系方式</span>等信息</div>
+          <div className={styles["tip"]}>2.{subDirectoryLabel}不要上传<span className={styles["highlight"]}>国家领导人的头像</span></div>
+          <div className={styles["tip"]}>3.{subDirectoryLabel}不能含有<span className={styles["highlight"]}>违法相关信息</span>（例如：黄、赌、毒等违法信息）</div>
         </div>
       )}
 
