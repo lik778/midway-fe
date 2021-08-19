@@ -7,6 +7,7 @@ import { ConnectState } from '@/models/connect';
 import styles from './index.less'
 import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   position: ModulePageType,
@@ -33,11 +34,16 @@ const HomeSwiper: FC<Props> = (props) => {
     disabled: false
   })
 
-  const handleClickSubmit = () => {
-    if (pcRef.current.disabled || wapRef.current.disabled) {
-      return
+  const handleClickSubmit = async () => {
+    try {
+      if (pcRef.current.disabled || wapRef.current.disabled) {
+        return
+      }
+      await Promise.all([pcRef.current.handleUpData('all'), wapRef.current.handleUpData('all')])
+      successMessage('保存成功')
+    } catch (e) {
+      errorMessage('操作失败')
     }
-    Promise.all([pcRef.current.handleUpData('all'), wapRef.current.handleUpData('all')])
   }
 
   return <Spin spinning={loadingShopModel}>

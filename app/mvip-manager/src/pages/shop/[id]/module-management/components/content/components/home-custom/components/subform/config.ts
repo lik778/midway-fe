@@ -5,8 +5,8 @@ import { FormType } from '@/components/wildcat-form/enums';
 export const CustomSetFormConfigFn:
   (Args: { key: string | number, moduleID: string }) => FormConfig =
   ({ key, moduleID }) => {
-    const titleMax = moduleID === "1" ? 20 : 16
-    const contentMax = moduleID === "1" ? 120 : 50
+    const titleMax =16
+    const contentMax = 50
     const aspectRatio = moduleID === "1" ? 595 / 222 : 400 / 300
     const imageTip = moduleID === "1" ? '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸595*222。'
       : '图片格式：jpg、jpeg、png，大小不超过3M，建议最佳尺寸400*300。'
@@ -32,10 +32,10 @@ export const CustomSetFormConfigFn:
           name: 'content',
           type: FormType.Textarea,
           required: true,
-          placeholder: `请输入简介，20～${contentMax}个字`,
-          minLength: 20,
+          placeholder: `请输入简介，30～${contentMax}个字`,
+          minLength: 30,
           maxLength: contentMax,
-          patternList: [{ pattern: new RegExp(`^[\\s\\S]{20,${contentMax}}$`), message: `20～${contentMax}个字` }]
+          patternList: [{ pattern: new RegExp(`^[\\s\\S]{30,${contentMax}}$`), message: `30～${contentMax}个字` }]
         },
         {
           label: '上传图片',

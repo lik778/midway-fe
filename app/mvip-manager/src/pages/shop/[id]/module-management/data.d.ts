@@ -1,5 +1,4 @@
 import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
-
 export interface PageItemOption {
   key: ModulePageType,
   label: string

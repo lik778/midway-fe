@@ -49,19 +49,20 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
 
   // 保存轮播图需要单独再打个接口
   const handleSubmitNoProduct = async () => {
+    if (curShopInfo.type !== ProductType.B2B) return
     setUpDataLoading(true)
-    const res = await setModuleBannerInfoApi(Number(params.id), {
+    await setModuleBannerInfoApi(Number(params.id), {
       bannerProduct: false,
       position, pageModule
     })
     setUpDataLoading(false)
   }
 
-  const handleUpData = () => {
+  const handleUpData = async () => {
     if (swiperType === 'product') {
-      productRef.current.handleUpData()
+      await productRef.current.handleUpData()
     } else {
-      Promise.all([handleSubmitNoProduct(), swiperRef.current.handleUpData('all')])
+      await Promise.all([handleSubmitNoProduct(), swiperRef.current.handleUpData('all')])
     }
   }
 
