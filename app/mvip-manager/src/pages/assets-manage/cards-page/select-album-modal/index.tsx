@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useContext } from 'react'
 import { Button, Select, Modal } from "antd"
 
+import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
 import { AlbumNameListItem } from "@/interfaces/shop"
@@ -10,6 +11,7 @@ import styles from './index.less'
 let albumSelectResolver: ((select: AlbumNameListItem | PromiseLike<AlbumNameListItem>) => void) | null = null
 
 export default function useSelectAlbumListsModal() {
+  const { directoryLabel } = useContext(CardsPageContext)
   const { lists: allAlbumLists } = useContext(AlbumNamesContext)
   const [exclude, setExclude] = useState<number[]>([])
   const displayLists = useMemo(() => allAlbumLists.filter(x => !exclude.includes(x.id)), [exclude])
@@ -46,7 +48,7 @@ export default function useSelectAlbumListsModal() {
     >
       <Select
         className='album-select-album-selector'
-        placeholder="请选择一个相册"
+        placeholder={`请选择一个${directoryLabel}`}
         onChange={(val: number) => handleSelectAlbum(val)}
       >
         {displayLists.map((x: AlbumNameListItem, idx: number) => (

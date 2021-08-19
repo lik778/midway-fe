@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useContext } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useContext } from 'react'
 import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
@@ -9,23 +9,40 @@ import ImageCardWrapper from './image-card/index'
 import CardsPage from '../cards-page/index'
 
 import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-names'
+import CardsPageContext, { CardsPageContextProvider } from '../context/cards-page'
 
-import { TabScope, CardItem, AlbumItem } from "@/interfaces/shop"
+import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
 import { CustomCardItemProps } from '../cards-page/cards-container/index'
 
-const AssetsMangeImageListPageContexted = () => {
+const AssetsMangeImageListPageContexted = (props: any) => {
   return (
-    <AlbumNamesContextProvider>
-      <AssetsMangeImageListPage />
-    </AlbumNamesContextProvider>
+    <CardsPageContextProvider>
+      <AlbumNamesContextProvider>
+        <AssetsMangeImageListPage {...props} />
+      </AlbumNamesContextProvider>
+    </CardsPageContextProvider>
   )
 }
 
 // 资源管理 - 相册列表
-const AssetsMangeImageListPage = () => {
+const AssetsMangeImageListPage = (props: {
+  directoryType: string
+  navBar: null | ((props: PageNavProps) => JSX.Element)
+  defaultScope: TabScopeItem
+}) => {
 
   /***************************************************** States */
+
+  const { directoryType: propsDirectoryType, navBar, defaultScope } = props
+  const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
+  useEffect(() => {
+    dispatch({
+      type: 'update-directory-type',
+      payload: propsDirectoryType || 'image'
+    })
+  }, [propsDirectoryType])
+
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const selectionExcludeFilter = useMemo(() => (x: number) => defaultAlbumIDs.includes(x), [defaultAlbumIDs])
@@ -64,7 +81,7 @@ const AssetsMangeImageListPage = () => {
       const count = selection.length
       const info = count === 0
         ? `删除后无法恢复，确认删除？`
-        : `本次预计删除 ${count} ${isScopeAlbum ? '个相册' : '张图片'}，删除后无法恢复，确认删除？`
+        : `本次预计删除 ${count} ${isScopeAlbum ? `个${directoryLabel}` : '张图片'}，删除后无法恢复，确认删除？`
       Modal.confirm({
         title: '确认删除',
         content: info,
@@ -98,7 +115,7 @@ const AssetsMangeImageListPage = () => {
         }
       })
     }
-  }, [isScopeAlbum, refreshAllAlbumLists])
+  }, [isScopeAlbum, directoryLabel, refreshAllAlbumLists])
 
   // 全选时不需要选择默认相册
   const selectAllFrom = useCallback((lists: CardItem[]) => (
@@ -131,19 +148,9 @@ const AssetsMangeImageListPage = () => {
 
   // 页头
   const pageNav = useCallback((props: PageNavProps) => {
-    const {
-      tabScope, curScope,
-      goTabScope, createAlbum, openUpload
-    } = props
-    return (
-      <NavBar
-        tabScope={tabScope}
-        curScope={curScope}
-        goTabScope={goTabScope}
-        createAlbum={createAlbum}
-        openUpload={openUpload}
-      />
-    )
+    return navBar
+      ? navBar(props)
+      : <NavBar {...props} />
   }, [])
 
   // 空列表提示
@@ -151,12 +158,12 @@ const AssetsMangeImageListPage = () => {
     const { curScope, createAlbum, openUpload } = props
     let info, $extra
     if (isScopeAlbum) {
-      info = "没有找到相册，快新建一个吧~"
-      $extra = <Button type="primary" onClick={() => createAlbum()}>新建相册</Button>
+      info = `没有找到${directoryLabel}，快新建一个吧~`
+      $extra = <Button type="primary" onClick={() => createAlbum()}>新建{directoryLabel}</Button>
     }
     if (isScopeImage) {
-      info = "当前相册还没有图片，快上传一些吧~"
-      $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传图片</Button>
+      info = `当前相册还没有${subDirectoryLabel}，快上传一些吧~`
+      $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传{subDirectoryLabel}</Button>
     }
     return (
       <Result
@@ -165,27 +172,41 @@ const AssetsMangeImageListPage = () => {
         style={{ margin: 'auto' }}
       />
     )
-  }, [isScopeAlbum, isScopeImage])
+  }, [isScopeAlbum, isScopeImage, directoryLabel, subDirectoryLabel])
+
+  // 视频预览
+  const cardItemPreview = useMemo(() => {
+    if (directoryType === 'video') {
+      return (previewItem: CardItem) => {
+        const { imgUrl } = previewItem as ImageItem
+        return <video src={imgUrl} preload="preload" />
+      }
+    } else {
+      return null
+    }
+  }, [directoryType])
 
   return (
-      <CardsPage
-        defaultScope={{ item: null, type: 'album', label: '相册', countLabel: '个' }}
-        pageNav={pageNav}
-        fetchListFn={fetchListFn}
-        deleteBatch={deleteBatch}
-        selectAllFrom={selectAllFrom}
-        selectionExcludeFilter={selectionExcludeFilter}
-        tabScopeChange={tabScopeChange}
-        cardItem={customCardItem}
-        emptyTip={emptyTip}
-      />
+    <CardsPage
+      defaultScope={defaultScope || ({ item: null, type: 'album', label: '相册', countLabel: '个' })}
+      pageNav={pageNav}
+      fetchListFn={fetchListFn}
+      deleteBatch={deleteBatch}
+      selectAllFrom={selectAllFrom}
+      selectionExcludeFilter={selectionExcludeFilter}
+      tabScopeChange={tabScopeChange}
+      cardItem={customCardItem}
+      emptyTip={emptyTip}
+      cardItemPreview={cardItemPreview}
+    />
   )
 }
 
 // 由于组件切换时状态有顺序和数量相等限制，
 // 暂时用一个组件用来填充
 function PaddingHooks(props: any) {
-  const {} = useContext(AlbumNamesContext)
+  const { } = useContext(CardsPageContext)
+  const { } = useContext(AlbumNamesContext)
   const [_, __] = useState('for padding')
   return (props: CustomCardItemProps) => {
     return null

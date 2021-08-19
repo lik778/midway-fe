@@ -91,7 +91,7 @@ type ErrorCardItemProps = CustomCardItemProps & {
 function ErrorCardItem(props: ErrorCardItemProps) {
   const {
     card, loading, auditLoadingItem, selection,
-    handleSelectCard, previewImage, reAuditImage, delImage
+    handleSelectCard, preview, reAuditImage, delImage
   } = props
 
   const { id, imgUrl, checkStatus, reason } = card
@@ -107,7 +107,7 @@ function ErrorCardItem(props: ErrorCardItemProps) {
   const stopEvent = (e: any) => e.stopPropagation()
 
   return (
-    <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => previewImage(card)}>
+    <div className={styles["error-image-card"]} key={`error-image-card-${id}`} onClick={() => preview(card)}>
       {showCoverInfo && (
         <div className={styles["mask"] + ' ' + (rejected ? styles['full'] : '')}>
           {rejected && <AuditFailedIcon />}
@@ -116,7 +116,7 @@ function ErrorCardItem(props: ErrorCardItemProps) {
         </div>
       )}
       {!inAudit && (
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
+        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => preview(card)}>
           <div className={styles["action-wrapper"]}>
             <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
             <div className={styles["anticon-down-con"]}>

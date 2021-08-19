@@ -1,59 +1,52 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop"
+import { updateImagesetAlbum } from "@/api/shop"
 
-import CardsPageContext from '../../context/cards-page'
-
-import { AlbumItem } from "@/interfaces/shop"
+import { ImageItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
-let createAlbumResover: ((isDone: boolean | PromiseLike<boolean>) => void) | null = null
+let resolver: ((isDone: boolean | PromiseLike<boolean>) => void) | null = null
 
 type Props = {
   refresh: () => void
 }
-export default function useCreateAlbumModal(props: Props) {
+export default function useEditVideoNameModal(props: Props) {
 
   /***************************************************** States */
 
   const { refresh } = props
-  const { directoryLabel } = useContext(CardsPageContext)
 
   const [form] = Form.useForm()
   const [defaultVals, setDefaultVals] = useState<any>({})
-  const [isEditing, setIsEditing] = useState(false)
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
 
   // 打开模态框
-  const openModal = useCallback(async (album?: AlbumItem): Promise<boolean> => {
+  const openModal = useCallback(async (album?: ImageItem): Promise<boolean> => {
     if (album) {
       const { id, name } = album
       const defaultVals = { id, name }
       setDefaultVals(defaultVals)
       form.setFieldsValue(defaultVals)
-      setIsEditing(true)
-    } else {
-      setIsEditing(false)
     }
     setVisible(true)
     return await new Promise(resolve => {
-      createAlbumResover = resolve
+      resolver = resolve
     })
   }, [defaultVals, form])
 
   const closeModal = () => {
-    createAlbumResover && createAlbumResover(false)
+    resolver && resolver(false)
     setVisible(false)
     form.resetFields()
   }
 
   /***************************************************** Actions */
 
-  // 新增及编辑相册
+  // 编辑视频名称
   const createAlbum = useCallback(async () => {
     form.validateFields()
       .then(formvals => {
@@ -61,14 +54,9 @@ export default function useCreateAlbumModal(props: Props) {
         let post = null
         let successMsg = ''
         let params: any = {}
-        if (isEditing) {
-          params.id = defaultVals.id
-          post = updateImagesetAlbum
-          successMsg = "编辑成功"
-        } else {
-          post = createImagesetAlbum
-          successMsg = "创建成功"
-        }
+        params.id = defaultVals.id
+        post = updateImagesetAlbum
+        successMsg = "编辑成功"
         post({ ...formvals, ...params })
           .then(res => {
             if (res.success) {
@@ -77,28 +65,28 @@ export default function useCreateAlbumModal(props: Props) {
               setVisible(false)
               form.resetFields()
               setDefaultVals({})
-              createAlbumResover && createAlbumResover(true)
+              resolver && resolver(true)
             } else {
               throw new Error(res.message || "出错啦，请稍后重试")
             }
           })
           .catch(error => {
             errorMessage(error.message)
-            createAlbumResover && createAlbumResover(false)
+            resolver && resolver(false)
           })
           .finally(() => {
             setLoading(false)
-            createAlbumResover && createAlbumResover(false)
+            resolver && resolver(false)
           })
       })
-  }, [createAlbumResover])
+  }, [resolver])
 
   /***************************************************** Renders */
 
   return [
     <Modal
       wrapClassName="create-album-modal"
-      title={isEditing ? `编辑${directoryLabel}` : `新建${directoryLabel}`}
+      title={'编辑视频'}
       width={432}
       footer={null}
       visible={visible}
@@ -113,13 +101,13 @@ export default function useCreateAlbumModal(props: Props) {
       >
         <Form.Item
           name="name"
-          label={(directoryLabel + "名称").slice(-4)}
+          label="视频名称"
           rules={[
-            { pattern: /^[\s\S]{2,20}$/, message: `${directoryLabel}名称限制为 2～20 个字符` },
-            { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]+$/, message: `${directoryLabel}名称不允许有特殊字符` }
+            { pattern: /^[\s\S]{2,20}$/, message: "视频名称限制为 2～20 个字符" },
+            { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]+$/, message: '视频名称不允许有特殊字符' }
           ]}
         >
-          <Input placeholder={`请输入${directoryLabel}名称`} />
+          <Input placeholder="请输入视频名称" />
         </Form.Item>
       </Form>
       <div className={styles["extra"]}>

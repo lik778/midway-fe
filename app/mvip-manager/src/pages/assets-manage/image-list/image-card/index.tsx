@@ -5,6 +5,7 @@ import { PartitionOutlined, DeleteOutlined, LoadingOutlined, DownOutlined, EditO
 import { successMessage, errorMessage } from "@/components/message"
 import { moveImagesetImage, delImagesetImage, setImagesetAlbumCover } from '@/api/shop'
 
+import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
 import { ImageItem } from "@/interfaces/shop"
@@ -13,12 +14,22 @@ import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 import styles from './index.less'
 
 export default function ImageCardWrapper(props: any) {
-  const { curScope, lists, selection, setSelection, refresh, selectAlbum } = props
+  const { curScope, lists, selection, setSelection, editVideo, refresh, selectAlbum } = props
+  const { directoryType } = useContext(CardsPageContext)
   const { } = useContext(AlbumNamesContext)
   const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 
+  // 编辑视频名称
+  const editVideoName = async (e: any, image: ImageItem) => {
+    e.stopPropagation()
+    await editVideo(image)
+  }
+
   // 设置封面图片
   const setCoverImage = async (e: any, image: ImageItem) => {
+    if (directoryType !== 'image') {
+      return
+    }
     e.stopPropagation()
     setSetCoverItem(image)
     const { id } = image
@@ -98,6 +109,7 @@ export default function ImageCardWrapper(props: any) {
       ...props,
       setCoverImage,
       setCoverItem,
+      editVideoName,
       moveImage,
       delImage,
     } as ImageCardProps)
@@ -107,6 +119,7 @@ export default function ImageCardWrapper(props: any) {
 type ImageCardProps = CustomCardItemProps & {
   card: ImageItem
   setCoverItem: ImageItem | null | undefined
+  editVideoName: (e: any, image: ImageItem) => any
   setCoverImage: (e: any, image: ImageItem) => void
   moveImage: (arg: any, image: ImageItem) => void
   delImage: (arg: any, image: ImageItem) => void
@@ -115,9 +128,10 @@ type ImageCardProps = CustomCardItemProps & {
 function ImageCard(props: ImageCardProps) {
   const {
     card, selection, setCoverItem, loading,
-    handleSelectCard, previewImage,
-    setCoverImage, moveImage, delImage
+    handleSelectCard, preview,
+    setCoverImage, moveImage, delImage, editVideoName
   } = props
+  const { directoryType } = useContext(CardsPageContext)
 
   const { id, imgUrl } = card
   const isChecked = selection.find((y: number) => y === id)
@@ -126,8 +140,12 @@ function ImageCard(props: ImageCardProps) {
   const stopEvent = (e: any) => e.stopPropagation()
 
   return (
-    <div className={styles["image-card"]} key={`image-card-${id}`} onClick={() => previewImage(card)}>
-      <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => previewImage(card)}>
+    <div
+      className={styles["image-card"] + ' ' + (directoryType === 'video' ? styles['video-card'] : '')}
+      key={`image-card-${id}`}
+      onClick={() => preview(card)}
+    >
+      <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => preview(card)}>
         <div className={styles["action-wrapper"]}>
           <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
           <div className={styles["anticon-down-con"]}>
@@ -135,6 +153,12 @@ function ImageCard(props: ImageCardProps) {
               <DownOutlined />
             </div>
             <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
+              {directoryType === 'video' && (
+                <div className={styles["anticon-down-item"]} onClick={e => editVideoName(e, card)}>
+                  <EditOutlined />
+                  <span>编辑</span>
+                </div>
+              )}
               <div className={styles["anticon-down-item"]}>
                 <PartitionOutlined />
                 <span>移动</span>
@@ -143,16 +167,25 @@ function ImageCard(props: ImageCardProps) {
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
-              <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
-                {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
-                <span>设为封面</span>
-              </div>
+              {directoryType === 'image' && (
+                <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
+                  {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
+                  <span>设为封面</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
       {(!loading && imgUrl) && (
-        <img className={styles["cover"]} src={imgUrl} alt="cover" />
+        <div className={styles["cover-con"]}>
+          <img className={styles["cover"]} src={imgUrl} alt="cover" />
+        </div>
+      )}
+      {directoryType === 'video' && (
+        <div className={styles["header"]}>
+          <span className={styles["name"]} title={'视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长'}>{'视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长'}</span>
+        </div>
       )}
     </div>
   )

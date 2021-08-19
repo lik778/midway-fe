@@ -58,7 +58,6 @@ export function AlbumNamesContextProvider(props: any) {
     refresh()
   }, [])
 
-  // TODO FIX TYPE
   return (
     <AlbumNamesContext.Provider value={{
       lists: albumNames.lists,

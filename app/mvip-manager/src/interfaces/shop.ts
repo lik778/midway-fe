@@ -398,7 +398,7 @@ type TabScopeItemBase = {
 export type TabScopeItem = (
   TabScopeItemBase & {
     type: 'album',
-    label: '相册' | '视频',
+    label: '相册' | '视频分组',
     countLabel: '个'
   }
 ) | (

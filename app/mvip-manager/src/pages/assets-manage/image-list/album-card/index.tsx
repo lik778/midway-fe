@@ -5,6 +5,7 @@ import { DeleteOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 import { successMessage, errorMessage } from "@/components/message"
 import { delImagesetAlbum } from '@/api/shop'
 
+import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
 import { AlbumItem } from "@/interfaces/shop"
@@ -14,20 +15,29 @@ import styles from './index.less'
 
 import DEFAULT_ALBUM_COVER from './default-album-cover.png'
 
-const createNewScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
+const createNewImageScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
+const createNewVideoScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '视频', countLabel: '个' })
 
 export default function AlbumCardWrapper(props: any) {
   const { lists, selection, setSelection, goTabScope, createAlbum, refresh } = props
+  const {
+    directoryType,
+    directoryLabel,
+    subDirectoryLabel,
+    subDirectoryCountLabel
+  } = useContext(CardsPageContext)
   const { refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const [_, __] = useState('for padding')
 
   // 查看相册详情
-  const intoScope = (album: AlbumItem) => goTabScope(createNewScope(album))
+  const intoScope = (album: AlbumItem) => directoryType === 'image'
+    ? goTabScope(createNewImageScope(album))
+    : goTabScope(createNewVideoScope(album))
 
   // 编辑相册名称
-  const handleEditAlbum = async (e: any, album: AlbumItem) => {
+  const editAlbumName = async (e: any, album: AlbumItem) => {
     e.stopPropagation()
-    createAlbum(album)
+    await createAlbum(album)
   }
 
   // 删除确认 Modal
@@ -63,8 +73,8 @@ export default function AlbumCardWrapper(props: any) {
     e.stopPropagation()
     const { id, totalImg } = album
     const info = totalImg === 0
-      ? `相册删除后无法恢复，确认删除？`
-      : `本次预计删除 ${totalImg} 张图片，删除后无法恢复，确认删除？`
+      ? `${directoryLabel}删除后无法恢复，确认删除？`
+      : `本次预计删除 ${totalImg} ${subDirectoryCountLabel + subDirectoryLabel}，删除后无法恢复，确认删除？`
     await delCallback(delImagesetAlbum, [id], info, () => {
       setSelection(selection.filter((x: number) => x !== id))
       refreshAllAlbumLists()
@@ -78,7 +88,7 @@ export default function AlbumCardWrapper(props: any) {
       ...props,
       delAlbum,
       intoScope,
-      handleEditAlbum
+      editAlbumName
     } as AlbumCardProps)
   )
 }
@@ -86,16 +96,17 @@ export default function AlbumCardWrapper(props: any) {
 type AlbumCardProps = CustomCardItemProps & {
   card: AlbumItem
   intoScope: (album: AlbumItem) => any
-  handleEditAlbum: (e: any, album: AlbumItem) => any
+  editAlbumName: (e: any, album: AlbumItem) => any
   delAlbum: (e: any, album: AlbumItem) => any
 }
 
 function AlbumCard(props: AlbumCardProps) {
   const {
     card, selection,
-    handleSelectCard, intoScope, handleEditAlbum,
+    handleSelectCard, intoScope, editAlbumName,
     delAlbum,
   } = props
+  const { subDirectoryCountLabel } = useContext(CardsPageContext)
 
   const { id, name, coverUrl, totalImg, type } = card
   const isDefaultAlbum = type === 'DEFAULT'
@@ -114,7 +125,7 @@ function AlbumCard(props: AlbumCardProps) {
                 <DownOutlined />
               </div>
               <div className={styles["down-actions"]}>
-                <div className={styles["anticon-down-item"]} onClick={e => handleEditAlbum(e, card)}>
+                <div className={styles["anticon-down-item"]} onClick={e => editAlbumName(e, card)}>
                   <EditOutlined />
                   <span>编辑</span>
                 </div>
@@ -131,7 +142,7 @@ function AlbumCard(props: AlbumCardProps) {
       <div className={styles["header"]}>
         <span className={styles["name"]} title={name}>{name}</span>
         <span>
-          <span>{totalImg}</span> 张
+          <span>{totalImg}</span> {subDirectoryCountLabel}
         </span>
       </div>
     </div>

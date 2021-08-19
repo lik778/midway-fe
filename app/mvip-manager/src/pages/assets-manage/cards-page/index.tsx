@@ -5,6 +5,7 @@ import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
 import useUploadModal from './upload-modal'
 import useCreateAlbumModal from './create-album-modal/index'
+import useEditVideoNameModal from './edit-video-name-modal/index'
 import useSelectAlbumListsModal from './select-album-modal/index'
 
 import usePrevious from '@/hooks/previous'
@@ -55,7 +56,8 @@ type CardsPageProps = {
   selectAllFrom: (items: CardItem[]) => CardItem[]
   // useSelection hook 的排除选中
   selectionExcludeFilter?: (select: number) => boolean
-  cardItem?: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null) | null
+  cardItem: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null)
+  cardItemPreview?: null | ((card: CardItem) => (JSX.Element | null))
   pageNav: (props: PageNavProps) => JSX.Element
   emptyTip: (props: EmptyTipProps) => JSX.Element
   children?: any
@@ -68,7 +70,7 @@ const CardsPage = (props: CardsPageProps) => {
   const {
     defaultScope,
     tabScopeChange, fetchListFn, deleteBatch, selectAllFrom, selectionExcludeFilter,
-    pageNav, cardItem, emptyTip,
+    pageNav, cardItem, cardItemPreview, emptyTip,
   } = props
 
   // tabScope 维护当前页面内文件夹的层级关系
@@ -170,8 +172,8 @@ const CardsPage = (props: CardsPageProps) => {
   /***************************************************** Renders */
 
   const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
-
-  const [$CreateAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ refresh })
+  const [$createAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ refresh })
+  const [$editVideoNameModal, editVideo] = useEditVideoNameModal({ refresh })
 
   // 创建或编辑相册后重新拉取所有相册列表
   const createAlbum = useCallback(async (album?: AlbumItem) => {
@@ -229,7 +231,8 @@ const CardsPage = (props: CardsPageProps) => {
     goTabScope,
     setSelection,
     createAlbum,
-    selectAlbum
+    selectAlbum,
+    editVideo
   })
 
   return (
@@ -262,6 +265,7 @@ const CardsPage = (props: CardsPageProps) => {
           select={select}
           unselect={unselect}
           cardItem={renderCardItem}
+          customPreview={cardItemPreview}
           emptyTip={renderCardListEmptyTip}
         />
         {/* 分页 */}
@@ -280,7 +284,9 @@ const CardsPage = (props: CardsPageProps) => {
       {/* 图片上传模态框 */}
       {$UploadModal}
       {/* 创建/编辑相册模态框 */}
-      {$CreateAlbumModal}
+      {$createAlbumModal}
+      {/* 编辑视频名称模态框 */}
+      {$editVideoNameModal}
       {/* 创建/编辑相册模态框 */}
       {$selectAlbumModal}
       {/*  */}
