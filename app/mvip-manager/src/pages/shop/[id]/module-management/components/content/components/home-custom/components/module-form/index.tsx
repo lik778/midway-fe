@@ -193,7 +193,7 @@ const ModuleForm: FC<Props> = (props) => {
           onDel={handleDelSubform}
         />
       ))}
-      {subformVals.length < (moduleID === "1" ? 10 : 8) && (
+      {subformVals.length < 10 && (
         <Button
           className={`${styles['add-btn']}`}
           type="primary"
