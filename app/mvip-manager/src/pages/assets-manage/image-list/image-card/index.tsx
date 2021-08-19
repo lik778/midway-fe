@@ -14,8 +14,8 @@ import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 import styles from './index.less'
 
 export default function ImageCardWrapper(props: any) {
-  const { curScope, lists, selection, setSelection, editVideo, refresh, selectAlbum } = props
-  const { directoryType } = useContext(CardsPageContext)
+  const { curScope, lists, selection, setSelection, editVideo, refresh } = props
+  const { directoryType, selectAlbum } = useContext(CardsPageContext)
   const { } = useContext(AlbumNamesContext)
   const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
 

@@ -7,6 +7,7 @@ import NavBar from './page-nav/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
 import CardsPage from '../cards-page/index'
+import useSelectAlbumListsModal from '../cards-page/select-album-modal/index'
 
 import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-names'
 import CardsPageContext, { CardsPageContextProvider } from '../context/cards-page'
@@ -140,6 +141,16 @@ const AssetsMangeImageListPage = (props: {
 
   /***************************************************** Renders */
 
+  // 选择相册模态框
+  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
+
+  useEffect(() => {
+    dispatch({
+      type: 'update-select-album',
+      payload: selectAlbum
+    })
+  }, [selectAlbum])
+
   // 自定义卡片
   const customCardItem = useMemo(() => {
     if (isScopeAlbum) {
@@ -203,7 +214,10 @@ const AssetsMangeImageListPage = (props: {
       cardItem={customCardItem}
       emptyTip={emptyTip}
       cardItemPreview={cardItemPreview}
-    />
+    >
+      {/* 选择相册模态框 */}
+      {$selectAlbumModal}
+    </CardsPage>
   )
 }
 

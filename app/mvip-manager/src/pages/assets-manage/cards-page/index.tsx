@@ -6,7 +6,6 @@ import SelectionBar from './page-selection-bar'
 import useUploadModal from './upload-modal'
 import useCreateAlbumModal from './create-album-modal/index'
 import useEditVideoNameModal from './edit-video-name-modal/index'
-import useSelectAlbumListsModal from './select-album-modal/index'
 
 import usePrevious from '@/hooks/previous'
 import useSelection from '@/hooks/selection'
@@ -181,7 +180,6 @@ const CardsPage = (props: CardsPageProps) => {
 
   /***************************************************** Renders */
 
-  const [$selectAlbumModal, selectAlbum] = useSelectAlbumListsModal()
   const [$createAlbumModal, createOrEditAlbum] = useCreateAlbumModal({ refresh })
   const [$editVideoNameModal, editVideo] = useEditVideoNameModal({ refresh })
 
@@ -241,7 +239,6 @@ const CardsPage = (props: CardsPageProps) => {
     goTabScope,
     setSelection,
     createAlbum,
-    selectAlbum,
     editVideo
   })
 
@@ -297,8 +294,6 @@ const CardsPage = (props: CardsPageProps) => {
       {$createAlbumModal}
       {/* 编辑视频名称模态框 */}
       {$editVideoNameModal}
-      {/* 创建/编辑相册模态框 */}
-      {$selectAlbumModal}
       {/*  */}
       {props.children}
     </>

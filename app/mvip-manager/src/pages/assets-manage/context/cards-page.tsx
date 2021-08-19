@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react'
 
-// import { AlbumItem } from "@/interfaces/shop"
+import { AlbumItem, AlbumNameListItem } from "@/interfaces/shop"
 
 type CardsPageContextType = {
   directoryType: 'image' | 'video'
@@ -11,6 +11,8 @@ type CardsPageContextType = {
   // refresh: (resetPagi?: boolean) => void
   // // 创建或编辑相册
   // createAlbum: (album?: AlbumItem) => void
+  // 选择相册模态框
+  selectAlbum: (args: { exclude: number[] }) => any
   dispatch: any
 }
 
@@ -21,6 +23,7 @@ const initialState: CardsPageContextType = {
   subDirectoryCountLabel: '张',
   // refresh: () => { },
   // createAlbum: () => { },
+  selectAlbum: () => {},
   dispatch: () => { }
 }
 
@@ -39,6 +42,9 @@ const reducer = (prevState: CardsPageContextType, action: any): CardsPageContext
     // case 'update-refresh':
     //   prevState.refresh = action.payload
       // return prevState
+    case 'update-select-album':
+      prevState.selectAlbum = action.payload
+      return prevState
     // case 'update-create-album':
     //   return {
     //     ...prevState,
