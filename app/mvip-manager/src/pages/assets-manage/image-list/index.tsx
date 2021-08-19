@@ -130,6 +130,7 @@ const AssetsMangeImageListPage = (props: {
 
   // 获取列表
   const fetchListFn = useMemo(() => {
+    // console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
     if (isScopeAlbum) {
       return fetchAlbumLists
     }
@@ -153,13 +154,11 @@ const AssetsMangeImageListPage = (props: {
 
   // 自定义卡片
   const customCardItem = useMemo(() => {
-    if (isScopeAlbum) {
-      return AlbumCardWrapper
-    }
     if (isScopeImage) {
       return ImageCardWrapper
+    } else {
+      return AlbumCardWrapper
     }
-    return PaddingHooks
   }, [isScopeAlbum, isScopeImage])
 
   // 页头
@@ -219,17 +218,6 @@ const AssetsMangeImageListPage = (props: {
       {$selectAlbumModal}
     </CardsPage>
   )
-}
-
-// 由于组件切换时状态有顺序和数量相等限制，
-// 暂时用一个组件用来填充
-function PaddingHooks(props: any) {
-  const { } = useContext(CardsPageContext)
-  const { } = useContext(AlbumNamesContext)
-  const [_, __] = useState('for padding')
-  return (props: CustomCardItemProps) => {
-    return null
-  }
 }
 
 /**
