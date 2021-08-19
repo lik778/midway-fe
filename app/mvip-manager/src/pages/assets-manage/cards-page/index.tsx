@@ -11,6 +11,7 @@ import useSelectAlbumListsModal from './select-album-modal/index'
 import usePrevious from '@/hooks/previous'
 import useSelection from '@/hooks/selection'
 import usePagination from '@/hooks/pagination'
+import CardsPageContext from '../context/cards-page'
 import AlbumNamesContext from '../context/album-names'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
@@ -97,6 +98,7 @@ const CardsPage = (props: CardsPageProps) => {
     }
     return { page, size }
   }, [pagi.current, pagiConf.pageSize, curScope])
+  const { dispatch } = useContext(CardsPageContext)
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const [lists, total, loading, refreshLists] = useLists(pagiQuery, curScope, fetchListFn)
 
@@ -112,6 +114,14 @@ const CardsPage = (props: CardsPageProps) => {
       refreshLists(showLoading)
     }
   }, [pagi.current, refreshLists, resetPagi])
+
+  // ？
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'update-refresh',
+  //     payload: refresh
+  //   })
+  // }, [refresh])
 
   // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求

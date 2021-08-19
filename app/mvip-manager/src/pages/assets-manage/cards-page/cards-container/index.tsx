@@ -34,7 +34,7 @@ interface CardsContainerProps {
   refresh: (resetPagi?: boolean) => void
   emptyTip: JSX.Element | null
   cardItem: (props: CustomCardItemProps) => (JSX.Element | null)
-  customPreview?: (card: CardItem) => (JSX.Element | null)
+  customPreview?: null | ((card: CardItem) => (JSX.Element | null))
 }
 
 /**

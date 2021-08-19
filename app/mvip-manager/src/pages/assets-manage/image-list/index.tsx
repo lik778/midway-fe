@@ -36,6 +36,11 @@ const AssetsMangeImageListPage = (props: {
 
   const { directoryType: propsDirectoryType, navBar, defaultScope } = props
   const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
+
+  // useEffect(() => {
+  //   console.log('refresh get:', refresh)
+  // }, [refresh])
+
   useEffect(() => {
     dispatch({
       type: 'update-directory-type',
@@ -163,7 +168,7 @@ const AssetsMangeImageListPage = (props: {
     }
     if (isScopeImage) {
       info = `当前相册还没有${subDirectoryLabel}，快上传一些吧~`
-      $extra = <Button type="primary" onClick={() => openUpload(curScope?.item?.id)}>上传{subDirectoryLabel}</Button>
+      $extra = <Button type="primary" onClick={() => openUpload(curScope!.item!.id)}>上传{subDirectoryLabel}</Button>
     }
     return (
       <Result
