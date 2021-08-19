@@ -193,6 +193,13 @@ const CardsPage = (props: CardsPageProps) => {
 
   const [$UploadModal, openUpload] = useUploadModal({ createAlbum, refresh })
 
+  // TODO delete - for test only
+  useEffect(() => {
+    if (allAlbumLists && allAlbumLists.length > 0) {
+      openUpload(allAlbumLists[0].id)
+    }
+  }, [allAlbumLists])
+
   // 选择区域的删除函数
   const selectionDeleteMethod = useMemo(() => (
     deleteBatch({

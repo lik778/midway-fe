@@ -1,36 +1,63 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { Upload, notification } from 'antd'
 import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 
 import styles from './index.less'
 
+declare global {
+  interface Window {
+    _quick_upload: boolean
+    _quick_upload_file: RcFile
+  }
+}
+
 // 获取图片 base64 预览地址
 const getBase64 = function (file: Blob): Promise<any> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  })
 }
 
 export interface UploadItem extends UploadFile {
   // 图片预览地址
-  preview: string;
+  preview: string
   // 赤壁审核
-  inChibi: boolean;
+  inChibi: boolean
   // 出错原因
-  error: string;
+  error: string
 }
 
 type Props = {
-  maxCount?: number;
+  // 上传类型 image 图片、video 视频
+  type: 'image' | 'video'
+  // 最大上传数量
+  maxCount?: number
   // 上传后钩子函数
-  afterUploadHook?: (item: UploadItem, update: Function) => Promise<UploadItem>;
+  afterUploadHook?: (item: UploadItem, update: Function) => Promise<UploadItem>
 }
 export function useUpload(props: Props) {
-  const { maxCount = 15, afterUploadHook } = props
+  const { type, maxCount = 15, afterUploadHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
+  const uploadItemLabel = useMemo(() => type === 'image' ? '图片' : '视频', [type])
+  const uploadConf = type === 'image'
+    ? {
+      accept: ['image/jpeg', 'image/png', 'image/jpg'],
+      action: window.__upyunImgConfig?.uploadUrl,
+      data: {
+        policy: window.__upyunImgConfig?.uploadParams?.policy,
+        signature: window.__upyunImgConfig?.uploadParams?.signature,
+      }
+    } : {
+      accept: ['video/mp4', 'video/mpeg', 'video/mov'],
+      action: window.__upyunVideoConfig?.uploadUrl,
+      data: {
+        policy: window.__upyunVideoConfig?.uploadParams?.policy,
+        signature: window.__upyunVideoConfig?.uploadParams?.signature,
+      }
+    }
 
   // 增加一项
   const add = useCallback((item: UploadItem) => {
@@ -70,7 +97,7 @@ export function useUpload(props: Props) {
   const handleChange = async (e: any) => {
     // 给上传增加一个测试开关
     // @ts-ignore
-    if (window._quickUpload) {
+    if (window._quick_upload) {
       return
     }
     const { uid, status } = e.file
@@ -95,55 +122,64 @@ export function useUpload(props: Props) {
     }
   }
 
-  // 检测图片是否符合格式及大小限制
-  const checkImage = (file: RcFile) => {
+  // 检测资源属性是否合规
+  const checkAssets = useCallback((file: RcFile) => {
     // 给上传增加一个测试开关
-    // @ts-ignore
-    if (window._quickUpload) {
-      // @ts-ignore
-      window._quickUploadFile = file
+    if (window._quick_upload) {
+      window._quick_upload_file = file
       return true
     }
-    const maxSize = 3
-    if (!file) {
-      return false
+    const isExtAndSizeValid = (file: RcFile, exts: string[], size: number) => {
+      if (!file) {
+        return false
+      }
+      const isValidType = exts.includes(file.type)
+      if (!isValidType) {
+        notification.open({
+          key: 'imageset-upload-error-filetype',
+          message: `${uploadItemLabel}格式错误`,
+          description: `请上传 ${exts.map(x => x.split('/')[1]).join('、')} 格式的${uploadItemLabel}`,
+        })
+        return false
+      }
+      const validSize = file.size / 1024 / 1024 < size
+      if (!validSize) {
+        notification.open({
+          key: 'imageset-upload-error-filesize',
+          message: `${uploadItemLabel}体积过大`,
+          description: `请上传小于${size}M的${uploadItemLabel}`,
+        })
+        return false
+      }
+      return true
     }
-    const validType = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg'
-    if (!validType) {
-      notification.open({
-        key: 'imageset-upload-error-filetype',
-        message: '图片格式错误',
-        description: '请上传 jpg、jpeg、png 格式的图片',
-      })
-      return false
+    // TODO
+    const isVideoDurationValid = () => {
+      return true
     }
-    const validSize = file.size / 1024 / 1024 < maxSize
-    if (!validSize) {
-      notification.open({
-        key: 'imageset-upload-error-filesize',
-        message: '图片过大',
-        description: `请上传不超过${maxSize}M的图片`,
-      })
-      return false
-    }
-    return true
-  }
+    return type === 'image'
+      ? isExtAndSizeValid(file, uploadConf.accept, 3)
+      : isExtAndSizeValid(file, uploadConf.accept, 100) && isVideoDurationValid()
+  }, [type])
+
+  /***************************************************** Renders */
 
   return [
     <Upload
       className={styles['tranparent-uploader']}
-      action={window.__upyunImgConfig?.uploadUrl}
-      data={{
-        policy: window.__upyunImgConfig?.uploadParams?.policy,
-        signature: window.__upyunImgConfig?.uploadParams?.signature,
-      }}
+      accept={uploadConf.accept.map(x => '.' + (x.split('/')[1])).join(',')}
+      action={uploadConf.action}
+      data={uploadConf.data}
       multiple={true}
       fileList={lists}
       showUploadList={false}
-      beforeUpload={checkImage}
+      beforeUpload={checkAssets}
       onChange={handleChange}
       maxCount={maxCount}
-    ><div></div></Upload>,
+    >
+      {/* ! 别去掉这个 div，为了使 upload 展示出来，子项至少要非空 */}
+      <div></div>
+    </Upload>,
     lists,
     setLists,
     update,

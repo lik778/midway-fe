@@ -13,7 +13,13 @@ import styles from './index.less'
 
 const MAX_UPLOAD_COUNT = 15
 const UPLOAD_RES_MAP_DEFAULT_ID = -1
-const getID = (): string => String(Math.random()).slice(-6) + +new Date()
+const getRandomNumber = (): string => String(Math.random()).slice(-6) + +new Date()
+
+declare global {
+  interface Window {
+    _mvip_upload_rerender_tick: NodeJS.Timeout | undefined
+  }
+}
 
 // 保存 UploadItem 和 上传结果的关系
 type UploadResMap = {
@@ -35,7 +41,10 @@ export default function useUploadModal(props: Props) {
   /***************************************************** States */
   const { refresh, createAlbum } = props
   const [visible, setVisible] = useState(false)
-  const { directoryLabel, subDirectoryCountLabel, subDirectoryLabel } = useContext(CardsPageContext)
+  const { directoryType, directoryLabel, subDirectoryCountLabel, subDirectoryLabel } = useContext(CardsPageContext)
+
+  const isUploadImage = useMemo(() => directoryType === 'image', [directoryType])
+  const isUploadVideo = useMemo(() => directoryType === 'video', [directoryType])
 
   const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector()
   useEffect(() => {
@@ -50,24 +59,22 @@ export default function useUploadModal(props: Props) {
   // 我需要这个数组用来记录已经上传的列表，
   // reRender 用来触发重渲染
   const uploadedLists = useRef<UploadResMap[]>([])
-  const [reRender, setRerender] = useState(getID())
+  const [reRender, setRerender] = useState(getRandomNumber())
   const record = (newLists: UploadResMap[]) => {
     uploadedLists.current = newLists
-    setRerender(getID())
+    setRerender(getRandomNumber())
     // 一秒之后触发重渲染，防止一直 pending 在“加载中”
-    // @ts-ignore
-    if (window._upload_rerender_tick) {
-      // @ts-ignore
-      clearInterval(window._upload_rerender_tick)
+    if (window._mvip_upload_rerender_tick) {
+      clearInterval(window._mvip_upload_rerender_tick)
     }
-    // @ts-ignore
-    window._upload_rerender_tick = setInterval(() => {
-      getID()
+    window._mvip_upload_rerender_tick = setInterval(() => {
+      getRandomNumber()
     }, 1000)
   }
 
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
+    type: directoryType,
     maxCount: 15,
     afterUploadHook,
   })
