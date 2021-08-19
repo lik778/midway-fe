@@ -5,7 +5,7 @@ import { changeBannerOrderApi, createBannerApi, getBannerListApi, deleteBannerAp
 import { useParams } from 'umi';
 import { BannerListItem, RouteParams } from '@/interfaces/shop';
 import { DeviceType } from '@/enums';
-import { errorMessage, successMessage } from '@/components/message';
+import { errorMessage } from '@/components/message';
 import Loading from '@/components/loading';
 import ImgUpload from "@/components/img-upload";
 import { ActionBtnListItem } from '@/components/img-upload/data';
@@ -81,7 +81,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     })
     setUpDataLoading(false)
     if (res.success) {
-      successMessage('保存成功')
       return res.data
     } else {
       errorMessage(`上传失败: ${res.message}`)
@@ -194,7 +193,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     if (!autoUpdata) {
       setChangeFlag(false)
     }
-    await getBannerList()
+    getBannerList()
   }, [changeFlag, bannerList, delBannerIds])
 
   // 将提交的函数放到上层控制
