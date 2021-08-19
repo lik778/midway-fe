@@ -116,7 +116,8 @@ function AlbumCard(props: AlbumCardProps) {
 
   return (
     <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => intoScope(card)}>
-      {!isDefaultAlbum && (
+
+    {!isDefaultAlbum && (
         <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => intoScope(card)}>
           <div className={styles["action-wrapper"]}>
             <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
@@ -144,7 +145,6 @@ function AlbumCard(props: AlbumCardProps) {
         <span>
           <span>{totalImg}</span> {subDirectoryCountLabel}
         </span>
-      </div>
-    </div>
+      </div></div>
   )
 }

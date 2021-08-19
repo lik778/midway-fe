@@ -24,7 +24,7 @@ export type CustomCardItemProps = {
 interface CardsContainerProps {
   lists: CardItem[]
   selection: any[]
-  curScope: TabScopeItem | undefined
+  curScope: TabScopeItem
   loading: boolean
   pagiConf: any
   setPagiConf: (conf: Partial<PaginationSetting>) => void
@@ -144,21 +144,17 @@ export default function CardsContainer(props: CardsContainerProps) {
   /***************************************************** Renders */
 
   const renderCard = (card: CardItem) => {
-    if (cardItem && curScope) {
-      return cardItem({
-        curScope,
-        card,
-        selection,
-        loading,
-        lists,
-        setSelection,
-        refresh,
-        preview,
-        handleSelectCard
-      })
-    } else {
-      return null
-    }
+    return cardItem({
+      curScope,
+      card,
+      selection,
+      loading,
+      lists,
+      setSelection,
+      refresh,
+      preview,
+      handleSelectCard
+    })
   }
 
   const renderFlexPadding = useCallback(() => {

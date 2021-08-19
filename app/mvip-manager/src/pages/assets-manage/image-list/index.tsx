@@ -9,12 +9,11 @@ import ImageCardWrapper from './image-card/index'
 import CardsPage from '../cards-page/index'
 import useSelectAlbumListsModal from '../cards-page/select-album-modal/index'
 
-import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-names'
 import CardsPageContext, { CardsPageContextProvider } from '../context/cards-page'
+import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-names'
 
 import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
-import { CustomCardItemProps } from '../cards-page/cards-container/index'
 
 const AssetsMangeImageListPageContexted = (props: any) => {
   return (
@@ -130,7 +129,6 @@ const AssetsMangeImageListPage = (props: {
 
   // 获取列表
   const fetchListFn = useMemo(() => {
-    // console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
     if (isScopeAlbum) {
       return fetchAlbumLists
     }
@@ -154,6 +152,7 @@ const AssetsMangeImageListPage = (props: {
 
   // 自定义卡片
   const customCardItem = useMemo(() => {
+    console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
     if (isScopeImage) {
       return ImageCardWrapper
     } else {

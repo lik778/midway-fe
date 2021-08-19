@@ -4,10 +4,10 @@ import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
 
 import { reAuditImagesetImage, createImagesetImage, delImagesetImage } from '@/api/shop'
 import { successMessage, errorMessage } from "@/components/message"
-import { useAlbumSelector } from '../album-selector'
+import useAlbumSelector from '../album-selector'
 import { useUpload, UploadItem } from './upload'
 
-import AlbumNamesContext from '../../context/album-names'
+import CardsPageContext from '../../context/cards-page'
 
 import styles from './index.less'
 
@@ -35,9 +35,9 @@ export default function useUploadModal(props: Props) {
   /***************************************************** States */
   const { refresh, createAlbum } = props
   const [visible, setVisible] = useState(false)
-  const { lists: allAlbumLists } = useContext(AlbumNamesContext)
+  const { directoryLabel, subDirectoryCountLabel, subDirectoryLabel } = useContext(CardsPageContext)
 
-  const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector({ allAlbumLists })
+  const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector()
   useEffect(() => {
     if (selectedAlbum) {
       setLists([])
@@ -149,7 +149,7 @@ export default function useUploadModal(props: Props) {
       reAuditImagesetImage({ id: image.imageID })
         .then((res: any) => {
           if (res.success) {
-            successMessage('申诉成功，请到资源管理 / 申诉记录查看进度')
+            successMessage('申诉成功，请到申诉记录查看进度')
           } else {
             throw new Error(res.message || '出错啦，请稍后重试')
           }
@@ -175,7 +175,7 @@ export default function useUploadModal(props: Props) {
     } else {
       Modal.confirm({
         title: '确认关闭',
-        content: '仍有图片仍未上传成功',
+        content: `仍有${subDirectoryLabel}仍未上传成功`,
         width: 532,
         onCancel() { },
         onOk() {
@@ -207,7 +207,7 @@ export default function useUploadModal(props: Props) {
     } else if (chibiFailed) {
       $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
         <AuditFailedIcon />
-        <span>该图片涉及违禁</span>
+        <span>该{subDirectoryLabel}涉及违禁</span>
         <span className={styles["re-audit-btn"]} onClick={() => reAuditImage(uploadedItem)}>点击申诉</span>
       </span>
     } else {
@@ -260,7 +260,7 @@ export default function useUploadModal(props: Props) {
   return [
     <Modal
       wrapClassName="upload-modal"
-      title="上传图片"
+      title={`上传${subDirectoryLabel}`}
       width={1045}
       closeIcon={null}
       footer={null}
@@ -273,7 +273,7 @@ export default function useUploadModal(props: Props) {
         <span>上传到：</span>
         {$albumSelector}
         <Button className={styles["create-album-btn"]} type="text" size="small" onClick={handleCreateAlbum}>
-          新增相册
+          新增{directoryLabel}
         </Button>
       </div>
 
@@ -289,10 +289,10 @@ export default function useUploadModal(props: Props) {
       {/* Tips */}
       {!showActions && (
         <div className={styles['tips-con']}>
-          <h4 className={styles["tip-header"]}>图片上传规范</h4>
-          <div className={styles["tip"]}>1.图片不要包含<span className={styles["highlight"]}>水印、二维码、联系方式</span>等信息</div>
-          <div className={styles["tip"]}>2.图片不要上传<span className={styles["highlight"]}>国家领导人的头像</span></div>
-          <div className={styles["tip"]}>3.图片不能含有<span className={styles["highlight"]}>违法相关信息</span>（例如：黄、赌、毒等违法信息）</div>
+          <h4 className={styles["tip-header"]}>{directoryLabel}上传规范</h4>
+          <div className={styles["tip"]}>1.{directoryLabel}不要包含<span className={styles["highlight"]}>水印、二维码、联系方式</span>等信息</div>
+          <div className={styles["tip"]}>2.{directoryLabel}不要上传<span className={styles["highlight"]}>国家领导人的头像</span></div>
+          <div className={styles["tip"]}>3.{directoryLabel}不能含有<span className={styles["highlight"]}>违法相关信息</span>（例如：黄、赌、毒等违法信息）</div>
         </div>
       )}
 
@@ -308,7 +308,7 @@ export default function useUploadModal(props: Props) {
           >
             确定
           </Button>
-          <span className={styles["count-tip"]}>（共 {lists.length} 张图片）</span>
+          <span className={styles["count-tip"]}>（共 {lists.length} {subDirectoryCountLabel}{directoryLabel}）</span>
         </div>
       )}
     </Modal>,
