@@ -18,4 +18,25 @@
       }
     }
   }
+  .tip-content {
+    position: relative;
+    color: #999999;
+    .text {
+      margin: 0 5px 5px 0;
+      color: #999;
+      font-size: 12px;
+      line-height: 18px;
+    }
+    .icon:hover + .img {
+      display: inline-block;
+    }
+    .img {
+      display: none;
+      width: 350px;
+      position: absolute;
+      top: -70px;
+      left: 110px;
+      z-index: 10;
+    }
+  }
 }

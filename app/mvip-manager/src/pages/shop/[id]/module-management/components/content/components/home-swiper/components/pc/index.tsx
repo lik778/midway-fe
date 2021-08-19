@@ -49,6 +49,7 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
 
   // 保存轮播图需要单独再打个接口
   const handleSubmitNoProduct = async () => {
+    if (curShopInfo.type !== ProductType.B2B) return
     setUpDataLoading(true)
     const res = await setModuleBannerInfoApi(Number(params.id), {
       bannerProduct: false,

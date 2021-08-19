@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useParams } from 'umi';
 import { Button, Row, Col, Spin } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import WildcatForm from '@/components/wildcat-form';
 import { aboutUsForm } from './config'
 import { ConnectState } from '@/models/connect';
@@ -20,6 +21,17 @@ interface Props {
   curShopInfo?: ShopInfo | null
 }
 
+const TipNode = () => {
+  return <div className={styles['tip-content']}>
+    <div>
+      <span className={styles['text']}>仅在电脑端展示</span>
+      <QuestionCircleOutlined className={styles['icon']} />
+      <img className={styles['img']} src="//file.baixing.net/202108/a4a1b6fc624ae157500620d340244724.png" alt="" />
+    </div>
+    <div className={styles['text']}>图片格式：jpg、jpeg、png，大小不超过3M，图片比例16：9，建议最小尺寸：432*243</div>
+  </div>
+}
+
 const AboutUs: FC<Props> = (props) => {
   const params = useParams<{ id: string }>()
   const { position, pageModule, curShopInfo } = props
@@ -32,9 +44,9 @@ const AboutUs: FC<Props> = (props) => {
   const config = useMemo(() => {
     // ShopIndustryType
     if (curShopInfo && curShopInfo.type) {
-      return aboutUsForm(curShopInfo.type)
+      return aboutUsForm(curShopInfo.type, <TipNode></TipNode>)
     } else {
-      return aboutUsForm(ShopIndustryType.SALE)
+      return aboutUsForm(ShopIndustryType.SALE, <TipNode></TipNode>)
     }
   }, [curShopInfo])
 

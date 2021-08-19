@@ -471,6 +471,8 @@ export interface ModuleSelectProductListItem {
   headImg: string,
   urlSuffix: string
   createdTime: number,
+  memo: string
+  status: AuditStatus
   [key: string]: any
 }
 
@@ -480,6 +482,8 @@ export interface ModuleSelectArticleListItem {
   urlSuffix: string
   createdTime: number,
   modifiedTime: number
+  memo: string
+  status: AuditStatus
   [key: string]: any
 }
 
