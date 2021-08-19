@@ -9,7 +9,8 @@ import { ShopBasicInfoForm } from './config';
 import { cloneDeepWith } from 'lodash';
 import { setShopBasicInfoApi } from '@/api/shop'
 import { objToTargetObj } from '@/utils';
-
+import { useDebounce } from '@/hooks/debounce'
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 const FormItem = Form.Item
 
 interface Props {
@@ -67,11 +68,11 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     setUpDataLoading(false)
   }
 
-  const formChange = (value: any) => {
+  const formChange = useDebounce((value: any) => {
     //手机正则
-    var landlinePtn = /(^(0\d{2,3}-?)?\d{7,8}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
+    const landlinePtn = /(^(0\d{2,3}-?)?\d{7,8}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
     setphoneTipShow(value.contactMobile && landlinePtn.test(value.contactMobile))
-  }
+  }, 500)
 
 
   return (
