@@ -4,7 +4,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import styles from './index.less'
 import AlbumMenu from './components/album-menu'
 import ImgList from './components/img-list'
-import { getBaixingAlbumNameList, getAlbumNameList } from '@/api/shop'
+import { getBaixingAlbumNameListApi, getAlbumNameListApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import { AlbumNameListItem } from '@/interfaces/shop';
 import { TabsKeys } from '../../data'
@@ -41,7 +41,7 @@ const Album: FC<Props> = (props) => {
         if (baixingImageData.length <= 0) {
           setMenuKey(undefined)
           setGetDataLoading(true)
-          const res = await getBaixingAlbumNameList(shopCurrent!.id)
+          const res = await getBaixingAlbumNameListApi(shopCurrent!.id)
           const newData = createNewData(res.data)
           handleChangeBaixingImageData(newData, baixingImageData)
         }
@@ -49,7 +49,7 @@ const Album: FC<Props> = (props) => {
         if (!imageData[shopCurrent.id]) {
           setMenuKey(undefined)
           setGetDataLoading(true)
-          const res = await getAlbumNameList(shopCurrent!.id)
+          const res = await getAlbumNameListApi(shopCurrent!.id)
           const newData = createNewData(res.data)
           handleChangeImageData({
             ...imageData,

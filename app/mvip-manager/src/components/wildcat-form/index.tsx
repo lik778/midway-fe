@@ -139,21 +139,22 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
               })
             }
             {
-              item.imagesTipPosition === 'right' && (typeof item.tip === 'string' ?
-                <div className={styles['tip-right']}>
-                  <p className={`${styles['image-tip']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p>
-                  <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
-                </div>
-                : item.tip)
+              item.imagesTipPosition === 'right' && <div className={styles['tip-right']}>
+                {
+                  typeof item.tip === 'string' ? <p className={`${styles['image-tip']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p>
+                    : item.tip
+                }
+                <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+              </div>
             }
           </div>
           {
-            item.imagesTipPosition !== 'right' && (typeof item.tip === 'string' ?
-              <>
-                <p className={styles['image-tip']}>{item.tip}</p>
-                <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
-              </>
-              : item.tip)
+            item.imagesTipPosition !== 'right' && <>
+              {
+                (typeof item.tip === 'string' ? <p className={styles['image-tip']}>{item.tip}</p> : item.tip)
+              }
+              <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+            </>
           }
         </Form.Item>)
       } else if (item.type === FormType.AreaSelect) {
@@ -207,7 +208,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
 
   return (
     <>
-      <Form form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
+      <Form layout={config.layout || 'horizontal'} form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
         onFinish={props.submit} onValuesChange={props.formChange} className={`${styles['form-styles']} ${props.className}`} labelAlign={config.labelAlign || 'right'}>
         {
           creatForm(FormItemList)

@@ -81,7 +81,45 @@ export class BaseSiteController {
     if (isSem) {
       data.basic.company.about = this.replaceMobile(data.basic.company.about)
     }
-    data.autoConfig = data.autoConfig && data.autoConfig.length > 0 ? data.autoConfig : [{ mainModuleTitle: '企业优势', subModuleBos: [{ fontColor: 0, title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' }, { fontColor: 0, title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' }, { fontColor: 0, title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' }, { fontColor: 0, title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }] }]
+
+    const defaultAutoConfig1 = {
+      mainModuleTitle: '企业优势', show: true,
+      subModuleBos: [
+        { title: '质量在心中', content: '将产品质量与企业荣耀挂钩，踏踏实实地进行至今' },
+        { title: '名牌在手中', content: '以诚心待客户，口碑已积累在多年，当前在行业内小有名气，有口皆碑' },
+        { title: '责任在肩上', content: '坚持做到物美价廉，物有所值，让消费者放心' },
+        { title: '诚信在言行中', content: '重承诺，重言行，拿客户满意作为衡量服务的标准' }]
+    }
+
+    const defaultAutoConfig2 = {
+      mainModuleTitle: '服务优势', show: true,
+      subModuleBos: [
+        { title: '口碑载道', content: '重视信誉和口碑，客户忠实度高', urlImg: '//file.baixing.net/202108/88bdb200a332fefd1e0886391da53ff7.png' },
+        { title: '资质正规', content: '相关资质均有工商备案，资质可查，公司正规', urlImg: '//file.baixing.net/202108/f48a629c05f0770ca771685f50980084.png' },
+        { title: '贴心服务', content: '全方位的售前售后服务，提高客户满意度', urlImg: '//file.baixing.net/202108/76c21e26ee68474da2d6d9736d5a88af.png' },
+        { title: '售后保障', content: '完善的售后服务体系和严格的管理制度，客户至上', urlImg: '//file.baixing.net/202108/9dcb37487ee2d0b32a2d9fcecc0bff8f.png' }]
+    }
+
+    if (!data.autoConfig) {
+      data.autoConfig = []
+    }
+
+    const { autoConfig } = data
+    if (data.autoConfig[0]) {
+
+      data.autoConfig[0].mainModuleTitle = autoConfig[0].mainModuleTitle ? autoConfig[0].mainModuleTitle : defaultAutoConfig1.mainModuleTitle
+      data.autoConfig[0].subModuleBos = autoConfig[0].subModuleBos && autoConfig[0].subModuleBos.length > 0 ? autoConfig[0].subModuleBos : defaultAutoConfig1.subModuleBos
+    } else {
+      data.autoConfig[0] = defaultAutoConfig1
+    }
+
+    if (data.autoConfig[1]) {
+      data.autoConfig[1].mainModuleTitle = autoConfig[1].mainModuleTitle ? autoConfig[1].mainModuleTitle : defaultAutoConfig2.mainModuleTitle
+      data.autoConfig[1].subModuleBos = autoConfig[1].subModuleBos && autoConfig[1].subModuleBos.length > 0 ? autoConfig[1].subModuleBos : defaultAutoConfig2.subModuleBos
+    } else {
+      data.autoConfig[1] = defaultAutoConfig2
+    }
+
     //红白头开关
     // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
     //   data.isRedTopbar = true
@@ -91,6 +129,7 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
+    console.log(data)
     return data
   }
 

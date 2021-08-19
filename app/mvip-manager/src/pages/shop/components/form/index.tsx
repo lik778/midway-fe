@@ -23,7 +23,7 @@ const ShopForm: FC<Props> = (props) => {
   const { ticketId, shopInfoData, actionType, onCancal, handleChangeData } = props
   const [nowDomainType, setNowDomainType] = useState<DomainStatus>()
   const [errMsg, setErrMsg] = useState<string>('')
-  const [updataLoading, setUpdataLoading] = useState<boolean>(false)
+  const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(shopInfoForm));
   const shopTypeOption: OptionItem[] = [{
     key: '售卖产品（举例：机床、车、房、车床、化工原料等）',
@@ -105,7 +105,7 @@ const ShopForm: FC<Props> = (props) => {
         <Row className={styles['footer-btn-container']}>
           <Col span={3}></Col>
           <Col span={21} className={styles['footer-btn-line']}><Button className={styles['btn']}
-            onClick={onCancal}>取消</Button><Button loading={updataLoading} className={styles['btn']}
+            onClick={onCancal}>取消</Button><Button loading={upDataLoading} className={styles['btn']}
               type="primary" htmlType="submit">保存</Button></Col>
         </Row>
       }

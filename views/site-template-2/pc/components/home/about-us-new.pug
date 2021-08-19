@@ -1,13 +1,15 @@
-.about-us-bgc
-  .about-us-content
+mixin about-Us-New(type,mediaImg)
+  .about-us-bgc
+    //- .about-us-content
     .content-right
       .content-right-title
         .right-title-left
           img(src=company.logo || defaultLogo)
+          
           p.left-title #{ companyName }
         .right-title-right
-          - var tag = ['实力商家','诚信认证','品质保障']
-          each item in tag
+          //- - var tag = ['最佳品质','实力商家','品质保证']
+          each item in type
             p.tag= item
       .content-right-body(data-d=company.about)
         - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
@@ -33,14 +35,5 @@
           .video-cover
             img.picture(src=videoCover)
       else
-        - Src = renderData.src
-        - var conpany = Src || '//file.baixing.net/202108/cf64fc96ae23bee3384871111292cdc1.png'
-        - var url = /\.(png|jpg|gif|jpeg|webp)$/
-        img.audio(src="//file.baixing.net/202108/cf64fc96ae23bee3384871111292cdc1.png")
-        //- if url.test(conpany)
-        //- else
-        //-   audio(src=conpany) 
-        //-     <source src="#" type="#">
-        //-   span.ico-video
-        //-     img(src="//file.baixing.net/202108/f911950bc7679d0a83235a02bbd9a36e.png")
+        img.audio(src=mediaImg||"//file.baixing.net/202108/cf64fc96ae23bee3384871111292cdc1.png")
         

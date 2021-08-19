@@ -3,15 +3,17 @@
 .only-oneline
   overflow hidden
   text-overflow ellipsis
+  display -webkit-box
+  -webkit-box-orient vertica
+   -webkit-line-clamp 1
   white-space nowrap
+
   
 .only-twoline
-  overflow hidden
-  text-overflow ellipsis
   display -webkit-box
+  overflow hidden
   -webkit-box-orient vertical
-  -webkit-line-clamp 2
-  word-break break-all
+  -webkit-line-clamp 1
   
 .only-threeline
   overflow hidden

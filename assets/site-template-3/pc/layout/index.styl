@@ -51,7 +51,9 @@ h1,h2,h3,h4,h5,h6
 .only-oneline
 	overflow hidden
 	text-overflow ellipsis
-	white-space nowrap
+	// white-space nowrap
+	display -webkit-box
+	-webkit-line-clamp 1
 .only-twoline
 	overflow hidden
 	text-overflow ellipsis

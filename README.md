@@ -72,6 +72,10 @@ mvip-manager                        //后台代码
 ### 确认domain值
  - 不同类型的店铺，后端所在的环境，决定了localhost开发时我们使用哪个domain
 详见 src/services/site.service.ts文件36行
+1. 域名为   &&&.shop-test.baixing.cn的 ，就 用&&&.shop-test.baixing.cn。
+2. 域名为   shop-test.baixing.cn/&&&的 ，就 用shop-test.baixing.cn。
+3. shop-test这个三级域名根据local.ts的host来决定。
+
 
 ### 确认是否已模拟cookies
  - 在localhost本地开发环境，开发mvip-manager管理后台时, 前端需要在浏览器Application中复制调试账户cookies里的3个字段

@@ -3,7 +3,7 @@ mixin side-cateList(type,list)
   if list && list.length > 0
     .sidebar-item
       .sidebar-item__title
-        span #{ type }
+        span #{ type || '文章推荐' }
       .sidebar-item__content
         .articles
           each item in list
