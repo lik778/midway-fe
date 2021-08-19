@@ -5,6 +5,7 @@ import { ReportService } from '../services/report.service';
 import { UserAgent } from '../decorator/user-agent.decorator';
 import config from '../config';
 import { PageException } from '../exceptions/page.exception';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY } from '../constant/cookie';
 
 const isLocal = process.env.NODE_ENV === 'local'
 
@@ -15,12 +16,17 @@ export class ReportController {
   // 留咨页面分享（专供微信公众号-留咨中心入口使用）
   @Get('/message-share')
   messageReport(@Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
-    res.render('report/share', {
-      title: '留咨列表',
-      url: isLocal
-        ? '//localhost/management/report/message?mobile=1&from=wechat'
-        : `/management/report/message?mobile=${device!=='pc'?1:0}&from=wechat`
-    })
+    const cookies = req.cookies
+    if (cookies && cookies[COOKIE_HASH_KEY] && cookies[COOKIE_USER_KEY] && cookies[COOKIE_TOKEN_KEY]) {
+      res.render('report/share', {
+        title: '留咨列表',
+        url: isLocal
+          ? '//localhost/management/report/message?mobile=1&from=wechat'
+          : `/management/report/message?mobile=${device!=='pc'?1:0}&from=wechat`
+      })
+    } else {
+      res.redirect('https://www.baixing.com/oz/login?redirect=https%3A%2F%2Fshop.baixing.com%2Freport%2Fmessage-share%3Ffrom%3Dmsvip')
+    }
   }
 
   // 报表分享 
