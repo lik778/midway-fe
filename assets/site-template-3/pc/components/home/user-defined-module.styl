@@ -14,7 +14,7 @@
     .user-defined-item-content
       width: 595px
       height: 222px
-      padding: 50px 107px 0 75px
+      padding: 50px 93px 50px 61px
       position relative
       background-color: #F9F9F9 
       .triangle 
@@ -32,18 +32,23 @@
           border-left: 0;
           border-right: 15px solid #F9F9F9;
       .title
-        margin-bottom 16px
+        margin-bottom 24px
         font-size: 18px;
         font-weight: bold;
         color: #333333;
       .line
         width: 30px
         height: 4px
-        margin-bottom 30px
+        margin-bottom 24px
         background: #D8D8D8;
       .desc
+        overflow hidden
+        text-overflow ellipsis
+        display -webkit-box
+        -webkit-box-orient vertical
+        -webkit-line-clamp 2
+        word-break break-all
         font-size: 14px;
         color: #666666;
-        word-break: break-word;
         letter-spacing 1px
         line-height 26px

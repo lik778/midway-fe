@@ -15,7 +15,7 @@
     .user-defined-item-content
       width: 595px
       height: 222px
-      padding: 50px 107px 0 75px
+      padding: 48px 77px 48px 77px
       position relative
       background-color: #fff
       .triangle 
@@ -39,11 +39,16 @@
       .line
         width: 30px
         height: 4px
-        margin-bottom 30px
+        margin-bottom 24px
         background: #D8D8D8;
       .desc
+        overflow hidden
+        text-overflow ellipsis
+        display -webkit-box
+        -webkit-box-orient vertical
+        -webkit-line-clamp 2
+        word-break break-all
         font-size: 14px;
         color: #666666;
-        word-break: break-word;
         line-height 26px
         letter-spacing .5px
