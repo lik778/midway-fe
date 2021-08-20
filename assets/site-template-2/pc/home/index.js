@@ -75,7 +75,7 @@ $(document).on('ready', function () {
 	});
 
 	/* 关于我们视频初始化 */
-	const $aboutUsVideo = document.querySelector('.about-us-content video')
+	const $aboutUsVideo = document.querySelector('.about-us-bgc video')
 	const hasAboutVideo = $aboutUsVideo
 	const $aboutUsVideoCovers = hasAboutVideo
 		? $aboutUsVideo.parentElement.parentElement.querySelector('.video-cover')
