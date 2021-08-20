@@ -21,12 +21,14 @@ const Modal: FC<Props> = (props) => {
 
   return <>
     {
-      init && <div className={styles['img-upload-modal']} style={{
+      init && <div className={styles['img-upload-modal-mask']} style={{
         display: albumVisible ? 'block' : 'none'
       }}>
-        <AlbumModalHeader></AlbumModalHeader>
-        <AlbumModalContent></AlbumModalContent>
-        <AlbumModalFooter></AlbumModalFooter>
+        <div className={styles['img-upload-modal']}>
+          <AlbumModalHeader></AlbumModalHeader>
+          <AlbumModalContent></AlbumModalContent>
+          <AlbumModalFooter></AlbumModalFooter>
+        </div>
       </div>
     }
   </>
