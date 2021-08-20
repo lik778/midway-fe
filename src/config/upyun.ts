@@ -23,16 +23,17 @@ export const upyunImgConfig = {
 }
 
 export const upyunVideoConfig = {
+  host: 'http://bxmedia.baixing.net',
+  form_api_secret: "9sMCIBryAo8INghVqfOQXtsvTNI=",
+  operateHost: 'http://p0.api.upyun.com',
   policy: {
     "bucket": "bxmedia",
     "save-key": "/{filemd5}{.suffix}",
-    "allow-file-type": 'mp4,mov'
+    "type": "nbhd",
+    /* @see https://help.upyun.com/knowledge-base/av/#e5b8b8e794a8e58f82e695b0 */
+    "advote": "/vcodec/libx264/s/1080p(16:9)/r/25/sm/false/ar/22050",
+    /* TODO for test only */
+    "notify-url": "https://enb6hk1stgczkkc.m.pipedream.net",
+    "ext-param": "source=msshop"
   },
-  form_api_secret: "9sMCIBryAo8INghVqfOQXtsvTNI=",
-  operator: "node",
-  password: "ZhanglinZuiShuai!",
-  operateHost: 'http://p0.api.upyun.com',
-  operateMethod: '/pretreatment/',
-  notify_url: "TODO",
-  host: 'http://bxmedia.baixing.net'
 }

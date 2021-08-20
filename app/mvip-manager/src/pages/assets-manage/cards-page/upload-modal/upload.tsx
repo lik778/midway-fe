@@ -35,8 +35,8 @@ type Props = {
   type: 'image' | 'video'
   // 最大上传数量
   maxCount?: number
-  // 上传后钩子函数
-  afterUploadHook?: (item: UploadItem, update: Function) => Promise<UploadItem>
+  // 上传后钩子（在上传到又拍云后用来和后端交互）
+  afterUploadHook?: (item: UploadItem, update?: Function) => Promise<UploadItem>
 }
 export function useUpload(props: Props) {
   const { type, maxCount = 15, afterUploadHook } = props

@@ -11,7 +11,9 @@ import CardsPageContext from '../../context/cards-page'
 
 import styles from './index.less'
 
+// 设置最大上传数量
 const MAX_UPLOAD_COUNT = 15
+// 用来标识上传到又拍云但还没“通知”后端的资源的默认列表ID
 const UPLOAD_RES_MAP_DEFAULT_ID = -1
 const getRandomNumber = (): string => String(Math.random()).slice(-6) + +new Date()
 
@@ -44,7 +46,7 @@ export default function useUploadModal(props: Props) {
   const { directoryType, directoryLabel, subDirectoryCountLabel, subDirectoryLabel } = useContext(CardsPageContext)
 
   const isUploadImage = useMemo(() => directoryType === 'image', [directoryType])
-  const isUploadVideo = useMemo(() => directoryType === 'video', [directoryType])
+  const isUploadVideo = useMemo(() => !isUploadImage, [isUploadImage])
 
   const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector()
   useEffect(() => {
@@ -72,24 +74,9 @@ export default function useUploadModal(props: Props) {
     }, 1000)
   }
 
-  const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
-  const [$uploader, lists, setLists, update, remove] = useUpload({
-    type: directoryType,
-    maxCount: 15,
-    afterUploadHook,
-  })
-
-  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
-
-  const open = (defaultVal?: number) => {
-    setAlbumByID(defaultVal)
-    openModal()
-  }
-
-  /***************************************************** API Calls */
-
-  async function afterUploadHook(item: UploadItem, update: Function): Promise<UploadItem> {
-    return await new Promise(async resolve => {
+  // 上传后钩子（在上传到又拍云后用来和后端交互）
+  const afterUploadHook = useCallback(async (item: UploadItem) => {
+    return await new Promise<UploadItem>(async resolve => {
       record([...uploadedLists.current, {
         uid: item.uid,
         imageID: UPLOAD_RES_MAP_DEFAULT_ID,
@@ -99,26 +86,30 @@ export default function useUploadModal(props: Props) {
         error: ''
       }])
       try {
-        const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
-        const res: any = await Promise.race([
-          createImagesetImage(query),
-          new Promise((resove, reject) => {
-            setTimeout(() => {
-              reject(new Error('上传超时，点击删除'))
-            }, 15 * 1000)
-          })
-        ])
-        if (res.success && (typeof res.data.id === 'number')) {
-          const target = uploadedLists.current.find(x => x.uid === item.uid)
-          if (target) {
-            target.imageID = res.data.id
-            target.inChibi = false
-            target.chibiFailed = res.data.checkStatus !== 'APPROVE'
-            record(uploadedLists.current)
+        if (isUploadImage) {
+          const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
+          const res: any = await Promise.race([
+            createImagesetImage(query),
+            new Promise((_, reject) => {
+              setTimeout(() => {
+                reject(new Error('上传超时，点击删除'))
+              }, 15 * 1000)
+            })
+          ])
+          if (res.success && (typeof res.data.id === 'number')) {
+            const target = uploadedLists.current.find(x => x.uid === item.uid)
+            if (target) {
+              target.imageID = res.data.id
+              target.inChibi = false
+              target.chibiFailed = res.data.checkStatus !== 'APPROVE'
+              record(uploadedLists.current)
+            }
+            resolve(item)
+          } else {
+            throw new Error(res.message || '上传失败')
           }
-          resolve(item)
         } else {
-          throw new Error(res.message || '上传失败')
+          resolve(item)
         }
       } catch (error: any) {
         const target = uploadedLists.current.find(x => x.uid === item.uid)
@@ -130,7 +121,23 @@ export default function useUploadModal(props: Props) {
         }
       }
     })
+  }, [isUploadImage, record])
+
+  const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
+  const [$uploader, lists, setLists, update, remove] = useUpload({
+    type: directoryType,
+    maxCount: MAX_UPLOAD_COUNT,
+    afterUploadHook,
+  })
+
+  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
+
+  const open = (defaultVal?: number) => {
+    setAlbumByID(defaultVal)
+    openModal()
   }
+
+  /***************************************************** API Calls */
 
   const handleRemove = useCallback((item: UploadItem) => {
     if (!selectedAlbum) return
