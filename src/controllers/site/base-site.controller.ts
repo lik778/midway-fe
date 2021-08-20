@@ -102,22 +102,8 @@ export class BaseSiteController {
 
     if (!data.autoConfig) {
       data.autoConfig = []
-    }
-
-    const { autoConfig } = data
-    if (data.autoConfig[0]) {
-
-      data.autoConfig[0].mainModuleTitle = autoConfig[0].mainModuleTitle ? autoConfig[0].mainModuleTitle : defaultAutoConfig1.mainModuleTitle
-      data.autoConfig[0].subModuleBos = autoConfig[0].subModuleBos && autoConfig[0].subModuleBos.length > 0 ? autoConfig[0].subModuleBos : defaultAutoConfig1.subModuleBos
     } else {
-      data.autoConfig[0] = defaultAutoConfig1
-    }
-
-    if (data.autoConfig[1]) {
-      data.autoConfig[1].mainModuleTitle = autoConfig[1].mainModuleTitle ? autoConfig[1].mainModuleTitle : defaultAutoConfig2.mainModuleTitle
-      data.autoConfig[1].subModuleBos = autoConfig[1].subModuleBos && autoConfig[1].subModuleBos.length > 0 ? autoConfig[1].subModuleBos : defaultAutoConfig2.subModuleBos
-    } else {
-      data.autoConfig[1] = defaultAutoConfig2
+      data.autoConfig = [data.autoConfig[1] || defaultAutoConfig1, data.autoConfig[2] || defaultAutoConfig2]
     }
 
     //红白头开关
@@ -129,7 +115,7 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-    console.log(data)
+
     return data
   }
 
