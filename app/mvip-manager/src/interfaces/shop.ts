@@ -2,6 +2,7 @@ import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
 import { ShopMetas } from '@/interfaces/user'
+import { AuditStatus } from '@/enums';
 
 export interface RouteParams {
   id: string;
@@ -28,9 +29,10 @@ export interface ProductListItem {
   memo: string
   name: string
   price: string
-  status: number
+  status: AuditStatus
   tags: string[]
   urlSuffix: string
+  createdTime: number
 }
 
 export interface CreateArticleApiParams {
@@ -53,9 +55,10 @@ export interface ArticleListItem {
   memo: string
   name: string
   source: number
-  status: number
+  status: AuditStatus
   tags: string[]
   urlSuffix: string
+  createdTime: number
 }
 
 export interface HandleApiParams {
@@ -203,8 +206,6 @@ export interface CustomerSetChildListItem {
   title: string,
   content: string,
   urlImg: string,
-  /** 0 :黑色   1 ：白色 */
-  fontColor: 0 | 1,
   /** 自用字段 因为是数字 一定要保证唯一 */
   key: string
 }
@@ -470,6 +471,8 @@ export interface ModuleSelectProductListItem {
   headImg: string,
   urlSuffix: string
   createdTime: number,
+  memo: string
+  status: AuditStatus
   [key: string]: any
 }
 
@@ -479,6 +482,8 @@ export interface ModuleSelectArticleListItem {
   urlSuffix: string
   createdTime: number,
   modifiedTime: number
+  memo: string
+  status: AuditStatus
   [key: string]: any
 }
 

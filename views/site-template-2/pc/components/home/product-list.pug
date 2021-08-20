@@ -1,7 +1,7 @@
 mixin product-list(type,productList)
 	.product-list.clearfix
 		if productList && productList.length >0
-			each item in type == 'hot' ? productList.slice(0,8) : productList.slice(0,6)
+			each item in type == 'hot' ? productList.slice(0,12) : productList.slice(0,6)
 				if type == 'hot'
 					a.item-p(href=item.urlSuffix target="_blank")
 						img(src=item.headImg || defaultImg)

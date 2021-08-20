@@ -70,13 +70,13 @@ const Product = (props: Props, parentRef: Ref<any>) => {
       productIdList: values.productList.map((item: SelectProductListItem) => item.id),
       position, pageModule
     })
-    if (res.success) {
-      successMessage('保存成功')
-    } else {
-      errorMessage(`上传失败: ${res.message}`)
-      return null
-    }
     setUpDataLoading(false)
+    if (res.success) {
+      return
+    } else {
+      errorMessage(res.message)
+      return Promise.reject()
+    }
   }
 
   useImperativeHandle(parentRef, () => ({

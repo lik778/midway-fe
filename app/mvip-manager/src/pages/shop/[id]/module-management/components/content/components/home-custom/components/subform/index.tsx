@@ -15,7 +15,7 @@ interface Props {
   index: number,
   item: CustomerSetChildListItem,
   key: string,
-  moduleID: number
+  moduleID: string
   total: number
   onDel: (item: CustomerSetChildListItem) => void
 }

@@ -40,6 +40,7 @@ const HomeSwiper: FC<Props> = (props) => {
       return
     }
     await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
+    successMessage('保存成功')
   }
 
   return <Spin spinning={loadingShopModel}>

@@ -10,10 +10,10 @@ interface Props {
 }
 
 // 这个组件可以抹去，但是防止b2b与b2c之间真的有区别，所以还是保留着
-const WapSwiper = (props: Props, parentRef: Ref<any>) => {
+const PcSwiper = (props: Props, parentRef: Ref<any>) => {
   const { curShopInfo, position, pageModule } = props
 
-  return <div className={styles['wap-container']}>
+  return <div className={styles['pc-container']}>
     <CarouselImg
       ref={parentRef}
       tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸1920*360'}
@@ -26,4 +26,4 @@ const WapSwiper = (props: Props, parentRef: Ref<any>) => {
   </div>
 }
 
-export default forwardRef(WapSwiper)
+export default forwardRef(PcSwiper)

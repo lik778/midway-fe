@@ -7,7 +7,7 @@ import { ModuleABoutABoutInfo, ModulePageType, ModuleComponentId, ModuleABoutABo
 import { getModuleInfoApi, setModuleABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
-import { successMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {
   position: ModulePageType,
@@ -47,8 +47,12 @@ const AboutUs: FC<Props> = (props) => {
       ...values,
       position, pageModule
     })
+    if (res.success) {
+      successMessage(res.message)
+    } else {
+      errorMessage(res.message)
+    }
     setUpDataLoading(false)
-    successMessage(res.message)
   }
 
   return <div className={styles["about-us-container"]}>

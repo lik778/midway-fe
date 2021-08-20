@@ -6,22 +6,24 @@ mixin about-us-new(tags,mediaImg)
           img(src=mediaImg||'//file.baixing.net/202108/ec6a5de033cd956ea192ddb15d2515a0.png', alt="")
         //-  视频 
         //- video.audio
-        //-   <source src="#" type="#">
+        //-   <source src="#" type="#"> 
         //- span.ico-video
         //-   img(src="//file.baixing.net/202108/f911950bc7679d0a83235a02bbd9a36e.png")
       .content-right
         .content-right-title
           .right-title-left
             img(src=company.logo || defaultLogo)
-            p.left-title 上海小猫咪爱宠医院
+            p.left-title #{ companyName }
           .right-title-right
             
             each item in tags
               p.tag= item
-        .content-right-body
+        .content-right-body(data-d=company.about)
+          - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
           .body-content
-            | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-          a.view-detail(href=aboutLink) 查看详情
+            | !{ aboutText.length === 220?aboutText+'...':aboutText }
+            if aboutText.length === 220
+              a.view-detail(href=aboutLink) 查看详情
         .content-right-bottom
           .bottom-left
             img(src="//file.baixing.net/202108/e9cd4572f5363e55005f0e8616be31c3.png")

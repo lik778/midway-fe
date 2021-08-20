@@ -1,5 +1,6 @@
 import { ListRes } from '@/interfaces/base';
 import { ServiceResponse } from '@/interfaces/api';
+import { AuditStatus } from '@/enums';
 
 import {
   ArticleListItem, GetContentApiParams, ProductListItem,
@@ -33,12 +34,18 @@ export interface SelectProductListItem {
   price: string,
   headImg: string,
   urlSuffix: string
+  createdTime: number,
+  status: AuditStatus,
+  memo: string
   [key: string]: any
 }
 
 export interface SelectArticleListItem {
   id: number,
   name: string,
+  createdTime: number,
   urlSuffix: string
+  status: AuditStatus,
+  memo: string
   [key: string]: any
 }

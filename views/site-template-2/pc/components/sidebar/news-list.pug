@@ -6,5 +6,5 @@ if articleRecommend && articleRecommend.length > 0
       span #{name || '新闻资讯'}
     .sidebar-item__content
       .side-news-list
-        each item in articleRecommend.slice(0, 8)
+        each item in articleRecommend.slice(0, 9)
           a.news(href=item.urlSuffix) #{ item.name }
