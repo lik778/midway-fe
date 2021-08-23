@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState, useContext, FC } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
 import { connect } from 'react-redux';
@@ -39,7 +39,7 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
   const { id: shopId } = useParams<{ id: string }>()
-  const { uploadType, editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop } = props
+  const { uploadType, editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
@@ -76,6 +76,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // 包装一下setFileList函数，需要触发onChange时调用 做一下图片处理
   const decorateSetFileList = useCallback(async (fileList: UploadFile[], oldFileList: UploadFile[]) => {
     const newFileList = await createFileList(fileList)
+    // 每次更新文件列表，只要变化就触发文件更新函数
+    if (onFileChange) {
+      onFileChange([...newFileList])
+    }
     if (!onChange) return
     //  这里用嵌套if是为了理解简单
     if (newFileList.length === 0) {
@@ -315,4 +319,3 @@ export default connect<any, any, ImgUploadProps>((state: any) => {
     ...shopMapDispatchToProps(dispatch),
   }
 })(ImgUpload);
-
