@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback, useState, useMemo, useContext } 
 import { Button, Modal } from "antd"
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
 
+import { upImageToYoupai } from '@/api/common'
 import { reAuditImagesetImage, createImagesetImage, delImagesetImage } from '@/api/shop'
 import { successMessage, errorMessage } from "@/components/message"
 import useAlbumSelector from '../album-selector'
@@ -10,6 +11,31 @@ import { useUpload, UploadItem } from './upload'
 import CardsPageContext from '../../context/cards-page'
 
 import styles from './index.less'
+
+/**
+ * base64 转 blob
+ * @see https://zhuanlan.zhihu.com/p/57700185
+ */
+async function base64ToBlob(b64data = '', contentType = '', sliceSize = 512): Promise<Blob> {
+  return new Promise(resolve => {
+    // 使用 atob() 方法将数据解码
+    let byteCharacters = atob(b64data)
+    let byteArrays = []
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      let slice = byteCharacters.slice(offset, offset + sliceSize);
+      let byteNumbers = []
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers.push(slice.charCodeAt(i))
+      }
+      // 8 位无符号整数值的类型化数组。内容将初始化为 0。
+      // 如果无法分配请求数目的字节，则将引发异常。
+      byteArrays.push(new Uint8Array(byteNumbers))
+    }
+    resolve(new Blob(byteArrays, {
+      type: contentType
+    }))
+  })
+}
 
 // 设置最大上传数量
 const MAX_UPLOAD_COUNT = 15
@@ -37,6 +63,7 @@ type UploadResImage = UploadResBase & {
 }
 // 视频资源
 type UploadResVideo = UploadResBase & {
+  cover: string
   inEncode: boolean
   encodeDone: boolean
 }
@@ -127,16 +154,25 @@ export default function useUploadModal(props: Props) {
           record([...uploadedLists.current, {
             uid: item.uid,
             id: UPLOAD_RES_MAP_DEFAULT_ID,
+            cover: '',
             inEncode: true,
             encodeDone: false,
             status: 'done',
             error: ''
           }])
-          setTimeout(() => {
+          const fileMD5 = item.response.url.split('/')[1].split('.')[0]
+          const coverName = `${fileMD5}-${String(Math.random()).slice(-6)}.jpg`
+          const formData = new FormData()
+          formData.append('policy', window.__upyunImgConfig?.uploadParams?.policy)
+          formData.append('signature', window.__upyunImgConfig?.uploadParams?.signature)
+          formData.append('file', await base64ToBlob(item.preview.split(',')[1], 'image/jpg'), coverName)
+          const res = await upImageToYoupai(formData)
+          if (res) {
             const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
             target.inEncode = false
+            target.cover = res.data.url.split('/')[1]
             record(uploadedLists.current)
-          }, 1000)
+          }
           resolve(item)
         }
       }

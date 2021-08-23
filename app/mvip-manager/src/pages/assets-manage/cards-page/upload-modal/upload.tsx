@@ -5,9 +5,11 @@ import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 import styles from './index.less'
 
 declare global {
+  // 上传后门设置
   interface Window {
     _quick_upload: boolean
     _quick_upload_file: RcFile
+    _min_duration: number
   }
 }
 
@@ -18,6 +20,28 @@ const getBase64 = function (file: Blob): Promise<any> {
     reader.readAsDataURL(file)
     reader.onload = () => resolve(reader.result)
     reader.onerror = error => reject(error)
+  }).catch(error => {
+    console.error('[ERR] getBase64 error', error, file)
+  })
+}
+
+// 获取视频的第一帧
+const getFirstVideoFrame = function (file: Blob): Promise<any> {
+  return new Promise(resolve => {
+    const $video = document.createElement('video')
+    const $canvas = document.createElement('canvas')
+    $video.preload = 'auto'
+    $video.src = URL.createObjectURL(file)
+    $video.onloadeddata = () => {
+      $video.currentTime = 0
+      $canvas.width = $video.videoWidth
+      $canvas.height = $video.videoHeight
+      $canvas.getContext('2d')!.drawImage($video, 0, 0, $canvas.width, $canvas.height)
+      const preview = $canvas.toDataURL('image/jpg')
+      resolve(preview)
+    }
+  }).catch(error => {
+    console.error('[ERR] getFirstVideoFrame error', error, file)
   })
 }
 
@@ -103,18 +127,33 @@ export function useUpload(props: Props) {
     const { uid, status } = e.file
     // 读取到图片的预览地址
     if (status === 'done') {
+      let defer = false
       if (e.file && !(e.file.preview)) {
-        getBase64(e.file.originFileObj)
-          .then(preview => {
-            updateRef.current(e.file, { preview })
-          })
-          .catch(error => {
-            console.error(error)
-            updateRef.current(e.file, { status: 'error', error: '解析失败' })
-          })
+        defer = true
+        if (e.file.type.match('video')) {
+          getFirstVideoFrame(e.file.originFileObj)
+            .then(preview => {
+              updateRef.current(e.file, { preview })
+              afterUploadHook && afterUploadHook(e.file, updateRef.current)
+            })
+            .catch(error => {
+              console.error(error)
+              updateRef.current(e.file, { status: 'error', error: '解析失败' })
+            })
+        } else {
+          getBase64(e.file.originFileObj)
+            .then(preview => {
+              updateRef.current(e.file, { preview })
+              afterUploadHook && afterUploadHook(e.file, updateRef.current)
+            })
+            .catch(error => {
+              console.error(error)
+              updateRef.current(e.file, { status: 'error', error: '解析失败' })
+            })
+        }
       }
-      if (afterUploadHook) {
-        afterUploadHook(e.file, updateRef.current)
+      if (!defer) {
+        afterUploadHook && afterUploadHook(e.file, updateRef.current)
       }
     }
     if (status) {
@@ -162,7 +201,8 @@ export function useUpload(props: Props) {
           $video.src = src
           $video.onloadedmetadata = () => {
             const duration = $video.duration
-            if (duration < 3) {
+            const minDuration = window._min_duration || 3
+            if (duration < minDuration) {
               notification.open({
                 key: 'imageset-upload-error-filesize',
                 message: '视频时长出错',
