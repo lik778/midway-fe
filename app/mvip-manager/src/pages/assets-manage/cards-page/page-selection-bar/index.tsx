@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react"
 import { Checkbox } from "antd"
 
+import { errorMessage } from "@/components/message"
+
 import { CardItem, TabScopeItem } from "@/interfaces/shop"
 
 import styles from './index.less'
@@ -61,7 +63,11 @@ export default function SelectionBar(props: SelectionBarProps) {
     e.stopPropagation()
     const isCheck = e.target.checked
     if (isCheck) {
-      select(ids)
+      if (ids.length === 0) {
+        errorMessage('当前页面没有可以选中的项目')
+      } else {
+        select(ids)
+      }
     } else {
       unselect(ids)
     }
