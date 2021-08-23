@@ -31,6 +31,7 @@ export type PageNavProps = {
   goTabScope: (scope: TabScopeItem) => void
   createAlbum: (newAlbum?: any) => void
   openUpload: (defaultVal: number) => void
+  refresh: (resetPagi: boolean) => void
 }
 
 export type DeleteBatchProps = {
@@ -234,8 +235,8 @@ const CardsPage = (props: CardsPageProps) => {
 
   // 页头
   const $pageNav = useMemo(() => (
-    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload })
-  ), [tabScope, curScope, goTabScope, createAlbum, openUpload])
+    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload, refresh })
+  ), [tabScope, curScope, goTabScope, createAlbum, openUpload, refresh])
 
   // 自定义卡片
   const renderCardItem = cardItem && cardItem({

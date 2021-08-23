@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
@@ -8,10 +8,12 @@ import ErrorCardWrapper from './error-card/index'
 import CardsPage from '../cards-page/index'
 
 import { MediaCateSource, CardItem, MediaAssetsItem } from "@/interfaces/shop"
-import { PageNavProps, DeleteBatchProps } from '../cards-page/index'
+import { DeleteBatchProps } from '../cards-page/index'
 
 // 资源管理 - 申诉列表
 const AssetsMangeAuditListPage = () => {
+
+  const [sourceType, setSourceType] = useState<'IMAGE' | 'VIDEO'>('IMAGE')
 
   // 批量删除
   const deleteBatch = useCallback((props: DeleteBatchProps) => {
@@ -69,21 +71,18 @@ const AssetsMangeAuditListPage = () => {
   ), [])
 
   // 页头
-  const pageNav = useCallback((props: PageNavProps) => {
-    const {
-      tabScope, curScope,
-      goTabScope, createAlbum, openUpload
-    } = props
+  const pageNav = useCallback((props: any & {
+    refresh: (resetPagi: boolean) => void
+  }) => {
+    const { refresh } = props
     return (
       <NavBar
-        tabScope={tabScope}
-        curScope={curScope}
-        goTabScope={goTabScope}
-        createAlbum={createAlbum}
-        openUpload={openUpload}
+        refresh={refresh}
+        sourceType={sourceType}
+        setSourceType={setSourceType}
       />
     )
-  }, [])
+  }, [sourceType])
 
   // 空列表提示
   const emptyTip = useCallback(() => (
@@ -94,8 +93,8 @@ const AssetsMangeAuditListPage = () => {
   ), [])
 
   const fetchListFn = useMemo(() => {
-    return fetchErrorImageLists('IMAGE')
-  }, [])
+    return fetchErrorImageLists(sourceType)
+  }, [sourceType])
 
   return (
     <CardsPage
