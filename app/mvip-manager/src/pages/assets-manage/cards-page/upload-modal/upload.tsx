@@ -179,7 +179,7 @@ export function useUpload(props: Props) {
         const isValidType = exts.includes(file.type)
         if (!isValidType) {
           notification.open({
-            key: 'imageset-upload-error-filetype',
+            key: 'media-upload-error-filetype',
             message: `${uploadItemLabel}格式错误`,
             description: `请上传 ${exts.map(x => x.split('/')[1]).join('、')} 格式的${uploadItemLabel}`,
           })
@@ -188,7 +188,7 @@ export function useUpload(props: Props) {
         const validSize = file.size / 1024 / 1024 < size
         if (!validSize) {
           notification.open({
-            key: 'imageset-upload-error-filesize',
+            key: 'media-upload-error-filesize',
             message: `${uploadItemLabel}体积过大`,
             description: `请上传小于${size}M的${uploadItemLabel}`,
           })
@@ -206,7 +206,7 @@ export function useUpload(props: Props) {
             const minDuration = window._min_duration || 3
             if (duration < minDuration) {
               notification.open({
-                key: 'imageset-upload-error-filesize',
+                key: 'media-upload-error-filesize',
                 message: '视频时长出错',
                 description: `请上传时长大于3秒的视频`,
               })
@@ -214,7 +214,7 @@ export function useUpload(props: Props) {
             }
             if (duration > 60) {
               notification.open({
-                key: 'imageset-upload-error-filesize',
+                key: 'media-upload-error-filesize',
                 message: '视频时长出错',
                 description: `请上传时长小于60秒的视频`,
               })

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react'
 import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { createImagesetAlbum, updateImagesetAlbum } from "@/api/shop"
+import { createMediaAlbum, updateMediaAlbum } from "@/api/shop"
 
 import CardsPageContext from '../../context/cards-page'
 
@@ -63,10 +63,10 @@ export default function useCreateAlbumModal(props: Props) {
         let params: any = {}
         if (isEditing) {
           params.id = defaultVals.id
-          post = updateImagesetAlbum
+          post = updateMediaAlbum
           successMsg = "编辑成功"
         } else {
-          post = createImagesetAlbum
+          post = createMediaAlbum
           successMsg = "创建成功"
         }
         post({ ...formvals, ...params })

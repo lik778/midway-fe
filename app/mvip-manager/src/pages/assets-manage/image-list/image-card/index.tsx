@@ -3,7 +3,7 @@ import { Checkbox, Modal } from "antd"
 import { PartitionOutlined, DeleteOutlined, LoadingOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { moveImagesetImage, delImagesetImage, setImagesetAlbumCover } from '@/api/shop'
+import { moveMediaImage, delMediaImage, setMediaAlbumCover } from '@/api/shop'
 
 import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
@@ -34,7 +34,7 @@ export default function ImageCardWrapper(props: any) {
     setSetCoverItem(image)
     const { id } = image
     const { item } = curScope
-    setImagesetAlbumCover({ id, mediaCateId: item.id })
+    setMediaAlbumCover({ id, mediaCateId: item.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('设置成功')
@@ -58,7 +58,7 @@ export default function ImageCardWrapper(props: any) {
       exclude: curScope.item ? [curScope?.item?.id] : []
     })
     const resetRefreshPagi = lists.length === 1
-    moveImagesetImage({ id, mediaCateId: album.id })
+    moveMediaImage({ id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功')
@@ -84,7 +84,7 @@ export default function ImageCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetImage({ ids: [id], mediaCateId: curScope!.item!.id })
+          delMediaImage({ ids: [id], mediaCateId: curScope!.item!.id })
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')

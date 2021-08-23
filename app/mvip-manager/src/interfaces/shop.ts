@@ -266,70 +266,70 @@ export interface BannerListItem {
   weight: number
 }
 
-export interface GetImagesetAlbumParam {
+export interface GetMediaAlbumParam {
   page: number;
   size: number;
 }
 
-export interface CreateImagesetAlbumParam {
+export interface CreateMediaAlbumParam {
   name: string;
 }
 
-export interface UpdateImagesetAlbumParam {
+export interface UpdateMediaAlbumParam {
   id: number;
   name?: string;
   cover?: number;
 }
 
-export interface GetImagesetImageParam {
+export interface GetMediaImageParam {
   mediaCateId?: number;// 获取图库内所有图片则不传，某个图册则传
   page: number;
   size: number;
 }
 
-export interface CreateImagesetImageParam {
+export interface CreateMediaImageParam {
   imgUrl: string;
   mediaCateId?: number; // 不传则上传到默认图库
 }
 
-export interface ReAuditImagesetImageParam {
+export interface ReAuditMediaImageParam {
   id: number
 }
 
-export type DelImagesetAlbumParam = number[]
+export type DelMediaAlbumParam = number[]
 
-export interface DelImagesetImageParam {
+export interface DelMediaImageParam {
   ids: number[];
   mediaCateId: number;
 }
 
-export interface UpdateImagesetImageParam {
+export interface UpdateMediaImageParam {
   id: number;
   mediaCateId: number;
 }
 
-export interface MoveImagesetImageParam {
+export interface MoveMediaImageParam {
   id: number;
   mediaCateId: number;
 }
 
-export interface GetImagesetAlbumRes {
+export interface GetMediaAlbumRes {
   mediaCateBos: {
     totalRecord: number;
     result: AlbumItem[]
   }
 }
 
-export interface GetImagesetImageRes {
+export interface GetMediaImageRes {
   mediaImgBos: ListRes<ImageItem[]>
 }
 
-export interface GetImagesetFailedImageParam {
+export interface GetMediaFailedImageParam {
   page: number;
   size: number;
 }
 
-export interface GetImagesetFailedImageRes {
+export interface GetMediaFailedImageRes {
   mediaImgBos: ListRes<ImageItem[]>
 }
 

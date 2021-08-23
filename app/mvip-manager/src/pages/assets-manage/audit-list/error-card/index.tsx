@@ -3,7 +3,7 @@ import { Checkbox, Modal } from "antd"
 import { DeleteOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { reAuditImagesetImage, delImagesetFailedImage } from '@/api/shop'
+import { reAuditMediaImage, delMediaFailedImage } from '@/api/shop'
 
 import { ImageItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
@@ -20,7 +20,7 @@ export default function ErrorCardWrapper(props: any) {
   const reAuditImage = async (e: any, image: ImageItem) => {
     setAuditLoadingItem(image)
     e.stopPropagation()
-    reAuditImagesetImage({ id: image.id })
+    reAuditMediaImage({ id: image.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('申诉成功')
@@ -48,7 +48,7 @@ export default function ErrorCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delImagesetFailedImage({ ids: [id] })
+          delMediaFailedImage({ ids: [id] })
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')

@@ -7,7 +7,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import { mockData } from '@/utils';
 import { ImageItem } from '@/interfaces/shop';
 import styles from './index.less'
-import { getImagesetImage, getBaixingImagesetImage } from '@/api/shop'
+import { getMediaImage, getBaixingMediaImage } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
 
@@ -44,13 +44,13 @@ const ImgList: FC<Props> = (props) => {
     if (albumTypeDetail.page > albumTypeDetail.total) return
     if (getDataLoading) return
     setGetDataLoading(true)
-    const res = await (tabKey === '百姓图库' ? getBaixingImagesetImage : getImagesetImage)(shopCurrent!.id, {
+    const res = await (tabKey === '百姓图库' ? getBaixingMediaImage : getMediaImage)(shopCurrent!.id, {
       page: albumTypeDetail.page,
       size: 16,
       mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined
     })
-    // (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes>
-    // (shopId: number, params: GetImagesetImageParam) => Promise<ServiceResponse<GetImagesetImageRes>>
+    // (shopId: number, params: GetMediaImageParam) => ShopAPIReturn<GetMediaImageRes>
+    // (shopId: number, params: GetMediaImageParam) => Promise<ServiceResponse<GetMediaImageRes>>
     setGetDataLoading(false)
     if (!res.success) {
       errorMessage(res.message)

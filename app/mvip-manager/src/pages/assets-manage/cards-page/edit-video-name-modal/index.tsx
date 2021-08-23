@@ -2,7 +2,7 @@ import React, { useState, useCallback, useContext } from 'react'
 import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { updateImagesetAlbum } from "@/api/shop"
+import { updateMediaAlbum } from "@/api/shop"
 
 import { ImageItem } from "@/interfaces/shop"
 
@@ -55,7 +55,7 @@ export default function useEditVideoNameModal(props: Props) {
         let successMsg = ''
         let params: any = {}
         params.id = defaultVals.id
-        post = updateImagesetAlbum
+        post = updateMediaAlbum
         successMsg = "编辑成功"
         post({ ...formvals, ...params })
           .then(res => {

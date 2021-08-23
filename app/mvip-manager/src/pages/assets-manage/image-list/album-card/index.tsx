@@ -3,7 +3,7 @@ import { Checkbox, Modal } from "antd"
 import { DeleteOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { delImagesetAlbum } from '@/api/shop'
+import { delMediaAlbum } from '@/api/shop'
 
 import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
@@ -75,7 +75,7 @@ export default function AlbumCardWrapper(props: any) {
     const info = totalImg === 0
       ? `${directoryLabel}删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} ${subDirectoryCountLabel + subDirectoryLabel}，删除后无法恢复，确认删除？`
-    await delCallback(delImagesetAlbum, [id], info, () => {
+    await delCallback(delMediaAlbum, [id], info, () => {
       setSelection(selection.filter((x: number) => x !== id))
       refreshAllAlbumLists()
       // TODO 在选区删除时也这么判断一下，现在那边是 refresh(true)

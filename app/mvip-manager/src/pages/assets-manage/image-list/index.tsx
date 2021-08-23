@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, useContext } from 're
 import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { getImagesetAlbum, getImagesetImage, delImagesetAlbum, delImagesetImage } from '@/api/shop'
+import { getMediaAlbum, getMediaImage, delMediaAlbum, delMediaImage } from '@/api/shop'
 import NavBar from './page-nav/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
@@ -95,8 +95,8 @@ const AssetsMangeImageListPage = (props: {
         onOk() {
           return new Promise((resolve, reject) => {
             const deleteFn = isScopeAlbum
-              ? delImagesetAlbum
-              : delImagesetImage
+              ? delMediaAlbum
+              : delMediaImage
             const query = isScopeAlbum
               ? [...selection]
               : { ids: [...selection], mediaCateId: curScope?.item?.id }
@@ -225,7 +225,7 @@ const AssetsMangeImageListPage = (props: {
 
 async function fetchAlbumLists(querys: any) {
   try {
-    const res = await getImagesetAlbum(querys)
+    const res = await getMediaAlbum(querys)
     const { result = [], totalRecord = 0 } = res.data.mediaCateBos
     return [result, totalRecord] as const
   } catch (err) {
@@ -235,7 +235,7 @@ async function fetchAlbumLists(querys: any) {
 
 async function fetchImageLists(querys: any) {
   try {
-    const res = await getImagesetImage(querys)
+    const res = await getMediaImage(querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {

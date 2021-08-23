@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react'
 import { Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { getImagesetFailedImage, delImagesetFailedImage } from '@/api/shop'
+import { getMediaFailedImage, delMediaFailedImage } from '@/api/shop'
 import NavBar from './page-nav/index'
 import ErrorCardWrapper from './error-card/index'
 import CardsPage from '../cards-page/index'
@@ -40,7 +40,7 @@ const AssetsMangeAuditListPage = () => {
         onOk() {
           return new Promise((resolve, reject) => {
             const query = { ids: [...selection], mediaCateId: curScope?.item?.id }
-            delImagesetFailedImage(query as any)
+            delMediaFailedImage(query as any)
               .then((res: any) => {
                 if (res.success) {
                   successMessage('删除成功');
@@ -107,7 +107,7 @@ const AssetsMangeAuditListPage = () => {
 
 async function fetchErrorImageLists(querys: any) {
   try {
-    const res = await getImagesetFailedImage(querys)
+    const res = await getMediaFailedImage(querys)
     const { result = [], totalRecord = 0 } = res.data.mediaImgBos
     return [result, totalRecord] as const
   } catch (err) {

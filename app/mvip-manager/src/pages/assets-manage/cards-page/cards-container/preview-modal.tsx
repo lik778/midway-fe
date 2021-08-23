@@ -6,7 +6,7 @@ import { CardItem, ImageItem } from "@/interfaces/shop"
 
 declare global {
   interface Window {
-    __page_imageset_preview_modal_keycatch_tick: any | null
+    __page_media_preview_modal_keycatch_tick: any | null
   }
 }
 
@@ -21,9 +21,9 @@ type PreviewModalProps = {
 export default function PreviewModal(props: PreviewModalProps) {
   const { lists, previewItem, previewModal, closePreviewModal, preview, customPreview } = props
   const clear = () => {
-    if (window.__page_imageset_preview_modal_keycatch_tick) {
-      window.removeEventListener('keyup', window.__page_imageset_preview_modal_keycatch_tick)
-      window.__page_imageset_preview_modal_keycatch_tick = null
+    if (window.__page_media_preview_modal_keycatch_tick) {
+      window.removeEventListener('keyup', window.__page_media_preview_modal_keycatch_tick)
+      window.__page_media_preview_modal_keycatch_tick = null
     }
   }
   if (!previewItem) {
@@ -55,10 +55,10 @@ export default function PreviewModal(props: PreviewModalProps) {
       }
     }
     window.addEventListener('keyup', handlePreview)
-    window.__page_imageset_preview_modal_keycatch_tick = handlePreview
+    window.__page_media_preview_modal_keycatch_tick = handlePreview
     return () => {
       window.removeEventListener('keyup', handlePreview)
-      window.__page_imageset_preview_modal_keycatch_tick = null
+      window.__page_media_preview_modal_keycatch_tick = null
     }
   }, [lists, prev, next])
 

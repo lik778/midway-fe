@@ -20,8 +20,8 @@ import styles from './index.less'
 
 declare global {
   interface Window {
-    _mvip_imageset_ticktime: number
-    _mvip_imageset_tick: NodeJS.Timeout | undefined
+    _mvip_media_ticktime: number
+    _mvip_media_tick: NodeJS.Timeout | undefined
   }
 }
 
@@ -130,18 +130,18 @@ const CardsPage = (props: CardsPageProps) => {
       lists.length === 0 &&
       allAlbumLists.length > 0
     if (canRefresh) {
-      window._mvip_imageset_ticktime = window._mvip_imageset_ticktime || 500
-      if (window._mvip_imageset_ticktime < 5 * 1000) {
-        if (window._mvip_imageset_tick) {
-          window.clearTimeout(window._mvip_imageset_tick)
+      window._mvip_media_ticktime = window._mvip_media_ticktime || 500
+      if (window._mvip_media_ticktime < 5 * 1000) {
+        if (window._mvip_media_tick) {
+          window.clearTimeout(window._mvip_media_tick)
         }
-        window._mvip_imageset_tick = setTimeout(() => {
-          window._mvip_imageset_ticktime = window._mvip_imageset_ticktime * 2
+        window._mvip_media_tick = setTimeout(() => {
+          window._mvip_media_ticktime = window._mvip_media_ticktime * 2
           refresh()
-        }, window._mvip_imageset_ticktime)
+        }, window._mvip_media_ticktime)
       }
     }
-    return () => window._mvip_imageset_tick && window.clearTimeout(window._mvip_imageset_tick)
+    return () => window._mvip_media_tick && window.clearTimeout(window._mvip_media_tick)
   }, [lists, allAlbumLists, curScope])
 
   const [selection, setSelection, select, unselect] = useSelection({ excludeFilter: selectionExcludeFilter })
@@ -193,12 +193,12 @@ const CardsPage = (props: CardsPageProps) => {
 
   const [$UploadModal, openUpload] = useUploadModal({ createAlbum, refresh })
 
-  // TODO delete - for test only
-  useEffect(() => {
-    if (allAlbumLists && allAlbumLists.length > 0) {
-      openUpload(allAlbumLists[0].id)
-    }
-  }, [allAlbumLists])
+  // TODO delete - open upload automatelly - for test only
+  // useEffect(() => {
+  //   if (allAlbumLists && allAlbumLists.length > 0) {
+  //     openUpload(allAlbumLists[0].id)
+  //   }
+  // }, [allAlbumLists])
 
   // 选择区域的删除函数
   const selectionDeleteMethod = useMemo(() => (
