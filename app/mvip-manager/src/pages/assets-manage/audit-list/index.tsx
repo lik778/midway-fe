@@ -72,13 +72,15 @@ const AssetsMangeAuditListPage = () => {
 
   // 页头
   const pageNav = useCallback((props: any & {
+    setSelection: (selection: number[]) => void
     refresh: (resetPagi: boolean) => void
   }) => {
-    const { refresh } = props
+    const { setSelection, refresh } = props
     return (
       <NavBar
         refresh={refresh}
         sourceType={sourceType}
+        setSelection={setSelection}
         setSourceType={setSourceType}
       />
     )

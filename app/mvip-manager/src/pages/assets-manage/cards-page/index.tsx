@@ -31,6 +31,7 @@ export type PageNavProps = {
   goTabScope: (scope: TabScopeItem) => void
   createAlbum: (newAlbum?: any) => void
   openUpload: (defaultVal: number) => void
+  setSelection: (selection: number[]) => void
   refresh: (resetPagi: boolean) => void
 }
 
@@ -235,8 +236,8 @@ const CardsPage = (props: CardsPageProps) => {
 
   // 页头
   const $pageNav = useMemo(() => (
-    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload, refresh })
-  ), [tabScope, curScope, goTabScope, createAlbum, openUpload, refresh])
+    pageNav({ tabScope, curScope, goTabScope, createAlbum, openUpload, refresh, setSelection })
+  ), [tabScope, curScope, goTabScope, createAlbum, openUpload, refresh, setSelection])
 
   // 自定义卡片
   const renderCardItem = cardItem && cardItem({

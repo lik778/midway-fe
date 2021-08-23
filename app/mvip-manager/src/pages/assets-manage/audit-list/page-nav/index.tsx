@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react"
-import { Breadcrumb, Button, Radio } from "antd"
+import React from "react"
+import { Breadcrumb, Radio } from "antd"
 
 import styles from "./index.less"
 
 export default (props: {
   sourceType: 'IMAGE' | 'VIDEO'
+  setSelection: (selection: number[]) => void
   refresh: (resetPagi: boolean) => void
   setSourceType: (type: 'IMAGE'|'VIDEO') => void
 }) => {
 
-  const { sourceType, setSourceType, refresh } = props
+  const { sourceType, setSelection, setSourceType, refresh } = props
 
   const handleNav = (e: any) => {
     const value = e.target.value
+    setSelection([])
     setSourceType(value)
     refresh(true)
   }
