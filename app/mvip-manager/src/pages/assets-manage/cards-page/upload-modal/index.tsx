@@ -15,6 +15,7 @@ import styles from './index.less'
 /**
  * base64 转 blob
  * @see https://zhuanlan.zhihu.com/p/57700185
+ * @see https://stackoverflow.com/questions/38579262/uncaught-invalidcharactererror-failed-to-convert-to-blob-from-base64-image
  */
 async function base64ToBlob(b64data = '', contentType = '', sliceSize = 512): Promise<Blob> {
   return new Promise(resolve => {
@@ -124,19 +125,24 @@ export default function useUploadModal(props: Props) {
             status: 'done',
             error: ''
           }])
-          if (!selectedAlbum) {
-            throw new Error('[ERR] 请选择上传文件夹')
+          // =￣ω￣=
+          // 调用后端接口保存上传结果，
+          // 就算调用失败也不会把已上传到又拍云的删除掉，
+          // 呜哈哈哈哈哈哈哈
+          const query = {
+            imgUrl: item.response.url,
+            mediaCateId: selectedAlbum!.id,
+            source: directoryType
           }
-          const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum.id }
           const res: any = await Promise.race([
-            createMediaAssets(query),
+            createMediaAssets(query as any),
             new Promise((_, reject) => {
               setTimeout(() => {
                 reject(new Error('上传超时，点击删除'))
               }, 15 * 1000)
             })
           ])
-          if (res.success && (typeof res.data.id === 'number')) {
+          if (res.success && (typeof +res.data.id === 'number')) {
             const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResImage
             if (target) {
               target.id = res.data.id
@@ -160,24 +166,53 @@ export default function useUploadModal(props: Props) {
             status: 'done',
             error: ''
           }])
+          /* 先上传封面 */
           const fileMD5 = item.response.url.split('/')[1].split('.')[0]
           const coverName = `${fileMD5}-${String(Math.random()).slice(-6)}.png`
           const formData = new FormData()
           formData.append('policy', window.__upyunImgConfig?.uploadParams?.policy)
           formData.append('signature', window.__upyunImgConfig?.uploadParams?.signature)
-          /**
-           * @see https://stackoverflow.com/questions/38579262/uncaught-invalidcharactererror-failed-to-convert-to-blob-from-base64-image
-           **/
           formData.append('file', await base64ToBlob(item.preview.split(',')[1], 'image/png'), coverName)
-          const res = await upImageToYoupai(formData)
-          if (res) {
+          const uploadCoverRes = await upImageToYoupai(formData)
+          if (uploadCoverRes) {
             const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
-            target.inEncode = false
-            target.cover = res.data.url.split('/')[1]
+            target.cover = uploadCoverRes.data.url.split('/')[1]
             record(uploadedLists.current)
           }
-          resolve(item)
+          // 呜哈哈哈哈哈哈哈 * 2
+          const itemName = item.name
+            .split('.')[0]
+            .split('')
+            .filter(x => x.match(/[a-zA-Z0-9\u4e00-\u9fa5!@#$%^&*()_+=-~|\\\{\}\[\]]/))
+            .join('')
+          const query = {
+            title: itemName || '未命名视频',
+            imgUrl: uploadCoverRes.data.url.split('/')[1],
+            videoUrl: item.response.url,
+            mediaCateId: selectedAlbum!.id,
+            source: directoryType
+          }
+          const res: any = await Promise.race([
+            createMediaAssets(query as any),
+            new Promise((_, reject) => {
+              setTimeout(() => {
+                reject(new Error('上传超时，点击删除'))
+              }, 15 * 1000)
+            })
+          ])
+          if (res.success && (typeof +res.data.id === 'number')) {
+            const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
+            if (target) {
+              target.id = res.data.id
+              target.inEncode = false
+              record(uploadedLists.current)
+            }
+            resolve(item)
+          } else {
+            throw new Error(res.message || '上传失败')
+          }
         }
+
       }
       /* 异常处理 */
       catch (error: any) {
@@ -200,7 +235,7 @@ export default function useUploadModal(props: Props) {
         }
       }
     })
-  }, [isUploadImage, record])
+  }, [isUploadImage, directoryType, record])
 
   const canUpload = useMemo(() => !!selectedAlbum, [selectedAlbum])
   const [$uploader, lists, setLists, update, remove] = useUpload({
@@ -291,12 +326,12 @@ export default function useUploadModal(props: Props) {
    * @todo REFACTOR 样式
    */
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
-    const { uid, percent, preview } = item
+    const { name, uid, percent, preview } = item
     let uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const error = uploadedItem ? uploadedItem.error : ''
 
-    let $extra
+    const $extra = []
     let $contents
     let dispearMask = false
 
@@ -362,9 +397,14 @@ export default function useUploadModal(props: Props) {
               </span>
             </div>
           </>
-          $extra = <div className={styles['play-icon']} />
+          $extra.push(
+            <div className={styles['play-icon']} key='play-icon' />
+          )
         }
       }
+      $extra.push(
+        <div className={styles['upload-item-name']}>{item.name}</div>
+      )
     }
 
     /* 通用卡片样式处理 */
@@ -396,7 +436,7 @@ export default function useUploadModal(props: Props) {
     // }
 
     return (
-      <div className={styles["upload-item"]} key={`${uid}-${idx}-${status}`}>
+      <div className={styles["upload-item"] + ' ' + (isUploadImage ? styles['image'] : styles['video'])} key={`${uid}-${idx}-${status}`}>
         <img className={styles["upload-img"]} src={preview} />
         <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
         <div className={styles["wrapper"]}>{$contents}</div>

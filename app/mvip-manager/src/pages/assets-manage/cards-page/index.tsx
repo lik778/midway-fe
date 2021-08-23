@@ -116,14 +116,6 @@ const CardsPage = (props: CardsPageProps) => {
     }
   }, [pagi.current, refreshLists, resetPagi])
 
-  // ？
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'update-refresh',
-  //     payload: refresh
-  //   })
-  // }, [refresh])
-
   // 列表接口可能不会返回默认相册，但是 nameList 接口一定会返回默认相册，
   // 所以这里判断列表接口为空时，等待 allAlbumLists 有结果之后再重新请求
   // 请求时间指数避退

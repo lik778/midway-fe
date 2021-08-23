@@ -295,8 +295,10 @@ export interface GetMediaAssetsParam {
 }
 
 export interface CreateMediaAssetsParam {
-  imgUrl: string;
   mediaCateId?: number; // 不传则上传到默认图库
+  title?: string;
+  imgUrl: string;
+  videoUrl?: string;
   source: MediaCateSource;
 }
 

@@ -135,7 +135,7 @@ function ImageCard(props: ImageCardProps) {
   } = props
   const { directoryType } = useContext(CardsPageContext)
 
-  const { id, imgUrl } = card
+  const { id, imgUrl, name } = card
   const isChecked = selection.find((y: number) => y === id)
   const inSetCoverLoading = setCoverItem && setCoverItem.id === id
 
@@ -186,7 +186,7 @@ function ImageCard(props: ImageCardProps) {
       )}
       {directoryType === 'VIDEO' && (
         <div className={styles["header"]}>
-          <span className={styles["name"]} title={'视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长'}>{'视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长'}</span>
+          <span className={styles["name"]} title={name}>{(loading ? '' : (name || '未命名视频'))}</span>
         </div>
       )}
     </div>

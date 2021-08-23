@@ -25,9 +25,9 @@ export default function useEditVideoNameModal(props: Props) {
   const [loading, setLoading] = useState(false)
 
   // 打开模态框
-  const openModal = useCallback(async (album?: MediaAssetsItem): Promise<boolean> => {
-    if (album) {
-      const { id, name } = album
+  const openModal = useCallback(async (item?: MediaAssetsItem): Promise<boolean> => {
+    if (item) {
+      const { id, name } = item
       const defaultVals = { id, name }
       setDefaultVals(defaultVals)
       form.setFieldsValue(defaultVals)
@@ -86,7 +86,7 @@ export default function useEditVideoNameModal(props: Props) {
 
   return [
     <Modal
-      wrapClassName="create-album-modal"
+      wrapClassName="create-item-modal"
       title={'编辑视频'}
       width={432}
       footer={null}
@@ -95,7 +95,7 @@ export default function useEditVideoNameModal(props: Props) {
       onCancel={closeModal}
     >
       <Form
-        name="create-album-form"
+        name="create-item-form"
         form={form}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 19 }}
