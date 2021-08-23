@@ -1,17 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC, ReactEventHandler } from 'react';
-import { ImageItem, CheckStatusType } from '@/interfaces/shop';
+import { useParams } from "umi";
+import { ImageItem, RouteParams } from '@/interfaces/shop';
 import AuditFailedIcon from '@/icons/failed'
 import ImgUploadContext from '@/components/img-upload/context'
 import { UploadFile } from 'antd/lib/upload/interface';
 import CropModal from '@/components/img-upload/components/crop-modal'
+import StatusBox from '@/components/img-upload/components/status-box'
 import { successMessage, errorMessage } from "@/components/message"
 import { reAuditImagesetImageApi } from '@/api/shop'
-
+import CacheComponent from '@/components/cache-component'
 import styles from './index.less'
 
+/**
+ * 当用fileList循环这个数组时，file一定存在，但是可能处于上传中状态，所以图片库详情可能为空
+ * 当用图册list循环这个数组，file一定不存在 ，但detail一定存在
+ */
 interface Props {
-  shopId?: number;
-  detail: ImageItem,
+  file?: UploadFile
+  detail?: ImageItem,
   itemHeight?: number
 }
 
@@ -19,7 +25,9 @@ interface Props {
 let clickCount = 0
 
 const ImgItem: FC<Props> = (props) => {
-  const { shopId, detail, itemHeight } = props
+  const params: RouteParams = useParams();
+  const shopId = Number(params.id);
+  const { file = {} as UploadFile, detail = {} as ImageItem, itemHeight } = props
   const context = useContext(ImgUploadContext)
   const { localFileList, handleChangeLocalFileList, handlePreview, initConfig: { maxLength, cropProps } } = context
   const [originSize, setOriginSize] = useState<{
@@ -30,6 +38,7 @@ const ImgItem: FC<Props> = (props) => {
     heigth: 0
   })
   const [cropVisible, setCropVisible] = useState(false)
+
   const handleLoad: ReactEventHandler<HTMLImageElement> = (e) => {
     e.persist()
     setOriginSize({
@@ -53,7 +62,7 @@ const ImgItem: FC<Props> = (props) => {
 
   const handleDoubleClick = () => {
     handlePreview({
-      preview: detail.imgUrl,
+      preview: detail.imgUrl || file.preview,
     } as UploadFile)
   }
 
@@ -105,24 +114,32 @@ const ImgItem: FC<Props> = (props) => {
   }, [detail])
 
   return <>
-    <div className={styles['img-item']} style={{
-      height: itemHeight
-    }} onClick={handleClickItem}>
-      <img className={styles['img']} src={detail.imgUrl} onLoad={handleLoad} />
-      {
-        detail.checkStatus === 'APPROVE' && <div className={styles["size-tip"]}>
-          {`${originSize.width}*${originSize.heigth}`}
-        </div>
-      }
-      {detail.checkStatus !== 'APPROVE' && (
-        <div className={styles["error-tip"]}>
-          <AuditFailedIcon />
-          <span>{detail.reason || '图片审核失败'}</span>
-          <span className={styles["re-audit-btn"]} onClick={e => reAuditImage(e)}>点击申诉</span>
-        </div>
-      )}
-    </div>
-    <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
+    <StatusBox file={file}>
+      <div className={styles['img-item']} style={{
+        height: itemHeight
+      }} onClick={handleClickItem}>
+        <img className={styles['img']} src={detail.imgUrl || file.preview} onLoad={handleLoad} />
+        {
+          typeof detail.checkStatus === 'string' && <>
+            {
+              detail.checkStatus === 'APPROVE' && <div className={styles["size-tip"]}>
+                {`${originSize.width}*${originSize.heigth}`}
+              </div>
+            }
+            {detail.checkStatus !== 'APPROVE' && (
+              <div className={styles["error-tip"]}>
+                <AuditFailedIcon />
+                <span>{detail.reason || '图片审核失败'}</span>
+                <span className={styles["re-audit-btn"]} onClick={e => reAuditImage(e)}>点击申诉</span>
+              </div>
+            )}
+          </>
+        }
+      </div>
+    </StatusBox>
+    <CacheComponent visible={file.status === 'done' && cropVisible}>
+      <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
+    </CacheComponent>
   </>
 }
 

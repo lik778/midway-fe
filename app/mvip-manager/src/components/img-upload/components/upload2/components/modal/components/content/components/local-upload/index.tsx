@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState, useContext, FC } from 'react'
+import React, { useState, useContext, FC } from 'react'
 import { Spin } from 'antd'
-import { useParams } from "umi";
 import { UploadFile } from 'antd/lib/upload/interface'
 import ImgUpload from '@/components/img-upload'
 import ImgUploadContext from '@/components/img-upload/context'
-import { RouteParams, ImageItem } from '@/interfaces/shop'
+import { ImageItem } from '@/interfaces/shop'
 import { createImagesetImageApi } from '@/api/shop'
 import styles from './index.less'
 import ImgItem from '../img-item'
@@ -14,13 +13,10 @@ const LocalUpload: FC = () => {
   const context = useContext(ImgUploadContext)
   const { initConfig: { uploadBtnText, maxSize, aspectRatio, cropProps }, shopCurrent } = context
 
-  const params: RouteParams = useParams();
-  const shopId = Number(params.id);
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const [albumList, setAlbumList] = useState<ImageItem[]>([])
-  const fileList = useMemo(() => {
-    return albumList.map(item => item.imgUrl)
-  }, [albumList])
+
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
   // ImgUpload uploadType===1情况下，每次onChange只会操作一个动作
@@ -47,9 +43,9 @@ const LocalUpload: FC = () => {
     <div className={styles['local-upload']}>
       <div className={styles['line']}>
         {
-          albumList.map(item => <ImgItem shopId={shopId} detail={item} itemHeight={102} key={item.id}></ImgItem>)
+          fileList.map((item, index) => <ImgItem detail={albumList[index]} file={item} itemHeight={102} key={item.uid} ></ImgItem>)
         }
-        <ImgUpload uploadType={1} editData={fileList} uploadBtnText={uploadBtnText} maxLength={1000} onChange={handleChange} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
+        <ImgUpload uploadType={1} uploadBtnText={uploadBtnText} maxLength={1000} onChange={handleChange} onFileChange={setFileList} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
           showRemoveIcon: false,
           showCropIcon: false
         }} cropProps={cropProps} itemRender={itemRender}></ImgUpload>
