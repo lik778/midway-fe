@@ -27,9 +27,6 @@ export default function ImageCardWrapper(props: any) {
 
   // 设置封面图片
   const setCoverImage = async (e: any, image: MediaAssetsItem) => {
-    if (directoryType !== 'image') {
-      return
-    }
     e.stopPropagation()
     setSetCoverItem(image)
     const { id } = image
@@ -84,7 +81,12 @@ export default function ImageCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delMediaAssets({ ids: [id], mediaCateId: curScope!.item!.id })
+          const query = {
+            ids: [id],
+            mediaCateId: curScope!.item!.id,
+            source: directoryType
+          }
+          delMediaAssets(query)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')

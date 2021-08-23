@@ -57,8 +57,8 @@ export interface UploadItem extends UploadFile {
 }
 
 type Props = {
-  // 上传类型 image 图片、video 视频
-  type: 'image' | 'video'
+  // 上传类型 IMAGE 图片、VIDEO 视频
+  type: 'IMAGE' | 'VIDEO'
   // 最大上传数量
   maxCount?: number
   // 上传后钩子（在上传到又拍云后用来和后端交互）
@@ -67,8 +67,8 @@ type Props = {
 export function useUpload(props: Props) {
   const { type, maxCount = 15, afterUploadHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
-  const uploadItemLabel = useMemo(() => type === 'image' ? '图片' : '视频', [type])
-  const uploadConf = type === 'image'
+  const uploadItemLabel = useMemo(() => type === 'IMAGE' ? '图片' : '视频', [type])
+  const uploadConf = type === 'IMAGE'
     ? {
       accept: ['image/jpeg', 'image/png', 'image/jpg'],
       action: window.__upyunImgConfig?.uploadUrl,
@@ -227,7 +227,7 @@ export function useUpload(props: Props) {
 
       let validRes
       try {
-        validRes = type === 'image'
+        validRes = type === 'IMAGE'
           ? isExtAndSizeValid(file, uploadConf.accept, 3)
           : isExtAndSizeValid(file, uploadConf.accept, 100) && (await isVideoDurationValid())
       } catch (error) {

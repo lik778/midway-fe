@@ -362,13 +362,14 @@ export type MediaCateItem = {
 }
 
 /**
- * DEFAULT(0, "初始化")
- * APPROVE(1, "审核通过")
- * REJECT_BYMACHINE(2, "机审驳回")
- * REAPPLY(3, "申诉中")
- * REJECT_BYHUMAN(4, "人审驳回")
+ * DEFAULT          初始化
+ * APPROVE          审核通过
+ * REJECT_BYMACHINE 机审驳回
+ * REAPPLY          申诉中
+ * REJECT_BYHUMAN   人审驳回
+ * ENCODE_FAILED    视频转码失败
  */
-export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
+export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN' | 'ENCODE_FAILED'
 export type ImageType = 'NOT_COVER' | 'COVER'
 
 // 分类内资源类型

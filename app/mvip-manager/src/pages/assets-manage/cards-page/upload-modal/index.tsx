@@ -223,8 +223,11 @@ export default function useUploadModal(props: Props) {
     const { uid } = item
     const findUploaded = uploadedLists.current.find(x => x.uid === uid)
     if (findUploaded && findUploaded.id !== UPLOAD_RES_MAP_DEFAULT_ID) {
-      // dont care is delete done or not ...
-      const query = { ids: [findUploaded.id], mediaCateId: selectedAlbum.id }
+      const query = {
+        ids: [findUploaded.id],
+        mediaCateId: selectedAlbum.id,
+        source: directoryType
+      }
       delMediaAssets(query)
         .then(res => {
           if (res.success) {
@@ -234,7 +237,7 @@ export default function useUploadModal(props: Props) {
         })
     }
     remove(item)
-  }, [remove, selectedAlbum])
+  }, [remove, selectedAlbum, directoryType])
 
   // 申诉图片
   const reAuditImage = async (image: UploadResMap | undefined) => {
