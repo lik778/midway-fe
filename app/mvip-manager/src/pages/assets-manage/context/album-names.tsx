@@ -1,14 +1,16 @@
 import React, { useEffect, useCallback, useReducer } from 'react'
 
-import { getAlbumNameList } from '@/api/shop'
+import { getMediaCatesNameList } from '@/api/shop'
 
-import { AlbumNameListItem } from "@/interfaces/shop"
+import { MediaCatesNameListItem, MediaCateSource } from "@/interfaces/shop"
 
 const notNull = (x: any) => !!x
 
-async function fetchAlbumNameLists() {
+async function fetchAlbumNameLists(sourceType: MediaCateSource) {
   try {
-    const res = await getAlbumNameList()
+    const res = await getMediaCatesNameList({
+      source: sourceType
+    })
     return {
       lists: res.data.filter(notNull),
       total: res.data.length
@@ -19,7 +21,7 @@ async function fetchAlbumNameLists() {
 }
 
 type AlbumNamesContextType = {
-  lists: AlbumNameListItem[]
+  lists: MediaCatesNameListItem[]
   total: number
   refresh: () => void
 }
@@ -44,10 +46,11 @@ const reducer = (_: any, action: any): AlbumNamesContextType => {
 }
 
 export function AlbumNamesContextProvider(props: any) {
+  const { sourceType } = props
   let [albumNames, dispatch] = useReducer(reducer, initialState)
 
   const refresh = useCallback(async () => {
-    const res = await fetchAlbumNameLists()
+    const res = await fetchAlbumNameLists(sourceType)
     dispatch({
       type: 'refresh',
       payload: res

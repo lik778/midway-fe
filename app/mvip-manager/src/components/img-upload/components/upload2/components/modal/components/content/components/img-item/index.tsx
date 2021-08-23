@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC, ReactEventHandler } from 'react';
-import { ImageItem, CheckStatusType } from '@/interfaces/shop';
+import { MediaAssetsItem, CheckStatusType } from '@/interfaces/shop';
 import AuditFailedIcon from '@/icons/failed'
 import ImgUploadContext from '@/components/img-upload/context'
 import { UploadFile } from 'antd/lib/upload/interface';
 import CropModal from '@/components/img-upload/components/crop-modal'
 import { successMessage, errorMessage } from "@/components/message"
-import { reAuditMediaImage } from '@/api/shop'
+import { reAuditMediaAssets } from '@/api/shop'
 
 import styles from './index.less'
 
 interface Props {
   shopId?: number;
-  detail: ImageItem,
+  detail: MediaAssetsItem,
   itemHeight?: number
 }
 
@@ -91,7 +91,7 @@ const ImgItem: FC<Props> = (props) => {
   // 申诉图片
   const reAuditImage = useCallback(async (e: any) => {
     e.stopPropagation()
-    reAuditMediaImage(shopId, { id: detail.id })
+    reAuditMediaAssets(shopId, { id: detail.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('申诉成功，请到图片管理 - 申诉记录查看进度')

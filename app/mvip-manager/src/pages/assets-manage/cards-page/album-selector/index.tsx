@@ -4,15 +4,15 @@ import { Select } from "antd"
 import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
-import { AlbumNameListItem } from "@/interfaces/shop"
+import { MediaCatesNameListItem } from "@/interfaces/shop"
 
 export default function useAlbumSelector() {
-  const [select, setSelect] = useState<AlbumNameListItem | undefined>(undefined)
+  const [select, setSelect] = useState<MediaCatesNameListItem | undefined>(undefined)
   const { directoryLabel } = useContext(CardsPageContext)
   const { lists: allAlbumLists } = useContext(AlbumNamesContext)
 
   const handleSelectAlbum = (id?: number) => {
-    const target = allAlbumLists.find((x: AlbumNameListItem) => x.id === id)
+    const target = allAlbumLists.find((x: MediaCatesNameListItem) => x.id === id)
     if (target) {
       setSelect(target)
     } else {
@@ -28,7 +28,7 @@ export default function useAlbumSelector() {
       value={select ? select.id : undefined}
       onChange={(val: number) => handleSelectAlbum(val)}
     >
-      {allAlbumLists.map((x: AlbumNameListItem) => {
+      {allAlbumLists.map((x: MediaCatesNameListItem) => {
         return <Select.Option value={x.id} key={x.id}>{x.name}</Select.Option>
       })}
     </Select>,

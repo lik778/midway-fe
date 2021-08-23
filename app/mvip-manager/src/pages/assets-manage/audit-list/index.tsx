@@ -1,13 +1,13 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { getMediaFailedImage, delMediaFailedImage } from '@/api/shop'
+import { getMediaFailedAssets, delMediaFailedAssets } from '@/api/shop'
 import NavBar from './page-nav/index'
 import ErrorCardWrapper from './error-card/index'
 import CardsPage from '../cards-page/index'
 
-import { CardItem, ImageItem } from "@/interfaces/shop"
+import { MediaCateSource, CardItem, MediaAssetsItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps } from '../cards-page/index'
 
 // 资源管理 - 申诉列表
@@ -15,10 +15,7 @@ const AssetsMangeAuditListPage = () => {
 
   // 批量删除
   const deleteBatch = useCallback((props: DeleteBatchProps) => {
-    const {
-      curScope, selection,
-      refresh, setSelection, refreshAllAlbumLists
-    } = props
+    const { curScope, selection, refresh, setSelection } = props
 
     return (e: any) => {
       e.stopPropagation()
@@ -39,14 +36,18 @@ const AssetsMangeAuditListPage = () => {
         onCancel() { },
         onOk() {
           return new Promise((resolve, reject) => {
-            const query = { ids: [...selection], mediaCateId: curScope?.item?.id }
-            delMediaFailedImage(query as any)
+            const query = {
+              ids: [...selection], mediaCateId: curScope?.item?.id,
+              source: 'IMAGE'
+            }
+            delMediaFailedAssets(query as any)
               .then((res: any) => {
                 if (res.success) {
                   successMessage('删除成功');
                   setSelection([])
                   refresh(resetFreshPage)
-                  refreshAllAlbumLists()
+                  // TODO FIXME ??
+                  // refreshAllAlbumLists()
                   resolve(res.success)
                 } else {
                   throw new Error(res.message || "出错啦，请稍后重试");
@@ -64,7 +65,7 @@ const AssetsMangeAuditListPage = () => {
 
   // 全选时排除正在审核中的项目
   const selectAllFrom = useCallback((lists: CardItem[]) => (
-    lists.filter(x => (x as ImageItem).checkStatus !== 'REAPPLY')
+    lists.filter(x => (x as MediaAssetsItem).checkStatus !== 'REAPPLY')
   ), [])
 
   // 页头
@@ -92,11 +93,15 @@ const AssetsMangeAuditListPage = () => {
     />
   ), [])
 
+  const fetchListFn = useMemo(() => {
+    return fetchErrorImageLists('IMAGE')
+  }, [])
+
   return (
     <CardsPage
       defaultScope={{ item: null, type: 'audit', label: '资源', countLabel: '项' }}
       pageNav={pageNav}
-      fetchListFn={fetchErrorImageLists}
+      fetchListFn={fetchListFn}
       deleteBatch={deleteBatch}
       cardItem={ErrorCardWrapper}
       selectAllFrom={selectAllFrom}
@@ -105,13 +110,16 @@ const AssetsMangeAuditListPage = () => {
   )
 }
 
-async function fetchErrorImageLists(querys: any) {
-  try {
-    const res = await getMediaFailedImage(querys)
-    const { result = [], totalRecord = 0 } = res.data.mediaImgBos
-    return [result, totalRecord] as const
-  } catch (err) {
-    throw new Error(err)
+function fetchErrorImageLists(sourceType: MediaCateSource) {
+  return async (querys: any) => {
+    try {
+      querys.source = sourceType
+      const res = await getMediaFailedAssets(querys)
+      const { result = [], totalRecord = 0 } = res.data.mediaImgBos
+      return [result, totalRecord] as const
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 }
 

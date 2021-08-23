@@ -3,12 +3,12 @@ import { Checkbox, Modal } from "antd"
 import { PartitionOutlined, DeleteOutlined, LoadingOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { moveMediaImage, delMediaImage, setMediaAlbumCover } from '@/api/shop'
+import { moveMediaAssets, delMediaAssets, setMediaCatesCover } from '@/api/shop'
 
 import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
-import { ImageItem } from "@/interfaces/shop"
+import { MediaAssetsItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 
 import styles from './index.less'
@@ -17,16 +17,16 @@ export default function ImageCardWrapper(props: any) {
   const { curScope, lists, selection, setSelection, editVideo, refresh } = props
   const { directoryType, selectAlbum } = useContext(CardsPageContext)
   const { } = useContext(AlbumNamesContext)
-  const [setCoverItem, setSetCoverItem] = useState<ImageItem | null>()
+  const [setCoverItem, setSetCoverItem] = useState<MediaAssetsItem | null>()
 
   // 编辑视频名称
-  const editVideoName = async (e: any, image: ImageItem) => {
+  const editVideoName = async (e: any, image: MediaAssetsItem) => {
     e.stopPropagation()
     await editVideo(image)
   }
 
   // 设置封面图片
-  const setCoverImage = async (e: any, image: ImageItem) => {
+  const setCoverImage = async (e: any, image: MediaAssetsItem) => {
     if (directoryType !== 'image') {
       return
     }
@@ -34,7 +34,7 @@ export default function ImageCardWrapper(props: any) {
     setSetCoverItem(image)
     const { id } = image
     const { item } = curScope
-    setMediaAlbumCover({ id, mediaCateId: item.id })
+    setMediaCatesCover({ id, mediaCateId: item.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('设置成功')
@@ -51,14 +51,14 @@ export default function ImageCardWrapper(props: any) {
   }
 
   // 移动图片
-  const moveImage = async (e: any, image: ImageItem) => {
+  const moveImage = async (e: any, image: MediaAssetsItem) => {
     e.stopPropagation()
     const { id } = image
     const album = await selectAlbum({
       exclude: curScope.item ? [curScope?.item?.id] : []
     })
     const resetRefreshPagi = lists.length === 1
-    moveMediaImage({ id, mediaCateId: album.id })
+    moveMediaAssets({ id, mediaCateId: album.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功')
@@ -74,7 +74,7 @@ export default function ImageCardWrapper(props: any) {
   }
 
   // 删除图片
-  const delImage = async (e: any, image: ImageItem) => {
+  const delImage = async (e: any, image: MediaAssetsItem) => {
     e.stopPropagation()
     const { id } = image
     await Modal.confirm({
@@ -84,7 +84,7 @@ export default function ImageCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delMediaImage({ ids: [id], mediaCateId: curScope!.item!.id })
+          delMediaAssets({ ids: [id], mediaCateId: curScope!.item!.id })
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')
@@ -117,12 +117,12 @@ export default function ImageCardWrapper(props: any) {
 }
 
 type ImageCardProps = CustomCardItemProps & {
-  card: ImageItem
-  setCoverItem: ImageItem | null | undefined
-  editVideoName: (e: any, image: ImageItem) => any
-  setCoverImage: (e: any, image: ImageItem) => void
-  moveImage: (arg: any, image: ImageItem) => void
-  delImage: (arg: any, image: ImageItem) => void
+  card: MediaAssetsItem
+  setCoverItem: MediaAssetsItem | null | undefined
+  editVideoName: (e: any, image: MediaAssetsItem) => any
+  setCoverImage: (e: any, image: MediaAssetsItem) => void
+  moveImage: (arg: any, image: MediaAssetsItem) => void
+  delImage: (arg: any, image: MediaAssetsItem) => void
 }
 
 function ImageCard(props: ImageCardProps) {
@@ -141,7 +141,7 @@ function ImageCard(props: ImageCardProps) {
 
   return (
     <div
-      className={styles["image-card"] + ' ' + (directoryType === 'video' ? styles['video-card'] : '')}
+      className={styles["image-card"] + ' ' + (directoryType === 'VIDEO' ? styles['video-card'] : '')}
       key={`image-card-${id}`}
       onClick={() => preview(card)}
     >
@@ -153,7 +153,7 @@ function ImageCard(props: ImageCardProps) {
               <DownOutlined />
             </div>
             <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
-              {directoryType === 'video' && (
+              {directoryType === 'VIDEO' && (
                 <div className={styles["anticon-down-item"]} onClick={e => editVideoName(e, card)}>
                   <EditOutlined />
                   <span>编辑</span>
@@ -167,7 +167,7 @@ function ImageCard(props: ImageCardProps) {
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
-              {directoryType === 'image' && (
+              {directoryType === 'IMAGE' && (
                 <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
                   {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
                   <span>设为封面</span>
@@ -182,7 +182,7 @@ function ImageCard(props: ImageCardProps) {
           <img className={styles["cover"]} src={imgUrl} alt="cover" />
         </div>
       )}
-      {directoryType === 'video' && (
+      {directoryType === 'VIDEO' && (
         <div className={styles["header"]}>
           <span className={styles["name"]} title={'视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长'}>{'视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长视频名称，非常长'}</span>
         </div>

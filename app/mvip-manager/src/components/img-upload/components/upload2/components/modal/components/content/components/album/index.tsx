@@ -4,9 +4,9 @@ import ImgUploadContext from '@/components/img-upload/context'
 import styles from './index.less'
 import AlbumMenu from './components/album-menu'
 import ImgList from './components/img-list'
-import { getBaixingAlbumNameList, getAlbumNameList } from '@/api/shop'
+import { getBaixingAlbumNameList, getMediaCatesNameList } from '@/api/shop'
 import { mockData } from '@/utils';
-import { AlbumNameListItem } from '@/interfaces/shop';
+import { MediaCatesNameListItem } from '@/interfaces/shop';
 import { TabsKeys } from '../../data'
 import { ImageData } from '@/components/img-upload/data'
 import { ImageDataAlbumListItem } from '@/components/img-upload/data';
@@ -22,7 +22,7 @@ const Album: FC<Props> = (props) => {
   const [menuKey, setMenuKey] = useState<number | undefined>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
-  const createNewData = (result: AlbumNameListItem[]) => {
+  const createNewData = (result: MediaCatesNameListItem[]) => {
     return [...([{ id: -1, name: '全部' }, ...result]).map<ImageDataAlbumListItem>(item => {
       return {
         ...item,
@@ -49,7 +49,10 @@ const Album: FC<Props> = (props) => {
         if (!imageData[shopCurrent.id]) {
           setMenuKey(undefined)
           setGetDataLoading(true)
-          const res = await getAlbumNameList(shopCurrent!.id)
+          // TODO
+          const res = await getMediaCatesNameList({
+            source: 'IMAGE'
+          })
           const newData = createNewData(res.data)
           handleChangeImageData({
             ...imageData,

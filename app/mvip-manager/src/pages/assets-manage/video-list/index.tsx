@@ -6,7 +6,7 @@ import NavBar from './page-nav/index'
 // 资源管理 - 视频列表
 const AssetsMangeVideoListPage = () => {
   return <ImageListPage
-    directoryType="video"
+    directoryType="VIDEO"
     defaultScope={{ item: null, type: 'album', label: '视频分组', countLabel: '个' }}
     navBar={NavBar}
   />

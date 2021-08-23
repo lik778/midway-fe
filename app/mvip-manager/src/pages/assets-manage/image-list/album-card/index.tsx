@@ -3,20 +3,20 @@ import { Checkbox, Modal } from "antd"
 import { DeleteOutlined, DownOutlined, EditOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { delMediaAlbum } from '@/api/shop'
+import { delMediaCategory } from '@/api/shop'
 
 import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
-import { AlbumItem } from "@/interfaces/shop"
+import { MediaCateItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 
 import styles from './index.less'
 
 import DEFAULT_ALBUM_COVER from './default-album-cover.png'
 
-const createNewImageScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
-const createNewVideoScope = (album: AlbumItem) => ({ item: album, type: 'image', label: '视频', countLabel: '个' })
+const createNewImageScope = (album: MediaCateItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
+const createNewVideoScope = (album: MediaCateItem) => ({ item: album, type: 'image', label: '视频', countLabel: '个' })
 
 export default function AlbumCardWrapper(props: any) {
   const { lists, selection, setSelection, goTabScope, createAlbum, refresh } = props
@@ -30,12 +30,12 @@ export default function AlbumCardWrapper(props: any) {
   const [_, __] = useState('for padding')
 
   // 查看相册详情
-  const intoScope = (album: AlbumItem) => directoryType === 'image'
+  const intoScope = (album: MediaCateItem) => directoryType === 'IMAGE'
     ? goTabScope(createNewImageScope(album))
     : goTabScope(createNewVideoScope(album))
 
   // 编辑相册名称
-  const editAlbumName = async (e: any, album: AlbumItem) => {
+  const editAlbumName = async (e: any, album: MediaCateItem) => {
     e.stopPropagation()
     await createAlbum(album)
   }
@@ -69,13 +69,14 @@ export default function AlbumCardWrapper(props: any) {
   }
 
   // 删除相册
-  const delAlbum = async (e: any, album: AlbumItem) => {
+  const delAlbum = async (e: any, album: MediaCateItem) => {
     e.stopPropagation()
     const { id, totalImg } = album
     const info = totalImg === 0
       ? `${directoryLabel}删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} ${subDirectoryCountLabel + subDirectoryLabel}，删除后无法恢复，确认删除？`
-    await delCallback(delMediaAlbum, [id], info, () => {
+    const query = { ids: [id], souce: directoryType }
+    await delCallback(delMediaCategory, query, info, () => {
       setSelection(selection.filter((x: number) => x !== id))
       refreshAllAlbumLists()
       // TODO 在选区删除时也这么判断一下，现在那边是 refresh(true)
@@ -94,10 +95,10 @@ export default function AlbumCardWrapper(props: any) {
 }
 
 type AlbumCardProps = CustomCardItemProps & {
-  card: AlbumItem
-  intoScope: (album: AlbumItem) => any
-  editAlbumName: (e: any, album: AlbumItem) => any
-  delAlbum: (e: any, album: AlbumItem) => any
+  card: MediaCateItem
+  intoScope: (album: MediaCateItem) => any
+  editAlbumName: (e: any, album: MediaCateItem) => any
+  delAlbum: (e: any, album: MediaCateItem) => any
 }
 
 function AlbumCard(props: AlbumCardProps) {

@@ -4,21 +4,21 @@ import { Button, Select, Modal } from "antd"
 import CardsPageContext from '../../context/cards-page'
 import AlbumNamesContext from '../../context/album-names'
 
-import { AlbumNameListItem } from "@/interfaces/shop"
+import { MediaCatesNameListItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
-let albumSelectResolver: ((select: AlbumNameListItem | PromiseLike<AlbumNameListItem>) => void) | null = null
+let albumSelectResolver: ((select: MediaCatesNameListItem | PromiseLike<MediaCatesNameListItem>) => void) | null = null
 
 export default function useSelectAlbumListsModal() {
   const { directoryLabel } = useContext(CardsPageContext)
   const { lists: allAlbumLists } = useContext(AlbumNamesContext)
   const [exclude, setExclude] = useState<number[]>([])
   const displayLists = useMemo(() => allAlbumLists.filter(x => !exclude.includes(x.id)), [exclude])
-  const [select, setSelect] = useState<AlbumNameListItem>()
+  const [select, setSelect] = useState<MediaCatesNameListItem>()
   const [visible, setVisible] = useState(false)
 
-  const selectAlbum = async (args: { exclude: number[] }): Promise<AlbumNameListItem> => {
+  const selectAlbum = async (args: { exclude: number[] }): Promise<MediaCatesNameListItem> => {
     const { exclude = [] } = args
     if (exclude && exclude.length > 0) {
       setExclude(exclude)
@@ -29,11 +29,11 @@ export default function useSelectAlbumListsModal() {
     })
   }
   const handleSelectAlbum = (id: number) => {
-    const target = allAlbumLists.find((x: AlbumNameListItem) => x.id === id)
+    const target = allAlbumLists.find((x: MediaCatesNameListItem) => x.id === id)
     target && setSelect(target)
   }
   const handleConfirmSelectAlbum = () => {
-    albumSelectResolver && albumSelectResolver(select as AlbumNameListItem)
+    albumSelectResolver && albumSelectResolver(select as MediaCatesNameListItem)
     setVisible(false)
   }
 
@@ -51,7 +51,7 @@ export default function useSelectAlbumListsModal() {
         placeholder={`请选择一个${directoryLabel}`}
         onChange={(val: number) => handleSelectAlbum(val)}
       >
-        {displayLists.map((x: AlbumNameListItem, idx: number) => (
+        {displayLists.map((x: MediaCatesNameListItem, idx: number) => (
           <Select.Option
             value={x.id}
             key={String(x.id) + idx}

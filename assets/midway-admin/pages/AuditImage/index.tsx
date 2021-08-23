@@ -5,7 +5,7 @@ import { ZoomInOutlined } from "@ant-design/icons"
 
 import { getAuditImageList, auditImage } from '../../api/shop'
 
-import { ImageItem } from '../../interfaces/shop'
+import { MediaAssetsItem } from '../../interfaces/shop'
 
 import './index.css'
 
@@ -40,7 +40,7 @@ export default () => {
     setPreviewModal(false)
   }
 
-  const passImage = async (item: ImageItem) => {
+  const passImage = async (item: MediaAssetsItem) => {
     setLoading(true)
     const res = await auditImage({
       id: item.id,
@@ -59,7 +59,7 @@ export default () => {
       setLoading(false)
     }
   }
-  const notPassImage = async (item: ImageItem) => {
+  const notPassImage = async (item: MediaAssetsItem) => {
     setLoading(true)
     const res = await auditImage({
       id: item.id,
@@ -99,7 +99,7 @@ export default () => {
     { title: '违规原因', dataIndex: 'reason', key: 'reason' },
     { 
       title: '审核操作',
-      render: (_, item: ImageItem) => {
+      render: (_, item: MediaAssetsItem) => {
         return <>
           <Button type="primary" disabled={loading} onClick={() => passImage(item)}>通过</Button>
           <Button type="primary" danger disabled={loading} onClick={() => notPassImage(item)} style={{ marginLeft: '1em' }}>不通过</Button>

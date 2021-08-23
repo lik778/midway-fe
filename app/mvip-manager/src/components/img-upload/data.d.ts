@@ -1,7 +1,7 @@
 import React from 'react';
 import { ShowUploadListInterface, UploadFile } from 'antd/lib/upload/interface'
 import { CropProps } from '../crop/data';
-import { ShopInfo, ImageItem, AlbumNameListItem } from '@/interfaces/shop'
+import { ShopInfo, MediaAssetsItem, MediaCatesNameListItem } from '@/interfaces/shop'
 
 export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
   showCropIcon?: boolean // 是否显示裁剪icon
@@ -28,7 +28,7 @@ export interface ImgUploadProps {
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
 
   // 当uploadType === 1 时的可选 开始
-  uploadBeforeCrop?: boolean,// 选择时裁剪 
+  uploadBeforeCrop?: boolean,// 选择时裁剪
   itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
   // 当uploadType === 1 时的可选 结束
   /**
@@ -44,7 +44,7 @@ export interface ImgUploadProps {
 export interface ImageDataAlbumListItem {
   id: number,
   name: string,
-  images: ImageItem[]
+  images: MediaAssetsItem[]
   page: number,// 当前类型数据已经翻到多少页
   total: number,// 当前类型总页数
   init: boolean // 是否初始化过
@@ -72,7 +72,7 @@ export interface ImgUploadContextProps {
     cropProps: CropProps,// 裁剪参数
     actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
     // 当uploadType === 1 时的可选 开始
-    uploadBeforeCrop?: boolean,// 选择时裁剪 
+    uploadBeforeCrop?: boolean,// 选择时裁剪
     itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
   },
   albumVisible: boolean, // 图片库是否显示

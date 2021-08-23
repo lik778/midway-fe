@@ -2,11 +2,11 @@ import React, { useEffect, useState, useCallback, useContext } from 'react'
 import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { createMediaAlbum, updateMediaAlbum } from "@/api/shop"
+import { createMediaCategory, updateMediaCategory } from "@/api/shop"
 
 import CardsPageContext from '../../context/cards-page'
 
-import { AlbumItem } from "@/interfaces/shop"
+import { MediaCateItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
@@ -20,7 +20,7 @@ export default function useCreateAlbumModal(props: Props) {
   /***************************************************** States */
 
   const { refresh } = props
-  const { directoryLabel } = useContext(CardsPageContext)
+  const { directoryType, directoryLabel } = useContext(CardsPageContext)
 
   const [form] = Form.useForm()
   const [defaultVals, setDefaultVals] = useState<any>({})
@@ -29,7 +29,7 @@ export default function useCreateAlbumModal(props: Props) {
   const [loading, setLoading] = useState(false)
 
   // 打开模态框
-  const openModal = useCallback(async (album?: AlbumItem): Promise<boolean> => {
+  const openModal = useCallback(async (album?: MediaCateItem): Promise<boolean> => {
     if (album) {
       const { id, name } = album
       const defaultVals = { id, name }
@@ -53,20 +53,22 @@ export default function useCreateAlbumModal(props: Props) {
 
   /***************************************************** Actions */
 
-  // 新增及编辑相册
+  // 创建资源文件夹（参数带上ID则为编辑）
   const createAlbum = useCallback(async () => {
     form.validateFields()
       .then(formvals => {
         setLoading(true)
         let post = null
         let successMsg = ''
-        let params: any = {}
+        let params: any = {
+          source: directoryType
+        }
         if (isEditing) {
           params.id = defaultVals.id
-          post = updateMediaAlbum
+          post = updateMediaCategory
           successMsg = "编辑成功"
         } else {
-          post = createMediaAlbum
+          post = createMediaCategory
           successMsg = "创建成功"
         }
         post({ ...formvals, ...params })
@@ -91,7 +93,7 @@ export default function useCreateAlbumModal(props: Props) {
             createAlbumResover && createAlbumResover(false)
           })
       })
-  }, [createAlbumResover])
+  }, [createAlbumResover, directoryType])
 
   /***************************************************** Renders */
 

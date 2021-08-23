@@ -1,26 +1,26 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { Checkbox, Modal } from "antd"
 import { DeleteOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { reAuditMediaImage, delMediaFailedImage } from '@/api/shop'
+import { reAuditMediaAssets, delMediaFailedAssets } from '@/api/shop'
 
-import { ImageItem } from "@/interfaces/shop"
+import { MediaAssetsItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 
 import styles from './index.less'
 
 export default function ErrorCardWrapper(props: any) {
   const { lists, selection, setSelection, refresh } = props
-  const [auditLoadingItem, setAuditLoadingItem] = useState<ImageItem | null>()
+  const [auditLoadingItem, setAuditLoadingItem] = useState<MediaAssetsItem | null>()
 
   /***************************************************** API Calls */
 
   // 申诉图片
-  const reAuditImage = async (e: any, image: ImageItem) => {
+  const reAuditImage = async (e: any, image: MediaAssetsItem) => {
     setAuditLoadingItem(image)
     e.stopPropagation()
-    reAuditMediaImage({ id: image.id })
+    reAuditMediaAssets({ id: image.id })
       .then((res: any) => {
         if (res.success) {
           successMessage('申诉成功')
@@ -38,7 +38,7 @@ export default function ErrorCardWrapper(props: any) {
   }
 
   // 删除图片
-  const delImage = (e: any, image: ImageItem) => {
+  const delImage = (e: any, image: MediaAssetsItem) => {
     e.stopPropagation()
     const { id } = image
     Modal.confirm({
@@ -48,7 +48,11 @@ export default function ErrorCardWrapper(props: any) {
       onCancel() { },
       onOk() {
         return new Promise((resolve, reject) => {
-          delMediaFailedImage({ ids: [id] })
+          const query = {
+            ids: [id],
+            source: 'IMAGE'
+          }
+          delMediaFailedAssets(query as any)
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')
@@ -83,10 +87,10 @@ export default function ErrorCardWrapper(props: any) {
 
 // 自定义申诉列表的卡片
 type ErrorCardItemProps = CustomCardItemProps & {
-  card: ImageItem,
-  auditLoadingItem: ImageItem | null
-  reAuditImage: (e: any, image: ImageItem) => any
-  delImage: (e: any, image: ImageItem) => any
+  card: MediaAssetsItem,
+  auditLoadingItem: MediaAssetsItem | null
+  reAuditImage: (e: any, image: MediaAssetsItem) => any
+  delImage: (e: any, image: MediaAssetsItem) => any
 }
 function ErrorCardItem(props: ErrorCardItemProps) {
   const {

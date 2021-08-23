@@ -4,7 +4,7 @@ export type ImageType = 'NOT_COVER' | 'COVER'
 /**
  * @description 相册图片类型
  */
-export type ImageItem = {
+export type MediaAssetsItem = {
   id: number,
   name?: string,
   imgUrl: string,

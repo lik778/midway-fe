@@ -4,7 +4,7 @@ import { debounce } from 'lodash'
 
 import PreviewModal from './preview-modal'
 
-import { TabScopeItem, CardItem, ImageItem } from "@/interfaces/shop"
+import { TabScopeItem, CardItem, MediaAssetsItem } from "@/interfaces/shop"
 import { PaginationSetting } from '@/hooks/pagination'
 
 import styles from "./index.less"
@@ -17,7 +17,7 @@ export type CustomCardItemProps = {
   lists: CardItem[]
   refresh: (resetPagi?: boolean) => void
   setSelection: (ids: number[]) => void
-  preview: (image: ImageItem) => any
+  preview: (image: MediaAssetsItem) => any
   handleSelectCard: (e: any, card: CardItem) => any
 }
 
@@ -51,7 +51,7 @@ export default function CardsContainer(props: CardsContainerProps) {
     emptyTip, cardItem, customPreview
   } = props
 
-  const [previewItem, setPreviewItem] = useState<ImageItem | undefined>()
+  const [previewItem, setPreviewItem] = useState<MediaAssetsItem | undefined>()
   const [previewModal, setPreviewModal] = useState(false)
 
   const [countInLine, setCountInLine] = useState(0)
@@ -121,7 +121,7 @@ export default function CardsContainer(props: CardsContainerProps) {
 
   /***************************************************** Interaction Fns */
 
-  const preview = (image: ImageItem) => {
+  const preview = (image: MediaAssetsItem) => {
     setPreviewItem(image)
     setPreviewModal(true)
   }

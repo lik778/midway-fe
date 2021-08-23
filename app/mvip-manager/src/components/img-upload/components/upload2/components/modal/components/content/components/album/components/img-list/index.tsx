@@ -5,9 +5,9 @@ import { TabsKeys } from '../../../../data';
 import ImgItem from '../../../img-item'
 import ImgUploadContext from '@/components/img-upload/context'
 import { mockData } from '@/utils';
-import { ImageItem } from '@/interfaces/shop';
+import { MediaAssetsItem } from '@/interfaces/shop';
 import styles from './index.less'
-import { getMediaImage, getBaixingMediaImage } from '@/api/shop'
+import { getMediaAssets, getBaixingMediaAssets } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
 
@@ -25,8 +25,8 @@ const ImgList: FC<Props> = (props) => {
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const ref = useRef<HTMLDivElement | null>(null)
 
-  const createNewData = (result: ImageItem[], totalPage: number) => {
-    // images: ImageItem[]
+  const createNewData = (result: MediaAssetsItem[], totalPage: number) => {
+    // images: MediaAssetsItem[]
     // page: number,// 当前类型数据已经翻到多少页
     // total: number,// 当前类型总页数
     // init: boolean // 是否初始化过
@@ -44,13 +44,15 @@ const ImgList: FC<Props> = (props) => {
     if (albumTypeDetail.page > albumTypeDetail.total) return
     if (getDataLoading) return
     setGetDataLoading(true)
-    const res = await (tabKey === '百姓图库' ? getBaixingMediaImage : getMediaImage)(shopCurrent!.id, {
+    const postMethod = tabKey === '百姓图库'
+      ? getBaixingMediaAssets
+      : getMediaAssets
+    const res = await postMethod({
       page: albumTypeDetail.page,
       size: 16,
-      mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined
+      mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined,
+      source: 'IMAGE'
     })
-    // (shopId: number, params: GetMediaImageParam) => ShopAPIReturn<GetMediaImageRes>
-    // (shopId: number, params: GetMediaImageParam) => Promise<ServiceResponse<GetMediaImageRes>>
     setGetDataLoading(false)
     if (!res.success) {
       errorMessage(res.message)

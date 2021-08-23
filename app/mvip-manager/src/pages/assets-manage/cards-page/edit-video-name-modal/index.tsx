@@ -2,9 +2,9 @@ import React, { useState, useCallback, useContext } from 'react'
 import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { updateMediaAlbum } from "@/api/shop"
+import { updateMediaCategory } from "@/api/shop"
 
-import { ImageItem } from "@/interfaces/shop"
+import { MediaAssetsItem } from "@/interfaces/shop"
 
 import styles from './index.less'
 
@@ -25,7 +25,7 @@ export default function useEditVideoNameModal(props: Props) {
   const [loading, setLoading] = useState(false)
 
   // 打开模态框
-  const openModal = useCallback(async (album?: ImageItem): Promise<boolean> => {
+  const openModal = useCallback(async (album?: MediaAssetsItem): Promise<boolean> => {
     if (album) {
       const { id, name } = album
       const defaultVals = { id, name }
@@ -55,7 +55,8 @@ export default function useEditVideoNameModal(props: Props) {
         let successMsg = ''
         let params: any = {}
         params.id = defaultVals.id
-        post = updateMediaAlbum
+        // TODO FIXME
+        post = updateMediaCategory
         successMsg = "编辑成功"
         post({ ...formvals, ...params })
           .then(res => {

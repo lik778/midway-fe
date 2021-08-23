@@ -1,23 +1,23 @@
 import React, { useReducer } from 'react'
 
-import { AlbumItem, AlbumNameListItem } from "@/interfaces/shop"
+import { MediaCateItem, MediaCatesNameListItem } from "@/interfaces/shop"
 
 type CardsPageContextType = {
-  directoryType: 'image' | 'video'
+  directoryType: 'IMAGE' | 'VIDEO'
   directoryLabel: '相册' | '视频分组'
   subDirectoryLabel: '图片' | '视频'
   subDirectoryCountLabel: '张' | '个'
   // // 刷新页面列表
   // refresh: (resetPagi?: boolean) => void
   // // 创建或编辑相册
-  // createAlbum: (album?: AlbumItem) => void
+  // createAlbum: (album?: MediaCateItem) => void
   // 选择相册模态框
   selectAlbum: (args: { exclude: number[] }) => any
   dispatch: any
 }
 
 const initialState: CardsPageContextType = {
-  directoryType: 'image',
+  directoryType: 'IMAGE',
   directoryLabel: '相册',
   subDirectoryLabel: '图片',
   subDirectoryCountLabel: '张',
@@ -34,9 +34,9 @@ export default CardsPageContext
 const reducer = (prevState: CardsPageContextType, action: any): CardsPageContextType => {
   switch (action.type) {
     case 'update-directory-type':
-      prevState.directoryLabel = action.payload === 'image' ? '相册' : '视频分组'
-      prevState.subDirectoryLabel = action.payload === 'image' ? '图片' : '视频'
-      prevState.subDirectoryCountLabel = action.payload === 'image' ? '张' : '个'
+      prevState.directoryLabel = action.payload === 'IMAGE' ? '相册' : '视频分组'
+      prevState.subDirectoryLabel = action.payload === 'IMAGE' ? '图片' : '视频'
+      prevState.subDirectoryCountLabel = action.payload === 'IMAGE' ? '张' : '个'
       prevState.directoryType = action.payload
       return prevState
     // case 'update-refresh':

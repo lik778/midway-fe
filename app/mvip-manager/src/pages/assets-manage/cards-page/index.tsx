@@ -13,7 +13,7 @@ import usePagination from '@/hooks/pagination'
 import CardsPageContext from '../context/cards-page'
 import AlbumNamesContext from '../context/album-names'
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem } from "@/interfaces/shop"
+import { TabScope, TabScopeItem, CardItem, MediaCateItem } from "@/interfaces/shop"
 import { CustomCardItemProps } from './cards-container'
 
 import styles from './index.less'
@@ -184,7 +184,7 @@ const CardsPage = (props: CardsPageProps) => {
   const [$editVideoNameModal, editVideo] = useEditVideoNameModal({ refresh })
 
   // 创建或编辑相册后重新拉取所有相册列表
-  const createAlbum = useCallback(async (album?: AlbumItem) => {
+  const createAlbum = useCallback(async (album?: MediaCateItem) => {
     const isDone = await createOrEditAlbum(album)
     if (isDone) {
       refreshAllAlbumLists()

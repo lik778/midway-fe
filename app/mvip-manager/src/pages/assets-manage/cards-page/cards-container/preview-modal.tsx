@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { Modal } from "antd"
 import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons"
 
-import { CardItem, ImageItem } from "@/interfaces/shop"
+import { CardItem, MediaAssetsItem } from "@/interfaces/shop"
 
 declare global {
   interface Window {
@@ -12,10 +12,10 @@ declare global {
 
 type PreviewModalProps = {
   lists: CardItem[]
-  previewItem: ImageItem | undefined
+  previewItem: MediaAssetsItem | undefined
   previewModal: boolean
   closePreviewModal: () => any
-  preview: (image: ImageItem) => any
+  preview: (image: MediaAssetsItem) => any
   customPreview?: (card: CardItem) => (JSX.Element | null)
 }
 export default function PreviewModal(props: PreviewModalProps) {
@@ -48,10 +48,10 @@ export default function PreviewModal(props: PreviewModalProps) {
   useEffect(() => {
     const handlePreview = (e: any) => {
       if ((e?.code === 'ArrowLeft') && prev) {
-        preview(prev as ImageItem)
+        preview(prev as MediaAssetsItem)
       }
       if ((e?.code === 'ArrowRight') && next) {
-        preview(next as ImageItem)
+        preview(next as MediaAssetsItem)
       }
     }
     window.addEventListener('keyup', handlePreview)
@@ -76,8 +76,8 @@ export default function PreviewModal(props: PreviewModalProps) {
         {/* FIXME 图片太小的话遮不住这个框框 */}
         <LoadingOutlined />
         {$customPreview || <img src={previewItem.imgUrl} alt="预览图片" />}
-        {prev && <LeftOutlined title="上一张" onClick={() => preview(prev as ImageItem)} />}
-        {next && <RightOutlined title="下一张" onClick={() => preview(next as ImageItem)} />}
+        {prev && <LeftOutlined title="上一张" onClick={() => preview(prev as MediaAssetsItem)} />}
+        {next && <RightOutlined title="下一张" onClick={() => preview(next as MediaAssetsItem)} />}
       </div>
     </Modal>
   )

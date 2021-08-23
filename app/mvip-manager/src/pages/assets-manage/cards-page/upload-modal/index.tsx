@@ -3,7 +3,7 @@ import { Button, Modal } from "antd"
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
 
 import { upImageToYoupai } from '@/api/common'
-import { reAuditMediaImage, createMediaImage, delMediaImage } from '@/api/shop'
+import { reAuditMediaAssets, createMediaAssets, delMediaAssets } from '@/api/shop'
 import { successMessage, errorMessage } from "@/components/message"
 import useAlbumSelector from '../album-selector'
 import { useUpload, UploadItem } from './upload'
@@ -81,7 +81,7 @@ export default function useUploadModal(props: Props) {
   const [visible, setVisible] = useState(false)
   const { directoryType, directoryLabel, subDirectoryCountLabel, subDirectoryLabel } = useContext(CardsPageContext)
 
-  const isUploadImage = useMemo(() => directoryType === 'image', [directoryType])
+  const isUploadImage = useMemo(() => directoryType === 'IMAGE', [directoryType])
   const isUploadVideo = useMemo(() => !isUploadImage, [isUploadImage])
 
   const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector()
@@ -129,7 +129,7 @@ export default function useUploadModal(props: Props) {
           }
           const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum.id }
           const res: any = await Promise.race([
-            createMediaImage(query),
+            createMediaAssets(query),
             new Promise((_, reject) => {
               setTimeout(() => {
                 reject(new Error('上传超时，点击删除'))
@@ -225,7 +225,7 @@ export default function useUploadModal(props: Props) {
     if (findUploaded && findUploaded.id !== UPLOAD_RES_MAP_DEFAULT_ID) {
       // dont care is delete done or not ...
       const query = { ids: [findUploaded.id], mediaCateId: selectedAlbum.id }
-      delMediaImage(query)
+      delMediaAssets(query)
         .then(res => {
           if (res.success) {
             const findIDX = uploadedLists.current.findIndex(x => x === findUploaded)
@@ -239,7 +239,7 @@ export default function useUploadModal(props: Props) {
   // 申诉图片
   const reAuditImage = async (image: UploadResMap | undefined) => {
     if (image) {
-      reAuditMediaImage({ id: image.id })
+      reAuditMediaAssets({ id: image.id })
         .then((res: any) => {
           if (res.success) {
             successMessage('申诉成功，请到申诉记录查看进度')

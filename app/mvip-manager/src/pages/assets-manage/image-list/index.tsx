@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, useContext } from 're
 import { Button, Modal, Result } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { getMediaAlbum, getMediaImage, delMediaAlbum, delMediaImage } from '@/api/shop'
+import { getMediaCatesList, getMediaAssets, delMediaCategory, delMediaAssets } from '@/api/shop'
 import NavBar from './page-nav/index'
 import AlbumCardWrapper from './album-card/index'
 import ImageCardWrapper from './image-card/index'
@@ -12,13 +12,15 @@ import useSelectAlbumListsModal from '../cards-page/select-album-modal/index'
 import CardsPageContext, { CardsPageContextProvider } from '../context/cards-page'
 import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-names'
 
-import { TabScope, TabScopeItem, CardItem, AlbumItem, ImageItem } from "@/interfaces/shop"
+import { MediaCateSource, TabScope, TabScopeItem, CardItem, MediaCateItem, MediaAssetsItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
 
 const AssetsMangeImageListPageContexted = (props: any) => {
+  let { directoryType } = props
+  directoryType = directoryType || 'image'
   return (
     <CardsPageContextProvider>
-      <AlbumNamesContextProvider>
+      <AlbumNamesContextProvider sourceType={directoryType}>
         <AssetsMangeImageListPage {...props} />
       </AlbumNamesContextProvider>
     </CardsPageContextProvider>
@@ -44,7 +46,7 @@ const AssetsMangeImageListPage = (props: {
   useEffect(() => {
     dispatch({
       type: 'update-directory-type',
-      payload: propsDirectoryType || 'image'
+      payload: propsDirectoryType || 'IMAGE'
     })
   }, [propsDirectoryType])
 
@@ -95,11 +97,18 @@ const AssetsMangeImageListPage = (props: {
         onOk() {
           return new Promise((resolve, reject) => {
             const deleteFn = isScopeAlbum
-              ? delMediaAlbum
-              : delMediaImage
+              ? delMediaCategory
+              : delMediaAssets
             const query = isScopeAlbum
-              ? [...selection]
-              : { ids: [...selection], mediaCateId: curScope?.item?.id }
+              ? {
+                ids: [...selection],
+                source: directoryType
+              }
+              : {
+                ids: [...selection],
+                mediaCateId: curScope?.item?.id,
+                source: directoryType
+              }
             deleteFn(query as any)
               .then((res: any) => {
                 if (res.success) {
@@ -120,23 +129,23 @@ const AssetsMangeImageListPage = (props: {
         }
       })
     }
-  }, [isScopeAlbum, directoryLabel, refreshAllAlbumLists])
+  }, [isScopeAlbum, directoryType, directoryLabel, refreshAllAlbumLists])
 
   // 全选时不需要选择默认相册
   const selectAllFrom = useCallback((lists: CardItem[]) => (
-    lists.filter(x => (x as AlbumItem).type !== 'DEFAULT')
+    lists.filter(x => (x as MediaCateItem).type !== 'DEFAULT')
   ), [isScopeAlbum])
 
   // 获取列表
   const fetchListFn = useMemo(() => {
     if (isScopeAlbum) {
-      return fetchAlbumLists
+      return fetchAssetsCatesList(directoryType)
     }
     if (isScopeImage) {
-      return fetchImageLists
+      return fetchAssetsList(directoryType)
     }
     return null
-  }, [isScopeAlbum, isScopeImage])
+  }, [directoryType, isScopeAlbum, isScopeImage])
 
   /***************************************************** Renders */
 
@@ -190,9 +199,9 @@ const AssetsMangeImageListPage = (props: {
 
   // 视频预览
   const cardItemPreview = useMemo(() => {
-    if (directoryType === 'video') {
+    if (directoryType === 'VIDEO') {
       return (previewItem: CardItem) => {
-        const { imgUrl } = previewItem as ImageItem
+        const { imgUrl } = previewItem as MediaAssetsItem
         return <video src={imgUrl} preload="preload" />
       }
     } else {
@@ -223,23 +232,29 @@ const AssetsMangeImageListPage = (props: {
  * API 请求
  */
 
-async function fetchAlbumLists(querys: any) {
-  try {
-    const res = await getMediaAlbum(querys)
-    const { result = [], totalRecord = 0 } = res.data.mediaCateBos
-    return [result, totalRecord] as const
-  } catch (err) {
-    throw new Error(err)
+function fetchAssetsCatesList(sourceType: MediaCateSource) {
+  return async (querys: any) => {
+    try {
+      querys.source = sourceType
+      const res = await getMediaCatesList(querys)
+      const { result = [], totalRecord = 0 } = res.data.mediaCateBos
+      return [result, totalRecord] as const
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 }
 
-async function fetchImageLists(querys: any) {
-  try {
-    const res = await getMediaImage(querys)
-    const { result = [], totalRecord = 0 } = res.data.mediaImgBos
-    return [result, totalRecord] as const
-  } catch (err) {
-    throw new Error(err)
+function fetchAssetsList(sourceType: MediaCateSource) {
+  return async (querys: any) => {
+    try {
+      querys.source = sourceType
+      const res = await getMediaAssets(querys)
+      const { result = [], totalRecord = 0 } = res.data.mediaImgBos
+      return [result, totalRecord] as const
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 }
 
