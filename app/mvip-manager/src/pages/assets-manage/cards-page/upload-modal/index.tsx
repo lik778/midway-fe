@@ -161,11 +161,14 @@ export default function useUploadModal(props: Props) {
             error: ''
           }])
           const fileMD5 = item.response.url.split('/')[1].split('.')[0]
-          const coverName = `${fileMD5}-${String(Math.random()).slice(-6)}.jpg`
+          const coverName = `${fileMD5}-${String(Math.random()).slice(-6)}.png`
           const formData = new FormData()
           formData.append('policy', window.__upyunImgConfig?.uploadParams?.policy)
           formData.append('signature', window.__upyunImgConfig?.uploadParams?.signature)
-          formData.append('file', await base64ToBlob(item.preview.split(',')[1], 'image/jpg'), coverName)
+          /**
+           * @see https://stackoverflow.com/questions/38579262/uncaught-invalidcharactererror-failed-to-convert-to-blob-from-base64-image
+           **/
+          formData.append('file', await base64ToBlob(item.preview.split(',')[1], 'image/png'), coverName)
           const res = await upImageToYoupai(formData)
           if (res) {
             const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo

@@ -26,6 +26,8 @@ const getBase64 = function (file: Blob): Promise<any> {
 }
 
 // 获取视频的第一帧
+// TODO FIXME 图片变绿！？
+// TODO png 压缩
 const getFirstVideoFrame = function (file: Blob): Promise<any> {
   return new Promise(resolve => {
     const $video = document.createElement('video')
@@ -37,7 +39,7 @@ const getFirstVideoFrame = function (file: Blob): Promise<any> {
       $canvas.width = $video.videoWidth
       $canvas.height = $video.videoHeight
       $canvas.getContext('2d')!.drawImage($video, 0, 0, $canvas.width, $canvas.height)
-      const preview = $canvas.toDataURL('image/jpg')
+      const preview = $canvas.toDataURL('image/png')
       resolve(preview)
     }
   }).catch(error => {
