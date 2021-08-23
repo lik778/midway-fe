@@ -23,15 +23,24 @@ declare global {
   }
 }
 
-// 保存 UploadItem 和 上传结果的关系
-type UploadResMap = {
+// 保存上传到又拍云的项目（UploadItem）和调用后端接口的关系
+type UploadResBase = {
   uid: string
-  imageID: number
-  inChibi: boolean
-  chibiFailed: boolean
+  id: number
   status: string
   error: string
 }
+// 图片资源
+type UploadResImage = UploadResBase & {
+  inChibi: boolean
+  chibiFailed: boolean
+}
+// 视频资源
+type UploadResVideo = UploadResBase & {
+  inEncode: boolean
+  encodeDone: boolean
+}
+type UploadResMap = UploadResImage | UploadResVideo
 
 type Props = {
   refresh: () => void
@@ -77,17 +86,21 @@ export default function useUploadModal(props: Props) {
   // 上传后钩子（在上传到又拍云后用来和后端交互）
   const afterUploadHook = useCallback(async (item: UploadItem) => {
     return await new Promise<UploadItem>(async resolve => {
-      record([...uploadedLists.current, {
-        uid: item.uid,
-        imageID: UPLOAD_RES_MAP_DEFAULT_ID,
-        inChibi: true,
-        chibiFailed: false,
-        status: 'done',
-        error: ''
-      }])
       try {
+        /* 图片上传后钩子 */
         if (isUploadImage) {
-          const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum!.id }
+          record([...uploadedLists.current, {
+            uid: item.uid,
+            id: UPLOAD_RES_MAP_DEFAULT_ID,
+            inChibi: true,
+            chibiFailed: false,
+            status: 'done',
+            error: ''
+          }])
+          if (!selectedAlbum) {
+            throw new Error('[ERR] 请选择上传文件夹')
+          }
+          const query = { imgUrl: item.response.url, mediaCateId: selectedAlbum.id }
           const res: any = await Promise.race([
             createImagesetImage(query),
             new Promise((_, reject) => {
@@ -97,9 +110,9 @@ export default function useUploadModal(props: Props) {
             })
           ])
           if (res.success && (typeof res.data.id === 'number')) {
-            const target = uploadedLists.current.find(x => x.uid === item.uid)
+            const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResImage
             if (target) {
-              target.imageID = res.data.id
+              target.id = res.data.id
               target.inChibi = false
               target.chibiFailed = res.data.checkStatus !== 'APPROVE'
               record(uploadedLists.current)
@@ -108,16 +121,43 @@ export default function useUploadModal(props: Props) {
           } else {
             throw new Error(res.message || '上传失败')
           }
-        } else {
+        }
+        /* 视频上传后钩子 */
+        if (!isUploadImage) {
+          record([...uploadedLists.current, {
+            uid: item.uid,
+            id: UPLOAD_RES_MAP_DEFAULT_ID,
+            inEncode: true,
+            encodeDone: false,
+            status: 'done',
+            error: ''
+          }])
+          setTimeout(() => {
+            const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
+            target.inEncode = false
+            record(uploadedLists.current)
+          }, 1000)
           resolve(item)
         }
-      } catch (error: any) {
-        const target = uploadedLists.current.find(x => x.uid === item.uid)
-        if (target) {
-          target.inChibi = false
-          target.status = 'error'
-          target.error = error.message
-          record(uploadedLists.current)
+      }
+      /* 异常处理 */
+      catch (error: any) {
+        if (isUploadImage) {
+          const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResImage
+          if (target) {
+            target.inChibi = false
+            target.status = 'error'
+            target.error = error.message
+            record(uploadedLists.current)
+          }
+        } else {
+          const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
+          if (target) {
+            target.inEncode = false
+            target.status = 'error'
+            target.error = error.message
+            record(uploadedLists.current)
+          }
         }
       }
     })
@@ -143,9 +183,9 @@ export default function useUploadModal(props: Props) {
     if (!selectedAlbum) return
     const { uid } = item
     const findUploaded = uploadedLists.current.find(x => x.uid === uid)
-    if (findUploaded && findUploaded.imageID !== UPLOAD_RES_MAP_DEFAULT_ID) {
+    if (findUploaded && findUploaded.id !== UPLOAD_RES_MAP_DEFAULT_ID) {
       // dont care is delete done or not ...
-      const query = { ids: [findUploaded.imageID], mediaCateId: selectedAlbum.id }
+      const query = { ids: [findUploaded.id], mediaCateId: selectedAlbum.id }
       delImagesetImage(query)
         .then(res => {
           if (res.success) {
@@ -160,7 +200,7 @@ export default function useUploadModal(props: Props) {
   // 申诉图片
   const reAuditImage = async (image: UploadResMap | undefined) => {
     if (image) {
-      reAuditImagesetImage({ id: image.imageID })
+      reAuditImagesetImage({ id: image.id })
         .then((res: any) => {
           if (res.success) {
             successMessage('申诉成功，请到申诉记录查看进度')
@@ -204,43 +244,38 @@ export default function useUploadModal(props: Props) {
 
   const showActions = lists.length > 0
 
-  // 渲染上传列表
-  // TODO REFACTOR 样式
+  /**
+   * 渲染上传列表
+   * @todo REFACTOR 样式
+   */
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { uid, percent, preview } = item
-    const uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
+    let uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
-    const inChibi = uploadedItem ? uploadedItem.inChibi : false
-    const chibiFailed = uploadedItem ? uploadedItem.chibiFailed : false
     const error = uploadedItem ? uploadedItem.error : ''
 
+    let $extra
     let $contents
     let dispearMask = false
-    if (inChibi === true) {
-      $contents = <span className={styles["upload-info"]}>审核中</span>
-    } else if (chibiFailed) {
-      $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
-        <AuditFailedIcon />
-        <span>该{subDirectoryLabel}涉及违禁</span>
-        <span className={styles["re-audit-btn"]} onClick={() => reAuditImage(uploadedItem)}>点击申诉</span>
-      </span>
-    } else {
-      if (status === 'uploading') {
-        const radius = 25
-        const percent100Len = Math.ceil(2 * 3.14 * radius)
-        const exactPercent = percent ? Math.floor(percent) : 0
-        $contents = <>
-          <svg className={styles['progress']} width="60px" height="60px">
-            <circle r="25" cy="30" cx="30" strokeWidth="3" stroke="rgba(0,0,0,0.5)" strokeLinejoin="round" strokeLinecap="round" fill="none" />
-            <circle r="25" cy="30" cx="30" strokeWidth="3" stroke="#1790FF" strokeLinejoin="round" strokeLinecap="round" fill="none" strokeDashoffset="0px" strokeDasharray={percent100Len + 'px'} />
-          </svg>
-          <span className={styles["upload-info"]}>{exactPercent}%</span>
-        </>
-      } else if (status === 'error' || item.status === 'error') {
-        $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
-          {error || '上传失败，点击删除'}
+
+    /* 图片卡片样式处理 */
+
+    if (isUploadImage) {
+      uploadedItem = uploadedItem as UploadResImage
+      const inChibi = uploadedItem ? uploadedItem.inChibi : false
+      const chibiFailed = uploadedItem ? uploadedItem.chibiFailed : false
+
+      if (inChibi === true) {
+        $contents = <span className={styles["upload-info"]}>审核中</span>
+      }
+      if (chibiFailed) {
+        $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
+          <AuditFailedIcon />
+          <span>该{subDirectoryLabel}涉及违禁</span>
+          <span className={styles["re-audit-btn"]} onClick={() => reAuditImage(uploadedItem)}>点击申诉</span>
         </span>
-      } else if (status === 'done') {
+      }
+      if (status === 'done') {
         if (preview) {
           dispearMask = true
           $contents = <>
@@ -254,20 +289,79 @@ export default function useUploadModal(props: Props) {
           dispearMask = false
           $contents = <span className={styles["upload-info"]}>加载中</span>
         }
-      } else if (!status) {
-        dispearMask = true
-      } else {
-        // ...
       }
     }
+
+    /* 视频卡片样式处理 */
+
+    if (!isUploadImage) {
+      uploadedItem = uploadedItem as UploadResVideo
+      const inEncode = uploadedItem ? uploadedItem.inEncode : false
+      const encodeDone = uploadedItem ? uploadedItem.encodeDone : false
+
+      if (inEncode === true) {
+        $contents = (
+          <span className={styles["upload-info"] + ' ' + styles["video"]} >
+            <span>视频转码中...</span>
+            <span className={styles["upload-info-des"]}>将自动为您生成视频封面<br />也可以稍后自行替换</span>
+          </span>
+        )
+      }
+      if (encodeDone) {
+        // ？
+      }
+      if (status === 'done') {
+        if (preview) {
+          dispearMask = true
+          $contents = <>
+            <div className={styles['upload-item-actions']}>
+              <span className={styles['action']} onClick={() => handleRemove(item)}>
+                <DeleteOutlined />
+              </span>
+            </div>
+          </>
+          $extra = <div className={styles['play-icon']} />
+        }
+      }
+    }
+
+    /* 通用卡片样式处理 */
+
+    // 处理加载中样式
+    if (status === 'uploading') {
+      const radius = 25
+      const percent100Len = Math.ceil(2 * 3.14 * radius)
+      const exactPercent = percent ? Math.floor(percent) : 0
+      $contents = <>
+        <svg className={styles['progress']} width="60px" height="60px">
+          <circle r="25" cy="30" cx="30" strokeWidth="3" stroke="rgba(0,0,0,0.5)" strokeLinejoin="round" strokeLinecap="round" fill="none" />
+          <circle r="25" cy="30" cx="30" strokeWidth="3" stroke="#1790FF" strokeLinejoin="round" strokeLinecap="round" fill="none" strokeDashoffset="0px" strokeDasharray={percent100Len + 'px'} />
+        </svg>
+        <span className={styles["upload-info"]}>{exactPercent}%</span>
+      </>
+    }
+
+    // 处理报错样式（需要点击删除）
+    if (status === 'error' || item.status === 'error') {
+      $contents = <span className={styles["upload-info"] + ' ' + styles['error']} onClick={() => handleRemove(item)}>
+        {error || '上传失败，点击删除'}
+      </span>
+    }
+
+    // TODO delete or not
+    // else if (!status) {
+    //   dispearMask = true
+    // }
+
     return (
       <div className={styles["upload-item"]} key={`${uid}-${idx}-${status}`}>
         <img className={styles["upload-img"]} src={preview} />
         <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
         <div className={styles["wrapper"]}>{$contents}</div>
+        {$extra}
       </div>
     )
-  }), [lists, uploadedLists, reRender])
+  }), [lists, uploadedLists, isUploadImage, reRender])
 
   const showUploadBtn = (lists.length < MAX_UPLOAD_COUNT) && canUpload
 

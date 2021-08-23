@@ -31,9 +31,9 @@ export const upyunVideoConfig = {
     "save-key": "/{filemd5}{.suffix}",
     "type": "nbhd",
     /* @see https://help.upyun.com/knowledge-base/av/#e5b8b8e794a8e58f82e695b0 */
-    "advote": "/vcodec/libx264/s/1080p(16:9)/r/25/sm/false/ar/22050",
-    /* TODO for test only */
+    "advote": "/s/720p(16:9)/r/25/sm/false/ar/22050",
+    /* TODO for test only */ 
     "notify-url": "https://enb6hk1stgczkkc.m.pipedream.net",
-    "ext-param": "source=msshop"
+    "ext-param": "source=msshop&s=720p(16:9)"
   },
 }
