@@ -233,6 +233,7 @@ export const getMediaCatesList = (params: GetMediaCatesParam) => {
 
 // 获取资源名称列表（比资源列表节约资源）
 export const getMediaCatesNameList = (params: getMediaCatesNameListParam) => {
+  // getApiData
   return postApiData<MediaCatesNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', params, setShopHeader(3863))
 }
 
@@ -248,11 +249,13 @@ export const updateMediaCategory = (params: UpdateMediaCatesParam) => {
 
 // 删除资源分类
 export const delMediaCategory = (params: DelMediaCatesParam) => {
-  return getApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params, setShopHeader(3863))
+  // getApiData
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params, setShopHeader(3863))
 }
 
 // 获取分类内资源列表
 export const getMediaAssets = (params: GetMediaAssetsParam) => {
+  // /material
   return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(3863))
 }
 
@@ -263,6 +266,7 @@ export const reAuditMediaAssets = (params: ReAuditMediaAssetsParam) => {
 
 // 添加素材到分类（上传又拍云后调用）
 export const createMediaAssets = (params: CreateMediaAssetsParam) => {
+  // /material
   return postApiData<MediaAssetsItem>(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(3863))
 }
 
@@ -287,6 +291,7 @@ export const moveMediaAssets = (params: MoveMediaAssetsParam) => {
 
 // 获取申诉列表（审核失败和审核中的资源）
 export const getMediaFailedAssets = (params: GetMediaFailedAssetsParam) => {
+  // /material
   return postApiData<GetMediaFailedAssetsRes>(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(3863))
 }
 
