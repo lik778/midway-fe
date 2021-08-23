@@ -123,43 +123,81 @@ export function useUpload(props: Props) {
   }
 
   // 检测资源属性是否合规
-  const checkAssets = useCallback((file: RcFile) => {
-    // 给上传增加一个测试开关
-    if (window._quick_upload) {
-      window._quick_upload_file = file
-      return true
-    }
-    const isExtAndSizeValid = (file: RcFile, exts: string[], size: number) => {
-      if (!file) {
-        return false
+  const checkAssets = useCallback(async (file: RcFile) => {
+    return new Promise(async (resolve, reject) => {
+
+      // 给上传增加一个测试开关
+      if (window._quick_upload) {
+        window._quick_upload_file = file
+        resolve(file)
       }
-      const isValidType = exts.includes(file.type)
-      if (!isValidType) {
-        notification.open({
-          key: 'imageset-upload-error-filetype',
-          message: `${uploadItemLabel}格式错误`,
-          description: `请上传 ${exts.map(x => x.split('/')[1]).join('、')} 格式的${uploadItemLabel}`,
+      const isExtAndSizeValid = (file: RcFile, exts: string[], size: number) => {
+        if (!file) {
+          return false
+        }
+        const isValidType = exts.includes(file.type)
+        if (!isValidType) {
+          notification.open({
+            key: 'imageset-upload-error-filetype',
+            message: `${uploadItemLabel}格式错误`,
+            description: `请上传 ${exts.map(x => x.split('/')[1]).join('、')} 格式的${uploadItemLabel}`,
+          })
+          return false
+        }
+        const validSize = file.size / 1024 / 1024 < size
+        if (!validSize) {
+          notification.open({
+            key: 'imageset-upload-error-filesize',
+            message: `${uploadItemLabel}体积过大`,
+            description: `请上传小于${size}M的${uploadItemLabel}`,
+          })
+          return false
+        }
+        return true
+      }
+      const isVideoDurationValid = () => {
+        return new Promise(validResolve => {
+          const $video = document.createElement('video')
+          const src = URL.createObjectURL(file)
+          $video.src = src
+          $video.onloadedmetadata = () => {
+            const duration = $video.duration
+            if (duration < 3) {
+              notification.open({
+                key: 'imageset-upload-error-filesize',
+                message: '视频时长出错',
+                description: `请上传时长大于3秒的视频`,
+              })
+              validResolve(false)
+            }
+            if (duration > 60) {
+              notification.open({
+                key: 'imageset-upload-error-filesize',
+                message: '视频时长出错',
+                description: `请上传时长小于60秒的视频`,
+              })
+              validResolve(false)
+            }
+            validResolve(true)
+          }
         })
-        return false
       }
-      const validSize = file.size / 1024 / 1024 < size
-      if (!validSize) {
-        notification.open({
-          key: 'imageset-upload-error-filesize',
-          message: `${uploadItemLabel}体积过大`,
-          description: `请上传小于${size}M的${uploadItemLabel}`,
-        })
-        return false
+
+      let validRes
+      try {
+        validRes = type === 'image'
+          ? isExtAndSizeValid(file, uploadConf.accept, 3)
+          : isExtAndSizeValid(file, uploadConf.accept, 100) && (await isVideoDurationValid())
+      } catch (error) {
+        console.error('[ERR] 上传出现错误', error)
+        validRes = false
       }
-      return true
-    }
-    // TODO
-    const isVideoDurationValid = () => {
-      return true
-    }
-    return type === 'image'
-      ? isExtAndSizeValid(file, uploadConf.accept, 3)
-      : isExtAndSizeValid(file, uploadConf.accept, 100) && isVideoDurationValid()
+      if (validRes) {
+        resolve(file)
+      } else {
+        reject('valid error')
+      }
+    })
   }, [type])
 
   /***************************************************** Renders */
