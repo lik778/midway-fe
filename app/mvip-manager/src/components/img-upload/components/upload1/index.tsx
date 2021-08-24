@@ -38,21 +38,18 @@ const Upload1: FC = () => {
 
   const handleChange = async (e: any) => {
     if (!!e.file.status) {
-      if (e.file.status === 'done') {
-        const nowFileList = e.fileList.map((item: any) => {
-          if (item.url) {
-            return item
-          } else {
-            return {
-              ...item,
-              url: item.response ? item.response.url : ''
-            }
+      const nowFileList = e.fileList.map((item: any) => {
+        if (item.url) {
+          return item
+        } else {
+          return {
+            ...item,
+            url: item.response ? item.response.url : ''
           }
-        })
-        handleChangeFileList(nowFileList, fileList.filter(item => item.uid !== e.file.uid), e.file)
-      } else {
-        handleReloadFileList([...e.fileList])
-      }
+        }
+      })
+      const oldFileList = fileList.filter(item => item.uid !== e.file.uid)
+      handleChangeFileList(nowFileList, oldFileList, e.file)
     }
   }
 

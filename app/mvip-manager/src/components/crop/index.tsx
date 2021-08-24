@@ -15,20 +15,31 @@ interface Props {
 
 const Crop: FC<Props> = (props) => {
   const { cropProps, url, handleCropSuccess } = props
-  /** 因为mac弹窗出来的时候可能dom节点还没渲染好，所以裁剪块会缩小在左上角，所以延时等弹窗渲染完毕 */
-  const [initFlag, setInitFlag] = useState<boolean>(false)
+  const [prevUrl, setPrevUrl] = useState<string>('')
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [cropper, setCropper] = useState<Cropper>();
   const [timestamp] = useState<number>(() => new Date().getTime())
+  const [reloadLoading, setReloadLoading] = useState<boolean>(false)
   // 初始化 或者替换图片时需要恢复图片位置
   useEffect(() => {
-    if (cropper) {
-      // 当图片太大，cropper可能对新图片还没准备好，所以给个延时
-      setTimeout(() => {
-        cropper.reset()
-      }, 100)
+    if (cropper && url) {
+      // 当图片太大，cropper可能对新图片还没准备好，所以给个延时再重置
+      if (url !== prevUrl) {
+        setReloadLoading(true)
+        setPrevUrl(url)
+        setTimeout(() => {
+          setReloadLoading(false)
+          cropper.reset()
+        }, 500)
+      }
     }
   }, [url, cropper])
+
+  useEffect(() => {
+    return () => {
+      cropper?.destroy()
+    }
+  }, [])
 
   // 确认裁剪
   const handleConfirmCropper = async () => {
@@ -51,50 +62,41 @@ const Crop: FC<Props> = (props) => {
     }/*, 'image/png' */);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setInitFlag(true)
-    }, 0)
-  }, [])
-
-  return <Spin spinning={!initFlag}>
-    <div className={styles["crop-container"]}>
-      <div className={styles["crop-content"]}>
-        {
-          initFlag && <Cropper
-            {...cropProps}
-            src={url}
-            style={{ width: 800, height: 500 }}
-            preview={`.img-preview-${timestamp}`}
-            guides={true}
-            autoCropArea={0.8}
-            movable={true} // 是否允许移动图片
-            zoomTo={1}
-            viewMode={2}
-            minCropBoxHeight={50}
-            minCropBoxWidth={50}
-            background={false}
-            responsive={true}
-            cropBoxResizable={true}
-            cropBoxMovable={true}
-            dragMode='move'
-            crossOrigin={"anonymous"} // 跨域设置
-            checkCrossOrigin={true}
-            checkOrientation={false}
-            onInitialized={(instance) => {
-              setCropper(instance);
-            }}
-          />
-        }
-      </div>
-      <div className={styles["crop-preview"]}>
-        <div className={styles["title"]}>图片预览</div>
-        <div className={styles["preview-box"]}>
-          <div className={`${styles["img-preview"]} img-preview-${timestamp}`} />
-        </div>
-        <Button size="large" type="primary" onClick={handleConfirmCropper} disabled={upDataLoading} loading={upDataLoading}>确认裁剪</Button>
-      </div>
+  return <Spin spinning={reloadLoading}> <div className={styles["crop-container"]}>
+    <div className={styles["crop-content"]}>
+      <Cropper
+        {...cropProps}
+        src={url}
+        style={{ width: 800, height: 500 }}
+        preview={`.img-preview-${timestamp}`}
+        guides={true}
+        autoCropArea={0.8}
+        movable={true} // 是否允许移动图片
+        zoomTo={1}
+        viewMode={2}
+        minCropBoxHeight={50}
+        minCropBoxWidth={50}
+        background={false}
+        responsive={true}
+        cropBoxResizable={true}
+        cropBoxMovable={true}
+        dragMode='move'
+        crossOrigin={"anonymous"} // 跨域设置
+        checkCrossOrigin={true}
+        checkOrientation={false}
+        onInitialized={(instance) => {
+          setCropper(instance);
+        }}
+      />
     </div>
+    <div className={styles["crop-preview"]}>
+      <div className={styles["title"]}>图片预览</div>
+      <div className={styles["preview-box"]}>
+        <div className={`${styles["img-preview"]} img-preview-${timestamp}`} />
+      </div>
+      <Button size="large" type="primary" onClick={handleConfirmCropper} disabled={upDataLoading} loading={upDataLoading}>确认裁剪</Button>
+    </div>
+  </div>
   </Spin>
 }
 export default Crop

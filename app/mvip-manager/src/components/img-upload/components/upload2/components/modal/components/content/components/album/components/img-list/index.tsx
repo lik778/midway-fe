@@ -50,8 +50,6 @@ const ImgList: FC<Props> = (props) => {
       size: 16,
       mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined
     })
-    // (shopId: number, params: GetImagesetImageParam) => ShopAPIReturn<GetImagesetImageRes>
-    // (shopId: number, params: GetImagesetImageParam) => Promise<ServiceResponse<GetImagesetImageRes>>
     setGetDataLoading(false)
     if (!res.success) {
       errorMessage(res.message)
@@ -113,17 +111,6 @@ const ImgList: FC<Props> = (props) => {
     scrollTop()
     getData()
   }, [menuKey, shopCurrent])
-
-  const handleScroll: React.UIEventHandler<HTMLDivElement> = useDebounce((e) => {
-    // 未滚动到底部
-    if (!ref.current) return
-    if ((ref.current.scrollHeight - ref.current.clientHeight) > ref.current.scrollTop) {
-      //未到底
-    } else {
-      //已到底部
-      getList()
-    }
-  }, 200)
 
   return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
     <ScrollBox scrollY={true} handleScrollToLower={getList} height="337px">
