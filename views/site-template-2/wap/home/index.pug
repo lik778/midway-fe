@@ -12,7 +12,7 @@ block header
       include ../components/nav
 
 block content
-  - hotProductList = renderData.productRecommend.productList.slice(0,8)
+  - hotProductList = renderData.productRecommend.productList.slice(0,12)
   - name = renderData.productRecommend.name || '热门推荐'
   .block-container 
     .block-title #{ name }
