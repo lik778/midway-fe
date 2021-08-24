@@ -27,7 +27,7 @@ let clickCount = 0
 const ImgItem: FC<Props> = (props) => {
   const params: RouteParams = useParams();
   const shopId = Number(params.id);
-  const { file = {} as UploadFile, detail = {} as ImageItem, itemHeight } = props
+  const { file, detail = {} as ImageItem, itemHeight } = props
   const context = useContext(ImgUploadContext)
   const { localFileList, handleChangeLocalFileList, handlePreview, initConfig: { maxLength, cropProps } } = context
   const [originSize, setOriginSize] = useState<{
@@ -52,7 +52,6 @@ const ImgItem: FC<Props> = (props) => {
       errorMessage('上传数量达到上限！')
       return
     }
-
     if (detail.checkStatus !== 'APPROVE') {
       errorMessage(detail.reason)
       return
@@ -62,7 +61,7 @@ const ImgItem: FC<Props> = (props) => {
 
   const handleDoubleClick = () => {
     handlePreview({
-      preview: detail.imgUrl || file.preview,
+      preview: detail.imgUrl || (file && file.preview),
     } as UploadFile)
   }
 
@@ -118,7 +117,7 @@ const ImgItem: FC<Props> = (props) => {
       <div className={styles['img-item']} style={{
         height: itemHeight
       }} onClick={handleClickItem}>
-        <img className={styles['img']} src={detail.imgUrl || file.preview} onLoad={handleLoad} />
+        <img className={styles['img']} src={detail.imgUrl || (file && file.preview)} onLoad={handleLoad} />
         {
           typeof detail.checkStatus === 'string' && <>
             {
@@ -137,7 +136,7 @@ const ImgItem: FC<Props> = (props) => {
         }
       </div>
     </StatusBox>
-    <CacheComponent visible={file.status === 'done' && cropVisible}>
+    <CacheComponent visible={((file && file.status === 'done') || !file) && cropVisible}>
       <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
     </CacheComponent>
   </>
