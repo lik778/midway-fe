@@ -26,6 +26,7 @@ function ContactForm(props: any) {
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(contactForm));
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [phoneTipShows, setphoneTipShows] = useState(false)
   // 是否修改过表单 阈值  
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
@@ -38,6 +39,8 @@ function ContactForm(props: any) {
 
 
   const formChange = (changeValue: any, allValues: any) => {
+    const landlinePtn = /(^(0\d{2,3}-?)?\d{7,8}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
+    setphoneTipShows(changeValue.contactMobile && landlinePtn.test(changeValue.contactMobile))
     setHasEditForm(true)
     setFormData(allValues)
   }
@@ -97,6 +100,7 @@ function ContactForm(props: any) {
         <WildcatForm editDataSource={companyInfo}
           onInit={(form) => setFormInstance(form)}
           config={config} formChange={formChange} />
+        <span className={phoneTipShows ? styles['phone-block'] : styles['phone-none']}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
       </Form.Item>
       <Form.Item label="智能接待系统" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
         <KF53 editDataSource={companyInfo} onChange={KF53Change} ref={kf53Ref} />
@@ -108,6 +112,7 @@ function ContactForm(props: any) {
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
         </div>
       </Form.Item>
+
     </div>
   )
 }
