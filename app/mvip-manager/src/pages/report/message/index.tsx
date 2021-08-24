@@ -21,7 +21,7 @@ import "./index.less"
 
 const TabPane = Tabs.TabPane
 const PAGESIZE = 10
-const TRACK_TYPE = 'shop-mvip-message-page'
+const BXMAINSITE = 'bxmainsite'
 
 // 可以的话请把这玩意儿删了
 function LeaveMessagePage() {
@@ -58,9 +58,9 @@ function LeaveMessagePage() {
   useEffect(() => {
     if (from && uid) {
       track({
-        eventType: TRACK_TYPE,
+        eventType: BXMAINSITE,
         data: {
-          event_type: 'page-pv',
+          event_type: 'mvip-shop-leave-message-page-pv',
           uid,
           from,
         }
@@ -92,9 +92,9 @@ function LeaveMessagePage() {
       if (isMobile && items.length) {
         items.map((x: LeaveMessageListData) => {
           trackEvent({
-            eventType: TRACK_TYPE,
+            eventType: BXMAINSITE,
             data: {
-              event_type: 'mobile-item-pv',
+              event_type: 'mvip-shop-leave-message-mobile-item-pv',
               item_id: x.id,
               uid,
               from,
@@ -212,9 +212,9 @@ function LeaveMessagePage() {
     if (key) {
       // 不同的时间范围 TAB 使用情况 UV 打点
       trackEvent({
-        eventType: TRACK_TYPE,
+        eventType: BXMAINSITE,
         data: {
-          event_type: 'pc-tab-uv',
+          event_type: 'mvip-shop-leave-message-pc-tab-uv',
           item_id: key,
           uid,
           from,
@@ -226,9 +226,9 @@ function LeaveMessagePage() {
   const changeTabWithTrackAtMobile = (key: string) => {
     // 不同的时间范围 TAB 使用情况 UV 打点
     trackEvent({
-      eventType: TRACK_TYPE,
+      eventType: BXMAINSITE,
       data: {
-        event_type: 'mobile-tab-uv',
+        event_type: 'mvip-shop-leave-message-mobile-tab-uv',
         item_id: key,
         uid,
         from,
@@ -403,9 +403,9 @@ function Card (props: CardProps) {
   const trackTel = useCallback(() => {
     if (item.id && uid && from) {
       track({
-        eventType: TRACK_TYPE,
+        eventType: BXMAINSITE,
         data: {
-          event_type: 'mobile-item-contact-click',
+          event_type: 'mvip-shop-leave-message-mobile-item-contact-click',
           item_id: item.id,
           uid,
           from,
@@ -417,9 +417,9 @@ function Card (props: CardProps) {
   const trackJump = useCallback(() => {
     if (item.id && uid && from) {
       track({
-        eventType: TRACK_TYPE,
+        eventType: BXMAINSITE,
         data: {
-          event_type: 'mobile-item-jump-to-source',
+          event_type: 'mvip-shop-leave-message-mobile-item-jump-to-source',
           item_id: item.id,
           uid,
           from,
