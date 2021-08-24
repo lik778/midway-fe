@@ -17,7 +17,7 @@ $(document).on('ready', function () {
     speed: 1000,
     centeredSlides: true,
     autoplay: {
-      delay: 500000,
+      delay: 5000,
       waitForTransition: true,
       pauseOnMouseEnter: true,
     },
