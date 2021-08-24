@@ -12,32 +12,29 @@ block header
             
 block append header
   include ../components/swiper
-  - const { banner }= renderData
+  - const banner = renderData.banner.bannerList
   +swiper(banner, 'home')
 
 block content
-  include ../../../common/wap/official-popup.pug
-  +official-popup({formId:'#contactForm'})
   //-公司信息
   include ../components/company-info
-
   .contact-us-block
     .contact-us-block-title 
       | 联系我们，获取
       span.red 详细信息
     include ../components/contact-us-form 
 
-  - productList = renderData.productList.result
+  - const { productList , name: allTitle } = renderData.productRecommend
   if productList && productList.length > 0
-    .product-block-title 服务项目
+    .product-block-title #{allTitle||"服务项目"}
     include ../components/product-list.pug
     +product-list(productList.slice(0,4))
 
-  //-TODO：自定义模块
-  - const userDefinedList = renderData.autoConfig
-  if userDefinedList && userDefinedList.length>0
+  //-自定义模块
+  - const { autoConfig } = renderData
+  if autoConfig && autoConfig[0]
     include ../components/user-defined-module-new.pug
-    +user-defined-module-new(userDefinedList)
+    +user-defined-module-new(autoConfig[0])
 
   //-TODO:新闻资讯模块
   include ../components/news-list-module.pug

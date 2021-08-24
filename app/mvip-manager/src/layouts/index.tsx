@@ -90,7 +90,7 @@ const Layouts = (props: any) => {
             </SubMenu>
           </Menu>
         </Sider>
-        <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1240 : '' }}>
+        <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1350 : '' }}>
           <Header className="layoutHeader">
             <div>{userInfo && userInfo.userName}</div>
           </Header>

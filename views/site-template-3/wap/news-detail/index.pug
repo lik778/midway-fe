@@ -7,7 +7,7 @@ block header
   include ../components/header
   include ../components/swiper
   - const { banner }= renderData
-  +swiper(banner, 'newsDetail')
+  +swiper(banner.bannerList, 'newsDetail')
 
 block content
   if !isSem

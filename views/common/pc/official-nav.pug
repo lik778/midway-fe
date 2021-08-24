@@ -1,8 +1,22 @@
-if nav.length > 0 && !isSem
-	.official-nav-item
-		.text 商户导航 
-		.down-arrow
-		.nav-dropdown
-			each item in nav.slice(0,10)
-				a.only-oneline(href=item.content) #{ item.name }
-			a.only-oneline(href=aboutLink) 关于我们
+//- if nav.length > 0 && !isSem
+//- 	.official-nav-item
+//- 		.text 商户导航 
+//- 		.down-arrow
+//- 		.nav-dropdown
+//- 			each item in nav.slice(0,10)
+//- 				a.only-oneline(href=item.content) #{ item.name }
+//- 			a.only-oneline(href=aboutLink) 关于我们
+.nav-right
+	if nav.length > 0
+		each item in nav.slice(0,10)
+			.nav-item
+				a(href=item.content) #{ item.name }
+					if item.position === 'productListPage' || item.position === 'articleListPage'
+						.down-arrow
+				if item.contentCateBos && item.contentCateBos.length > 0
+					.nav-dropdown
+						.nav-dropdown-box
+							each i in item.contentCateBos.slice(0,10)
+								a.only-oneline(href=i.urlSuffix) #{ i.name }
+		.nav-item 
+			a(href=aboutLink) 关于我们

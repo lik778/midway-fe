@@ -1,0 +1,173 @@
+.about-us-bgc
+  box-sizing border-box 
+  width 1190px
+  display flex
+  justify-content center
+  align-items flex-start
+  height 360px
+  padding 59px 36px 51px 30px
+  background url("//file.baixing.net/202108/55178a98c73c9d27db933bce8121e310.png") no-repeat center center/100%
+  background-size cover
+  margin 0 0 0 -1px
+  // .about-us-content
+  //   display flex
+  //   justify-content center
+  //   // align-items center
+  //   margin 58px 0 0 38px
+  .content-left
+    position relative
+    width 432px
+    height 243px
+    margin-top 0
+    border-radius 7px
+    overflow hidden
+    .audio
+      width 100%
+      height 100%
+      object-fit: cover
+    audio
+      width 100%
+      height 100%
+    .ico-video
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%,-50%)
+      width 54px
+      height 54px
+      img
+        width 100%
+        height 100%
+    .video-cover
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+      z-index 9
+      cursor pointer
+      img
+        width 100%
+        height 100%
+    .video-wrapper 
+      display flex
+      justify-content center
+      align-items center
+      width 100%
+      height 100%
+      video
+        max-width 100%
+        heigh 100%
+        cursor pointer
+        z-index 9
+  .content-right
+    // height 243px
+    width 656px
+    display flex
+    flex-direction column
+    justify-content flex-start
+    padding 0 36px 0 0
+    margin-top -6px
+    .content-right-title
+      display flex
+      justify-content flex-start
+      align-items center
+      margin-bottom 12px
+      .right-title-left
+        display flex
+        justify-content center
+        align-items center
+        img
+          width 50px
+          height 46px
+          margin-right 16px
+          border-radius 4px
+          overflow hidden
+        .left-title
+          // line-height 26px
+          font-size 20px
+          font-weight bold
+      .right-title-right
+        margin-left 16px
+        display flex
+        .tag
+          box-sizing border-box
+          padding 5px 9px
+          line-height 14px
+          text-align center
+          border 1px solid #D19960
+          border-radius 2px
+          color #D19960
+          font-size 14px
+          margin-right 12px
+    .content-right-body
+      position relative
+      width 656px
+      height 120px
+      .body-content
+        height 120px
+        color #666666
+        line-height 24px
+        font-size 14px
+      .view-detail
+        display inline
+        color #FF4365
+        font-size 14px
+    .content-right-bottom
+      height 40px
+      display flex
+      align-items center
+      margin-top 38px
+      .bottom-left
+        display flex
+        justify-content center
+        align-items center
+        img
+          width 63px
+          height 37px
+        .phone
+          margin-left 13px
+          padding-left 0
+          text-align left
+          .active
+            font-size 20px
+            color #FF4365
+            font-weight bold
+          .service-hot
+            margin-bottom 1px
+            font-size 12px
+            color #333333
+            font-weight bold
+          .service-tel
+            font-size 24px
+            color #FF4365
+            font-weight bold
+      .bottom-right
+        width 160px
+        height 40px
+        margin-left 20px
+        background-color #ED4646
+        border-radius 4px
+        color #FFFFFF
+        line-height 40px
+        font-size 14px
+        text-align center
+        cursor pointer
+
+.about-us-bgc
+  .video-wrapper
+    background-color black
+  .video-cover
+    position relative
+    img 
+      object-fit cover
+  .video-cover::after
+    content ''
+    position absolute
+    left calc(50% - 28px)
+    top calc(50% - 28px)
+    width 55px
+    height 55px
+    background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAMAAAC4uKf/AAAAqFBMVEUAAAAAAAAAAAAAAAAAAAAAAAC/v78AAAAAAAAAAAAAAAAAAAAAAAAAAAAMDAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/v4+PhtbW01NTXu7u7n5+coKCj////JycnFxcWhoaGZmZmTk5NgYGBCQkL19fXr6+vk5OTi4uLR0dHNzc24uLipqal6enpUVFQhISHY2NjW1taKior////luF/rAAAAN3RSTlOAAAN8eGTMCls1D0tDKIJwamBXUEhGPyMeG/r4oo7v6Yr+0s+7trOckvXs5uTY1ce+qJiJ3NyvtZcixAAAAsVJREFUaN7VmolS2zAQhv/owJZs5z4JN4VytLT0yvu/WTMpIJgA0a6Omu8FvpkdWdbu/ugQsDNTlbrfU1KqXl+XlZnZDgFfmZhPBxKvIAfTuYgpK0yp8A6qNEUcmWiGEjuRw0YEy4pawRNVF0EyO5YgIMeWLSsqCSKyKlgyYRQYKCPosoUGE70gysQEAUwERWY1gtDWX9YoBKIaX1mNCNReMjFCFEZit0yUiEQpdskKjWjo4n2Z0IiIFlsySg35ldyWjRCZ0duyGtGp35I1SEDzuswqJEBZZwD9IPKPpJNNkIjJtmyBZCycjFhEfiGdzCAh5qWsUEiIKl7IKiSlei6zEkmR9plsjMSMnayQSIwsnmQ1klM/yoRCcpR4kDXIQPMgGyIDw42MfDz4RwT+N9XJ+fXy7ApczEZWwovu8WrN/vcueJRrmfdZ/LP6x9EB+zyiM4cf31aPfD0Eh/laNoUfe6sn9j9xajldywb+MscNo5aDtUxSZI4zci1lBxYkmWNJrqXFjCpzHH8GiRkMXeY4PwEBg4ohcywv4E+FkiVz3PrXsoTmyRynez/hh0afK3NcX8KLPnp8mePLD3jQgwqQOfZ9bhQFGSJzHHl84TJQ5rjykal8MoVeHNmt1wHpR5EdHXodfU2V8b9rTb2u+F8ZUKIKlS0v/S9iEyY7JfxlDP3nyf9/zqjPAv7fDLDoSLbs7AQUJPkp5zg+AI0B/ZHq3qmcR+qcI7s75D2/hSLLbg64jUWnpDQW/K6ppDSD92E9DAypzb3bXO/37DaX1MB3L3//uuiCyTDraCLr0CXnOCnroCznCDDrcDPn2DbrQDrnqD3rEiHneiTn4ifrSivnsu7/ryHTLFjbsTpOsBRvy7o/dpChTRGNmOGTtsVqIgWG2hmFCg95tTe+FhTMa3vkkBem/CgxUVoA9qNFeyOGlrPGsf8C2eyo8x7aSZcAAAAASUVORK5CYII=")
+    background-size 100%
+    cursor pointer

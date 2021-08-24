@@ -7,37 +7,48 @@ block styles
 //-使用了统一的header和nav
 block content
 		include ../components/common/base-swiper.pug
-		+ baseSwiper('540px')
+		+baseSwiper('540px')
 		.container
-				//-自身优势
-				- selfAdvantage = [{title:'口碑载道',content:'重视信誉和口碑，客户忠实度高',icon:'//file.baixing.net/202105/c8f81a54a43830099bdc04f4b424da4c.png'},{title:'资质正规',content:'相关资质均有工商备案，资质可查，公司正规',icon:'//file.baixing.net/202105/625a56c2569eb767d8770999cbd8dd50.png'},{title:'贴心服务',content:'全方位的售前售后服务，提高客户满意度',icon:'//file.baixing.net/202105/f941fd50013f2f8ef7b51439e45b9079.png'},{title:'售后保障',content:'完善的售后服务体系和严格的管理制度，客户至上',icon:'//file.baixing.net/202105/5dde08cac771ec82db133664d24ddc1d.png'}]
+				//-自定义模块数据
+				- const { autoConfig } = renderData
+				//-自定义模块2（即之前的自身优势模块）
 				include ../components/home/self-advantage.pug
+				if autoConfig&&autoConfig[1]&&autoConfig[1].show
+					+home-title(autoConfig[1].mainModuleTitle||'服务资质')
+					- defaultSelfAdvantage = [{title:'丰富的海外经验丰富的海外经验哈哈',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/88bdb200a332fefd1e0886391da53ff7.png'},{title:'高效的业务团队',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/f48a629c05f0770ca771685f50980084.png'},{title:'领先的技术优势',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/76c21e26ee68474da2d6d9736d5a88af.png'},{title:'丰富的产业资源',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/9dcb37487ee2d0b32a2d9fcecc0bff8f.png'}]
+					- selfAdvantage = autoConfig[1].subModuleBos||defaultSelfAdvantage
+					+self-advantage(selfAdvantage)
 
 				//-服务项目
-				- const { result : proList} = renderData.productList
+				- const { productList : proList, name: allTitle } = renderData.productRecommend
 				if proList && proList.length > 0
-						+home-title('服务项目')
-						include ../components/home/product-list.pug
-
-				//-关于我们
-				include ../components/home/about-us.pug
+						+home-title(allTitle)
+						//- include ../components/home/product-list.pug
+						- productListResult = renderData.productRecommend&&renderData.productRecommend.productList?renderData.productRecommend.productList:renderData.productList.result
+						include ../components/home/product-list-new.pug
+						+item(productListResult)
+				//- - tags = renderData.basic.aboutModule.tags
+				//- - media = renderData.basic.aboutModule.media
+				- const { tags, media } = renderData.basic.aboutModule
+				include ../components/home/about-us-new.pug
+				+about-us-new(tags,media)
 				if !isSem
-					include ../components/home/viewPhone.pug
+					//- include ../components/home/viewPhone.pug
 
-				//-自定义模块
-				- const { autoConfig } = renderData
-				if autoConfig && autoConfig.length > 0
+				//-自定义模块1（即之前的企业优势模块）
+				if autoConfig && autoConfig[0] &&autoConfig[0].show
 					include ../components/home/user-defined-module.pug
-					+user-defined-module(autoConfig)
+					+user-defined-module(autoConfig[0])
 
 				//-新闻资讯
 				- articleList = renderData.articleList.result
-				- const { articleRecommend } = renderData
-				if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+				//- - const { articleRecommend: articleList} = renderData.articleRecommend
+				if articleList && articleList.length >0
 						+home-title('新闻资讯')
-						include ../components/home/news-center.pug
+						//- include ../components/home/news-center.pug
+						include ../components/home/news-center-new.pug
 						.new-center.clearfix
-								+news-box('新闻资讯', articleList)
+								+news-box(articleList)
 								
 				+home-title('联系我们')
 				include ../components/home/contact-us.pug

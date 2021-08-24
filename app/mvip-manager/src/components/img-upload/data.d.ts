@@ -39,6 +39,12 @@ export interface ImgUploadProps {
    */
   onChange?(values: string | string[], fileList: UploadFile[], oldFileList: UploadFile[]): void;
   [key: string]: any
+  /**
+ * onChange
+ * @description 当前文件列表变化 可能还在上传中状态
+ * @param fileList 当前文件列表
+ */
+  onFileChange?(fileList: UploadFile[]): void
 }
 
 export interface ImageDataAlbumListItem {

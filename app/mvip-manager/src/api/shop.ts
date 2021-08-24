@@ -18,7 +18,10 @@ import {
   GetMediaCatesParam, getMediaCatesNameListParam, CreateMediaCatesParam, UpdateMediaCatesParam, DelMediaCatesParam,
   GetMediaFailedAssetsParam, GetMediaFailedAssetsRes,
   GetMediaAssetsParam, CreateMediaAssetsParam, DelMediaAssetsParam, UpdateMediaAssetsParam, MoveMediaAssetsParam, MediaCatesNameListItem,
-  ReAuditMediaAssetsParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion
+  ReAuditMediaAssetsParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion,
+  ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo,
+  ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam,
+  ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -179,18 +182,19 @@ export const getCustomerModuleListApi = (shopId: number) => {
 }
 
 /** 获取某个自定义设置 */
-export const getCustomerSetApi = (shopId: number, id: number) => {
-  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id }, setShopHeader(shopId))
+export const getCustomerSetApi = (shopId: number, id: string) => {
+  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id: Number(id) }, setShopHeader(shopId))
 }
 
 /** 保存某个自定义设置 */
 export const setCustomerSetApi = (shopId: number, requestData: {
   mainModuleId?: number,
   mainModuleTitle: string,
+  show: boolean,
   subModuleVos: CustomerSetChildListItem[],
   subModulesToDelete: number[]
 }) => {
-  return postApiData<never>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
+  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
 }
 
 /** 获取店铺基础信息设置 */
@@ -300,3 +304,27 @@ export const delMediaFailedAssets = (params: Pick<DelMediaAssetsParam, 'ids'|'so
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/deleteFailed', params, setShopHeader(3863))
 }
 
+/** 模块管理 开始 */
+// 获取模块信息
+export const getModuleInitInfoApi = (shopId: number) => getApiData<ModuleInitPage[]>(ServicePath.SHOP, 'midway/backend/module/init', {}, setShopHeader(shopId))
+
+// 获取模块信息 T = ModuleProductSwiper | ModuleProductInfo | ModuleArticleInfo | ModuleHomeABoutInfo | ModuleABoutABoutInfo
+export const getModuleInfoApi = <T>(shopId: number, params: ModuleRequestParam) => getApiData<T>(ServicePath.SHOP, 'midway/backend/module/info', params, setShopHeader(shopId))
+
+// 修改模块数据
+// 修改banner 产品模块配置
+export const setModuleBannerInfoApi = (shopId: number, params: ModuleProductSwiperParam | ModuleProductSwiperNoParam) => postApiData<ModuleProductSwiper>(ServicePath.SHOP, 'midway/backend/module/update/banner', params, setShopHeader(shopId))
+
+// 修改推荐产品
+export const setModuleProductInfoApi = (shopId: number, params: ModuleProductInfoParam) => postApiData<ModuleProductInfo>(ServicePath.SHOP, 'midway/backend/module/update/productRecomend', params, setShopHeader(shopId))
+
+// 修改推荐文章
+export const setModuleArticleInfoApi = (shopId: number, params: ModuleArticleInfoParam) => postApiData<ModuleArticleInfo>(ServicePath.SHOP, 'midway/backend/module/update/articleRecomend', params, setShopHeader(shopId))
+
+// 修改关于我们模块 首页
+export const setModuleHomeABoutInfoApi = (shopId: number, params: ModuleHomeABoutInfoParam) => postApiData<ModuleHomeABoutInfo>(ServicePath.SHOP, 'midway/backend/module/update/homeAbout', params, setShopHeader(shopId))
+
+// 修改关于我们模块 关于我们页面
+export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutInfoParam) => postApiData<ModuleABoutABoutInfo>(ServicePath.SHOP, 'midway/backend/module/update/about', params, setShopHeader(shopId))
+
+/** 模块管理 结束 */

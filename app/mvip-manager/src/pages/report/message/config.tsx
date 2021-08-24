@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import { Popover, Radio } from 'antd'
 
 import { LeaveMessageChannelMap } from '@/constants/report'
-import { decodeHTMLCodeSafe } from '@/utils'
+import { decodeHTMLCodeSafe, isValidURL } from '@/utils'
 
 import { LeaveMessageListData } from '@/interfaces/report'
 import { SearchListConfig } from '../components/search-list'
@@ -75,9 +75,13 @@ export const LeaveMessageSearchListConfig = ({
         key: 'sourceName',
         render: (_: any, r: Item) => {
           return <>
-            <Popover content={r.sourceName} trigger="hover">
-              <span className="line-1">{r.sourceName || '-'}</span>
-            </Popover>
+            {r.sourceName ? (
+              <Popover content={r.sourceName} trigger="hover">
+                <span className="line-1">{r.sourceName || '-'}</span>
+              </Popover>
+            ):(
+              <span className="line-1">-</span>
+            )}
           </>
         }
       },
@@ -86,7 +90,15 @@ export const LeaveMessageSearchListConfig = ({
         dataIndex: 'sourceUrl',
         width: 120,
         key: 'sourceUrl',
-        render: (_: any, r: Item) => <a href={r.sourceUrl} target="__blank">查看详情</a>
+        render: (_: any, r: Item) => {
+          const sourceUrl = r.sourceUrl || ''
+          const isValid = isValidURL(sourceUrl)
+          if (isValid) {
+            return <a href={r.sourceUrl} target="__blank">查看详情</a>
+          } else {
+            return <a className="disabled" href="#" onClick={e => e.stopPropagation()}>查看详情</a>
+          }
+        }
       },
       {
         title: '留咨内容',

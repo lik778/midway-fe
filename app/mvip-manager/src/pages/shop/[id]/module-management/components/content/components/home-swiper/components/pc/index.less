@@ -1,0 +1,28 @@
+.pc-container {
+  width: 50%;
+  min-height: 420px;
+  padding: 0 20px;
+  border-right: 1px solid #d8d8d8;
+  .radio-group-item {
+    margin-bottom: 20px;
+    .radio-content {
+      position: relative;
+      color: #999999;
+      .text {
+        margin-right: 10px;
+      }
+      .icon:hover + .img {
+        display: inline-block;
+      }
+      .img {
+        display: none;
+        width: 350px;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(100%, -50%);
+        z-index: 10;
+      }
+    }
+  }
+}

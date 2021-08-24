@@ -8,35 +8,53 @@ block content
     include ../components/home/swiper.pug
 
     .container
-        - hotProductList = renderData.productRecommend
-        if hotProductList && hotProductList.length>0
+        //-自定义模块数据
+        - const { autoConfig } = renderData
+        //-自定义模块2（即之前的自身优势模块）
+        if autoConfig&&autoConfig[1]&&autoConfig[1].show
+            include ../components/home/self-advantage.pug
             .block-title
-                //- img(src="//file.baixing.net/202102/d339891d66dd354929403679f3ef6de7.png", alt="热门产品")
+                //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
                 .point 
                     .littlePoint 
                     .largePoint
-                h2 热门产品
+                .h2 #{autoConfig[1].mainModuleTitle||'服务资质'}
+                .point 
+                    .largePoint
+                    .littlePoint
+            - defaultSelfAdvantage = [{title:'丰富的海外经验丰富的海外经验哈哈',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/88bdb200a332fefd1e0886391da53ff7.png'},{title:'高效的业务团队',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/f48a629c05f0770ca771685f50980084.png'},{title:'领先的技术优势',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/76c21e26ee68474da2d6d9736d5a88af.png'},{title:'丰富的产业资源',content:'技术人员皆有着多年的相关行业经验，技术高效有保证技术人员皆有着多年的相关行业经验，技术高效有保证保证',urlImg:'//file.baixing.net/202108/9dcb37487ee2d0b32a2d9fcecc0bff8f.png'}]
+            - selfAdvantage = autoConfig[1].subModuleBos||defaultSelfAdvantage
+            +self-advantage(selfAdvantage)
+
+        - const { productList: hotProductList, name } = renderData.productRecommend
+        if hotProductList && hotProductList.length>0
+            .block-title
+                .point 
+                    .littlePoint 
+                    .largePoint
+                .h2 #{ name || '热门产品'}
                 .point 
                     .largePoint 
                     .littlePoint
             include ../components/home/product-list.pug
             +product-list('hot', hotProductList)
-
+        - const { name: aboutUsTitle, tags, media } = renderData.basic.aboutModule
         .block-title
             //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
             .point 
-                .littlePoint 
+                .littlePoint
                 .largePoint
-            h2 关于我们
+            .h2 #{ aboutUsTitle || '关于我们'}
             .point 
-                .largePoint  
+                .largePoint
                 .littlePoint
         include ../components/home/about-us-new.pug
+        +about-Us-New(tags,media)
 
-        - const userDefinedList = renderData.autoConfig
-        if userDefinedList && userDefinedList.length>0
+        //-自定义模块1（即之前的企业优势模块）
+        if autoConfig && autoConfig[0] &&autoConfig[0].show
             include ../components/home/user-defined-module.pug
-            +user-defined-module(userDefinedList)
+            +user-defined-module(autoConfig[0]) 
 
         //- 变量名 "productLists" 会报一个编译时错误，很奇怪
         //- 暂时先换个名字
@@ -47,30 +65,32 @@ block content
                 .point 
                     .littlePoint
                     .largePoint
-                h2 产品分类
-                .point 
+                .h2 产品分类
+                .point
                     .largePoint
                     .littlePoint
-            include ../components/home/product-catogeries.pug
-            include ../components/home/product-list.pug
-            +product-list('nothot', productLists)
+            .product-catogeries-list
+              include ../components/home/product-catogeries-new.pug 
+              include ../components/home/product-list-new.pug
+              +product-list('nothot', productLists)
 
         - articleList = renderData.articleList.result
-        - const { articleRecommend } = renderData
+        - const { articleList: articleRecommend } = renderData.articleRecommend
+        - const { name: title } = renderData.articleRecommend || '文章推荐'
         if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
             .block-title
                 //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
                 .point 
                     .littlePoint
                     .largePoint
-                h2 新闻中心
+                .h2 新闻中心
                 .point
                     .largePoint
                     .littlePoint
             include ../components/home/news-center.pug
             .new-center.clearfix
                 +news-box('新闻资讯', articleList)
-                +news-box('推荐文章', articleRecommend)
+                +news-box(title, articleRecommend)
 
 
         .block-title
@@ -78,7 +98,7 @@ block content
             .point
                 .littlePoint
                 .largePoint
-            h2 联系我们
+            .h2 联系我们
             .point
                 .largePoint
                 .littlePoint

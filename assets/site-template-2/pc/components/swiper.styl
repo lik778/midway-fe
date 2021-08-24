@@ -1,90 +1,113 @@
 @import 'swiper/dist/css/swiper.min.css'
-
 .banner-content
-	position relative
-	margin 0 auto
-	height 540px
-	display flex
-	justify-content center
-	align-items center
-	overflow hidden
-	.bg-blur
-		position: absolute
-		top: 0
-		left: 0
-		width: 100%
-		height: 100%
-		z-index: 0
-		filter: blur(10px);
-		
+  position relative
+  margin 0 auto
+  height 540px
+  display flex
+  justify-content center
+  align-items center
+  overflow hidden
+  .bg-blur
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 0
+    filter: blur(10px);
 #banner-container
-	width 1200px
-	position relative
-	height 300px
-
-#banner-container  .swiper-slide {
-	width 366px
-	height 300px
-	background #fff
-	//box-shadow 0 4px 10px rgba(#000, 0.2)
-	overflow hidden
-	position relative
-}
-#banner-container  .swiper-slide img{
-	display block
-	width 100%
-	object-fit cover
-}
-#banner-container  .swiper-slide p {
-	height 55px
-	padding 0 40px
-	line-height 55px
-	text-align center
-	color #636363
-	font-size 1.1em
-	margin 0
-	position absolute
-	bottom 0
-	width 100%
-	box-sizing border-box
-	background-color #fff
-	overflow hidden
-	white-space nowrap
-	text-overflow ellipsis
-	box-shadow 0 4px 10px rgba(#000, 0.2)
-}
-
-#banner-container .swiper-pagination {
-	width 100%
-	bottom 20px
-}
-
-#banner-container .swiper-pagination-bullets .swiper-pagination-bullet {
-	margin 0 5px
-	border 3px solid #fff
-	background-color #d5d5d5
-	width 10px
-	height 10px
-	opacity 1
-}
-
-#banner-container .swiper-pagination-bullets .swiper-pagination-bullet-active {
-	border 3px solid #00aadc
-	background-color #fff
-}
-
-#banner-container
-	.swiper-button-prev,
-	.swiper-button-next
-		right -20px
-		width 45px
-		height 45px
-		background url(//file.baixing.net/202102/880853b526000f109d60a15ba638decc.png) no-repeat center center/100%
-		outline none
-		opacity 0.7
-		transition 0.3s
-		&:hover
-			opacity 1
-	.swiper-button-prev
-		left -20px
-		background url(//file.baixing.net/202102/fa46d5f3f3c4b10a47651decb76bbe30.png) no-repeat center center/100%
+  width 1200px
+  position relative
+  height 300px
+  .swiper-slide
+    width 329.4px
+    height 274px
+    // background #fff
+    //box-shadow 0 4px 10px rgba(#000, 0.2)
+    overflow hidden
+    position relative
+    border-radius 4px 4px 0 0
+    img
+      display block
+      width 100%
+      height: 219px;
+      object-fit cover
+    p
+      box-sizing border-box
+      width 100%
+      height 54px
+      margin 0
+      padding 0 40px
+      line-height 54px
+      text-align center
+      color #333333
+      font-size 16px
+      background-color #fff
+      box-shadow 0 4px 10px rgba(#000, 0.2)
+      text-shadow: 0px 0px 27px rgba(0, 0, 0, 0.15)
+  .swiper-pagination
+    width 100%
+    bottom 20px
+  .swiper-pagination-bullets
+    .swiper-pagination-bullet
+      margin 0 5px
+      border 3px solid #fff
+      background-color #d5d5d5
+      width 10px
+      height 10px
+      opacity 1
+    .swiper-pagination-bullet-active
+      border 3px solid #00aadc
+      background-color #fff
+  .swiper-button-prev
+    left 4%
+    width 50px
+    height 50px
+    background url(//file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png) no-repeat center center/100%
+    &:hover
+      background url(//file.baixing.net/202105/4ec4c9301b4dfdddcabc6f00c51d541d.png) no-repeat center center/100%
+      transform rotate(180deg)
+  .swiper-button-next
+    right 4%
+    width 50px
+    height 50px
+    top 50%
+    background url(//file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png) no-repeat center center/100%
+    transform rotate(180deg)
+    &:hover
+      background url(//file.baixing.net/202105/4ec4c9301b4dfdddcabc6f00c51d541d.png) no-repeat center center/100%
+      transform rotate(0)
+#banner-list
+  width: 100%
+  height: 540px;
+  .swiper-container
+    width: 100%;
+    height: 100%;
+    .swiper-wrapper
+      width 100%	
+      .swiper-slide
+        width: 100%
+        height: 540px
+        img
+          height 100%
+          width 100%
+    .swiper-pagination-bullet-active
+        background $color-main
+    .swiper-button-prev
+      left 4%
+      width 50px
+      height 50px
+      background url(//file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png) no-repeat center center/100%
+      &:hover
+        background url(//file.baixing.net/202105/4ec4c9301b4dfdddcabc6f00c51d541d.png) no-repeat center center/100%
+        transform rotate(180deg)
+    .swiper-button-next
+      right 4%
+      width 50px
+      height 50px
+      top 50%
+      background url(//file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png) no-repeat center center/100%
+      transform rotate(180deg)
+      &:hover
+        background url(//file.baixing.net/202105/4ec4c9301b4dfdddcabc6f00c51d541d.png) no-repeat center center/100%
+        transform rotate(0)

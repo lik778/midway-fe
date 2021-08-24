@@ -12,8 +12,18 @@ export const addKeyForListData = (list: any, page?: number, size?: number) => {
   })
 }
 
-export const formatTime = (time: string): string => {
-  return dayjs(Number(time) * 1000).format('YYYY-MM-DD')
+/**
+ * @param {Number} timeStamp 判断时间戳格式是否是毫秒
+ * @returns {Boolean}
+ */
+const isMillisecond = (timeStamp: number | string) => {
+  const timeStr = String(timeStamp)
+  return timeStr.length > 10
+}
+
+export const formatTime = (time: string | number): string => {
+
+  return dayjs(Number(time) * (isMillisecond(time) ? 1 : 1000)).format('YYYY-MM-DD')
 }
 
 export const checkHasShow = function <T>(list: T[] | null): string {
@@ -253,4 +263,9 @@ export const decodeHTMLCodeSafe = (message: string) => {
   } catch (err) {
     return message
   }
+}
+
+// 简单判断字符串是不是合法的 URL
+export const isValidURL = (url: string) => {
+  return /(^https?)|(^\/\/)/.test(url)
 }

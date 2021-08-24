@@ -17,9 +17,9 @@ block content
             +pagination(totalPage, currentPage, `${currentPathname}`)
 
         .sidebar
-            - const { articleList } = renderData
+            - const { articleList: articleList,name:articleName } = renderData.articleRecommend
             include ../components/sidebar/cateList.pug
-            +side-cateList('新闻资讯', articleList.result)
+            +side-cateList(articleName, articleList)
             include ../components/sidebar/products.pug
 
 block scripts

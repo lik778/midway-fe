@@ -1,24 +1,26 @@
 mixin user-defined-module(pageType,userDefinedModuleList)
   each userDefinedModule in userDefinedModuleList
-    .user-defined-module
-      h2.block-title #{ userDefinedModule.mainModuleTitle }
-        span
-        span
-      - const userDefinedList = userDefinedModule.subModuleBos
-      - const isOdd = userDefinedList.length%2 === 0 ? false : true
-      .user-defined-list
-        each item,index in userDefinedList
-          if index < 9
-            - var number = '0' + ( index+1 )
-          else
-            - var number = index + 1
-          .user-defined-item
-            span.number #{ number }
-            span.title #{ item.title }
-            .content.only-fiveline #{ item.content }
-        if isOdd
-          if pageType === 'about'
+    if userDefinedModule.show
+      .user-defined-module
+        h2.block-title #{ userDefinedModule.mainModuleTitle }
+          span
+          span
+        - const userDefinedList = userDefinedModule.subModuleBos
+        - const isOdd = userDefinedList.length%2 === 0 ? false : true
+        .user-defined-list
+          each item,index in userDefinedList
+            if index < 9
+              - var number = '0' + ( index+1 )
+            else
+              - var number = index + 1
             .user-defined-item
-          else if pageType === 'home'
-            .user-defined-item
-              a(href=aboutLink) 查看更多详情
+              span.number #{ number }
+              span.title #{ item.title }
+              .content.only-fiveline #{ item.content }
+          if isOdd
+            if pageType === 'about'
+              .user-defined-item
+            else if pageType === 'home'
+              .user-defined-item
+                a(href=aboutLink) 查看更多详情
+  

@@ -10,6 +10,7 @@ import styles from './index.less'
 import { getMediaAssets, getBaixingMediaAssets } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
+import ScrollBox from '@/components/scroll-box'
 
 interface Props {
   tabsCurrent: TabsKeys,
@@ -115,25 +116,16 @@ const ImgList: FC<Props> = (props) => {
     getData()
   }, [menuKey, shopCurrent])
 
-  const handleScroll: React.UIEventHandler<HTMLDivElement> = useDebounce((e) => {
-    // 未滚动到底部
-    if (!ref.current) return
-    if ((ref.current.scrollHeight - ref.current.clientHeight) > ref.current.scrollTop) {
-      //未到底
-    } else {
-      //已到底部
-      getList()
-    }
-  }, 200)
-
   return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
-    <div className={styles['img-list']} onScroll={handleScroll}  ref={(dom) => ref.current = dom}>
-      <div className={styles['list']}>
-        {
-          albumTypeDetail && albumTypeDetail.images.map(item => <ImgItem detail={item} key={item.id}></ImgItem>)
-        }
+    <ScrollBox scrollY={true} handleScrollToLower={getList} height="337px">
+      <div className={styles['img-list']}>
+        <div className={styles['list']}>
+          {
+            albumTypeDetail && albumTypeDetail.images.map(item => <ImgItem detail={item} key={item.id}></ImgItem>)
+          }
+        </div>
       </div>
-    </div>
+    </ScrollBox>
   </Spin>
 }
 export default ImgList

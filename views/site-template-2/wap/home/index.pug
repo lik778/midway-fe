@@ -5,24 +5,26 @@ block styles
 block header
   include ../components/header
   include ../components/swiper
+  - tags = renderData.basic.aboutModule.tags  
   include ../components/company-info-home
+  +company-info-home(tags)
   if !isSem
       include ../components/nav
 
 block content
-  include ../../../common/wap/official-popup.pug
-  +official-popup({formId:'#contactForm'})
+  - hotProductList = renderData.productRecommend.productList.slice(0,8)
+  - name = renderData.productRecommend.name || '热门推荐'
   .block-container 
-    .block-title 热门推荐
+    .block-title #{ name }
     .block-content 
       include ../components/product-list-hot.pug
-      - hotProductList = renderData.productRecommend.slice(0,8)
-      +product-list-hot( hotProductList)
+      +product-list-hot(hotProductList)
 
-  - const userDefinedList = renderData.autoConfig
-  if userDefinedList && userDefinedList.length>0
+  //-自定义模块1（即之前的企业优势模块）
+  - const { autoConfig } = renderData
+  if autoConfig && autoConfig[0].show
     include ../components/user-defined-module-new.pug
-    +user-defined-module-new(userDefinedList)
+    +user-defined-module-new(autoConfig[0])
 
   if !isSem
     include ../components/aboutus.pug

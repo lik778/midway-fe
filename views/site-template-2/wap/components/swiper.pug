@@ -1,23 +1,20 @@
-- const bannerList = renderData.banner
+- const {bannerList} = renderData.banner
 - const hasBannerList = bannerList && bannerList.length > 0
   .swiper-container
     .swiper-wrapper
       if hasBannerList
-        each item, idx in bannerList
+        each item in bannerList
           - const isVideo = item.hrefUrl
           if isVideo
             .swiper-slide
               .video-wrapper
-                if idx === 0
-                  video(src=item.hrefUrl, loop, preload, controls, muted)
-                else
-                  video(src=item.hrefUrl, loop, preload, controls)
+                video(src=item.hrefUrl, loop, preload, controls)
               .video-cover
                 img(src=item.displayImgUrl)
           else
             .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
       else
-        .swiper-slide(style="background-image:url(//file.baixing.net/202103/410b62b875216c3267539be22288285f.png)")
-        .swiper-slide(style="background-image:url(//file.baixing.net/202103/0e18a589532358323c4946c53d35460c.png)")
+        .swiper-slide(style="background-image:url(//file.baixing.net/202108/288501b7594f8f641301712d80389603.png)")
+        .swiper-slide(style="background-image:url(//file.baixing.net/202108/93d79230ca39672ceced406c9203afde.png)")
     if hasBannerList
       .num-tip #{bannerList.length}张图片

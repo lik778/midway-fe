@@ -1,0 +1,42 @@
+.status-box {
+  display: inline-block;
+  position: relative;
+  margin: 0 8px 8px 0;
+  &:hover {
+    .error {
+      display: none;
+    }
+  }
+  .upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.5);
+    .progress {
+      position: absolute;
+      filter: drop-shadow(0, 0, 5px, white);
+      // transition: linear 0.25s;
+    }
+  }
+  .error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #f1492c;
+  }
+}
