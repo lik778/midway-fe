@@ -11,19 +11,21 @@
         .video-cover
           width: 100%
           z-index 9
-          cursor pointer
-          img
-            width: 100%
-        .video-wrapper 
           position absolute
           top 0
           left 0
           right 0
           bottom 0
           cursor pointer
-          video
+          img
             width: 100%
             height: 100%
+            object-fit: cover
+        .video-wrapper 
+          width: 100%
+          video
+            width: 100%
+            height: 540px
             cursor pointer
             z-index 8
         video,
