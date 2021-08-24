@@ -28,7 +28,7 @@ block content
   if productList && productList.length > 0
     .product-block-title #{allTitle||"服务项目"}
     include ../components/product-list.pug
-    +product-list(productList.slice(0,4))
+    +product-list(productList.slice(0,12))
 
   //-自定义模块
   - const { autoConfig } = renderData
