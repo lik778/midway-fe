@@ -10,17 +10,18 @@ import '../layout/index';
 leaveLeads();
 viewPhone();
 
-$(document).on('ready', function() {
+$(document).on('ready', function () {
   // 轮播图初始化
   const swiper = new Swiper('#banner-list .swiper-container', {
     loop: true,
     speed: 1000,
     centeredSlides: true,
     autoplay: {
-      delay: 5000,
+      delay: 500000,
       waitForTransition: true,
       pauseOnMouseEnter: true,
     },
+    autoHeight: true, //高度随内容变化
     pagination: {
       el: '#banner-list .swiper-pagination',
       clickable: true,
@@ -33,6 +34,9 @@ $(document).on('ready', function() {
       slideChange: () => {
         pauseAllBannerVideo();
         swiper.autoplay.start();
+      },
+      resize: function () {
+        this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
       },
     },
   });
@@ -62,7 +66,7 @@ $(document).on('ready', function() {
     [...$bannerVideoCovers].map(($cover, idx) => {
       $cover.addEventListener('click', evt => {
         play(idx);
-        $cover.remove();
+        $cover.style.zIndex = -10;
         evt.stopPropagation();
       });
     });
@@ -107,7 +111,7 @@ $(document).on('ready', function() {
     });
   }
   // 点击显示电话号码
-  $('.bottom-right').on('click', function() {
+  $('.bottom-right').on('click', function () {
     $('.showphone').text('3057');
   });
   // 计算行高

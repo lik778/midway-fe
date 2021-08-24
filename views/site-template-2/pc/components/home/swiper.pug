@@ -34,12 +34,12 @@
   else
     - const {bannerList}=  renderData.banner
     #banner-list
-      .swiper-container.swiper-specil-size(style="height:540px")
+      .swiper-container.swiper-specil-size
         .swiper-wrapper
           if bannerList && bannerList.length > 0
             each item in bannerList
               .swiper-slide
-                  img(src=item.displayImgUrl , style="height:"+height)
+                img(src=item.displayImgUrl)
           else
             .swiper-slide
               img(src="//file.baixing.net/202103/cffd7713b3858170c2a1ae855ee26513.png"  , style="height:"+height)
