@@ -60,7 +60,8 @@ function LeaveMessagePage() {
       track({
         eventType: BXMAINSITE,
         data: {
-          event_type: 'mvip-shop-leave-message-page-pv',
+          event_type: BXMAINSITE,
+          action: 'mvip-shop-leave-message-page-pv',
           uid,
           from,
         }
@@ -94,7 +95,8 @@ function LeaveMessagePage() {
           trackEvent({
             eventType: BXMAINSITE,
             data: {
-              event_type: 'mvip-shop-leave-message-mobile-item-pv',
+              event_type: BXMAINSITE,
+              action: 'mvip-shop-leave-message-mobile-item-pv',
               item_id: x.id,
               uid,
               from,
@@ -214,7 +216,8 @@ function LeaveMessagePage() {
       trackEvent({
         eventType: BXMAINSITE,
         data: {
-          event_type: 'mvip-shop-leave-message-pc-tab-uv',
+          event_type: BXMAINSITE,
+          action: 'mvip-shop-leave-message-pc-tab-uv',
           item_id: key,
           uid,
           from,
@@ -228,7 +231,8 @@ function LeaveMessagePage() {
     trackEvent({
       eventType: BXMAINSITE,
       data: {
-        event_type: 'mvip-shop-leave-message-mobile-tab-uv',
+        event_type: BXMAINSITE,
+        action: 'mvip-shop-leave-message-mobile-tab-uv',
         item_id: key,
         uid,
         from,
@@ -405,7 +409,8 @@ function Card (props: CardProps) {
       track({
         eventType: BXMAINSITE,
         data: {
-          event_type: 'mvip-shop-leave-message-mobile-item-contact-click',
+          event_type: BXMAINSITE,
+          action: 'mvip-shop-leave-message-mobile-item-contact-click',
           item_id: item.id,
           uid,
           from,
@@ -419,7 +424,8 @@ function Card (props: CardProps) {
       track({
         eventType: BXMAINSITE,
         data: {
-          event_type: 'mvip-shop-leave-message-mobile-item-jump-to-source',
+          event_type: BXMAINSITE,
+          action: 'mvip-shop-leave-message-mobile-item-jump-to-source',
           item_id: item.id,
           uid,
           from,
