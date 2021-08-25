@@ -7,7 +7,6 @@ mixin about-Us-New(type,mediaImg)
           
           p.left-title #{ companyName }
         .right-title-right
-          //- - var tag = ['最佳品质','实力商家','品质保证']
           each item in type
             p.tag= item
       .content-right-body(data-d=company.about)
@@ -35,4 +34,3 @@ mixin about-Us-New(type,mediaImg)
             img.picture(src=videoCover)
       else
         img.audio(src=mediaImg||"//file.baixing.net/202108/cf64fc96ae23bee3384871111292cdc1.png")
-        

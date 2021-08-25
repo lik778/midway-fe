@@ -17,7 +17,8 @@ const swiper = new Swiper('.swiper-container', {
   navigation: {
     nextEl: '.swiper-container .swiper-button-next',
     prevEl: '.swiper-container .swiper-button-prev',
-  }, on: {
+  },
+  on: {
     slideChange: () => {
       pauseAllBannerVideo()
       swiper.autoplay.start()
@@ -40,13 +41,17 @@ if (hasBannerVideo) {
     $bannerVideos[idx].play()
   }
   ;[...$bannerVideos].map($video => {
-    $video.addEventListener('click', () => {
-      $video.paused
-        ? swiper.autoplay.stop()
-        : swiper.autoplay.start()
-    })
     $video.onplay = () => {
       swiper.autoplay.stop()
+      if (window._cbs) {
+        window._cbs.pauseAll()
+      }
+    }
+    $video.onpause = () => {
+      swiper.autoplay.start()
+      if (window._cbs) {
+        window._cbs.resumeAll()
+      }
     }
   })
   ;[...$bannerVideoCovers].map(($cover, idx) => {
