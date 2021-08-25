@@ -9,11 +9,6 @@
   background url("//file.baixing.net/202108/55178a98c73c9d27db933bce8121e310.png") no-repeat center center/100%
   background-size cover
   margin 0 0 0 -1px
-  // .about-us-content
-  //   display flex
-  //   justify-content center
-  //   // align-items center
-  //   margin 58px 0 0 38px
   .content-left
     position relative
     width 432px
@@ -38,28 +33,6 @@
       img
         width 100%
         height 100%
-    .video-cover
-      position absolute
-      top 0
-      left 0
-      width 100%
-      height 100%
-      z-index 9
-      cursor pointer
-      img
-        width 100%
-        height 100%
-    .video-wrapper 
-      display flex
-      justify-content center
-      align-items center
-      width 100%
-      height 100%
-      video
-        max-width 100%
-        heigh 100%
-        cursor pointer
-        z-index 9
   .content-right
     // height 243px
     width 656px
@@ -156,10 +129,28 @@
 
 .about-us-bgc
   .video-wrapper
+    display flex
+    justify-content center
+    align-items center
+    width 100%
+    height 100%
     background-color black
+    video
+      max-width 100%
+      heigh 100%
+      cursor pointer
+      z-index 9
   .video-cover
-    position relative
-    img 
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    z-index 9
+    cursor pointer
+    img
+      width 100%
+      height 100%
       object-fit cover
   .video-cover::after
     content ''

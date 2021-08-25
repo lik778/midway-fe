@@ -11,6 +11,9 @@ leaveLeads();
 viewPhone();
 
 $(document).on('ready', function() {
+
+  const $bannerVideos = document.querySelectorAll('#banner-list .swiper-container video')
+
   // 轮播图初始化
   const swiper = new Swiper('#banner-list .swiper-container', {
     loop: true,
@@ -31,50 +34,43 @@ $(document).on('ready', function() {
     },
     on: {
       slideChange: () => {
-        pauseAllBannerVideo();
-        swiper.autoplay.start();
-      },
-    },
-  });
+        $bannerVideos.map(x => x.pause())
+        swiper.autoplay.start()
+      }
+    }
+  })
 
-  /* 轮播视频初始化 */
-
-  const $bannerVideos = document.querySelectorAll('#banner-list video');
-  const $bannerVideoCovers = [...$bannerVideos].map($video => {
-    return $video.parentElement.parentElement.querySelector('.video-cover');
-  });
-  function pauseAllBannerVideo() {
-    [...$bannerVideos].map(x => x.pause());
+  const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
+  const $slides = $swiper.querySelectorAll('.swiper-slide')
+  const getCurSlide = () => $slides[swiper.activeIndex]
+  const getVideo = () => {
+    const $curSlide = getCurSlide()
+    return [
+      $curSlide.querySelector('video'),
+      $curSlide.querySelector('.video-cover')
+    ]
   }
+  $swiper.addEventListener('click', () => {
+    const [$video, $cover] = getVideo()
+    if ($cover) {
+      $cover.remove()
+      $video.play()
+    }
+  })
 
-  const hasBannerVideo = $bannerVideos.length > 0;
-  if (hasBannerVideo) {
-    // 点击封面或视频播放视频
-    const play = idx => {
-      swiper.autoplay.stop();
-      $bannerVideos[idx].play();
-    };
-    [...$bannerVideos].map($video => {
-      $video.addEventListener('click', () => {
-        $video.paused ? swiper.autoplay.stop() : swiper.autoplay.start();
-      });
-    });
-    [...$bannerVideoCovers].map(($cover, idx) => {
-      $cover.addEventListener('click', evt => {
-        play(idx);
-        $cover.remove();
-        evt.stopPropagation();
-      });
-    });
-    // 切换轮播时暂停视频
-    const $next = document.querySelector('#banner-list .swiper-button-next');
-    $next && $next.addEventListener('click', pauseAllBannerVideo);
-    const $prev = document.querySelector('#banner-list .swiper-button-prev');
-    $prev && $prev.addEventListener('click', pauseAllBannerVideo);
-  }
+  /* 视频播放时暂停轮播 */
+  $bannerVideos.map($video => {
+    $video.onplay = () => {
+      swiper.autoplay.stop()
+      window._cbs && window._cbs.pauseAll()
+    }
+    $video.onpause = () => {
+      swiper.autoplay.start()
+      window._cbs && window._cbs.resumeAll()
+    }
+  })
 
   /* 关于我们视频初始化 */
-
   const $aboutUsVideo = document.querySelector('.about-us-picture video');
   const hasAboutVideo = $aboutUsVideo;
   const $aboutUsVideoCovers = hasAboutVideo
@@ -106,23 +102,9 @@ $(document).on('ready', function() {
       ),
     });
   }
+
   // 点击显示电话号码
   $('.bottom-right').on('click', function() {
     $('.showphone').text('3057');
-  });
-  // 计算行高
-  // 高度/行高=文本行数
-  //  var rowNum=Math.round($(".body-content").height()/parseFloat($(".body-content").css('line-height')));
-  // if (rowNum === 6) {
-  //   // alert($(".body-content").text().replace(/.(\.\.\.\.)?$/,"......"))
-  //   //   $(".body-content").text($(".body-content").text().replace(/.(\.\.\.\.\.\.\.)?$/,"......"))
-  //   $('.view-detail').css('display','block')
-  // }
-  // var nowWord = $('.body-content').text().length
-  // var newWord
-  // if (nowWord > 270) {
-  //   $('.view-detail').css('display', 'block')
-  //   newWord =  $('.body-content').text().slice(0,270) + '....'
-  // }
-  // $('.body-content').text(newWord)
-});
+  })
+})

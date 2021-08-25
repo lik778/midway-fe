@@ -80,7 +80,6 @@ $(document).on('ready', function () {
 		}
 	})
 
-	/* 轮播图 */
 	const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
 	const $slides = $swiper.querySelectorAll('.swiper-slide')
 	const getCurSlide = () => $slides[swiper.activeIndex]
