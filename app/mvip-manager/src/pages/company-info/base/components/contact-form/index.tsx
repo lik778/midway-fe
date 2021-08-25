@@ -7,13 +7,10 @@ import { contactForm } from '../../config';
 import { KF53Info, QQItem, UserEnterpriseInfo, SaveEnterpriseContactInfoApiParams } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
-import { formUnvalid, isEmptyObject } from '@/utils';
-import genNewUserModal from '../new-user-modal';
 import KF53 from '../kf53';
 import QQCustomService from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
-import { isNewUserApi } from '@/api/shop';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import styles from './index.less';
 
@@ -26,7 +23,7 @@ function ContactForm(props: any) {
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(contactForm));
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  // 是否修改过表单 阈值  
+  // 是否修改过表单 阈值
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
   // 客户信息表单的form
