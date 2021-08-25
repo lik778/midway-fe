@@ -3,33 +3,35 @@
 #banner-list
   .swiper-container
     width 100%
-    height 100%
     .swiper-wrapper
-      height 100%
       .swiper-slide
         position relative
         img
           width 100%
-          height 100%
-          object-fit cover
         .video-cover
+          width: 100%
+          z-index 9
           position absolute
           top 0
           left 0
-          width 100%
-          z-index 9
+          right 0
+          bottom 0
           cursor pointer
+          img
+            width: 100%
+            height: 100%
+            object-fit: cover
         .video-wrapper 
-          width 100%
-          text-align center
+          width: 100%
           video
+            width: 100%
+            height: 540px
             cursor pointer
-            z-index 9
-        img,
+            z-index 8
         video,
         .video-cover,
         .video-wrapper
-          height 100%
+          width 100%
 
     .swiper-pagination-bullet-active
         background $color-main
