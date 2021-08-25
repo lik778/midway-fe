@@ -1,4 +1,4 @@
-import Swiper from 'swiper'
+import Swiper from 'swiper';
 
 const swiper = new Swiper('.swiper-container', {
   speed: 1000,
@@ -6,7 +6,7 @@ const swiper = new Swiper('.swiper-container', {
   autoplay: {
     delay: 3000,
     disableOnInteraction: false,
-    waitForTransition: true
+    waitForTransition: true,
   },
   //分页器
   pagination: {
@@ -20,44 +20,69 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange: () => {
-      pauseAllBannerVideo()
-      swiper.autoplay.start()
-    }
-  }
-})
+      pauseAllBannerVideo();
+      swiper.autoplay.start();
+    },
+  },
+});
 
-const $bannerVideos = document.querySelectorAll('.swiper-container video')
+const $bannerVideos = document.querySelectorAll('.swiper-container video');
 const $bannerVideoCovers = [...$bannerVideos].map($video => {
-  return $video.parentElement.parentElement.querySelector('.video-cover')
-})
+  return $video.parentElement.parentElement.querySelector('.video-cover');
+});
 function pauseAllBannerVideo() {
-  [...$bannerVideos].map(x => x.pause())
+  [...$bannerVideos].map(x => x.pause());
 }
-const hasBannerVideo = $bannerVideos.length > 0
+const hasBannerVideo = $bannerVideos.length > 0;
 if (hasBannerVideo) {
   // 点击封面播放视频
   const play = idx => {
-    $bannerVideos[idx].play()
-    swiper.autoplay.stop()
-  }
+    $bannerVideos[idx].play();
+    swiper.autoplay.stop();
+  };
   // FIXME 视频点击不了
-  ;[...$bannerVideos].map(($video) => {
+  [...$bannerVideos].map($video => {
     $video.addEventListener('click', () => {
-      $video.paused
-        ? swiper.autoplay.stop()
-        : swiper.autoplay.start()
-    })
-  })
-  ;[...$bannerVideoCovers].map(($cover, idx) => {
+      $video.paused ? swiper.autoplay.stop() : swiper.autoplay.start();
+    });
+  });
+  [...$bannerVideoCovers].map(($cover, idx) => {
     $cover.addEventListener('click', evt => {
-      play(idx)
-      $cover.remove()
-      evt.stopPropagation()
-    })
-  })
+      play(idx);
+      $cover.remove();
+      evt.stopPropagation();
+    });
+  });
   // 切换轮播时暂停视频
-  const $next = document.querySelector('.swiper-container .swiper-button-next')
-  $next && $next.addEventListener('click', pauseAllBannerVideo)
-  const $prev = document.querySelector('.swiper-container .swiper-button-prev')
-  $prev && $prev.addEventListener('click', pauseAllBannerVideo)
+  const $next = document.querySelector('.swiper-container .swiper-button-next');
+  $next && $next.addEventListener('click', pauseAllBannerVideo);
+  const $prev = document.querySelector('.swiper-container .swiper-button-prev');
+  $prev && $prev.addEventListener('click', pauseAllBannerVideo);
 }
+
+// 控制除了首页轮播图
+new Swiper('.swiper-container-small', {
+  speed: 1000,
+  centeredSlides: true,
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+    waitForTransition: true,
+  },
+  //分页器
+  pagination: {
+    el: '.swiper-container-small .swiper-pagination',
+    clickable: true,
+  },
+  //前进后退按钮
+  navigation: {
+    nextEl: '.swiper-container-small .swiper-button-next',
+    prevEl: '.swiper-container-small .swiper-button-prev',
+  },
+  on: {
+    slideChange: () => {
+      pauseAllBannerVideo();
+      swiper.autoplay.start();
+    },
+  },
+});
