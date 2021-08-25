@@ -37,12 +37,8 @@ const AssetsMangeImageListPage = (props: {
 
   /***************************************************** States */
 
-  const { directoryType: propsDirectoryType, navBar, defaultScope } = props
+  const { directoryType: propsDirectoryType, defaultScope, navBar } = props
   const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
-
-  // useEffect(() => {
-  //   console.log('refresh get:', refresh)
-  // }, [refresh])
 
   useEffect(() => {
     dispatch({

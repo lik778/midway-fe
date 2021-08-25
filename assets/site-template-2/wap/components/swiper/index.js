@@ -1,5 +1,7 @@
 import Swiper from 'swiper'
 
+const $bannerVideos = document.querySelectorAll('.swiper-container video')
+
 const swiper = new Swiper('.swiper-container', {
   speed: 1000,
   centeredSlides: true,
@@ -20,51 +22,49 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange: () => {
-      pauseAllBannerVideo()
+      $bannerVideos.map(x => x.pause())
       swiper.autoplay.start()
     }
   }
 })
 
-const $bannerVideos = document.querySelectorAll('.swiper-container video')
-const $bannerVideoCovers = [...$bannerVideos].map($video => {
-  return $video.parentElement.parentElement.querySelector('.video-cover')
-})
-function pauseAllBannerVideo() {
-  [...$bannerVideos].map(x => x.pause())
+const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
+const $slides = $swiper.querySelectorAll('.swiper-slide')
+const getCurSlide = () => $slides[swiper.activeIndex]
+const getVideo = () => {
+  const $curSlide = getCurSlide()
+  return [
+    $curSlide.querySelector('video'),
+    $curSlide.querySelector('.video-cover')
+  ]
 }
-const hasBannerVideo = $bannerVideos.length > 0
-if (hasBannerVideo) {
-  // 点击封面或视频播放视频
-  const play = idx => {
+$swiper.addEventListener('click', () => {
+  $swiper.classList.toggle('fullscreen')
+  const [$video, $cover] = getVideo()
+  const isPaused = $video.paused
+  if (isPaused) {
+    $cover && $cover.remove()
+    $video.play()
+  }
+})
+$swiper.addEventListener('dbclick', () => {
+  const [$video, $cover] = getVideo()
+  const isPaused = $video.paused
+  if (isPaused) {
+    $cover && $cover.remove()
+    $video.play()
+  } else {
+    $video.pause()
+  }
+})
+
+$bannerVideos.map($video => {
+  $video.onplay = () => {
     swiper.autoplay.stop()
-    $bannerVideos[idx].play()
+    window._cbs && window._cbs.pauseAll()
   }
-  ;[...$bannerVideos].map($video => {
-    $video.onplay = () => {
-      swiper.autoplay.stop()
-      if (window._cbs) {
-        window._cbs.pauseAll()
-      }
-    }
-    $video.onpause = () => {
-      swiper.autoplay.start()
-      if (window._cbs) {
-        window._cbs.resumeAll()
-      }
-    }
-  })
-  ;[...$bannerVideoCovers].map(($cover, idx) => {
-    $cover.addEventListener('click', evt => {
-      play(idx)
-      $cover.remove()
-      evt.stopPropagation()
-    })
-  })
-  // 切换轮播时暂停视频
-  const $next = document.querySelector('.swiper-container .swiper-button-next')
-  $next && $next.addEventListener('click', pauseAllBannerVideo)
-  const $prev = document.querySelector('.swiper-container .swiper-button-prev')
-  $prev && $prev.addEventListener('click', pauseAllBannerVideo)
-}
-
+  $video.onpause = () => {
+    swiper.autoplay.start()
+    window._cbs && window._cbs.resumeAll()
+  }
+})
