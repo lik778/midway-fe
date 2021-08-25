@@ -55,8 +55,9 @@ $(document).on('ready', function () {
 		}
 	});
 
-	// 轮播图
-	new Swiper('#banner-list .swiper-container', {
+	const $bannerVideos = document.querySelectorAll('#banner-list .swiper-container video')
+
+	const swiper = new Swiper('#banner-list .swiper-container', {
 		loop: true,
 		speed: 1000,
 		autoplay: {
@@ -67,12 +68,48 @@ $(document).on('ready', function () {
 			el: '#banner-list .swiper-pagination',
 			clickable: true,
 		},
-
 		navigation: {
 			nextEl: '#banner-list .swiper-button-next',
 			prevEl: '#banner-list .swiper-button-prev',
 		},
-	});
+		on: {
+			slideChange: () => {
+				$bannerVideos.map(x => x.pause())
+				swiper.autoplay.start()
+			}
+		}
+	})
+
+	/* 轮播图 */
+	const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
+	const $slides = $swiper.querySelectorAll('.swiper-slide')
+	const getCurSlide = () => $slides[swiper.activeIndex]
+	const getVideo = () => {
+		const $curSlide = getCurSlide()
+		return [
+			$curSlide.querySelector('video'),
+			$curSlide.querySelector('.video-cover')
+		]
+	}
+	$swiper.addEventListener('click', () => {
+		const [$video, $cover] = getVideo()
+		if ($cover) {
+			$cover.remove()
+			$video.play()
+		}
+	})
+
+	/* 视频播放时暂停轮播 */
+	$bannerVideos.map($video => {
+		$video.onplay = () => {
+			swiper.autoplay.stop()
+			window._cbs && window._cbs.pauseAll()
+		}
+		$video.onpause = () => {
+			swiper.autoplay.start()
+			window._cbs && window._cbs.resumeAll()
+		}
+	})
 
 	/* 关于我们视频初始化 */
 	const $aboutUsVideo = document.querySelector('.about-us-bgc video')
@@ -100,12 +137,5 @@ $(document).on('ready', function () {
 			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
 		})
 	}
-			// 新闻模块
-	// var nowWord = $('.item-card .item-content').text().length
-	// var newWord
-	// if (nowWord > 44) {
-	// 	newWord = $('.item-card .item-content').text().slice(1,44) + '.......'
-	// }
-	// $('.item-card .item-content').text(newWord)
 })
 

@@ -38,7 +38,15 @@
         .swiper-wrapper
           if bannerList && bannerList.length > 0
             each item in bannerList
-              .swiper-slide
+              - const isVideo = item.hrefUrl
+              if isVideo
+                .swiper-slide
+                  .video-wrapper
+                    video(src=item.hrefUrl, loop, preload, controls)
+                  .video-cover
+                    img(src=item.displayImgUrl)
+              else
+                .swiper-slide
                   img(src=item.displayImgUrl , style="height:"+height)
           else
             .swiper-slide

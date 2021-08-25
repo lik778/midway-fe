@@ -10,12 +10,10 @@ const swiper = new Swiper('.swiper-container', {
     disableOnInteraction: false,
     waitForTransition: true
   },
-  //分页器
   pagination: {
     el: '.swiper-container .swiper-pagination',
     clickable: true,
   },
-  //前进后退按钮
   navigation: {
     nextEl: '.swiper-container .swiper-button-next',
     prevEl: '.swiper-container .swiper-button-prev',
@@ -28,6 +26,7 @@ const swiper = new Swiper('.swiper-container', {
   }
 })
 
+/* 轮播图 */
 const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
 const $slides = $swiper.querySelectorAll('.swiper-slide')
 const getCurSlide = () => $slides[swiper.activeIndex]
@@ -58,6 +57,7 @@ $swiper.addEventListener('dbclick', () => {
   }
 })
 
+/* 视频播放时暂停轮播 */
 $bannerVideos.map($video => {
   $video.onplay = () => {
     swiper.autoplay.stop()
