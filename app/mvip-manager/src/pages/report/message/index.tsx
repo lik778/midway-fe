@@ -114,6 +114,7 @@ function LeaveMessagePage() {
               action: 'mvip-shop-leave-message',
               action_page: 'mobile-item-pv',
               item_id: x.id,
+              mobile: x.contact,
               uid,
               from,
               platform: getTrackerPlatform(from)
@@ -428,7 +429,7 @@ function Card (props: CardProps) {
   }, [setShouldFold])
 
   const trackTel = useCallback(() => {
-    if (item.id && uid && from) {
+    if (item && item.id && uid && from) {
       track({
         eventType: BXMAINSITE,
         data: {
@@ -437,16 +438,17 @@ function Card (props: CardProps) {
           action: 'mvip-shop-leave-message',
           action_page: 'mobile-item-contact-click',
           item_id: item.id,
+          mobile: item.contact,
           uid,
           from,
           platform: getTrackerPlatform(from)
         }
       })
     }
-  }, [item.id])
+  }, [item])
 
   const trackJump = useCallback(() => {
-    if (item.id && uid && from) {
+    if (item && item.id && uid && from) {
       track({
         eventType: BXMAINSITE,
         data: {
@@ -455,13 +457,14 @@ function Card (props: CardProps) {
           action: 'mvip-shop-leave-message',
           action_page: 'mobile-item-jump-to-source',
           item_id: item.id,
+          mobile: item.contact,
           uid,
           from,
           platform: getTrackerPlatform(from)
         }
       })
     }
-  }, [item.id])
+  }, [item])
 
   const displayMessage = decodeHTMLCodeSafe(item.message)
   const isValid = isValidURL(item.sourceUrl || '')
