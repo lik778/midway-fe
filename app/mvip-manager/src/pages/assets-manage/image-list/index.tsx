@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useContext } from 'react'
 import { Button, Modal, Result } from "antd"
 
+import EmptyListIcon from '@/icons/empty-list'
 import { successMessage, errorMessage } from "@/components/message"
 import { getMediaCatesList, getMediaAssets, delMediaCategory, delMediaAssets } from '@/api/shop'
 import NavBar from './page-nav/index'
@@ -190,6 +191,7 @@ const AssetsMangeImageListPage = (props: {
     }
     return (
       <Result
+        icon={<EmptyListIcon />}
         title={info}
         extra={$extra}
         style={{ margin: 'auto' }}

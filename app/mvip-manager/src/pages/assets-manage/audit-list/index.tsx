@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { Modal, Result } from "antd"
 
+import EmptyListIcon from '@/icons/empty-list'
 import { successMessage, errorMessage } from "@/components/message"
 import { getMediaFailedAssets, delMediaFailedAssets } from '@/api/shop'
 import NavBar from './page-nav/index'
@@ -89,6 +90,7 @@ const AssetsMangeAuditListPage = () => {
   // 空列表提示
   const emptyTip = useCallback(() => (
     <Result
+      icon={<EmptyListIcon />}
       title="当前没有申诉中的图片哦~"
       style={{ margin: 'auto' }}
     />
