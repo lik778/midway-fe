@@ -85,23 +85,25 @@ $(document).on('ready', function () {
 		}
 	})
 
-	const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
-	const $slides = $swiper.querySelectorAll('.swiper-slide')
-	const getCurSlide = () => $slides[swiper.activeIndex]
-	const getVideo = () => {
-		const $curSlide = getCurSlide()
-		return [
-			$curSlide.querySelector('video'),
-			$curSlide.querySelector('.video-cover')
-		]
-	}
-	$swiper.addEventListener('click', () => {
-		const [$video, $cover] = getVideo()
-		if ($cover) {
-			$cover.remove()
-			$video.play()
+	if (swiper.$el) {
+		const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
+		const $slides = $swiper.querySelectorAll('.swiper-slide')
+		const getCurSlide = () => $slides[swiper.activeIndex]
+		const getVideo = () => {
+			const $curSlide = getCurSlide()
+			return [
+				$curSlide.querySelector('video'),
+				$curSlide.querySelector('.video-cover')
+			]
 		}
-	})
+		$swiper.addEventListener('click', () => {
+			const [$video, $cover] = getVideo()
+			if ($cover) {
+				$cover.remove()
+				$video.play()
+			}
+		})
+	}
 
 	/* 视频播放时暂停轮播 */
 	$bannerVideos.map($video => {
