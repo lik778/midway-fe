@@ -3,6 +3,7 @@ import styles from './index.less';
 import AlbumModal from '@/components/img-upload/components/upload2/components/modal'
 import ImgUploadContext from '@/components/img-upload/context'
 import ImgItem from '@/components/img-upload/components/img-item'
+import VideoItem from '@/components/img-upload/components/video-item'
 import UploadBtn from '@/components/img-upload/components/upload-btn'
 
 const Upload2: FC = () => {
@@ -12,7 +13,13 @@ const Upload2: FC = () => {
   return <>
     <div className={styles['img-selected-list']}>
       {
-        fileList.map((item, index, arr) => <ImgItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>)
+        fileList.map((item, index, arr) => {
+          if (item.type === 'IMAGE') {
+            return <ImgItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>
+          } else if (item.type === 'VIDEO') {
+            return <VideoItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
+          }
+        })
       }
       {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />}
     </div>

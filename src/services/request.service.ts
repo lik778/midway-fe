@@ -44,6 +44,7 @@ export class RequestService {
       }).catch((err: AxiosError) => reject(err))
     })
       .catch((err) => {
+        console.log(err)
         this.logService.errorLog(err)
         if (err.isAxiosError) {
           const { message, code, success } = err.response.data

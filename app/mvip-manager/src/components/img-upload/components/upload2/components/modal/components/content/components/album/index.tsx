@@ -8,25 +8,25 @@ import { getBaixingAlbumNameList, getMediaCatesNameList } from '@/api/shop'
 import { mockData } from '@/utils';
 import { MediaCatesNameListItem } from '@/interfaces/shop';
 import { TabsKeys } from '../../data'
-import { ImageData } from '@/components/img-upload/data'
-import { ImageDataAlbumListItem } from '@/components/img-upload/data';
+import { MediaDataAlbumListItem, MediaType } from '@/components/img-upload/data';
 interface Props {
   tabsCurrent: TabsKeys
   tabKey: TabsKeys
+  mediaType: MediaType
 }
 
 const Album: FC<Props> = (props) => {
-  const { tabsCurrent, tabKey } = props
+  const { tabsCurrent, tabKey, mediaType } = props
   const context = useContext(ImgUploadContext)
-  const { shopCurrent, baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
+  const { baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
   const [menuKey, setMenuKey] = useState<number | undefined>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
   const createNewData = (result: MediaCatesNameListItem[]) => {
-    return [...([{ id: -1, name: '全部' }, ...result]).map<ImageDataAlbumListItem>(item => {
+    return [...([{ id: -1, name: '全部' }, ...result]).map<MediaDataAlbumListItem>(item => {
       return {
         ...item,
-        images: [],
+        media: [],
         page: 1,
         total: 1,
         init: false
@@ -35,44 +35,47 @@ const Album: FC<Props> = (props) => {
   }
 
   const getAlbumMenu = async () => {
-    // 选择好店铺后，先判断是否有请求过左侧相册名列表
-    if (shopCurrent) {
-      if (tabKey === '百姓图库') {
-        if (baixingImageData.length <= 0) {
-          setMenuKey(undefined)
-          setGetDataLoading(true)
-          const res = await getBaixingAlbumNameList(shopCurrent!.id)
-          const newData = createNewData(res.data)
-          handleChangeBaixingImageData(newData, baixingImageData)
-        }
-      } else if (tabKey === '我的图库') {
-        if (!imageData[shopCurrent.id]) {
-          setMenuKey(undefined)
-          setGetDataLoading(true)
-          // TODO
-          const res = await getMediaCatesNameList({
-            source: 'IMAGE'
-          })
-          const newData = createNewData(res.data)
-          handleChangeImageData({
-            ...imageData,
-            [shopCurrent.id]: newData
-          }, imageData)
-        }
+    if (tabKey === '百姓图库') {
+      if (baixingImageData.length <= 0) {
+        setMenuKey(undefined)
+        setGetDataLoading(true)
+        const res = await getBaixingAlbumNameList(468)
+        const newData = createNewData(res.data)
+        handleChangeBaixingImageData(newData, baixingImageData)
       }
-      setGetDataLoading(false)
-      setMenuKey(-1)
+    } else if (tabKey === '我的图库') {
+      if (imageData.length <= 0) {
+        setMenuKey(undefined)
+        setGetDataLoading(true)
+        const res = await getMediaCatesNameList({
+          source: 'IMAGE'
+        })
+        const newData = createNewData(res.data)
+        handleChangeImageData(newData, imageData)
+      }
+    } else if (tabKey === '我的视频') {
+      if (imageData.length <= 0) {
+        setMenuKey(undefined)
+        setGetDataLoading(true)
+        const res = await getMediaCatesNameList({
+          source: 'IMAGE'
+        })
+        const newData = createNewData(res.data)
+        handleChangeImageData(newData, imageData)
+      }
     }
+    setGetDataLoading(false)
+    setMenuKey(-1)
   }
 
   useEffect(() => {
     getAlbumMenu()
-  }, [shopCurrent])
+  }, [])
 
   return <Spin spinning={getDataLoading}>
     <div className={styles['album']}>
       <AlbumMenu tabsCurrent={tabsCurrent} menuKey={menuKey} handleChangeMenuKey={setMenuKey}></AlbumMenu>
-      <ImgList tabsCurrent={tabsCurrent} tabKey={tabKey} menuKey={menuKey}></ImgList>
+      <ImgList tabsCurrent={tabsCurrent} tabKey={tabKey} menuKey={menuKey} mediaType={mediaType}></ImgList>
     </div>
   </Spin>
 }

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface'
-import { ImgUploadContextProps, ImageData, ImageDataAlbumListItem } from './data'
+import { ImgUploadContextProps, ImageData, MediaDataAlbumListItem } from './data'
 import { ShopInfo } from '@/interfaces/shop';
 
 const defaultValue = {
@@ -32,7 +32,7 @@ const defaultValue = {
   loadingShopModel: false,
   handleChangeShopCurrent: (newShopCurrent: ShopInfo) => { },
   handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => { },
-  handleChangeBaixingImageData: (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => { },
+  handleChangeBaixingImageData: (newBaixingImageData: MediaDataAlbumListItem[], oldBaixingImageData: MediaDataAlbumListItem[]) => { },
   handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => { },
   handlePreview: (file: UploadFile) => { },
   handleRemove: (file: UploadFile, fileIndex: number) => { },

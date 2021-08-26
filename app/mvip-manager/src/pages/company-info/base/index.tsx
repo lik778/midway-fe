@@ -8,6 +8,7 @@ import Loading from '@/components/loading';
 import MainTitle from '@/components/main-title';
 import ContactForm from './components/contact-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
+import { getImgUploadValueModel, getImgUploadModelValue } from '@/components/img-upload'
 import { saveEnterpriseForShopApi } from '@/api/user'
 import { InitEnterpriseForShopParams, MetasItem, SaveEnterpriseForShopParams, UserEnterpriseInfo, ShopMetas } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
@@ -59,8 +60,8 @@ function CompanyInfoBase(props: Props) {
       companyName,
       companyYears,
       employeeCount,
-      promoteImg,
-      metas: metas
+      promoteImg: getImgUploadValueModel('IMAGE', promoteImg),
+      metas: metas,
     })
     setFormLoading(false)
 
@@ -127,7 +128,8 @@ function CompanyInfoBase(props: Props) {
     const requestData = {
       ...values,
       area: Array.isArray(values.area) ? values.area : Object.keys(values.area).map(k => k),
-      ...metas
+      ...metas,
+      promoteImg: values.promoteImg ? getImgUploadModelValue(values.promoteImg) : values.promoteImg
     } as SaveEnterpriseForShopParams
     // 下面三个是表单里的额外字段，用于保存类目的，避免接口有多余字段，所以删除
     // @ts-ignore

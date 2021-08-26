@@ -8,7 +8,8 @@ import { DeviceType } from '@/enums';
 import { errorMessage } from '@/components/message';
 import Loading from '@/components/loading';
 import ImgUpload from "@/components/img-upload";
-import { ActionBtnListItem } from '@/components/img-upload/data';
+import { ActionBtnListItem, MediaItem } from '@/components/img-upload/data';
+import { getImgUploadValueModel, getImgUploadModelValue } from '@/components/img-upload';
 import { UploadFile } from "antd/lib/upload/interface";
 import { Spin } from 'antd'
 import styles from './index.less'
@@ -34,9 +35,9 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     if (bannerList.length === 0) {
       return ''
     } else if (bannerList.length === 1) {
-      return bannerList[0].displayImgUrl
+      return getImgUploadValueModel('IMAGE', bannerList[0].displayImgUrl)
     } else {
-      return bannerList.map(item => item.displayImgUrl)
+      return bannerList.map(item => getImgUploadValueModel('IMAGE', item.displayImgUrl) as MediaItem)
     }
   }, [bannerList])
   const [getDataLoading, setGetDataLoading] = useState(true)
@@ -108,7 +109,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   }
 
   // 目前可以同时操纵多个图片 可同时新增删除
-  const handleChange = async (values: string | string[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
+  const handleChange = async (values: "" | MediaItem | MediaItem[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
     // oldFileList 对应bannerLiet的文件 ，且顺序相同。
     // 找到fileList与oldFileList的交集a。
     // 维持localValues的顺序等于values，并将已有的id记录在localValues里
@@ -220,6 +221,10 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       },
     ]
   }, [handleMove])
+
+  useEffect(() => {
+    console.log("editData", editData)
+  }, [editData])
 
   return (
     <div className={styles['carousel-img']} >

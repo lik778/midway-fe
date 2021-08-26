@@ -3,6 +3,7 @@ import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
 import { ShopMetas } from '@/interfaces/user'
 import { AuditStatus } from '@/enums';
+import { MediaItem } from '@/components/img-upload/data';
 
 export interface RouteParams {
   id: string;
@@ -210,6 +211,16 @@ export interface CustomerSetChildListItem {
   key: string
 }
 
+export interface InitCustomerSetChildListItem {
+  id?: number,
+  title: string,
+  content: string,
+  urlImg: MediaItem | '',
+  /** 自用字段 因为是数字 一定要保证唯一 */
+  key: string
+}
+
+
 // 自定义设置
 export interface CustomerSetListItem {
   mainModuleId?: number,
@@ -235,19 +246,19 @@ export interface Ticket {
 }
 
 // 店铺自己的基础信息模块 设置参数
-interface ShopBasicInfoParams {
+export interface ShopItemBasicInfo {
   companyName: string,
   companyAlias: string,// 店铺名称 默认值取得店铺名称
   companyAddress: string,
   companyDescription: string,
-  promoteImg: string,
   contactName: string,
   contactMobile: string,
   contactMobile2: string,
   wechat: string,
 }
 
-export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
+export interface ShopItemBasicInfoParams extends ShopItemBasicInfo {
+  promoteImg: string;
   firstCategory: { [key: string]: string };
   metas: ShopMetas
   area: {
@@ -255,7 +266,17 @@ export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
   }
 }
 
-export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
+export interface InitShopItemBasicInfoParams extends ShopItemBasicInfo {
+  promoteImg: MediaItem | '';
+  firstCategory: { [key: string]: string };
+  metas: ShopMetas
+  area: {
+    [key: string]: string
+  }
+}
+
+export interface UploadShopBasicInfoParams extends ShopItemBasicInfo {
+  promoteImg: string;
   area: {
     [key: string]: string
   },
@@ -432,18 +453,18 @@ export type TabScopeItem = (
     countLabel: '个'
   }
 ) | (
-  TabScopeItemBase & {
-    type: 'image',
-    label: '图片',
-    countLabel: '张'
-  }
-) | (
-  TabScopeItemBase & {
-    type: 'audit',
-    label: '资源',
-    countLabel: '项'
-  }
-)
+    TabScopeItemBase & {
+      type: 'image',
+      label: '图片',
+      countLabel: '张'
+    }
+  ) | (
+    TabScopeItemBase & {
+      type: 'audit',
+      label: '资源',
+      countLabel: '项'
+    }
+  )
 export type TabScope = TabScopeItem[]
 
 

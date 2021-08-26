@@ -9,6 +9,7 @@ interface Props {
 const CacheComponent: FC<Props> = (props) => {
   const { visible, className, children } = props
   const [init, setInit] = useState<boolean>(false)
+  
   useEffect(() => {
     if (visible) {
       setInit(true)
@@ -22,7 +23,6 @@ const CacheComponent: FC<Props> = (props) => {
       }
       const childProps = {
         ...child.props,
-        visible: visible
       }
       return React.cloneElement(child, childProps)
     })
