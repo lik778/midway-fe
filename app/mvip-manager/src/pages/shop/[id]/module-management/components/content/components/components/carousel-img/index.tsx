@@ -222,10 +222,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     ]
   }, [handleMove])
 
-  useEffect(() => {
-    console.log("editData", editData)
-  }, [editData])
-
   return (
     <div className={styles['carousel-img']} >
       <div className={styles["title"]}>{txt}: </div>

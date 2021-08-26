@@ -587,10 +587,20 @@ export interface ModuleHomeABoutInfo {
   media: string
 }
 
+export interface InitModuleHomeABoutInfo {
+  name: string,
+  tags: string[],
+  media: MediaItem | ''
+}
+
 export interface ModuleHomeABoutInfoParam extends ModuleRequestParam, ModuleHomeABoutInfo { }
 
 export interface ModuleABoutABoutInfo {
   backImg: string,
+}
+
+export interface InitModuleABoutABoutInfo {
+  backImg: MediaItem | '',
 }
 
 export interface ModuleABoutABoutInfoParam extends ModuleRequestParam, ModuleABoutABoutInfo { }

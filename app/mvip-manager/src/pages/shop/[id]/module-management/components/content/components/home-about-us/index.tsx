@@ -7,13 +7,14 @@ import { aboutUsForm } from './config'
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE } from '@/models/shop';
 import { connect } from 'dva';
-import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId, ShopInfo } from '@/interfaces/shop'
+import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId, ShopInfo, InitModuleHomeABoutInfo } from '@/interfaces/shop'
 import { getModuleInfoApi, setModuleHomeABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
 import { useMemo } from 'react';
 import { ShopIndustryType } from '@/enums';
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 
 interface Props {
   position: ModulePageType,
@@ -35,7 +36,7 @@ const TipNode = () => {
 const AboutUs: FC<Props> = (props) => {
   const params = useParams<{ id: string }>()
   const { position, pageModule, curShopInfo } = props
-  const [detail, setDetail] = useState<ModuleHomeABoutInfo>({
+  const [detail, setDetail] = useState<InitModuleHomeABoutInfo>({
     name: '',
     tags: [],
     media: ''
@@ -58,7 +59,10 @@ const AboutUs: FC<Props> = (props) => {
     const res = await getModuleInfoApi<ModuleHomeABoutInfo>(Number(params.id), {
       position, pageModule
     })
-    setDetail(res.data)
+    setDetail({
+      ...res.data,
+      media: getImgUploadValueModel('IMAGE', res.data.media)
+    })
     setGetDataLoading(false)
   }
 
@@ -66,12 +70,13 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = async (values: ModuleHomeABoutInfo) => {
+  const handleSubmit = async (values: InitModuleHomeABoutInfo) => {
     console.log(values)
     // 因为tag组件默认传出来的是 逗号拼接的string
     setUpDataLoading(true)
     const res = await setModuleHomeABoutInfoApi(Number(params.id), {
       ...values,
+      media: getImgUploadModelValue(values.media),
       tags: Array.isArray(values.tags) ? values.tags : (values.tags as any).split(','),
       position, pageModule
     })
