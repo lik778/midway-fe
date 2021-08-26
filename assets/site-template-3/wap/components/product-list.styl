@@ -3,6 +3,7 @@
   *
     box-sizing border-box
   .product
+    position relative
     display flex
     justify-content center
     align-items stretch
@@ -51,3 +52,18 @@
       font-size: 12px;
       color: #666666;
       line-height: 18px;
+
+.play-icon.active
+  position: absolute;
+  top: 60px;
+  width: 36px;
+  height: 36px;
+  background: url(//file.baixing.net/201709/1ae6e52bed21cee4b2e9f45be173d0f4.png)
+  background-size: 100%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 1;
+  &.left
+    left: 90px;
+  &.right
+    right: 60px;

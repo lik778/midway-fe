@@ -1,8 +1,9 @@
-
 if productList && productList.length >0
 	.product-list
 		each item in productList
+			- const isVideo = item.videoUrl
 			a.item-p(href=item.urlSuffix target="_blank")
+				.play-icon(class=isVideo?'active':'')
 				img(src=item.headImg || defaultImg)
 				p.only-twoline #{ item.name }
 				//- .show-desc 查看详情
