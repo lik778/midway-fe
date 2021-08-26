@@ -25,6 +25,8 @@ export interface ActionBtnListItem {
 
 export interface ImgUploadProps {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
+  showImage?: boolean,// 是否显示图片相关tab
+  showVideo?: boolean,// 是否显示视频相关tab
   editData?: MediaItem | MediaItem[] | '';// 传入的数据
   uploadBtnText: string;// 上传按钮上的提示文本
   maxSize?: number;// 单个图片最大尺寸
@@ -73,10 +75,12 @@ export interface ImgUploadContextProps {
   },// 用户预选择文件的对象，空间换时间
   initConfig: {
     uploadType: 1 | 2,//1：直接上传  2：打开图库
+    showImage: boolean,// 是否显示图片相关tab
+    showVideo: boolean,// 是否显示视频相关tab
     uploadBtnText: string;// 上传按钮上的提示文本
     maxSize: number;// 单个图片最大尺寸
     maxLength: number;// 本次上传个数上线
-    disabled?: boolean | undefined;// 是否禁用
+    disabled: boolean;// 是否禁用
     aspectRatio?: number// 图片不是正方形的时候通过传比例去设置长度
     itemWidth?: number// 根据aspectRatio算出的长度
     showUploadList?: ExpandShowUploadListInterface// 按钮控制
