@@ -16,7 +16,10 @@ async function fetchAlbumNameLists(sourceType: MediaCateSource) {
       total: res.data.length
     } as AlbumNamesContextType
   } catch(err) {
-    throw new Error(err)
+    return {
+      lists: [],
+      total: 0
+    }
   }
 }
 

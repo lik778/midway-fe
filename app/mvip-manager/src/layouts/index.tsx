@@ -76,18 +76,6 @@ const Layouts = (props: any) => {
                 </SubMenu>
               )
             })}
-            {/* 测试用素材管理菜单栏 */}
-            <SubMenu style={{ marginBottom: '10px' }} key="assets-manage" title="素材管理" className="assets-manage">
-              <Menu.Item key="assets-img">
-                <Link to="/assets-manage/image-list">图片管理</Link>
-              </Menu.Item>
-              <Menu.Item key="assets-video">
-                <Link to="/assets-manage/video-list">视频管理</Link>
-              </Menu.Item>
-              <Menu.Item key="assets-reapply">
-                <Link to="/assets-manage/audit-list">申诉列表</Link>
-              </Menu.Item>
-            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1350 : '' }}>

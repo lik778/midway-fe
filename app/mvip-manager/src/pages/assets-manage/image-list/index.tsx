@@ -16,9 +16,11 @@ import AlbumNamesContext, { AlbumNamesContextProvider } from '../context/album-n
 import { MediaCateSource, TabScope, TabScopeItem, CardItem, MediaCateItem, MediaAssetsItem } from "@/interfaces/shop"
 import { PageNavProps, DeleteBatchProps, EmptyTipProps } from '../cards-page/index'
 
+// TODO 页面权限
+
 const AssetsMangeImageListPageContexted = (props: any) => {
   let { directoryType } = props
-  directoryType = directoryType || 'image'
+  directoryType = directoryType || 'IMAGE'
   return (
     <CardsPageContextProvider>
       <AlbumNamesContextProvider sourceType={directoryType}>

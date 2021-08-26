@@ -7,7 +7,6 @@ import { getMediaFailedAssets, delMediaFailedAssets } from '@/api/shop'
 import NavBar from './page-nav/index'
 import ErrorCardWrapper from './error-card/index'
 import CardsPage from '../cards-page/index'
-
 import { MediaCateSource, CardItem, MediaAssetsItem } from "@/interfaces/shop"
 import { DeleteBatchProps } from '../cards-page/index'
 
