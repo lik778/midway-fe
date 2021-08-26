@@ -10,4 +10,15 @@ export const viewTel = function () {
       eventTracker("53kf-pc", "vad-pc")
     });
   })
+
+  // 视频初始化
+  const $productVideo = document.querySelector('.company video')
+  if ($productVideo) {
+    const $cover = document.querySelector('.company .video-cover')
+    $cover.addEventListener('click', evt => {
+      $productVideo.play()
+      $cover.remove()
+      evt.stopPropagation()
+    })
+  }
 }

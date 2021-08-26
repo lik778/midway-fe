@@ -9,11 +9,23 @@ menusModule()
 leaveLeads()
 
 $(document).on('ready', function () {
+  
   // sem部分链接需要禁止二跳
   if (isSem) {
     initSem({
       type: 'detail',
       gotoOtherPageA: $('#layout-content a,.header a')
+    })
+  }
+
+  // 视频初始化
+  const $productVideo = document.querySelector('.product-detail video')
+  if ($productVideo) {
+    const $cover = document.querySelector('.product-detail .video-cover')
+    $cover.addEventListener('click', evt => {
+      $productVideo.play()
+      $cover.remove()
+      evt.stopPropagation()
     })
   }
 })
