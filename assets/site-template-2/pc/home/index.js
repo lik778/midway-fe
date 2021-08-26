@@ -55,7 +55,7 @@ $(document).on('ready', function () {
 		}
 	});
 
-	const $bannerVideos = document.querySelectorAll('#banner-list .swiper-container video')
+	const $bannerVideos = [...document.querySelectorAll('#banner-list .swiper-container video')]
 
 	const swiper = new Swiper('#banner-list .swiper-container', {
 		loop: true,

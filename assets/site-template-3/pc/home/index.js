@@ -12,7 +12,7 @@ viewPhone();
 
 $(document).on('ready', function() {
 
-  const $bannerVideos = document.querySelectorAll('#banner-list .swiper-container video')
+  const $bannerVideos = [...document.querySelectorAll('#banner-list .swiper-container video')]
 
   // 轮播图初始化
   const swiper = new Swiper('#banner-list .swiper-container', {

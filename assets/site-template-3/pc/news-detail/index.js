@@ -46,7 +46,7 @@ $(document).on('ready', function () {
 
   /* 轮播视频初始化 */
 
-  const $bannerVideos = document.querySelectorAll('#banner-list video')
+  const $bannerVideos = [...document.querySelectorAll('#banner-list video')]
   const $bannerVideoCovers = [...$bannerVideos].map($video => {
     return $video.parentElement.parentElement.querySelector('.video-cover')
   })

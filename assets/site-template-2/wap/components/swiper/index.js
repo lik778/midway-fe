@@ -1,6 +1,6 @@
 import Swiper from 'swiper';
 
-const $bannerVideos = document.querySelectorAll('.swiper-container video')
+const $bannerVideos = [...document.querySelectorAll('.swiper-container video')]
 
 const swiper = new Swiper('.swiper-container', {
   speed: 1000,
