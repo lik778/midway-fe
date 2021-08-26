@@ -37,6 +37,7 @@ const ModalFooter: FC = () => {
   }
 
   const handleClickOk = () => {
+    console.log(localFileList)
     handleChangeFileList([...localFileList], fileList, null)
     handleChangeAlbumVisible(false)
   }

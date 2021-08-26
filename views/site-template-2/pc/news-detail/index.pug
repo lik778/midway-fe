@@ -3,7 +3,7 @@ block styles
   :combine(fileName="site-template-2-news-detail-pc.css")
 
 block content
-  include ./news-detail-swiper.pug
+  include ../components/news-detail/swiper.pug
   if !isSem
     include ../components/common/breadcrumbs.pug
   - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo

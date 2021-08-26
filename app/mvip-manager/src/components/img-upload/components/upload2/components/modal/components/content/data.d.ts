@@ -1,1 +1,1 @@
-export type TabsKeys = "本地上传" | "百姓图库" | "我的图库"
+export type TabsKeys = "本地上传" | "百姓图库" | "我的图库" | "我的视频"

@@ -24,6 +24,7 @@ $(document).on('ready', function() {
       waitForTransition: true,
       pauseOnMouseEnter: true,
     },
+    autoHeight: true, //高度随内容变化
     pagination: {
       el: '#banner-list .swiper-pagination',
       clickable: true,
@@ -33,6 +34,9 @@ $(document).on('ready', function() {
       prevEl: '#banner-list .swiper-button-prev',
     },
     on: {
+      resize: function () {
+        this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+      },
       slideChange: () => {
         $bannerVideos.map(x => x.pause())
         swiper.autoplay.start()
@@ -104,7 +108,7 @@ $(document).on('ready', function() {
   }
 
   // 点击显示电话号码
-  $('.bottom-right').on('click', function() {
+  $('.bottom-right').on('click', function () {
     $('.showphone').text('3057');
   })
 })

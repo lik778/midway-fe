@@ -1,0 +1,50 @@
+.img-item {
+  display: inline-block;
+  width: 104px;
+  height: 104px;
+  padding: 8px;
+  vertical-align: top;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+
+  .img {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &:hover {
+      .mask {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .mask {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      content: " ";
+      transition: background-color 0.3s;
+
+      &:hover {
+        .action-btn {
+          opacity: 1;
+        }
+      }
+
+      .action-btn {
+        padding: 0 5px;
+        color: #fff;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+    }
+  }
+}

@@ -22,6 +22,7 @@ $(document).on('ready', function () {
       disableOnInteraction: false,
       waitForTransition: true
     },
+    autoHeight: true, //高度随内容变化
     //分页器
     pagination: {
       el: '#banner-list .swiper-pagination',
@@ -36,7 +37,10 @@ $(document).on('ready', function () {
       slideChange: () => {
         pauseAllBannerVideo()
         swiper.autoplay.start()
-      }
+      },
+      resize: function () {
+        this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+      },
     }
   })
 

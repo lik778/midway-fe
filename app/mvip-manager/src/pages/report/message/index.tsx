@@ -22,6 +22,17 @@ import "./index.less"
 const TabPane = Tabs.TabPane
 const PAGESIZE = 10
 const BXMAINSITE = 'bxmainsite'
+const getTrackerPlatform = (from: string | null) => {
+  switch (from) {
+    case 'mvip':
+    case 'msvip':
+      return 'pc'
+    case 'wechat':
+      return 'mobile'
+    default:
+      return 'unknown'
+  }
+}
 
 // 可以的话请把这玩意儿删了
 function LeaveMessagePage() {
@@ -61,9 +72,12 @@ function LeaveMessagePage() {
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          action: 'mvip-shop-leave-message-page-pv',
+          tm: +new Date(),
+          action: 'mvip-shop-leave-message',
+          action_page: 'page-pv',
           uid,
           from,
+          platform: getTrackerPlatform(from)
         }
       })
     }
@@ -96,10 +110,14 @@ function LeaveMessagePage() {
             eventType: BXMAINSITE,
             data: {
               event_type: BXMAINSITE,
-              action: 'mvip-shop-leave-message-mobile-item-pv',
+              tm: +new Date(),
+              action: 'mvip-shop-leave-message',
+              action_page: 'mobile-item-pv',
               item_id: x.id,
+              mobile: x.contact,
               uid,
               from,
+              platform: getTrackerPlatform(from)
             }
           })
         })
@@ -217,10 +235,13 @@ function LeaveMessagePage() {
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          action: 'mvip-shop-leave-message-pc-tab-uv',
+          tm: +new Date(),
+          action: 'mvip-shop-leave-message',
+          action_page: 'pc-tab-uv',
           item_id: key,
           uid,
           from,
+          platform: getTrackerPlatform(from)
         }
       })
       changeTab(key)
@@ -232,10 +253,13 @@ function LeaveMessagePage() {
       eventType: BXMAINSITE,
       data: {
         event_type: BXMAINSITE,
-        action: 'mvip-shop-leave-message-mobile-tab-uv',
+        tm: +new Date(),
+        action: 'mvip-shop-leave-message',
+        action_page: 'mobile-tab-uv',
         item_id: key,
         uid,
         from,
+        platform: getTrackerPlatform(from)
       }
     })
     changeTab(key)
@@ -405,34 +429,42 @@ function Card (props: CardProps) {
   }, [setShouldFold])
 
   const trackTel = useCallback(() => {
-    if (item.id && uid && from) {
+    if (item && item.id && uid && from) {
       track({
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          action: 'mvip-shop-leave-message-mobile-item-contact-click',
+          tm: +new Date(),
+          action: 'mvip-shop-leave-message',
+          action_page: 'mobile-item-contact-click',
           item_id: item.id,
+          mobile: item.contact,
           uid,
           from,
+          platform: getTrackerPlatform(from)
         }
       })
     }
-  }, [item.id])
+  }, [item])
 
   const trackJump = useCallback(() => {
-    if (item.id && uid && from) {
+    if (item && item.id && uid && from) {
       track({
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          action: 'mvip-shop-leave-message-mobile-item-jump-to-source',
+          tm: +new Date(),
+          action: 'mvip-shop-leave-message',
+          action_page: 'mobile-item-jump-to-source',
           item_id: item.id,
+          mobile: item.contact,
           uid,
           from,
+          platform: getTrackerPlatform(from)
         }
       })
     }
-  }, [item.id])
+  }, [item])
 
   const displayMessage = decodeHTMLCodeSafe(item.message)
   const isValid = isValidURL(item.sourceUrl || '')

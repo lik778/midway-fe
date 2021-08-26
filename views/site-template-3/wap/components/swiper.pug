@@ -1,28 +1,59 @@
-mixin swiper(data, type)
-  .swiper-container
-    if data && data.length > 0
-      .swiper-wrapper
-        each item in data
-          - const isVideo = item.hrefUrl
-          if isVideo
-            .swiper-slide
-              .video-wrapper
-                video(src=item.hrefUrl, loop, preload, controls)
-              .video-cover
-                img(src=item.displayImgUrl)
-          else
-            .swiper-slide(style=`background-image:url("${item.displayImgUrl}")`)
-      if type === 'home'
-        .num-tip #{data.length}张图片
+mixin swiper(data, type, height)
+  if height == '100vw'
+    .swiper-container
+      if data && data.length > 0
+        .swiper-wrapper
+          each item in data
+            - const isVideo = item.hrefUrl
+            if isVideo
+              .swiper-slide
+                .video-wrapper
+                  video(src=item.hrefUrl, loop, preload, controls)
+                .video-cover
+                  img(src=item.displayImgUrl)
+            else
+              .swiper-slide(style=`background-image:url("${item.displayImgUrl}")`)
+        if type === 'home'
+          .num-tip #{data.length}张图片
+        else
+          if data.length > 1
+            .swiper-pagination
       else
-        if data.length > 1
+        if type === 'home'
+          .swiper-wrapper
+            .swiper-slide(style="background-image:url(//file.baixing.net/202105/68804ccf9b248f73ae14561a4981fc94.png)")
+        else
+          .swiper-wrapper
+            .swiper-slide(style="background-image:url(//file.baixing.net/202103/410b62b875216c3267539be22288285f.png)")
+            .swiper-slide(style="background-image:url(//file.baixing.net/202103/0e18a589532358323c4946c53d35460c.png)")
           .swiper-pagination
-    else
-      if type === 'home'
+  else
+    .swiper-container-small
+      if data && data.length > 0
         .swiper-wrapper
-          .swiper-slide(style="background-image:url(//file.baixing.net/202105/68804ccf9b248f73ae14561a4981fc94.png)")
+          each item in data
+            - const isVideo = item.hrefUrl
+            if isVideo
+              .swiper-slide
+                .video-wrapper
+                  video(src=item.hrefUrl, loop, preload, controls)
+                .video-cover
+                  img(src=item.displayImgUrl)
+            else
+              .swiper-slide(style=`background-image:url("${item.displayImgUrl}")`)
+        if type === 'home'
+          .num-tip #{data.length}张图片
+        else
+          if data.length > 1
+            .swiper-pagination
       else
-        .swiper-wrapper
-          .swiper-slide(style="background-image:url(//file.baixing.net/202103/410b62b875216c3267539be22288285f.png)")
-          .swiper-slide(style="background-image:url(//file.baixing.net/202103/0e18a589532358323c4946c53d35460c.png)")
-        .swiper-pagination
+        if type === 'home'
+          .swiper-wrapper
+            .swiper-slide(style="background-image:url(//file.baixing.net/202105/68804ccf9b248f73ae14561a4981fc94.png)")
+        else
+          .swiper-wrapper
+            .swiper-slide(style="background-image:url(//file.baixing.net/202103/410b62b875216c3267539be22288285f.png)")
+            .swiper-slide(style="background-image:url(//file.baixing.net/202103/0e18a589532358323c4946c53d35460c.png)")
+          .swiper-pagination
+
+//-分页放进判断里，目的是单图时不显示

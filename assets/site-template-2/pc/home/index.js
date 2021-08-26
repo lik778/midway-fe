@@ -19,8 +19,8 @@ $(document).on('ready', function () {
 		loopedSlides: 5,
 		autoplay: {
 			delay: 5000,
-      waitForTransition: true,
-      pauseOnMouseEnter: true
+			waitForTransition: true,
+			pauseOnMouseEnter: true
 		},
 		navigation: {
 			nextEl: '.swiper-button-next',
@@ -64,6 +64,7 @@ $(document).on('ready', function () {
 			delay: 3000,
 			waitForTransition: true
 		},
+		autoHeight: true, //高度随内容变化
 		pagination: {
 			el: '#banner-list .swiper-pagination',
 			clickable: true,
@@ -73,6 +74,10 @@ $(document).on('ready', function () {
 			prevEl: '#banner-list .swiper-button-prev',
 		},
 		on: {
+			resize: function () {
+				//窗口变化时，更新Swiper的一些属性，如宽高等
+				this.update()
+			},
 			slideChange: () => {
 				$bannerVideos.map(x => x.pause())
 				swiper.autoplay.start()

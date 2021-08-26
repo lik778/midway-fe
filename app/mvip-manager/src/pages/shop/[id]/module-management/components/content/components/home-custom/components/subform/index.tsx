@@ -5,9 +5,10 @@ import WildcatForm from '@/components/wildcat-form';
 import { CustomSetFormConfigFn } from './config';
 
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-import { CustomerSetChildListItem } from '@/interfaces/shop';
+import { CustomerSetChildListItem, InitCustomerSetChildListItem } from '@/interfaces/shop';
 
 import styles from './index.less'
+import { getImgUploadValueModel } from '@/components/img-upload';
 
 const FormItem = Form.Item
 
@@ -36,8 +37,9 @@ const SubForm = (props: Props, parentRef: Ref<any>) => {
     moduleID
   }))
 
-  const [editDataSource, setEditDataSource] = useState({
+  const [editDataSource, setEditDataSource] = useState<InitCustomerSetChildListItem>({
     ...item,
+    urlImg: getImgUploadValueModel('IMAGE', item.urlImg)
   })
 
   const showDeleteBtn = useMemo(() => total > 2, [total])

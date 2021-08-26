@@ -3,11 +3,12 @@ import { useParams } from 'umi';
 import { Button, Row, Col, Spin, message } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { aboutUsForm } from './config'
-import { ModuleABoutABoutInfo, ModulePageType, ModuleComponentId, ModuleABoutABoutInfoParam } from '@/interfaces/shop'
+import { ModuleABoutABoutInfo, ModulePageType, ModuleComponentId, ModuleABoutABoutInfoParam, InitModuleABoutABoutInfo } from '@/interfaces/shop'
 import { getModuleInfoApi, setModuleABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 
 interface Props {
   position: ModulePageType,
@@ -17,7 +18,7 @@ interface Props {
 const AboutUs: FC<Props> = (props) => {
   const params = useParams<{ id: string }>()
   const { position, pageModule } = props
-  const [detail, setDetail] = useState<ModuleABoutABoutInfo>({
+  const [detail, setDetail] = useState<InitModuleABoutABoutInfo>({
     backImg: ''
   })
 
@@ -29,10 +30,10 @@ const AboutUs: FC<Props> = (props) => {
     const res = await getModuleInfoApi<ModuleABoutABoutInfo>(Number(params.id), {
       position, pageModule
     })
-    // const res = await mockData<ModuleABoutABoutInfo>('data', {
-    //   "backImg": ""
-    // })
-    setDetail(res.data)
+    setDetail({
+      ...res.data,
+      backImg: getImgUploadValueModel('IMAGE', res.data.backImg)
+    })
     setGetDataLoading(false)
   }
 
@@ -40,11 +41,11 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = async (values: ModuleABoutABoutInfo) => {
-    console.log(values)
+  const handleSubmit = async (values: InitModuleABoutABoutInfo) => {
     setUpDataLoading(true)
     const res = await setModuleABoutInfoApi(Number(params.id), {
       ...values,
+      backImg: getImgUploadModelValue(values.backImg),
       position, pageModule
     })
     if (res.success) {

@@ -5,6 +5,7 @@ block styles
 block header
   include ../components/header
   include ../components/swiper
+  +Swiper('100vw')
   - tags = renderData.basic.aboutModule.tags  
   include ../components/company-info-home
   +company-info-home(tags)
@@ -36,6 +37,14 @@ block content
       include ../components/product-list-new.pug
       - productList = renderData.productList.result.slice(0,6)
       +product-list-new(productList)
+
+  include ../components/home-news-list-module.pug
+  - const {result:articleList}  = renderData.articleList
+  - const { articleList: articleRecommend } = renderData.articleRecommend
+  - const { name: articleRecommendName } = renderData.articleRecommend || '文章推荐'
+  if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+    +news-module-list(articleList,'新闻资讯')
+    +news-module-list(articleRecommend,articleRecommendName)
 
   include ../components/contact-form.pug
 

@@ -1,3 +1,4 @@
+import { MediaItem } from '@/components/img-upload/data';
 import { KFStatus, VerifyStatus, VerifyType } from '@/enums';
 
 export interface VerifyItem {
@@ -9,15 +10,15 @@ export type ShopMetas = [MetasItem | undefined, MetasItem | undefined, string[]]
 
 export interface InitEnterpriseForShopParams {
   area: any | null;
-  companyAddress: string| null;
-  companyAlias: string| null;
-  companyDescription: string| null;
-  companyName: string| null;
-  companyYears: number| null;
-  employeeCount: number| null;
-  firstCategory?: string| null;
-  serviceArea: string| null;
-  promoteImg: string| null;
+  companyAddress: string | null;
+  companyAlias: string | null;
+  companyDescription: string | null;
+  companyName: string | null;
+  companyYears: number | null;
+  employeeCount: number | null;
+  firstCategory?: string | null;
+  serviceArea: string | null;
+  promoteImg: MediaItem | '';
   metas: ShopMetas
 }
 
@@ -102,6 +103,12 @@ export interface MetasItem {
 export interface ZhidaoMaterial {
   banner1: string,
   banner2: string,
+  siteUrl: any
+}
+
+export interface InitZhidaoMaterial {
+  banner1: MediaItem | '',
+  banner2: MediaItem | '',
   siteUrl: any
 }
 

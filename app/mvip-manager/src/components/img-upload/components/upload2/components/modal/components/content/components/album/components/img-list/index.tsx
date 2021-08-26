@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, useRef, FC } from 'react';
-import { ImageData, ImageDataAlbumListItem } from '@/components/img-upload/data';
+import { MediaDataAlbumListItem, MediaType } from '@/components/img-upload/data';
 import { Spin } from 'antd'
 import { TabsKeys } from '../../../../data';
 import ImgItem from '../../../img-item'
+import VideoItem from '../../../video-item'
 import ImgUploadContext from '@/components/img-upload/context'
 import { mockData } from '@/utils';
 import { MediaAssetsItem } from '@/interfaces/shop';
@@ -15,14 +16,15 @@ import ScrollBox from '@/components/scroll-box'
 interface Props {
   tabsCurrent: TabsKeys,
   tabKey: TabsKeys,
-  menuKey?: number
+  menuKey?: number,
+  mediaType: MediaType
 }
 
 const ImgList: FC<Props> = (props) => {
-  const { tabsCurrent, tabKey, menuKey } = props
+  const { tabsCurrent, tabKey, menuKey, mediaType } = props
   const context = useContext(ImgUploadContext)
-  const { shopCurrent, baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
-  const [albumTypeDetail, setAlbumTypeDetail] = useState<ImageDataAlbumListItem>()
+  const { baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
+  const [albumTypeDetail, setAlbumTypeDetail] = useState<MediaDataAlbumListItem>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const ref = useRef<HTMLDivElement | null>(null)
 
@@ -33,11 +35,11 @@ const ImgList: FC<Props> = (props) => {
     // init: boolean // 是否初始化过
     return {
       ...albumTypeDetail!,
-      images: [...albumTypeDetail!.images, ...result],
+      media: [...albumTypeDetail!.media, ...result],
       page: albumTypeDetail!.page + 1,
       total: totalPage,
       init: true
-    } as ImageDataAlbumListItem
+    }
   }
 
   const getList = async () => {
@@ -69,16 +71,13 @@ const ImgList: FC<Props> = (props) => {
         }
       }), baixingImageData)
     } else if (tabKey === '我的图库') {
-      handleChangeImageData({
-        ...imageData,
-        [shopCurrent!.id]: imageData[shopCurrent!.id].map(item => {
-          if (item.id === newAlbumTypeDetail.id) {
-            return newAlbumTypeDetail
-          } else {
-            return item
-          }
-        })
-      }, imageData)
+      handleChangeImageData(imageData.map(item => {
+        if (item.id === newAlbumTypeDetail.id) {
+          return newAlbumTypeDetail
+        } else {
+          return item
+        }
+      }), imageData)
     }
     setAlbumTypeDetail(newAlbumTypeDetail)
   }
@@ -89,7 +88,7 @@ const ImgList: FC<Props> = (props) => {
         const newAlbumTypeDetail = baixingImageData.find(item => item.id === menuKey)
         setAlbumTypeDetail(newAlbumTypeDetail)
       } else if (tabKey === '我的图库') {
-        const newAlbumTypeDetail = imageData[shopCurrent!.id]?.find(item => item.id === menuKey)
+        const newAlbumTypeDetail = imageData.find(item => item.id === menuKey)
         setAlbumTypeDetail(newAlbumTypeDetail)
       } else {
         setAlbumTypeDetail(undefined)
@@ -114,14 +113,20 @@ const ImgList: FC<Props> = (props) => {
   useEffect(() => {
     scrollTop()
     getData()
-  }, [menuKey, shopCurrent])
+  }, [menuKey])
 
   return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
     <ScrollBox scrollY={true} handleScrollToLower={getList} height="337px">
       <div className={styles['img-list']}>
         <div className={styles['list']}>
           {
-            albumTypeDetail && albumTypeDetail.images.map(item => <ImgItem detail={item} key={item.id}></ImgItem>)
+            albumTypeDetail && albumTypeDetail.media.map(item => {
+              if (mediaType === 'IMAGE') {
+                return <ImgItem detail={item} key={item.id} mediaType={mediaType}></ImgItem>
+              } else if (mediaType === 'VIDEO') {
+                return <VideoItem detail={item} key={item.id} mediaType={mediaType}></VideoItem>
+              }
+            })
           }
         </div>
       </div>

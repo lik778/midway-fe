@@ -1,4 +1,4 @@
-import Swiper from 'swiper'
+import Swiper from 'swiper';
 
 const $bannerVideos = document.querySelectorAll('.swiper-container video')
 
@@ -8,7 +8,7 @@ const swiper = new Swiper('.swiper-container', {
   autoplay: {
     delay: 3000,
     disableOnInteraction: false,
-    waitForTransition: true
+    waitForTransition: true,
   },
   pagination: {
     el: '.swiper-container .swiper-pagination',
@@ -67,4 +67,31 @@ $bannerVideos.map($video => {
     swiper.autoplay.start()
     window._cbs && window._cbs.resumeAll()
   }
+})
+
+// 这个是控制除了首页的轮播图
+new Swiper('.swiper-container-small', {
+  speed: 1000,
+  centeredSlides: true,
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+    waitForTransition: true,
+  },
+  //分页器
+  pagination: {
+    el: '.swiper-container-small .swiper-pagination',
+    clickable: true,
+  },
+  //前进后退按钮
+  navigation: {
+    nextEl: '.swiper-container-small .swiper-button-next',
+    prevEl: '.swiper-container-smallr .swiper-button-prev',
+  },
+  on: {
+    slideChange: () => {
+      pauseAllBannerVideo();
+      swiper.autoplay.start();
+    },
+  },
 })

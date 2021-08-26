@@ -1,14 +1,9 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
-import { connect } from 'react-redux';
-import { ConnectState } from '@/models/connect';
-import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
-import { ImgUploadProps, ImageData, ImageDataAlbumListItem } from './data';
-import { useParams } from 'umi';
+import { ImgUploadProps, MediaDataAlbumListItem, MediaItem, MediaType } from './data';
 import ImgUploadContext from '@/components/img-upload/context'
-import { ShopInfo } from '@/interfaces/shop';
 import Upload1 from '@/components/img-upload/components/upload1'
 import Upload2 from '@/components/img-upload/components/upload2'
 import CropModal from '@/components/img-upload/components/crop-modal'
@@ -38,7 +33,6 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 // 当前组件不要使用useContext(ImgUploadContext)
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
-  const { id: shopId } = useParams<{ id: string }>()
   const { uploadType, editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
@@ -86,11 +80,17 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       onChange('', fileList, oldFileList);
     } else if (newFileList.length === 1) {
       if (newFileList[0].url) {
-        onChange(getUrl(newFileList[0].url!), newFileList, oldFileList);
+        onChange({
+          url: getUrl(newFileList[0].url!),
+          mediaType: newFileList[0].type as MediaType
+        }, newFileList, oldFileList);
       }
     } else {
       if (newFileList.every(item => item.url)) {
-        onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)), newFileList, oldFileList);
+        onChange(newFileList.map((item: UploadFile<any>) => ({
+          url: getUrl(item.url!),
+          mediaType: newFileList[0].type as MediaType
+        })), newFileList, oldFileList);
       }
     }
   }, [onChange])
@@ -100,10 +100,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     if (editData) {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
-        fileList = editData.map((item: string, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item, preview: item, size: 0, name: '', originFileObj: null as any, type: '', }))
+        fileList = (editData).map((item, index) => ({ uid: `${item}-${index}`, status: 'done', url: item.url, thumbUrl: item.url, preview: item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }))
         createFileList(fileList)
       } else {
-        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData, thumbUrl: editData, preview: editData }]
+        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: editData.mediaType, status: 'done', url: editData.url, thumbUrl: editData.url, preview: editData.url }]
         createFileList(fileList)
       }
     }
@@ -117,8 +117,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
 
   // context 需要
-  // 下面三个从model拿的
-  const { shopList, getShopList, loadingShopModel } = props
   const [localFileList, setLocalFileList] = useState<UploadFile[]>([])
   const checkFileObject = useMemo(() => {
     const checkFileObject: { [key: string]: boolean } = {}
@@ -126,10 +124,9 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     return checkFileObject
   }, [localFileList])
   const [albumVisible, setAlbumVisible] = useState<boolean>(false)
-  const [imageData, setImageData] = useState<ImageData>({})
-  const [baixingImageData, setBaixingImageData] = useState<ImageDataAlbumListItem[]>([])
-  const [shopListFilter, setShopListFilter] = useState<ShopInfo[]>([])
-  const [shopCurrent, setShopCurrent] = useState<ShopInfo | null>(null)
+  const [imageData, setImageData] = useState<MediaDataAlbumListItem[]>([])
+  const [videoData, setVideoData] = useState<MediaDataAlbumListItem[]>([])
+  const [baixingImageData, setBaixingImageData] = useState<MediaDataAlbumListItem[]>([])
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
   // 弹窗模式需要 开始
@@ -139,41 +136,20 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       handleChangeLocalFileList([...fileList])
     }
   }, [albumVisible])
-
-  useEffect(() => {
-    // 过滤出正常状态的店铺 设置初始店铺
-    const newShopListFilter = shopList ? (shopList as ShopInfo[]).filter(item => item.status === 1) : []
-    setShopListFilter(newShopListFilter)
-    if (newShopListFilter.length > 0) {
-      let newShopCurrent = newShopListFilter.find(item => item.id === Number(shopId))
-      if (!newShopCurrent) {
-        newShopCurrent = newShopListFilter[0]
-      }
-      setShopCurrent(newShopCurrent)
-    }
-  }, [shopList])
-
-  // 弹窗模式需要获取店铺列表
-  // 不放到albumVisible===true时是因为避免这个事情
-  useEffect(() => {
-    if (uploadType === 2) {
-      getShopList()
-    }
-  }, [])
   // 初始化弹窗 结束
 
-  // 当前店铺修改
-  const handleChangeShopCurrent = (newShopCurrent: ShopInfo) => {
-    setShopCurrent(newShopCurrent)
+  // 视频数据更改
+  const handleChangeVideoData = (newVideoData: MediaDataAlbumListItem[], oldVideoData: MediaDataAlbumListItem[]) => {
+    setVideoData(newVideoData)
   }
 
   // 图片数据更改
-  const handleChangeImageData = (newImageData: ImageData, oldImageData: ImageData) => {
+  const handleChangeImageData = (newImageData: MediaDataAlbumListItem[], oldImageData: MediaDataAlbumListItem[]) => {
     setImageData(newImageData)
   }
 
   // 图片数据更改
-  const handleChangeBaixingImageData = (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => {
+  const handleChangeBaixingImageData = (newBaixingImageData: MediaDataAlbumListItem[], oldBaixingImageData: MediaDataAlbumListItem[]) => {
     setBaixingImageData(newBaixingImageData)
   }
 
@@ -255,6 +231,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           localFileList,
           checkFileObject,
           imageData,
+          videoData,
           baixingImageData,
           initConfig: {
             uploadType,
@@ -271,13 +248,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
             uploadBeforeCrop
           },
           albumVisible,
-          shopList: shopListFilter,
-          shopCurrent,
-          loadingShopModel,
           upDataLoading,
           handleChangeAlbumVisible: setAlbumVisible,
           handleChangeUpDataLoading: setUpDataLoading,
-          handleChangeShopCurrent: handleChangeShopCurrent,
+          handleChangeVideoData: handleChangeVideoData,
           handleChangeImageData: handleChangeImageData,
           handleChangeBaixingImageData: handleChangeBaixingImageData,
           handleChangeLocalFileList: handleChangeLocalFileList,
@@ -310,12 +284,23 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   )
 }
 
-export default connect<any, any, ImgUploadProps>((state: any) => {
-  const { shopList } = (state as ConnectState)[SHOP_NAMESPACE]
-  const { loading } = (state as ConnectState)
-  return { shopList, loadingShopModel: loading.models.shop }
-}, (dispatch) => {
-  return {
-    ...shopMapDispatchToProps(dispatch),
+export const getImgUploadValueModel = (mediaType: MediaType, value: string | null | undefined): MediaItem | '' => {
+  if (value) {
+    return {
+      url: value,
+      mediaType
+    }
+  } else {
+    return ''
   }
-})(ImgUpload);
+}
+
+export const getImgUploadModelValue = (value: MediaItem | '') => {
+  if (value) {
+    return value.url
+  } else {
+    return ''
+  }
+}
+
+export default ImgUpload

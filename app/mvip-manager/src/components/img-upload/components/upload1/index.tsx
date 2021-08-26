@@ -6,6 +6,7 @@ import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 import ImgItem from '@/components/img-upload/components/img-item'
 import UploadBtn from '@/components/img-upload/components/upload-btn'
 import { getFileBase64 } from '@/utils/index'
+import { useEffect } from 'react';
 
 
 const Upload1: FC = () => {
@@ -40,11 +41,15 @@ const Upload1: FC = () => {
     if (!!e.file.status) {
       const nowFileList = e.fileList.map((item: any) => {
         if (item.url) {
-          return item
+          return {
+            ...item,
+            type: 'IMAGE'
+          }
         } else {
           return {
             ...item,
-            url: item.response ? item.response.url : ''
+            url: item.response ? item.response.url : '',
+            type: 'IMAGE'
           }
         }
       })
@@ -52,6 +57,11 @@ const Upload1: FC = () => {
       handleChangeFileList(nowFileList, oldFileList, e.file)
     }
   }
+
+
+  useEffect(() => {
+    console.log(fileList)
+  }, [fileList])
 
   return <Upload
     action={window.__upyunImgConfig?.uploadUrl}
