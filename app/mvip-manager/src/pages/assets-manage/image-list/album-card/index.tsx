@@ -14,6 +14,7 @@ import { CustomCardItemProps } from '../../cards-page/cards-container/index'
 import styles from './index.less'
 
 import DEFAULT_ALBUM_COVER from './default-album-cover.png'
+import DEFAULT_VIDEO_CATES_COVER from './default-video-cates-cover.png'
 
 const createNewImageScope = (album: MediaCateItem) => ({ item: album, type: 'image', label: '图片', countLabel: '张' })
 const createNewVideoScope = (album: MediaCateItem) => ({ item: album, type: 'image', label: '视频', countLabel: '个' })
@@ -107,16 +108,21 @@ function AlbumCard(props: AlbumCardProps) {
     handleSelectCard, intoScope, editAlbumName,
     delAlbum,
   } = props
-  const { subDirectoryCountLabel } = useContext(CardsPageContext)
+  const { directoryType, subDirectoryCountLabel } = useContext(CardsPageContext)
+  const isImage = directoryType === 'IMAGE'
 
   const { id, name, coverUrl, totalImg, type } = card
   const isDefaultAlbum = type === 'DEFAULT'
   const isChecked = selection.find((y: number) => y === id)
 
+  const DEFAULT_COVER = isImage
+    ? DEFAULT_ALBUM_COVER
+    : DEFAULT_VIDEO_CATES_COVER
+
   const stopEvent = (e: any) => e.stopPropagation()
 
   return (
-    <div className={styles["album-card"]} key={`album-card-${id}`} onClick={() => intoScope(card)}>
+    <div className={isImage ? styles["album-card"] : styles["video-album-card"]} title={name} key={`album-card-${id}`} onClick={() => intoScope(card)}>
 
     {!isDefaultAlbum && (
         <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => intoScope(card)}>
@@ -140,7 +146,7 @@ function AlbumCard(props: AlbumCardProps) {
           </div>
         </div>
       )}
-      <img className={styles["cover"]} src={coverUrl || DEFAULT_ALBUM_COVER} alt="cover" />
+      <img className={styles["cover"]} src={isImage ? (coverUrl || DEFAULT_COVER) : DEFAULT_COVER} alt={name} />
       <div className={styles["header"]}>
         <span className={styles["name"]} title={name}>{name}</span>
         <span>

@@ -37,18 +37,24 @@ const hasBannerVideo = $bannerVideos.length > 0;
 if (hasBannerVideo) {
   // 点击封面或视频播放视频
   const play = idx => {
-    swiper.autoplay.stop();
-    $bannerVideos[idx].play();
-  };
-  [...$bannerVideos].map($video => {
-    $video.addEventListener('click', () => {
-      $video.paused ? swiper.autoplay.stop() : swiper.autoplay.start();
-    });
+    swiper.autoplay.stop()
+    $bannerVideos[idx].play()
+  }
+  ;[...$bannerVideos].map($video => {
     $video.onplay = () => {
-      swiper.autoplay.stop();
-    };
-  });
-  [...$bannerVideoCovers].map(($cover, idx) => {
+      swiper.autoplay.stop()
+      if (window._cbs) {
+        window._cbs.pauseAll()
+      }
+    }
+    $video.onpause = () => {
+      swiper.autoplay.start()
+      if (window._cbs) {
+        window._cbs.resumeAll()
+      }
+    }
+  })
+  ;[...$bannerVideoCovers].map(($cover, idx) => {
     $cover.addEventListener('click', evt => {
       play(idx);
       $cover.remove();

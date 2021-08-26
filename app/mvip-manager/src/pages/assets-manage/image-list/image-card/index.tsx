@@ -134,6 +134,7 @@ function ImageCard(props: ImageCardProps) {
     setCoverImage, moveImage, delImage, editVideoName
   } = props
   const { directoryType } = useContext(CardsPageContext)
+  const isImage = directoryType === 'IMAGE'
 
   const { id, imgUrl, name } = card
   const isChecked = selection.find((y: number) => y === id)
@@ -143,7 +144,7 @@ function ImageCard(props: ImageCardProps) {
 
   return (
     <div
-      className={styles["image-card"] + ' ' + (directoryType === 'VIDEO' ? styles['video-card'] : '')}
+      className={isImage ? styles["image-card"] : styles["video-card"]}
       key={`image-card-${id}`}
       onClick={() => preview(card)}
     >
@@ -184,9 +185,9 @@ function ImageCard(props: ImageCardProps) {
           <img className={styles["cover"]} src={imgUrl} alt="cover" />
         </div>
       )}
-      {directoryType === 'VIDEO' && (
+      {(!loading && directoryType === 'VIDEO') && (
         <div className={styles["header"]}>
-          <span className={styles["name"]} title={name}>{(loading ? '' : (name || '未命名视频'))}</span>
+          <span className={styles["name"]} title={name}>{name}</span>
         </div>
       )}
     </div>

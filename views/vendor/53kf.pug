@@ -1,4 +1,70 @@
-//-目的：增加53客服并打点。需确保base-site.controller.ts里res.render定义了kf53和trackId
+//- 拦截并记录计时事件以扩展暂停计时等功能
+script.
+    window._intercept53KF = true
+    const noop = () => 'do!nothing!'
+    const rawTimeout = window.setTimeout
+    const rawClearTimeout = window.clearTimeout
+    window._cbs = {
+        pools: [],
+        record (cb, time) {
+            try {
+                const id = String(Math.random()).slice(-6) + '-' + (+new Date())
+                const cbWrapper = async () => {
+                    try {
+                        await cb()
+                        const idx = window._cbs.pools.findIndex(x => x === id)
+                        window._cbs.pools.splice(idx, 1)
+                    } catch (cbError) {
+                        console.error('[ERR]', cbError)
+                    }
+                }
+                // 时间较小的计时正常执行，不计入池中
+                if (time > (10 * 1000)) {
+                    const timeoutID = rawTimeout(cbWrapper, time)
+                    window._cbs.pools.push({
+                        id,
+                        time,
+                        timeout: timeoutID,
+                        cb: cbWrapper,
+                        pause: false
+                    })
+                    console.log('[INFO] record timeout')
+                    return timeoutID
+                } else {
+                    return rawTimeout(cb, time)
+                }
+            } catch (recordError) {
+                console.error('[ERR]', recordError)
+                noop()
+                return null
+            }
+        },
+        pauseAll () {
+            console.log('[INFO] pauseAll', window._cbs.pools)
+            window._cbs.pools.map(item => {
+                const { timeout, pause } = item
+                if (!pause) {
+                    rawClearTimeout(timeout)
+                    item.pause = true
+                }
+            })
+        },
+        resumeAll () {
+            console.log('[INFO] resumeAll', window._cbs.pools)
+            window._cbs.pools.map(item => {
+                const { cb, time, pause } = item
+                if (pause) {
+                    item.timeout = rawTimeout(cb, time)
+                    item.pause = false
+                }
+            })
+        }
+    }
+    if (window._intercept53KF) {
+        window.setTimeout = (cb, time) => window._cbs.record(cb, time)
+    }
+
+//- 目的：增加53客服并打点。需确保base-site.controller.ts里res.render定义了kf53和trackId
 - a = renderData.kf53
 if a && a.length> 0
     - x = a.lastIndexOf('";var')

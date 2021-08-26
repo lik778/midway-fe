@@ -1,6 +1,7 @@
 @import '../../cards-page/cards-container/index.less';
 
-.album-card {
+.album-card,
+.video-album-card {
   .card();
   height: 216px;
 
@@ -20,4 +21,20 @@
       white-space: nowrap;
     }
   }
+}
+
+.video-album-card::after {
+  content: attr(title);
+  position: absolute;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  width: 83%;
+  top: calc(50% - 46px);
+  left: 0.3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 28px;
+  font-weight: bold;
+  color: #2fb7ff;
 }

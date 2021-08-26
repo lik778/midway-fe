@@ -161,13 +161,14 @@ export class BaseSiteController {
 
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
-    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/home/index`
+    const template = SiteService.templateMapping[templateId]
+    const templateUrl = `${template}/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
 
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, template });
   }
 
   @Get('/n')
