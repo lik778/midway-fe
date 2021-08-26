@@ -11,7 +11,7 @@ if bannerProduct
           if productList && productList.length > 0
             if productList.length == 1
               a.swiper-slide(href=productList[0].urlSuffix)
-                img(src=productList[0].headImg)
+                img(src=productList[0].headImg || defaultImg)
                 p.only-oneline #{ productList[0].name }
               .swiper-slide
                 img(src=defaultImg)
