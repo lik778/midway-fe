@@ -17,13 +17,22 @@ initProductListHot()
 $(document).on("ready", function () {
   // sem需要禁止部分内容二跳
   // tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
-  if (isSem) {
+  if (isSem === '1') {
     initSem({
+      sem: isSem,
       type: 'home',
       contactForm: $('#contactForm'),
       contactFormParent: $('#layout-content'),
       formA: $('#layout-content a').not('.products a'),
       gotoOtherPageA: $('.products a')
+    })
+  }
+  
+  if (isSem === '2') {
+    initSem({
+      sem: isSem,
+      type: 'home',
+      gotoOtherPageA: $('a')
     })
   }
 })

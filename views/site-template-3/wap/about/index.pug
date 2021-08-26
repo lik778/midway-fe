@@ -5,7 +5,8 @@ block styles
 		:combine(fileName="site-template-3-about-wap.css")
 
 block append header
-		include ../components/company-info
+		if isSem !== '2'
+				include ../components/company-info
 
 block content
 		- const userDefinedList = renderData.autoConfig

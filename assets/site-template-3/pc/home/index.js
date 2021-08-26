@@ -97,8 +97,9 @@ $(document).on('ready', function () {
   }
 
   // sem部分链接需要禁止二跳
-  if (isSem) {
+  if (isSem === '1') {
     initSem({
+      sem: isSem,
       type: 'home',
       contactForm: $('#contactUs .contact-us__message'),
       contactFormParent: $('#contactUs'),
@@ -110,6 +111,16 @@ $(document).on('ready', function () {
       ),
     });
   }
+
+  
+  if (isSem === '2') {
+    initSem({
+      sem: isSem,
+      type: 'home',
+      gotoOtherPageA: $('a')
+    })
+  }
+
   // 点击显示电话号码
   $('.bottom-right').on('click', function () {
     $('.showphone').text('3057');

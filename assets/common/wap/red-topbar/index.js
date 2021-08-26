@@ -12,9 +12,9 @@ export const initRedTopbar = () => {
     if (key) {
       const keyValue = key.split('=')[1]
       input.val(keyValue)
-    } 
+    }
 
-    
+
     // 清除输入
     $('#searchClear').on('click', function () {
       input.val('')
@@ -23,17 +23,17 @@ export const initRedTopbar = () => {
     searchBtn.on('click', function () {
       const shopDomain = $(this).data('shopdomain')
       const value = $.trim(input.val())
-      window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? '&sem=1' : ''}`
+      window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? `&sem=${isSem}` : ''}`
     })
 
 
-    input.on("keypress", function(e) {
-    //当e.keyCode的值为13 即，点击前往/搜索 按键时执行以下操作
-      if(e.keyCode == 13) {
+    input.on("keypress", function (e) {
+      //当e.keyCode的值为13 即，点击前往/搜索 按键时执行以下操作
+      if (e.keyCode == 13) {
         const shopDomain = searchBtn.data('shopdomain')
         var value = $.trim(input.val());
         document.activeElement.blur();//软键盘收起
-        window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? '&sem=1' : ''}`
+        window.location.href = `${shopDomain}search?key=${(value || '').toString()}${isSem ? `&sem=${isSem}` : ''}`
       }
     });
   })
