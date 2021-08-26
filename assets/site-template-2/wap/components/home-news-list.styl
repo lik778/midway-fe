@@ -1,0 +1,38 @@
+@import "./no-data"
+    
+.news-list
+  box-sizing border-box
+  padding 8px 15px
+  background-color #fff
+  margin-bottom 10px
+  .item
+    display flex
+    justify-content space-between
+    align-items flex-start
+    padding 16px 0
+    &+.item
+      border-top 1px solid #F3F3F3
+    .left
+      width 50px
+      .day
+        margin-bottom 8px
+        font-size 20px
+        font-weight bold
+        color #666666
+        line-height 20px
+      .year-month
+        font-size 12px
+        color #999999
+    .right
+      width calc(100% - 66px)
+      .title
+        margin-bottom 16px
+        font-size 14px
+        font-weight bold
+        color #333333
+        line-height 14px
+        font-weight: bold;
+      .desc
+        font-size 12px
+        line-height 12px
+        color #999999
