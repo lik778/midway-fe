@@ -161,14 +161,14 @@ export class BaseSiteController {
 
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
-    const template = SiteService.templateMapping[templateId]
-    const templateUrl = `${template}/${device}/home/index`
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
 
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, template });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, pageTemplate });
   }
 
   @Get('/n')
@@ -198,13 +198,14 @@ export class BaseSiteController {
       }
     })
     const { templateId } = data.basic.shop
-    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/news/index`
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
 
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, pageTemplate });
   }
 
   @Get('/n-:id')
@@ -237,7 +238,8 @@ export class BaseSiteController {
       })
 
       const { templateId } = data.basic.shop
-      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news-detail/index`
+      const pageTemplate = SiteService.templateMapping[templateId]
+      const templateUrl = `${pageTemplate}/${device}/news-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -247,7 +249,7 @@ export class BaseSiteController {
           data.articleInfo.content = this.replaceMobile(data.articleInfo.content)
         }
       }
-      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
+      return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, pageTemplate });
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getNewsCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0, ...this.createParams(isSem, isCn) }, domain);
@@ -268,11 +270,12 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/news/index`;
+      const pageTemplate = SiteService.templateMapping[templateId]
+      const templateUrl = `${pageTemplate}/${device}/news/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
+      return res.render(templateUrl, { title: '资讯子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, pageTemplate });
     }
   }
 
@@ -302,12 +305,13 @@ export class BaseSiteController {
       }
     })
     const { templateId } = data.basic.shop
-    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/product/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, pageTemplate });
   }
 
   @Get('/p-:id')
@@ -340,7 +344,8 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product-detail/index`
+      const pageTemplate = SiteService.templateMapping[templateId]
+      const templateUrl = `${pageTemplate}/${device}/product-detail/index`
       const { kf53 } = data.basic.contact;
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
@@ -353,7 +358,7 @@ export class BaseSiteController {
         }
       }
 
-      return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, });
+      return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, pageTemplate });
     } else {
       const currentPage = query.page || 1;
       const { data: originData } = await this.midwayApiService.getProductCateData(shopName, device, { cateId: params.id, page: currentPage, size: 0, ...this.createParams(isSem, isCn) }, domain);
@@ -373,11 +378,12 @@ export class BaseSiteController {
         }
       })
       const { templateId } = data.basic.shop
-      const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/product/index`;
+      const pageTemplate = SiteService.templateMapping[templateId]
+      const templateUrl = `${pageTemplate}/${device}/product/index`;
       const currentPathname = req.originalUrl;
       const { kf53 } = data.basic.contact;
       const trackId = this.trackerService.getTrackId(req, res)
-      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
+      return res.render(templateUrl, { title: '服务子类', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, pageTemplate });
     }
   }
 
@@ -409,13 +415,14 @@ export class BaseSiteController {
       }
     })
     const { templateId } = data.basic.shop
-    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/about/index`;
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/about/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
 
-    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, });
+    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, pageTemplate });
   }
 
 
@@ -463,14 +470,15 @@ export class BaseSiteController {
       }
     })
     const { templateId } = data.basic.shop
-    const templateUrl = `${SiteService.templateMapping[templateId]}/${device}/search/index`;
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/search/index`;
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
 
     return res.render(templateUrl, {
-      title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn,
+      title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn, pageTemplate
     })
   }
 }
