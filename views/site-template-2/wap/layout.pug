@@ -11,10 +11,7 @@ block public-header
   block header
     include ./components/header
     include ./components/swiper
-    if isHome
-      +swiper('100vw')
-    else 
-      +swiper('152px')
+    +swiper('100vw')
 
     include ./components/nav
 
