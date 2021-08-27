@@ -105,7 +105,7 @@ export default function useEditVideoNameModal(props: Props) {
           label="视频名称"
           rules={[
             { pattern: /^[\s\S]{2,20}$/, message: "视频名称限制为 2～20 个字符" },
-            { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]+$/, message: '视频名称不允许有特殊字符' }
+            { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5|(|)|[|]|{|}]+$/, message: '视频名称不允许有特殊字符' }
           ]}
         >
           <Input placeholder="请输入视频名称" />
