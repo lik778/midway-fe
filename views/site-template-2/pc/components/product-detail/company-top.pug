@@ -5,7 +5,7 @@
 		.company-text
 			h3 #{ name }
 			p 价格：#{ price || '面议' }
-			if !isSem
+			if isSem !== "1"
 				.company-address
 					span 商家地址：
 					span #{ company.address }
@@ -16,5 +16,5 @@
 					img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
 					span 在线咨询
 	.company-right
-		if !isSem
+		if isSem !== "1"
 			include ../sidebar/company-card.pug

@@ -16,13 +16,22 @@ initCompanyInfo()
 
 // sem下禁止用户二跳 
 $(document).on("ready", function () {
-  if (isSem) {
+  if (isSem === '1') {
     initSem({
+      sem: isSem,
       type: 'home',
       contactForm: $('#contactForm'),
       contactFormParent: $('#layout-content'),
       formA: $('#layout-content a').not('.products a,.news-list a'),
       gotoOtherPageA: $('.products a,.news-list a')
+    })
+  }
+
+  if (isSem === '2') {
+    initSem({
+      sem: isSem,
+      type: 'home',
+      gotoOtherPageA: $('a')
     })
   }
 })

@@ -3,7 +3,7 @@ section.news-detail__section
   .news-detail__contact-us
     .contact-form
       include ./contact-form.pug
-    if !isSem
+    if isSem !== "1"
       .company-info
         .info-label 公司信息
         .info-item

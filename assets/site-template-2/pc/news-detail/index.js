@@ -19,7 +19,7 @@ $(document).on('ready', function () {
       disableOnInteraction: false,
       waitForTransition: true
     },
-		autoHeight: true, //高度随内容变化
+    autoHeight: true, //高度随内容变化
     //分页器
     pagination: {
       el: '.swiper-pagination',
@@ -31,16 +31,25 @@ $(document).on('ready', function () {
       prevEl: '.swiper-button-prev',
     },
     on: {
-			resize: function () {
-				this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
-			},
-		},
+      resize: function () {
+        this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+      },
+    },
   });
   // sem部分链接需要禁止二跳
-  if (isSem) {
+  if (isSem === '1') {
     initSem({
+      sem: isSem,
       type: 'detail',
       gotoOtherPageA: $('#layout-content .container a,.official-nav-block-bgc a')
+    })
+  }
+
+  if (isSem === '2') {
+    initSem({
+      sem: isSem,
+      type: 'detail',
+      gotoOtherPageA: $('a')
     })
   }
 })

@@ -5,11 +5,12 @@ block styles
 block header
   include ../components/header
   include ../components/swiper
-  +Swiper('100vw')
-  - tags = renderData.basic.aboutModule.tags  
-  include ../components/company-info-home
-  +company-info-home(tags)
-  if !isSem
+  +swiper('100vw')
+  if isSem !== "2"
+    - const {tags} = renderData.basic.aboutModule  
+    include ../components/company-info-home
+    +company-info-home(tags)
+  if isSem !== "1"
       include ../components/nav
 
 block content
@@ -27,7 +28,7 @@ block content
     include ../components/user-defined-module-new.pug
     +user-defined-module-new(autoConfig[0])
 
-  if !isSem
+  if isSem !== "1"
     include ../components/aboutus.pug
     +aboutus('home')
 

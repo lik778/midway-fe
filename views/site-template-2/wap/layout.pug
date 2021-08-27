@@ -3,7 +3,7 @@ block public-header
   include ../../common/wap/official-header
   //-block official-breadcrumbs
   include ../../common/wap/official-red-breadcrumb.pug
-  - breadcrumbList = [{text:isCn?'首页':'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: companyName,url:'#'}]
+  - breadcrumbList = [{text:isCn?'首页':'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: isSem === '2'?'欢迎访问当前页面': companyName,url:'#'}]
   +breadcrumb(breadcrumbList)
   //-为了提供给留咨参数
   if shopName
@@ -11,6 +11,8 @@ block public-header
   block header
     include ./components/header
     include ./components/swiper
+    +swiper('100vw')
+
     include ./components/nav
 
 
