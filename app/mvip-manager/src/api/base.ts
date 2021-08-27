@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ServiceResponse } from '@/interfaces/api'
+
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
