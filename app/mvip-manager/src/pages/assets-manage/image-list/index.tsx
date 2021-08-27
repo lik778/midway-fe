@@ -203,8 +203,12 @@ const AssetsMangeImageListPage = (props: {
   const cardItemPreview = useMemo(() => {
     if (directoryType === 'VIDEO') {
       return (previewItem: CardItem) => {
-        const { imgUrl } = previewItem as MediaAssetsItem
-        return <video src={imgUrl} preload="preload" />
+        const { videoUrl, imgUrl } = previewItem as MediaAssetsItem
+        return (
+          <video src={videoUrl} poster={imgUrl} preload="preload" controls autoPlay key={videoUrl + '-' + imgUrl}>
+            your browser does not support the video tag
+          </video>
+        )
       }
     } else {
       return null
@@ -236,7 +240,6 @@ function PaddingHooksCard(props: any) {
   const { } = useContext(CardsPageContext)
   const { } = useContext(AlbumNamesContext)
   const [_, __] = useState('for padding')
-  const { } = useContext(AlbumNamesContext)
   return (props: any) => {
     return null
   }
