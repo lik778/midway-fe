@@ -39,15 +39,15 @@ const AssetsMangeImageListPage = (props: {
 
   /***************************************************** States */
 
-  const { directoryType: propsDirectoryType, defaultScope, navBar } = props
+  const { defaultScope, navBar } = props
   const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
 
   useEffect(() => {
     dispatch({
       type: 'update-directory-type',
-      payload: propsDirectoryType || 'IMAGE'
+      payload: props.directoryType || 'IMAGE'
     })
-  }, [propsDirectoryType])
+  }, [props.directoryType])
 
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
@@ -160,7 +160,7 @@ const AssetsMangeImageListPage = (props: {
 
   // 自定义卡片
   const customCardItem = useMemo(() => {
-    console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
+    // console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
     if (isScopeImage) {
       return ImageCardWrapper
     } else {
