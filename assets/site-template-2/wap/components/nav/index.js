@@ -10,8 +10,8 @@ export const navModule = function () {
 		//	$(tab).addClass('nav-active')
 		//}
 		//})
-		windowPath = window.location.pathname.indexOf('-') !== -1 ? window.location.pathname.split('-')[0] : window.location.pathname
-		windowHref = window.location.origin + windowPath
+		const	windowPath = window.location.pathname.indexOf('-') !== -1 ? window.location.pathname.split('-')[0] : window.location.pathname
+		const	windowHref = window.location.origin + windowPath
 
 		$(".nav a").each((index, tab) => {
 			const h = $(tab).attr('href').replace(/#{0,}/g, '')
