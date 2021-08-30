@@ -278,7 +278,7 @@ export default function useUploadModal(props: Props) {
   }, [remove, selectedAlbum, directoryType])
 
   // 申诉图片
-  const reAuditAsset = async (image: UploadResMap | undefined) => {
+  const reAuditAsset = async (image: UploadResMap) => {
     if (image) {
       reAuditMediaAssets({ id: image.id })
         .then((res: any) => {
@@ -331,6 +331,10 @@ export default function useUploadModal(props: Props) {
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { name, uid, percent, preview } = item
     let uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
+    if (!uploadedItem) {
+      return null
+    }
+
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const error = uploadedItem ? uploadedItem.error : ''
     const inChibi = uploadedItem ? uploadedItem.inChibi : false
@@ -343,15 +347,13 @@ export default function useUploadModal(props: Props) {
     /* 图片卡片样式处理 */
 
     if (isUploadImage) {
-      uploadedItem = uploadedItem as UploadResImage
-
       if (inChibi === true) {
         $contents = <span className={styles["upload-info"]}>审核中</span>
       } else if (chibiFailed) {
         $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
           <AuditFailedIcon />
           <span>该图片涉及违禁</span>
-          <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem)}>点击申诉</span>
+          <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem as UploadResMap)}>点击申诉</span>
         </span>
       } else if (status === 'done') {
         if (preview) {
@@ -373,9 +375,8 @@ export default function useUploadModal(props: Props) {
     /* 视频卡片样式处理 */
 
     if (!isUploadImage) {
-      uploadedItem = uploadedItem as UploadResVideo
-      const inEncode = uploadedItem ? uploadedItem.inEncode : false
-      const encodeDone = uploadedItem ? uploadedItem.encodeDone : false
+      const inEncode = uploadedItem ? (uploadedItem as UploadResVideo).inEncode : false
+      const encodeDone = uploadedItem ? (uploadedItem as UploadResVideo).encodeDone : false
 
       if (inEncode === true) {
         $contents = (
@@ -388,7 +389,7 @@ export default function useUploadModal(props: Props) {
         $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
           <AuditFailedIcon />
           <span>该视频涉及违禁</span>
-          <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem)}>点击申诉</span>
+          <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem as UploadResVideo)}>点击申诉</span>
         </span>
       } else if (status === 'done') {
         if (preview) {
