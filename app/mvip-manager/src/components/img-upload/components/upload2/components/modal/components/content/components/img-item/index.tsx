@@ -86,7 +86,7 @@ const ImgItem: FC<Props> = (props) => {
 
   // 传入url ，返回裁剪后的图的uid
   const handleCropSuccess = (uid: string, previewUrl: string) => {
-    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: uid, thumbUrl: previewUrl, preview: previewUrl as string, size: 0, name: '', originFileObj: null as any, type: 'IMAGE' }
+    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: uid, thumbUrl: uid, preview: previewUrl as string, size: 0, name: '', originFileObj: null as any, type: 'IMAGE' }
     if (maxLength === 1) {
       handleChangeLocalFileList([newFile])
     } else {

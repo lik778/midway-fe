@@ -30,11 +30,6 @@ const ImgItem: FC<Props> = (props) => {
       cropIcon: <ScissorOutlined color={'#fff'} />,
       showDownloadIcon: false,
       downloadIcon: <DownloadOutlined color={'#fff'} />,
-      showSelectCoverIcon: false,
-      selectCoverIcon: <img style={{
-        width: 12,
-        height: 13
-      }} src="//file.baixing.net/202012/fb7a973eef780d1aff76e925a7d36377.png"></img>,
     }
     if (showUploadList) {
       return {
@@ -77,14 +72,7 @@ const ImgItem: FC<Props> = (props) => {
               }
             </div>
           }
-          {
-            // 裁剪
-            file.type === 'VIDEO' && (localShopUploadList.showSelectCoverIcon) && <div className={styles['action-btn']} title="裁剪图片" onClick={() => onCrop && onCrop(file, fileIndex)}>
-              {
-                localShopUploadList.cropIcon
-              }
-            </div>
-          }
+
           {
             // 下载
             localShopUploadList.showDownloadIcon && (onDownload ?

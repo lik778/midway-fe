@@ -32,9 +32,10 @@ export default (props: Props) => {
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
+    let media = editData ? editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg) : undefined
     return {
       ...editData,
-      headImg: getImgUploadValueModel('IMAGE', editData?.headImg),
+      media,
       contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item))
     }
   }, [editData])
@@ -70,13 +71,19 @@ export default (props: Props) => {
   const sumbit = async (values: any) => {
     values.name = values.name.trim();
     const isEdit = !isEmptyObject(editData);
-    values.headImg = getImgUploadModelValue(values.headImg)
-    values.contentImg = values.contentImg.map((item: MediaItem) => getImgUploadModelValue(item))
+
     if (!values.price) { values.price = '面议' }
     if (typeof values.tags === 'string') {
       values.tags = values.tags.split(',')
     }
-    values.contentImg = !values.contentImg || values.contentImg.length === 0 ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
+    const media = values.media
+    if (media) {
+      values.headImg = media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) : getImgUploadModelValue(values.media, true)
+      values.videoUrl = media.mediaType === 'VIDEO' ? getImgUploadModelValue(values.media) : undefined
+    }
+    values.contentImg = !values.contentImg || values.contentImg.length === 0 ? null : !Array.isArray(values.contentImg) ? getImgUploadModelValue(values.contentImg) : values.contentImg.map((item: MediaItem) => getImgUploadModelValue(item)).join(',')
+    delete values.media
+    console.log(values)
     let resData: any;
     setFormLoading(true)
     if (isEdit) {

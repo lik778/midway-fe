@@ -32,13 +32,22 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   const [changeFlag, setChangeFlag] = useState<boolean>(false)
   // 需要删除的bannerId
   const [delBannerIds, setDelBannerIds] = useState<number[]>([])
+
+  const initBannerItem = (bannerItem: BannerListItem) => {
+    if (bannerItem.hrefUrl) {
+      return getImgUploadValueModel('VIDEO', bannerItem.hrefUrl, bannerItem.displayImgUrl) as MediaItem
+    } else {
+      return getImgUploadValueModel('IMAGE', bannerItem.displayImgUrl!) as MediaItem
+    }
+  }
+
   const editData = useMemo(() => {
     if (bannerList.length === 0) {
       return ''
     } else if (bannerList.length === 1) {
-      return getImgUploadValueModel('IMAGE', bannerList[0].displayImgUrl)
+      return initBannerItem(bannerList[0])
     } else {
-      return bannerList.map(item => getImgUploadValueModel('IMAGE', item.displayImgUrl) as MediaItem)
+      return bannerList.map(item => initBannerItem(item))
     }
   }, [bannerList])
   const [getDataLoading, setGetDataLoading] = useState(true)
@@ -67,7 +76,10 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     setGetDataLoading(false)
   }
 
-  const createBannerImg = async (url: string) => {
+  const createBannerImg = async (data: {
+    hrefUrl: string,
+    imgUrl: string
+  }) => {
     setUpDataLoading(true)
     // 原有逻辑是权重控制排序
     // 现在每次修改都会更具图片id排次序所以可以忽略了权重
@@ -75,7 +87,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       ? Math.max(...bannerList.map(x => +x.weight || 0))
       : 0) + 1
     const res = await createBannerApi(Number(params.id), {
-      url,
+      ...data,
       type,
       position,
       // weight 字段越大排序越靠后
@@ -116,33 +128,48 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     // 维持localValues的顺序等于values，并将已有的id记录在localValues里
     // 删除oldFileList中不存在于a的项
     // 新增localValues中不存在id的项
-
-    let localValues: { id?: number, url: string, preview: string }[] = fileList.map(item => ({
-      url: item.url!,
-      preview: item.preview!
-    }))
-
+    console.log(fileList)
     const localBannerList = [...bannerList]
     const newBannerList: BannerListItem[] = []
-    localValues.forEach(item => {
-      const index = localBannerList.findIndex(oItem => oItem.displayImgUrl === item.url)
+    fileList.forEach(item => {
+      const index = localBannerList.findIndex(oItem => {
+        if (item.type === 'IMAGE') {
+          return oItem.displayImgUrl === item.url
+        } else {
+          return oItem.hrefUrl === item.url && oItem.displayImgUrl === item.thumbUrl
+        }
+      })
       if (index !== -1) {
         const dItem = localBannerList.splice(index, 1)[0]
         newBannerList.push(dItem)
       } else {
-        newBannerList.push({
-          ...item,
-          displayImgUrl: item.preview,
-          hrefUrl: '',
-          imgUrl: item.url,
-          position,
-          status: NaN,
-          weight: NaN,
-          id: NaN
-        })
+        if (item.type === 'IMAGE') {
+          newBannerList.push({
+            ...item,
+            displayImgUrl: item.preview!,
+            hrefUrl: '',
+            imgUrl: item.url!,
+            position,
+            status: NaN,
+            weight: NaN,
+            id: NaN
+          })
+        } else {
+          newBannerList.push({
+            ...item,
+            displayImgUrl: item.thumbUrl!,
+            hrefUrl: item.url!,
+            imgUrl: item.thumbUrl!,
+            position,
+            status: NaN,
+            weight: NaN,
+            id: NaN
+          })
+        }
       }
     })
     const newDelBannerIds = [...new Set([...delBannerIds, ...localBannerList.filter(item => item.id).map(item => item.id)])]
+    console.log(newBannerList, newDelBannerIds)
     if (autoUpdata) {
       handleUpData('all', newBannerList, newDelBannerIds)
     } else {
@@ -184,7 +211,10 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
         if (item.id) {
           return Promise.resolve(item.id)
         } else {
-          return createBannerImg(item.imgUrl)
+          return createBannerImg({
+            imgUrl: item.imgUrl,
+            hrefUrl: item.hrefUrl
+          })
         }
       }), ...(autoUpdata ? nowDelBannerIds! : delBannerIds).map(item => deleteBannerImg(item))])
       await handleOrdersChange(ids.filter(item => typeof item === 'number') as number[])

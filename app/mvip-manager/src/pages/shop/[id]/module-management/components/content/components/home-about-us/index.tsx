@@ -15,6 +15,7 @@ import { errorMessage, successMessage } from '@/components/message';
 import { useMemo } from 'react';
 import { ShopIndustryType } from '@/enums';
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
+import { MediaItem } from '@/components/img-upload/data';
 
 interface Props {
   position: ModulePageType,
@@ -39,7 +40,7 @@ const AboutUs: FC<Props> = (props) => {
   const [detail, setDetail] = useState<InitModuleHomeABoutInfo>({
     name: '',
     tags: [],
-    media: ''
+    media: '',
   })
 
   const config = useMemo(() => {
@@ -59,9 +60,10 @@ const AboutUs: FC<Props> = (props) => {
     const res = await getModuleInfoApi<ModuleHomeABoutInfo>(Number(params.id), {
       position, pageModule
     })
+    const { videoUrl, media } = res.data
     setDetail({
       ...res.data,
-      media: getImgUploadValueModel('IMAGE', res.data.media)
+      media: res.data.videoUrl ? getImgUploadValueModel('VIDEO', videoUrl, media) : getImgUploadValueModel('IMAGE', media)
     })
     setGetDataLoading(false)
   }
@@ -76,7 +78,8 @@ const AboutUs: FC<Props> = (props) => {
     setUpDataLoading(true)
     const res = await setModuleHomeABoutInfoApi(Number(params.id), {
       ...values,
-      media: getImgUploadModelValue(values.media),
+      media: values.media ? values.media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) as string : getImgUploadModelValue(values.media, true) as string : '',
+      videoUrl: values.media ? values.media.mediaType === 'IMAGE' ? '' : getImgUploadModelValue(values.media) as string : '',
       tags: Array.isArray(values.tags) ? values.tags : (values.tags as any).split(','),
       position, pageModule
     })

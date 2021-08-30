@@ -7,6 +7,8 @@ import ImgUploadContext from '@/components/img-upload/context'
 import Upload1 from '@/components/img-upload/components/upload1'
 import Upload2 from '@/components/img-upload/components/upload2'
 import CropModal from '@/components/img-upload/components/crop-modal'
+import PreviewModal from '@/components/img-upload/components/preview-modal'
+
 import { getFileBase64 } from '@/utils/index'
 
 // 返回的url/开始初始化的url 处理方式不同
@@ -38,7 +40,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const [previewVisible, setPreviewVisible] = useState(false)
-  const [previewImage, setPreviewImage] = useState('')
+  const [previewMedia, setPreviewMedia] = useState<UploadFile>()
 
   const [cropVisible, setCropVisible] = useState(false)
   const [cropItem, setCropItem] = useState<UploadFile<any>>()
@@ -81,28 +83,33 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       if (newFileList[0].url) {
         onChange({
           url: getUrl(newFileList[0].url!),
-          mediaType: newFileList[0].type as MediaType
+          mediaType: newFileList[0].type as MediaType,
+          coverUrl: newFileList[0].thumbUrl
         }, newFileList, oldFileList);
       }
     } else {
       if (newFileList.every(item => item.url)) {
         onChange(newFileList.map((item: UploadFile<any>) => ({
           url: getUrl(item.url!),
-          mediaType: newFileList[0].type as MediaType
+          mediaType: item.type as MediaType,
+          coverUrl: item.thumbUrl
         })), newFileList, oldFileList);
       }
     }
   }, [onChange])
 
   // 修改值初始化
+  // url 是当前媒体的url
+  // thumbUrl 是封面图字段 当mediaType==='VIDEO'时，可以为图片id
+  // preview 是图片预览字段 当mediaType==='VIDEO'时，是封面图预览 。当mediaType==='IMAGE'时，是图片的预览
   const initEdit = () => {
     if (editData) {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
-        fileList = (editData).map((item, index) => ({ uid: `${item}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }))
+        fileList = (editData).map((item, index) => ({ uid: `${item}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }))
         createFileList(fileList)
       } else {
-        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: editData.mediaType, status: 'done', url: editData.url, thumbUrl: editData.mediaType === 'VIDEO' ? editData.coverUrl : editData.url, preview: editData.url }]
+        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: editData.mediaType, status: 'done', url: editData.url, thumbUrl: editData.mediaType === 'VIDEO' ? editData.coverUrl : editData.url, preview: editData.mediaType === 'VIDEO' ? editData.coverUrl : editData.url }]
         createFileList(fileList)
       }
     }
@@ -160,13 +167,14 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
   // 预览
   const handlePreview = (file: UploadFile) => {
-    setPreviewImage(file.preview!)
+    setPreviewMedia(file)
     setPreviewVisible(true)
   }
 
   // 取消预览
   const handlePreviewCancel = () => {
     setPreviewVisible(false)
+    setPreviewMedia(undefined)
   }
 
   // 删除
@@ -270,25 +278,17 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           }
         </ImgUploadContext.Provider>
       </div>
-      <Modal
-        title="预览图片"
-        width={800}
-        visible={previewVisible}
-        onOk={handlePreviewCancel}
-        onCancel={handlePreviewCancel}
-        footer={null}
-      >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+      <PreviewModal previewVisible={previewVisible} previewMedia={previewMedia} handleCloseModal={handlePreviewCancel}></PreviewModal>
       <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={cropItem?.preview} handleCropSuccess={handleCropSuccess}></CropModal>
     </>
   )
 }
 
-export const getImgUploadValueModel = (mediaType: MediaType, value: string | null | undefined): MediaItem | '' => {
-  if (value) {
+export const getImgUploadValueModel = (mediaType: MediaType, media: string | null | undefined, coverUrl?: string): MediaItem | '' => {
+  if (media) {
     return {
-      url: value,
+      url: media,
+      coverUrl,
       mediaType
     }
   } else {
@@ -296,9 +296,13 @@ export const getImgUploadValueModel = (mediaType: MediaType, value: string | nul
   }
 }
 
-export const getImgUploadModelValue = (value: MediaItem | '') => {
+export const getImgUploadModelValue = (value: MediaItem | '', isCover?: boolean) => {
   if (value) {
-    return value.url
+    if (isCover) {
+      return value.coverUrl
+    } else {
+      return value.url
+    }
   } else {
     return ''
   }

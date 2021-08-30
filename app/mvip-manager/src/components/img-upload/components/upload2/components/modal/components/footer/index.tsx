@@ -37,7 +37,6 @@ const ModalFooter: FC = () => {
   }
 
   const handleClickOk = () => {
-    console.log(localFileList)
     handleChangeFileList([...localFileList], fileList, null)
     handleChangeAlbumVisible(false)
   }
@@ -53,7 +52,10 @@ const ModalFooter: FC = () => {
     <div className={styles['line']}>
       {
         localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={`${item.uid}-${index}`}>
-          <img className={styles['img']} src={item.preview} draggable={false} onDoubleClick={() => handleDoubleClick(item)}></img>
+          {
+            item.type === 'VIDEO' && <div className={styles['play-icon']}></div>
+          }
+          <img className={styles['img']} src={item.type === 'IMAGE' ? item.preview : item.thumbUrl} draggable={false} onDoubleClick={() => handleDoubleClick(item)}></img>
           <div className={styles['delete']} onClick={() => handleDel(index)}>
             <DeleteOutlined style={{
               color: '#fff'

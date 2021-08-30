@@ -26,10 +26,13 @@ const ImgItem: FC<Props> = (props) => {
       previewIcon: <EyeOutlined color={'#fff'} />,
       showRemoveIcon: true,
       removeIcon: <DeleteOutlined color={'#fff'} />,
-      showCropIcon: true,
-      cropIcon: <ScissorOutlined color={'#fff'} />,
       showDownloadIcon: false,
-      downloadIcon: <DownloadOutlined color={'#fff'} />
+      downloadIcon: <DownloadOutlined color={'#fff'} />,
+      showSelectCoverIcon: true,
+      selectCoverIcon: <img style={{
+        width: 14,
+        height: 14
+      }} src="//file.baixing.net/202108/be570e4aba6980dda40f5dfbb5cc2937.png"></img>,
     }
     if (showUploadList) {
       return {
@@ -46,11 +49,12 @@ const ImgItem: FC<Props> = (props) => {
 
   return <StatusBox file={file}>
     <div className={styles['img-item']} style={{ width: itemWidth }}>
-      <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.url})` }}>
+      <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.thumbUrl})` }}>
+        <div className={styles['play-icon']}></div>
         <div className={styles['mask']}>
           {
             // 预览
-            (localShopUploadList.showPreviewIcon) && <div className={styles['action-btn']} title="预览图片" onClick={() => onPreview(file, fileIndex)}>
+            (localShopUploadList.showPreviewIcon) && <div className={styles['action-btn']} title="预览视频" onClick={() => onPreview(file, fileIndex)}>
               {
                 localShopUploadList.previewIcon
               }
@@ -58,17 +62,17 @@ const ImgItem: FC<Props> = (props) => {
           }
           {
             // 删除
-            (localShopUploadList.showRemoveIcon) && <div className={styles['action-btn']} title="删除图片" onClick={() => onRemove(file, fileIndex)}>
+            (localShopUploadList.showRemoveIcon) && <div className={styles['action-btn']} title="删除视频" onClick={() => onRemove(file, fileIndex)}>
               {
                 localShopUploadList.removeIcon
               }
             </div>
           }
           {
-            // 裁剪
-            (localShopUploadList.showCropIcon) && file.status === 'done' && <div className={styles['action-btn']} title="裁剪图片" onClick={() => onCrop && onCrop(file, fileIndex)}>
+            // 选择封面图
+            file.type === 'VIDEO' && (localShopUploadList.showSelectCoverIcon) && <div className={styles['action-btn']} title="选择封面图">
               {
-                localShopUploadList.cropIcon
+                localShopUploadList.selectCoverIcon
               }
             </div>
           }

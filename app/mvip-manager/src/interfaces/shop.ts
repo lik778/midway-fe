@@ -99,7 +99,8 @@ export interface ModifyNavItem {
 
 export interface ImgItemParam {
   type: number;
-  url: string;
+  hrefUrl: string;
+  imgUrl: string;
   position: ModulePageType;
   weight: number;
 }
@@ -587,7 +588,8 @@ export interface ModuleArticleInfoParam extends ModuleRequestParam {
 export interface ModuleHomeABoutInfo {
   name: string,
   tags: string[],
-  media: string
+  media: string,
+  videoUrl: string
 }
 
 export interface InitModuleHomeABoutInfo {

@@ -38,7 +38,7 @@ const ImgItem: FC<Props> = (props) => {
       errorMessage(detail.reason)
       return
     }
-    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: detail.videoUrl, thumbUrl: detail.imgUrl, preview: detail.videoUrl, size: 0, name: '', originFileObj: null as any, type: '' }
+    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: detail.videoUrl, thumbUrl: detail.imgUrl, preview: detail.imgUrl, size: 0, name: '', originFileObj: null as any, type: mediaType }
     if (maxLength === 1) {
       handleChangeLocalFileList([newFile])
     } else {
@@ -85,11 +85,11 @@ const ImgItem: FC<Props> = (props) => {
 
   return <>
     <StatusBox file={file}>
-      <div className={styles['img-item']} style={{
+      <div className={styles['video-item']} style={{
         height: itemHeight
       }} onClick={handleClickItem} title={detail.title}>
-        <div className={styles['icon']}></div>
-        <img className={styles['img']} src={detail.imgUrl || (file && file.preview)} />
+        <div className={styles['play-icon']}></div>
+        <img className={styles['img']} src={detail.imgUrl || (file && file.thumbUrl)} />
         <div className={styles['title']}>{detail.title}</div>
         {
           typeof detail.checkStatus === 'string' && detail.checkStatus !== 'APPROVE' && (

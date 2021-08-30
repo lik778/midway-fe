@@ -69,6 +69,7 @@ const Upload1: FC = () => {
       policy: window.__upyunImgConfig?.uploadParams?.policy,
       signature: window.__upyunImgConfig?.uploadParams?.signature
     }}
+    accept="image/jpeg,image/jpg,image/png"
     style={{ width: itemWidth }}
     listType="picture-card"
     fileList={fileList}
