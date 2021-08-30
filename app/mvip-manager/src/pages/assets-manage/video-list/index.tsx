@@ -9,6 +9,7 @@ const AssetsMangeVideoListPage = () => {
     directoryType="VIDEO"
     defaultScope={{ item: null, type: 'album', label: '视频分组', countLabel: '个' }}
     navBar={NavBar}
+    key="video-list"
   />
 }
 

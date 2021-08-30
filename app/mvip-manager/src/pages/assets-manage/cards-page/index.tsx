@@ -261,7 +261,6 @@ const CardsPage = (props: CardsPageProps) => {
           actions={$selectionBarActions}
         />
         {/* 卡片展示区 */}
-        {/* FIXME react hooks order warning */}
         <CardList
           lists={lists}
           curScope={curScope}

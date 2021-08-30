@@ -436,7 +436,7 @@ export default function useUploadModal(props: Props) {
     // }
 
     return (
-      <div className={styles["upload-item"] + ' ' + (isUploadImage ? styles['image'] : styles['video'])} key={`${uid}-${idx}-${status}`}>
+      <div className={styles["upload-item"] + ' ' + (isUploadImage ? styles['image'] : styles['video'])} key={`${uid}-${idx}-${status}-${name||''}`}>
         <img className={styles["upload-img"]} src={preview} />
         <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
         <div className={styles["wrapper"]}>{$contents}</div>

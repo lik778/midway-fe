@@ -76,7 +76,7 @@ export default function AlbumCardWrapper(props: any) {
     const info = totalImg === 0
       ? `${directoryLabel}删除后无法恢复，确认删除？`
       : `本次预计删除 ${totalImg} ${subDirectoryCountLabel + subDirectoryLabel}，删除后无法恢复，确认删除？`
-    const query = { ids: [id], souce: directoryType }
+    const query = { ids: [id], source: directoryType }
     await delCallback(delMediaCategory, query, info, () => {
       setSelection(selection.filter((x: number) => x !== id))
       refreshAllAlbumLists()

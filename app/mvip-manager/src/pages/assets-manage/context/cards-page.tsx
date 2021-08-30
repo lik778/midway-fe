@@ -34,11 +34,17 @@ export default CardsPageContext
 const reducer = (prevState: CardsPageContextType, action: any): CardsPageContextType => {
   switch (action.type) {
     case 'update-directory-type':
-      prevState.directoryLabel = action.payload === 'IMAGE' ? '相册' : '视频分组'
-      prevState.subDirectoryLabel = action.payload === 'IMAGE' ? '图片' : '视频'
-      prevState.subDirectoryCountLabel = action.payload === 'IMAGE' ? '张' : '个'
-      prevState.directoryType = action.payload
-      return prevState
+      const directoryLabel = action.payload === 'IMAGE' ? '相册' : '视频分组'
+      const subDirectoryLabel = action.payload === 'IMAGE' ? '图片' : '视频'
+      const subDirectoryCountLabel = action.payload === 'IMAGE' ? '张' : '个'
+      const directoryType = action.payload
+      return {
+        ...prevState,
+        directoryLabel,
+        subDirectoryLabel,
+        subDirectoryCountLabel,
+        directoryType,
+      }
     // case 'update-refresh':
     //   prevState.refresh = action.payload
       // return prevState

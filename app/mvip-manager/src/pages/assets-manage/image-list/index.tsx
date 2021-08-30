@@ -39,15 +39,15 @@ const AssetsMangeImageListPage = (props: {
 
   /***************************************************** States */
 
-  const { directoryType: propsDirectoryType, defaultScope, navBar } = props
+  const { defaultScope, navBar } = props
   const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
 
   useEffect(() => {
     dispatch({
       type: 'update-directory-type',
-      payload: propsDirectoryType || 'IMAGE'
+      payload: props.directoryType || 'IMAGE'
     })
-  }, [propsDirectoryType])
+  }, [props.directoryType])
 
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
@@ -161,11 +161,13 @@ const AssetsMangeImageListPage = (props: {
   // 自定义卡片
   const customCardItem = useMemo(() => {
     console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
-    if (isScopeImage) {
-      return ImageCardWrapper
-    } else {
+    if (isScopeAlbum) {
       return AlbumCardWrapper
     }
+    if (isScopeImage) {
+      return ImageCardWrapper
+    }
+    return PaddingHooksCard
   }, [isScopeAlbum, isScopeImage])
 
   // 页头
@@ -201,8 +203,12 @@ const AssetsMangeImageListPage = (props: {
   const cardItemPreview = useMemo(() => {
     if (directoryType === 'VIDEO') {
       return (previewItem: CardItem) => {
-        const { imgUrl } = previewItem as MediaAssetsItem
-        return <video src={imgUrl} preload="preload" />
+        const { videoUrl, imgUrl } = previewItem as MediaAssetsItem
+        return (
+          <video src={videoUrl} poster={imgUrl} preload="preload" controls autoPlay key={videoUrl + '-' + imgUrl}>
+            your browser does not support the video tag
+          </video>
+        )
       }
     } else {
       return null
@@ -226,6 +232,17 @@ const AssetsMangeImageListPage = (props: {
       {$selectAlbumModal}
     </CardsPage>
   )
+}
+
+// 由于组件切换时状态有顺序和数量相等限制，
+// 暂时用一个组件用来填充
+function PaddingHooksCard(props: any) {
+  const { } = useContext(CardsPageContext)
+  const { } = useContext(AlbumNamesContext)
+  const [_, __] = useState('for padding')
+  return (props: any) => {
+    return null
+  }
 }
 
 /**
