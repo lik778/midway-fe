@@ -24,7 +24,7 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
   const { id, shopBasicInfoParams, getDataLoading, onChange } = props
 
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(ShopBasicInfoForm));
-  const [phoneTipShow, setphoneTipShow] = useState(false)
+  const [phoneTipShow, setPhoneTipShow] = useState(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
 
   const updateConfigData = () => {
@@ -48,6 +48,28 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     updateConfigData()
   }, [shopBasicInfoParams])
 
+  const setPhoneTipShowFc = () => {
+    const newChildren = config.children.map(item => {
+      if (item.name === "phoneAndWX") {
+        item.children = item.children?.map(cItem => {
+          if (cItem.name === "contactMobile") {
+            return {
+              ...cItem,
+              slotDom: <span className={`${styles['phone-top']} ${phoneTipShow ? styles['phone-block'] : styles['phone-none']}`}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
+            }
+          }
+          return cItem
+        })
+      }
+      return item
+    })
+    setConfig({ ...config, children: newChildren })
+  }
+
+  useEffect(() => {
+    setPhoneTipShowFc()
+  }, [phoneTipShow])
+
   const sumbit = async (values: InitShopBasicInfoParams) => {
     const requestData: UploadShopBasicInfoParams = {
       ...values
@@ -68,10 +90,14 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     setUpDataLoading(false)
   }
 
-  const formChange = useDebounce((changeValue: any, allValues: any) => {
+  const formChange = useDebounce((_changeValue: { [key in keyof InitShopBasicInfoParams]: string }, allValues: InitShopBasicInfoParams) => {
     //手机正则 
     const landlinePtn = /(^400[0123456789]\d{6}$)|(^400-[0123456789]\d{2}-\d{4}$)/
-    setphoneTipShow(changeValue.contactMobile && landlinePtn.test(changeValue.contactMobile))
+    if (allValues.contactMobile) {
+      setPhoneTipShow(landlinePtn.test(allValues.contactMobile))
+    } else {
+      setPhoneTipShow(false)
+    }
   }, 100)
 
 
@@ -84,7 +110,6 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
           config={config}
           formChange={formChange}
         />
-        <span className={phoneTipShow ? styles['phone-block'] : styles['phone-none']}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
       </div>
     </Spin >)
 }

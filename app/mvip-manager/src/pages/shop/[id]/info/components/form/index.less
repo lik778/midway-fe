@@ -1,15 +1,18 @@
 .shop-container {
   position: relative;
-  .phone-none {
-    display: none;
-  }
-  .phone-block {
+  .phone-top{
     display: block;
     position: absolute;
-    bottom: 20.5%;
-    left: 246px;
     color: #f85e5e;
     font-weight: 500;
+    bottom: 0;
+    left: 112px;
+    transform: translateY(100%);
+  }
+  .phone-none {
+    opacity: 0;
+  }
+  .phone-block {
+    opacity: 1;
   }
 }
-
