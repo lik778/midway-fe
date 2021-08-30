@@ -136,9 +136,14 @@ function ImageCard(props: ImageCardProps) {
   const { directoryType } = useContext(CardsPageContext)
   const isImage = directoryType === 'IMAGE'
 
-  const { id, imgUrl, title } = card
+  const { id, imgUrl, title, decodeStatus } = card
   const isChecked = selection.find((y: number) => y === id)
   const inSetCoverLoading = setCoverItem && setCoverItem.id === id
+  const inEncoding = decodeStatus === 'DECODING'
+  const isSuccess = decodeStatus === 'SUCCESS'
+  const isError = !isSuccess && !inEncoding
+  // 应该是数据流动的问题，导致如果不检测 decodeStatus 就会显示 ErrorMask
+  const showMask = card.hasOwnProperty('decodeStatus') && !loading
 
   const stopEvent = (e: any) => e.stopPropagation()
 
@@ -148,6 +153,20 @@ function ImageCard(props: ImageCardProps) {
       key={`image-card-${id}`}
       onClick={() => preview(card)}
     >
+      {showMask && inEncoding && (
+        <div className={styles["mask"] + ' ' + styles['full']}>
+          <LoadingOutlined />
+          <span>正在转码中，请稍等</span>
+          <span className={styles["reason"]}>转码完成后第一时间通知您</span>
+        </div>
+      )}
+      {showMask && isError && (
+        <div className={styles["mask"] + ' ' + styles['full']}>
+          <ErrorIcon />
+          <span>转码失败</span>
+          <span className={styles["reason"]}>转码失败，请删除重试</span>
+        </div>
+      )}
       <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => preview(card)}>
         <div className={styles["action-wrapper"]}>
           <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
@@ -156,16 +175,18 @@ function ImageCard(props: ImageCardProps) {
               <DownOutlined />
             </div>
             <div className={styles["down-actions"]} onClick={e => moveImage(e, card)}>
-              {directoryType === 'VIDEO' && (
+              {!isError && directoryType === 'VIDEO' && (
                 <div className={styles["anticon-down-item"]} onClick={e => editVideoName(e, card)}>
                   <EditOutlined />
                   <span>编辑</span>
                 </div>
               )}
-              <div className={styles["anticon-down-item"]}>
-                <PartitionOutlined />
-                <span>移动</span>
-              </div>
+              {!isError && (
+                <div className={styles["anticon-down-item"]}>
+                  <PartitionOutlined />
+                  <span>移动</span>
+                </div>
+              )}
               <div className={styles["anticon-down-item"]} onClick={e => delImage(e, card)}>
                 <DeleteOutlined />
                 <span>删除</span>
@@ -191,5 +212,20 @@ function ImageCard(props: ImageCardProps) {
         </div>
       )}
     </div>
+  )
+}
+
+function ErrorIcon() {
+  return (
+    <svg className={styles['anticon']} xmlns="http://www.w3.org/2000/svg" width="22px" height="22px" viewBox="0 0 22 22" version="1.1">
+      <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g transform="translate(-317.000000, -486.000000)">
+          <g transform="translate(317.000000, 486.000000)">
+            <circle fill="#F1492C" cx="11" cy="11" r="11" />
+            <path d="M10.8217593,5.72916667 C11.2084864,5.72916667 11.5219907,6.04267098 11.5219907,6.42939815 L11.5211667,10.1211667 L15.2141204,10.1215278 C15.6008475,10.1215278 15.9143519,10.4350321 15.9143519,10.8217593 C15.9143519,11.2084864 15.6008475,11.5219907 15.2141204,11.5219907 L11.5211667,11.5211667 L11.5219907,15.2141204 C11.5219907,15.6008475 11.2084864,15.9143519 10.8217593,15.9143519 C10.4350321,15.9143519 10.1215278,15.6008475 10.1215278,15.2141204 L10.1211667,11.5211667 L6.42939815,11.5219907 C6.04267098,11.5219907 5.72916667,11.2084864 5.72916667,10.8217593 C5.72916667,10.4350321 6.04267098,10.1215278 6.42939815,10.1215278 L10.1211667,10.1211667 L10.1215278,6.42939815 C10.1215278,6.04267098 10.4350321,5.72916667 10.8217593,5.72916667 Z" id="形状结合" fill="#FFFFFF" transform="translate(10.821759, 10.821759) rotate(-45.000000) translate(-10.821759, -10.821759) " />
+          </g>
+        </g>
+      </g>
+    </svg>
   )
 }
