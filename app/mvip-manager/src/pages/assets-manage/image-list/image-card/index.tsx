@@ -15,7 +15,7 @@ import styles from './index.less'
 
 export default function ImageCardWrapper(props: any) {
   const { curScope, lists, selection, setSelection, editVideo, refresh } = props
-  const { directoryType, selectAlbum } = useContext(CardsPageContext)
+  const { directoryType, subDirectoryLabel, selectAlbum } = useContext(CardsPageContext)
   const { } = useContext(AlbumNamesContext)
   const [setCoverItem, setSetCoverItem] = useState<MediaAssetsItem | null>()
 
@@ -59,7 +59,7 @@ export default function ImageCardWrapper(props: any) {
       .then((res: any) => {
         if (res.success) {
           successMessage('移动成功')
-          setSelection(selection.filter(x => x !== id))
+          setSelection(selection.filter((x: number) => x !== id))
           refresh(resetRefreshPagi)
         } else {
           throw new Error(res.message || "出错啦，请稍后重试")
@@ -76,7 +76,7 @@ export default function ImageCardWrapper(props: any) {
     const { id } = image
     await Modal.confirm({
       title: '确认删除',
-      content: `图片删除后无法恢复，确认删除？`,
+      content: `${subDirectoryLabel}删除后无法恢复，确认删除？`,
       width: 532,
       onCancel() { },
       onOk() {
@@ -90,7 +90,7 @@ export default function ImageCardWrapper(props: any) {
             .then((res: any) => {
               if (res.success) {
                 successMessage('删除成功')
-                setSelection(selection.filter(x => x !== id))
+                setSelection(selection.filter((x: number) => x !== id))
                 refresh(lists.length === 1)
                 resolve(res.success)
               } else {
@@ -185,9 +185,9 @@ function ImageCard(props: ImageCardProps) {
           <img className={styles["cover"]} src={imgUrl} alt="cover" />
         </div>
       )}
-      {(!loading && directoryType === 'VIDEO') && (
+      {(!loading && imgUrl && directoryType === 'VIDEO') && (
         <div className={styles["header"]}>
-          <span className={styles["name"]} title={name}>{name}</span>
+          <span className={styles["name"]} title={name}>{name || '未命名视频'}</span>
         </div>
       )}
     </div>

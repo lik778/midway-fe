@@ -85,7 +85,6 @@ export default function CardsContainer(props: CardsContainerProps) {
         setCountInLine(result)
       }
       const countInPage = result * 2
-      console.log('pagiConf.pageSiz:', pagiConf.pageSize, countInPage)
       if (pagiConf.pageSize !== countInPage) {
         setPagiConf({
           pageSize: countInPage,

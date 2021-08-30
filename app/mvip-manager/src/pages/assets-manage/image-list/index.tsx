@@ -172,7 +172,7 @@ const AssetsMangeImageListPage = (props: {
 
   // 自定义卡片
   const customCardItem = useMemo(() => {
-    console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
+    // console.log('custom render card order - isScopeAlbum isScopeImage', isScopeAlbum, isScopeImage)
     if (isScopeAlbum) {
       return AlbumCardWrapper
     }
