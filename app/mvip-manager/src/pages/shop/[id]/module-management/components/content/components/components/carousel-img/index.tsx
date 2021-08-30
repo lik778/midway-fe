@@ -16,6 +16,7 @@ import styles from './index.less'
 import { forwardRef } from "react";
 import { ModulePageType } from '@/interfaces/shop'
 interface Props {
+  showVideo?: boolean,
   autoUpdata?: boolean, // 是否操作后自动更新数据
   type: DeviceType,
   position: ModulePageType,
@@ -25,7 +26,7 @@ interface Props {
 }
 
 const CarouselItem = (props: Props, parentRef: Ref<any>) => {
-  const { autoUpdata = true, type, txt, tip, position, aspectRatio } = props
+  const { showVideo = false, autoUpdata = true, type, txt, tip, position, aspectRatio } = props
   const [bannerList, setBannerList] = useState<BannerListItem[]>([])
   // 当前banner是否被修改过
   const [changeFlag, setChangeFlag] = useState<boolean>(false)
@@ -231,6 +232,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
         <div className={styles['upload-container']}>
           <ImgUpload
             uploadType={2}
+            showVideo={showVideo}
             editData={editData}
             uploadBtnText="上传图片"
             maxSize={3}

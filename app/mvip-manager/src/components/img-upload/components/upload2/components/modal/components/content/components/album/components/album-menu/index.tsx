@@ -12,17 +12,19 @@ interface Props {
 const AlbumMenu: FC<Props> = (props) => {
   const { tabsCurrent, menuKey, handleChangeMenuKey } = props
   const context = useContext(ImgUploadContext)
-  const { baixingImageData, imageData } = context
+  const { baixingImageData, imageData, videoData } = context
 
   const menuList = useMemo(() => {
     if (tabsCurrent === "百姓图库") {
       return baixingImageData
     } else if (tabsCurrent === "我的图库") {
       return imageData
+    } else if (tabsCurrent === "我的视频") {
+      return videoData
     } else {
       return []
     }
-  }, [tabsCurrent, baixingImageData, imageData])
+  }, [tabsCurrent, baixingImageData, imageData, videoData])
 
   return <div className={styles['album-menu-container']}>
     <div className={styles['album-menu-content']}>

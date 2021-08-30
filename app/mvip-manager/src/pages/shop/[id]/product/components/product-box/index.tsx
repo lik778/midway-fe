@@ -32,7 +32,6 @@ export default (props: Props) => {
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
-    console.log(editData)
     return {
       ...editData,
       headImg: getImgUploadValueModel('IMAGE', editData?.headImg),

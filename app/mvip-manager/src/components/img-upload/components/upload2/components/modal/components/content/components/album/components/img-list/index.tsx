@@ -12,6 +12,7 @@ import { getMediaAssets, getBaixingMediaAssets } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
 import ScrollBox from '@/components/scroll-box'
+import { Link } from 'umi'
 
 interface Props {
   tabsCurrent: TabsKeys,
@@ -23,10 +24,10 @@ interface Props {
 const ImgList: FC<Props> = (props) => {
   const { tabsCurrent, tabKey, menuKey, mediaType } = props
   const context = useContext(ImgUploadContext)
-  const { baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
+  const { baixingImageData, imageData, videoData, handleChangeBaixingImageData, handleChangeImageData, handleChangeVideoData } = context
   const [albumTypeDetail, setAlbumTypeDetail] = useState<MediaDataAlbumListItem>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
-  const ref = useRef<HTMLDivElement | null>(null)
+  const scrollRef = useRef<{ scrollTop: () => void }>()
 
   const createNewData = (result: MediaAssetsItem[], totalPage: number) => {
     // images: MediaAssetsItem[]
@@ -42,6 +43,31 @@ const ImgList: FC<Props> = (props) => {
     }
   }
 
+
+  const upContextData = (newAlbumTypeDetail: MediaDataAlbumListItem) => {
+    let fn: (newImageData: MediaDataAlbumListItem[], oldImageData: MediaDataAlbumListItem[]) => void | undefined
+    let data: MediaDataAlbumListItem[] | undefined
+    if (tabKey === '百姓图库') {
+      fn = handleChangeBaixingImageData
+      data = baixingImageData
+    } else if (tabKey === '我的图库') {
+      fn = handleChangeImageData
+      data = imageData
+    } else if (tabKey === '我的视频') {
+      fn = handleChangeVideoData
+      data = videoData
+    }
+    if (fn! && data) {
+      fn(data.map(item => {
+        if (item.id === newAlbumTypeDetail.id) {
+          return newAlbumTypeDetail
+        } else {
+          return item
+        }
+      }), data)
+    }
+  }
+
   const getList = async () => {
     if (!albumTypeDetail) return
     if (albumTypeDetail.page > albumTypeDetail.total) return
@@ -54,7 +80,7 @@ const ImgList: FC<Props> = (props) => {
       page: albumTypeDetail.page,
       size: 16,
       mediaCateId: albumTypeDetail.id !== -1 ? albumTypeDetail.id : undefined,
-      source: 'IMAGE'
+      source: mediaType
     })
     setGetDataLoading(false)
     if (!res.success) {
@@ -62,23 +88,7 @@ const ImgList: FC<Props> = (props) => {
       return
     }
     const newAlbumTypeDetail = createNewData(res.data.mediaImgBos.result || [], res.data.mediaImgBos.totalPage)
-    if (tabKey === '百姓图库') {
-      handleChangeBaixingImageData(baixingImageData.map(item => {
-        if (item.id === newAlbumTypeDetail.id) {
-          return newAlbumTypeDetail
-        } else {
-          return item
-        }
-      }), baixingImageData)
-    } else if (tabKey === '我的图库') {
-      handleChangeImageData(imageData.map(item => {
-        if (item.id === newAlbumTypeDetail.id) {
-          return newAlbumTypeDetail
-        } else {
-          return item
-        }
-      }), imageData)
-    }
+    upContextData(newAlbumTypeDetail)
     setAlbumTypeDetail(newAlbumTypeDetail)
   }
 
@@ -90,17 +100,16 @@ const ImgList: FC<Props> = (props) => {
       } else if (tabKey === '我的图库') {
         const newAlbumTypeDetail = imageData.find(item => item.id === menuKey)
         setAlbumTypeDetail(newAlbumTypeDetail)
+      } else if (tabKey === '我的视频') {
+        const newAlbumTypeDetail = videoData.find(item => item.id === menuKey)
+        setAlbumTypeDetail(newAlbumTypeDetail)
       } else {
         setAlbumTypeDetail(undefined)
       }
     }
   }
 
-  // 切换店铺图册滚动到顶部
-  const scrollTop = () => {
-    if (!ref.current) return
-    ref.current.scrollTop = 0
-  }
+
 
   // 初始化一个图册时需要看它是否已经请求过数据，缓存起来了
   useEffect(() => {
@@ -111,24 +120,42 @@ const ImgList: FC<Props> = (props) => {
 
   // 切换图册，切换店铺，都要触发，切换店铺时，新的店铺的左侧图册列表还没请求，所以及时shopCurrent触发了更新，但是imageData，baixingImageData
   useEffect(() => {
-    scrollTop()
+    scrollRef.current?.scrollTop()
     getData()
   }, [menuKey])
 
+  const mediaTypeTxt = mediaType === 'VIDEO' ? '视频' : '图片'
+  const mediaTypeUrl = mediaType === 'VIDEO' ? '/assets-manage/video-list' : '/assets-manage/image-list'
+
   return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
-    <ScrollBox scrollY={true} handleScrollToLower={getList} height="337px">
+    <ScrollBox scrollY={true} handleScrollToLower={getList} height="337px" ref={scrollRef}>
       <div className={styles['img-list']}>
-        <div className={styles['list']}>
-          {
-            albumTypeDetail && albumTypeDetail.media.map(item => {
-              if (mediaType === 'IMAGE') {
-                return <ImgItem detail={item} key={item.id} mediaType={mediaType}></ImgItem>
-              } else if (mediaType === 'VIDEO') {
-                return <VideoItem detail={item} key={item.id} mediaType={mediaType}></VideoItem>
-              }
-            })
-          }
-        </div>
+        {
+          albumTypeDetail && <>
+            {
+              albumTypeDetail.media.length > 0 && <div className={styles['list']}>
+                {
+                  albumTypeDetail.media.map(item => {
+                    if (mediaType === 'IMAGE') {
+                      return <ImgItem detail={item} key={item.id} mediaType={mediaType}></ImgItem>
+                    } else if (mediaType === 'VIDEO') {
+                      return <VideoItem detail={item} key={item.id} mediaType={mediaType}></VideoItem>
+                    }
+                  })
+                }
+              </div>
+            }
+            {
+              albumTypeDetail.media.length === 0 && <div className={styles['no-data']}>
+                <img className={styles['img']} src="//file.baixing.net/202108/3adcd85474b22d42953e5e4796f4b44a.png" alt="" />
+                <div className={styles['text']}>暂无{mediaTypeTxt}，你可以</div>
+                <Link className={styles['btn']} to={mediaTypeUrl}>
+                  +上传{mediaTypeTxt}
+                </Link>
+              </div>
+            }
+          </>
+        }
       </div>
     </ScrollBox>
   </Spin>

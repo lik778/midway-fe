@@ -15,6 +15,7 @@ const Swiper = (props: Props, parentRef: Ref<any>) => {
   return <div className={styles['swiper-container']}>
     <CarouselImg
       ref={parentRef}
+      showVideo={true}
       tip={'最多上传5张轮播图，图片格式：jpg/jpeg/png,大小不超过3M, 建议上传尺寸1920*540'}
       txt={'PC端轮播图'}
       type={DeviceType.PC}

@@ -59,7 +59,7 @@ export class BaseSiteController {
     if (sem === "2") {
       return "2"
     }
-    
+
     // 其他
     return undefined
   }
@@ -113,7 +113,6 @@ export class BaseSiteController {
     } else {
       data.autoConfig = [data.autoConfig[1] || defaultAutoConfig1, data.autoConfig[2] || defaultAutoConfig2]
     }
-
     //红白头开关
     // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
     //   data.isRedTopbar = true
@@ -123,13 +122,13 @@ export class BaseSiteController {
     if (nowTime - 1624064400000 > 0) {
       data.isRedTopbar = true
     }
-
+    console.log(data)
     return data
   }
 
   private createParams(isSem, isCn) {
     return {
-      semKeyWordFlag: isSem==="1" ? 1 : 0,
+      semKeyWordFlag: isSem === "1" ? 1 : 0,
       cnKeyWordFlag: isCn ? 1 : 0
     }
   }

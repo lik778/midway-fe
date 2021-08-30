@@ -427,17 +427,20 @@ export type MediaCateItem = {
  */
 export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN' | 'ENCODE_FAILED'
 export type ImageType = 'NOT_COVER' | 'COVER'
-
+export type MediaType = 'IMAGE' | 'VIDEO'
+export type DecodeStatus = 'DEFAULT' | 'DECODING' | 'SUCCESS' | 'FAILED'
 // 分类内资源类型
 // TODO rename
 export type MediaAssetsItem = {
   id: number,
-  name?: string,
   imgUrl: string,
   videoUrl: string,
+  source: MediaType
   type: ImageType,
   checkStatus: CheckStatusType,
   reason: string,
+  title: string
+  decodeStatus: DecodeStatus
 }
 
 export type CardItem = MediaCateItem | MediaAssetsItem

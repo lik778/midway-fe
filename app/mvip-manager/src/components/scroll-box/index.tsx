@@ -1,17 +1,31 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, { ForwardRefRenderFunction, useState, useEffect, useRef, Ref } from 'react';
 import styles from './index.less'
 import { useDebounce } from '@/hooks/debounce';
+import { forwardRef } from 'react';
+import { useImperativeHandle } from 'react';
 
 interface Props {
+  children?: any
   className?: string
   height?: string | number
   scrollY: boolean// 是否开启向下滚动事件
   handleScrollToLower: (...arg: any) => void
 }
 
-const ScrollBox: FC<Props> = (props) => {
+
+const ScrollBox: ForwardRefRenderFunction<unknown, Props> = (props, parentRef) => {
   const { children, className, height, scrollY, handleScrollToLower } = props
   const ref = useRef<HTMLDivElement | null>(null)
+
+  useImperativeHandle(parentRef, () => ({
+    scrollTop
+  }));
+
+  // 切换店铺图册滚动到顶部
+  const scrollTop = () => {
+    if (!ref.current) return
+    ref.current.scrollTop = 0
+  }
 
   const handleScroll: React.UIEventHandler<HTMLDivElement> = useDebounce((e) => {
     // 未滚动到底部
@@ -31,4 +45,4 @@ const ScrollBox: FC<Props> = (props) => {
   </div>
 }
 
-export default ScrollBox
+export default forwardRef(ScrollBox)
