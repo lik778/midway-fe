@@ -60,7 +60,7 @@ type CardsPageProps = {
   // useSelection hook 的排除选中
   selectionExcludeFilter?: (select: number) => boolean
   cardItem: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null)
-  cardItemPreview?: null | ((card: CardItem) => (JSX.Element | null))
+  customCardItemPreview?: null | ((card: CardItem) => (JSX.Element | null))
   pageNav: (props: PageNavProps) => JSX.Element
   emptyTip: (props: EmptyTipProps) => JSX.Element
   children?: any
@@ -73,7 +73,7 @@ const CardsPage = (props: CardsPageProps) => {
   const {
     defaultScope, openUploadID,
     tabScopeChange, fetchListFn, deleteBatch, selectAllFrom, selectionExcludeFilter,
-    pageNav, cardItem, cardItemPreview, emptyTip,
+    pageNav, cardItem, customCardItemPreview, emptyTip,
   } = props
 
   // tabScope 维护当前页面内文件夹的层级关系
@@ -279,7 +279,7 @@ const CardsPage = (props: CardsPageProps) => {
           select={select}
           unselect={unselect}
           cardItem={renderCardItem}
-          customPreview={cardItemPreview}
+          customPreview={customCardItemPreview}
           emptyTip={renderCardListEmptyTip}
         />
         {/* 分页 */}

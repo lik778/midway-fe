@@ -212,7 +212,7 @@ const AssetsMangeImageListPage = (props: {
   }, [isScopeAlbum, isScopeImage, directoryLabel, subDirectoryLabel])
 
   // 视频预览
-  const cardItemPreview = useMemo(() => {
+  const customCardItemPreview = useMemo(() => {
     if (directoryType === 'VIDEO') {
       return (previewItem: CardItem) => {
         const { videoUrl, imgUrl } = previewItem as MediaAssetsItem
@@ -239,7 +239,7 @@ const AssetsMangeImageListPage = (props: {
       tabScopeChange={tabScopeChange}
       cardItem={customCardItem}
       emptyTip={emptyTip}
-      cardItemPreview={cardItemPreview}
+      customCardItemPreview={customCardItemPreview}
     >
       {/* 选择相册模态框 */}
       {$selectAlbumModal}

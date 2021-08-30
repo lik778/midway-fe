@@ -103,6 +103,22 @@ const AssetsMangeAuditListPage = () => {
     />
   ), [sourceLabel])
 
+  // 视频预览
+  const customCardItemPreview = useMemo(() => {
+    if (sourceType === 'VIDEO') {
+      return (previewItem: CardItem) => {
+        const { videoUrl, imgUrl } = previewItem as MediaAssetsItem
+        return (
+          <video src={videoUrl} poster={imgUrl} preload="preload" controls autoPlay key={videoUrl + '-' + imgUrl}>
+            your browser does not support the video tag
+          </video>
+        )
+      }
+    } else {
+      return null
+    }
+  }, [sourceType])
+
   const fetchListFn = useMemo(() => {
     return fetchErrorImageLists(sourceType)
   }, [sourceType])
@@ -116,6 +132,7 @@ const AssetsMangeAuditListPage = () => {
       cardItem={ErrorCardWrapper}
       selectAllFrom={selectAllFrom}
       emptyTip={emptyTip}
+      customCardItemPreview={customCardItemPreview}
     />
   )
 }
