@@ -187,7 +187,7 @@ export default function useUploadModal(props: Props) {
             .join('')
           const query = {
             title: itemName || '未命名视频',
-            imgUrl: uploadCoverRes.data.url.split('/')[1],
+            imgUrl: uploadCoverRes.data.url,
             videoUrl: item.response.url,
             mediaCateId: selectedAlbum!.id,
             source: directoryType
@@ -377,7 +377,7 @@ export default function useUploadModal(props: Props) {
       if (inEncode === true) {
         $contents = (
           <span className={styles["upload-info"] + ' ' + styles["video"]} >
-            <span>视频转码中...</span>
+            <span>保存中，请稍后...</span>
             <span className={styles["upload-info-des"]}>将自动为您生成视频封面<br />也可以稍后自行替换</span>
           </span>
         )

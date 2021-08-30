@@ -51,6 +51,7 @@ export type EmptyTipProps = {
 
 type CardsPageProps = {
   defaultScope: TabScopeItem
+  openUploadID?: number
   tabScopeChange?: (tabScope: TabScope) => void
   fetchListFn: ((query: any) => any) | null
   deleteBatch: (props: DeleteBatchProps) => (e: any) => void
@@ -70,7 +71,7 @@ const CardsPage = (props: CardsPageProps) => {
   /***************************************************** States */
 
   const {
-    defaultScope,
+    defaultScope, openUploadID,
     tabScopeChange, fetchListFn, deleteBatch, selectAllFrom, selectionExcludeFilter,
     pageNav, cardItem, cardItemPreview, emptyTip,
   } = props
@@ -186,6 +187,11 @@ const CardsPage = (props: CardsPageProps) => {
   }, [createOrEditAlbum])
 
   const [$UploadModal, openUpload] = useUploadModal({ createAlbum, refresh })
+  useEffect(() => {
+    if (openUploadID) {
+      openUpload(openUploadID)
+    }
+  }, [openUploadID])
 
   // TODO delete - open upload automatelly - for test only
   // useEffect(() => {

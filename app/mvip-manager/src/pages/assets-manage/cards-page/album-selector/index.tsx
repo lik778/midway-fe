@@ -11,7 +11,7 @@ export default function useAlbumSelector() {
   const { directoryLabel } = useContext(CardsPageContext)
   const { lists: allAlbumLists } = useContext(AlbumNamesContext)
 
-  const handleSelectAlbum = (id?: number) => {
+  const handleSelectAlbum = async (id?: number) => {
     const target = allAlbumLists.find((x: MediaCatesNameListItem) => x.id === id)
     if (target) {
       setSelect(target)

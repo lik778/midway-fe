@@ -39,6 +39,17 @@ const AssetsMangeImageListPage = (props: {
 
   /***************************************************** States */
 
+  /* 是否打开默认的上传框 */
+  const params = useMemo(() => new URLSearchParams(window.location.search), [])
+  const openUploadID = useMemo<number>(() => {
+    const openID = params.get('open-upload')
+    if (openID) {
+      return Number(openID)
+    } else {
+      return 0
+    }
+  }, [params])
+
   const { defaultScope, navBar } = props
   const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
 
@@ -50,6 +61,7 @@ const AssetsMangeImageListPage = (props: {
   }, [props.directoryType])
 
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
+  // "默认分组"类型的相册
   const defaultAlbumIDs = useMemo(() => allAlbumLists.filter(x => x.type === 'DEFAULT').map(x => x.id), [allAlbumLists])
   const selectionExcludeFilter = useMemo(() => (x: number) => defaultAlbumIDs.includes(x), [defaultAlbumIDs])
 
@@ -218,6 +230,7 @@ const AssetsMangeImageListPage = (props: {
   return (
     <CardsPage
       defaultScope={defaultScope || ({ item: null, type: 'album', label: '相册', countLabel: '个' })}
+      openUploadID={openUploadID}
       pageNav={pageNav}
       fetchListFn={fetchListFn}
       deleteBatch={deleteBatch}
