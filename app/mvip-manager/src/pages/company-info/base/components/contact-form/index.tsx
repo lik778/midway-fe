@@ -15,6 +15,7 @@ import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { isNewUserApi } from '@/api/shop';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
+import { useDebounce } from '@/hooks/debounce';
 import styles from './index.less';
 
 
@@ -38,12 +39,12 @@ function ContactForm(props: any) {
   const QQRef = useRef<{ form: FormInstance<any> }>()
 
 
-  const formChange = (changeValue: any, allValues: any) => {
+  const formChange = useDebounce((changeValue: any, allValues: any) => {
     const landlinePtn = /(^400[0123456789]\d{6}$)|(^400-[0123456789]\d{2}-\d{4}$)/
     setphoneTipShows(changeValue.contactMobile && landlinePtn.test(changeValue.contactMobile))
     setHasEditForm(true)
     setFormData(allValues)
-  }
+  }, 100)
 
   const KF53Change = (values: any) => {
     setHasEditForm(true)
