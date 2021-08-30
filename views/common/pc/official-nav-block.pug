@@ -1,7 +1,8 @@
 .official-nav-block-bgc
 	.official-nav-block
 		.nav-left
-			include ./official-nav-company-info.pug
+			if isSem !== "2"
+				include ./official-nav-company-info.pug
 			include ./official-nav.pug
 		.nav-right
 			block official-nav-phone

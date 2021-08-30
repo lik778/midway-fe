@@ -26,7 +26,7 @@ export const init400Btn = function () {
     const phoneNumTipText = $('.official-400-btn .official-nav-phone-num-tip>.tip-text')
 
     phoneNumBtn.on("click", async function (e) {
-      if (isSem) {
+      if (isSem === '1') {
         var union400num = $(this).data('union400num')
         if (union400num) {
           phoneNumText.text(union400num)

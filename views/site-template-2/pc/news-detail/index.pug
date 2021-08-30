@@ -4,7 +4,7 @@ block styles
 
 block content
   include ../components/news-detail/swiper.pug
-  if !isSem
+  if isSem !== "1"
     include ../components/common/breadcrumbs.pug
   - const { name, contentImg, content, modifiedTime, preArticle, nextArticle } = renderData.articleInfo
   .container
@@ -36,7 +36,7 @@ block content
 
       include ../components/common/contact-form-companyInfo.pug
 
-    if !isSem
+    if isSem !== "1"
       .sidebar
         include ../components/sidebar/company-card.pug
         include ../components/sidebar/news-list.pug

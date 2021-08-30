@@ -1,6 +1,6 @@
 //- #contactUsSem 用于sem跳转
 .contact-us#contactUs
-  if !isSem
+  if isSem !== "1"
     .contact-us__address
         .contact-us__title #{ companyName || '暂未添加公司名称' }
         p.contact-us__detail 公司地址：#{ company.address || '暂未添加地址' }

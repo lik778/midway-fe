@@ -51,6 +51,22 @@ const ShopProductPage = (props: any) => {
       }
     }
   }
+
+  const handleClickCreateProduct = () => {
+    setEditProductData({})
+    setProductFormVisible(true)
+  }
+
+
+  const handleClickEditProduct = (item: ShopProductListItem) => {
+    setEditProductData({ ...item });
+    setProductFormVisible(true);
+  }
+
+  useEffect(() => {
+    handleClickCreateProduct()
+  }, [])
+
   return (
     <div>
       <ContentHeader {...props} type={ShopModuleType.PRODUCT} onChangeType={onChangeType} />
@@ -59,20 +75,14 @@ const ShopProductPage = (props: any) => {
           onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
           cateList={cateList}
           showGroup={() => setModuleGroupVisible(true)}
-          showCreate={() => {
-            setEditProductData({})
-            setProductFormVisible(true)
-          }}
+          showCreate={handleClickCreateProduct}
           type={typeTxt} />
         <ProductList
           total={total}
           page={page}
           loading={listLoading}
           dataSource={productList}
-          openEditForm={(item) => {
-            setEditProductData({ ...item });
-            setProductFormVisible(true);
-          }}
+          openEditForm={handleClickEditProduct}
           type={typeTxt}
           onChange={(page) => setPage(page)} />
         <ShopModuleGroup

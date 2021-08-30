@@ -5,13 +5,13 @@ block styles
 
 //- sem下去除导航栏的手机号
 block official-nav-phone
-  if isSem
+  if isSem === '1'
     span 
   else 
     include ../../../common/pc/official-nav-phone.pug
 
 block content
-  if !isSem
+  if isSem !== "1"
     include ../components/common/breadcrumbs.pug
   .container.clearfix
     include ../components/product-detail/company-top.pug
@@ -24,7 +24,7 @@ block content
     .main
       include ../components/product-detail/product-content.pug
       include ../components/common/contact-form-companyInfo.pug
-    if !isSem
+    if isSem !== "1"
       .sidebar
         - const { productCateList, articleCateList} = renderData
         include ../components/sidebar/cateList.pug

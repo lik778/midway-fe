@@ -6,8 +6,14 @@ import { MediaAssetsItem, MediaCatesNameListItem } from '@/interfaces/shop'
 export type MediaType = 'IMAGE' | 'VIDEO'
 
 // 对外的值
+/**
+ * url 媒体项的url
+ * coverUrl 如果是视频则需要传入它的封面图
+ * mediaType 媒体项类型
+ */
 export type MediaItem = {
   url: string,
+  coverUrl?:string, 
   mediaType: MediaType
 }
 
@@ -15,6 +21,8 @@ export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
   showCropIcon?: boolean // 是否显示裁剪icon
   cropIcon?: React.ReactNode
   previewIcon?: React.ReactNode
+  showSelectCoverIcon?: boolean // 是否显示选择封面图
+  selectCoverIcon?: React.ReactNode
 }
 
 export interface ActionBtnListItem {

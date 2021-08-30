@@ -134,8 +134,9 @@ $(document).on('ready', function () {
 
 	// sem需要禁止部分内容二跳
 	// tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
-	if (isSem) {
+	if (isSem === '1') {
 		initSem({
+			sem: isSem,
 			type: 'home',
 			contactForm: $('#contactUs .contact-us__message'),
 			contactFormParent: $('#contactUs'),
@@ -143,5 +144,20 @@ $(document).on('ready', function () {
 			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
 		})
 	}
+
+	if (isSem === '2') {
+		initSem({
+			sem: isSem,
+			type: 'home',
+			gotoOtherPageA: $('a')
+		})
+	}
+	// 新闻模块
+	// var nowWord = $('.item-card .item-content').text().length
+	// var newWord
+	// if (nowWord > 44) {
+	// 	newWord = $('.item-card .item-content').text().slice(1,44) + '.......'
+	// }
+	// $('.item-card .item-content').text(newWord)
 })
 

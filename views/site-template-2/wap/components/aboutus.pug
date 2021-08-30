@@ -30,7 +30,8 @@ mixin aboutus(pageType)
       if pageType != 'home'
         .aboutus-content-box
           if pageType === 'about'
-            p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
+            if isSem !== '2'
+              p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
           else
             p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
             p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }

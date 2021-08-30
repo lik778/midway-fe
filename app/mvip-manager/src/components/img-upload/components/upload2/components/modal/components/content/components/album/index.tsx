@@ -18,7 +18,7 @@ interface Props {
 const Album: FC<Props> = (props) => {
   const { tabsCurrent, tabKey, mediaType } = props
   const context = useContext(ImgUploadContext)
-  const { baixingImageData, imageData, handleChangeBaixingImageData, handleChangeImageData } = context
+  const { baixingImageData, imageData, videoData, handleChangeBaixingImageData, handleChangeImageData, handleChangeVideoData } = context
   const [menuKey, setMenuKey] = useState<number | undefined>()
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
 
@@ -54,14 +54,15 @@ const Album: FC<Props> = (props) => {
         handleChangeImageData(newData, imageData)
       }
     } else if (tabKey === '我的视频') {
-      if (imageData.length <= 0) {
+      console.log(videoData)
+      if (videoData.length <= 0) {
         setMenuKey(undefined)
         setGetDataLoading(true)
         const res = await getMediaCatesNameList({
-          source: 'IMAGE'
+          source: 'VIDEO'
         })
         const newData = createNewData(res.data)
-        handleChangeImageData(newData, imageData)
+        handleChangeVideoData(newData, videoData)
       }
     }
     setGetDataLoading(false)

@@ -99,10 +99,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     if (editData) {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
-        fileList = (editData).map((item, index) => ({ uid: `${item}-${index}`, status: 'done', url: item.url, thumbUrl: item.url, preview: item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }))
+        fileList = (editData).map((item, index) => ({ uid: `${item}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }))
         createFileList(fileList)
       } else {
-        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: editData.mediaType, status: 'done', url: editData.url, thumbUrl: editData.url, preview: editData.url }]
+        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: editData.mediaType, status: 'done', url: editData.url, thumbUrl: editData.mediaType === 'VIDEO' ? editData.coverUrl : editData.url, preview: editData.url }]
         createFileList(fileList)
       }
     }

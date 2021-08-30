@@ -2,6 +2,14 @@ mixin breadcrumb(list)
   ul.breadcrumb-red
     each item, index in list
       li.item
-        a.url(href=isSem?'#':item.url) #{ item.text }
+        a.url(href=isSem==="1"?'#':item.url) 
+          if isSem === '2'
+            if index !== list.length-1
+              | #{ item.text }
+            else 
+              | 欢迎访问当前页面
+          else 
+            | #{ item.text }
+       
         if index < list.length-1
           .and
