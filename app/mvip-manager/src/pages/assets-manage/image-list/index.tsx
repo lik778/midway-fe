@@ -51,7 +51,7 @@ const AssetsMangeImageListPage = (props: {
   }, [params])
 
   const { defaultScope, navBar } = props
-  const { directoryType, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
+  const { directoryType, subDirectoryCountLabel, directoryLabel, subDirectoryLabel, dispatch } = useContext(CardsPageContext)
 
   useEffect(() => {
     dispatch({
@@ -99,7 +99,7 @@ const AssetsMangeImageListPage = (props: {
       const count = selection.length
       const info = count === 0
         ? `删除后无法恢复，确认删除？`
-        : `本次预计删除 ${count} ${isScopeAlbum ? `个${directoryLabel}` : '张图片'}，删除后无法恢复，确认删除？`
+        : `本次预计删除 ${count} ${subDirectoryCountLabel + subDirectoryLabel}，删除后无法恢复，确认删除？`
       Modal.confirm({
         title: '确认删除',
         content: info,
@@ -140,7 +140,7 @@ const AssetsMangeImageListPage = (props: {
         }
       })
     }
-  }, [isScopeAlbum, directoryType, directoryLabel, refreshAllAlbumLists])
+  }, [isScopeAlbum, directoryType, directoryLabel, subDirectoryCountLabel, refreshAllAlbumLists])
 
   // 全选时不需要选择默认相册
   const selectAllFrom = useCallback((lists: CardItem[]) => (
