@@ -281,6 +281,11 @@ export const setMediaCatesCover = (params: UpdateMediaAssetsInCateParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/setCover', params)
 }
 
+// 更改素材属性（如改名）
+export const updateMediaAssets = (params: UpdateMediaAssetsParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/modifyTitle', params)
+}
+
 // 移动素材到其它分类
 export const moveMediaAssets = (params: MoveMediaAssetsParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/move', params)

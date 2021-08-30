@@ -2,7 +2,9 @@ import React, { useState, useCallback, useContext } from 'react'
 import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
-import { updateMediaCategory } from "@/api/shop"
+import { updateMediaAssets } from "@/api/shop"
+
+import CardsPageContext from '../../context/cards-page'
 
 import { MediaAssetsItem } from "@/interfaces/shop"
 
@@ -18,6 +20,7 @@ export default function useEditVideoNameModal(props: Props) {
   /***************************************************** States */
 
   const { refresh } = props
+  const { directoryType } = useContext(CardsPageContext)
 
   const [form] = Form.useForm()
   const [defaultVals, setDefaultVals] = useState<any>({})
@@ -27,8 +30,8 @@ export default function useEditVideoNameModal(props: Props) {
   // 打开模态框
   const openModal = useCallback(async (item?: MediaAssetsItem): Promise<boolean> => {
     if (item) {
-      const { id, name } = item
-      const defaultVals = { id, name }
+      const { id, title } = item
+      const defaultVals = { id, title }
       setDefaultVals(defaultVals)
       form.setFieldsValue(defaultVals)
     }
@@ -53,10 +56,11 @@ export default function useEditVideoNameModal(props: Props) {
         setLoading(true)
         let post = null
         let successMsg = ''
-        let params: any = {}
+        let params: any = {
+          source: directoryType
+        }
         params.id = defaultVals.id
-        // TODO FIXME
-        post = updateMediaCategory
+        post = updateMediaAssets
         successMsg = "编辑成功"
         post({ ...formvals, ...params })
           .then(res => {
@@ -101,7 +105,7 @@ export default function useEditVideoNameModal(props: Props) {
         wrapperCol={{ span: 19 }}
       >
         <Form.Item
-          name="name"
+          name="title"
           label="视频名称"
           rules={[
             { pattern: /^[\s\S]{2,20}$/, message: "视频名称限制为 2～20 个字符" },

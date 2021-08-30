@@ -445,7 +445,7 @@ export type MediaAssetsItem = {
   type: ImageType,
   checkStatus: CheckStatusType,
   reason: string,
-  name: string
+  title: string
   decodeStatus: DecodeStatus
 }
 

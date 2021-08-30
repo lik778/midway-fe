@@ -20,9 +20,9 @@ export default function ImageCardWrapper(props: any) {
   const [setCoverItem, setSetCoverItem] = useState<MediaAssetsItem | null>()
 
   // 编辑视频名称
-  const editVideoName = async (e: any, image: MediaAssetsItem) => {
+  const editVideoName = async (e: any, video: MediaAssetsItem) => {
     e.stopPropagation()
-    await editVideo(image)
+    await editVideo(video)
   }
 
   // 设置封面图片
@@ -136,7 +136,7 @@ function ImageCard(props: ImageCardProps) {
   const { directoryType } = useContext(CardsPageContext)
   const isImage = directoryType === 'IMAGE'
 
-  const { id, imgUrl, name } = card
+  const { id, imgUrl, title } = card
   const isChecked = selection.find((y: number) => y === id)
   const inSetCoverLoading = setCoverItem && setCoverItem.id === id
 
@@ -187,7 +187,7 @@ function ImageCard(props: ImageCardProps) {
       )}
       {(!loading && imgUrl && directoryType === 'VIDEO') && (
         <div className={styles["header"]}>
-          <span className={styles["name"]} title={name}>{name || '未命名视频'}</span>
+          <span className={styles["name"]} title={title}>{title || '未命名视频'}</span>
         </div>
       )}
     </div>
