@@ -7,7 +7,7 @@ block header
   include ../components/swiper
   +swiper('100vw')
   if isSem !== "2"
-    - const {tags} = renderData.about ||renderData.basic.aboutModule  
+    - const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
     include ../components/company-info-home
     +company-info-home(tags)
   if isSem !== "1"

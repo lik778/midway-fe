@@ -29,7 +29,7 @@ block content
 						+item(productListResult)
 
 				if isSem !== "2"
-					- const { tags, media } = renderData.about|| renderData.basic.aboutModule
+					- const { tags, media } = renderData.about|| renderData.basic.aboutModule|| {}
 					include ../components/home/about-us-new.pug
 					+about-us-new(tags,media)
 
