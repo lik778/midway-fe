@@ -1,6 +1,5 @@
 import React, { useContext, FC } from 'react'
 import styles from './index.less';
-import AlbumModal from '@/components/img-upload/components/upload2/components/modal'
 import ImgUploadContext from '@/components/img-upload/context'
 import ImgItem from '@/components/img-upload/components/img-item'
 import VideoItem from '@/components/img-upload/components/video-item'
@@ -8,7 +7,7 @@ import UploadBtn from '@/components/img-upload/components/upload-btn'
 
 const Upload2: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { fileList, initConfig: { maxSize, maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handleReloadFileList, handleChangeFileList, handlePreview, handleRemove, handleCrop } = context
+  const { fileList, initConfig: {  maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handlePreview, handleRemove, handleCrop, handleSelectCover } = context
 
   return <>
     <div className={styles['img-selected-list']}>
@@ -17,13 +16,13 @@ const Upload2: FC = () => {
           if (item.type === 'IMAGE') {
             return <ImgItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>
           } else if (item.type === 'VIDEO') {
-            return <VideoItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
+            return <VideoItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onSelectCover={handleSelectCover} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
           }
         })
       }
       {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />}
     </div>
-    <AlbumModal></AlbumModal></>
+  </>
 }
 
 export default Upload2

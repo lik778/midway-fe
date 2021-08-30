@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC, ReactEventHandler } from 'react';
 import AuditFailedIcon from '@/icons/failed'
 import ImgUploadContext from '@/components/img-upload/context'
+import SelectModalContext from '@/components/img-upload/components/select-modal/context'
 import CropModal from '@/components/img-upload/components/crop-modal'
 import StatusBox from '@/components/img-upload/components/status-box'
 import { successMessage, errorMessage } from "@/components/message"
@@ -20,7 +21,7 @@ interface Props {
   mediaType: MediaType
   detail: MediaAssetsItem,
   file?: UploadFile
-  itemHeight?: number
+  itemHeight?: number,
 }
 
 // 用于区分单双击
@@ -29,7 +30,9 @@ let clickCount = 0
 const ImgItem: FC<Props> = (props) => {
   const { file, detail = {} as MediaAssetsItem, itemHeight, mediaType } = props
   const context = useContext(ImgUploadContext)
-  const { localFileList, handleChangeLocalFileList, handlePreview, initConfig: { maxLength, cropProps } } = context
+  const selectModalContext = useContext(SelectModalContext)
+  const { maxLength, localFileList, handleChangeLocalFileList } = selectModalContext
+  const { handlePreview, initConfig: { cropProps } } = context
   const [originSize, setOriginSize] = useState<{
     width: number,
     heigth: number

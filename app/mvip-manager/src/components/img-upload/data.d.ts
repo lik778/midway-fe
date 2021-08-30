@@ -4,6 +4,7 @@ import { CropProps } from '../crop/data';
 import { MediaAssetsItem, MediaCatesNameListItem } from '@/interfaces/shop'
 
 export type MediaType = 'IMAGE' | 'VIDEO'
+export type SelectModalType = 'FILE' | 'COVER'
 
 // 对外的值
 /**
@@ -13,7 +14,7 @@ export type MediaType = 'IMAGE' | 'VIDEO'
  */
 export type MediaItem = {
   url: string,
-  coverUrl?:string, 
+  coverUrl?: string,
   mediaType: MediaType
 }
 
@@ -47,7 +48,6 @@ export interface ImgUploadProps {
 
   // 当uploadType === 1 时的可选 开始
   uploadBeforeCrop?: boolean,// 选择时裁剪
-  itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
   // 当uploadType === 1 时的可选 结束
   /**
    * onChange
@@ -77,10 +77,6 @@ export interface MediaDataAlbumListItem {
 
 export interface ImgUploadContextProps {
   fileList: UploadFile[],// 当前选择的文件列表
-  localFileList: UploadFile[],// 用户预选择的文件列表
-  checkFileObject: {
-    [key: string]: boolean
-  },// 用户预选择文件的对象，空间换时间
   initConfig: {
     uploadType: 1 | 2,//1：直接上传  2：打开图库
     showImage: boolean,// 是否显示图片相关tab
@@ -99,6 +95,7 @@ export interface ImgUploadContextProps {
     itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
   },
   albumVisible: boolean, // 图片库是否显示
+  selectModalType: SelectModalType,
   videoData: MediaDataAlbumListItem[],
   imageData: MediaDataAlbumListItem[],
   baixingImageData: MediaDataAlbumListItem[],
@@ -117,8 +114,8 @@ export interface ImgUploadContextProps {
   handleChangeFileList: (newFileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => void
   // 更新确认选择文件
   handleReloadFileList: (fileList: UploadFile[]) => Promise<UploadFile<any>[]> // 更新数组但是不会触发onChange通知外部
-  handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => void,
   handlePreview: (file: UploadFile) => void
   handleRemove: (file: UploadFile, fileIndex: number) => void
   handleCrop: (file: UploadFile, fileIndex: number) => void
+  handleSelectCover: (file: UploadFile, fileIndex: number) => void
 }

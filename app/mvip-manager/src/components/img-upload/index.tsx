@@ -2,10 +2,12 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
 import styles from './index.less';
-import { ImgUploadProps, MediaDataAlbumListItem, MediaItem, MediaType } from './data';
+import { ImgUploadProps, MediaDataAlbumListItem, MediaItem, MediaType, SelectModalType } from './data';
+import { SelectModalProps } from '@/components/img-upload/components/select-modal/data';
 import ImgUploadContext from '@/components/img-upload/context'
 import Upload1 from '@/components/img-upload/components/upload1'
 import Upload2 from '@/components/img-upload/components/upload2'
+import SelectModal from '@/components/img-upload/components/select-modal'
 import CropModal from '@/components/img-upload/components/crop-modal'
 import PreviewModal from '@/components/img-upload/components/preview-modal'
 
@@ -98,6 +100,9 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     }
   }, [onChange])
 
+  const creatFileItem = (item: MediaItem, index: number): UploadFile => {
+    return { uid: `${item.url}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }
+  }
   // 修改值初始化
   // url 是当前媒体的url
   // thumbUrl 是封面图字段 当mediaType==='VIDEO'时，可以为图片id
@@ -106,10 +111,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     if (editData) {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
-        fileList = (editData).map((item, index) => ({ uid: `${item}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }))
+        fileList = (editData).map((item, index) => creatFileItem(item, index))
         createFileList(fileList)
       } else {
-        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: editData.mediaType, status: 'done', url: editData.url, thumbUrl: editData.mediaType === 'VIDEO' ? editData.coverUrl : editData.url, preview: editData.mediaType === 'VIDEO' ? editData.coverUrl : editData.url }]
+        fileList = [creatFileItem(editData, 0)]
         createFileList(fileList)
       }
     }
@@ -123,12 +128,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
 
   // context 需要
-  const [localFileList, setLocalFileList] = useState<UploadFile[]>([])
-  const checkFileObject = useMemo(() => {
-    const checkFileObject: { [key: string]: boolean } = {}
-    localFileList.forEach(item => checkFileObject[item.url!] = true)
-    return checkFileObject
-  }, [localFileList])
   const [albumVisible, setAlbumVisible] = useState<boolean>(false)
   const [imageData, setImageData] = useState<MediaDataAlbumListItem[]>([])
   const [videoData, setVideoData] = useState<MediaDataAlbumListItem[]>([])
@@ -136,13 +135,57 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
   // 弹窗模式需要 开始
-  // 初始化弹窗 开始
+  // 弹窗是给正常文件还是给封面图
+  const [selectModalType, setSelectModalType] = useState<SelectModalType>('FILE')
+  const [selectCoverFile, setSelectCoverFile] = useState<UploadFile>()
+
+  const handleChangeCover = useCallback((coverFileList: UploadFile[], oldCoverFileList: UploadFile[]) => {
+    if (coverFileList.length > 0) {
+      decorateSetFileList(fileList.map(item => {
+        if (item.uid === selectCoverFile?.uid) {
+          return {
+            ...item,
+            thumbUrl: coverFileList[0].url,
+            preview: coverFileList[0].preview
+          }
+        }
+        return item
+      }), [...fileList])
+    }
+  }, [selectCoverFile, fileList, decorateSetFileList])
+
+  const SelectModalOption = useMemo<SelectModalProps>(() => {
+    if (selectModalType === 'COVER' && selectCoverFile) {
+      return {
+        showVideo: false,
+        maxLength: 1,
+        fileList: [{ uid: `${selectCoverFile.url}-${0}`, status: 'done', url: selectCoverFile.thumbUrl, thumbUrl: selectCoverFile.thumbUrl, preview: selectCoverFile.preview, size: 0, name: '', originFileObj: null as any, type: 'IMAGE', }],
+        handleChangeFileList: handleChangeCover
+      }
+    } else {
+      return {
+        showVideo,
+        maxLength,
+        fileList: fileList,
+        handleChangeFileList: decorateSetFileList
+      }
+    }
+  }, [selectModalType, maxSize, fileList, decorateSetFileList, selectCoverFile, handleChangeCover])
+
+  // 选择封面图
+  const handleSelectCover = (file: UploadFile, fileIndex: number) => {
+    console.log(file)
+    setSelectCoverFile(file)
+    setSelectModalType('COVER')
+    setAlbumVisible(true)
+  }
+
   useEffect(() => {
-    if (albumVisible) {
-      handleChangeLocalFileList([...fileList])
+    if (!albumVisible) {
+      setSelectModalType('FILE')
+      setSelectCoverFile(undefined)
     }
   }, [albumVisible])
-  // 初始化弹窗 结束
 
   // 视频数据更改
   const handleChangeVideoData = (newVideoData: MediaDataAlbumListItem[], oldVideoData: MediaDataAlbumListItem[]) => {
@@ -159,10 +202,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     setBaixingImageData(newBaixingImageData)
   }
 
-  // 预选择图片
-  const handleChangeLocalFileList = (newLocalFileList: UploadFile[]) => {
-    setLocalFileList(newLocalFileList)
-  }
   // 弹窗模式需要 结束
 
   // 预览
@@ -235,8 +274,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       <div className={styles['img-upload']}>
         <ImgUploadContext.Provider value={{
           fileList,
-          localFileList,
-          checkFileObject,
           imageData,
           videoData,
           baixingImageData,
@@ -257,18 +294,19 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
             uploadBeforeCrop
           },
           albumVisible,
+          selectModalType,
           upDataLoading,
           handleChangeAlbumVisible: setAlbumVisible,
           handleChangeUpDataLoading: setUpDataLoading,
           handleChangeVideoData: handleChangeVideoData,
           handleChangeImageData: handleChangeImageData,
           handleChangeBaixingImageData: handleChangeBaixingImageData,
-          handleChangeLocalFileList: handleChangeLocalFileList,
           handleReloadFileList: createFileList,
           handleChangeFileList: decorateSetFileList,
           handlePreview,
           handleRemove,
           handleCrop,
+          handleSelectCover,
         }}>
           {
             uploadType === 1 && <Upload1></Upload1>
@@ -276,6 +314,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           {
             uploadType === 2 && <Upload2></Upload2>
           }
+          <SelectModal {...SelectModalOption}></SelectModal>
         </ImgUploadContext.Provider>
       </div>
       <PreviewModal previewVisible={previewVisible} previewMedia={previewMedia} handleCloseModal={handlePreviewCancel}></PreviewModal>

@@ -58,11 +58,6 @@ const Upload1: FC = () => {
     }
   }
 
-
-  useEffect(() => {
-    console.log(fileList)
-  }, [fileList])
-
   return <Upload
     action={window.__upyunImgConfig?.uploadUrl}
     data={{

@@ -3,11 +3,20 @@ import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import styles from './index.less'
 import ImgUploadContext from '@/components/img-upload/context'
+import SelectModalContext from '@/components/img-upload/components/select-modal/context'
 import { UploadFile } from 'antd/lib/upload/interface';
 
-const ModalFooter: FC = () => {
+interface Props {
+  fileList: UploadFile[],
+  handleChangeFileList: (newFileList: UploadFile<any>[], oldFileList: UploadFile<any>[], file: UploadFile<any> | null) => void
+}
+
+const ModalFooter: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
-  const { fileList, localFileList, initConfig: { maxLength }, handleChangeLocalFileList, handleChangeFileList, handleChangeAlbumVisible, handlePreview } = context
+  const selectModalContext = useContext(SelectModalContext)
+  const { fileList, handleChangeFileList } = props
+  const { handleChangeAlbumVisible, handlePreview } = context
+  const { maxLength, localFileList, handleChangeLocalFileList } = selectModalContext
   const empty = useMemo(() => {
     return Array.from({ length: maxLength - localFileList.length })
   }, [localFileList, maxLength])
@@ -19,7 +28,6 @@ const ModalFooter: FC = () => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.dataTransfer.setData("json", `${index}`)
   }
-
 
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (e) => {
     // 默认地，无法将数据/元素放置到其他元素中。如果需要设置允许放置，我们必须阻止对元素的默认处理方式。这要通过调用ondragover 事件的 event.preventDefault()

@@ -27,6 +27,7 @@ interface Props {
 
 const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   const { showVideo = false, autoUpdata = true, type, txt, tip, position, aspectRatio } = props
+  const [editData, setEditData] = useState<"" | MediaItem | MediaItem[] | undefined>()
   const [bannerList, setBannerList] = useState<BannerListItem[]>([])
   // 当前banner是否被修改过
   const [changeFlag, setChangeFlag] = useState<boolean>(false)
@@ -41,15 +42,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     }
   }
 
-  const editData = useMemo(() => {
-    if (bannerList.length === 0) {
-      return ''
-    } else if (bannerList.length === 1) {
-      return initBannerItem(bannerList[0])
-    } else {
-      return bannerList.map(item => initBannerItem(item))
-    }
-  }, [bannerList])
   const [getDataLoading, setGetDataLoading] = useState(true)
   const [upDataLoading, setUpDataLoading] = useState(false)
   // 获取店铺id
@@ -58,6 +50,16 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   useEffect(() => {
     getBannerList()
   }, [])
+
+  const createEditData = (bannerList: BannerListItem[]) => {
+    if (bannerList.length === 0) {
+      setEditData('')
+    } else if (bannerList.length === 1) {
+      setEditData(initBannerItem(bannerList[0]))
+    } else {
+      setEditData(bannerList.map(item => initBannerItem(item)))
+    }
+  }
 
   const getBannerList = async () => {
     setGetDataLoading(true)
@@ -69,7 +71,10 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       position
     })
     if (res?.success) {
-      setBannerList(res.data.result!)
+      const { result } = res.data
+      if (!result) return
+      setBannerList(result)
+      createEditData(result)
     } else {
       errorMessage(`获取图片失败，请稍后重试。`)
     }
@@ -128,7 +133,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     // 维持localValues的顺序等于values，并将已有的id记录在localValues里
     // 删除oldFileList中不存在于a的项
     // 新增localValues中不存在id的项
-    console.log(fileList)
     const localBannerList = [...bannerList]
     const newBannerList: BannerListItem[] = []
     fileList.forEach(item => {
@@ -169,7 +173,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       }
     })
     const newDelBannerIds = [...new Set([...delBannerIds, ...localBannerList.filter(item => item.id).map(item => item.id)])]
-    console.log(newBannerList, newDelBannerIds)
     if (autoUpdata) {
       handleUpData('all', newBannerList, newDelBannerIds)
     } else {
@@ -186,6 +189,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     const item = newBannerList[index]
     newBannerList[index] = newBannerList[index + order]
     newBannerList[index + order] = item
+    createEditData(newBannerList)
     if (autoUpdata) {
       handleUpData('move', newBannerList, [])
     } else {

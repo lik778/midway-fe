@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState, useContext } from 'react';
 import { EyeOutlined, DeleteOutlined, ScissorOutlined, DownloadOutlined } from '@ant-design/icons'
 import { UploadFile, } from 'antd/lib/upload/interface'
 import styles from './index.less'
 import { ActionBtnListItem, ExpandShowUploadListInterface } from '../../data'
 import StatusBox from '@/components/img-upload/components/status-box'
+import ImgUploadContext from '@/components/img-upload/context'
 
 interface Props {
   file: UploadFile,
@@ -12,14 +13,16 @@ interface Props {
   showUploadList?: ExpandShowUploadListInterface,
   itemWidth?: number // 图片块的宽度
   actionBtn?: ActionBtnListItem[]
-  onPreview: (file: any, fileIndex: number) => void,
-  onRemove: (file: any, fileIndex: number) => void,
-  onCrop?: (file: any, fileIndex: number) => void,
-  onDownload?: (file: any, fileIndex: number) => void,
+  onPreview: (file: UploadFile, fileIndex: number) => void,
+  onRemove: (file: UploadFile, fileIndex: number) => void,
+  onCrop?: (file: UploadFile, fileIndex: number) => void,
+  onDownload?: (file: UploadFile, fileIndex: number) => void,
+  onSelectCover?: (file: UploadFile, fileIndex: number) => void
 }
 
 const ImgItem: FC<Props> = (props) => {
-  const { file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
+  const { file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover } = props
+
   const localShopUploadList = useMemo<ExpandShowUploadListInterface>(() => {
     const initShowUploadList: ExpandShowUploadListInterface = {
       showPreviewIcon: true,
@@ -48,7 +51,7 @@ const ImgItem: FC<Props> = (props) => {
 
 
   return <StatusBox file={file}>
-    <div className={styles['img-item']} style={{ width: itemWidth }}>
+    <div className={styles['video-item']} style={{ width: itemWidth }}>
       <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.thumbUrl})` }}>
         <div className={styles['play-icon']}></div>
         <div className={styles['mask']}>
@@ -70,7 +73,7 @@ const ImgItem: FC<Props> = (props) => {
           }
           {
             // 选择封面图
-            file.type === 'VIDEO' && (localShopUploadList.showSelectCoverIcon) && <div className={styles['action-btn']} title="选择封面图">
+            file.type === 'VIDEO' && (localShopUploadList.showSelectCoverIcon) && <div className={styles['action-btn']} title="选择封面图" onClick={() => onSelectCover && onSelectCover(file, fileIndex)}>
               {
                 localShopUploadList.selectCoverIcon
               }

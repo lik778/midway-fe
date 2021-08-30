@@ -5,14 +5,17 @@ import styles from './index.less'
 import Album from './components/album'
 import LocalUpload from './components/local-upload'
 import ImgUploadContext from '@/components/img-upload/context'
+import SelectModalContext from '@/components/img-upload/components/select-modal/context'
 import { TabsKeys } from './data'
 const { TabPane } = Tabs
 
 const ModalContent: FC = () => {
   const context = useContext(ImgUploadContext)
-  const [tabsCurrent, setTabsCurrent] = useState<TabsKeys>('本地上传')
+  const selectModalContext = useContext(SelectModalContext)
+  const { showVideo } = selectModalContext
   const { handleChangeAlbumVisible, initConfig } = context
-  const { showImage, showVideo } = initConfig
+  const { showImage } = initConfig
+  const [tabsCurrent, setTabsCurrent] = useState<TabsKeys>('本地上传')
 
   const initTabs = () => {
     if (showImage) {
@@ -27,7 +30,7 @@ const ModalContent: FC = () => {
   }, [showImage, showVideo])
 
   return <div className={styles['modal-content']}>
-    <Tabs defaultActiveKey={tabsCurrent} size="large" onChange={(key) => setTabsCurrent(key as TabsKeys)}>
+    <Tabs activeKey={tabsCurrent} size="large" onChange={(key) => setTabsCurrent(key as TabsKeys)}>
       {
         showImage && <>
           <TabPane tab="本地上传" key="本地上传">

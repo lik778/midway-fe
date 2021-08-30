@@ -63,10 +63,6 @@ const ShopProductPage = (props: any) => {
     setProductFormVisible(true);
   }
 
-  useEffect(() => {
-    handleClickCreateProduct()
-  }, [])
-
   return (
     <div>
       <ContentHeader {...props} type={ShopModuleType.PRODUCT} onChangeType={onChangeType} />

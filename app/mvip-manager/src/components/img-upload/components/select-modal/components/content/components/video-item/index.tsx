@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, FC, ReactEventHandler } from 'react';
 import AuditFailedIcon from '@/icons/failed'
 import ImgUploadContext from '@/components/img-upload/context'
+import SelectModalContext from '@/components/img-upload/components/select-modal/context'
 import StatusBox from '@/components/img-upload/components/status-box'
 import { successMessage, errorMessage } from "@/components/message"
 import { reAuditMediaAssets } from '@/api/shop'
@@ -18,7 +19,7 @@ interface Props {
   mediaType: MediaType
   detail: MediaAssetsItem,
   file?: UploadFile
-  itemHeight?: number
+  itemHeight?: number,
 }
 
 // 用于区分单双击
@@ -27,7 +28,9 @@ let clickCount = 0
 const ImgItem: FC<Props> = (props) => {
   const { file, detail = {} as MediaAssetsItem, itemHeight, mediaType } = props
   const context = useContext(ImgUploadContext)
-  const { localFileList, handleChangeLocalFileList, handlePreview, initConfig: { maxLength, cropProps } } = context
+  const selectModalContext = useContext(SelectModalContext)
+  const { handlePreview, initConfig: { cropProps } } = context
+  const { maxLength, localFileList, handleChangeLocalFileList } = selectModalContext
 
   const handleSelectItem = () => {
     if (maxLength > 1 && localFileList.length >= maxLength) {
@@ -38,7 +41,7 @@ const ImgItem: FC<Props> = (props) => {
       errorMessage(detail.reason)
       return
     }
-    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: detail.videoUrl, thumbUrl: detail.imgUrl, preview: detail.imgUrl, size: 0, name: '', originFileObj: null as any, type: mediaType }
+    const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: detail.videoUrl, thumbUrl: detail.imgUrl, preview: detail.imgUrl, size: 0, name: detail.title, originFileObj: null as any, type: mediaType }
     if (maxLength === 1) {
       handleChangeLocalFileList([newFile])
     } else {
@@ -87,7 +90,7 @@ const ImgItem: FC<Props> = (props) => {
     <StatusBox file={file}>
       <div className={styles['video-item']} style={{
         height: itemHeight
-      }} onClick={handleClickItem} title={detail.title}>
+      }} onClick={handleClickItem}>
         <div className={styles['play-icon']}></div>
         <img className={styles['img']} src={detail.imgUrl || (file && file.thumbUrl)} />
         <div className={styles['title']}>{detail.title}</div>

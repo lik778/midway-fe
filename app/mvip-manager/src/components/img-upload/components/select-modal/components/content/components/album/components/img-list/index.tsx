@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState, useContext, useRef, FC } from 'react';
 import { MediaDataAlbumListItem, MediaType } from '@/components/img-upload/data';
-import { Spin } from 'antd'
+import { Spin, Result } from 'antd'
 import { TabsKeys } from '../../../../data';
 import ImgItem from '../../../img-item'
 import VideoItem from '../../../video-item'
@@ -13,6 +13,7 @@ import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
 import ScrollBox from '@/components/scroll-box'
 import { Link } from 'umi'
+import EmptyListIcon from '@/icons/empty-list'
 
 interface Props {
   tabsCurrent: TabsKeys,
@@ -125,7 +126,7 @@ const ImgList: FC<Props> = (props) => {
   }, [menuKey])
 
   const mediaTypeTxt = mediaType === 'VIDEO' ? '视频' : '图片'
-  const mediaTypeUrl = mediaType === 'VIDEO' ? '/assets-manage/video-list' : '/assets-manage/image-list'
+  const mediaTypeUrl = mediaType === 'VIDEO' ? '/assets-manage/video-list?open-upload=1' : '/assets-manage/image-list?open-upload=1'
 
   return <Spin className={styles['img-list-spin']} spinning={getDataLoading}>
     <ScrollBox scrollY={true} handleScrollToLower={getList} height="337px" ref={scrollRef}>
@@ -146,13 +147,16 @@ const ImgList: FC<Props> = (props) => {
               </div>
             }
             {
-              albumTypeDetail.media.length === 0 && <div className={styles['no-data']}>
-                <img className={styles['img']} src="//file.baixing.net/202108/3adcd85474b22d42953e5e4796f4b44a.png" alt="" />
-                <div className={styles['text']}>暂无{mediaTypeTxt}，你可以</div>
-                <Link className={styles['btn']} to={mediaTypeUrl}>
+              albumTypeDetail.media.length === 0 && <Result
+                icon={<EmptyListIcon></EmptyListIcon>}
+                title={
+                  <div className={styles['text']}>暂无{mediaTypeTxt}，你可以</div>
+                }
+                extra={<Link className={styles['btn']} to={mediaTypeUrl}>
                   +上传{mediaTypeTxt}
-                </Link>
-              </div>
+                </Link>}
+              >
+              </Result>
             }
           </>
         }

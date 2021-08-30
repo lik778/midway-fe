@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { EyeOutlined, DeleteOutlined, ScissorOutlined, DownloadOutlined } from '@ant-design/icons'
 import { UploadFile, } from 'antd/lib/upload/interface'
 import styles from './index.less'
@@ -41,9 +41,6 @@ const ImgItem: FC<Props> = (props) => {
     }
   }, [showUploadList])
 
-
-
-
   return <StatusBox file={file}>
     <div className={styles['img-item']} style={{ width: itemWidth }}>
       <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.url})` }}>
@@ -72,7 +69,6 @@ const ImgItem: FC<Props> = (props) => {
               }
             </div>
           }
-
           {
             // 下载
             localShopUploadList.showDownloadIcon && (onDownload ?
