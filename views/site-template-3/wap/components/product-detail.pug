@@ -12,10 +12,10 @@
       .pro-meta
         h3 #{ name }
         p 价格：#{ price || '面议'}
-        if !isSem
+        if isSem !== "1"
           p 商家地址：#{ renderData.basic.company.address }
     .pro-center
-      if !isSem
+      if isSem !== "1"
         include ./company-info-other.pug
     .pro-bottom
       .pro-title

@@ -4,7 +4,7 @@ block styles
   :combine(fileName="site-template-3-search-pc.css")
 
 block content
-  if !isSem
+  if isSem !== "1"
     include ../components/common/breadcrumbs.pug
 
   .container
@@ -27,7 +27,7 @@ block content
       - var totalPage = (contentList && contentList.totalPage) || 1
       +pagination(totalPage, currentPage, `${currentPathname}`)
 
-    if !isSem
+    if isSem !== "1"
       //-侧边栏
       .sidebar
         //- TODO; 未确认到底用哪个字段

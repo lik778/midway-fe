@@ -11,10 +11,19 @@ leaveLeads()
 $(document).on('ready', function () {
   
   // sem部分链接需要禁止二跳
-  if (isSem) {
+  if (isSem === '1') {
     initSem({
+      sem: isSem,
       type: 'detail',
       gotoOtherPageA: $('#layout-content a,.header a')
+    })
+  }
+
+  if (isSem === '2') {
+    initSem({
+      sem: isSem,
+      type: 'detail',
+      gotoOtherPageA: $('a')
     })
   }
 
@@ -28,4 +37,5 @@ $(document).on('ready', function () {
       evt.stopPropagation()
     })
   }
+
 })

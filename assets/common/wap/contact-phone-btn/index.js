@@ -25,7 +25,7 @@ export const initPhone = function () {
       eventTracker("phone-wap", "bottom-wap")
     })
 
-    if (isSem) {
+    if (isSem === '1') {
       const footerPhoneSemBtn = $('.footer-phone-sem-box')
       const phoneNum = $('.footer-phone-box .phone-num')
       const timeTip = $('.footer-phone-box .time-tip')

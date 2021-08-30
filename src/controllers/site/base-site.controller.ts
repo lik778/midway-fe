@@ -35,25 +35,33 @@ export class BaseSiteController {
   private checkSem(sem: string | undefined, bannerId: string | undefined, account: string) {
     // tapd https://www.tapd.cn/20095111/prong/stories/view/1120095111001038855
     // 恢复小微权益  所以不接收sem参数，代码里关于sem的判断暂时不删除，留着备用
-    return undefined
-
     // 投放页改成店铺首页
+
+    // sem = 1   百度投放
     // 1.先判断bannerid是否包含凤鸣id：
     // a.无bannerid的按KA要求页面显示（400电话样式）；
     // b.有bannerid的判断有无account参数：
     // b-1.无account按account=0处理，代表小微账号，店铺落地页显示单品页面，即用户自己电话的页面；
     // b-2.有account且=1，代表KA账户，店铺落地页显示sem=1的页面，即400电话的页面；
-    const bannerIdList = ['2192', '2195', '2005', '2241']
-    if (bannerId && bannerIdList.indexOf(bannerId) !== -1) {
-      if (account === '1') {
-        return true
-      } else {
-        return undefined
-      }
-    } else {
-      // 这里 isSem: sem === "1" ? true : undefined 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
-      return sem === "1" ? true : undefined
+    // const bannerIdList = ['2192', '2195', '2005', '2241']
+    // if (bannerId && bannerIdList.indexOf(bannerId) !== -1) {
+    //   if (account === '1') {
+    //     return '1'
+    //   } else {
+    //     return undefined
+    //   }
+    // } else {
+    //   // 这里 isSem: sem === "1" 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
+    //   return "1"
+    // }
+
+    //sem = 2 头条投放
+    if (sem === "2") {
+      return "2"
     }
+    
+    // 其他
+    return undefined
   }
 
   private replaceMobile(string: string) {
@@ -78,7 +86,7 @@ export class BaseSiteController {
     }
     data.basic.company.about = data.basic.company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
     // 如果是sem情况下需要对数据做联系方式过滤
-    if (isSem) {
+    if (isSem === '1') {
       data.basic.company.about = this.replaceMobile(data.basic.company.about)
     }
 
@@ -121,7 +129,7 @@ export class BaseSiteController {
 
   private createParams(isSem, isCn) {
     return {
-      semKeyWordFlag: isSem ? 1 : 0,
+      semKeyWordFlag: isSem==="1" ? 1 : 0,
       cnKeyWordFlag: isCn ? 1 : 0
     }
   }
@@ -244,7 +252,7 @@ export class BaseSiteController {
       const currentPathname = req.originalUrl;
       const trackId = this.trackerService.getTrackId(req, res)
 
-      if (isSem) {
+      if (isSem === '1') {
         if (data.articleInfo && data.articleInfo.content) {
           data.articleInfo.content = this.replaceMobile(data.articleInfo.content)
         }
@@ -352,7 +360,7 @@ export class BaseSiteController {
 
 
       // 如果是sem情况下需要对数据做联系方式过滤
-      if (isSem) {
+      if (isSem === '1') {
         if (data.productInfo && data.productInfo.content) {
           data.productInfo.content = this.replaceMobile(data.productInfo.content)
         }
