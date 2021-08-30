@@ -40,7 +40,7 @@ block content
             +product-list('hot', hotProductList)
 
         if isSem !== "2"
-            - const { name: aboutUsTitle, tags, media } = renderData.basic.aboutModule
+            - const { name: aboutUsTitle, tags, media } = renderData.about||renderData.basic.aboutModule
             .block-title
                 //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
                 .point 

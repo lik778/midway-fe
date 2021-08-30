@@ -3,7 +3,7 @@
     img.info-logo(src=company.logo, alt="logo")
     .info-text
       h3.info-name #{ companyName }
-      - tags = renderData.basic.aboutModule.tags
+      - const {tags} = renderData.about|| renderData.basic.aboutModule
      
       .info-tag-list
         if tags
