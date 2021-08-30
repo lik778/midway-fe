@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, FormInstance } from 'antd';
 import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
@@ -27,7 +27,7 @@ function ContactForm(props: any) {
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(contactForm));
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [phoneTipShows, setphoneTipShows] = useState(false)
+  const [phoneTipShow, setPhoneTipShow] = useState(false)
   // 是否修改过表单 阈值  
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
@@ -38,10 +38,26 @@ function ContactForm(props: any) {
   // 53客服表单的form
   const QQRef = useRef<{ form: FormInstance<any> }>()
 
+  const setPhoneTipShowFc = () => {
+    const newChildren = config.children.map(item => {
+      if (item.name === "contactMobile") {
+        return {
+          ...item,
+          slotDom: <span className={`${styles['phone-top']} ${phoneTipShow ? styles['phone-block'] : styles['phone-none']}`}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
+        }
+      }
+      return item
+    })
+    setConfig({ ...config, children: newChildren })
+  }
+
+  useEffect(() => {
+    setPhoneTipShowFc()
+  }, [phoneTipShow])
 
   const formChange = useDebounce((changeValue: any, allValues: any) => {
     const landlinePtn = /(^400[0123456789]\d{6}$)|(^400-[0123456789]\d{2}-\d{4}$)/
-    setphoneTipShows(changeValue.contactMobile && landlinePtn.test(changeValue.contactMobile))
+    setPhoneTipShow(changeValue.contactMobile && landlinePtn.test(changeValue.contactMobile))
     setHasEditForm(true)
     setFormData(allValues)
   }, 100)
@@ -101,7 +117,6 @@ function ContactForm(props: any) {
         <WildcatForm editDataSource={companyInfo}
           onInit={(form) => setFormInstance(form)}
           config={config} formChange={formChange} />
-        <span className={phoneTipShows ? styles['phone-block'] : styles['phone-none']}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
       </Form.Item>
       <Form.Item label="智能接待系统" labelAlign='right' labelCol={{ span: 4 }} className={styles['label-style']}>
         <KF53 editDataSource={companyInfo} onChange={KF53Change} ref={kf53Ref} />
