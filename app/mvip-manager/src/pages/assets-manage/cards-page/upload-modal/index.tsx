@@ -56,12 +56,11 @@ type UploadResBase = {
   id: number
   status: string
   error: string
-}
-// 图片资源
-type UploadResImage = UploadResBase & {
   inChibi: boolean
   chibiFailed: boolean
 }
+// 图片资源
+type UploadResImage = UploadResBase
 // 视频资源
 type UploadResVideo = UploadResBase & {
   cover: string
@@ -163,6 +162,8 @@ export default function useUploadModal(props: Props) {
             cover: '',
             inEncode: true,
             encodeDone: false,
+            inChibi: true,
+            chibiFailed: false,
             status: 'done',
             error: ''
           }])
@@ -205,6 +206,8 @@ export default function useUploadModal(props: Props) {
             if (target) {
               target.id = res.data.id
               target.inEncode = false
+              target.inChibi = false
+              target.chibiFailed = res.data.checkStatus !== 'APPROVE'
               record(uploadedLists.current)
             }
             resolve(item)
@@ -275,7 +278,7 @@ export default function useUploadModal(props: Props) {
   }, [remove, selectedAlbum, directoryType])
 
   // 申诉图片
-  const reAuditImage = async (image: UploadResMap | undefined) => {
+  const reAuditAsset = async (image: UploadResMap | undefined) => {
     if (image) {
       reAuditMediaAssets({ id: image.id })
         .then((res: any) => {
@@ -330,6 +333,8 @@ export default function useUploadModal(props: Props) {
     let uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const error = uploadedItem ? uploadedItem.error : ''
+    const inChibi = uploadedItem ? uploadedItem.inChibi : false
+    const chibiFailed = uploadedItem ? uploadedItem.chibiFailed : false
 
     const $extra = []
     let $contents
@@ -339,8 +344,6 @@ export default function useUploadModal(props: Props) {
 
     if (isUploadImage) {
       uploadedItem = uploadedItem as UploadResImage
-      const inChibi = uploadedItem ? uploadedItem.inChibi : false
-      const chibiFailed = uploadedItem ? uploadedItem.chibiFailed : false
 
       if (inChibi === true) {
         $contents = <span className={styles["upload-info"]}>审核中</span>
@@ -348,7 +351,7 @@ export default function useUploadModal(props: Props) {
         $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
           <AuditFailedIcon />
           <span>该图片涉及违禁</span>
-          <span className={styles["re-audit-btn"]} onClick={() => reAuditImage(uploadedItem)}>点击申诉</span>
+          <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem)}>点击申诉</span>
         </span>
       } else if (status === 'done') {
         if (preview) {
@@ -381,6 +384,12 @@ export default function useUploadModal(props: Props) {
             <span className={styles["upload-info-des"]}>将自动为您生成视频封面<br />也可以稍后自行替换</span>
           </span>
         )
+      } else if (chibiFailed) {
+        $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
+          <AuditFailedIcon />
+          <span>该视频涉及违禁</span>
+          <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem)}>点击申诉</span>
+        </span>
       } else if (status === 'done') {
         if (preview) {
           dispearMask = true
