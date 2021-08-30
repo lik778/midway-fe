@@ -69,7 +69,7 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
 
   const formChange = ((value: any) => {
     //手机正则 
-    const landlinePtn = /(^(0\d{2,3}-?)?\d{7,8}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
+    const landlinePtn = /(^400[0123456789]\d{6}$)|(^400-[0123456789]\d{2}-\d{4}$)/
     setphoneTipShow(value.contactMobile && landlinePtn.test(value.contactMobile))
   })
 
