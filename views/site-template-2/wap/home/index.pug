@@ -5,10 +5,12 @@ block styles
 block header
   include ../components/header
   include ../components/swiper
-  - tags = renderData.basic.aboutModule.tags  
-  include ../components/company-info-home
-  +company-info-home(tags)
-  if !isSem
+  +swiper('100vw')
+  if isSem !== "2"
+    - const {tags} = renderData.basic.aboutModule  
+    include ../components/company-info-home
+    +company-info-home(tags)
+  if isSem !== "1"
       include ../components/nav
 
 block content
@@ -26,7 +28,7 @@ block content
     include ../components/user-defined-module-new.pug
     +user-defined-module-new(autoConfig[0])
 
-  if !isSem
+  if isSem !== "1"
     include ../components/aboutus.pug
     +aboutus('home')
 
@@ -36,6 +38,14 @@ block content
       include ../components/product-list-new.pug
       - productList = renderData.productList.result.slice(0,6)
       +product-list-new(productList)
+
+  include ../components/home-news-list-module.pug
+  - const {result:articleList}  = renderData.articleList
+  - const { articleList: articleRecommend } = renderData.articleRecommend
+  - const { name: articleRecommendName } = renderData.articleRecommend || '文章推荐'
+  if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+    +news-module-list(articleList,'新闻资讯')
+    +news-module-list(articleRecommend,articleRecommendName)
 
   include ../components/contact-form.pug
 

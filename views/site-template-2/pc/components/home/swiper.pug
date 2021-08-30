@@ -1,6 +1,6 @@
-.banner-content
-  - bannerProduct = renderData.banner.bannerProduct
-  if bannerProduct
+- const {bannerProduct} = renderData.banner
+if bannerProduct
+  .banner-content
     - const {banner:bannerData} = renderData
     - bg = bannerData.backGroundImg || (bannerData.bannerList&&bannerData.bannerList[0]&&renderData.banner.bannerList[0].displayImgUrl)|| "//file.baixing.net/202103/a6354faab0bc153c2cfe6e30c64c6463.png"
     .bg-blur(style="background: url("+bg+") no-repeat center center/100% 100%")
@@ -11,7 +11,7 @@
           if productList && productList.length > 0
             if productList.length == 1
               a.swiper-slide(href=productList[0].urlSuffix)
-                img(src=productList[0].headImg)
+                img(src=productList[0].headImg || defaultImg)
                 p.only-oneline #{ productList[0].name }
               .swiper-slide
                 img(src=defaultImg)
@@ -31,22 +31,21 @@
       .swiper-pagination
       .swiper-button-next
       .swiper-button-prev
-  else
-    - const {bannerList}=  renderData.banner
-    #banner-list
-      .swiper-container.swiper-specil-size(style="height:540px")
-        .swiper-wrapper
-          if bannerList && bannerList.length > 0
-            each item in bannerList
-              .swiper-slide
-                  img(src=item.displayImgUrl , style="height:"+height)
-          else
+else
+  - const {bannerList}=  renderData.banner
+  #banner-list
+    .swiper-container.swiper-specil-size
+      .swiper-wrapper
+        if bannerList && bannerList.length > 0
+          each item in bannerList
             .swiper-slide
-              img(src="//file.baixing.net/202103/cffd7713b3858170c2a1ae855ee26513.png"  , style="height:"+height)
-            .swiper-slide
-              img(src="//file.baixing.net/202103/1ae6440e16ffe7ec601da2c2468f7fba.png" , style="height:"+height)
-        .swiper-pagination
-        .swiper-button-next
-        .swiper-button-prev
+              img(src=item.displayImgUrl)
+        else
+          .swiper-slide
+            img(src="//file.baixing.net/202103/cffd7713b3858170c2a1ae855ee26513.png"  , style="height:"+height)
+          .swiper-slide
+            img(src="//file.baixing.net/202103/1ae6440e16ffe7ec601da2c2468f7fba.png" , style="height:"+height)
+      .swiper-pagination
+      .swiper-button-next
+      .swiper-button-prev
 
-  

@@ -1,0 +1,7 @@
+mixin news-module-list(newsList,title)
+	if newsList && newsList.length >0
+		.news-list-title-box
+			.title #{title}
+			a.more(href=newsLink) 查看全部
+		include ../components/home-news-list.pug
+		+news-list(newsList)

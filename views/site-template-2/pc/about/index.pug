@@ -5,17 +5,18 @@ block styles
 
 //-使用了统一的header和nav
 block content
-  if !isSem
+  if isSem !== "1"
     include ../components/common/breadcrumbs.pug
 
   .container
     -  backImg = renderData.basic.aboutModule.backImg || '//file.baixing.net/202102/4d00d8e95d5a246f4e3842fcf09a2329.png'
     .banner(style="background: url("+backImg+") no-repeat top left/cover")
       //- cn域名下about取消公司名称显示
-      if !isCn
+      if !isCn && isSem !== '2'
         | #{ companyName }
-    .intro
-      | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+    if isSem !== '2'
+      .intro
+        | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
       
     - const userDefinedList = renderData.autoConfig
     if userDefinedList && userDefinedList.length>0

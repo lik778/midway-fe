@@ -6,18 +6,19 @@ block styles
 
 
 block header
-  if !isSem
+  if isSem !== "1"
     .float-nav
       include ../components/drawer-nav
             
 block append header
   include ../components/swiper
   - const banner = renderData.banner.bannerList
-  +swiper(banner, 'home')
+  +swiper(banner, 'home','100vw')
 
 block content
-  //-公司信息
-  include ../components/company-info
+  if isSem !== "2" 
+    //-公司信息
+    include ../components/company-info
   .contact-us-block
     .contact-us-block-title 
       | 联系我们，获取

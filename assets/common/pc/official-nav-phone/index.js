@@ -19,7 +19,7 @@ const set400NumbertimeOut = function () {
 export const initPhone = function () {
   $(document).on('ready', async function () {
     // 如果是sem页面 有点击显示电话功能
-    if (isSem) {
+    if (isSem === '1') {
       const phoneNumBox = $('.official-nav-phone-block .official-nav-phone-num-box')
       const phoneNum = $('.official-nav-phone-block .official-nav-phone-num-box>.official-nav-phone-num')
       const phoneNumTip = $('.official-nav-phone-block .official-nav-phone-num-tip')

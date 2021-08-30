@@ -1,7 +1,7 @@
 if phone&&phone.content
 	img.official-nav-phone-icon(src='//file.baixing.net/202108/e9cd4572f5363e55005f0e8616be31c3.png', alt="")
 	.official-nav-phone-block
-		if !isSem
+		if isSem!=="1"
 			span.hot-link 24小时服务热线
 			span.official-nav-phone-num(style="color:"+navPhoneColor)
 				| #{ phone.content }

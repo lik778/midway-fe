@@ -5,8 +5,8 @@ export const initNav = function () {
     let windowHref = ''
     let windowPath = ''
     if (domainType === 'PREFIX') {
-      windowHref = window.location.href;
-      windowPath = window.location.pathname
+      windowPath = window.location.pathname.indexOf('-') !== -1 ? window.location.pathname.split('-')[0] : window.location.pathname
+      windowHref = window.location.origin + windowPath
       $(".nav-item>a").each((index, tab) => {
         const h = $(tab).attr('href').replace(/#{0,}/g, '')
         const n = h.slice(-2, -1); //提取导航里的尾部，展示n,p

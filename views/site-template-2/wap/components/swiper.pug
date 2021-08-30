@@ -1,20 +1,43 @@
-- const {bannerList} = renderData.banner
-- const hasBannerList = bannerList && bannerList.length > 0
-  .swiper-container
-    .swiper-wrapper
-      if hasBannerList
-        each item in bannerList
-          - const isVideo = item.hrefUrl
-          if isVideo
-            .swiper-slide
-              .video-wrapper
-                video(src=item.hrefUrl, loop, preload, controls)
-              .video-cover
-                img(src=item.displayImgUrl)
+mixin swiper(height)
+  - const {bannerList} = renderData.banner
+  - const hasBannerList = bannerList && bannerList.length > 0
+    //- 首页
+    if height == '100vw'
+      .swiper-container
+        .swiper-wrapper
+          if hasBannerList
+            each item in bannerList
+              - const isVideo = item.hrefUrl
+              if isVideo
+                .swiper-slide
+                  .video-wrapper
+                    video(src=item.hrefUrl, loop, preload, controls)
+                  .video-cover
+                    img(src=item.displayImgUrl)
+              else
+                .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
           else
-            .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
-      else
-        .swiper-slide(style="background-image:url(//file.baixing.net/202108/288501b7594f8f641301712d80389603.png)")
-        .swiper-slide(style="background-image:url(//file.baixing.net/202108/93d79230ca39672ceced406c9203afde.png)")
-    if hasBannerList
-      .num-tip #{bannerList.length}张图片
+            .swiper-slide(style="background-image:url(//file.baixing.net/202108/288501b7594f8f641301712d80389603.png)")
+            .swiper-slide(style="background-image:url(//file.baixing.net/202108/93d79230ca39672ceced406c9203afde.png)")
+        if hasBannerList
+          .num-tip #{bannerList.length}张图片
+    //-非首页
+    else
+      .swiper-container-small
+        .swiper-wrapper
+          if hasBannerList
+            each item in bannerList
+              - const isVideo = item.hrefUrl
+              if isVideo
+                .swiper-slide
+                  .video-wrapper
+                    video(src=item.hrefUrl, loop, preload, controls)
+                  .video-cover
+                    img(src=item.displayImgUrl)
+              else
+                .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
+          else
+            .swiper-slide(style="background-image:url(//file.baixing.net/202108/288501b7594f8f641301712d80389603.png)")
+            .swiper-slide(style="background-image:url(//file.baixing.net/202108/93d79230ca39672ceced406c9203afde.png)")
+        if hasBannerList
+          .num-tip #{bannerList.length}张图片

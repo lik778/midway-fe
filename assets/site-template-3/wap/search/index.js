@@ -14,10 +14,19 @@ initTabs()
 
 $(document).on('ready', function () {
   // sem部分链接需要禁止二跳
-  if (isSem) {
+  if (isSem === '1') {
     initSem({
-      type: 'detail',
+      sem: isSem,
+      type: 'listing',
       gotoOtherPageA: $('#layout-content a')
+    })
+  }
+
+  if (isSem === '2') {
+    initSem({
+      sem: isSem,
+      type: 'listing',
+      gotoOtherPageA: $('a')
     })
   }
 })

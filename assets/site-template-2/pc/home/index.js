@@ -19,8 +19,8 @@ $(document).on('ready', function () {
 		loopedSlides: 5,
 		autoplay: {
 			delay: 5000,
-      waitForTransition: true,
-      pauseOnMouseEnter: true
+			waitForTransition: true,
+			pauseOnMouseEnter: true
 		},
 		navigation: {
 			nextEl: '.swiper-button-next',
@@ -63,14 +63,19 @@ $(document).on('ready', function () {
 			delay: 3000,
 			waitForTransition: true
 		},
+		autoHeight: true, //高度随内容变化
 		pagination: {
 			el: '#banner-list .swiper-pagination',
 			clickable: true,
 		},
-
 		navigation: {
 			nextEl: '#banner-list .swiper-button-next',
 			prevEl: '#banner-list .swiper-button-prev',
+		},
+		on: {
+			resize: function () {
+				this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+			},
 		},
 	});
 
@@ -91,8 +96,9 @@ $(document).on('ready', function () {
 
 	// sem需要禁止部分内容二跳
 	// tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
-	if (isSem) {
+	if (isSem === '1') {
 		initSem({
+			sem: isSem,
 			type: 'home',
 			contactForm: $('#contactUs .contact-us__message'),
 			contactFormParent: $('#contactUs'),
@@ -100,7 +106,15 @@ $(document).on('ready', function () {
 			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
 		})
 	}
-			// 新闻模块
+
+	if (isSem === '2') {
+		initSem({
+			sem: isSem,
+			type: 'home',
+			gotoOtherPageA: $('a')
+		})
+	}
+	// 新闻模块
 	// var nowWord = $('.item-card .item-content').text().length
 	// var newWord
 	// if (nowWord > 44) {
