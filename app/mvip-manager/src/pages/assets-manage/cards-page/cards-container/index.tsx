@@ -65,17 +65,18 @@ export default function CardsContainer(props: CardsContainerProps) {
       const gapMax = 46
       const gapMin = 36
       const tryCount = [3, 4, 5, 6, 7, 8]
-      // FIXME type
-      const result = tryCount.reduce((h, c) => {
+      const result = tryCount.reduce((h: number, c: number): number => {
         if (!h) {
           const maxWidthLimit = (cardWidth + gapMax) * c - gapMax
           const minWidthLimit = (cardWidth + gapMin) * c - gapMin
           const isFit = ((width > minWidthLimit) && (width < maxWidthLimit))
-          if (isFit) return c
+          if (isFit) {
+            return c
+          }
           const isBigger = width < minWidthLimit
           if (isBigger) {
             const last = tryCount.find((x, i) => tryCount[i+1] === c)
-            return last
+            return last!
           }
         }
         return h
@@ -85,17 +86,14 @@ export default function CardsContainer(props: CardsContainerProps) {
       }
       const countInPage = result * 2
       if (pagiConf.pageSize !== countInPage) {
-        // FIXME 100ms 会导致空列表提示一闪而过
-        debounce(() => {
-          setPagiConf({
-            pageSize: countInPage,
-            pageSizeOptions: [
-              String(countInPage),
-              String(countInPage * 2),
-              String(countInPage * 4),
-            ]
-          })
-        }, 100)
+        setPagiConf({
+          pageSize: countInPage,
+          pageSizeOptions: [
+            String(countInPage),
+            String(countInPage * 2),
+            String(countInPage * 4),
+          ]
+        })
       }
     }
   }, [countInLine])

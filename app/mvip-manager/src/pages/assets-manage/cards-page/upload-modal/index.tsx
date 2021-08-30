@@ -185,6 +185,7 @@ export default function useUploadModal(props: Props) {
             .split('.')[0]
             .split('')
             .filter(x => x.match(/[a-zA-Z0-9\u4e00-\u9fa5!@#$%^&*()_+=-~|\\\{\}\[\]]/))
+            .slice(0, 20)
             .join('')
           const query = {
             title: itemName || '未命名视频',

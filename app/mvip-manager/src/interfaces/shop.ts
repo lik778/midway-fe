@@ -340,6 +340,7 @@ export interface UpdateMediaCatesParam {
   id: number;
   name?: string;
   cover?: number;
+  source: MediaCateSource;
 }
 
 export interface GetMediaAssetsParam {
@@ -369,9 +370,14 @@ export interface DelMediaAssetsParam {
   source: MediaCateSource;
 }
 
-export interface UpdateMediaAssetsParam {
+export interface UpdateMediaAssetsInCateParam {
   id: number;
   mediaCateId: number;
+}
+
+export interface UpdateMediaAssetsParam {
+  id: number;
+  title: string;
 }
 
 export interface MoveMediaAssetsParam {

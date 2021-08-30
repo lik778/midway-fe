@@ -3,7 +3,6 @@ import moment from 'moment';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants';
 
-
 export const addKeyForListData = (list: any, page?: number, size?: number) => {
   const pageSize = size ? size : 10;
   if (!list || list.length === 0) return [];
