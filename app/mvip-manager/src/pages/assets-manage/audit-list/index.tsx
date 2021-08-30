@@ -14,6 +14,14 @@ import { DeleteBatchProps } from '../cards-page/index'
 const AssetsMangeAuditListPage = () => {
 
   const [sourceType, setSourceType] = useState<'IMAGE' | 'VIDEO'>('IMAGE')
+  const sourceLabel = useMemo(() => {
+    if (sourceType === 'IMAGE') {
+      return '图片'
+    }
+    if (sourceType === 'VIDEO') {
+      return '视频'
+    }
+  }, [sourceType])
 
   // 批量删除
   const deleteBatch = useCallback((props: DeleteBatchProps) => {
@@ -30,7 +38,7 @@ const AssetsMangeAuditListPage = () => {
       const count = selection.length
       const info = count === 0
         ? `删除后无法恢复，确认删除？`
-        : `本次预计删除 ${count} 张图片，删除后无法恢复，确认删除？`
+        : `本次预计删除 ${count} 张${sourceLabel}，删除后无法恢复，确认删除？`
       Modal.confirm({
         title: '确认删除',
         content: info,
@@ -40,7 +48,7 @@ const AssetsMangeAuditListPage = () => {
           return new Promise((resolve, reject) => {
             const query = {
               ids: [...selection], mediaCateId: curScope?.item?.id,
-              source: 'IMAGE'
+              source: sourceType
             }
             delMediaFailedAssets(query as any)
               .then((res: any) => {
@@ -63,7 +71,7 @@ const AssetsMangeAuditListPage = () => {
         }
       })
     }
-  }, [])
+  }, [sourceType, sourceLabel])
 
   // 全选时排除正在审核中的项目
   const selectAllFrom = useCallback((lists: CardItem[]) => (
@@ -90,10 +98,10 @@ const AssetsMangeAuditListPage = () => {
   const emptyTip = useCallback(() => (
     <Result
       icon={<EmptyListIcon />}
-      title="当前没有申诉中的图片哦~"
+      title={`当前没有申诉中的${sourceLabel}哦~`}
       style={{ margin: 'auto' }}
     />
-  ), [])
+  ), [sourceLabel])
 
   const fetchListFn = useMemo(() => {
     return fetchErrorImageLists(sourceType)
