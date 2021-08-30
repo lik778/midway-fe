@@ -17,7 +17,7 @@ import {
   GetMediaAssetsRes, GetMediaCatesRes,
   GetMediaCatesParam, getMediaCatesNameListParam, CreateMediaCatesParam, UpdateMediaCatesParam, DelMediaCatesParam,
   GetMediaFailedAssetsParam, GetMediaFailedAssetsRes,
-  GetMediaAssetsParam, CreateMediaAssetsParam, DelMediaAssetsParam, UpdateMediaAssetsParam, MoveMediaAssetsParam, MediaCatesNameListItem,
+  GetMediaAssetsParam, CreateMediaAssetsParam, DelMediaAssetsParam, UpdateMediaAssetsInCateParam, UpdateMediaAssetsParam, MoveMediaAssetsParam, MediaCatesNameListItem,
   ReAuditMediaAssetsParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion,
   ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo,
   ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam,
@@ -227,77 +227,76 @@ export const getBaixingAlbumNameList = (shopId: number) => {
 }
 
 /**
- * 资源管理页面相关接口
+ * 素材管理页面相关接口
  */
 
-// 获取资源列表
+// 获取素材列表
 export const getMediaCatesList = (params: GetMediaCatesParam) => {
   return postApiData<GetMediaCatesRes>(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params)
 }
 
-// 获取资源名称列表（比资源列表节约资源）
+// 获取素材名称列表（比素材列表节约资源）
 export const getMediaCatesNameList = (params: getMediaCatesNameListParam) => {
   return getApiData<MediaCatesNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', params)
 }
 
-// 创建资源分类
+// 创建素材分类
 export const createMediaCategory = (params: CreateMediaCatesParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params)
 }
 
-// 更新资源分类
+// 更新素材分类
 export const updateMediaCategory = (params: UpdateMediaCatesParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params)
 }
 
-// 删除资源分类
+// 删除素材分类
 export const delMediaCategory = (params: DelMediaCatesParam) => {
   return getApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params)
 }
 
-// 获取分类内资源列表
+// 获取分类内素材列表
 export const getMediaAssets = (params: GetMediaAssetsParam) => {
   // /material
   return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/material/listing', params)
 }
 
-// 相册图片申诉
+// 素材申诉
 export const reAuditMediaAssets = (params: ReAuditMediaAssetsParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/reapply', params)
 }
 
-// 添加素材到分类（上传又拍云后调用）
+// 添加素材到分类
 export const createMediaAssets = (params: CreateMediaAssetsParam) => {
-  // /material
   return postApiData<MediaAssetsItem>(ServicePath.SHOP, 'midway/backend/material/create', params)
 }
 
-// 删除相册图片
+// 删除素材
 export const delMediaAssets = (params: DelMediaAssetsParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/delete', params)
 }
 
-// 更新相册图片
-export const setMediaCatesCover = (params: UpdateMediaAssetsParam) => {
+// 设定素材为分类封面
+export const setMediaCatesCover = (params: UpdateMediaAssetsInCateParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/setCover', params)
 }
 
-// 移动相册图片到其它相册
+// 移动素材到其它分类
 export const moveMediaAssets = (params: MoveMediaAssetsParam) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/move', params)
 }
 
 /**
- * 资源管理审核页面相关接口
+ * 素材管理审核页面相关接口
  */
 
-// 获取申诉列表（审核失败和审核中的资源）
+// 获取申诉列表（审核失败和审核中的素材）
 export const getMediaFailedAssets = (params: GetMediaFailedAssetsParam) => {
   // /material
   return postApiData<GetMediaFailedAssetsRes>(ServicePath.SHOP, '/midway/backend/material/failedImageListing', params)
 }
 
-// 删除申诉资源（专用来删除审核失败的资源）
+// 删除申诉素材（专用来删除审核失败的素材）
 export const delMediaFailedAssets = (params: Pick<DelMediaAssetsParam, 'ids'|'source'>) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/deleteFailed', params)
 }
