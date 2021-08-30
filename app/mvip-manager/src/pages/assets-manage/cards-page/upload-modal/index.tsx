@@ -344,15 +344,13 @@ export default function useUploadModal(props: Props) {
 
       if (inChibi === true) {
         $contents = <span className={styles["upload-info"]}>审核中</span>
-      }
-      if (chibiFailed) {
+      } else if (chibiFailed) {
         $contents = <span className={styles["upload-info"] + ' ' + styles["chibi-failed"]}>
           <AuditFailedIcon />
-          <span>该{subDirectoryLabel}涉及违禁</span>
+          <span>该图片涉及违禁</span>
           <span className={styles["re-audit-btn"]} onClick={() => reAuditImage(uploadedItem)}>点击申诉</span>
         </span>
-      }
-      if (status === 'done') {
+      } else if (status === 'done') {
         if (preview) {
           dispearMask = true
           $contents = <>
@@ -383,11 +381,7 @@ export default function useUploadModal(props: Props) {
             <span className={styles["upload-info-des"]}>将自动为您生成视频封面<br />也可以稍后自行替换</span>
           </span>
         )
-      }
-      if (encodeDone) {
-        // ？
-      }
-      if (status === 'done') {
+      } else if (status === 'done') {
         if (preview) {
           dispearMask = true
           $contents = <>
