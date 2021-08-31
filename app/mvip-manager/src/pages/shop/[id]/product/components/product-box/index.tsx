@@ -52,7 +52,7 @@ export default (props: Props) => {
         return {
           ...item,
           options: cateList.map(x => { return { key: x.name, value: x.id } }),
-          btnConfig: <GroupSelectBtn item={item} onClick={onModalClick}></GroupSelectBtn>
+          slotDom: <GroupSelectBtn item={item} onClick={onModalClick}></GroupSelectBtn>
         }
       }
       return item

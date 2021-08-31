@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, FormInstance } from 'antd';
 import { connect } from 'dva';
 import { cloneDeepWith } from 'lodash';
@@ -12,6 +12,7 @@ import QQCustomService from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
+import { useDebounce } from '@/hooks/debounce';
 import styles from './index.less';
 
 
@@ -23,7 +24,8 @@ function ContactForm(props: any) {
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(contactForm));
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  // 是否修改过表单 阈值
+  const [phoneTipShow, setPhoneTipShow] = useState(false)
+  // 是否修改过表单 阈值  
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
   // 客户信息表单的form
@@ -33,11 +35,29 @@ function ContactForm(props: any) {
   // 53客服表单的form
   const QQRef = useRef<{ form: FormInstance<any> }>()
 
+  const setPhoneTipShowFc = () => {
+    const newChildren = config.children.map(item => {
+      if (item.name === "contactMobile") {
+        return {
+          ...item,
+          slotDom: <span className={`${styles['phone-top']} ${phoneTipShow ? styles['phone-block'] : styles['phone-none']}`}>由于座机号码无法接收短信，请及时绑定“百姓商户”公众号进行留咨接收</span>
+        }
+      }
+      return item
+    })
+    setConfig({ ...config, children: newChildren })
+  }
 
-  const formChange = (changeValue: any, allValues: any) => {
+  useEffect(() => {
+    setPhoneTipShowFc()
+  }, [phoneTipShow])
+
+  const formChange = useDebounce((changeValue: any, allValues: any) => {
+    const landlinePtn = /(^400[0123456789]\d{6}$)|(^400-[0123456789]\d{2}-\d{4}$)/
+    setPhoneTipShow(changeValue.contactMobile && landlinePtn.test(changeValue.contactMobile))
     setHasEditForm(true)
     setFormData(allValues)
-  }
+  }, 100)
 
   const KF53Change = (values: any) => {
     setHasEditForm(true)
@@ -105,6 +125,7 @@ function ContactForm(props: any) {
           <Button onClick={props.back} style={{ margin: '0 8px' }} size="large">上一步</Button>
         </div>
       </Form.Item>
+
     </div>
   )
 }
