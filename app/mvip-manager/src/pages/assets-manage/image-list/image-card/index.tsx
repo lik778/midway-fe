@@ -143,7 +143,7 @@ function ImageCard(props: ImageCardProps) {
   const isSuccess = decodeStatus === 'SUCCESS'
   const isError = !isSuccess && !inEncoding
   // 应该是数据流动的问题，导致如果不检测 decodeStatus 就会显示 ErrorMask
-  const showMask = card.hasOwnProperty('decodeStatus') && !loading
+  const showVideoMask = directoryType === 'IMAGE' && card.hasOwnProperty('decodeStatus') && !loading
 
   const stopEvent = (e: any) => e.stopPropagation()
 
@@ -153,14 +153,14 @@ function ImageCard(props: ImageCardProps) {
       key={`image-card-${id}`}
       onClick={() => preview(card)}
     >
-      {showMask && inEncoding && (
+      {showVideoMask && inEncoding && (
         <div className={styles["mask"] + ' ' + styles['full']}>
           <LoadingOutlined />
           <span>正在转码中，请稍等</span>
           <span className={styles["reason"]}>转码完成后第一时间通知您</span>
         </div>
       )}
-      {showMask && isError && (
+      {showVideoMask && isError && (
         <div className={styles["mask"] + ' ' + styles['full']}>
           <ErrorIcon />
           <span>转码失败</span>
@@ -191,7 +191,7 @@ function ImageCard(props: ImageCardProps) {
                 <DeleteOutlined />
                 <span>删除</span>
               </div>
-              {directoryType === 'IMAGE' && (
+              {(directoryType === 'IMAGE') && (
                 <div className={styles["anticon-down-item"]} onClick={e => setCoverImage(e, card)}>
                   {inSetCoverLoading ? <LoadingOutlined /> : <EditOutlined />}
                   <span>设为封面</span>
