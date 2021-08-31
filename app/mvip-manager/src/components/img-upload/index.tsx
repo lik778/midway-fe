@@ -174,7 +174,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
   // 选择封面图
   const handleSelectCover = (file: UploadFile, fileIndex: number) => {
-    console.log(file)
     setSelectCoverFile(file)
     setSelectModalType('COVER')
     setAlbumVisible(true)
@@ -338,7 +337,7 @@ export const getImgUploadValueModel = (mediaType: MediaType, media: string | nul
 export const getImgUploadModelValue = (value: MediaItem | '', isCover?: boolean) => {
   if (value) {
     if (isCover) {
-      return value.coverUrl
+      return value.coverUrl || ''
     } else {
       return value.url
     }

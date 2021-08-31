@@ -182,21 +182,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     }
   }
 
-  // 移动事件
-  const handleMove = useCallback(async (file: UploadFile, fileList: UploadFile[], order: number) => {
-    const newBannerList = [...bannerList]
-    const index = fileList.findIndex(item => item.uid === file.uid)
-    const item = newBannerList[index]
-    newBannerList[index] = newBannerList[index + order]
-    newBannerList[index + order] = item
-    createEditData(newBannerList)
-    if (autoUpdata) {
-      handleUpData('move', newBannerList, [])
-    } else {
-      setBannerList(newBannerList)
-      setChangeFlag(true)
-    }
-  }, [bannerList])
 
   // 提交函数 单个move还是从弹窗中选择了多个图, 
   // 分自动更新还是手动更新，对应的数据源不同
@@ -238,18 +223,27 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     disabled: upDataLoading || getDataLoading
   }), [upDataLoading, getDataLoading, handleUpData])
 
+  // 移动事件
+  const handleMove = async (file: UploadFile, fileList: UploadFile[], fileIndex: number, handleChangeFileList: (newFileList: UploadFile<any>[], oldFileList: UploadFile<any>[], file: UploadFile<any> | null) => void, order: number) => {
+    const newFileList = [...fileList]
+    const item = newFileList[fileIndex]
+    newFileList[fileIndex] = newFileList[fileIndex + order]
+    newFileList[fileIndex + order] = item
+    handleChangeFileList(newFileList, fileList, file)
+  }
+
   const renderIcons: ActionBtnListItem[] = useMemo(() => {
     return [
       {
         title: "move-up",
-        action: (file, fileList) => handleMove(file, fileList, -1),
+        action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, -1),
         icon: (file, fileList) => {
           return fileList.findIndex(item => item.uid === file.uid) === 0 ? null : <UpOutlined />
         },
       },
       {
         title: "move-down",
-        action: (file, fileList) => handleMove(file, fileList, 1),
+        action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, 1),
         icon: (file, fileList) => {
           return fileList.findIndex(item => item.uid === file.uid) === fileList.length - 1 ? null : <DownOutlined />
         },

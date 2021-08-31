@@ -25,7 +25,7 @@ interface Props {
 // 用于区分单双击
 let clickCount = 0
 
-const ImgItem: FC<Props> = (props) => {
+const VideoItem: FC<Props> = (props) => {
   const { file, detail = {} as MediaAssetsItem, itemHeight, mediaType } = props
   const context = useContext(ImgUploadContext)
   const selectModalContext = useContext(SelectModalContext)
@@ -108,4 +108,4 @@ const ImgItem: FC<Props> = (props) => {
   </>
 }
 
-export default ImgItem
+export default VideoItem

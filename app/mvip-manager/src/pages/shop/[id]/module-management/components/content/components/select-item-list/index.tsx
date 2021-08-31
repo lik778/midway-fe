@@ -57,7 +57,6 @@ const AboutUs: FC<Props> = (props) => {
   }, [])
 
   const handleSubmit = async (values: ModuleArticleInfo | ModuleProductInfo) => {
-    console.log(values)
     setUpDataLoading(true)
     let res
     if (type === "product") {
