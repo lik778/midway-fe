@@ -180,6 +180,7 @@ export default function useUploadModal(props: Props) {
             target.cover = uploadCoverRes.data.url.split('/')[1]
             record(uploadedLists.current)
           }
+          // =￣ω￣=
           // 呜哈哈哈哈哈哈哈 * 2
           const itemName = item.name
             .split('.')[0]
@@ -382,8 +383,8 @@ export default function useUploadModal(props: Props) {
       if (inEncode === true) {
         $contents = (
           <span className={styles["upload-info"] + ' ' + styles["video"]} >
-            <span>保存中，请稍后...</span>
-            <span className={styles["upload-info-des"]}>将自动为您生成视频封面<br />也可以稍后自行替换</span>
+            <span>上传中</span>
+            <span className={styles["upload-info-des"]}>正在上传，请稍后</span>
           </span>
         )
       } else if (chibiFailed) {
@@ -393,19 +394,25 @@ export default function useUploadModal(props: Props) {
           <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem as UploadResVideo)}>点击申诉</span>
         </span>
       } else if (status === 'done') {
-        if (preview) {
-          dispearMask = true
-          $contents = <>
-            <div className={styles['upload-item-actions']}>
-              <span className={styles['action']} onClick={() => handleRemove(item)}>
-                <DeleteOutlined />
-              </span>
-            </div>
-          </>
-          $extra.push(
-            <div className={styles['play-icon']} key='play-icon' />
-          )
-        }
+        $contents = (
+          <span className={styles["upload-info"] + ' ' + styles["video"]} >
+            <span>上传成功，正在转码</span>
+            <span className={styles["upload-info-des"]}>可以在视频列表查看视频转码进度</span>
+          </span>
+        )
+        // if (preview) {
+        //   dispearMask = true
+        //   $contents = <>
+        //     <div className={styles['upload-item-actions']}>
+        //       <span className={styles['action']} onClick={() => handleRemove(item)}>
+        //         <DeleteOutlined />
+        //       </span>
+        //     </div>
+        //   </>
+        //   $extra.push(
+        //     <div className={styles['play-icon']} key='play-icon' />
+        //   )
+        // }
       }
       $extra.push(
         <div className={styles['upload-item-name']}>{item.name}</div>
