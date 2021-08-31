@@ -106,20 +106,23 @@ export default function ImageCardWrapper(props: any) {
     })
   }
 
-  return (props: CustomCardItemProps) => (
-    ImageCard({
-      ...props,
-      setCoverImage,
-      setCoverItem,
-      editVideoName,
-      moveImage,
-      delImage,
-    } as ImageCardProps)
-  )
+  return (props: CustomCardItemProps) => {
+    const card = props.card
+    return (
+      <ImageCard
+        {...props}
+        setCoverItem={setCoverItem}
+        setCoverImage={setCoverImage}
+        editVideoName={editVideoName}
+        moveImage={moveImage}
+        delImage={delImage}
+        key={card.id}
+      />
+    )
+  }
 }
 
 type ImageCardProps = CustomCardItemProps & {
-  card: MediaAssetsItem
   setCoverItem: MediaAssetsItem | null | undefined
   editVideoName: (e: any, image: MediaAssetsItem) => any
   setCoverImage: (e: any, image: MediaAssetsItem) => void
@@ -129,10 +132,11 @@ type ImageCardProps = CustomCardItemProps & {
 
 function ImageCard(props: ImageCardProps) {
   const {
-    card, selection, setCoverItem, loading,
+    selection, setCoverItem, loading,
     handleSelectCard, preview,
     setCoverImage, moveImage, delImage, editVideoName
   } = props
+  const card = props.card as MediaAssetsItem
   const { directoryType } = useContext(CardsPageContext)
   const isImage = directoryType === 'IMAGE'
 
@@ -143,7 +147,7 @@ function ImageCard(props: ImageCardProps) {
   const isSuccess = decodeStatus === 'SUCCESS'
   const isError = !isSuccess && !inEncoding
   // 应该是数据流动的问题，导致如果不检测 decodeStatus 就会显示 ErrorMask
-  const showVideoMask = directoryType === 'IMAGE' && card.hasOwnProperty('decodeStatus') && !loading
+  const showVideoMask = directoryType === 'VIDEO' && card.hasOwnProperty('decodeStatus') && !loading
 
   const stopEvent = (e: any) => e.stopPropagation()
 

@@ -21,9 +21,10 @@ export const upyunImgConfig = {
 const env = {
   get upyunVideoConfig () {
     const isProd = process.env.NODE_ENV === 'production'
-    const notifyURL = isProd
-      ? 'http://api.baixing.com.cn:80/api/midway/internal/material/materialReapply'
-      : 'http://172.30.2.14:30263/api/midway/internal/material/materialReapply'
+    // const notifyURL = isProd
+    //   ? 'http://api.baixing.com.cn:80/api/midway/internal/material/materialReapply'
+    //   : 'http://172.30.2.14:30263/api/midway/internal/material/materialReapply'
+    const notifyURL = 'https://enb6hk1stgczkkc.m.pipedream.net'
     console.log('notifyURL', notifyURL)
     return {
       host: 'http://bxmedia.baixing.net',
@@ -35,7 +36,7 @@ const env = {
         "type": "nbhd",
         "advote": "/s/720p(16:9)/r/25/sm/false/ar/22050",
         "notify-url": notifyURL,
-        "ext-param": "source=msshop&s=720p&type=mvip-encode"
+        "ext-param": `source=msshop&s=720p&type=mvip-encode&isProd=${isProd?'1':'0'}`
       }
     }
   }

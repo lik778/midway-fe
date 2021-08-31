@@ -179,7 +179,7 @@ const AssetsMangeImageListPage = (props: {
     if (isScopeImage) {
       return ImageCardWrapper
     }
-    return PaddingHooksCard
+    return PaddingHooksCardWrapper
   }, [isScopeAlbum, isScopeImage])
 
   // 页头
@@ -249,13 +249,15 @@ const AssetsMangeImageListPage = (props: {
 
 // 由于组件切换时状态有顺序和数量相等限制，
 // 暂时用一个组件用来填充
-function PaddingHooksCard(props: any) {
+function PaddingHooksCardWrapper(props: any) {
   const { } = useContext(CardsPageContext)
   const { } = useContext(AlbumNamesContext)
   const [_, __] = useState('for padding')
-  return (props: any) => {
-    return null
-  }
+  return <PaddingHooksCard />
+}
+function PaddingHooksCard(props: any) {
+  const { } = useContext(CardsPageContext)
+  return <span></span>
 }
 
 /**

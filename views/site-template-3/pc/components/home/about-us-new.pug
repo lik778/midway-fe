@@ -1,15 +1,14 @@
-mixin about-us-new(tags,mediaImg)
+mixin about-us-new(content)
+  - const { tags, media: mediaImg, videoUrl } = content
   .about-us-bgc
     .about-us-content
       .content-left
-        - const videoUrl = company.videoUrl
-        - const videoCover = company.videoCover
         if videoUrl
           .video-con
             .video-wrapper
               video(src=videoUrl, loop, preload, controls)
             .video-cover
-              img.picture(src=videoCover)
+              img.picture(src=mediaImg)
         else
           .img-left
             img(src=mediaImg||'//file.baixing.net/202108/ec6a5de033cd956ea192ddb15d2515a0.png', alt="")

@@ -85,18 +85,21 @@ export default function AlbumCardWrapper(props: any) {
     })
   }
 
-  return (props: CustomCardItemProps) => (
-    AlbumCard({
-      ...props,
-      delAlbum,
-      intoScope,
-      editAlbumName
-    } as AlbumCardProps)
-  )
+  return (props: CustomCardItemProps) => {
+    const card = props.card
+    return (
+      <AlbumCard
+        {...props}
+        delAlbum={delAlbum}
+        intoScope={intoScope}
+        editAlbumName={editAlbumName}
+        key={card.id}
+      />
+    )
+  }
 }
 
 type AlbumCardProps = CustomCardItemProps & {
-  card: MediaCateItem
   intoScope: (album: MediaCateItem) => any
   editAlbumName: (e: any, album: MediaCateItem) => any
   delAlbum: (e: any, album: MediaCateItem) => any
@@ -104,13 +107,14 @@ type AlbumCardProps = CustomCardItemProps & {
 
 function AlbumCard(props: AlbumCardProps) {
   const {
-    card, selection,
+    selection,
     handleSelectCard, intoScope, editAlbumName,
     delAlbum,
   } = props
   const { directoryType, subDirectoryCountLabel } = useContext(CardsPageContext)
   const isImage = directoryType === 'IMAGE'
 
+  const card = props.card as MediaCateItem
   const { id, name, coverUrl, totalImg, type } = card
   const isDefaultAlbum = type === 'DEFAULT'
   const isChecked = selection.find((y: number) => y === id)
