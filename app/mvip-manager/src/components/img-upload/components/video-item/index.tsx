@@ -20,7 +20,7 @@ interface Props {
   onSelectCover?: (file: UploadFile, fileIndex: number) => void
 }
 
-const ImgItem: FC<Props> = (props) => {
+const VideoItem: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
   const { handleChangeFileList } = context
   const { file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover } = props
@@ -109,4 +109,4 @@ const ImgItem: FC<Props> = (props) => {
     </div>
   </StatusBox>
 }
-export default ImgItem
+export default VideoItem
