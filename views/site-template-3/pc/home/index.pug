@@ -31,9 +31,8 @@ block content
 				//- - media = renderData.basic.aboutModule.media
 
 				if isSem !== "2"
-					- const { tags, media } = renderData.basic.aboutModule
 					include ../components/home/about-us-new.pug
-					+about-us-new(tags,media)
+					+about-us-new(renderData.basic.aboutModule)
 
 				//-自定义模块1（即之前的企业优势模块）
 				if autoConfig && autoConfig[0] &&autoConfig[0].show
