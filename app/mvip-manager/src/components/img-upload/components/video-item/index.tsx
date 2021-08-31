@@ -21,6 +21,8 @@ interface Props {
 }
 
 const ImgItem: FC<Props> = (props) => {
+  const context = useContext(ImgUploadContext)
+  const { handleChangeFileList } = context
   const { file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover } = props
 
   const localShopUploadList = useMemo<ExpandShowUploadListInterface>(() => {
@@ -96,7 +98,7 @@ const ImgItem: FC<Props> = (props) => {
             actionBtn && actionBtn.map((item, index) => {
               const icon = item.icon(file, fileList)
               return icon && <div className={styles['action-btn']} title={item.title} onClick={
-                () => item.action(file, fileList, fileIndex)
+                () => item.action(file, fileList, fileIndex, handleChangeFileList)
               } key={`${index}-${item.title}`}>
                 {icon}
               </div>
