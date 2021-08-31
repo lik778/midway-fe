@@ -34,7 +34,7 @@
 | maxLength         | 最大长度 ， 输入框指最大输入长度，图片则是指最大上传个数，tag 是指 tag 文字最大长度 | number                           | Input、textarea: undefined, upload:0,tag:1 | false                                  |
 | minLength         | 最小长度 输入框指最小输入长度，tag 是指 tag 文字最小长度                            | number                           | Input、textarea: undefined, tag:1          | false                                  |
 | tip               | 文案说明，目前只用在图片上传                                                        | string 、ReactNode               |                                            | false                                  |
-| btnConfig         | 输入框需要增加额外按钮什么的，现在用于店铺服务，文章                                | ReactNode                        |                                            | false                                  |
+| slotDom         | 需要增加额外节点                                | ReactNode                        |                                            | false                                  |
 | maxNum            | 最大值，数字输入框是最大值，tag 是指最大个数                                        | number                           | inputNumber:undefined,tag：0               |
 | minNum            | 最小值，只用于数字输入                                                              | number                           |                                            | false                                  |
 | images            | 只用于图片上传，配置每一小个上传                                                    | ImagesItem[]                     | []                                         | type === FormType.ImgUpload?true:false |

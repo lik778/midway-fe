@@ -101,33 +101,30 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         return item.node
       }
       const patternList = item.patternList ? item.patternList : [];
+      let dom = <></>
       if (item.type === FormType.Input) {
-        return (
-          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
-            <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount} />
-          </Form.Item>
-        )
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+          <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} showCount={item.showCount} />
+        </Form.Item>
       } else if (item.type === FormType.InputNumber) {
-        return (
-          <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
-            <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled} />
-          </Form.Item>
-        )
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+          <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled} />
+        </Form.Item>
       } else if (item.type === FormType.Textarea) {
-        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
           <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled} />
-        </Form.Item>)
+        </Form.Item>
       } else if (item.type === FormType.Select) {
-        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
           <Select
             onChange={(newValue) => onChange(newValue, item.name || '')}
             placeholder={item.placeholder} size='large'
             style={{ width: item.formItemWidth }} disabled={item.disabled}>
             {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
           </Select>
-        </Form.Item>)
+        </Form.Item>
       } else if (item.type === FormType.ImgUpload) {
-        return (<Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
+        dom = <Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
           label={item.label} required={item.required} labelCol={item.labelCol}>
           <div className={styles['flex-box']}>
             {
@@ -156,53 +153,40 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
               <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
             </>
           }
-        </Form.Item>)
+        </Form.Item>
       } else if (item.type === FormType.AreaSelect) {
         const value = getEditData(item.name || '');
-        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol}>
           <AreaSelect width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
-        </Form.Item>)
+        </Form.Item>
       } else if (item.type === FormType.GroupSelect) {
-        return (<div className={styles['group-select-btn']} key={item.label}>
-          <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol}>
-            <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled}>
-              {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-            </Select>
-          </Form.Item>
-          {item.btnConfig}
-        </div>)
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+          <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled}>
+            {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+          </Select>
+        </Form.Item>
       } else if (item.type === FormType.Tag) {
         const value = form.getFieldsValue()[item.name || ''];
-        return (<Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
           <TagModule
             value={value || []}
             maxLength={item.maxLength || 1}
             minLength={item.minLength || 1}
             maxNum={item.maxNum || 0}
             onChange={(newValue) => onChange(newValue, item.name || '')} />
-        </Form.Item>)
-      }
-      // else if (item.type === FormType.MetaSelect) {
-      //   return (
-      //     <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
-      //       <CheckboxGroup
-      //         options={item.options as OptionCheckBox[]}
-      //       />
-      //     </Form.Item>
-      //   )
-      // }
-      else if (item.type === FormType.MetaSelect) {
+        </Form.Item>
+      } else if (item.type === FormType.MetaSelect) {
         const value = getEditData(item.name || '');
-        return <MetasSelect item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} ></MetasSelect>
+        dom = <MetasSelect item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} ></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
-        return (
-          <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
-            {
-              item.children ? creatForm(item.children) : ''
-            }
-          </Form.Item>
-        )
+        dom = <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+          {
+            item.children ? creatForm(item.children) : ''
+          }
+        </Form.Item>
       }
+      return <div className={styles['form-item-box']} key={item.label}>{dom}{item.slotDom}
+      </div>
     })
   }
 

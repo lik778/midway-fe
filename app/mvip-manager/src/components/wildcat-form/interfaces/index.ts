@@ -47,7 +47,7 @@ export interface FormItem {
   maxLength?: number
   minLength?: number,
   tip?: string | ReactNode, // 文案说明,
-  btnConfig?: ReactNode, // 输入框需要增加额外标签
+  slotDom?: ReactNode, // 需要增加额外节点
   maxNum?: number,
   minNum?: number,
   images?: ImagesItem[],// 图片多种情况
