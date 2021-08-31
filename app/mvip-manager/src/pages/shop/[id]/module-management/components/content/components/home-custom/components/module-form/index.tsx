@@ -9,6 +9,7 @@ import { errorMessage, successMessage } from '@/components/message';
 import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
 import { CustomerSetChildListItem, CustomerSetListItem, InitCustomerSetChildListItem } from '@/interfaces/shop';
 import { getImgUploadModelValue } from '@/components/img-upload';
+import { useDebounce } from '@/hooks/debounce';
 
 const notNull = (x: any): boolean => !!x
 
@@ -117,7 +118,7 @@ const ModuleForm: FC<Props> = (props) => {
   ])
 
   // 提交表单
-  const sumbit = async () => {
+  const sumbit = useDebounce(async () => {
     try {
       setFormLoading(true)
       await validateForm()
@@ -151,7 +152,8 @@ const ModuleForm: FC<Props> = (props) => {
     } finally {
       setFormLoading(false)
     }
-  }
+  }, 300)
+
   return <>
     <Spin spinning={getDataLoading}>
       <Form form={form} name={`form-${moduleID}`} className={styles['title-form-container']}>

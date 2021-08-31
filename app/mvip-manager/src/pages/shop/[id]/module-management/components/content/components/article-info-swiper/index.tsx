@@ -8,6 +8,7 @@ import styles from './index.less'
 import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
 import { errorMessage, successMessage } from '@/components/message';
+import { useDebounce } from '@/hooks/debounce';
 
 interface Props {
   position: ModulePageType,
@@ -34,7 +35,7 @@ const HomeSwiper: FC<Props> = (props) => {
     disabled: false
   })
 
-  const handleClickSubmit = async () => {
+  const handleClickSubmit = useDebounce(async () => {
     try {
       if (pcRef.current.disabled || wapRef.current.disabled) {
         return
@@ -44,7 +45,7 @@ const HomeSwiper: FC<Props> = (props) => {
     } catch (e) {
       errorMessage('操作失败')
     }
-  }
+  }, 300)
 
   return <Spin spinning={loadingShopModel}>
     <div className={styles['home-swiper-container']}>
@@ -54,7 +55,7 @@ const HomeSwiper: FC<Props> = (props) => {
           <WapSwiper ref={wapRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></WapSwiper>
         </div>
           <Button className={styles['btn']}
-            size="large" onClick={handleClickSubmit}>保存</Button>
+            size="large" onClick={handleClickSubmit} disabled={pcRef.current.disabled || wapRef.current.disabled}>保存</Button>
         </>
       }
     </div>
