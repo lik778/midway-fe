@@ -143,7 +143,7 @@ function ImageCard(props: ImageCardProps) {
   const isSuccess = decodeStatus === 'SUCCESS'
   const isError = !isSuccess && !inEncoding
   // 应该是数据流动的问题，导致如果不检测 decodeStatus 就会显示 ErrorMask
-  const showVideoMask = directoryType === 'IMAGE' && card.hasOwnProperty('decodeStatus') && !loading
+  const showVideoMask = directoryType === 'VIDEO' && card.hasOwnProperty('decodeStatus') && !loading
 
   const stopEvent = (e: any) => e.stopPropagation()
 
