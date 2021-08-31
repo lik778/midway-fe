@@ -34,7 +34,6 @@ function CompanyInfoPhone400(props: any) {
     //   account: '40088888888',
     //   destNums: '11111111111,1222222222,13333333333,14444444444,555555555555555',
     // }])
-    console.log(res)
     const data: FormSourceData = {
       phone1: '',
       phone2: '',
@@ -61,7 +60,6 @@ function CompanyInfoPhone400(props: any) {
       destNums: [values.phone1, values.phone2, values.phone3, values.phone4, values.phone5].filter(item => item).join(',')
     }
     setUpdataLoading(true)
-    console.log(requestData)
     const { success, message, data } = await setPhone400Api(requestData)
     // const { success, message, data } = await mockData<Phone400Detail>('data', requestData)
     if (success) {

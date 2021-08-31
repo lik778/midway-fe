@@ -83,7 +83,6 @@ export default (props: Props) => {
     }
     values.contentImg = !values.contentImg || values.contentImg.length === 0 ? null : !Array.isArray(values.contentImg) ? getImgUploadModelValue(values.contentImg) : values.contentImg.map((item: MediaItem) => getImgUploadModelValue(item)).join(',')
     delete values.media
-    console.log(values)
     let resData: any;
     setFormLoading(true)
     if (isEdit) {

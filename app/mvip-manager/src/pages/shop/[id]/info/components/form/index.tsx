@@ -45,7 +45,6 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
   //会根据企业信息变更，重新渲染大表单
   useEffect(() => {
     updateConfigData()
-    console.log(shopBasicInfoParams)
   }, [shopBasicInfoParams])
 
   const sumbit = async (values: InitShopItemBasicInfoParams) => {
