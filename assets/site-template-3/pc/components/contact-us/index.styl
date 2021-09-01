@@ -11,19 +11,20 @@
         flex 1
         &+.form-item
           margin-left 30px
-
         &__label
-          margin-bottom 20px
+          margin-bottom 8px
           line-height 14px
           font-size 14px
+          font-weight 500
           color #333333
           position relative
           display inline-block
 
-          &.required
-            &::before
-              content '*'
-              color $color-main
+        .required
+          &::after
+            content '*'
+            margin-left 5px
+            color $color-main
         input,
         textarea
           background #F9F9F9
@@ -32,14 +33,18 @@
           color #999999
           width 100%
           padding 15px
+          &:focus
+            outline: #CCCCCC solid 2px
+            border-radius: 4px
+          &::-webkit-input-placeholder
+            color #BBBBBB
+          &:-ms-input-placeholder
+            color #BBBBBB
+          &:-moz-placeholder
+            color #BBBBBB
         textarea
           resize vertical
-          width 510px
           height 100px
-        input
-          width 240px
-          height 40px
-
         button
           width: 160px;
           height: 44px;
