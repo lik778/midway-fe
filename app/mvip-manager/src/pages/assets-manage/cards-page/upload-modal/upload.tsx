@@ -77,7 +77,7 @@ export function useUpload(props: Props) {
         signature: window.__upyunImgConfig?.uploadParams?.signature,
       }
     } : {
-      accept: ['video/mp4', 'video/mpeg', 'video/mov'],
+      accept: ['video/mp4', 'video/mpeg', 'video/mov', 'video/quicktime'],
       action: window.__upyunVideoConfig?.uploadUrl,
       data: {
         policy: window.__upyunVideoConfig?.uploadParams?.policy,
@@ -247,7 +247,7 @@ export function useUpload(props: Props) {
   return [
     <Upload
       className={styles['tranparent-uploader']}
-      accept={uploadConf.accept.map(x => '.' + (x.split('/')[1])).join(',')}
+      accept={uploadConf.accept.map(x => '.' + (x.split('/')[1])).filter(x => x !== 'quicktime').join(',')}
       action={uploadConf.action}
       data={uploadConf.data}
       multiple={true}
