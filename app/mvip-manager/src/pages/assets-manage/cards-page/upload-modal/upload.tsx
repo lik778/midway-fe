@@ -88,8 +88,6 @@ export function useUpload(props: Props) {
     }
   const uploadAccept = uploadConf.accept
     .map(x => '.' + (x.split('/')[1]))
-    .filter(x => x !== 'quicktime')
-    .filter(x => x !== 'mpeg')
     .join(',')
 
   // 增加一项
@@ -183,12 +181,13 @@ export function useUpload(props: Props) {
         if (!file) {
           return false
         }
+        const extNotShow = ['quicktime', 'mpeg']
         const isValidType = exts.includes(file.type)
         if (!isValidType) {
           notification.open({
             key: 'media-upload-error-filetype',
             message: `${uploadItemLabel}格式错误`,
-            description: `请上传 ${exts.map(x => x.split('/')[1]).join('、')} 格式的${uploadItemLabel}`,
+            description: `请上传 ${exts.map(x => x.split('/')[1]).filter(x => !extNotShow.includes(x)).join('、')} 格式的${uploadItemLabel}`,
           })
           return false
         }

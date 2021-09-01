@@ -65,7 +65,6 @@ type UploadResImage = UploadResBase
 type UploadResVideo = UploadResBase & {
   cover: string
   inEncode: boolean
-  encodeDone: boolean
 }
 type UploadResMap = UploadResImage | UploadResVideo
 
@@ -161,7 +160,6 @@ export default function useUploadModal(props: Props) {
             id: UPLOAD_RES_MAP_DEFAULT_ID,
             cover: '',
             inEncode: true,
-            encodeDone: false,
             inChibi: true,
             chibiFailed: false,
             status: 'done',
@@ -333,9 +331,6 @@ export default function useUploadModal(props: Props) {
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { name, uid, percent, preview } = item
     let uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
-    if (!uploadedItem) {
-      return null
-    }
 
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const error = uploadedItem ? uploadedItem.error : ''
@@ -378,7 +373,6 @@ export default function useUploadModal(props: Props) {
 
     if (!isUploadImage) {
       const inEncode = uploadedItem ? (uploadedItem as UploadResVideo).inEncode : false
-      const encodeDone = uploadedItem ? (uploadedItem as UploadResVideo).encodeDone : false
 
       if (inEncode === true) {
         $contents = (
@@ -394,25 +388,17 @@ export default function useUploadModal(props: Props) {
           <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem as UploadResVideo)}>点击申诉</span>
         </span>
       } else if (status === 'done') {
-        $contents = (
-          <span className={styles["upload-info"] + ' ' + styles["video"]} >
-            <span>上传成功，正在转码</span>
-            <span className={styles["upload-info-des"]}>可以在视频列表查看视频转码进度</span>
-          </span>
-        )
-        // if (preview) {
-        //   dispearMask = true
-        //   $contents = <>
-        //     <div className={styles['upload-item-actions']}>
-        //       <span className={styles['action']} onClick={() => handleRemove(item)}>
-        //         <DeleteOutlined />
-        //       </span>
-        //     </div>
-        //   </>
-        //   $extra.push(
-        //     <div className={styles['play-icon']} key='play-icon' />
-        //   )
-        // }
+        if (preview) {
+          $contents = (
+            <span className={styles["upload-info"] + ' ' + styles["video"]} >
+              <span>上传成功，正在转码</span>
+              <span className={styles["upload-info-des"]}>可以在视频列表查看视频转码进度</span>
+            </span>
+          )
+        } else {
+          dispearMask = false
+          $contents = <span className={styles["upload-info"]}>加载中</span>
+        }
       }
       $extra.push(
         <div className={styles['upload-item-name']}>{item.name}</div>
