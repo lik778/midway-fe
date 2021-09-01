@@ -9,7 +9,8 @@ block content
     include ../components/common/breadcrumbs.pug
 
   .container
-    -  backImg = renderData.basic.aboutModule.backImg || '//file.baixing.net/202102/4d00d8e95d5a246f4e3842fcf09a2329.png'
+    - let {backImg} = renderData.about||renderData.basic.aboutModule || {}
+    - backImg=backImg||'//file.baixing.net/202102/4d00d8e95d5a246f4e3842fcf09a2329.png'
     .banner(style="background: url("+backImg+") no-repeat top left/cover")
       //- cn域名下about取消公司名称显示
       if !isCn && isSem !== '2'
