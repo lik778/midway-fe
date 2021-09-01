@@ -164,7 +164,7 @@ export function useUpload(props: Props) {
   }
 
   // 检测资源属性是否合规
-  const checkAssets = useCallback(async (file: RcFile) => {
+  const checkAssets = useCallback(async (file: RcFile): Promise<any> => {
     return new Promise(async (resolve, reject) => {
 
       // 给上传增加一个测试开关
