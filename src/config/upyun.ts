@@ -28,7 +28,6 @@ export const upyunVideoConfig = {
     "save-key": "/{filemd5}{.suffix}",
     "type": "nbhd",
     "advote": "/s/720p(16:9)/r/25/sm/false/ar/22050",
-    "notify-url": "https://enb6hk1stgczkkc.m.pipedream.net",
     "ext-param": "source=msshop&s=720p&type=mvip-encode"
   },
 }
