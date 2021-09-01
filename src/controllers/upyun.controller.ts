@@ -47,7 +47,7 @@ export class UpyunController {
   async upyunVideoConfig(@Req() req: Request, @Res() res: Response) {
     const videoConfig = upyunVideoConfig
     const notifyBase = config().services['midway-service'].host
-    const notifyURL = notifyBase + '/api/midway/internal/material/materialReapply'
+    const notifyURL = notifyBase + '/api/midway/internal/material/decode'
     console.log('notifyURL:', notifyURL)
     const uploadPolicy = {
       ...videoConfig['policy'],
