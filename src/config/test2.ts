@@ -2,7 +2,8 @@ export default {
   env: 'test2',
   services: {
     'midway-service': {
-      host: 'http://172.30.2.14:30263'
+      host: 'http://172.30.2.14:30263',
+      external: 'http://midway.test-bxapplets.upyun.baixing.cn'
     },
     'zhidao-service': {
       host: 'http://172.30.2.14:31252'

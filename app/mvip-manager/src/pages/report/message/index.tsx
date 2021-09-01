@@ -216,6 +216,7 @@ function LeaveMessagePage() {
     if (range) {
       setRange(range)
       const [timeStart, timeEnd] = formatRange(range)
+      // setQuery({ timeStart, timeEnd })
       refreshList({
         timeStart,
         timeEnd,
