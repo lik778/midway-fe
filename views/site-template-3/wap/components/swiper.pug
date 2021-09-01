@@ -1,5 +1,5 @@
 mixin swiper(data, type)
-  .swiper-container(style= type==='home'?"height: 100vw":"")
+  .swiper-container(style= type==='home'? "height: 100vw" : "height: 152px")
     if data && data.length > 0
       .swiper-wrapper
         each item in data
