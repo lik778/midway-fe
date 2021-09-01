@@ -5,6 +5,7 @@ import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { upyunImgConfig, upyunVideoConfig } from '../config/upyun'
 import { md5 } from '../util/common'
+import config from '../config'
 
 @Controller('/upyun')
 export class UpyunController {
@@ -45,8 +46,12 @@ export class UpyunController {
   @Get('/upyunVideoConfig')
   async upyunVideoConfig(@Req() req: Request, @Res() res: Response) {
     const videoConfig = upyunVideoConfig
+    const notifyBase = config().services['midway-service'].host
+    const notifyURL = notifyBase + '/api/midway/internal/material/materialReapply'
+    console.log('notifyURL:', notifyURL)
     const uploadPolicy = {
       ...videoConfig['policy'],
+      'notify-url': notifyURL,
       "expiration": new Date().getTime() + 3600 * 1000
     }
     const { encodedUploadPolicy, uploadSignature } = this.genUpyunSignature(uploadPolicy, videoConfig['form_api_secret'])
