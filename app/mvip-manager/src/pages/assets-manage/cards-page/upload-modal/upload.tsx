@@ -7,8 +7,10 @@ import styles from './index.less'
 declare global {
   // 上传后门设置
   interface Window {
+    // 跳过上传检测
     _quick_upload: boolean
     _quick_upload_file: RcFile
+    // 最小上传视频时间
     _min_duration: number
   }
 }
@@ -84,6 +86,11 @@ export function useUpload(props: Props) {
         signature: window.__upyunVideoConfig?.uploadParams?.signature,
       }
     }
+  const uploadAccept = uploadConf.accept
+    .map(x => '.' + (x.split('/')[1]))
+    .filter(x => x !== 'quicktime')
+    .filter(x => x !== 'mpeg')
+    .join(',')
 
   // 增加一项
   const add = useCallback((item: UploadItem) => {
@@ -247,7 +254,7 @@ export function useUpload(props: Props) {
   return [
     <Upload
       className={styles['tranparent-uploader']}
-      accept={uploadConf.accept.map(x => '.' + (x.split('/')[1])).filter(x => x !== 'quicktime').join(',')}
+      accept={uploadAccept}
       action={uploadConf.action}
       data={uploadConf.data}
       multiple={true}
