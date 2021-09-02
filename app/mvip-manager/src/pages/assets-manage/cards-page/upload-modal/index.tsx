@@ -309,7 +309,7 @@ export default function useUploadModal(props: Props) {
     } else {
       Modal.confirm({
         title: '确认关闭',
-        content: `仍有${subDirectoryLabel}仍未上传成功`,
+        content: `未上传成功的${subDirectoryLabel}将被取消，请确认`,
         width: 532,
         onCancel() { },
         onOk() {
