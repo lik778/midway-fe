@@ -85,10 +85,10 @@ export default function useUploadModal(props: Props) {
 
   const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector()
   useEffect(() => {
-    if (selectedAlbum) {
+    if (selectedAlbum || !visible) {
       setLists([])
     }
-  }, [selectedAlbum])
+  }, [selectedAlbum, visible])
 
   const handleCreateAlbum = () => createAlbum()
 
@@ -433,7 +433,7 @@ export default function useUploadModal(props: Props) {
     //   dispearMask = true
     // }
 
-    return (
+    return visible && (
       <div className={styles["upload-item"] + ' ' + (isUploadImage ? styles['image'] : styles['video'])} key={`${uid}-${idx}-${status}-${name||''}`}>
         <img className={styles["upload-img"]} src={preview} />
         <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
@@ -441,7 +441,7 @@ export default function useUploadModal(props: Props) {
         {$extra}
       </div>
     )
-  }), [lists, uploadedLists, isUploadImage, reRender])
+  }), [lists, uploadedLists, isUploadImage, reRender, visible])
 
   const showUploadBtn = (lists.length < MAX_UPLOAD_COUNT) && canUpload
 
