@@ -64,7 +64,6 @@ type UploadResImage = UploadResBase
 // 视频资源
 type UploadResVideo = UploadResBase & {
   cover: string
-  inEncode: boolean
 }
 type UploadResMap = UploadResImage | UploadResVideo
 
@@ -159,7 +158,6 @@ export default function useUploadModal(props: Props) {
             uid: item.uid,
             id: UPLOAD_RES_MAP_DEFAULT_ID,
             cover: '',
-            inEncode: true,
             inChibi: true,
             chibiFailed: false,
             status: 'done',
@@ -205,7 +203,6 @@ export default function useUploadModal(props: Props) {
             const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
             if (target) {
               target.id = res.data.id
-              target.inEncode = false
               target.inChibi = false
               target.chibiFailed = res.data.checkStatus !== 'APPROVE'
               record(uploadedLists.current)
@@ -230,7 +227,7 @@ export default function useUploadModal(props: Props) {
         } else {
           const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
           if (target) {
-            target.inEncode = false
+            target.inChibi = false
             target.status = 'error'
             target.error = error.message
             record(uploadedLists.current)
@@ -247,7 +244,18 @@ export default function useUploadModal(props: Props) {
     afterUploadHook,
   })
 
-  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
+  // 当上传完成、机审通过才能无感知关闭弹窗
+  const canConfirm = useMemo(() => {
+    const isUploaded = lists.every(x => x.status === 'done')
+    const isPassChibi = lists.every(x => {
+      const target = uploadedLists.current.find(y => y.uid === x.uid)
+      return !target
+        // 如果没找到资源说明还没调用后端接口呢所以算机审未通过
+        ? false
+        : !target.inChibi
+    })
+    return isUploaded && isPassChibi
+  }, [lists, reRender])
 
   const open = (defaultVal?: number) => {
     setAlbumByID(defaultVal)
@@ -309,7 +317,7 @@ export default function useUploadModal(props: Props) {
     } else {
       Modal.confirm({
         title: '确认关闭',
-        content: `未上传成功的${subDirectoryLabel}将被取消，请确认`,
+        content: `仍未上传成功的${subDirectoryLabel}，将被取消上传！`,
         width: 532,
         onCancel() { },
         onOk() {
@@ -372,9 +380,9 @@ export default function useUploadModal(props: Props) {
     /* 视频卡片样式处理 */
 
     if (!isUploadImage) {
-      const inEncode = uploadedItem ? (uploadedItem as UploadResVideo).inEncode : false
+      const inChibi = uploadedItem ? (uploadedItem as UploadResVideo).inChibi : false
 
-      if (inEncode === true) {
+      if (inChibi === true) {
         $contents = (
           <span className={styles["upload-info"] + ' ' + styles["video"]} >
             <span>上传中</span>
