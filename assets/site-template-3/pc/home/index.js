@@ -77,21 +77,21 @@ $(document).on('ready', function() {
   })
 
   /* 关于我们视频初始化 */
-  const $aboutUsVideo = document.querySelector('.about-us-bgc video');
-  const hasAboutVideo = $aboutUsVideo;
+  const $aboutUsVideo = document.querySelector('.about-us-bgc video')
+  const hasAboutVideo = $aboutUsVideo
   const $aboutUsVideoCovers = hasAboutVideo
     ? $aboutUsVideo.parentElement.parentElement.querySelector('.video-cover')
-    : null;
+    : null
   if (hasAboutVideo) {
     // 点击封面或视频播放视频
     $aboutUsVideo.addEventListener('click', () => {
-      $aboutUsVideo.paused ? $aboutUsVideo.play() : $aboutUsVideo.pause();
-    });
+      $aboutUsVideo.paused ? $aboutUsVideo.play() : $aboutUsVideo.pause()
+    })
     $aboutUsVideoCovers.addEventListener('click', evt => {
-      $aboutUsVideo.play();
-      $aboutUsVideoCovers.remove();
-      evt.stopPropagation();
-    });
+      $aboutUsVideo.play()
+      $aboutUsVideoCovers.remove()
+      evt.stopPropagation()
+    })
   }
 
   // sem部分链接需要禁止二跳
