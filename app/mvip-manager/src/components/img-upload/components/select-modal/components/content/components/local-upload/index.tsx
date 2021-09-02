@@ -26,7 +26,6 @@ const LocalUpload: FC = () => {
     // 这里这么判断是因为在弹窗选图下，本地上传模块的图片后不存在删除操作，只有新增，所以比对一下url不同就知道是哪一个文件被修改了
     // 至于为什么不用最后一个，以免以后有裁剪功能什么的比对
     const file = fileList.find((item, index) => !oldFileList[index] || item.url !== oldFileList[index].url)
-    // TODO FIXME TYPE
     const res = await createMediaAssets({
       imgUrl: file!.url!,
       source: 'IMAGE'
@@ -41,6 +40,8 @@ const LocalUpload: FC = () => {
   const itemRender = (originNode: React.ReactElement<any, string | React.JSXElementConstructor<any>>, file: UploadFile<any>, fileList?: UploadFile<any>[] | undefined) => {
     return undefined
   }
+
+  // console.log('fileList:', fileList)
 
   return <Spin spinning={upDataLoading}>
     <div className={styles['tip']}>因视频转码时间较久，“本地上传”仅支持上传图片，若需使用视频，请直接在“我的视频”中调用</div>
