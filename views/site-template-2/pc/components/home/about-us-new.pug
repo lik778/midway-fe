@@ -1,4 +1,4 @@
-mixin about-Us-New(type,mediaImg)
+mixin about-Us-New(type,mediaImg,videoUrl)
   .about-us-bgc
     .content-right
       .content-right-title
@@ -24,13 +24,11 @@ mixin about-Us-New(type,mediaImg)
             p.phoneNumber-full.none #{ phone.content }
         .bottom-right 查看完整电话
     .content-left
-      - const videoUrl = company.videoUrl
-      - const videoCover = company.videoCover
       if videoUrl
         .video-con
           .video-wrapper
             video(src=videoUrl, loop, preload, controls)
           .video-cover
-            img.picture(src=videoCover)
+            img.picture(src=mediaImg)
       else
         img.audio(src=mediaImg||"//file.baixing.net/202108/cf64fc96ae23bee3384871111292cdc1.png")

@@ -40,7 +40,7 @@ block content
             +product-list('hot', hotProductList)
 
         if isSem !== "2"
-            - const { name: aboutUsTitle, tags, media } = renderData.about||renderData.basic.aboutModule || {}
+            - const { name: aboutUsTitle, tags, media, videoUrl } = renderData.about||renderData.basic.aboutModule || {}
             .block-title
                 //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
                 .point 
@@ -51,7 +51,7 @@ block content
                     .largePoint
                     .littlePoint
             include ../components/home/about-us-new.pug
-            +about-Us-New(tags,media)
+            +about-Us-New(tags,media,videoUrl)
 
         //-自定义模块1（即之前的企业优势模块）
         if autoConfig && autoConfig[0] &&autoConfig[0].show
