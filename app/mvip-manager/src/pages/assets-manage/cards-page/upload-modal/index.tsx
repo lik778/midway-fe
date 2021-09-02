@@ -105,7 +105,7 @@ export default function useUploadModal(props: Props) {
     }
     window._mvip_upload_rerender_tick = setInterval(() => {
       getRandomNumber()
-    }, 1000)
+    }, 500)
   }
 
   // 上传后钩子（在上传到又拍云后用来和后端交互）
@@ -326,7 +326,7 @@ export default function useUploadModal(props: Props) {
         }
       })
     }
-  }, [lists])
+  }, [lists, canConfirm])
 
   /***************************************************** Renders */
 
