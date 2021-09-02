@@ -124,7 +124,10 @@ $(document).on('ready', function () {
 		? $aboutUsVideo.parentElement.parentElement.querySelector('.video-cover')
 		: null
 	if (hasAboutVideo) {
-		// 点击封面播放视频
+		// 点击封面或视频播放视频
+		$aboutUsVideo.addEventListener('click', () => {
+			$aboutUsVideo.paused ? $aboutUsVideo.play() : $aboutUsVideo.pause()
+		})
 		$aboutUsVideoCovers.addEventListener('click', evt => {
 			$aboutUsVideo.play()
 			$aboutUsVideoCovers.remove()

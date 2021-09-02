@@ -44,6 +44,8 @@ const LocalUpload: FC = () => {
     return undefined
   }
 
+  // console.log('fileList:', fileList)
+
   return <Spin spinning={upDataLoading}>
     <div className={styles['tip']}>因视频转码时间较久，“本地上传”仅支持上传图片，若需使用视频，请直接在“我的视频”中调用</div>
     <div className={styles['local-upload']}>
