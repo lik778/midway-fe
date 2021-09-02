@@ -72,29 +72,3 @@ $bannerVideos.map($video => {
   }
 })
 
-// 控制除了首页轮播图
-new Swiper('.swiper-container-small', {
-  speed: 1000,
-  centeredSlides: true,
-  autoplay: {
-    delay: 3000,
-    disableOnInteraction: false,
-    waitForTransition: true,
-  },
-  //分页器
-  pagination: {
-    el: '.swiper-container-small .swiper-pagination',
-    clickable: true,
-  },
-  //前进后退按钮
-  navigation: {
-    nextEl: '.swiper-container-small .swiper-button-next',
-    prevEl: '.swiper-container-small .swiper-button-prev',
-  },
-  on: {
-    slideChange: () => {
-      pauseAllBannerVideo();
-      swiper.autoplay.start();
-    },
-  },
-})

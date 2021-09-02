@@ -1,7 +1,6 @@
 .contact-us
   display flex
-  width 1220px
-  margin-left -17px
+  width 1190px
   &__address
     width 435px
     height 526px
@@ -12,6 +11,7 @@
     box-sizing border-box
     background url('//file.baixing.net/202102/9612863cfe9db6407b85fb5bbcc7b8ed.png') no-repeat center center/cover,
                 linear-gradient(200deg, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0.85) 28%, #FFFFFF 44%)
+    border-radius 4px
   &__title
     font-weight bold
     font-size 20px
@@ -64,9 +64,10 @@
   &__message
     box-sizing border-box
     height 526px
-    width 769px
+    width 737px
     background-color #fff
     padding 50px 0 0 50px
+    border-radius 4px
   &__form
     position relative
     .form-group
@@ -102,6 +103,15 @@
           color #999999
           width 100%
           padding 15px 0 15px 15px
+          &::-webkit-input-placeholder
+            color #BBBBBB
+          &:-ms-input-placeholder
+            color #BBBBBB
+          &:-moz-placeholder
+            color #BBBBBB
+          &:focus
+            outline: #CCCCCC solid 2px
+            border-radius: 4px
         textarea
           resize vertical
           width 664px
@@ -109,6 +119,10 @@
         input 
           width 320px
           height 50px
+          &:focus
+            border-color #cccccc
+          
+          
 
         button
           background #FF2D38
@@ -118,6 +132,7 @@
           padding 9px 59px
           cursor pointer
           line-height 22px
+          border-radius 4px
     .result-msg
       display none
       width 160px
