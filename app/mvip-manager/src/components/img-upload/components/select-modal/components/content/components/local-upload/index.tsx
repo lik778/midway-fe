@@ -12,7 +12,7 @@ import { MediaItem } from '@/components/img-upload/data'
 
 const LocalUpload: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { initConfig: { uploadBtnText, maxSize, aspectRatio, cropProps } } = context
+  const { initConfig: { uploadBtnText, maxSize, maxLength, cropProps } } = context
 
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
@@ -49,7 +49,7 @@ const LocalUpload: FC = () => {
         {
           fileList.map((item, index) => <ImgItem mediaType="IMAGE" detail={albumList[index]} file={item} itemHeight={102} key={item.uid} ></ImgItem>)
         }
-        <ImgUpload uploadType={1} uploadBtnText={uploadBtnText} maxLength={1000} onChange={handleChange} onFileChange={setFileList} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
+        <ImgUpload uploadType={1} uploadBtnText={uploadBtnText} maxLength={maxLength} onChange={handleChange} onFileChange={setFileList} maxSize={maxSize} aspectRatio={150 / 116} showUploadList={{
           showRemoveIcon: false,
           showCropIcon: false
         }} cropProps={cropProps} itemRender={itemRender}></ImgUpload>

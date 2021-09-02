@@ -7,9 +7,13 @@ import styles from './index.less'
 declare global {
   // 上传后门设置
   interface Window {
+    // 跳过上传检测
     _quick_upload: boolean
     _quick_upload_file: RcFile
+    // 最小上传视频时间
     _min_duration: number
+    // 最大上传大小
+    _max_size: number
   }
 }
 
@@ -77,13 +81,16 @@ export function useUpload(props: Props) {
         signature: window.__upyunImgConfig?.uploadParams?.signature,
       }
     } : {
-      accept: ['video/mp4', 'video/mpeg', 'video/mov'],
+      accept: ['video/mp4', 'video/mpeg', 'video/mov', 'video/quicktime'],
       action: window.__upyunVideoConfig?.uploadUrl,
       data: {
         policy: window.__upyunVideoConfig?.uploadParams?.policy,
         signature: window.__upyunVideoConfig?.uploadParams?.signature,
       }
     }
+  const uploadAccept = uploadConf.accept
+    .map(x => '.' + (x.split('/')[1]))
+    .join(',')
 
   // 增加一项
   const add = useCallback((item: UploadItem) => {
@@ -164,7 +171,7 @@ export function useUpload(props: Props) {
   }
 
   // 检测资源属性是否合规
-  const checkAssets = useCallback(async (file: RcFile) => {
+  const checkAssets = useCallback(async (file: RcFile): Promise<any> => {
     return new Promise(async (resolve, reject) => {
 
       // 给上传增加一个测试开关
@@ -176,16 +183,17 @@ export function useUpload(props: Props) {
         if (!file) {
           return false
         }
+        const extNotShow = ['quicktime', 'mpeg']
         const isValidType = exts.includes(file.type)
         if (!isValidType) {
           notification.open({
             key: 'media-upload-error-filetype',
             message: `${uploadItemLabel}格式错误`,
-            description: `请上传 ${exts.map(x => x.split('/')[1]).join('、')} 格式的${uploadItemLabel}`,
+            description: `请上传 ${exts.map(x => x.split('/')[1]).filter(x => !extNotShow.includes(x)).join('、')} 格式的${uploadItemLabel}`,
           })
           return false
         }
-        const validSize = file.size / 1024 / 1024 < size
+        const validSize = file.size / 1024 / 1024 < (window._max_size || size)
         if (!validSize) {
           notification.open({
             key: 'media-upload-error-filesize',
@@ -247,7 +255,7 @@ export function useUpload(props: Props) {
   return [
     <Upload
       className={styles['tranparent-uploader']}
-      accept={uploadConf.accept.map(x => '.' + (x.split('/')[1])).join(',')}
+      accept={uploadAccept}
       action={uploadConf.action}
       data={uploadConf.data}
       multiple={true}

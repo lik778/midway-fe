@@ -28,6 +28,9 @@ export default withRouter((props) => {
               <Menu.Item key="audit-image">
                 <Link to="/audit-image" key="audit-image">图片审核</Link>
               </Menu.Item>
+              <Menu.Item key="audit-video">
+                <Link to="/audit-video" key="audit-video">视频审核</Link>
+              </Menu.Item>
               <Menu.Item key="verify-word">
                 <Link to="/verify-word" key="verify-word">词根审核</Link>
               </Menu.Item>

@@ -64,8 +64,6 @@ type UploadResImage = UploadResBase
 // 视频资源
 type UploadResVideo = UploadResBase & {
   cover: string
-  inEncode: boolean
-  encodeDone: boolean
 }
 type UploadResMap = UploadResImage | UploadResVideo
 
@@ -86,10 +84,10 @@ export default function useUploadModal(props: Props) {
 
   const [$albumSelector, selectedAlbum, setAlbum, setAlbumByID] = useAlbumSelector()
   useEffect(() => {
-    if (selectedAlbum) {
+    if (selectedAlbum || !visible) {
       setLists([])
     }
-  }, [selectedAlbum])
+  }, [selectedAlbum, visible])
 
   const handleCreateAlbum = () => createAlbum()
 
@@ -107,7 +105,7 @@ export default function useUploadModal(props: Props) {
     }
     window._mvip_upload_rerender_tick = setInterval(() => {
       getRandomNumber()
-    }, 1000)
+    }, 500)
   }
 
   // 上传后钩子（在上传到又拍云后用来和后端交互）
@@ -160,8 +158,6 @@ export default function useUploadModal(props: Props) {
             uid: item.uid,
             id: UPLOAD_RES_MAP_DEFAULT_ID,
             cover: '',
-            inEncode: true,
-            encodeDone: false,
             inChibi: true,
             chibiFailed: false,
             status: 'done',
@@ -185,7 +181,7 @@ export default function useUploadModal(props: Props) {
           const itemName = item.name
             .split('.')[0]
             .split('')
-            .filter(x => x.match(/[a-zA-Z0-9\u4e00-\u9fa5!@#$%^&*()_+=-~|\\\{\}\[\]]/))
+            .filter(x => x.match(/[a-zA-Z0-9\u4e00-\u9fa5-=_&^%@#\+\$\*\(\)\[\]{}]/))
             .slice(0, 20)
             .join('')
           const query = {
@@ -207,7 +203,6 @@ export default function useUploadModal(props: Props) {
             const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
             if (target) {
               target.id = res.data.id
-              target.inEncode = false
               target.inChibi = false
               target.chibiFailed = res.data.checkStatus !== 'APPROVE'
               record(uploadedLists.current)
@@ -232,7 +227,7 @@ export default function useUploadModal(props: Props) {
         } else {
           const target = uploadedLists.current.find(x => x.uid === item.uid) as UploadResVideo
           if (target) {
-            target.inEncode = false
+            target.inChibi = false
             target.status = 'error'
             target.error = error.message
             record(uploadedLists.current)
@@ -249,7 +244,18 @@ export default function useUploadModal(props: Props) {
     afterUploadHook,
   })
 
-  const canConfirm = useMemo(() => lists.every(x => x.status === 'done'), [lists])
+  // 当上传完成、机审通过才能无感知关闭弹窗
+  const canConfirm = useMemo(() => {
+    const isUploaded = lists.every(x => x.status === 'done')
+    const isPassChibi = lists.every(x => {
+      const target = uploadedLists.current.find(y => y.uid === x.uid)
+      return !target
+        // 如果没找到资源说明还没调用后端接口呢所以算机审未通过
+        ? false
+        : !target.inChibi
+    })
+    return isUploaded && isPassChibi
+  }, [lists, reRender])
 
   const open = (defaultVal?: number) => {
     setAlbumByID(defaultVal)
@@ -311,7 +317,7 @@ export default function useUploadModal(props: Props) {
     } else {
       Modal.confirm({
         title: '确认关闭',
-        content: `仍有${subDirectoryLabel}仍未上传成功`,
+        content: `仍未上传成功的${subDirectoryLabel}，将被取消上传！`,
         width: 532,
         onCancel() { },
         onOk() {
@@ -320,7 +326,7 @@ export default function useUploadModal(props: Props) {
         }
       })
     }
-  }, [lists])
+  }, [lists, canConfirm])
 
   /***************************************************** Renders */
 
@@ -333,9 +339,6 @@ export default function useUploadModal(props: Props) {
   const renderLists = useCallback(() => lists.map((item: UploadItem, idx) => {
     const { name, uid, percent, preview } = item
     let uploadedItem = uploadedLists.current.find(x => x.uid === item.uid)
-    if (!uploadedItem) {
-      return null
-    }
 
     const status = (uploadedItem ? uploadedItem.status : item.status) || 'error'
     const error = uploadedItem ? uploadedItem.error : ''
@@ -377,10 +380,9 @@ export default function useUploadModal(props: Props) {
     /* 视频卡片样式处理 */
 
     if (!isUploadImage) {
-      const inEncode = uploadedItem ? (uploadedItem as UploadResVideo).inEncode : false
-      const encodeDone = uploadedItem ? (uploadedItem as UploadResVideo).encodeDone : false
+      const inChibi = uploadedItem ? (uploadedItem as UploadResVideo).inChibi : false
 
-      if (inEncode === true) {
+      if (inChibi === true) {
         $contents = (
           <span className={styles["upload-info"] + ' ' + styles["video"]} >
             <span>上传中</span>
@@ -394,25 +396,17 @@ export default function useUploadModal(props: Props) {
           <span className={styles["re-audit-btn"]} onClick={() => reAuditAsset(uploadedItem as UploadResVideo)}>点击申诉</span>
         </span>
       } else if (status === 'done') {
-        $contents = (
-          <span className={styles["upload-info"] + ' ' + styles["video"]} >
-            <span>上传成功，正在转码</span>
-            <span className={styles["upload-info-des"]}>可以在视频列表查看视频转码进度</span>
-          </span>
-        )
-        // if (preview) {
-        //   dispearMask = true
-        //   $contents = <>
-        //     <div className={styles['upload-item-actions']}>
-        //       <span className={styles['action']} onClick={() => handleRemove(item)}>
-        //         <DeleteOutlined />
-        //       </span>
-        //     </div>
-        //   </>
-        //   $extra.push(
-        //     <div className={styles['play-icon']} key='play-icon' />
-        //   )
-        // }
+        if (preview) {
+          $contents = (
+            <span className={styles["upload-info"] + ' ' + styles["video"]} >
+              <span>上传成功，正在转码</span>
+              <span className={styles["upload-info-des"]}>可以在视频列表查看视频转码进度</span>
+            </span>
+          )
+        } else {
+          dispearMask = false
+          $contents = <span className={styles["upload-info"]}>加载中</span>
+        }
       }
       $extra.push(
         <div className={styles['upload-item-name']}>{item.name}</div>
@@ -447,7 +441,7 @@ export default function useUploadModal(props: Props) {
     //   dispearMask = true
     // }
 
-    return (
+    return visible && (
       <div className={styles["upload-item"] + ' ' + (isUploadImage ? styles['image'] : styles['video'])} key={`${uid}-${idx}-${status}-${name||''}`}>
         <img className={styles["upload-img"]} src={preview} />
         <div className={styles["mask"] + (dispearMask ? styles['none'] : '')} />
@@ -455,7 +449,7 @@ export default function useUploadModal(props: Props) {
         {$extra}
       </div>
     )
-  }), [lists, uploadedLists, isUploadImage, reRender])
+  }), [lists, uploadedLists, isUploadImage, reRender, visible])
 
   const showUploadBtn = (lists.length < MAX_UPLOAD_COUNT) && canUpload
 

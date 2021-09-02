@@ -185,6 +185,15 @@ export const objToTargetObj = <T, K extends keyof T>(obj: T, key = 'key'): any[]
   return Object.keys(obj).map((k) => ({ [key]: obj[k as K], key: obj[k as K], value: k }))
 }
 
+export const createNameRules = (config = {} as any) => {
+  const { name } = config
+  return [
+    { pattern: /(^[\S]).*([\S]$)/, message: `${name}不能以空格开头或结尾` },
+    { pattern: /^[\s\S]{2,20}$/, message: `${name}限制为 2～20 个字符` },
+    { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5-=_&^%@#\+\$\*\(\)\[\]{}\s]+$/, message: `${name}不允许有特殊符号` }
+  ]
+}
+
 /**
  * 用于mock数据使用
  */
