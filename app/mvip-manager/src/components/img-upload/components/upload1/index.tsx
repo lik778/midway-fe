@@ -6,17 +6,24 @@ import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 import ImgItem from '@/components/img-upload/components/img-item'
 import UploadBtn from '@/components/img-upload/components/upload-btn'
 import { getFileBase64 } from '@/utils/index'
-import { useEffect } from 'react';
+import { ImgUploadContextInitConfig } from '@/components/img-upload/data'
 
+interface Props {
+  fileList: UploadFile<any>[]
+  initConfig: ImgUploadContextInitConfig
+  handleChangeFileList: (newFileList: UploadFile<any>[], oldFileList: UploadFile<any>[], file: UploadFile<any> | null) => void
+  handlePreview?: (file: UploadFile<any>) => void
+  handleRemove?: (file: UploadFile<any>, fileIndex: number) => void
+  handleCrop?: (file: UploadFile<any>, fileIndex: number) => void
+}
 
-const Upload1: FC = () => {
-  const context = useContext(ImgUploadContext)
-  const { fileList, initConfig: { maxSize, maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handleReloadFileList, handleChangeFileList, handlePreview, handleRemove, handleCrop } = context
+const Upload1: FC<Props> = (props) => {
+  const { fileList, initConfig: { maxSize, maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handleChangeFileList, handlePreview, handleRemove, handleCrop } = props
 
   const setCropItem = async (file: RcFile,) => {
     const filrUrl = await getFileBase64(file)
     const cropItem: UploadFile = { uid: file.uid, status: 'uploading', preview: filrUrl as string, size: 0, name: '', originFileObj: null as any, type: '', }
-    handleCrop(cropItem, fileList.length)
+    handleCrop && handleCrop(cropItem, fileList.length)
   }
 
   const beforeUpload = (file: RcFile) => {
@@ -72,10 +79,11 @@ const Upload1: FC = () => {
     onChange={handleChange}
     isImageUrl={(file) => { return true }}
     disabled={disabled}
-    itemRender={itemRender ? itemRender : (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem fileIndex={(fileList || []).findIndex(item => item.uid === file.uid)} file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
+    //  itemRender 与 onRemove onCrop 是互斥的  
+    itemRender={itemRender ? itemRender : (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem fileIndex={(fileList || []).findIndex(item => item.uid === file.uid)} file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview!} onRemove={handleRemove!} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
   >
     {
-      fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />
+      fileList.length < maxLength && <UploadBtn uploadType={1} text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />
     }
   </Upload >
 }

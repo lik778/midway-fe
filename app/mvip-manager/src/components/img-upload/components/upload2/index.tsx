@@ -7,7 +7,7 @@ import UploadBtn from '@/components/img-upload/components/upload-btn'
 
 const Upload2: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { fileList, initConfig: {  maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handlePreview, handleRemove, handleCrop, handleSelectCover } = context
+  const { fileList, initConfig: { maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handlePreview, handleRemove, handleCrop, handleSelectCover, handleChangeAlbumVisible } = context
 
   return <>
     <div className={styles['img-selected-list']}>
@@ -20,7 +20,7 @@ const Upload2: FC = () => {
           }
         })
       }
-      {fileList.length < maxLength && <UploadBtn text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />}
+      {fileList.length < maxLength && <UploadBtn uploadType={2} text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} handleChangeAlbumVisible={handleChangeAlbumVisible} />}
     </div>
   </>
 }

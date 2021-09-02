@@ -50,14 +50,17 @@ export class RequestService {
       }).catch((err: AxiosError) => reject(err))
     })
       .catch((err) => {
-        console.log(err)
         this.logService.errorLog(err)
         if (err.isAxiosError) {
-          const { message, code, success } = err.response.data
-          if (this.landPageRequestRegExp.test(url)) {
-            throw new PageException(code, success, message);
+          if (err.response) {
+            const { message, code, success } = err.response.data
+            if (this.landPageRequestRegExp.test(url)) {
+              throw new PageException(code, success, message);
+            } else {
+              throw new ApiException(code, success, message);
+            }
           } else {
-            throw new ApiException(code, success, message);
+            throw new ApiException(500, false, '请求没有返回，response为undefined');
           }
         } else {
           if (this.landPageRequestRegExp.test(url)) {

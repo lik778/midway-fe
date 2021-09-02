@@ -28,9 +28,10 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
     return file.preview
   } else if (file.url && file.url.indexOf('.baixing.') !== -1) {
     return file.url
+  } else if (file.originFileObj) {
+    return getFileBase64(file.originFileObj);
   } else {
-    const preview = getFileBase64(file.originFileObj);
-    return preview
+    return ''
   }
 }
 
@@ -268,6 +269,23 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
   // TODO; 暂时没有下载功能就 a标签跳新页面了，就不写这个函数了
 
+  const initConfig = {
+    uploadType,
+    showImage,
+    showVideo,
+    uploadBtnText,
+    maxSize,
+    maxLength,
+    disabled,
+    aspectRatio,
+    itemWidth,
+    cropProps,
+    showUploadList,
+    actionBtn,
+    itemRender,
+    uploadBeforeCrop
+  }
+
   return (
     <>
       <div className={styles['img-upload']}>
@@ -277,20 +295,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           videoData,
           baixingImageData,
           initConfig: {
-            uploadType,
-            showImage,
-            showVideo,
-            uploadBtnText,
-            maxSize,
-            maxLength,
-            disabled,
-            aspectRatio,
-            itemWidth,
-            cropProps,
-            showUploadList,
-            actionBtn,
-            itemRender,
-            uploadBeforeCrop
+            ...initConfig
           },
           albumVisible,
           selectModalType,
@@ -308,7 +313,13 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           handleSelectCover,
         }}>
           {
-            uploadType === 1 && <Upload1></Upload1>
+            uploadType === 1 && <Upload1
+              fileList={fileList}
+              initConfig={{ ...initConfig }}
+              handleChangeFileList={decorateSetFileList}
+              handlePreview={handlePreview}
+              handleRemove={handleRemove}
+              handleCrop={handleCrop} ></Upload1>
           }
           {
             uploadType === 2 && <Upload2></Upload2>

@@ -74,26 +74,27 @@ export interface MediaDataAlbumListItem {
   init: boolean // 是否初始化过
 }
 
+export interface ImgUploadContextInitConfig {
+  uploadType: 1 | 2,//1：直接上传  2：打开图库
+  showImage: boolean,// 是否显示图片相关tab
+  showVideo: boolean,// 是否显示视频相关tab
+  uploadBtnText: string;// 上传按钮上的提示文本
+  maxSize: number;// 单个图片最大尺寸
+  maxLength: number;// 本次上传个数上线
+  disabled: boolean;// 是否禁用
+  aspectRatio?: number// 图片不是正方形的时候通过传比例去设置长度
+  itemWidth?: number// 根据aspectRatio算出的长度
+  showUploadList?: ExpandShowUploadListInterface// 按钮控制
+  cropProps: CropProps,// 裁剪参数
+  actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
+  // 当uploadType === 1 时的可选 开始
+  uploadBeforeCrop?: boolean,// 选择时裁剪
+  itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
+}
 
 export interface ImgUploadContextProps {
   fileList: UploadFile[],// 当前选择的文件列表
-  initConfig: {
-    uploadType: 1 | 2,//1：直接上传  2：打开图库
-    showImage: boolean,// 是否显示图片相关tab
-    showVideo: boolean,// 是否显示视频相关tab
-    uploadBtnText: string;// 上传按钮上的提示文本
-    maxSize: number;// 单个图片最大尺寸
-    maxLength: number;// 本次上传个数上线
-    disabled: boolean;// 是否禁用
-    aspectRatio?: number// 图片不是正方形的时候通过传比例去设置长度
-    itemWidth?: number// 根据aspectRatio算出的长度
-    showUploadList?: ExpandShowUploadListInterface// 按钮控制
-    cropProps: CropProps,// 裁剪参数
-    actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
-    // 当uploadType === 1 时的可选 开始
-    uploadBeforeCrop?: boolean,// 选择时裁剪
-    itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
-  },
+  initConfig: ImgUploadContextInitConfig,
   albumVisible: boolean, // 图片库是否显示
   selectModalType: SelectModalType,
   videoData: MediaDataAlbumListItem[],

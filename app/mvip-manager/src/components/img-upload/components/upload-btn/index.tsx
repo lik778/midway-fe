@@ -1,20 +1,19 @@
 import React, { useContext, FC } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import ImgUploadContext  from '@/components/img-upload/context'
 import styles from './index.less'
 interface Props {
   text?: string
   disabled?: boolean
-  itemWidth?: number
+  itemWidth?: number,
+  uploadType: 1 | 2,
+  handleChangeAlbumVisible?: (albumVisible: boolean) => void
 }
 
 const UploadBtn: FC<Props> = (props) => {
-  const { text, disabled, itemWidth } = props
-  const context = useContext(ImgUploadContext)
-  const { initConfig, handleChangeAlbumVisible } = context
+  const { text, disabled, itemWidth, uploadType, handleChangeAlbumVisible } = props
   const handleClick = () => {
-    if (initConfig.uploadType) {
-      handleChangeAlbumVisible(true)
+    if (uploadType === 2) {
+      handleChangeAlbumVisible && handleChangeAlbumVisible(true)
     }
   }
 
