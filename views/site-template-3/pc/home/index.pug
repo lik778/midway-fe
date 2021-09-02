@@ -27,12 +27,10 @@ block content
 						- productListResult = renderData.productRecommend&&renderData.productRecommend.productList?renderData.productRecommend.productList:renderData.productList.result
 						include ../components/home/product-list-new.pug
 						+item(productListResult)
-				//- - tags = renderData.basic.aboutModule.tags
-				//- - media = renderData.basic.aboutModule.media
 
 				if isSem !== "2"
 					include ../components/home/about-us-new.pug
-					+about-us-new(renderData.basic.aboutModule)
+					+about-us-new( renderData.about|| renderData.basic.aboutModule|| {})
 
 				//-自定义模块1（即之前的企业优势模块）
 				if autoConfig && autoConfig[0] &&autoConfig[0].show
@@ -49,7 +47,7 @@ block content
 						.new-center.clearfix
 								+news-box(articleList)
 								
-				+home-title('联系我们')
+				//- +home-title('联系我们')
 				include ../components/home/contact-us.pug
 				
 				//- 用于sem禁止外跳
