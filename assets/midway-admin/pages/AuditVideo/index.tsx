@@ -20,7 +20,7 @@ export default () => {
   const getLists = async (page?: number) => {
     setLoading(true)
     page = page || 1
-    const res = await getAuditMaterialList({ source: 'IMAGE', page, size: 999 })
+    const res = await getAuditMaterialList({ source: 'VIDEO', page, size: 999 })
     setLists((res.data as any[]).map(x => ({ ...x, key: x.id })))
     setLoading(false)
   }
