@@ -12,6 +12,8 @@ declare global {
     _quick_upload_file: RcFile
     // 最小上传视频时间
     _min_duration: number
+    // 最大上传大小
+    _max_size: number
   }
 }
 
@@ -191,7 +193,7 @@ export function useUpload(props: Props) {
           })
           return false
         }
-        const validSize = file.size / 1024 / 1024 < size
+        const validSize = file.size / 1024 / 1024 < (window._max_size || size)
         if (!validSize) {
           notification.open({
             key: 'media-upload-error-filesize',
