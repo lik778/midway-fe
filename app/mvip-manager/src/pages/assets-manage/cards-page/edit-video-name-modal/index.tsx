@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input } from "antd"
 
 import { successMessage, errorMessage } from "@/components/message"
 import { updateMediaAssets } from "@/api/shop"
+import { createNameRules } from '@/utils'
 
 import CardsPageContext from '../../context/cards-page'
 
@@ -107,10 +108,7 @@ export default function useEditVideoNameModal(props: Props) {
         <Form.Item
           name="title"
           label="视频名称"
-          rules={[
-            { pattern: /^[\s\S]{2,20}$/, message: "视频名称限制为 2～20 个字符" },
-            { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5|(|)|[|]|{|}]+$/, message: '视频名称不允许有特殊字符' }
-          ]}
+          rules={createNameRules({ name: '视频名称' })}
         >
           <Input placeholder="请输入视频名称" />
         </Form.Item>
