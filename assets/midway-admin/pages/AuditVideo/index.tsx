@@ -82,14 +82,14 @@ export default () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: '图片预览',
-      dataIndex: 'imgUrl',
-      key: 'imgUrl',
-      render: src => {
+      title: '预览',
+      dataIndex: 'videoUrl',
+      key: 'videoUrl',
+      render: (videoUrl, row) => {
         return (
           <div className="preview-img-con">
-            <img className="preview-sm-image" src={src} />
-            <div className="mask" onClick={() => previewImage(src)}>
+            <img className="preview-sm-image" src={row.imgUrl} />
+            <div className="mask" onClick={() => previewImage(videoUrl)}>
               <ZoomInOutlined />
             </div>
           </div>
@@ -121,7 +121,7 @@ export default () => {
         onCancel={closePreviewModal}
       >
         <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
-          <img src={previewURL} alt="预览图片" />
+          <video src={previewURL} autoPlay={true} controls />
         </div>
       </Modal>
     )

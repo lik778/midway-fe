@@ -52,10 +52,10 @@
   justify-content: center;
   align-items: center;
 }
-.image-preview-modal .image-wrapper.active img {
+.image-preview-modal .image-wrapper.active video {
   width: auto;
 }
-.image-preview-modal .image-wrapper img {
+.image-preview-modal .image-wrapper video {
   width: 0%;
   max-width: 100%;
   max-height: 100%;
