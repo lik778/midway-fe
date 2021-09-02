@@ -96,7 +96,7 @@ export const getBannerListApi = (shopId: number, params: ImgListParam) => {
 
 // 获取tdk List
 export const getMetaDetailApi = (shopId: number, params: TdkDetailMeta) => {
-  return postApiData(ServicePath.SHOP, `midway/backend/meta/detail`, params, setShopHeader(shopId))
+  return postApiData<any>(ServicePath.SHOP, `midway/backend/meta/detail`, params, setShopHeader(shopId))
 }
 
 // 保存tdk信息

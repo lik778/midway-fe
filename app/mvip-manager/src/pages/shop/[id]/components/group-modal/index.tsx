@@ -37,7 +37,7 @@ const groupConfig = [
     initLen: 0,
     err: '请输入大于9个字的SEO标题',
     errClass: '',
-    visible: false
+    visible: true
   },
   {
     label: 'SEO关键词',
@@ -50,7 +50,7 @@ const groupConfig = [
     maxLength: 100,
     err: '',
     errClass: '',
-    visible: false
+    visible: true
   },
   {
     label: 'SEO描述',
@@ -63,7 +63,7 @@ const groupConfig = [
     initLen: 0,
     err: '请输入大于40个字的SEO描述',
     errClass: '',
-    visible: false
+    visible: true
   },
 ]
 
@@ -77,7 +77,6 @@ interface Props {
   groupCreate(item: CateItem): void;
   groupUpdate(item: CateItem): void;
   onClose(): void;
-  curShopInfo: ShopInfo | undefined;
 }
 const NewCate = (props: Props) => {
   const params: RouteParams = useParams();
@@ -150,7 +149,7 @@ const NewCate = (props: Props) => {
       setConfirmLoading(false)
       if (res?.success) {
         successMessage('编辑成功');
-        groupUpdate(res?.data);
+        groupUpdate(res?.data as any);
         resetConfigValue(config);
         onClose();
       } else {
@@ -161,7 +160,7 @@ const NewCate = (props: Props) => {
       setConfirmLoading(false)
       if (res?.success) {
         successMessage('新增分组成功');
-        groupCreate(res?.data);
+        groupCreate(res?.data as any);
         resetConfigValue(config);
         onClose();
       } else {
@@ -195,21 +194,6 @@ const NewCate = (props: Props) => {
     }))
   }
 
-  //只有B2B的店铺，新建分组才会有SEO设置输入框
-  const { curShopInfo } = props
-  useEffect(() => {
-    if (curShopInfo) {
-      const { type } = curShopInfo
-      if (type == ProductType.B2B) {
-        const newConfig = config.map(x => ({
-          ...x,
-          visible: true
-        }))
-        setConfig(newConfig)
-      }
-    }
-  }, [curShopInfo])
-
   return (
     <div className="group-modal">
       <Modal
@@ -239,7 +223,4 @@ const NewCate = (props: Props) => {
 }
 
 //取状态管理里的当前店铺信息，用于判断店铺类型，是否显示SEO设置
-export default connect<{ curShopInfo: ShopInfo }>((state: any): any => {
-  const { curShopInfo } = state[SHOP_NAMESPACE]
-  return { curShopInfo }
-})(NewCate)
+export default NewCate

@@ -167,7 +167,23 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>
       } else if (item.type === FormType.Tag) {
         const value = form.getFieldsValue()[item.name || ''];
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[{
+          validator: async (rule: any, value: any) => {
+            const minNum = item.minNum || 0
+            const maxNum = item.maxNum || 1000000
+            if (item.required) {
+              if (!value || value.length === 0) {
+                return Promise.reject(`请输入${item.label}`)
+              }
+            }
+            if (value) {
+              if (value.length < minNum || value.length > maxNum) {
+                return Promise.reject(`${item.label}数在${minNum}到${maxNum}个之间`)
+              }
+            }
+            return Promise.resolve()
+          }
+        }]} labelCol={item.labelCol}>
           <TagModule
             value={value || []}
             maxLength={item.maxLength || 1}

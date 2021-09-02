@@ -57,25 +57,25 @@ const Layouts = (props: any) => {
           <Header className="sideHeader">
             <div className="logo"></div>
           </Header>
+          {isNull(menuList) && (
+            <div style={{ padding: 20 }}>
+              <Skeleton active title={false} paragraph={{ rows: 4 }} />
+            </div>
+          )}
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
             onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
-            { isNull(menuList) && (
-                <div style={{ padding: 20 }}>
-                  <Skeleton active title={false} paragraph={{ rows: 4 }} />
-                </div>
-            )}
             {
               menuList && menuList.map((subMenu: MidMenuItem) => {
                 return (
                   <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
-                           className={subMenu.key}>
+                    className={subMenu.key}>
                     { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
                       return (
                         <Menu.Item key={menu.key}>
-                          <Link to={menu.path || ''}>{ menu.menuName }</Link>
+                          <Link to={menu.path || ''}>{menu.menuName}</Link>
                         </Menu.Item>
                       )
-                    }) }
+                    })}
                   </SubMenu>
                 )
               })
@@ -86,7 +86,7 @@ const Layouts = (props: any) => {
           <Header className="layoutHeader">
             <div>{userInfo && userInfo.userName}</div>
           </Header>
-          <Content>{ props.children }</Content>
+          <Content>{props.children}</Content>
         </Layout>
       </Layout>
     </ConfigProvider>
