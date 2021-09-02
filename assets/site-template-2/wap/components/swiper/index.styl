@@ -72,9 +72,9 @@
   left: 0;
   width: 100vw;
   transform: translateY(-50%);
+  z-index: 1000;
 }
-.swiper-container.fullscreen::before {
-  content: '';
+.swiper-container.fullscreen + .swiper-fullscreen-mask {
   position: fixed;
   top: 0;
   left: 0;
@@ -82,6 +82,7 @@
   height: 300vh;
   background: #000;
   transform: translateY(-150vh);
+  z-index: 999;
 }
 
 .swiper-container-small
