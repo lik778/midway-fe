@@ -81,9 +81,6 @@ export default (props: Props) => {
     values.name = values.name.trim()
     let resData: any;
     const isEdit = !isEmptyObject(editData);
-    if (typeof values.tags === 'string') {
-      values.tags = values.tags.split(',')
-    }
     formValues = values
     setFormLoading(true)
     if (isEdit) {

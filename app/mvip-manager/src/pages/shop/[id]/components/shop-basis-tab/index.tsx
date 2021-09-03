@@ -32,7 +32,7 @@ const BasisTab = (props: Props) => {
       link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
       label: "SEO设置",
       key: ShopBasisType.SEO,
-      display: false,
+      display: true,
     }, {
       // tip: 基础资料设置只有游龙工单申请过，加入白名单的用户才能使用
       link: `/shop/${params.id}/${ShopBasisType.INFO}`,
@@ -57,14 +57,6 @@ const BasisTab = (props: Props) => {
       const { hasMultiShopRights } = shopStatus;
 
       return menuList.map(item => {
-        if (item.key === ShopBasisType.SEO) {
-          if (isB2B) {
-            item.display = true
-          } else if (history.location.pathname.includes(ShopBasisType.SEO)) {
-            // 如果该用户不是B2B用户 还出现在seo页面 则跳到首页
-            history.replace('/shop')
-          }
-        }
         if (item.key === ShopBasisType.INFO) {
           if (hasMultiShopRights) {
             item.display = true

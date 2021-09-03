@@ -61,9 +61,6 @@ export default (props: Props) => {
     values.name = values.name.trim();
     const isEdit = !isEmptyObject(editData);
     if (!values.price) { values.price = '面议' }
-    if (typeof values.tags === 'string') {
-      values.tags = values.tags.split(',')
-    }
     values.contentImg = !values.contentImg || values.contentImg.length === 0 ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
     let resData: any;
     setFormLoading(true)
