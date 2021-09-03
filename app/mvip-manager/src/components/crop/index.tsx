@@ -65,7 +65,8 @@ const Crop: FC<Props> = (props) => {
   return <Spin spinning={reloadLoading}> <div className={styles["crop-container"]}>
     <div className={styles["crop-content"]}>
       <Cropper
-        {...cropProps}
+        initialAspectRatio={cropProps.autoAspectRatio ? cropProps.aspectRatio : undefined}
+        aspectRatio={cropProps.autoAspectRatio ? undefined : cropProps.aspectRatio}
         src={url}
         style={{ width: 800, height: 500 }}
         preview={`.img-preview-${timestamp}`}
