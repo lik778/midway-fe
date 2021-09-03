@@ -21,7 +21,7 @@ function RemainPage(props: any) {
 
   return (
     <div className='page-report page-report-remain'>
-      <MainTitle title="留资报表"/>
+      <MainTitle title="留咨报表"/>
       <div className="container">
         <div className="segment">
           <Row className="statics-con" gutter={16}>
@@ -29,7 +29,7 @@ function RemainPage(props: any) {
               <Statistic title="询盘访客数" value={216}/>
             </Col>
             <Col className="statics" span={12}>
-              <Statistic title="留资访客数" value={112}/>
+              <Statistic title="留咨访客数" value={112}/>
             </Col>
           </Row>
         </div>
@@ -48,7 +48,7 @@ function genChartOptions(all: number, filtered: number) {
     },
     series: [
       {
-        name: '询盘/留资转化图',
+        name: '询盘/留咨转化图',
         type: 'funnel',
         maxSize: '70%',
         data: [

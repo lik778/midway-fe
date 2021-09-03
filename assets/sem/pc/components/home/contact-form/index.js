@@ -37,7 +37,7 @@ export const leaveLeads = function () {
                 alert('内容最多255个字符')
                 return false
             }
-            // TODO;  这里使用打点暂时替代留资
+            // TODO;  这里使用打点暂时替代留咨
             semEventTracker('contact-us-bottom-pc', 'home-pc', 'click', JSON.stringify(data)).then(() => {
                 alert("提交成功")
             }).catch(() => {

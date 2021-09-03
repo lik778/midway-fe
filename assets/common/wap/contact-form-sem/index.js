@@ -47,9 +47,9 @@ function disable(e) {
 /**
  * 
  * @param {*} type home/detail 是首页还是详情页
- * @param {*} contactForm 是首页 需要有留资弹窗
- * @param {*} contactFormParent 是首页 需要有留资弹窗的父节点
- * @param {*} formA 是首页 需要展示留资弹窗的a标签
+ * @param {*} contactForm 是首页 需要有留咨弹窗
+ * @param {*} contactFormParent 是首页 需要有留咨弹窗的父节点
+ * @param {*} formA 是首页 需要展示留咨弹窗的a标签
  * @param {*} gotoOtherPageA 需要前往详情页的a标签
  * @param {*} disableA 被禁用的a标签
  */
