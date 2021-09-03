@@ -21,8 +21,8 @@ export const ShopBasicInfoForm: FormConfig = {
     { formItemWidth: 260, label: '企业地址', name: 'area', type: FormType.AreaSelect, required: true, patternList: [{ validator: validatorArea }] },
     { formItemWidth: 260, label: '详细地址', name: 'companyAddress', type: FormType.Input, required: true, placeholder: '详细地址（如街道、门牌号等）' },
     {
-      label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～300个字',
-      minLength: 50, maxLength: 300, patternList: [{ pattern: /^[\s\S]{50,300}$/, message: '50～300个字' }]
+      label: '企业简介', name: 'companyDescription', type: FormType.Textarea, required: true, placeholder: '请输入简介，50～2000个字',
+      minLength: 50, maxLength: 2000, patternList: [{ pattern: /^[\s\S]{50,2000}$/, message: '50～2000个字' }]
     },
     {
       label: '企业logo', name: 'promoteImg', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 2, text: '企业logo', name: 'promoteImg', rule: [{ required: true, message: `请上传企业logo` }], cropProps: { aspectRatio: 100 / 100 } }],
