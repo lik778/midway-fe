@@ -57,25 +57,29 @@ const Layouts = (props: any) => {
           <Header className="sideHeader">
             <div className="logo"></div>
           </Header>
-          <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys} onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
-            {isNull(menuList) && (
-              <div style={{ padding: 20 }}>
-                <Skeleton active title={false} paragraph={{ rows: 4 }} />
-              </div>
-            )}
-            {menuList && menuList.map((subMenu: MidMenuItem) => {
-              return (
-                <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName} className={subMenu.key}>
-                  { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
-                    return (
-                      <Menu.Item key={menu.key}>
-                        <Link to={menu.path || ''}>{menu.menuName}</Link>
-                      </Menu.Item>
-                    )
-                  })}
-                </SubMenu>
-              )
-            })}
+          {isNull(menuList) && (
+            <div style={{ padding: 20 }}>
+              <Skeleton active title={false} paragraph={{ rows: 4 }} />
+            </div>
+          )}
+          <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
+            onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
+            {
+              menuList && menuList.map((subMenu: MidMenuItem) => {
+                return (
+                  <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
+                    className={subMenu.key}>
+                    { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
+                      return (
+                        <Menu.Item key={menu.key}>
+                          <Link to={menu.path || ''}>{menu.menuName}</Link>
+                        </Menu.Item>
+                      )
+                    })}
+                  </SubMenu>
+                )
+              })
+            }
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1350 : '' }}>

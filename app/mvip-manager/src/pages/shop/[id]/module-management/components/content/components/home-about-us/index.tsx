@@ -80,7 +80,6 @@ const AboutUs: FC<Props> = (props) => {
       ...values,
       media: values.media ? values.media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) as string : getImgUploadModelValue(values.media, true) as string : '',
       videoUrl: values.media ? values.media.mediaType === 'IMAGE' ? '' : getImgUploadModelValue(values.media) as string : '',
-      tags: Array.isArray(values.tags) ? values.tags : (values.tags as any).split(','),
       position, pageModule
     })
     if (res.success) {

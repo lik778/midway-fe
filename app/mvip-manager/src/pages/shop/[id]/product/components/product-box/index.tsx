@@ -73,9 +73,6 @@ export default (props: Props) => {
     const isEdit = !isEmptyObject(editData);
 
     if (!values.price) { values.price = '面议' }
-    if (typeof values.tags === 'string') {
-      values.tags = values.tags.split(',')
-    }
     const media = values.media
     if (media) {
       values.headImg = media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) : getImgUploadModelValue(values.media, true)

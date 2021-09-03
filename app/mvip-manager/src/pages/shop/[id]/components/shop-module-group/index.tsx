@@ -47,7 +47,7 @@ export default (props: Props) => {
     if (!numsMap.has(Number(item?.id))) {
       const res = await getCateNumApi(shopId, { id: item?.id })
       if (res?.success) {
-        numsMap.set(Number(item?.id), res.data)
+        numsMap.set(Number(item?.id), res.data as any)
         setNumsMap(new Map(numsMap));
       }
     }
@@ -57,7 +57,7 @@ export default (props: Props) => {
 
   const deleteGroupItem = async () => {
     const deleteId = deleteItem?.id || 0
-    const res  = await deleteContentCateApi(Number(params.id), { id: deleteId })
+    const res = await deleteContentCateApi(Number(params.id), { id: deleteId })
     if (res?.success) {
       const deleteIndex = cateList.findIndex((x: CateItem) => x.id === deleteId)
       cateList.splice(deleteIndex, 1)
@@ -77,53 +77,55 @@ export default (props: Props) => {
       visible={props.visible}
       onClose={props.onClose}
       width="700">
-        <div>
-            <div style={{ overflow: 'hidden' }}>
-              <Button style={{ float: 'right', backgroundColor: '#096dd9',
-                borderColor: '#096dd9' }} onClick={() => createGroupItem() }
-                icon={<PlusOutlined />} size="large" type="primary">新建分组</Button>
-            </div>
-            <div className='group-list'>
-              { Boolean(hasData) && cateList.map((x: CateItem) => {
-                return (
-                  <div className='group-item' key={x.name}>
-                    <span className="name">{x.name}</span>
-                    <div className="action">
-                      <span onClick={() => editGroupItem(x)}>编辑</span>
-                      <span onClick={() => createDeleteGroupItemModal(x)}>删除</span>
-                    </div>
-                  </div>
-                )
-              }) }
-            </div>
-            <div className="group-tips">
-              <h3>分组说明</h3>
-              <p className="q">怎么填写分组？</p>
-              <p>答：分组是将您公司从事的业务/售卖的产品进行分类。</p>
-              <p>举例：您从事家电维修行业，您的分组可以是：热水器维修、空调维修、电视机维修、洗衣机维修等</p>
-              <p className="q">分组的目的（在哪里使用）：</p>
-              <p>答：分组是为了更合理的管理您网站的文章，在网站前端展示，有利于SEO收录和检索</p>
-            </div>
-          <GroupModal
-            type={type}
-            editItem={editItem}
-            visible={groupModalVisible}
-            groupCreate={(item: CateItem) => updateCateList([...cateList, item])}
-            groupUpdate={(item: CateItem) => {
-              updateCateList(cateList.map((x: CateItem) => {
-                if (x.id === item.id) { x = item }
-                return x;
-              }))
-            }}
-            onClose={() => setGroupModalVisible(false)}/>
+      <div>
+        <div style={{ overflow: 'hidden' }}>
+          <Button style={{
+            float: 'right', backgroundColor: '#096dd9',
+            borderColor: '#096dd9'
+          }} onClick={() => createGroupItem()}
+            icon={<PlusOutlined />} size="large" type="primary">新建分组</Button>
         </div>
-        <MyModal
+        <div className='group-list'>
+          {Boolean(hasData) && cateList.map((x: CateItem) => {
+            return (
+              <div className='group-item' key={x.name}>
+                <span className="name">{x.name}</span>
+                <div className="action">
+                  <span onClick={() => editGroupItem(x)}>编辑</span>
+                  <span onClick={() => createDeleteGroupItemModal(x)}>删除</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="group-tips">
+          <h3>分组说明</h3>
+          <p className="q">怎么填写分组？</p>
+          <p>答：分组是将您公司从事的业务/售卖的产品进行分类。</p>
+          <p>举例：您从事家电维修行业，您的分组可以是：热水器维修、空调维修、电视机维修、洗衣机维修等</p>
+          <p className="q">分组的目的（在哪里使用）：</p>
+          <p>答：分组是为了更合理的管理您网站的文章，在网站前端展示，有利于SEO收录和检索</p>
+        </div>
+        <GroupModal
+          type={type}
+          editItem={editItem}
+          visible={groupModalVisible}
+          groupCreate={(item: CateItem) => updateCateList([...cateList, item])}
+          groupUpdate={(item: CateItem) => {
+            updateCateList(cateList.map((x: CateItem) => {
+              if (x.id === item.id) { x = item }
+              return x;
+            }))
+          }}
+          onClose={() => setGroupModalVisible(false)} />
+      </div>
+      <MyModal
         title="确认删除"
         content={<p>删除后，“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
-         ? `${numsMap.get(Number(deleteItem?.id))}个` : '' }
-        { isProductCate ?  '服务' : '文章' }会全部删除，确认删除吗</p>}
+          ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
+          {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗</p>}
         visible={visibleDeleteDialog}
         onOk={() => deleteGroupItem()}
-        onCancel={() => setVisibleDeleteDialog(false)}/>
+        onCancel={() => setVisibleDeleteDialog(false)} />
     </Drawer>)
 }
