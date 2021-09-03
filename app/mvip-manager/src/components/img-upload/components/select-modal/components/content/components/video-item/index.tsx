@@ -52,7 +52,7 @@ const VideoItem: FC<Props> = (props) => {
 
   const handleDoubleClick = () => {
     handlePreview({
-      preview: detail.imgUrl || (file && file.preview),
+      url: detail.videoUrl || (file && file.url),
       type: mediaType
     } as UploadFile)
   }

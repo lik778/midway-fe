@@ -59,11 +59,11 @@ const ModalFooter: FC<Props> = (props) => {
     </div>
     <div className={styles['line']}>
       {
-        localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={`${item.uid}-${index}`}>
+        localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={`${item.uid}-${index}`} onDoubleClick={() => handleDoubleClick(item)}>
           {
             item.type === 'VIDEO' && <div className={styles['play-icon']}></div>
           }
-          <img className={styles['img']} src={item.type === 'IMAGE' ? item.preview : item.thumbUrl} draggable={false} onDoubleClick={() => handleDoubleClick(item)}></img>
+          <img className={styles['img']} src={item.type === 'IMAGE' ? item.preview : item.thumbUrl} draggable={false}></img>
           <div className={styles['delete']} onClick={() => handleDel(index)}>
             <DeleteOutlined style={{
               color: '#fff'

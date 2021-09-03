@@ -19,13 +19,13 @@ const PreviewModal: FC<Props> = (props) => {
   useEffect(() => {
     if (videoRef.current) {
       if (previewVisible) {
+        videoRef.current.src = previewMedia?.url || ''
         videoRef.current.currentTime = 0
         videoRef.current.play()
       } else {
         videoRef.current.pause()
       }
     }
-
   }, [previewVisible])
 
   return <Modal

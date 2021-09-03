@@ -64,6 +64,7 @@ const ImgItem: FC<Props> = (props) => {
 
   const handleDoubleClick = () => {
     handlePreview({
+      type: mediaType,
       preview: detail.imgUrl || (file && file.preview),
     } as UploadFile)
   }
