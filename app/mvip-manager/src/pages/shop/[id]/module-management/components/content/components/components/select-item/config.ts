@@ -32,7 +32,7 @@ export const selectItemConfig: {
     rules: [{ required: true, message: '请选择文章' }]
   },
   'homePage-articleRecommend': {
-    name: 'articleRecommend',
+    name: 'articleList',
     label: '文章推荐',
     type: 'article',
     required: true,
@@ -90,7 +90,7 @@ export const selectItemConfig: {
     label: '产品推荐',
     type: 'product',
     required: true,
-    maxLength: 6,
+    maxLength: 5,
     ajaxApi: getProductListApi as any,
     rules: [{ required: true, message: '请选择产品' }]
   },

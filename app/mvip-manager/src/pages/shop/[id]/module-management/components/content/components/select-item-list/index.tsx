@@ -7,8 +7,8 @@ import { Detail } from './data'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import SelectItem from '../components/select-item'
 import { ConfigItemType, ConfigKey } from '../components/select-item/data'
-import { ModuleArticleInfo, ModuleProductInfo, ModulePageType, ModuleComponentId, ModuleArticleInfoParam, ModuleProductInfoParam } from '@/interfaces/shop'
-import { getModuleInfoApi, setModuleProductInfoApi, setModuleArticleInfoApi } from '@/api/shop'
+import { ModuleArticleInfo, ModuleProductInfo, ModulePageType, ModuleComponentId, ModuleArticleInfoParam, ModuleProductInfoParam, ModuleHomeArticleListInfo } from '@/interfaces/shop'
+import { getModuleInfoApi, setModuleProductInfoApi, setModuleHomeArticleListApi, setModuleArticleInfoApi } from '@/api/shop'
 import styles from './index.less'
 import { mockData } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
@@ -16,12 +16,13 @@ interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId,
   type: ConfigItemType,
-  configKey: ConfigKey
+  configKey: ConfigKey,
+  itemMaxLength?: number // 因为b2c的首页文章长度和b2b不一样 不想在这里接入model 所以加个参数传值
 }
 
 const AboutUs: FC<Props> = (props) => {
   const params = useParams<{ id: string }>()
-  const { position, pageModule, type, configKey } = props
+  const { position, pageModule, type, configKey, itemMaxLength } = props
   const [detail, setDetail] = useState<ModuleArticleInfo | ModuleProductInfo>({
     name: '',
     productList: [],
@@ -38,17 +39,22 @@ const AboutUs: FC<Props> = (props) => {
     config.customerFormItemList = [{
       index: 2,
       key: `${type}List`,
-      node: <SelectItem key={`${type}List`} configKey={configKey}></SelectItem>
+      node: <SelectItem key={`${type}List`} configKey={configKey} itemMaxLength={itemMaxLength}></SelectItem>
     }]
     return config
   });
 
   const getDetail = async () => {
     setGetDataLoading(true)
-    const res = await getModuleInfoApi<ModuleArticleInfo | ModuleProductInfo>(Number(params.id), {
+    const res = await getModuleInfoApi<ModuleArticleInfo | ModuleHomeArticleListInfo | ModuleProductInfo>(Number(params.id), {
       position, pageModule
     })
-    setDetail(res.data)
+    //  首页文章列表的数据和其他推荐的文章数据格式不一样做一次转化 都改成相同的模型输入
+    let data = res.data
+    if (position === 'homePage' && pageModule === 'articleList') {
+      (data as ModuleArticleInfo).articleList = (data as ModuleHomeArticleListInfo).articleList?.result || []
+    }
+    setDetail(data as ModuleArticleInfo | ModuleProductInfo)
     setGetDataLoading(false)
   }
 
@@ -57,20 +63,25 @@ const AboutUs: FC<Props> = (props) => {
   }, [])
 
   const handleSubmit = async (values: ModuleArticleInfo | ModuleProductInfo) => {
-    console.log(values)
     setUpDataLoading(true)
     let res
     if (type === "product") {
       res = await setModuleProductInfoApi(Number(params.id), {
         ...values,
         productIdList: (values as ModuleProductInfo).productList.map(item => item.id),
-        position, pageModule
+        position, pageModule,
+      })
+    } else if (position === 'homePage' && pageModule === 'articleList') {
+      res = await setModuleHomeArticleListApi(Number(params.id), {
+        ...values,
+        articleIdList: (values as ModuleArticleInfo).articleList.map(item => item.id),
+        position, pageModule,
       })
     } else {
       res = await setModuleArticleInfoApi(Number(params.id), {
         ...values,
         articleIdList: (values as ModuleArticleInfo).articleList.map(item => item.id),
-        position, pageModule
+        position, pageModule,
       })
     }
     if (res.success) {

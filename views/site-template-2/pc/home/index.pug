@@ -76,9 +76,9 @@ block content
               include ../components/home/product-list-new.pug
               +product-list('nothot', productLists)
 
-        - articleList = renderData.articleList.result
+        - const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
         - const { articleList: articleRecommend } = renderData.articleRecommend
-        - const { name: title } = renderData.articleRecommend || '文章推荐'
+        - const { name: articleRecommendName } = renderData.articleRecommend || '文章推荐'
         if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
             .block-title
                 //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
@@ -91,8 +91,8 @@ block content
                     .littlePoint
             include ../components/home/news-center.pug
             .new-center.clearfix
-                +news-box('新闻资讯', articleList)
-                +news-box(title, articleRecommend)
+                +news-box(articleListName, articleList)
+                +news-box(articleRecommendName, articleRecommend)
 
 
         .block-title

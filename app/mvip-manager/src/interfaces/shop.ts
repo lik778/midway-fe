@@ -523,6 +523,11 @@ export interface ModuleArticleInfo {
   articleList: ModuleSelectArticleListItem[]
 }
 
+export interface ModuleHomeArticleListInfo {
+  name: string,
+  articleList: ListRes<ModuleSelectArticleListItem[]>
+}
+
 export interface ModuleArticleInfoParam extends ModuleRequestParam {
   name: string,
   articleIdList: number[]

@@ -292,6 +292,9 @@ export const setModuleBannerInfoApi = (shopId: number, params: ModuleProductSwip
 // 修改推荐产品
 export const setModuleProductInfoApi = (shopId: number, params: ModuleProductInfoParam) => postApiData<ModuleProductInfo>(ServicePath.SHOP, 'midway/backend/module/update/productRecomend', params, setShopHeader(shopId))
 
+// 修改首页文章
+export const setModuleHomeArticleListApi = (shopId: number, params: ModuleArticleInfoParam) => postApiData<ModuleArticleInfo>(ServicePath.SHOP, 'midway/backend/module/update/articleList', params, setShopHeader(shopId))
+
 // 修改推荐文章
 export const setModuleArticleInfoApi = (shopId: number, params: ModuleArticleInfoParam) => postApiData<ModuleArticleInfo>(ServicePath.SHOP, 'midway/backend/module/update/articleRecomend', params, setShopHeader(shopId))
 

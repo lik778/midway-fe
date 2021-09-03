@@ -16,7 +16,7 @@ export enum ConfigItemTypeText {
 export type ConfigKey = 'homePage-banner' | 'homePage-productRecommend' | 'homePage-articleList' | 'homePage-articleRecommend' | 'productListPage-productRecommend' | 'productListPage-articleRecommend' | 'articleListPage-productRecommend' | 'articleInfoPage-productRecommend' | 'articleInfoPage-articleRecommend' | 'productInfoPage-productRecommend'
 
 export interface ConfigItem {
-  name: string,// 表单项的key
+  name: 'productList' | 'articleList',// 表单项的key
   label: string,// 表单项文字
   type: ConfigItemType,// 列表是文章还是产品
   required: boolean,// 是否必填
