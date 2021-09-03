@@ -8,7 +8,7 @@ import ImgUploadContext from '@/components/img-upload/context'
 import { mockData } from '@/utils';
 import { MediaAssetsItem } from '@/interfaces/shop';
 import styles from './index.less'
-import { getMediaAssets, getBaixingMediaAssets } from '@/api/shop'
+import { getSelectableMediaAssets, getBaixingMediaAssets } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import { errorMessage } from '@/components/message';
 import ScrollBox from '@/components/scroll-box'
@@ -76,7 +76,7 @@ const ImgList: FC<Props> = (props) => {
     setGetDataLoading(true)
     const postMethod = tabKey === '百姓图库'
       ? getBaixingMediaAssets
-      : getMediaAssets
+      : getSelectableMediaAssets
     const res = await postMethod({
       page: albumTypeDetail.page,
       size: 16,

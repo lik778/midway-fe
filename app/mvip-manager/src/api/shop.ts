@@ -257,7 +257,12 @@ export const delMediaCategory = (params: DelMediaCatesParam) => {
 
 // 获取分类内素材列表
 export const getMediaAssets = (params: GetMediaAssetsParam) => {
-  // /material
+  return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/material/listing', params)
+}
+
+// 获取分类内可选用的素材列表
+// TODO
+export const getSelectableMediaAssets = (params: GetMediaAssetsParam) => {
   return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/material/listing', params)
 }
 
@@ -297,7 +302,6 @@ export const moveMediaAssets = (params: MoveMediaAssetsParam) => {
 
 // 获取申诉列表（审核失败和审核中的素材）
 export const getMediaFailedAssets = (params: GetMediaFailedAssetsParam) => {
-  // /material
   return postApiData<GetMediaFailedAssetsRes>(ServicePath.SHOP, '/midway/backend/material/failedImageListing', params)
 }
 
