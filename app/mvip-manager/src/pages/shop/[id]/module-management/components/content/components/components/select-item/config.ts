@@ -22,6 +22,24 @@ export const selectItemConfig: {
     ajaxApi: getProductListApi as any,
     rules: [{ required: true, message: '请选择热门产品' }]
   },
+  'homePage-articleList': {
+    name: 'articleList',
+    label: '新闻资讯',
+    type: 'article',
+    required: true,
+    maxLength: 3,
+    ajaxApi: getArticleListApi as any,
+    rules: [{ required: true, message: '请选择文章' }]
+  },
+  'homePage-articleRecommend': {
+    name: 'articleRecommend',
+    label: '文章推荐',
+    type: 'article',
+    required: true,
+    maxLength: 3,
+    ajaxApi: getArticleListApi as any,
+    rules: [{ required: true, message: '请选择文章' }]
+  },
   'productListPage-productRecommend': {
     name: 'productList',
     label: '产品推荐',
@@ -66,5 +84,14 @@ export const selectItemConfig: {
     maxLength: 9,
     ajaxApi: getArticleListApi as any,
     rules: [{ required: true, message: '请选择文章' }]
+  },
+  'productInfoPage-productRecommend': {
+    name: 'productList',
+    label: '产品推荐',
+    type: 'product',
+    required: true,
+    maxLength: 6,
+    ajaxApi: getProductListApi as any,
+    rules: [{ required: true, message: '请选择产品' }]
   },
 }

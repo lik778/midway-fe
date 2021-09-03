@@ -31,6 +31,14 @@ const Content: FC<Props> = (props) => {
       <HomeCustom></HomeCustom>
     </CacheComponent>
 
+    <CacheComponent visible={position === 'homePage' && pageModule === 'articleList'}>
+      <SelectItemList position='homePage' pageModule='articleList' type='article' configKey="homePage-articleList"></SelectItemList>
+    </CacheComponent>
+
+    <CacheComponent visible={position === 'homePage' && pageModule === 'articleRecommend'}>
+      <SelectItemList position='homePage' pageModule='articleRecommend' type='article' configKey="homePage-articleRecommend"></SelectItemList>
+    </CacheComponent>
+
     <CacheComponent visible={position === 'homePage' && pageModule === 'about'}>
       <HomeAboutUs position={position} pageModule={pageModule}></HomeAboutUs>
     </CacheComponent>
@@ -57,6 +65,10 @@ const Content: FC<Props> = (props) => {
 
     <CacheComponent visible={position === 'articleInfoPage' && pageModule === 'articleRecommend'}>
       <SelectItemList position='articleInfoPage' pageModule='articleRecommend' type='article' configKey="articleInfoPage-articleRecommend"></SelectItemList>
+    </CacheComponent>
+
+    <CacheComponent visible={position === 'productInfoPage' && pageModule === 'productRecommend'}>
+      <SelectItemList position='productInfoPage' pageModule='productRecommend' type='product' configKey="productInfoPage-productRecommend"></SelectItemList>
     </CacheComponent>
 
     <CacheComponent visible={position === 'aboutPage' && pageModule === 'about'}>
