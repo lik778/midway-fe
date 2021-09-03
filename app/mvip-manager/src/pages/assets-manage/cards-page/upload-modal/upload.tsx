@@ -2,6 +2,8 @@ import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { Upload, notification } from 'antd'
 import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 
+import { getFileMD5, getBase64 } from '@/utils'
+
 import styles from './index.less'
 
 declare global {
@@ -15,18 +17,6 @@ declare global {
     // 最大上传大小
     _max_size: number
   }
-}
-
-// 获取图片 base64 预览地址
-const getBase64 = function (file: Blob): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = error => reject(error)
-  }).catch(error => {
-    console.error('[ERR] getBase64 error', error, file)
-  })
 }
 
 // 获取视频的第一帧
@@ -83,9 +73,28 @@ export function useUpload(props: Props) {
     } : {
       accept: ['video/mp4', 'video/mpeg', 'video/mov', 'video/quicktime'],
       action: window.__upyunVideoConfig?.uploadUrl,
-      data: {
-        policy: window.__upyunVideoConfig?.uploadParams?.policy,
-        signature: window.__upyunVideoConfig?.uploadParams?.signature,
+      async data(file: RcFile) {
+        const defaultConf = {
+          policy: window.__upyunVideoConfig?.uploadParams?.policy,
+          signature: window.__upyunVideoConfig?.uploadParams?.signature,
+        }
+        const fileMD5 = await getFileMD5(file)
+        let fileSuffix = ''
+        switch (file.type) {
+          case 'video/mp4':
+          case 'video/mpeg':
+            fileSuffix = '.mp4'
+            break
+          case 'video/mov':
+          case 'video/quicktime':
+            fileSuffix = '.mov'
+            break
+        }
+        const confWithMD5 = await window.__upyunGetTaskConfig({ fileMD5, fileSuffix })
+        return {
+          ...defaultConf,
+          ...confWithMD5
+        }
       }
     }
   const uploadAccept = uploadConf.accept
@@ -170,8 +179,14 @@ export function useUpload(props: Props) {
     }
   }
 
-  // 检测资源属性是否合规
-  const checkAssets = useCallback(async (file: RcFile): Promise<any> => {
+  /**
+   * 上传前检测
+   */ 
+  const beforeUpload = useCallback(async (file: RcFile): Promise<any> => {
+  
+    /**
+     * 资源合规检测
+     */
     return new Promise(async (resolve, reject) => {
 
       // 给上传增加一个测试开关
@@ -261,7 +276,7 @@ export function useUpload(props: Props) {
       multiple={true}
       fileList={lists}
       showUploadList={false}
-      beforeUpload={checkAssets}
+      beforeUpload={beforeUpload}
       onChange={handleChange}
       maxCount={maxCount}
     >

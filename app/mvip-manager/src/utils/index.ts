@@ -1,7 +1,37 @@
 import dayjs from 'dayjs';
 import moment from 'moment';
+import BMF from 'browser-md5-file';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants';
+
+const bmf = new BMF()
+// 计算文件的MD5值
+export const getFileMD5 = async (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    bmf.md5(
+      file,
+      (err: any, md5: string) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(md5)
+        }
+      }
+    )
+  })
+}
+
+// 获取图片 base64 预览地址
+export const getBase64 = function (file: Blob): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  }).catch(error => {
+    console.error('[ERR] getBase64 error', error, file)
+  })
+}
 
 export const addKeyForListData = (list: any, page?: number, size?: number) => {
   const pageSize = size ? size : 10;

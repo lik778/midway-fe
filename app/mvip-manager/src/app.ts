@@ -1,5 +1,5 @@
-import { getUpyunImgConfigUpyun, getUpyunVideoConfigUpyun } from './api/upyun'
-import { UpyunImgConfig, UpyunVideoConfig } from '@/interfaces/haojing';
+import { getUpyunImgConfigUpyun, getUpyunVideoConfigUpyun, getUpyunTaskConfig } from './api/upyun'
+import { UpyunImgConfig, UpyunVideoConfig, UpyunGenTaskParams } from '@/interfaces/haojing';
 import { enableMapSet } from 'immer';
 import '@/styles/report.less';
 import '@/styles/common.less';
@@ -9,6 +9,7 @@ declare global {
   interface Window {
     __upyunImgConfig: UpyunImgConfig;
     __upyunVideoConfig: UpyunVideoConfig;
+    __upyunGetTaskConfig: (params: UpyunGenTaskParams) => Promise<UpyunVideoConfig>;
   }
 }
 
@@ -46,6 +47,7 @@ declare global {
     ])
     window.__upyunImgConfig = upyunImgConfig
     window.__upyunVideoConfig = upyunVideoConfig
+    window.__upyunGetTaskConfig = getUpyunTaskConfig
   }
 
 })()

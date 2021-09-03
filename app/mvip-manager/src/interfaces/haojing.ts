@@ -16,6 +16,11 @@ export interface UpyunVideoConfig {
   host: string;
 }
 
+export interface UpyunGenTaskParams {
+  fileMD5: string;
+  fileSuffix: string;
+}
+
 export interface UploadParams {
   policy: string;
   signature: string;

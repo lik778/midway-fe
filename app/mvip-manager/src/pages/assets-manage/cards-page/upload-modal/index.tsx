@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState, useMemo, useContext } from 'react'
 import { Button, Modal } from "antd"
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
+const crypto = require('crypto')
 
 import { upImageToYoupai } from '@/api/common'
 import { reAuditMediaAssets, createMediaAssets, delMediaAssets } from '@/api/shop'
@@ -188,6 +189,7 @@ export default function useUploadModal(props: Props) {
             title: itemName || '未命名视频',
             imgUrl: uploadCoverRes.data.url,
             videoUrl: item.response.url,
+            taskId: item.response.task_ids[0],
             mediaCateId: selectedAlbum!.id,
             source: directoryType
           }

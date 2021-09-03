@@ -46,12 +46,8 @@ export class UpyunController {
   @Get('/upyunVideoConfig')
   async upyunVideoConfig(@Req() req: Request, @Res() res: Response) {
     const videoConfig = upyunVideoConfig
-    // const notifyBase = config().services['midway-service'].external
-    // const notifyURL = notifyBase + '/api/midway/internal/material/decode'
-    const notifyURL = "https://enb6hk1stgczkkc.m.pipedream.net"
     const uploadPolicy = {
       ...videoConfig['policy'],
-      'notify-url': notifyURL,
       "expiration": new Date().getTime() + 3600 * 1000
     }
     const { encodedUploadPolicy, uploadSignature } = this.genUpyunSignature(uploadPolicy, videoConfig['form_api_secret'])
@@ -66,6 +62,35 @@ export class UpyunController {
       'suffix': '#videoup',
       'fileKey': 'file',
       'host': videoConfig.host ? `${this.request_url_scheme(req)}://${videoConfig.host}` : null
+    })
+  }
+
+  /**
+   * 获取又拍云上传视频带转码任务时的配置
+   */
+  @Get('/getUpyunTaskConfig')
+  async getUpyunTaskConfig(@Req() req: Request, @Res() res: Response) {
+    console.log(req.query)
+    const { fileMD5, fileSuffix } = req.query
+    const videoConfig = upyunVideoConfig
+    // const notifyBase = config().services['midway-service'].external
+    // const notifyURL = notifyBase + '/api/midway/internal/material/decode'
+    const notifyURL = "https://enb6hk1stgczkkc.m.pipedream.net"
+    const uploadPolicy = {
+      ...videoConfig['policy'],
+      apps: [{
+        "name": "naga",
+        "type": "nbhd",
+        "avopts": "/s/720p(16:9)",
+        "save_as": `/nbhd_${fileMD5}${fileSuffix}`,
+        "notify_url": notifyURL
+      }],
+      expiration: new Date().getTime() + 3600 * 1000
+    }
+    const { encodedUploadPolicy, uploadSignature } = this.genUpyunSignature(uploadPolicy, videoConfig['form_api_secret'])
+    res.json({
+      'policy': encodedUploadPolicy,
+      'signature': uploadSignature,
     })
   }
 

@@ -25,9 +25,6 @@ export const upyunVideoConfig = {
   operateHost: 'http://p0.api.upyun.com',
   policy: {
     "bucket": "bxmedia",
-    "save-key": "/{filemd5}{.suffix}",
-    "type": "nbhd",
-    "advote": "/s/720p(16:9)/r/25/sm/false/ar/22050",
-    "ext-param": "source=msshop&s=720p&type=mvip-encode"
+    "save-key": "/{filemd5}{.suffix}"
   },
 }
