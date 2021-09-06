@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC, useMemo } from 'react';
+import React, { useState, useEffect, FC, useRef } from 'react';
 import { Checkbox } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { MetasItem } from '@/interfaces/user';
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const MetasCheckbox: FC<Props> = (props) => {
+  const componentUnmounted = useRef<Boolean>(false)
   const { item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange, setThirdDataLength } = props
   const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
   // 缓存一下请求数据
@@ -49,9 +50,19 @@ const MetasCheckbox: FC<Props> = (props) => {
   useEffect(() => {
     // 这里用定时器延时是因为cascaderValue更新会清空当前的选中值，所以做个延时，保证初始化这个动作在整个组件最后再初始化
     setTimeout(() => {
-      initValues()
+      // 当组件没有被销毁时可以触发这个函数
+      if (!componentUnmounted.current) {
+        initValues()
+      }
     }, 0)
   }, [initialValues])
+
+  // 给个值用于判断组件是否被销毁
+  useEffect(() => {
+    return () => {
+      componentUnmounted.current = true
+    }
+  }, [])
 
   // 当选择器的值变化触发
   useEffect(() => {
