@@ -215,12 +215,21 @@ export const objToTargetObj = <T, K extends keyof T>(obj: T, key = 'key'): any[]
   return Object.keys(obj).map((k) => ({ [key]: obj[k as K], key: obj[k as K], value: k }))
 }
 
+/**
+ * 文件名规范
+ * @see https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file#naming-conventions
+ * @see https://www.cyberciti.biz/faq/linuxunix-rules-for-naming-file-and-directory-names/
+ * 1. 所有字符都支持，除了特殊字符.<>:"/\|?*&
+ * 2. 不能以空格开头或结尾
+ * 3. 字数限制2~20
+ * @returns
+ */
 export const createNameRules = (config = {} as any) => {
   const { name } = config
   return [
     { pattern: /(^[\S]).*([\S]$)/, message: `${name}不能以空格开头或结尾` },
     { pattern: /^[\s\S]{2,20}$/, message: `${name}限制为 2～20 个字符` },
-    { pattern: /^[a-zA-Z0-9\u4e00-\u9fa5-=_&^%@#\+\$\*\(\)\[\]{}\s]+$/, message: `${name}不允许有特殊符号` }
+    { pattern: /^[^\.\<\>\:\"\/\\\|\?\*\&]+$/, message: `${name}不允许有特殊符号` }
   ]
 }
 
