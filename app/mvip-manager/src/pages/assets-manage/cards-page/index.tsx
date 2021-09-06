@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback, useContext } from 'react'
 import { Pagination, Button } from "antd"
+import { history } from 'umi'
 
 import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
@@ -172,6 +173,18 @@ const CardsPage = (props: CardsPageProps) => {
     }
     setTabScope(newScopes)
   }
+
+  // 拦截路由
+  useEffect(() => {
+    const unBlock = history.block((location, action) => {
+      const path = location.pathname
+      const jumpSelf = window.location.href.match(path)
+      if (jumpSelf) {
+        goTabScope(tabScope[0])
+      }
+    })
+    return () => unBlock()
+  }, [history, goTabScope, tabScope])
 
   /***************************************************** Renders */
 

@@ -19,10 +19,7 @@ export default (props: PageNavProps) => {
   const lastScopeName = curScope?.item?.name || ''
 
   // 前往图片管理页面
-  const goImageList = () => {
-    history.replace('/assets-manage/image-list')
-    goTabScope(tabScope[0])
-  }
+  const goImageList = () => goTabScope(tabScope[0])
 
   return (
     <>
