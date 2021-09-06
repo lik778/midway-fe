@@ -180,11 +180,11 @@ export default function useUploadModal(props: Props) {
           // =￣ω￣=
           // 呜哈哈哈哈哈哈哈 * 2
           const itemName = item.name
-            .split('.')[0]
-            .split('')
-            .filter(x => x.match(/[a-zA-Z0-9\u4e00-\u9fa5-=_&^%@#\+\$\*\(\)\[\]{}]/))
+            .split(".")[0]
+            .split("")
+            .filter(x => x.match(/[^\.\<\>\:\"\/\\\|\?\*\&]/))
             .slice(0, 20)
-            .join('')
+            .join("");
           const query = {
             title: itemName || '未命名视频',
             imgUrl: uploadCoverRes.data.url,
