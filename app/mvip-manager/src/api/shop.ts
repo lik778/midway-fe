@@ -263,7 +263,11 @@ export const getMediaAssets = (params: GetMediaAssetsParam) => {
 // 获取分类内可选用的素材列表
 // TODO
 export const getSelectableMediaAssets = (params: GetMediaAssetsParam) => {
-  return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/material/listing', params)
+  return postApiData<GetMediaAssetsRes>(
+    ServicePath.SHOP,
+    'midway/backend/material/listing',
+    Object.assign(params, { onlyApprove: true })
+  )
 }
 
 // 素材申诉

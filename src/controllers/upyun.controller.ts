@@ -75,6 +75,7 @@ export class UpyunController {
     const videoConfig = upyunVideoConfig
     const notifyBase = config().services['midway-service'].external
     const notifyURL = notifyBase + '/api/midway/internal/material/decode'
+    // * for test
     // const notifyURL = "https://enb6hk1stgczkkc.m.pipedream.net"
     const uploadPolicy = {
       ...videoConfig['policy'],

@@ -348,6 +348,7 @@ export interface GetMediaAssetsParam {
   page: number;
   size: number;
   source: MediaCateSource;
+  onlyApprove?: boolean;
 }
 
 export interface CreateMediaAssetsParam {
