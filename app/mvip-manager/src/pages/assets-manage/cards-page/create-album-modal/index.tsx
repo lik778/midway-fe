@@ -124,7 +124,7 @@ export default function useCreateAlbumModal(props: Props) {
       </Form>
       <div className={styles["extra"]}>
         <div className={styles["name-tip"]}>
-          注：可填写2~20个字符，支持中、英文，请不要填写特殊符号
+          注：请输入2~20个字符
         </div>
         <Button
           className={styles["confirm-btn"]}
