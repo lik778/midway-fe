@@ -146,6 +146,7 @@ function ImageCard(props: ImageCardProps) {
   const inEncoding = decodeStatus === 'DECODING'
   const isSuccess = decodeStatus === 'SUCCESS'
   const isError = !isSuccess && !inEncoding
+  const isVideoError = directoryType === "VIDEO" && isError
   // 应该是数据流动的问题，导致如果不检测 decodeStatus 就会显示 ErrorMask
   const showVideoMask = directoryType === 'VIDEO' && card.hasOwnProperty('decodeStatus') && !loading
 
@@ -185,7 +186,7 @@ function ImageCard(props: ImageCardProps) {
                   <span>编辑</span>
                 </div>
               )}
-              {!isError && (
+              {!isVideoError && (
                 <div className={styles["anticon-down-item"]}>
                   <PartitionOutlined />
                   <span>移动</span>
