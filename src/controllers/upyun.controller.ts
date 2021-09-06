@@ -70,7 +70,6 @@ export class UpyunController {
    */
   @Get('/getUpyunTaskConfig')
   async getUpyunTaskConfig(@Req() req: Request, @Res() res: Response) {
-    console.log(req.query)
     const { fileMD5, fileSuffix } = req.query
     const videoConfig = upyunVideoConfig
     const notifyBase = config().services['midway-service'].external
