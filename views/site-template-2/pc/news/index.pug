@@ -7,11 +7,11 @@ block content
 
   .container
     .main
+      - const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
       include ../components/news/news-list.pug
-      +news-list(renderData.articleList.result)
+      +news-list(articleList)
 
       include ../../../common/pc/pagination.pug
-      - var totalPage = (renderData.articleList && renderData.articleList.totalPage) || 1
       +pagination(totalPage, currentPage, `${currentPathname}`)
 
     .sidebar

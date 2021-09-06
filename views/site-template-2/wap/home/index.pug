@@ -40,11 +40,10 @@ block content
       +product-list-new(productList)
 
   include ../components/home-news-list-module.pug
-  - const {result:articleList}  = renderData.articleList
-  - const { articleList: articleRecommend } = renderData.articleRecommend
-  - const { name: articleRecommendName } = renderData.articleRecommend || '文章推荐'
+  - const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
+  - const { articleList: articleRecommend ,name: articleRecommendName} = renderData.articleRecommend
   if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
-    +news-module-list(articleList,'新闻资讯')
+    +news-module-list(articleList,articleListName)
     +news-module-list(articleRecommend,articleRecommendName)
 
   include ../components/contact-form.pug

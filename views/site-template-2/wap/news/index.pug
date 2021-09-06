@@ -5,12 +5,11 @@ block styles
 block content
     - const cateList = renderData.articleCateList
     include ../components/toptab
-
+    - const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
     include ../components/news-list
-    +news-list(renderData.articleList.result)
+    +news-list(articleList)
 
     include ../../../common/wap/pagination.pug
-    - const { totalPage } = renderData.articleList
     +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
 block scripts
