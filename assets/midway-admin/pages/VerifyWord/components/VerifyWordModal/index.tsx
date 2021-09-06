@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 const { Panel } = Collapse;
 const TextArea = Input.TextArea;
-const FormItem = Form.Item;
+const FormItem = Form.Item; 
 interface Props {
   visible: boolean;
   editItem: VerifyWordItem;
