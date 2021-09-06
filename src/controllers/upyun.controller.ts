@@ -76,6 +76,7 @@ export class UpyunController {
     const notifyURL = notifyBase + '/api/midway/internal/material/decode'
     // * for test
     // const notifyURL = "https://enb6hk1stgczkkc.m.pipedream.net"
+    // console.log('notifyURL:', notifyURL)
     const uploadPolicy = {
       ...videoConfig['policy'],
       apps: [{
