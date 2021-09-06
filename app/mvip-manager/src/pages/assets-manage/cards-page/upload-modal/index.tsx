@@ -206,7 +206,7 @@ export default function useUploadModal(props: Props) {
             if (target) {
               target.id = res.data.id
               target.inChibi = false
-              target.chibiFailed = res.data.checkStatus !== 'APPROVE'
+              target.chibiFailed = !["APPROVE", 'DEFAULT'].includes(res.data.checkStatus)
               record(uploadedLists.current)
             }
             resolve(item)
