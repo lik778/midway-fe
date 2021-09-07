@@ -140,9 +140,10 @@ function ImageCard(props: ImageCardProps) {
   const { directoryType } = useContext(CardsPageContext)
   const isImage = directoryType === 'IMAGE'
 
-  const { id, imgUrl, title, decodeStatus } = card
+  const { id, imgUrl, title, decodeStatus, checkStatus } = card
   const isChecked = selection.find((y: number) => y === id)
   const inSetCoverLoading = setCoverItem && setCoverItem.id === id
+  const inMachineAudit = checkStatus === 'DEFAULT'
   const inEncoding = decodeStatus === 'DECODING'
   const isSuccess = decodeStatus === 'SUCCESS'
   const isError = !isSuccess && !inEncoding
@@ -158,19 +159,26 @@ function ImageCard(props: ImageCardProps) {
       key={`image-card-${id}`}
       onClick={() => preview(card)}
     >
-      {showVideoMask && inEncoding && (
-        <div className={styles["mask"] + ' ' + styles['full']}>
-          <LoadingOutlined />
-          <span>正在转码中，请稍等</span>
-          <span className={styles["reason"]}>转码完成后第一时间通知您</span>
-        </div>
-      )}
-      {showVideoMask && isError && (
-        <div className={styles["mask"] + ' ' + styles['full']}>
-          <ErrorIcon />
-          <span>转码失败</span>
-          <span className={styles["reason"]}>转码失败，请删除重试</span>
-        </div>
+      {showVideoMask && (
+        inEncoding ? (
+          <div className={styles["mask"] + ' ' + styles['full']}>
+            <LoadingOutlined />
+            <span>正在转码中，请稍等</span>
+            <span className={styles["reason"]}>转码完成后第一时间通知您</span>
+          </div>
+        ) : inMachineAudit ? (
+          <div className={styles["mask"] + ' ' + styles['full']}>
+            <LoadingOutlined />
+            <span>正在审核中，请稍等</span>
+            <span className={styles["reason"]}></span>
+          </div>
+        ) : isError ? (
+          <div className={styles["mask"] + ' ' + styles['full']}>
+            <ErrorIcon />
+            <span>转码失败</span>
+            <span className={styles["reason"]}>转码失败，请删除重试</span>
+          </div>
+        ) : null
       )}
       <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => preview(card)}>
         <div className={styles["action-wrapper"]}>
