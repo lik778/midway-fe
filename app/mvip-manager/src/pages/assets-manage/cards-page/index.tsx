@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback, useContext } from 're
 import { Pagination, Button } from "antd"
 import { history } from 'umi'
 
+import { errorMessage } from '@/components/message'
 import CardList from './cards-container'
 import SelectionBar from './page-selection-bar'
 import useUploadModal from './upload-modal'
@@ -400,6 +401,7 @@ function useLists(
         }
       })
       .catch((error: Error) => {
+        errorMessage('网络错误，请稍后重试')
         console.error(error)
       })
       .finally(() => {
