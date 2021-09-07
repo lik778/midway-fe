@@ -5,6 +5,6 @@ export const sentryCaptureException = (exception: any) => {
   if (isProd()) {
     Sentry.captureException(exception);
   } else {
-    console.log(exception);
+    console.log('sentryCaptureException:', exception);
   }
 }
