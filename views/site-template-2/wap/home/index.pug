@@ -41,10 +41,8 @@ block content
 
   include ../components/home-news-list-module.pug
   - const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
-  - const { articleList: articleRecommend ,name: articleRecommendName} = renderData.articleRecommend
-  if articleList && articleList.length >0 || articleRecommend && articleRecommend.length >0
+  if articleList && articleList.length >0
     +news-module-list(articleList,articleListName)
-    +news-module-list(articleRecommend,articleRecommendName)
 
   include ../components/contact-form.pug
 

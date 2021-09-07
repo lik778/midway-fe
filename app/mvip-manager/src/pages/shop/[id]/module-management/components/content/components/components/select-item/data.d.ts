@@ -13,7 +13,7 @@ export enum ConfigItemTypeText {
   'article' = '文章'
 }
 
-export type ConfigKey = 'homePage-banner' | 'homePage-productRecommend' | 'homePage-articleList' | 'homePage-articleRecommend' | 'productListPage-productRecommend' | 'productListPage-articleRecommend' | 'articleListPage-productRecommend' | 'articleInfoPage-productRecommend' | 'articleInfoPage-articleRecommend' | 'productInfoPage-productRecommend'
+export type ConfigKey = 'homePage-banner' | 'homePage-productRecommend' | 'homePage-articleList' | 'productListPage-productRecommend' | 'productListPage-articleRecommend' | 'articleListPage-productRecommend' | 'articleInfoPage-productRecommend' | 'articleInfoPage-articleRecommend' | 'productInfoPage-productRecommend'
 
 export interface ConfigItem {
   name: 'productList' | 'articleList',// 表单项的key

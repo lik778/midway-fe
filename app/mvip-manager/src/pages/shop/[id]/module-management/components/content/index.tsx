@@ -43,11 +43,7 @@ const Content: FC<Props> = (props) => {
     </CacheComponent>
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'articleList'}>
-      <SelectItemList position='homePage' pageModule='articleList' type='article' configKey="homePage-articleList" itemMaxLength={isB2B ? 3 : 4}></SelectItemList>
-    </CacheComponent>
-
-    <CacheComponent visible={position === 'homePage' && pageModule === 'articleRecommend'}>
-      <SelectItemList position='homePage' pageModule='articleRecommend' type='article' configKey="homePage-articleRecommend"></SelectItemList>
+      <SelectItemList position='homePage' pageModule='articleList' type='article' configKey="homePage-articleList"></SelectItemList>
     </CacheComponent>
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'about'}>

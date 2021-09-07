@@ -27,16 +27,7 @@ export const selectItemConfig: {
     label: '新闻资讯',
     type: 'article',
     required: true,
-    maxLength: 3,
-    ajaxApi: getArticleListApi as any,
-    rules: [{ required: true, message: '请选择文章' }]
-  },
-  'homePage-articleRecommend': {
-    name: 'articleList',
-    label: '文章推荐',
-    type: 'article',
-    required: true,
-    maxLength: 3,
+    maxLength: 4,
     ajaxApi: getArticleListApi as any,
     rules: [{ required: true, message: '请选择文章' }]
   },
