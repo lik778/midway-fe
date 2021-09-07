@@ -183,12 +183,7 @@ export function useUpload(props: Props) {
    * 上传前检测
    */
   const beforeUpload = useCallback(async (file: RcFile): Promise<any> => {
-
-    /**
-     * 资源合规检测
-     */
     return new Promise(async (resolve, reject) => {
-
       // 给上传增加一个测试开关
       if (window._quick_upload) {
         window._quick_upload_file = file
