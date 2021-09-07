@@ -27,7 +27,7 @@ interface CardsContainerProps {
   curScope: TabScopeItem
   loading: boolean
   pagiConf: any
-  setPagiConf: (conf: Partial<PaginationSetting>) => void
+  handlePagiChange: (page: number, pageSize?: number | undefined) => void
   select: (id: number | number[]) => void
   setSelection: (ids: number[]) => void
   unselect: (id: number | number[]) => void
@@ -47,7 +47,7 @@ export default function CardsContainer(props: CardsContainerProps) {
 
   const {
     lists, selection, curScope, loading, pagiConf,
-    setPagiConf, setSelection, select, unselect, refresh,
+    handlePagiChange, setSelection, select, unselect, refresh,
     emptyTip, cardItem, customPreview
   } = props
 
@@ -86,14 +86,7 @@ export default function CardsContainer(props: CardsContainerProps) {
       }
       const countInPage = result * 2
       if (pagiConf.pageSize !== countInPage) {
-        setPagiConf({
-          pageSize: countInPage,
-          pageSizeOptions: [
-            String(countInPage),
-            String(countInPage * 2),
-            String(countInPage * 4),
-          ]
-        })
+        handlePagiChange(1, countInPage)
       }
     }
   }, [countInLine])

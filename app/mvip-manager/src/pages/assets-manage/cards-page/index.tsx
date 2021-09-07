@@ -93,6 +93,7 @@ const CardsPage = (props: CardsPageProps) => {
   const pagiQuery = useMemo(() => {
     let page = pagi.current
     let size = pagiConf.pageSize
+    // console.log('pagiQuery', page, size)
     // @ts-ignore
     const isChangeScope = curScope && prevCurScope && (curScope.type !== prevCurScope.type)
     if (isChangeScope) {
@@ -101,9 +102,14 @@ const CardsPage = (props: CardsPageProps) => {
     }
     return { page, size }
   }, [pagi.current, pagiConf.pageSize, curScope])
+
   const { dispatch } = useContext(CardsPageContext)
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const [lists, total, loading, refreshLists] = useLists(pagiQuery, curScope, fetchListFn)
+
+  useEffect(() => {
+    console.log('asdf', pagiConf)
+  }, [pagiConf])
 
   // 刷新列表可以重置分页后刷新或就地刷新
   const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
@@ -155,8 +161,19 @@ const CardsPage = (props: CardsPageProps) => {
   const handlePagiChange = (page: number, pageSize?: number | undefined) => {
     pageSize = pageSize || pagiConf.pageSize
     const pageSizeChanged = pageSize !== pagiConf.pageSize
-    setPagi({ ...pagi, current: pageSizeChanged ? 1 : page })
-    setPagiConf({ ...pagiConf, pageSize })
+    setPagi({
+      ...pagi,
+      current: pageSizeChanged ? 1 : page
+    })
+    setPagiConf({
+      ...pagiConf,
+      pageSize,
+      pageSizeOptions: [
+        String(pageSize),
+        String(pageSize * 2),
+        String(pageSize * 4),
+      ]
+    })
   }
 
   // 切换文件层级
@@ -300,7 +317,7 @@ const CardsPage = (props: CardsPageProps) => {
           selection={selection}
           loading={loading}
           pagiConf={pagiConf}
-          setPagiConf={setPagiConf}
+          handlePagiChange={handlePagiChange}
           setSelection={setSelection}
           refresh={refresh}
           select={select}
