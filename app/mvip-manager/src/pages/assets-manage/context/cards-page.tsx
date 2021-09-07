@@ -4,7 +4,7 @@ import { MediaCateItem, MediaCatesNameListItem } from "@/interfaces/shop"
 
 type CardsPageContextType = {
   directoryType: 'IMAGE' | 'VIDEO'
-  directoryLabel: '相册' | '视频分组'
+  directoryLabel: '相册' | '分组'
   subDirectoryLabel: '图片' | '视频'
   subDirectoryCountLabel: '张' | '个'
   // // 刷新页面列表
@@ -34,7 +34,7 @@ export default CardsPageContext
 const reducer = (prevState: CardsPageContextType, action: any): CardsPageContextType => {
   switch (action.type) {
     case 'update-directory-type':
-      const directoryLabel = action.payload === 'IMAGE' ? '相册' : '视频分组'
+      const directoryLabel = action.payload === 'IMAGE' ? '相册' : '分组'
       const subDirectoryLabel = action.payload === 'IMAGE' ? '图片' : '视频'
       const subDirectoryCountLabel = action.payload === 'IMAGE' ? '张' : '个'
       const directoryType = action.payload

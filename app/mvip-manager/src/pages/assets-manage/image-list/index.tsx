@@ -198,7 +198,7 @@ const AssetsMangeImageListPage = (props: {
       $extra = <Button type="primary" onClick={() => createAlbum()}>新建{directoryLabel}</Button>
     }
     if (isScopeImage) {
-      info = `当前${directoryLabel}还没有${subDirectoryLabel}，快上传一些吧~`
+      info = `当前${directoryLabel}还没有${subDirectoryLabel}，快去上传吧~`
       $extra = <Button type="primary" onClick={() => openUpload(curScope!.item!.id)}>上传{subDirectoryLabel}</Button>
     }
     return (
