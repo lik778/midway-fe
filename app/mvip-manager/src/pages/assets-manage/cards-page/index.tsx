@@ -178,8 +178,10 @@ const CardsPage = (props: CardsPageProps) => {
   useEffect(() => {
     const unBlock = history.block((location, action) => {
       const path = location.pathname
-      // image-list, video-list, audit-list
-      if (path.match('-list')) {
+      if (
+        path.includes('image-list') ||
+        path.includes('video-list')
+      ) {
         if (action === 'PUSH') {
           const jumpSelf = window.location.href.match(path)
           if (jumpSelf) {
