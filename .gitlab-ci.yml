@@ -29,9 +29,9 @@ nest-install:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-    # changes:
-    #   - package-lock.json
-    #   - app/mvip-manager/package-lock.json
+    changes:
+      - package-lock.json
+      - app/mvip-manager/package-lock.json
   image: registry.gitlab.baixing.cn/arch/base-images/nodejs:12.22-alpine
   cache:
     key: midway-fe:nest-install
@@ -56,9 +56,9 @@ mvip-install:
       - test@fenlei/midway-fe
       - test1@fenlei/midway-fe
       - test2@fenlei/midway-fe
-    # changes:
-    #   - package-lock.json
-    #   - app/mvip-manager/package-lock.json
+    changes:
+      - package-lock.json
+      - app/mvip-manager/package-lock.json
   image: registry.gitlab.baixing.cn/arch/base-images/nodejs:12.22-alpine
   cache:
     key: midway-fe:mvip-install
