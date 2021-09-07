@@ -40,7 +40,7 @@ async function base64ToBlob(b64data = '', contentType = '', sliceSize = 512): Pr
 }
 
 // 设置最大上传数量
-const MAX_UPLOAD_COUNT = 15
+const MAX_UPLOAD_COUNT = 100
 // 用来标识上传到又拍云但还没“通知”后端的资源的默认列表ID
 const UPLOAD_RES_MAP_DEFAULT_ID = -1
 const getRandomNumber = (): string => String(Math.random()).slice(-6) + +new Date()

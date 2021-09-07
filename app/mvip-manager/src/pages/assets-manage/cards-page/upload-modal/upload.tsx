@@ -59,7 +59,7 @@ type Props = {
   afterUploadHook?: (item: UploadItem, update?: Function) => Promise<UploadItem>
 }
 export function useUpload(props: Props) {
-  const { type, maxCount = 15, afterUploadHook } = props
+  const { type, maxCount = 1, afterUploadHook } = props
   const [lists, setLists] = useState<UploadItem[]>([])
   const uploadItemLabel = useMemo(() => type === 'IMAGE' ? '图片' : '视频', [type])
   const uploadConf = type === 'IMAGE'
@@ -181,9 +181,9 @@ export function useUpload(props: Props) {
 
   /**
    * 上传前检测
-   */ 
+   */
   const beforeUpload = useCallback(async (file: RcFile): Promise<any> => {
-  
+
     /**
      * 资源合规检测
      */
