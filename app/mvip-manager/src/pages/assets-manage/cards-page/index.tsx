@@ -178,17 +178,20 @@ const CardsPage = (props: CardsPageProps) => {
   useEffect(() => {
     const unBlock = history.block((location, action) => {
       const path = location.pathname
-      if (action === 'PUSH') {
-        const jumpSelf = window.location.href.match(path)
-        if (jumpSelf) {
-          goTabScope(tabScope[0])
-          return false
+      // image-list, video-list, audit-list
+      if (path.match('-list')) {
+        if (action === 'PUSH') {
+          const jumpSelf = window.location.href.match(path)
+          if (jumpSelf) {
+            goTabScope(tabScope[0])
+            return false
+          }
         }
-      }
-      if (action === "POP") {
-        if (tabScope.length >= 2) {
-          goTabScope(tabScope[0])
-          return false
+        if (action === "POP") {
+          if (tabScope.length >= 2) {
+            goTabScope(tabScope[0])
+            return false
+          }
         }
       }
     })
