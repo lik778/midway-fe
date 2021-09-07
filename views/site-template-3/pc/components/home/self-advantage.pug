@@ -1,5 +1,6 @@
 mixin self-advantage(configItem)
-	.self-advantage
+	- const dataList = configItem.slice(0,10)
+	#self-advantage(class=dataList.length<=3?'self-advantage one-line':'self-advantage')
 		each item in configItem.slice(0,10)
 			.advanItem
 				img(src = item.urlImg )
