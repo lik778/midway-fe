@@ -60,8 +60,8 @@ block content
 
         //- 变量名 "productLists" 会报一个编译时错误，很奇怪
         //- 暂时先换个名字
-        - productLists = renderData.productList.result
-        if productLists && productLists.length>0
+        - const shopProductLists = renderData.productList.result
+        if shopProductLists && shopProductLists.length>0
             .block-title
                 //- img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",style="width:283px",alt="产品分类")
                 .point 
@@ -74,9 +74,10 @@ block content
             .product-catogeries-list
               include ../components/home/product-catogeries-new.pug 
               include ../components/home/product-list-new.pug
-              +product-list('nothot', productLists)
+              +product-list('nothot', shopProductLists)
 
-        - const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
+        - const { name:articleListName } = renderData.articleList
+        - const articleList = (renderData.articleList || {}).result || []
         if articleList && articleList.length >0
             .block-title
                 //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
