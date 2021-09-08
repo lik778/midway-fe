@@ -23,19 +23,19 @@ export class RequestService {
           if (err.response) {
             const { message, code, success } = err.response.data
             if (this.landPageRequestRegExp.test(url)) {
-              throw new PageException(code, success, message);
+              throw new PageException(code, success, message, 'request.service get PageException 1', { url, params, headers });
             } else {
-              throw new ApiException(code, success, message);
+              throw new ApiException(code, success, message, 'request.service get ApiException 1', { url, params, headers });
             }
           } else {
-            throw new ApiException(500, false, `请求没有返回，response为undefined
-          ${err}`);
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
+          ${err}`, 'request.service get ApiException 2', { url, params, headers });
           }
         } else {
           if (this.landPageRequestRegExp.test(url)) {
-            throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常');
+            throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service get PageException 2', { url, params, headers });
           } else {
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常');
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service get ApiException 3', { url, params, headers });
           }
         }
       })
@@ -54,19 +54,19 @@ export class RequestService {
           if (err.response) {
             const { message, code, success } = err.response.data
             if (this.landPageRequestRegExp.test(url)) {
-              throw new PageException(code, success, message);
+              throw new PageException(code, success, message, 'request.service post PageException 1', { url, data, headers });
             } else {
-              throw new ApiException(code, success, message);
+              throw new ApiException(code, success, message, 'request.service post ApiException 1', { url, data, headers });
             }
           } else {
-            throw new ApiException(500, false, `请求没有返回，response为undefined
-          ${err}`);
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
+          ${err}`, 'request.service post ApiException 2', { url, data, headers });
           }
         } else {
           if (this.landPageRequestRegExp.test(url)) {
-            throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常');
+            throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service post PageException 2', { url, data, headers });
           } else {
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常');
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service post ApiException 3', { url, data, headers });
           }
         }
       })
