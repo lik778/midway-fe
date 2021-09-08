@@ -30,8 +30,8 @@ export default {
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
 
-      const assetsName = isLocal ? item : readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
-      if(assetsName){
+      const assetsName = isLocal ? readDir.find(x => x == item) : readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
+      if (assetsName) {
         if (suffix === 'css') {
           retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
         }
