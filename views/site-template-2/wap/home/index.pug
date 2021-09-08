@@ -40,7 +40,8 @@ block content
       +product-list-new(productList)
 
   include ../components/home-news-list-module.pug
-  - const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
+  - const { name:articleListName } = renderData.articleList
+  - const articleList = (renderData.articleList || {}).result || []
   if articleList && articleList.length >0
     +news-module-list(articleList,articleListName)
 

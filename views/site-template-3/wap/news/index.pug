@@ -6,7 +6,9 @@ block content
     - const cateList = renderData.articleCateList
     include ../components/toptab
     include ../components/news-list
-    - const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
+    - const { name:articleListName } = renderData.articleList
+    - const articleList = (renderData.articleList || {}).result || []
+    - const totalPage = (renderData.articleList || {}).totalPage || []
     +news-list(articleList)
 
     //-留言资讯

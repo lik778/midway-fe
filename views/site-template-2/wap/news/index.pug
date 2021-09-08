@@ -5,7 +5,9 @@ block styles
 block content
     - const cateList = renderData.articleCateList
     include ../components/toptab
-    - const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
+    - const { name:articleListName } = renderData.articleList
+    - const articleList = (renderData.articleList || {}).result || []
+    - const totalPage = (renderData.articleList || {}).totalPage || []
     include ../components/news-list
     +news-list(articleList)
 

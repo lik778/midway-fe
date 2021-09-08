@@ -1,4 +1,6 @@
-- const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
+- const { name:articleListName } = renderData.articleList
+- const articleList = (renderData.articleList || {}).result || []
+- const totalPage = (renderData.articleList || {}).totalPage || []
 if articleList && articleList.length >0
 	.news-list-title-box
 		.title #{articleListName}
