@@ -17,14 +17,19 @@ export class RequestService {
         resolve(res?.data)
       }).catch((err: AxiosError) => reject(err))
     })
-      .catch((err: AxiosError) => {
+      .catch((err) => {
         this.logService.errorLog(err)
         if (err.isAxiosError) {
-          const { message, code, success } = err.response.data
-          if (this.landPageRequestRegExp.test(url)) {
-            throw new PageException(code, success, message);
+          if (err.response) {
+            const { message, code, success } = err.response.data
+            if (this.landPageRequestRegExp.test(url)) {
+              throw new PageException(code, success, message);
+            } else {
+              throw new ApiException(code, success, message);
+            }
           } else {
-            throw new ApiException(code, success, message);
+            throw new ApiException(500, false, `请求没有返回，response为undefined
+          ${err}`);
           }
         } else {
           if (this.landPageRequestRegExp.test(url)) {
@@ -46,11 +51,16 @@ export class RequestService {
       .catch((err) => {
         this.logService.errorLog(err)
         if (err.isAxiosError) {
-          const { message, code, success } = err.response.data
-          if (this.landPageRequestRegExp.test(url)) {
-            throw new PageException(code, success, message);
+          if (err.response) {
+            const { message, code, success } = err.response.data
+            if (this.landPageRequestRegExp.test(url)) {
+              throw new PageException(code, success, message);
+            } else {
+              throw new ApiException(code, success, message);
+            }
           } else {
-            throw new ApiException(code, success, message);
+            throw new ApiException(500, false, `请求没有返回，response为undefined
+          ${err}`);
           }
         } else {
           if (this.landPageRequestRegExp.test(url)) {
