@@ -99,7 +99,7 @@ function ErrorCardItem(props: ErrorCardItemProps) {
   } = props
 
   const { id, imgUrl, checkStatus, reason } = card
-  const shortReasonMatch = (reason || '').match(/\[(.+)\]/)
+  const shortReasonMatch = (reason || '').match(/\[(.+)\]/) || (reason || '').match(/“(.+)”/)
   const shortReason = shortReasonMatch ? shortReasonMatch[1] : '审核驳回'
   const isChecked = selection.find((y: number) => y === id)
   const inAudit = checkStatus === 'REAPPLY'
