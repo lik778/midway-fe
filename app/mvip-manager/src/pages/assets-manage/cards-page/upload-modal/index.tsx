@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState, useMemo, useContext } from 'react'
-import { Button, Modal } from "antd"
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
+import { Button, Modal, Spin } from "antd"
+import { DeleteOutlined, PlusOutlined, LoadingOutlined } from "@ant-design/icons"
 const crypto = require('crypto')
 
 import { upImageToYoupai } from '@/api/common'
@@ -78,6 +78,7 @@ export default function useUploadModal(props: Props) {
   /***************************************************** States */
   const { refresh, createAlbum } = props
   const [visible, setVisible] = useState(false)
+  const [checkUploadLoading, setCheckUploadLoading] = useState(false)
   const { directoryType, directoryLabel, subDirectoryCountLabel, subDirectoryLabel } = useContext(CardsPageContext)
 
   const isUploadImage = useMemo(() => directoryType === 'IMAGE', [directoryType])
@@ -244,6 +245,7 @@ export default function useUploadModal(props: Props) {
     type: directoryType,
     maxCount: MAX_UPLOAD_COUNT,
     afterUploadHook,
+    setCheckUploadLoading,
   })
 
   // 当上传完成、机审通过才能无感知关闭弹窗
@@ -478,8 +480,8 @@ export default function useUploadModal(props: Props) {
       {/* Container */}
       <div className={styles['upload-lists']}>
         {renderLists()}
-        <div className={styles["upload-add"] + ' ' + (!showUploadBtn ? styles['hidden'] : '')}>
-          <PlusOutlined />
+        <div className={styles["upload-add"] + ' ' + (!showUploadBtn ? styles['hidden'] : '') + ' ' + (checkUploadLoading ? styles['disabled'] : '')}>
+          {checkUploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
           {$uploader}
         </div>
       </div>

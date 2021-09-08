@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react'
-import { Upload, notification } from 'antd'
+import { Upload, Spin, notification } from 'antd'
 import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 
 import { getFileMD5, getBase64 } from '@/utils'
@@ -41,6 +41,8 @@ const getFirstVideoFrame = function (file: Blob): Promise<any> {
   })
 }
 
+const checkUploadLoadingTick: any = null
+
 export interface UploadItem extends UploadFile {
   // 图片预览地址
   preview: string
@@ -57,10 +59,14 @@ type Props = {
   maxCount?: number
   // 上传后钩子（在上传到又拍云后用来和后端交互）
   afterUploadHook?: (item: UploadItem, update?: Function) => Promise<UploadItem>
+  // 上传前检查状态钩子
+  setCheckUploadLoading?: (loading: boolean) => void
 }
 export function useUpload(props: Props) {
   const { type, maxCount = 1, afterUploadHook } = props
+  const checkUploadLoadingHook = props.setCheckUploadLoading || (() => {})
   const [lists, setLists] = useState<UploadItem[]>([])
+  const [checkUploadLoading, setCheckUploadLoading] = useState(false)
   const uploadItemLabel = useMemo(() => type === 'IMAGE' ? '图片' : '视频', [type])
   const uploadConf = type === 'IMAGE'
     ? {
@@ -74,32 +80,44 @@ export function useUpload(props: Props) {
       accept: ['video/mp4', 'video/mpeg', 'video/mov', 'video/quicktime'],
       action: window.__upyunVideoConfig?.uploadUrl,
       async data(file: RcFile) {
-        const defaultConf = {
-          policy: window.__upyunVideoConfig?.uploadParams?.policy,
-          signature: window.__upyunVideoConfig?.uploadParams?.signature,
+        setCheckUploadLoading(true)
+        if (!checkUploadLoadingTick) {
+          window.clearTimeout(checkUploadLoadingTick)
         }
-        const fileMD5 = await getFileMD5(file)
-        let fileSuffix = ''
-        switch (file.type) {
-          case 'video/mp4':
-          case 'video/mpeg':
-            fileSuffix = '.mp4'
-            break
-          case 'video/mov':
-          case 'video/quicktime':
-            fileSuffix = '.mov'
-            break
-        }
-        const confWithMD5 = await window.__upyunGetTaskConfig({ fileMD5, fileSuffix })
-        return {
-          ...defaultConf,
-          ...confWithMD5
+        try {
+          const defaultConf = {
+            policy: window.__upyunVideoConfig?.uploadParams?.policy,
+            signature: window.__upyunVideoConfig?.uploadParams?.signature,
+          }
+          const fileMD5 = await getFileMD5(file)
+          let fileSuffix = ''
+          switch (file.type) {
+            case 'video/mp4':
+            case 'video/mpeg':
+              fileSuffix = '.mp4'
+              break
+            case 'video/mov':
+            case 'video/quicktime':
+              fileSuffix = '.mov'
+              break
+          }
+          const confWithMD5 = await window.__upyunGetTaskConfig({ fileMD5, fileSuffix })
+          return {
+            ...defaultConf,
+            ...confWithMD5
+          }
+        } finally {
+          setCheckUploadLoading(false)
         }
       }
     }
   const uploadAccept = uploadConf.accept
     .map(x => '.' + (x.split('/')[1]))
     .join(',')
+
+  useEffect(() => {
+    checkUploadLoadingHook(checkUploadLoading)
+  }, [checkUploadLoading])
 
   // 增加一项
   const add = useCallback((item: UploadItem) => {
