@@ -146,7 +146,6 @@ export class SiteService {
 
   //关于我们页面
   public getAboutPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
-    console.log('about:',`${this.prefixPath}/about/?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`)
     return this.requestService.post(`${this.prefixPath}/about/?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, {},
       this.setPageHeaders(shopName, device, domain));
   }
