@@ -506,7 +506,7 @@ export default function useUploadModal(props: Props) {
           >
             确定
           </Button>
-          <span className={styles["count-tip"]}>（共 {lists.length} {subDirectoryCountLabel}{directoryLabel}）</span>
+          <span className={styles["count-tip"]}>（共 {lists.length} {subDirectoryCountLabel}{subDirectoryLabel}）</span>
         </div>
       )}
     </Modal>,
