@@ -38,8 +38,8 @@ block content
 					+user-defined-module(autoConfig[0])
 
 				//-新闻资讯
-				- const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
-				//- - const { articleRecommend: articleList} = renderData.articleRecommend
+				- const { name:articleListName } = renderData.articleList
+				- const articleList = (renderData.articleList || {}).result || []
 				if articleList && articleList.length >0
 						+home-title(articleListName)
 						include ../components/home/news-center.pug
