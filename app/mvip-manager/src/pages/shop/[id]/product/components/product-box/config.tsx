@@ -1,3 +1,4 @@
+import React from 'react';
 // tips: 页面配置
 import { FormType } from '@/components/wildcat-form/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
@@ -13,7 +14,7 @@ export const productForm: FormConfig = {
     { formItemWidth: 130, label: '标签', name: 'tags', type: FormType.Tag, required: true, minLength: 1, maxLength: 10, placeholder: '输入标签', maxNum: 30, minNum: 1 },
     {
       formItemWidth: 150, label: '用于封面', name: 'media', type: FormType.ImgUpload, required: false, maxLength: 1, images: [{ uploadType: 2, showVideo: true, text: '用于封面', name: 'media', maxSize: 3, cropProps: { aspectRatio: 300 / 200 }, aspectRatio: 300 / 200 }],
-      tip: '图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于300*200'
+      tip: <span>图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于300*200<br />视频建议尺寸16:9，视频时长最短3秒，最长一分钟</span>
     },
     {
       formItemWidth: 150, label: '用于正文', name: 'contentImg', type: FormType.ImgUpload, required: false, maxLength: 5, images: [{ uploadType: 2, text: '用于正文介绍', name: 'contentImg', maxSize: 3, cropProps: { aspectRatio: 300 / 200, autoAspectRatio: true }, aspectRatio: 300 / 200 }],

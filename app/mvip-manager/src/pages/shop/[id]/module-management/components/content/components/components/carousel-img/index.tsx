@@ -21,7 +21,7 @@ interface Props {
   type: DeviceType,
   position: ModulePageType,
   txt: string,
-  tip: string,
+  tip: string | JSX.Element
   aspectRatio: number
 }
 
@@ -183,7 +183,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   }
 
 
-  // 提交函数 单个move还是从弹窗中选择了多个图, 
+  // 提交函数 单个move还是从弹窗中选择了多个图,
   // 分自动更新还是手动更新，对应的数据源不同
   // 自动更新需要传 nowBannerList nowDelBannerIds
   const handleUpData = useCallback(async (type: 'move' | 'all', nowBannerList?: BannerListItem[], nowDelBannerIds?: number[]) => {
