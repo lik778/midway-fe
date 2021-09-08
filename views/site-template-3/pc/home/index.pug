@@ -39,12 +39,11 @@ block content
 					+user-defined-module(autoConfig[0])
 
 				//-新闻资讯
-				- articleList = renderData.articleList.result
+				- const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
 				//- - const { articleRecommend: articleList} = renderData.articleRecommend
 				if articleList && articleList.length >0
-						+home-title('新闻资讯')
-						//- include ../components/home/news-center.pug
-						include ../components/home/news-center-new.pug
+						+home-title(articleListName)
+						include ../components/home/news-center.pug
 						.new-center.clearfix
 								+news-box(articleList)
 								

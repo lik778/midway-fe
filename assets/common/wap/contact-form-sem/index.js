@@ -30,7 +30,7 @@ function gotoDetail(e, sem) {
   e.preventDefault()
   const href = $(e.currentTarget).attr('href')
   if (!href) return
-  const target = $(e.currentTarget).attr('target')
+  const target = $(e.currentTarget).attr('target') || '_self'
   if (href.indexOf('?') !== -1) {
     window.open(`${href}&sem=${sem}`, target,)
   } else {

@@ -448,9 +448,9 @@ export interface ShopArticleListItem {
 }
 
 /** 店铺模块管理相关 开始 */
-export type ModulePageType = 'homePage' | 'productListPage' | 'articleListPage' | 'articleInfoPage' | 'aboutPage'
+export type ModulePageType = 'homePage' | 'productListPage' | 'articleListPage' | 'productInfoPage' | 'articleInfoPage' | 'aboutPage'
 
-export type ModuleComponentId = 'banner' | 'productRecommend' | 'autoConfig' | 'about' | 'articleRecommend'
+export type ModuleComponentId = 'banner' | 'productRecommend' | 'autoConfig' | 'articleList' | 'about' | 'articleRecommend'
 
 export interface ModuleInitPage {
   position: ModulePageType,
@@ -521,6 +521,11 @@ export interface ModuleProductInfoParam extends ModuleRequestParam {
 export interface ModuleArticleInfo {
   name: string,
   articleList: ModuleSelectArticleListItem[]
+}
+
+export interface ModuleHomeArticleListInfo {
+  name: string,
+  articleList: ListRes<ModuleSelectArticleListItem[]>
 }
 
 export interface ModuleArticleInfoParam extends ModuleRequestParam {
