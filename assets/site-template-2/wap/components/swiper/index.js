@@ -41,10 +41,12 @@ if (swiper.$el) {
   $swiper.addEventListener('click', () => {
     $swiper.classList.toggle('fullscreen')
     const [$video, $cover] = getVideo()
-    const isPaused = $video.paused
-    if (isPaused) {
-      $cover && $cover.remove()
-      $video.play()
+    if ($video) {
+      const isPaused = $video.paused
+      if (isPaused) {
+        $cover && $cover.remove()
+        $video.play()
+      }
     }
   })
   $swiper.addEventListener('dbclick', () => {

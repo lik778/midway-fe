@@ -11,7 +11,7 @@ mixin swiper(height)
             if isVideo
               .swiper-slide
                 .video-wrapper
-                  video(src=item.hrefUrl, loop, preload, controls)
+                  video(src=item.hrefUrl, loop, preload)
                 .video-cover
                   img(src=item.displayImgUrl)
             else
@@ -31,7 +31,7 @@ mixin swiper(height)
             if isVideo
               .swiper-slide
                 .video-wrapper
-                  video(src=item.hrefUrl, loop, preload, controls)
+                  video(src=item.hrefUrl, loop, preload)
                 .video-cover
                   img(src=item.displayImgUrl)
             else
