@@ -119,10 +119,12 @@ function ErrorCardItem(props: ErrorCardItemProps) {
           {rejected && <span className={styles["reason"]}>违规原因：{shortReason}</span>}
         </div>
       )}
-      {!inAudit && (
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => preview(card)}>
+      {!inAudit && <>
+        <div className={styles["selection"] + ' ' + styles['auto-hide']} onClick={() => preview(card)}>
           <div className={styles["action-wrapper"]}>
-            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+            <div className={styles["checkbox-wrapper"] + ' ' + (isChecked ? styles["checked"] : '')}>
+              <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+            </div>
             <div className={styles["anticon-down-con"]}>
               <div className={styles["anticon-down"]}>
                 <DownOutlined />
@@ -142,7 +144,7 @@ function ErrorCardItem(props: ErrorCardItemProps) {
             </div>
           </div>
         </div>
-      )}
+      </>}
       {(!loading && imgUrl) && (
         <img className={styles["cover"]} src={imgUrl} alt="cover" />
       )}

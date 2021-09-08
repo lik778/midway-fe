@@ -128,10 +128,12 @@ function AlbumCard(props: AlbumCardProps) {
   return (
     <div className={isImage ? styles["album-card"] : styles["video-album-card"]} title={name} key={`album-card-${id}`} onClick={() => intoScope(card)}>
 
-    {!isDefaultAlbum && (
-        <div className={styles["selection"] + ' ' + (isChecked ? '' : styles['auto-hide'])} onClick={() => intoScope(card)}>
+    {!isDefaultAlbum && <>
+        <div className={styles["selection"] + ' ' + styles['auto-hide']} onClick={() => intoScope(card)}>
           <div className={styles["action-wrapper"]}>
-            <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+            <div className={styles["checkbox-wrapper"] + ' ' + (isChecked ? styles["checked"] : '')}>
+              <Checkbox checked={isChecked} onChange={e => handleSelectCard(e, card)} onClick={e => stopEvent(e)} />
+            </div>
             <div className={styles["anticon-down-con"]}>
               <div className={styles["anticon-down"]}>
                 <DownOutlined />
@@ -149,7 +151,7 @@ function AlbumCard(props: AlbumCardProps) {
             </div>
           </div>
         </div>
-      )}
+      </>}
       <img className={styles["cover"]} src={isImage ? (coverUrl || DEFAULT_COVER) : DEFAULT_COVER} alt={name} />
       <div className={styles["header"]}>
         <span className={styles["name"]} title={name}>{name}</span>
