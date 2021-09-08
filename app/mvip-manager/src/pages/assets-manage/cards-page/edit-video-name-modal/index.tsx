@@ -45,7 +45,7 @@ export default function useEditVideoNameModal(props: Props) {
   const closeModal = () => {
     resolver && resolver(false)
     setVisible(false)
-    form.resetFields()
+    setTimeout(() => form.resetFields(), 200)
   }
 
   /***************************************************** Actions */
