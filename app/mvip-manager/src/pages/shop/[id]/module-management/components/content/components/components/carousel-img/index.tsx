@@ -235,14 +235,14 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   const renderIcons: ActionBtnListItem[] = useMemo(() => {
     return [
       {
-        title: "move-up",
+        title: "上移",
         action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, -1),
         icon: (file, fileList) => {
           return fileList.findIndex(item => item.uid === file.uid) === 0 ? null : <UpOutlined />
         },
       },
       {
-        title: "move-down",
+        title: "下移",
         action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, 1),
         icon: (file, fileList) => {
           return fileList.findIndex(item => item.uid === file.uid) === fileList.length - 1 ? null : <DownOutlined />
