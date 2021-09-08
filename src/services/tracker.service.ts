@@ -13,8 +13,8 @@ export class TrackerService {
   host: string;
   haojingDomain: string;
   constructor(private readonly configService: ConfigService,
-              private readonly logService: LogService,
-              private readonly httpService: HttpService) {
+    private readonly logService: LogService,
+    private readonly httpService: HttpService) {
     this.host = configService.get('services.midway-service.host');
     this.haojingDomain = configService.get('haojingDomain');
   }
@@ -28,10 +28,14 @@ export class TrackerService {
 
   public point(req: Request, res: Response, body: TrackerDTO): Promise<any> {
     const { eventType, data } = body
-    return this.httpService.post(`${this.host}/api/midway/internal/event/tracking/report`,
-      JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) }), { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
+    const url = `${this.host}/api/midway/internal/event/tracking/report`
+    const requestData = JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) })
+    return this.httpService.post(url,
+      requestData, { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err);
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '打点错误');
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '打点错误', 'tracker.service point ApiException 1', {
+          url, data: requestData,
+        });
       })
   }
 
@@ -46,7 +50,7 @@ export class TrackerService {
       ua: req.headers['user-agent'],
       refer: refer || '',
       refer_keywords: referKey
-      };
+    };
   }
 
   public getTrackId(req: Request, res: Response) {
@@ -58,7 +62,7 @@ export class TrackerService {
         httpOnly: true,
         domain: this.haojingDomain
       });
-      return  gTrackId
+      return gTrackId
     }
     return trackId
   }
@@ -78,11 +82,12 @@ export class TrackerService {
 
   public getAuditImgList(req: Request, res: Response, body: TrackerDTO): Promise<any> {
     const { eventType, data } = body
-    return this.httpService.post(`${this.host}/api/midway/internal/mediaImg/imgReapply`,
-      JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) }), { headers: this.setMediaImgHeaders() }).toPromise().catch(err => {
+    const url = `${this.host}/api/midway/internal/mediaImg/imgReapply`
+    const requestData = JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) })
+    return this.httpService.post(url,
+      requestData, { headers: this.setMediaImgHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err);
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '获取审核记录错误');
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '获取审核记录错误', 'tracker.service getAuditImgList ApiException 1', { url, data: requestData });
       })
   }
-
 }
