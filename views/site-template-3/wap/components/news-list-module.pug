@@ -1,7 +1,7 @@
-- const newsList= renderData.articleList.result
-if newsList && newsList.length >0
+- const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
+if articleList && articleList.length >0
 	.news-list-title-box
-		.title 新闻资讯
+		.title #{articleListName}
 		a.more(href=newsLink) 查看全部
 	include ../components/news-list.pug
-	+news-list(newsList)
+	+news-list(articleList)

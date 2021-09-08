@@ -13,10 +13,10 @@ export enum ConfigItemTypeText {
   'article' = '文章'
 }
 
-export type ConfigKey = 'homePage-banner' | 'homePage-productRecommend' | 'productListPage-productRecommend' | 'productListPage-articleRecommend' | 'articleListPage-productRecommend' | 'articleInfoPage-productRecommend' | 'articleInfoPage-articleRecommend'
+export type ConfigKey = 'homePage-banner' | 'homePage-productRecommend' | 'homePage-articleList' | 'productListPage-productRecommend' | 'productListPage-articleRecommend' | 'articleListPage-productRecommend' | 'articleInfoPage-productRecommend' | 'articleInfoPage-articleRecommend' | 'productInfoPage-productRecommend'
 
 export interface ConfigItem {
-  name: string,// 表单项的key
+  name: 'productList' | 'articleList',// 表单项的key
   label: string,// 表单项文字
   type: ConfigItemType,// 列表是文章还是产品
   required: boolean,// 是否必填

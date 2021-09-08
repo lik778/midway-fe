@@ -1,6 +1,7 @@
-import React, { FC, useState, useEffect } from 'react';
-
-import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
+import React, { FC, useMemo, useEffect } from 'react';
+import { SHOP_NAMESPACE } from '@/models/shop';
+import { ShopInfo, ModulePageType, ModuleComponentId } from '@/interfaces/shop'
+import { ProductType } from '@/enums';
 import styles from './index.less'
 import CacheComponent from '@/components/cache-component'
 import HomeAboutUs from './components/home-about-us'
@@ -13,11 +14,21 @@ import ArticleInfoSwiper from './components/article-info-swiper'
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId
-  handleChangeModuleName: (componentName: string) => void
+  handleChangeModuleName: (componentName: string) => void,
+  curShopInfo: ShopInfo | null;
 }
 
 const Content: FC<Props> = (props) => {
-  const { position, pageModule, handleChangeModuleName } = props
+  const { position, pageModule, handleChangeModuleName, curShopInfo } = props
+  
+  const isB2B = useMemo(() => {
+    if (curShopInfo) {
+      const { type } = curShopInfo;
+      return Boolean(type === ProductType.B2B)
+    }
+    return true
+  }, [curShopInfo])
+
   return <>
     <CacheComponent visible={position === 'homePage' && pageModule === 'banner'}>
       <HomeSwiper position={position} pageModule={pageModule}></HomeSwiper>
@@ -29,6 +40,10 @@ const Content: FC<Props> = (props) => {
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'autoConfig'}>
       <HomeCustom></HomeCustom>
+    </CacheComponent>
+
+    <CacheComponent visible={position === 'homePage' && pageModule === 'articleList'}>
+      <SelectItemList position='homePage' pageModule='articleList' type='article' configKey="homePage-articleList"></SelectItemList>
     </CacheComponent>
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'about'}>
@@ -57,6 +72,10 @@ const Content: FC<Props> = (props) => {
 
     <CacheComponent visible={position === 'articleInfoPage' && pageModule === 'articleRecommend'}>
       <SelectItemList position='articleInfoPage' pageModule='articleRecommend' type='article' configKey="articleInfoPage-articleRecommend"></SelectItemList>
+    </CacheComponent>
+
+    <CacheComponent visible={position === 'productInfoPage' && pageModule === 'productRecommend'}>
+      <SelectItemList position='productInfoPage' pageModule='productRecommend' type='product' configKey="productInfoPage-productRecommend"></SelectItemList>
     </CacheComponent>
 
     <CacheComponent visible={position === 'aboutPage' && pageModule === 'about'}>

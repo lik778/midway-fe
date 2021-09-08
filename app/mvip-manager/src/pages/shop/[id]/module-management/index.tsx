@@ -1,8 +1,11 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'umi';
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
+import { SHOP_NAMESPACE } from '@/models/shop';
+import { connect } from 'react-redux';
+import { ConnectState } from '@/models/connect';
 import { ShopBasisType } from '@/enums'
-import { ModulePageType, ModuleComponentId } from '@/interfaces/shop'
+import { ShopInfo, ModulePageType, ModuleComponentId } from '@/interfaces/shop'
 import { getModuleInitInfoApi } from '@/api/shop'
 import { PageItemOption, MenuItemOption } from './data'
 import SelectPage from './components/select-page'
@@ -11,8 +14,12 @@ import Content from './components/content'
 import styles from './index.less'
 import { mockData } from '@/utils';
 
+interface Props {
+  curShopInfo: ShopInfo | null
+}
 
-const ModuleManagement = () => {
+const ModuleManagement: FC<Props> = (props) => {
+  const { curShopInfo } = props
   const params = useParams<{ id: string }>()
   const [moduleOptions, setModuleOptions] = useState<any[]>([])
   const [position, setPosition] = useState<ModulePageType>()
@@ -100,7 +107,7 @@ const ModuleManagement = () => {
               <Menu position={position} pageModule={pageModule} menuOptions={menuOptions} handleChangeComponent={setComponentId}></Menu>
             </div>
             <div className={styles['content']}>
-              <Content position={position} pageModule={pageModule} handleChangeModuleName={handleChangeModuleName}></Content>
+              <Content position={position} pageModule={pageModule} handleChangeModuleName={handleChangeModuleName} curShopInfo={curShopInfo}></Content>
             </div>
           </div>
         }
@@ -109,4 +116,9 @@ const ModuleManagement = () => {
   </>
 }
 
-export default ModuleManagement
+const mapStateToProps = (state: ConnectState): any => {
+  const { curShopInfo } = state[SHOP_NAMESPACE];
+  return { curShopInfo }
+}
+
+export default connect<ConnectState, any, Props, any>(mapStateToProps)(ModuleManagement)
