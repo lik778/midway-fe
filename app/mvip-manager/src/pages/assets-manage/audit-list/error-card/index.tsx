@@ -107,6 +107,13 @@ function ErrorCardItem(props: ErrorCardItemProps) {
   const rejected = ['REJECT_BYMACHINE', 'REJECT_BYHUMAN'].includes(checkStatus)
   const showCoverInfo = inAudit || rejected
   const showReapplyBtn = rejected && checkStatus !== 'REJECT_BYHUMAN'
+  const rejectedLabel = inAudit
+    ? '申诉中'
+    : checkStatus === 'REJECT_BYMACHINE'
+      ? '机审驳回'
+      : checkStatus === 'REJECT_BYHUMAN'
+        ? '申诉不通过'
+        : ''
 
   const stopEvent = (e: any) => e.stopPropagation()
 
@@ -115,7 +122,7 @@ function ErrorCardItem(props: ErrorCardItemProps) {
       {showCoverInfo && (
         <div className={styles["mask"] + ' ' + (rejected ? styles['full'] : '')}>
           {rejected && <AuditFailedIcon />}
-          {inAudit ? '申诉中' : rejected ? '申诉不通过' : ''}
+          {rejectedLabel}
           {rejected && <span className={styles["reason"]}>违规原因：{shortReason}</span>}
         </div>
       )}
