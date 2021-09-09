@@ -13,6 +13,7 @@ interface Props {
 
 const CropModal: FC<Props> = (prop) => {
   const { cropVisible, handleCropClose, cropProps, cropUrl, handleCropSuccess } = prop
+  console.log('cropProps render :', cropProps)
   return <Modal
     width={1220}
     title="裁剪图片"

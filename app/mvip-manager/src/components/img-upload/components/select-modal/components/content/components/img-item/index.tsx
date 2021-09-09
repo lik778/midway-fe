@@ -32,7 +32,7 @@ const ImgItem: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
   const selectModalContext = useContext(SelectModalContext)
   const { maxLength, localFileList, handleChangeLocalFileList } = selectModalContext
-  const { handlePreview, initConfig: { cropProps } } = context
+  const { selectModalType, handlePreview, initConfig: { cropProps } } = context
   const [originSize, setOriginSize] = useState<{
     width: number,
     heigth: number
@@ -41,6 +41,17 @@ const ImgItem: FC<Props> = (props) => {
     heigth: 0
   })
   const [cropVisible, setCropVisible] = useState(false)
+  const [modCropProps, setModCropProps] = useState(cropProps)
+
+  // 视频封面需要固定裁剪比例
+  useEffect(() => {
+    if (selectModalType === 'COVER') {
+      setModCropProps({
+        ...modCropProps,
+        aspectRatio: 16/9
+      })
+    }
+  }, [selectModalType])
 
   const handleLoad: ReactEventHandler<HTMLImageElement> = (e) => {
     e.persist()
@@ -141,7 +152,7 @@ const ImgItem: FC<Props> = (props) => {
       </div>
     </StatusBox>
     <CacheComponent visible={((file && file.status === 'done') || !file) && cropVisible}>
-      <CropModal cropVisible={((file && file.status === 'done') || !file) && cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
+      <CropModal cropVisible={((file && file.status === 'done') || !file) && cropVisible} handleCropClose={handleCropClose} cropProps={modCropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
     </CacheComponent>
   </>
 }
