@@ -37,11 +37,11 @@ else
     .swiper-container.swiper-specil-size
       .swiper-wrapper
         if bannerList && bannerList.length > 0
-          each item in bannerList
+          each item,index in bannerList
             - const isVideo = item.hrefUrl
               if isVideo
                 .swiper-slide
-                  .video-wrapper
+                  .video-wrapper(data-o=index)
                     video(src=item.hrefUrl, loop, preload, controls)
                   .video-cover
                     img(src=item.displayImgUrl)

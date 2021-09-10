@@ -6,10 +6,8 @@ block content
   include ../components/common/breadcrumbs.pug
 
   .container
-    .main
-      - const { name:articleListName } = renderData.articleList
-      - const articleList = (renderData.articleList || {}).result || []
-      - const totalPage = (renderData.articleList || {}).totalPage || []
+    .main 
+      - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
       include ../components/news/news-list.pug
       +news-list(articleList)
 

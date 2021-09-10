@@ -7,7 +7,7 @@ block styles
 //-使用了统一的header和nav
 block content
 		include ../components/common/base-swiper.pug
-		+baseSwiper('540px')
+		+baseSwiper('28.125vw','343.125px')
 		.container
 				//-自定义模块数据
 				- const { autoConfig } = renderData
@@ -38,8 +38,7 @@ block content
 					+user-defined-module(autoConfig[0])
 
 				//-新闻资讯
-				- const { name:articleListName } = renderData.articleList
-				- const articleList = (renderData.articleList || {}).result || []
+				- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
 				if articleList && articleList.length >0
 						+home-title(articleListName)
 						include ../components/home/news-center.pug

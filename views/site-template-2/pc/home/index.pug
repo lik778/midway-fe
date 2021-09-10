@@ -76,8 +76,8 @@ block content
               include ../components/home/product-list-new.pug
               +product-list('nothot', shopProductLists)
 
-        - const { name:articleListName } = renderData.articleList
-        - const articleList = (renderData.articleList || {}).result || []
+        - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+        include ../components/news/news-list.pug
         if articleList && articleList.length >0
             .block-title
                 //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
