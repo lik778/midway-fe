@@ -24,7 +24,7 @@ block content
 
   //-自定义模块1（即之前的企业优势模块）
   - const { autoConfig } = renderData
-  if autoConfig && autoConfig[0].show
+  if autoConfig && autoConfig[0] && autoConfig[0].show
     include ../components/user-defined-module-new.pug
     +user-defined-module-new(autoConfig[0])
 
