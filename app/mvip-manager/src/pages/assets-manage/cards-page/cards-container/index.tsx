@@ -34,7 +34,7 @@ interface CardsContainerProps {
   refresh: (resetPagi?: boolean) => void
   emptyTip: JSX.Element | null
   cardItem: (props: CustomCardItemProps) => (JSX.Element | null)
-  customPreview?: null | ((card: CardItem) => (JSX.Element | null))
+  customPreview?: ((card: CardItem) => (JSX.Element | null))
 }
 
 /**
@@ -75,7 +75,7 @@ export default function CardsContainer(props: CardsContainerProps) {
           }
           const isBigger = width < minWidthLimit
           if (isBigger) {
-            const last = tryCount.find((x, i) => tryCount[i+1] === c)
+            const last = tryCount.find((x, i) => tryCount[i + 1] === c)
             return last!
           }
         }

@@ -62,7 +62,7 @@ type CardsPageProps = {
   // useSelection hook 的排除选中
   selectionExcludeFilter?: (select: number) => boolean
   cardItem: (props: any) => (props: CustomCardItemProps) => (JSX.Element | null)
-  customCardItemPreview?: null | ((card: CardItem) => (JSX.Element | null))
+  customCardItemPreview?: (card: CardItem) => (JSX.Element | null)
   pageNav: (props: PageNavProps) => JSX.Element
   emptyTip: (props: EmptyTipProps) => JSX.Element
   children?: any
@@ -107,10 +107,6 @@ const CardsPage = (props: CardsPageProps) => {
   const { dispatch } = useContext(CardsPageContext)
   const { lists: allAlbumLists, refresh: refreshAllAlbumLists } = useContext(AlbumNamesContext)
   const [lists, total, loading, refreshLists] = useLists(pagiQuery, curScope, fetchListFn)
-
-  useEffect(() => {
-    console.log('asdf', pagiConf)
-  }, [pagiConf])
 
   // 刷新列表可以重置分页后刷新或就地刷新
   const refresh = useCallback((resetPage?: boolean, showLoading?: boolean) => {
@@ -413,6 +409,6 @@ function useLists(
   return [lists, total, loading, refresh, setLists, setTotal] as const
 }
 
-// CardsPage.wrappers = ['@/wrappers/path-auth']
+CardsPage.wrappers = ['@/wrappers/path-auth']
 
 export default CardsPage

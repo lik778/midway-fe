@@ -94,6 +94,9 @@ export default function SelectionBar(props: SelectionBarProps) {
           )}
         </span>
       </div>
+      {
+        curScope?.type === 'image' && <div className={styles['tip']}>本列表页仅展示审核通过的视频/图片，审核失败的视频/图片请在“申诉列表”查看。</div>
+      }
     </>
   )
 }

@@ -457,6 +457,7 @@ export type CardItem = MediaCateItem | MediaAssetsItem
 type TabScopeItemBase = {
   item: CardItem | null
 }
+
 export type TabScopeItem = (
   TabScopeItemBase & {
     type: 'album',
@@ -466,7 +467,7 @@ export type TabScopeItem = (
 ) | (
     TabScopeItemBase & {
       type: 'image',
-      label: '图片',
+      label: '图片' | '视频',
       countLabel: '张'
     }
   ) | (

@@ -115,7 +115,7 @@ const AssetsMangeAuditListPage = () => {
         )
       }
     } else {
-      return null
+      return undefined
     }
   }, [sourceType])
 

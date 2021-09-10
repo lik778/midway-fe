@@ -223,7 +223,7 @@ const AssetsMangeImageListPage = (props: {
         )
       }
     } else {
-      return null
+      return undefined
     }
   }, [directoryType])
 
@@ -237,7 +237,7 @@ const AssetsMangeImageListPage = (props: {
       selectAllFrom={selectAllFrom}
       selectionExcludeFilter={selectionExcludeFilter}
       tabScopeChange={tabScopeChange}
-      cardItem={customCardItem}
+      cardItem={customCardItem as any}
       emptyTip={emptyTip}
       customCardItemPreview={customCardItemPreview}
     >
@@ -290,6 +290,6 @@ function fetchAssetsList(sourceType: MediaCateSource) {
   }
 }
 
-// AssetsMangeImageListPageContexted.wrappers = ['@/wrappers/path-auth']
+AssetsMangeImageListPageContexted.wrappers = ['@/wrappers/path-auth']
 
 export default AssetsMangeImageListPageContexted

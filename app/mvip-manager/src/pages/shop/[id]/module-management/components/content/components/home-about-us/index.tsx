@@ -31,7 +31,7 @@ const TipNode = () => {
       <QuestionCircleOutlined className={styles['icon']} />
       <img className={styles['img']} src="//file.baixing.net/202108/a4a1b6fc624ae157500620d340244724.png" alt="" />
     </div>
-    <div className={styles['text']}>图片格式：jpg、jpeg、png，大小不超过3M，<br />视频建议尺寸16:9，视频时长最短3秒，最长一分钟</div>
+    <div className={styles['text']}>图片格式：jpg、jpeg、png，大小不超过3M，<br />视频建议尺寸：16:9，大小100M以内，视频时长最短3S，最长60S</div>
   </div>
 }
 

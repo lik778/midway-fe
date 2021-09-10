@@ -13,6 +13,6 @@ const AssetsMangeVideoListPage = () => {
   />
 }
 
-// AssetsMangeVideoListPage.wrappers = ['@/wrappers/path-auth']
+AssetsMangeVideoListPage.wrappers = ['@/wrappers/path-auth']
 
 export default AssetsMangeVideoListPage
