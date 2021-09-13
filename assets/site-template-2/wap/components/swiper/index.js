@@ -2,6 +2,8 @@ import Swiper from 'swiper';
 
 const $bannerVideos = [...document.querySelectorAll('.swiper-container video')]
 
+let $swiper, $slides
+
 const swiper = new Swiper('.swiper-container', {
   speed: 1000,
   centeredSlides: true,
@@ -19,17 +21,31 @@ const swiper = new Swiper('.swiper-container', {
     prevEl: '.swiper-container .swiper-button-prev',
   },
   on: {
-    slideChange: () => {
-      $bannerVideos.map(x => x.pause())
-      swiper.autoplay.start()
+    slideChange: function () {
+      if (!$swiper) return
+      $bannerVideos.map((x, index) => x.pause())
+      if ($swiper.classList.contains('fullscreen')) {
+        this.autoplay.stop()
+        const $video = $slides[this.activeIndex].querySelector('video')
+        const $cover = $slides[this.activeIndex].querySelector('.video-cover')
+        if ($video) {
+          const isPaused = $video.paused
+          if (isPaused) {
+            $cover && $cover.remove()
+            $video.play()
+          }
+        }
+      } else {
+        this.autoplay.start()
+      }
     }
   }
 })
 
 /* 轮播图 */
 if (swiper.$el) {
-  const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
-  const $slides = $swiper.querySelectorAll('.swiper-slide')
+  $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
+  $slides = $swiper.querySelectorAll('.swiper-slide')
   const getCurSlide = () => $slides[swiper.activeIndex]
   const getVideo = () => {
     const $curSlide = getCurSlide()
@@ -38,7 +54,7 @@ if (swiper.$el) {
       $curSlide.querySelector('.video-cover')
     ]
   }
-  $swiper.addEventListener('click', () => {
+  $swiper.addEventListener('click', function () {
     $swiper.classList.toggle('fullscreen')
     const [$video, $cover] = getVideo()
     if ($video) {
@@ -46,30 +62,24 @@ if (swiper.$el) {
       if (isPaused) {
         $cover && $cover.remove()
         $video.play()
+      } else {
+        $video.pause()
       }
-    }
-  })
-  $swiper.addEventListener('dbclick', () => {
-    const [$video, $cover] = getVideo()
-    const isPaused = $video.paused
-    if (isPaused) {
-      $cover && $cover.remove()
-      $video.play()
-    } else {
-      $video.pause()
     }
   })
 }
 
 /* 视频播放时暂停轮播 */
 $bannerVideos.map($video => {
-  $video.onplay = () => {
+  $video.onplay = function () {
     swiper.autoplay.stop()
     window._cbs && window._cbs.pauseAll()
   }
-  $video.onpause = () => {
-    swiper.autoplay.start()
-    window._cbs && window._cbs.resumeAll()
+  $video.onpause = function () {
+    if (!$swiper.classList.contains('fullscreen')) {
+      swiper.autoplay.start()
+      window._cbs && window._cbs.resumeAll()
+    }
   }
 })
 
