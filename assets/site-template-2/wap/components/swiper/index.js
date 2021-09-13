@@ -40,7 +40,7 @@ const swiper = new Swiper('.swiper-container', {
           clearInterval(timer)
           $swiper = _this.$el.length ? _this.$el[0] : _this.$el
           $slides = $swiper.querySelectorAll('.swiper-slide')
-          $swiperMask = document.getElementById('swiper-fullscreen-mask')
+          const $swiperMask = document.getElementById('swiper-fullscreen-mask')
           const getCurSlide = () => $slides[swiper.activeIndex]
           const getVideo = () => {
             const $curSlide = getCurSlide()
@@ -72,7 +72,6 @@ const swiper = new Swiper('.swiper-container', {
             }
           }
           $swiper.addEventListener('click', addClickEvent)
-
           $swiperMask.addEventListener('click', addClickEvent)
 
           /* 视频播放时暂停轮播 */
