@@ -9,7 +9,7 @@ mixin swiper(type)
           if isVideo
             .swiper-slide
               .video-wrapper
-                video(src=item.hrefUrl, loop, preload,  webkit-playsinline="webkit-playsinline" playsinline="playsinline")
+                video(src=item.hrefUrl, loop, preload,  webkit-playsinline="webkit-playsinline", playsinline="playsinline",x5-video-player-type='h5-page')
               .video-cover
                 img(src=item.displayImgUrl)
           else
