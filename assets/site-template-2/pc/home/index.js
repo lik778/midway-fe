@@ -55,8 +55,9 @@ $(document).on('ready', function () {
 		}
 	});
 
-	// 轮播图
-	new Swiper('#banner-list .swiper-container', {
+	const $bannerVideos = [...document.querySelectorAll('#banner-list .swiper-container video')]
+
+	const swiper = new Swiper('#banner-list .swiper-container', {
 		loop: true,
 		speed: 1000,
 		autoplay: {
@@ -74,10 +75,47 @@ $(document).on('ready', function () {
 		},
 		on: {
 			resize: function () {
-				this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+				//窗口变化时，更新Swiper的一些属性，如宽高等
+				this.update()
 			},
-		},
-	});
+			slideChange: () => {
+				$bannerVideos.map(x => x.pause())
+				swiper.autoplay.start()
+			}
+		}
+	})
+
+	if (swiper.$el) {
+		const $swiper = swiper.$el.length ? swiper.$el[0] : swiper.$el
+		const $slides = $swiper.querySelectorAll('.swiper-slide')
+		const getCurSlide = () => $slides[swiper.activeIndex]
+		const getVideo = () => {
+			const $curSlide = getCurSlide()
+			return [
+				$curSlide.querySelector('video'),
+				$curSlide.querySelector('.video-cover')
+			]
+		}
+		$swiper.addEventListener('click', () => {
+			const [$video, $cover] = getVideo()
+			if ($cover) {
+				$cover.remove()
+				$video.play()
+			}
+		})
+	}
+
+	/* 视频播放时暂停轮播 */
+	$bannerVideos.map($video => {
+		$video.onplay = () => {
+			swiper.autoplay.stop()
+			window._cbs && window._cbs.pauseAll()
+		}
+		$video.onpause = () => {
+			swiper.autoplay.start()
+			window._cbs && window._cbs.resumeAll()
+		}
+	})
 
 	/* 关于我们视频初始化 */
 	const $aboutUsVideo = document.querySelector('.about-us-bgc video')
@@ -86,7 +124,7 @@ $(document).on('ready', function () {
 		? $aboutUsVideo.parentElement.parentElement.querySelector('.video-cover')
 		: null
 	if (hasAboutVideo) {
-		// 点击封面播放视频
+		// 点击封面或视频播放视频
 		$aboutUsVideoCovers.addEventListener('click', evt => {
 			$aboutUsVideo.play()
 			$aboutUsVideoCovers.remove()

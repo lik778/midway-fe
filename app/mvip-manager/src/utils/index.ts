@@ -1,8 +1,37 @@
 import dayjs from 'dayjs';
 import moment from 'moment';
+import BMF from 'browser-md5-file';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants';
 
+const bmf = new BMF()
+// 计算文件的MD5值
+export const getFileMD5 = async (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    bmf.md5(
+      file,
+      (err: any, md5: string) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(md5)
+        }
+      }
+    )
+  })
+}
+
+// 获取图片 base64 预览地址
+export const getBase64 = function (file: Blob): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  }).catch(error => {
+    console.error('[ERR] getBase64 error', error, file)
+  })
+}
 
 export const addKeyForListData = (list: any, page?: number, size?: number) => {
   const pageSize = size ? size : 10;
@@ -184,6 +213,24 @@ export const isNotLocalEnv = (): boolean => {
 export const objToTargetObj = <T, K extends keyof T>(obj: T, key = 'key'): any[] => {
   if (!obj) return []
   return Object.keys(obj).map((k) => ({ [key]: obj[k as K], key: obj[k as K], value: k }))
+}
+
+/**
+ * 文件名规范
+ * @see https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file#naming-conventions
+ * @see https://www.cyberciti.biz/faq/linuxunix-rules-for-naming-file-and-directory-names/
+ * 1. 所有字符都支持，除了特殊字符.<>:"/\|?*&
+ * 2. 不能以空格开头或结尾
+ * 3. 字数限制2~20
+ * @returns
+ */
+export const createNameRules = (config = {} as any) => {
+  const { name } = config
+  return [
+    { pattern: /(^[\S]).*([\S]$)/, message: `${name}不能以空格开头或结尾` },
+    { pattern: /^[\s\S]{2,20}$/, message: `${name}限制为 2～20 个字符` },
+    { pattern: /^[^\.\<\>\:\"\/\\\|\?\*\&]+$/, message: `${name}不允许有特殊符号` }
+  ]
 }
 
 /**

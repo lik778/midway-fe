@@ -25,4 +25,16 @@ $(document).on('ready', function () {
       gotoOtherPageA: $('a')
     })
   }
+
+  // 视频初始化
+  const $productVideo = document.querySelector('.product-detail video')
+  if ($productVideo) {
+    const $cover = document.querySelector('.product-detail .video-cover')
+    $cover.addEventListener('click', evt => {
+      $productVideo.play()
+      $cover.remove()
+      evt.stopPropagation()
+    })
+  }
+
 })

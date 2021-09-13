@@ -3,8 +3,10 @@
 .product-list
   if productList && productList.length >0
     each item in productList
+      - const isVideo = item.videoUrl
       a.item(href=item.urlSuffix target="_blank" data-id=item.id)
         .left
+          .play-icon(class=isVideo?'active':'')
           img.img(src=item.headImg || defaultImg)
           .text-content
             //- TODO;

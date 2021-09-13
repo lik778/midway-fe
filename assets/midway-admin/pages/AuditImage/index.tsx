@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { message, Table, Button, Input, Form, Modal } from 'antd'
 import { ZoomInOutlined } from "@ant-design/icons"
 
-import { getAuditImageList, auditImage } from '../../api/shop'
+import { getAuditMaterialList, auditMaterial } from '../../api/shop'
 
-import { ImageItem } from '../../interfaces/shop'
+import { MediaAssetsItem } from '../../interfaces/shop'
 
 import './index.css'
 
@@ -20,8 +20,7 @@ export default () => {
   const getLists = async (page?: number) => {
     setLoading(true)
     page = page || 1
-    // const queryData = form.getFieldsValue()
-    const res = await getAuditImageList({ page, size: 999 })
+    const res = await getAuditMaterialList({ source: 'IMAGE', page, size: 999 })
     setLists((res.data as any[]).map(x => ({ ...x, key: x.id })))
     setLoading(false)
   }
@@ -39,9 +38,9 @@ export default () => {
     setPreviewModal(false)
   }
 
-  const passImage = async (item: ImageItem) => {
+  const passImage = async (item: MediaAssetsItem) => {
     setLoading(true)
-    const res = await auditImage({
+    const res = await auditMaterial({
       id: item.id,
       reason: '',
       checkResult: 1
@@ -59,9 +58,9 @@ export default () => {
     }
     setLoading(false)
   }
-  const notPassImage = async (item: ImageItem) => {
+  const notPassImage = async (item: MediaAssetsItem) => {
     setLoading(true)
-    const res = await auditImage({
+    const res = await auditMaterial({
       id: item.id,
       reason: '',
       checkResult: 4
@@ -100,7 +99,7 @@ export default () => {
     { title: '违规原因', dataIndex: 'reason', key: 'reason' },
     {
       title: '审核操作',
-      render: (_, item: ImageItem) => {
+      render: (_, item: MediaAssetsItem) => {
         return <>
           <Button type="primary" disabled={loading} onClick={() => passImage(item)}>通过</Button>
           <Button type="primary" danger disabled={loading} onClick={() => notPassImage(item)} style={{ marginLeft: '1em' }}>不通过</Button>
@@ -130,11 +129,6 @@ export default () => {
 
   return (
     <div className="page-audit-image">
-      {/* <Form layout="inline" form={form} style={{ marginBottom: 32 }}>
-        <Form.Item label="用户id" name="usrId">
-          <Input placeholder="请输入用户id" />
-        </Form.Item>
-      </Form> */}
       <Table
         loading={loading}
         dataSource={lists}

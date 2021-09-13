@@ -7,7 +7,7 @@ block content
 
   .container
     .main
-      - const { articleList:{result:articleList,totalPage:totalPage}, name:articleListName} = renderData.articleList
+      - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
       include ../components/news/news-list.pug
       +news-list(articleList)
       include ../../../common/pc/pagination.pug

@@ -4,7 +4,7 @@ import { join } from 'path';
 import * as util from './util';
 import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
-import scriptFallbackFunctionSouce from './simple-resouce-reload'
+import scriptFallbackFunctionSouce from './simple-resource-reload'
 const isLocal = process.env.NODE_ENV === 'local'
 
 /* CDN 资源加载出错时的简单回退至加载源站，没有考虑加载顺序 */

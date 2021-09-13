@@ -1,4 +1,4 @@
-import { postApiData, getApiData, setShopHeader } from './base'
+import { getApiData, postApiData, setShopHeader } from './base'
 import {
   GetContentApiParams,
   CreateProductApiParams,
@@ -12,13 +12,16 @@ import {
   TdkSaveMeta,
   BannerListItem,
   TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  AlbumItem, ImageItem, CardItem,
+  MediaCateItem, MediaAssetsItem,
   CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  GetImagesetImageRes, GetImagesetAlbumRes,
-  GetImagesetAlbumParam, CreateImagesetAlbumParam, UpdateImagesetAlbumParam, DelImagesetAlbumParam,
-  GetImagesetFailedImageParam, GetImagesetFailedImageRes,
-  GetImagesetImageParam, CreateImagesetImageParam, DelImagesetImageParam, UpdateImagesetImageParam, MoveImagesetImageParam, AlbumNameListItem,
-  ReAuditImagesetImageParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion, ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo, ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam, ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam
+  GetMediaAssetsRes, GetMediaCatesRes,
+  GetMediaCatesParam, getMediaCatesNameListParam, CreateMediaCatesParam, UpdateMediaCatesParam, DelMediaCatesParam,
+  GetMediaFailedAssetsParam, GetMediaFailedAssetsRes,
+  GetMediaAssetsParam, CreateMediaAssetsParam, DelMediaAssetsParam, UpdateMediaAssetsInCateParam, UpdateMediaAssetsParam, MoveMediaAssetsParam, MediaCatesNameListItem,
+  ReAuditMediaAssetsParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion,
+  ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo,
+  ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam,
+  ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -204,79 +207,112 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/setShopEnterprise', params, setShopHeader(shopId))
 }
 
-// 获取相册列表
-export const getImagesetAlbumApi =
-  (shopId: number, params: GetImagesetAlbumParam) => postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params, setShopHeader(shopId))
+/**
+ * 图片上传模态框相关接口
+ */
 
-// 创建店铺相册
-export const createImagesetAlbumApi = (shopId: number, params: CreateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params, setShopHeader(shopId))
-}
-
-// 修改店铺相册
-export const updateImagesetAlbumApi = (shopId: number, params: UpdateImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params, setShopHeader(shopId))
-}
-
-// 删除店铺相册
-export const delImagesetAlbumApi = (shopId: number, params: DelImagesetAlbumParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params, setShopHeader(shopId))
+// 获取百姓网相册名称列表 URl
+export const getBaixingAlbum = (shopId: number, params: GetMediaCatesParam) => {
+  return postApiData<GetMediaCatesRes>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', params, setShopHeader(shopId))
 }
 
 // 获取相册图片列表
-export const getImagesetImageApi =
-  (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/listing', params, setShopHeader(shopId))
-
-// 获取申诉列表（审核失败和审核中的图片）
-export const getImagesetFailedImageApi = (shopId: number, params: GetImagesetFailedImageParam) => postApiData<GetImagesetFailedImageRes>(ServicePath.SHOP, '/midway/backend/mediaImg/failedImageListing', params, setShopHeader(shopId))
-
-// 相册图片申诉
-export const reAuditImagesetImageApi = (shopId: number, params: ReAuditImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/reapply', params, setShopHeader(shopId))
-}
-
-// 新增相册图片
-export const createImagesetImageApi = (shopId: number, params: CreateImagesetImageParam) => {
-  return postApiData<ImageItem>(ServicePath.SHOP, 'midway/backend/mediaImg/create', params, setShopHeader(shopId))
-}
-
-// 删除相册图片
-export const delImagesetImageApi = (shopId: number, params: DelImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/delete', params, setShopHeader(shopId))
-}
-
-// 删除相册图片（专用来删除审核失败的图片）
-export const delImagesetFailedImageApi = (shopId: number, params: Pick<DelImagesetImageParam, 'ids'>) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/deleteFailed', params, setShopHeader(shopId))
-}
-
-// 更新相册图片
-export const setImagesetAlbumCoverApi = (shopId: number, params: UpdateImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/setCover', params, setShopHeader(shopId))
-}
-
-// 移动相册图片到其它相册
-export const moveImagesetImageApi = (shopId: number, params: MoveImagesetImageParam) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/mediaImg/move', params, setShopHeader(shopId))
+export const getBaixingMediaAssets = (params: GetMediaAssetsParam) => {
+  return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/material/baiXingListing', params)
 }
 
 // 获取百姓网相册名称列表 URl
-export const getBaixingAlbumApi = (shopId: number, params: GetImagesetAlbumParam) => {
-  return postApiData<GetImagesetAlbumRes>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', params, setShopHeader(shopId))
+export const getBaixingAlbumNameList = (shopId: number) => {
+  return postApiData<MediaCatesNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', {}, setShopHeader(shopId))
 }
 
-// 获取我的相册名称列表 URl
-export const getAlbumNameListApi = (shopId: number) => {
-  return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', {}, setShopHeader(shopId))
+/**
+ * 素材管理页面相关接口
+ */
+
+// 获取素材列表
+export const getMediaCatesList = (params: GetMediaCatesParam) => {
+  return postApiData<GetMediaCatesRes>(ServicePath.SHOP, 'midway/backend/mediaCate/listing', params)
 }
 
-// 获取百姓网相册名称列表 URl
-export const getBaixingAlbumNameListApi = (shopId: number) => {
-  return postApiData<AlbumNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/baiXingNameListing', {}, setShopHeader(shopId))
+// 获取素材名称列表（比素材列表节约资源）
+export const getMediaCatesNameList = (params: getMediaCatesNameListParam) => {
+  return getApiData<MediaCatesNameListItem[]>(ServicePath.SHOP, 'midway/backend/mediaCate/nameListing', params)
 }
 
-// 获取相册图片列表
-export const getBaixingImagesetImageApi = (shopId: number, params: GetImagesetImageParam) => postApiData<GetImagesetImageRes>(ServicePath.SHOP, 'midway/backend/mediaImg/baiXingListing', params, setShopHeader(shopId))
+// 创建素材分类
+export const createMediaCategory = (params: CreateMediaCatesParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/create', params)
+}
+
+// 更新素材分类
+export const updateMediaCategory = (params: UpdateMediaCatesParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/mediaCate/update', params)
+}
+
+// 删除素材分类
+export const delMediaCategory = (params: DelMediaCatesParam) => {
+  return getApiData(ServicePath.SHOP, 'midway/backend/mediaCate/delete', params)
+}
+
+// 获取分类内素材列表
+export const getMediaAssets = (params: GetMediaAssetsParam) => {
+  return postApiData<GetMediaAssetsRes>(ServicePath.SHOP, 'midway/backend/material/listing', params)
+}
+
+// 获取分类内可选用的素材列表
+// TODO
+export const getSelectableMediaAssets = (params: GetMediaAssetsParam) => {
+  return postApiData<GetMediaAssetsRes>(
+    ServicePath.SHOP,
+    'midway/backend/material/listing',
+    Object.assign(params, { onlyApprove: true })
+  )
+}
+
+// 素材申诉
+export const reAuditMediaAssets = (params: ReAuditMediaAssetsParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/reapply', params)
+}
+
+// 添加素材到分类
+export const createMediaAssets = (params: CreateMediaAssetsParam) => {
+  return postApiData<MediaAssetsItem>(ServicePath.SHOP, 'midway/backend/material/create', params)
+}
+
+// 删除素材
+export const delMediaAssets = (params: DelMediaAssetsParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/delete', params)
+}
+
+// 设定素材为分类封面
+export const setMediaCatesCover = (params: UpdateMediaAssetsInCateParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/setCover', params)
+}
+
+// 更改素材属性（如改名）
+export const updateMediaAssets = (params: UpdateMediaAssetsParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/modifyTitle', params)
+}
+
+// 移动素材到其它分类
+export const moveMediaAssets = (params: MoveMediaAssetsParam) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/move', params)
+}
+
+/**
+ * 素材管理审核页面相关接口
+ */
+
+// 获取申诉列表（审核失败和审核中的素材）
+export const getMediaFailedAssets = (params: GetMediaFailedAssetsParam) => {
+  return postApiData<GetMediaFailedAssetsRes>(ServicePath.SHOP, '/midway/backend/material/failedImageListing', params)
+}
+
+// 删除申诉素材（专用来删除审核失败的素材）
+export const delMediaFailedAssets = (params: Pick<DelMediaAssetsParam, 'ids'|'source'>) => {
+  return postApiData(ServicePath.SHOP, 'midway/backend/material/deleteFailed', params)
+}
 
 /** 模块管理 开始 */
 // 获取模块信息

@@ -1,9 +1,11 @@
 mixin product-list(productList)
   .products
     each item,index in productList
+      - const isVideo = item.videoUrl
       a.product(href=item.urlSuffix)
         if index%2 === 0
           img.product-img(src=item.headImg || defaultImg)
+          .play-icon(class='left ' + (isVideo?'active':''))
           .product-content.right
             .taigger
             .product-title.only-oneline #{ item.name }
@@ -16,3 +18,4 @@ mixin product-list(productList)
             .product-line 
             .product-desc.only-twoline #{ item.content }
           img.product-img(src=item.headImg || defaultImg)
+          .play-icon(class='right ' + (isVideo?'active':''))

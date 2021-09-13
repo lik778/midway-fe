@@ -1,4 +1,4 @@
-mixin baseSwiper(height)
+mixin baseSwiper(height,minHeight)
   - const {bannerList} = renderData.banner
   - const hasBannerList = bannerList && bannerList.length > 0
   #banner-list
@@ -7,15 +7,14 @@ mixin baseSwiper(height)
         if hasBannerList
           each item in bannerList
             - const isVideo = item.hrefUrl
-            if isVideo
-              .swiper-slide
+            .swiper-slide(style="height:"+height+";min-height:"+minHeight)
+              if isVideo
                 .video-wrapper
                   video(src=item.hrefUrl, loop, preload, controls)
                 .video-cover
                   img(src=item.displayImgUrl)
-            else
-              .swiper-slide
-                  img(src=item.displayImgUrl)
+              else
+                img(src=item.displayImgUrl)
         else
           if height === '540px'
             .swiper-slide

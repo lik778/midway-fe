@@ -1,6 +1,7 @@
 import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { LogService } from './log.service';
+import { toPlainObject } from '../util/common'
 import { PageException } from '../exceptions/page.exception';
 import { ApiException } from '../exceptions/api.exception';
 
@@ -13,7 +14,12 @@ export class RequestService {
 
   public get(url: string, params: any, headers?: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.httpService.get(url, { params, headers }).toPromise().then((res: AxiosResponse) => {
+      /**
+       * axios.request get 请求中的 params 参数必须是无格式对象或者字符串
+       * @see http://www.axios-js.com/zh-cn/docs/#%E8%AF%B7%E6%B1%82%E9%85%8D%E7%BD%AE
+       */
+      const querys = toPlainObject(params)
+      this.httpService.get(url, { params: querys, headers }).toPromise().then((res: AxiosResponse) => {
         resolve(res?.data)
       }).catch((err: AxiosError) => reject(err))
     })

@@ -1,5 +1,10 @@
 import Swiper from 'swiper';
 
+const $bannerVideos = [...document.querySelectorAll('.swiper-container video')]
+const $coverVideos = [...document.querySelectorAll('.swiper-container .video-cover')]
+
+let $swiper, $slides
+
 const swiper = new Swiper('.swiper-container', {
   speed: 1000,
   centeredSlides: true,
@@ -8,56 +13,89 @@ const swiper = new Swiper('.swiper-container', {
     disableOnInteraction: false,
     waitForTransition: true,
   },
-  //分页器
   pagination: {
     el: '.swiper-container .swiper-pagination',
     clickable: true,
   },
-  //前进后退按钮
   navigation: {
     nextEl: '.swiper-container .swiper-button-next',
     prevEl: '.swiper-container .swiper-button-prev',
   },
   on: {
-    slideChange: () => {
-      pauseAllBannerVideo();
-      swiper.autoplay.start();
+    slideChange: function () {
+      if (!$swiper) return
+      $bannerVideos.forEach((x, index) => x.pause())
+      $coverVideos.forEach((x, index) => x.classList.remove('play'))
+      if (!$swiper.classList.contains('fullscreen')) {
+        this.autoplay.start()
+      } else {
+        this.autoplay.stop()
+      }
     },
-  },
-});
+    init: function () {
+      const _this = this
+      const timer = setInterval(function () {
+        /* 轮播图 */
+        if (_this.$el) {
+          clearInterval(timer)
+          $swiper = _this.$el.length ? _this.$el[0] : _this.$el
+          $slides = $swiper.querySelectorAll('.swiper-slide')
+          const $swiperMask = document.getElementById('swiper-fullscreen-mask')
+          const getCurSlide = () => $slides[swiper.activeIndex]
+          const getVideo = () => {
+            const $curSlide = getCurSlide()
+            return [
+              $curSlide.querySelector('video'),
+              $curSlide.querySelector('.video-cover')
+            ]
+          }
+          const addClickEvent = function () {
+            const [$video, $cover] = getVideo()
+            if ($video) {
+              const isPaused = $video.paused
+              if (isPaused) {
+                if (!$swiper.classList.contains('fullscreen')) {
+                  $swiper.classList.add('fullscreen')
+                }
+                if ($cover) {
+                  $cover.classList.add('play-flag')
+                  $cover.classList.add('play')
+                }
+                $video.play()
+              } else {
+                $video.pause()
+                $cover.classList.remove('play')
+                $swiper.classList.remove('fullscreen')
+              }
+            } else {
+              $swiper.classList.toggle('fullscreen')
+            }
+          }
+          $swiper.addEventListener('click', addClickEvent)
+          $swiperMask.addEventListener('click', function(){
+            const [$video, $cover] = getVideo()
+            if ($video) {
+              $video.pause()
+              $cover.classList.remove('play')
+              $swiper.classList.remove('fullscreen')
+            }
+          })
 
-const $bannerVideos = document.querySelectorAll('.swiper-container video');
-const $bannerVideoCovers = [...$bannerVideos].map($video => {
-  return $video.parentElement.parentElement.querySelector('.video-cover');
-});
-function pauseAllBannerVideo() {
-  [...$bannerVideos].map(x => x.pause());
-}
-const hasBannerVideo = $bannerVideos.length > 0;
-if (hasBannerVideo) {
-  // 点击封面或视频播放视频
-  const play = idx => {
-    swiper.autoplay.stop();
-    $bannerVideos[idx].play();
-  };
-  [...$bannerVideos].map($video => {
-    $video.addEventListener('click', () => {
-      $video.paused ? swiper.autoplay.stop() : swiper.autoplay.start();
-    });
-    $video.onplay = () => {
-      swiper.autoplay.stop();
-    };
-  });
-  [...$bannerVideoCovers].map(($cover, idx) => {
-    $cover.addEventListener('click', evt => {
-      play(idx);
-      $cover.remove();
-      evt.stopPropagation();
-    });
-  });
-  // 切换轮播时暂停视频
-  const $next = document.querySelector('.swiper-container .swiper-button-next');
-  $next && $next.addEventListener('click', pauseAllBannerVideo);
-  const $prev = document.querySelector('.swiper-container .swiper-button-prev');
-  $prev && $prev.addEventListener('click', pauseAllBannerVideo);
-}
+          /* 视频播放时暂停轮播 */
+          $bannerVideos.map($video => {
+            $video.onplay = function () {
+              swiper.autoplay.stop()
+              window._cbs && window._cbs.pauseAll()
+            }
+            $video.onpause = function () {
+              if (!$swiper.classList.contains('fullscreen')) {
+                swiper.autoplay.start()
+                window._cbs && window._cbs.resumeAll()
+              }
+            }
+          })
+        }
+      }, 10)
+    }
+  }
+})

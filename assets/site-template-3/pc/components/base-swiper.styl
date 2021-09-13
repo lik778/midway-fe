@@ -5,34 +5,13 @@
     width 100%
     .swiper-wrapper
       .swiper-slide
+        width: 100%
+        height: 28.125vw
+        min-height: 343.125px
         position relative
         img
           width 100%
-        .video-cover
-          width: 100%
-          z-index 9
-          position absolute
-          top 0
-          left 0
-          right 0
-          bottom 0
-          cursor pointer
-          img
-            width: 100%
-            height: 100%
-            object-fit: cover
-        .video-wrapper 
-          width: 100%
-          video
-            width: 100%
-            height: 540px
-            cursor pointer
-            z-index 8
-        video,
-        .video-cover,
-        .video-wrapper
-          width 100%
-
+          height 100%
 
     .swiper-pagination-bullet
       width 24px
@@ -63,13 +42,32 @@
         background url(//file.baixing.net/202108/af2916a86a85a940625a4a47c70d5fb3) no-repeat center center/100%
         transform rotate(0)
 
+/* 轮播视频 */
 #banner-list
   .video-wrapper
+    display flex
+    justify-content center
+    align-items center
+    width 100%
+    height 100%
     background-color black
+    video
+      flex 1
+      width 100%
+      height 100%
+      cursor pointer
+      z-index 9
   .video-cover
-    position relative
-    img 
-      object-fit cover
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    z-index 9
+    cursor pointer
+    img
+      width 100%
+      height 100%
   .video-cover::after
     content ''
     position absolute

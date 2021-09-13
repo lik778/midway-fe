@@ -7,13 +7,10 @@ import { contactForm } from '../../config';
 import { KF53Info, QQItem, UserEnterpriseInfo, SaveEnterpriseContactInfoApiParams } from '@/interfaces/user';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { saveEnterpriseContactInfoApi } from '@/api/user'
-import { formUnvalid, isEmptyObject } from '@/utils';
-import genNewUserModal from '../new-user-modal';
 import KF53 from '../kf53';
 import QQCustomService from '../qq-custom-service';
 import { KFStatus } from '@/enums';
 import { errorMessage, successMessage } from '@/components/message';
-import { isNewUserApi } from '@/api/shop';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import { useDebounce } from '@/hooks/debounce';
 import styles from './index.less';

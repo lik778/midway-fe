@@ -3,6 +3,7 @@ import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
 import { ShopMetas } from '@/interfaces/user'
 import { AuditStatus } from '@/enums';
+import { MediaItem } from '@/components/img-upload/data';
 
 export interface RouteParams {
   id: string;
@@ -98,7 +99,8 @@ export interface ModifyNavItem {
 
 export interface ImgItemParam {
   type: number;
-  url: string;
+  hrefUrl: string;
+  imgUrl: string;
   position: ModulePageType;
   weight: number;
 }
@@ -210,6 +212,16 @@ export interface CustomerSetChildListItem {
   key: string
 }
 
+export interface InitCustomerSetChildListItem {
+  id?: number,
+  title: string,
+  content: string,
+  urlImg: MediaItem | '',
+  /** 自用字段 因为是数字 一定要保证唯一 */
+  key: string
+}
+
+
 // 自定义设置
 export interface CustomerSetListItem {
   mainModuleId?: number,
@@ -235,19 +247,19 @@ export interface Ticket {
 }
 
 // 店铺自己的基础信息模块 设置参数
-interface ShopBasicInfoParams {
+export interface ShopItemBasicInfo {
   companyName: string,
   companyAlias: string,// 店铺名称 默认值取得店铺名称
   companyAddress: string,
   companyDescription: string,
-  promoteImg: string,
   contactName: string,
   contactMobile: string,
   contactMobile2: string,
   wechat: string,
 }
 
-export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
+export interface ShopItemBasicInfoParams extends ShopItemBasicInfo {
+  promoteImg: string;
   firstCategory: { [key: string]: string };
   metas: ShopMetas
   area: {
@@ -255,7 +267,17 @@ export interface InitShopBasicInfoParams extends ShopBasicInfoParams {
   }
 }
 
-export interface UploadShopBasicInfoParams extends ShopBasicInfoParams {
+export interface InitShopItemBasicInfoParams extends ShopItemBasicInfo {
+  promoteImg: MediaItem | '';
+  firstCategory: { [key: string]: string };
+  metas: ShopMetas
+  area: {
+    [key: string]: string
+  }
+}
+
+export interface UploadShopBasicInfoParams extends ShopItemBasicInfo {
+  promoteImg: string;
   area: {
     [key: string]: string
   },
@@ -299,120 +321,162 @@ export interface BannerListItem {
   weight: number
 }
 
-export interface GetImagesetAlbumParam {
+export type MediaCateSource = 'IMAGE' | 'VIDEO'
+
+export interface GetMediaCatesParam {
   page: number;
   size: number;
 }
 
-export interface CreateImagesetAlbumParam {
+export interface getMediaCatesNameListParam {
+  source: MediaCateSource;
+}
+
+export interface CreateMediaCatesParam {
   name: string;
 }
 
-export interface UpdateImagesetAlbumParam {
+export interface UpdateMediaCatesParam {
   id: number;
   name?: string;
   cover?: number;
+  source: MediaCateSource;
 }
 
-export interface GetImagesetImageParam {
-  mediaCateId?: number;// 获取图库内所有图片则不传，某个图册则传
+export interface GetMediaAssetsParam {
+  mediaCateId?: number;// 获取用户所有图片则不传分类ID
   page: number;
   size: number;
+  source: MediaCateSource;
+  onlyApprove?: boolean;
 }
 
-export interface CreateImagesetImageParam {
-  imgUrl: string;
+export interface CreateMediaAssetsParam {
   mediaCateId?: number; // 不传则上传到默认图库
+  title?: string;
+  imgUrl: string;
+  videoUrl?: string;
+  source: MediaCateSource;
 }
 
-export interface ReAuditImagesetImageParam {
+export interface ReAuditMediaAssetsParam {
   id: number
 }
 
-export type DelImagesetAlbumParam = number[]
+export type DelMediaCatesParam = number[]
 
-export interface DelImagesetImageParam {
+export interface DelMediaAssetsParam {
   ids: number[];
   mediaCateId: number;
+  source: MediaCateSource;
 }
 
-export interface UpdateImagesetImageParam {
+export interface UpdateMediaAssetsInCateParam {
   id: number;
   mediaCateId: number;
 }
 
-export interface MoveImagesetImageParam {
+export interface UpdateMediaAssetsParam {
+  id: number;
+  title: string;
+}
+
+export interface MoveMediaAssetsParam {
   id: number;
   mediaCateId: number;
 }
 
-export interface GetImagesetAlbumRes {
+export interface GetMediaCatesRes {
   mediaCateBos: {
     totalRecord: number;
-    result: AlbumItem[]
+    result: MediaCateItem[]
   }
 }
 
-export interface GetImagesetImageRes {
-  mediaImgBos: ListRes<ImageItem[]>
+export interface GetMediaAssetsRes {
+  mediaImgBos: ListRes<MediaAssetsItem[]>
 }
 
-export interface GetImagesetFailedImageParam {
+export interface GetMediaFailedAssetsParam {
   page: number;
   size: number;
+  source: MediaCateSource;
 }
 
-export interface GetImagesetFailedImageRes {
-  mediaImgBos: ListRes<ImageItem[]>
+export interface GetMediaFailedAssetsRes {
+  mediaImgBos: ListRes<MediaAssetsItem[]>
 }
 
-export interface AlbumNameListItem {
+export interface MediaCatesNameListItem {
   id: number,
   name: string,
-  type: AlbumType
+  type: MediaCateNameListItemType
 }
 
-export interface AlbumImageListItem {
-  id: number,
-  url: string
-  status: 0 | 1 | 2// 0 未过审 ，1 已过审 ，2 待审核
-}
-
-// 默认相册/普通相册：默认相册不能编辑、删除
-export type AlbumType = 'DEFAULT' | 'NORMAL'
+// 资源分类类型（默认分类不能编辑、删除）
+type MediaCateNameListItemType = 'DEFAULT' | 'NORMAL'
 
 // 相册
-export type AlbumItem = {
+export type MediaCateItem = {
   id: number,
   name: string,
   coverUrl: string,
   totalImg: number,
-  type: AlbumType
+  type: MediaCateNameListItemType
 }
 
-
-export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN'
-export type ImageType = 'NOT_COVER' | 'COVER'
 /**
- * @description 相册图片类型
- * @param checkStatus :DEFAULT(0, "初始化"),APPROVE(1, "审核通过"),REJECT_BYMACHINE(2, "机审驳回"),REAPPLY(3, "申诉中"),REJECT_BYHUMAN(4, "人审驳回");
+ * DEFAULT          初始化
+ * APPROVE          审核通过
+ * REJECT_BYMACHINE 机审驳回
+ * REAPPLY          申诉中
+ * REJECT_BYHUMAN   人审驳回
+ * ENCODE_FAILED    视频转码失败
  */
-export type ImageItem = {
+export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN' | 'ENCODE_FAILED'
+export type ImageType = 'NOT_COVER' | 'COVER'
+export type MediaType = 'IMAGE' | 'VIDEO'
+export type DecodeStatus = 'DEFAULT' | 'DECODING' | 'SUCCESS' | 'FAILED'
+// 分类内资源类型
+// TODO rename
+export type MediaAssetsItem = {
   id: number,
-  name?: string,
   imgUrl: string,
+  videoUrl: string,
+  source: MediaType
   type: ImageType,
-  checkStatus: CheckStatusType,// 状态
-  reason: string,// 驳回理由
+  checkStatus: CheckStatusType,
+  reason: string,
+  title: string
+  decodeStatus: DecodeStatus
 }
 
-export type CardItem = AlbumItem | ImageItem
+export type CardItem = MediaCateItem | MediaAssetsItem
 
 // 相册管理目录层级类型
-export type TabScopeItem = {
+type TabScopeItemBase = {
   item: CardItem | null
-  type: 'album' | 'image' | 'audit'
 }
+
+export type TabScopeItem = (
+  TabScopeItemBase & {
+    type: 'album',
+    label: '相册' | '分组',
+    countLabel: '个'
+  }
+) | (
+    TabScopeItemBase & {
+      type: 'image',
+      label: '图片' | '视频',
+      countLabel: '张'
+    }
+  ) | (
+    TabScopeItemBase & {
+      type: 'audit',
+      label: '资源',
+      countLabel: '项'
+    }
+  )
 export type TabScope = TabScopeItem[]
 
 
@@ -537,13 +601,24 @@ export interface ModuleArticleInfoParam extends ModuleRequestParam {
 export interface ModuleHomeABoutInfo {
   name: string,
   tags: string[],
-  media: string
+  media: string,
+  videoUrl: string
+}
+
+export interface InitModuleHomeABoutInfo {
+  name: string,
+  tags: string[],
+  media: MediaItem | ''
 }
 
 export interface ModuleHomeABoutInfoParam extends ModuleRequestParam, ModuleHomeABoutInfo { }
 
 export interface ModuleABoutABoutInfo {
   backImg: string,
+}
+
+export interface InitModuleABoutABoutInfo {
+  backImg: MediaItem | '',
 }
 
 export interface ModuleABoutABoutInfoParam extends ModuleRequestParam, ModuleABoutABoutInfo { }

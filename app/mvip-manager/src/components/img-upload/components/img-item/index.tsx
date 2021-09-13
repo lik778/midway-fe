@@ -1,6 +1,7 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import { EyeOutlined, DeleteOutlined, ScissorOutlined, DownloadOutlined } from '@ant-design/icons'
 import { UploadFile, } from 'antd/lib/upload/interface'
+import ImgUploadContext from '@/components/img-upload/context'
 import styles from './index.less'
 import { ActionBtnListItem, ExpandShowUploadListInterface } from '../../data'
 import StatusBox from '@/components/img-upload/components/status-box'
@@ -19,6 +20,9 @@ interface Props {
 }
 
 const ImgItem: FC<Props> = (props) => {
+  const context = useContext(ImgUploadContext)
+  const { handleChangeFileList } = context
+
   const { file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onCrop, onDownload } = props
   const localShopUploadList = useMemo<ExpandShowUploadListInterface>(() => {
     const initShowUploadList: ExpandShowUploadListInterface = {
@@ -29,7 +33,7 @@ const ImgItem: FC<Props> = (props) => {
       showCropIcon: true,
       cropIcon: <ScissorOutlined color={'#fff'} />,
       showDownloadIcon: false,
-      downloadIcon: <DownloadOutlined color={'#fff'} />
+      downloadIcon: <DownloadOutlined color={'#fff'} />,
     }
     if (showUploadList) {
       return {
@@ -40,9 +44,6 @@ const ImgItem: FC<Props> = (props) => {
       return initShowUploadList
     }
   }, [showUploadList])
-
-
-
 
   return <StatusBox file={file}>
     <div className={styles['img-item']} style={{ width: itemWidth }}>
@@ -89,7 +90,7 @@ const ImgItem: FC<Props> = (props) => {
             actionBtn && actionBtn.map((item, index) => {
               const icon = item.icon(file, fileList)
               return icon && <div className={styles['action-btn']} title={item.title} onClick={
-                () => item.action(file, fileList, fileIndex)
+                () => item.action(file, fileList, fileIndex, handleChangeFileList)
               } key={`${index}-${item.title}`}>
                 {icon}
               </div>

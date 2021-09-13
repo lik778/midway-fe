@@ -3,25 +3,24 @@ import { Form, Spin } from 'antd'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import WildcatForm from '@/components/wildcat-form';
 import styles from './index.less'
-import { InitShopBasicInfoParams, UploadShopBasicInfoParams } from '@/interfaces/shop';
+import { ShopItemBasicInfoParams, InitShopItemBasicInfoParams, UploadShopBasicInfoParams } from '@/interfaces/shop';
 import { errorMessage, successMessage } from '@/components/message';
 import { ShopBasicInfoForm } from './config';
 import { cloneDeepWith } from 'lodash';
 import { setShopBasicInfoApi } from '@/api/shop'
 import { objToTargetObj } from '@/utils';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
+import { getImgUploadModelValue } from '@/components/img-upload';
 import { useDebounce } from '@/hooks/debounce';
-const FormItem = Form.Item
 
 interface Props {
   id: number,
-  shopBasicInfoParams: InitShopBasicInfoParams | {},
+  shopBasicInfoParams: InitShopItemBasicInfoParams | {},
   getDataLoading: boolean
   onChange: () => void
 }
 
 const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
-  const { id, shopBasicInfoParams, getDataLoading, onChange } = props
+  const { id, shopBasicInfoParams, onChange } = props
 
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(ShopBasicInfoForm));
   const [phoneTipShow, setPhoneTipShow] = useState(false)
@@ -32,7 +31,7 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
       return
     }
     // 这里的shopBasicInfoParams可以为空对象 表示初始值为空
-    const { firstCategory } = shopBasicInfoParams as InitShopBasicInfoParams
+    const { firstCategory } = shopBasicInfoParams as InitShopItemBasicInfoParams
     const newChildren = config.children.map(item => {
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {
@@ -70,9 +69,10 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     setPhoneTipShowFc()
   }, [phoneTipShow])
 
-  const sumbit = async (values: InitShopBasicInfoParams) => {
+  const sumbit = async (values: InitShopItemBasicInfoParams) => {
     const requestData: UploadShopBasicInfoParams = {
-      ...values
+      ...values,
+      promoteImg: getImgUploadModelValue(values.promoteImg)
     }
     // 下面两个是表单里的额外字段，用于保存类目的，避免接口有多余字段，所以删除
     // @ts-ignore
@@ -90,7 +90,7 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     setUpDataLoading(false)
   }
 
-  const formChange = useDebounce((_changeValue: { [key in keyof InitShopBasicInfoParams]: string }, allValues: InitShopBasicInfoParams) => {
+  const formChange = useDebounce((_changeValue: { [key in keyof InitShopItemBasicInfoParams]: string }, allValues: InitShopItemBasicInfoParams) => {
     //手机正则 
     const landlinePtn = /(^400[0123456789]\d{6}$)|(^400-[0123456789]\d{2}-\d{4}$)/
     if (allValues.contactMobile) {

@@ -4,6 +4,7 @@
 	flex-wrap wrap
 	justify-content space-between
 	.product
+		position relative
 		background-color #fff
 		display flex
 		flex-direction column
@@ -26,3 +27,13 @@
 			margin 15px
 			font-size 14px
 
+.play-icon.active
+	position: absolute;
+	left: 50%;
+	top: 60px;
+	width: 26px;
+	height: 26px;
+	background: url(//file.baixing.net/201709/1ae6e52bed21cee4b2e9f45be173d0f4.png)
+	background-size: 100%;
+	transform: translate(-50%, -50%);
+	cursor: pointer;

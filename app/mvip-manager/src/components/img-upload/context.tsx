@@ -1,14 +1,10 @@
 import React, { FC, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface'
-import { ImgUploadContextProps, ImageData, ImageDataAlbumListItem } from './data'
+import { ImgUploadContextProps, MediaDataAlbumListItem, SelectModalType } from './data'
 import { ShopInfo } from '@/interfaces/shop';
 
 const defaultValue = {
   fileList: [],
-  localFileList: [],
-  checkFileObject: {},
-  imageData: {},
-  baixingImageData: [],
   initConfig: {
     uploadType: 1 as 1,
     uploadBtnText: '',
@@ -20,9 +16,15 @@ const defaultValue = {
     cropProps: {
       aspectRatio: 1 / 1,
     },
+    showImage: true,
+    showVideo: false
   },
+  imageData: [],
+  videoData: [],
+  baixingImageData: [],
   upDataLoading: false,
   albumVisible: false,
+  selectModalType: 'FILE' as SelectModalType,
   handleChangeAlbumVisible: (albumVisible: boolean) => { },
   handleChangeUpDataLoading: (upDataLoading: boolean) => { },
   handleChangeFileList: (newFileList: UploadFile[], oldFileList: UploadFile[], file: UploadFile | null) => { },
@@ -31,12 +33,13 @@ const defaultValue = {
   shopCurrent: null,
   loadingShopModel: false,
   handleChangeShopCurrent: (newShopCurrent: ShopInfo) => { },
-  handleChangeImageData: (newImageData: ImageData, oldImageData: ImageData) => { },
-  handleChangeBaixingImageData: (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => { },
-  handleChangeLocalFileList: (newLocalFileList: UploadFile[]) => { },
+  handleChangeImageData: (newImageData: MediaDataAlbumListItem[], oldImageData: MediaDataAlbumListItem[]) => { },
+  handleChangeVideoData: (newImageData: MediaDataAlbumListItem[], oldImageData: MediaDataAlbumListItem[]) => { },
+  handleChangeBaixingImageData: (newBaixingImageData: MediaDataAlbumListItem[], oldBaixingImageData: MediaDataAlbumListItem[]) => { },
   handlePreview: (file: UploadFile) => { },
   handleRemove: (file: UploadFile, fileIndex: number) => { },
   handleCrop: (file: UploadFile, fileIndex: number) => { },
+  handleSelectCover: (file: UploadFile, fileIndex: number) => { },
 }
 
 const ImgUploadContext = React.createContext<ImgUploadContextProps>(defaultValue);

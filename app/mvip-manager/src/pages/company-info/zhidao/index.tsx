@@ -5,16 +5,18 @@ import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-import { ZhidaoMaterial } from '@/interfaces/user';
+
+import { ZhidaoMaterial, InitZhidaoMaterial } from '@/interfaces/user';
 import { setZhidaoMaterial, getZhidaoMaterial } from '@/api/user'
 import Loading from '@/components/loading';
 import { errorMessage, successMessage } from '@/components/message';
 import './index.less';
 import { objToTargetObj } from '@/utils';
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 
 function CompanyInfoZhudao(props: any) {
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
-  const [enterpriseInfo, setEnterpriseInfo] = useState<ZhidaoMaterial | null>({
+  const [enterpriseInfo, setEnterpriseInfo] = useState<InitZhidaoMaterial | null>({
     banner1: '',
     banner2: '',
     siteUrl: ''
@@ -25,7 +27,12 @@ function CompanyInfoZhudao(props: any) {
   const getFormData = async () => {
     setFormLoading(true)
     const res = await getZhidaoMaterial()
-    setEnterpriseInfo(res.data)
+    const { siteUrl, banner1, banner2 } = res.data
+    setEnterpriseInfo({
+      banner1: getImgUploadValueModel('IMAGE', banner1),
+      banner2: getImgUploadValueModel('IMAGE', banner2),
+      siteUrl: res.data.siteUrl
+    })
     const newChildren = config.children.map(item => {
       if (item.name === 'siteUrl') {
         item.options = objToTargetObj(res.data.siteUrls)
@@ -40,9 +47,13 @@ function CompanyInfoZhudao(props: any) {
     getFormData()
   }, [])
 
-  const sumbit = async (values: ZhidaoMaterial) => {
+  const sumbit = async (values: InitZhidaoMaterial) => {
     setLoading(true)
-    const { success, message, data } = await setZhidaoMaterial(values)
+    const { success, message, data } = await setZhidaoMaterial({
+      ...values,
+      banner1: getImgUploadModelValue(values.banner1),
+      banner2: getImgUploadModelValue(values.banner2),
+    })
     if (success) {
       successMessage('保存成功')
     } else {

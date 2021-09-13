@@ -40,7 +40,7 @@ export class ZhidaoService {
     if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
       res.redirect(`${this.haojingHost}/oz/login`)
       return
-    } else if (code === ErrorCode.ERR_MANAGEMENT) {
+    } else if (code === ErrorCode.ERR_MANAGEMENT) { 
       res.redirect(`${this.haojingHost}`)
       return
     } else {
@@ -57,6 +57,7 @@ export class ZhidaoService {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']
+    console.log(input)
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));

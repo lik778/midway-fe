@@ -1,17 +1,16 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
-import { connect } from 'react-redux';
-import { ConnectState } from '@/models/connect';
-import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
-import { ImgUploadProps, ImageData, ImageDataAlbumListItem } from './data';
-import { useParams } from 'umi';
+import { ImgUploadProps, MediaDataAlbumListItem, MediaItem, MediaType, SelectModalType } from './data';
+import { SelectModalProps } from '@/components/img-upload/components/select-modal/data';
 import ImgUploadContext from '@/components/img-upload/context'
-import { ShopInfo } from '@/interfaces/shop';
 import Upload1 from '@/components/img-upload/components/upload1'
 import Upload2 from '@/components/img-upload/components/upload2'
+import SelectModal from '@/components/img-upload/components/select-modal'
 import CropModal from '@/components/img-upload/components/crop-modal'
+import PreviewModal from '@/components/img-upload/components/preview-modal'
+
 import { getFileBase64 } from '@/utils/index'
 
 // 返回的url/开始初始化的url 处理方式不同
@@ -29,23 +28,22 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
     return file.preview
   } else if (file.url && file.url.indexOf('.baixing.') !== -1) {
     return file.url
+  } else if (file.originFileObj) {
+    return getFileBase64(file.originFileObj);
   } else {
-    const preview = getFileBase64(file.originFileObj);
-    return preview
+    return ''
   }
 }
 
 // 当前组件不要使用useContext(ImgUploadContext)
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
-  const { id: shopId } = useParams<{ id: string }>()
-  const { uploadType, editData, maxSize, uploadBtnText, maxLength, disabled, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
+  const { uploadType, showImage = true, showVideo = false, editData, maxSize = 1, uploadBtnText, maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
-  const localMaxSize = useMemo(() => maxSize || 1, [maxSize])
 
   const [previewVisible, setPreviewVisible] = useState(false)
-  const [previewImage, setPreviewImage] = useState('')
+  const [previewMedia, setPreviewMedia] = useState<UploadFile>()
 
   const [cropVisible, setCropVisible] = useState(false)
   const [cropItem, setCropItem] = useState<UploadFile<any>>()
@@ -86,24 +84,38 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       onChange('', fileList, oldFileList);
     } else if (newFileList.length === 1) {
       if (newFileList[0].url) {
-        onChange(getUrl(newFileList[0].url!), newFileList, oldFileList);
+        onChange({
+          url: getUrl(newFileList[0].url!),
+          mediaType: newFileList[0].type as MediaType,
+          coverUrl: newFileList[0].thumbUrl
+        }, newFileList, oldFileList);
       }
     } else {
       if (newFileList.every(item => item.url)) {
-        onChange(newFileList.map((item: UploadFile<any>) => getUrl(item.url!)), newFileList, oldFileList);
+        onChange(newFileList.map((item: UploadFile<any>) => ({
+          url: getUrl(item.url!),
+          mediaType: item.type as MediaType,
+          coverUrl: item.thumbUrl
+        })), newFileList, oldFileList);
       }
     }
   }, [onChange])
 
+  const creatFileItem = (item: MediaItem, index: number): UploadFile => {
+    return { uid: `${item.url}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }
+  }
   // 修改值初始化
+  // url 是当前媒体的url
+  // thumbUrl 是封面图字段 当mediaType==='VIDEO'时，可以为图片id
+  // preview 是图片预览字段 当mediaType==='VIDEO'时，是封面图预览 。当mediaType==='IMAGE'时，是图片的预览
   const initEdit = () => {
     if (editData) {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
-        fileList = editData.map((item: string, index: number) => ({ uid: `${item}-${index}`, status: 'done', url: item, thumbUrl: item, preview: item, size: 0, name: '', originFileObj: null as any, type: '', }))
+        fileList = (editData).map((item, index) => creatFileItem(item, index))
         createFileList(fileList)
       } else {
-        fileList = [{ uid: '-1', size: 0, name: '', originFileObj: null as any, type: '', status: 'done', url: editData, thumbUrl: editData, preview: editData }]
+        fileList = [creatFileItem(editData, 0)]
         createFileList(fileList)
       }
     }
@@ -117,81 +129,91 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
 
   // context 需要
-  // 下面三个从model拿的
-  const { shopList, getShopList, loadingShopModel } = props
-  const [localFileList, setLocalFileList] = useState<UploadFile[]>([])
-  const checkFileObject = useMemo(() => {
-    const checkFileObject: { [key: string]: boolean } = {}
-    localFileList.forEach(item => checkFileObject[item.url!] = true)
-    return checkFileObject
-  }, [localFileList])
   const [albumVisible, setAlbumVisible] = useState<boolean>(false)
-  const [imageData, setImageData] = useState<ImageData>({})
-  const [baixingImageData, setBaixingImageData] = useState<ImageDataAlbumListItem[]>([])
-  const [shopListFilter, setShopListFilter] = useState<ShopInfo[]>([])
-  const [shopCurrent, setShopCurrent] = useState<ShopInfo | null>(null)
+  const [imageData, setImageData] = useState<MediaDataAlbumListItem[]>([])
+  const [videoData, setVideoData] = useState<MediaDataAlbumListItem[]>([])
+  const [baixingImageData, setBaixingImageData] = useState<MediaDataAlbumListItem[]>([])
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
 
   // 弹窗模式需要 开始
-  // 初始化弹窗 开始
+  // 弹窗是给正常文件还是给封面图
+  const [selectModalType, setSelectModalType] = useState<SelectModalType>('FILE')
+  const [selectCoverFile, setSelectCoverFile] = useState<UploadFile>()
+
+  const handleChangeCover = useCallback((coverFileList: UploadFile[], oldCoverFileList: UploadFile[]) => {
+    if (coverFileList.length > 0) {
+      decorateSetFileList(fileList.map(item => {
+        if (item.uid === selectCoverFile?.uid) {
+          return {
+            ...item,
+            thumbUrl: coverFileList[0].url,
+            preview: coverFileList[0].preview
+          }
+        }
+        return item
+      }), [...fileList])
+    }
+  }, [selectCoverFile, fileList, decorateSetFileList])
+
+  const SelectModalOption = useMemo<SelectModalProps>(() => {
+    if (selectModalType === 'COVER' && selectCoverFile) {
+      return {
+        showVideo: false,
+        maxLength: 1,
+        fileList: [{ uid: `${selectCoverFile.url}-${0}`, status: 'done', url: selectCoverFile.thumbUrl, thumbUrl: selectCoverFile.thumbUrl, preview: selectCoverFile.preview, size: 0, name: '', originFileObj: null as any, type: 'IMAGE', }],
+        handleChangeFileList: handleChangeCover
+      }
+    } else {
+      return {
+        showVideo,
+        maxLength,
+        fileList: fileList,
+        handleChangeFileList: decorateSetFileList
+      }
+    }
+  }, [selectModalType, maxSize, fileList, decorateSetFileList, selectCoverFile, handleChangeCover])
+
+  // 选择封面图
+  const handleSelectCover = (file: UploadFile, fileIndex: number) => {
+    setSelectCoverFile(file)
+    setSelectModalType('COVER')
+    setAlbumVisible(true)
+  }
+
   useEffect(() => {
-    if (albumVisible) {
-      handleChangeLocalFileList([...fileList])
+    if (!albumVisible) {
+      setSelectModalType('FILE')
+      setSelectCoverFile(undefined)
     }
   }, [albumVisible])
 
-  useEffect(() => {
-    // 过滤出正常状态的店铺 设置初始店铺
-    const newShopListFilter = shopList ? (shopList as ShopInfo[]).filter(item => item.status === 1) : []
-    setShopListFilter(newShopListFilter)
-    if (newShopListFilter.length > 0) {
-      let newShopCurrent = newShopListFilter.find(item => item.id === Number(shopId))
-      if (!newShopCurrent) {
-        newShopCurrent = newShopListFilter[0]
-      }
-      setShopCurrent(newShopCurrent)
-    }
-  }, [shopList])
-
-  // 弹窗模式需要获取店铺列表
-  // 不放到albumVisible===true时是因为避免这个事情
-  useEffect(() => {
-    if (uploadType === 2) {
-      getShopList()
-    }
-  }, [])
-  // 初始化弹窗 结束
-
-  // 当前店铺修改
-  const handleChangeShopCurrent = (newShopCurrent: ShopInfo) => {
-    setShopCurrent(newShopCurrent)
+  // 视频数据更改
+  const handleChangeVideoData = (newVideoData: MediaDataAlbumListItem[], oldVideoData: MediaDataAlbumListItem[]) => {
+    setVideoData(newVideoData)
   }
 
   // 图片数据更改
-  const handleChangeImageData = (newImageData: ImageData, oldImageData: ImageData) => {
+  const handleChangeImageData = (newImageData: MediaDataAlbumListItem[], oldImageData: MediaDataAlbumListItem[]) => {
     setImageData(newImageData)
   }
 
   // 图片数据更改
-  const handleChangeBaixingImageData = (newBaixingImageData: ImageDataAlbumListItem[], oldBaixingImageData: ImageDataAlbumListItem[]) => {
+  const handleChangeBaixingImageData = (newBaixingImageData: MediaDataAlbumListItem[], oldBaixingImageData: MediaDataAlbumListItem[]) => {
     setBaixingImageData(newBaixingImageData)
   }
 
-  // 预选择图片
-  const handleChangeLocalFileList = (newLocalFileList: UploadFile[]) => {
-    setLocalFileList(newLocalFileList)
-  }
   // 弹窗模式需要 结束
 
   // 预览
   const handlePreview = (file: UploadFile) => {
-    setPreviewImage(file.preview!)
+    setPreviewMedia(file)
     setPreviewVisible(true)
   }
 
   // 取消预览
   const handlePreviewCancel = () => {
     setPreviewVisible(false)
+    setPreviewMedia(undefined)
   }
 
   // 删除
@@ -247,75 +269,92 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
   // TODO; 暂时没有下载功能就 a标签跳新页面了，就不写这个函数了
 
+  const initConfig = {
+    uploadType,
+    showImage,
+    showVideo,
+    uploadBtnText,
+    maxSize,
+    maxLength,
+    disabled,
+    aspectRatio,
+    itemWidth,
+    cropProps,
+    showUploadList,
+    actionBtn,
+    itemRender,
+    uploadBeforeCrop
+  }
+
   return (
     <>
       <div className={styles['img-upload']}>
         <ImgUploadContext.Provider value={{
           fileList,
-          localFileList,
-          checkFileObject,
           imageData,
+          videoData,
           baixingImageData,
           initConfig: {
-            uploadType,
-            uploadBtnText,
-            maxSize: localMaxSize,
-            maxLength,
-            disabled,
-            aspectRatio,
-            itemWidth,
-            cropProps,
-            showUploadList,
-            actionBtn,
-            itemRender,
-            uploadBeforeCrop
+            ...initConfig
           },
           albumVisible,
-          shopList: shopListFilter,
-          shopCurrent,
-          loadingShopModel,
+          selectModalType,
           upDataLoading,
           handleChangeAlbumVisible: setAlbumVisible,
           handleChangeUpDataLoading: setUpDataLoading,
-          handleChangeShopCurrent: handleChangeShopCurrent,
+          handleChangeVideoData: handleChangeVideoData,
           handleChangeImageData: handleChangeImageData,
           handleChangeBaixingImageData: handleChangeBaixingImageData,
-          handleChangeLocalFileList: handleChangeLocalFileList,
           handleReloadFileList: createFileList,
           handleChangeFileList: decorateSetFileList,
           handlePreview,
           handleRemove,
           handleCrop,
+          handleSelectCover,
         }}>
           {
-            uploadType === 1 && <Upload1></Upload1>
+            uploadType === 1 && <Upload1
+              fileList={fileList}
+              initConfig={{ ...initConfig }}
+              handleChangeFileList={decorateSetFileList}
+              handlePreview={handlePreview}
+              handleRemove={handleRemove}
+              handleCrop={handleCrop} ></Upload1>
           }
           {
             uploadType === 2 && <Upload2></Upload2>
           }
+          <SelectModal {...SelectModalOption}></SelectModal>
         </ImgUploadContext.Provider>
       </div>
-      <Modal
-        title="预览图片"
-        width={800}
-        visible={previewVisible}
-        onOk={handlePreviewCancel}
-        onCancel={handlePreviewCancel}
-        footer={null}
-      >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+      <PreviewModal previewVisible={previewVisible} previewMedia={previewMedia} handleCloseModal={handlePreviewCancel}></PreviewModal>
       <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={cropItem?.preview} handleCropSuccess={handleCropSuccess}></CropModal>
     </>
   )
 }
 
-export default connect<any, any, ImgUploadProps>((state: any) => {
-  const { shopList } = (state as ConnectState)[SHOP_NAMESPACE]
-  const { loading } = (state as ConnectState)
-  return { shopList, loadingShopModel: loading.models.shop }
-}, (dispatch) => {
-  return {
-    ...shopMapDispatchToProps(dispatch),
+export const getImgUploadValueModel = (mediaType: MediaType, media: string | null | undefined, coverUrl?: string): MediaItem | '' => {
+  if (media) {
+    return {
+      url: media,
+      coverUrl,
+      mediaType
+    }
+  } else {
+    return ''
   }
-})(ImgUpload);
+}
+
+export const getImgUploadModelValue = (value: MediaItem | '', isCover?: boolean) => {
+  if (value) {
+    if (isCover) {
+      return value.coverUrl || ''
+    } else {
+      return value.url
+    }
+  } else {
+    return ''
+  }
+}
+
+export default ImgUpload

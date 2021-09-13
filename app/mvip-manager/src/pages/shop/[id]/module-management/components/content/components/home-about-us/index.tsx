@@ -7,13 +7,16 @@ import { aboutUsForm } from './config'
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE } from '@/models/shop';
 import { connect } from 'dva';
-import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId, ShopInfo } from '@/interfaces/shop'
+import { ModuleHomeABoutInfo, ModulePageType, ModuleComponentId, ShopInfo, InitModuleHomeABoutInfo } from '@/interfaces/shop'
 import { getModuleInfoApi, setModuleHomeABoutInfoApi } from '@/api/shop'
 import { mockData } from '@/utils';
 import styles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
 import { useMemo } from 'react';
 import { ShopIndustryType } from '@/enums';
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
+import { MediaItem } from '@/components/img-upload/data';
+import { useDebounce } from '@/hooks/debounce';
 
 interface Props {
   position: ModulePageType,
@@ -28,17 +31,17 @@ const TipNode = () => {
       <QuestionCircleOutlined className={styles['icon']} />
       <img className={styles['img']} src="//file.baixing.net/202108/a4a1b6fc624ae157500620d340244724.png" alt="" />
     </div>
-    <div className={styles['text']}>图片格式：jpg、jpeg、png，大小不超过3M，图片比例16：9，建议最小尺寸：432*243</div>
+    <div className={styles['text']}>图片格式：jpg、jpeg、png，大小不超过3M，<br />视频建议尺寸：16:9，大小100M以内，视频时长最短3S，最长60S</div>
   </div>
 }
 
 const AboutUs: FC<Props> = (props) => {
   const params = useParams<{ id: string }>()
   const { position, pageModule, curShopInfo } = props
-  const [detail, setDetail] = useState<ModuleHomeABoutInfo>({
+  const [detail, setDetail] = useState<InitModuleHomeABoutInfo>({
     name: '',
     tags: [],
-    media: ''
+    media: '',
   })
 
   const config = useMemo(() => {
@@ -58,7 +61,11 @@ const AboutUs: FC<Props> = (props) => {
     const res = await getModuleInfoApi<ModuleHomeABoutInfo>(Number(params.id), {
       position, pageModule
     })
-    setDetail(res.data)
+    const { videoUrl, media } = res.data
+    setDetail({
+      ...res.data,
+      media: res.data.videoUrl ? getImgUploadValueModel('VIDEO', videoUrl, media) : getImgUploadValueModel('IMAGE', media)
+    })
     setGetDataLoading(false)
   }
 
@@ -66,11 +73,13 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = async (values: ModuleHomeABoutInfo) => {
+  const handleSubmit = useDebounce(async (values: InitModuleHomeABoutInfo) => {
     // 因为tag组件默认传出来的是 逗号拼接的string
     setUpDataLoading(true)
     const res = await setModuleHomeABoutInfoApi(Number(params.id), {
       ...values,
+      media: values.media ? values.media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) as string : getImgUploadModelValue(values.media, true) as string : '',
+      videoUrl: values.media ? values.media.mediaType === 'IMAGE' ? '' : getImgUploadModelValue(values.media) as string : '',
       position, pageModule
     })
     if (res.success) {
@@ -79,7 +88,7 @@ const AboutUs: FC<Props> = (props) => {
       errorMessage(res.message)
     }
     setUpDataLoading(false)
-  }
+  }, 300)
 
   return <div className={styles["about-us-container"]}>
     <Spin spinning={getDataLoading || upDataLoading}>
@@ -92,7 +101,7 @@ const AboutUs: FC<Props> = (props) => {
             <Col span={2}></Col>
             <Col className={styles['about-us-content']}>
               <div className={styles['about-us-tip']}>注：【公司名称】和【公司简介】读取企业资料相关字段的内容</div>
-              <Button loading={upDataLoading} className={styles['btn']}
+              <Button loading={upDataLoading} disabled={upDataLoading} className={styles['btn']}
                 type="primary" size="large" htmlType="submit">保存</Button>
             </Col>
           </Row>

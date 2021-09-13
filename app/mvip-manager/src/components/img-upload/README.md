@@ -1,10 +1,13 @@
-1. 当前图片库只能用于店铺，所以用店铺首页的 list。如果以后其他地方也要用，需要注意一下获取 shopList
-
 ### 参数介绍
+
+showImage?: boolean,// 是否显示图片相关 tab
+showVideo?: boolean,// 是否显示视频相关 tab
 
 | 参数             | 说明                                     | 类型                                                                                                     | 默认值 | 是否必填 |
 | ---------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------ | -------- |
 | uploadType       | 1：直接上传 2：打开图库                  | 1 ,2                                                                                                     |        | true     |
+| showImage        | 是否显示图片相关 tab                     | boolean                                                                                                  |        | true     |
+| showVideo        | 是否显示视频相关 tab                     | boolean                                                                                                  |        | false    |
 | editData         | 默认值                                   | string / string[]/ undefined                                                                             |        | false    |
 | uploadBtnText    | 上传按钮上的文本                         | string                                                                                                   |        | true     |
 | maxSize          | 单个图片最大尺寸                         | number                                                                                                   | 1      | false    |

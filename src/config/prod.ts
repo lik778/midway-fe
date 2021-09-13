@@ -2,7 +2,8 @@ export default {
   env: 'production',
   services: {
     'midway-service': {
-      host: 'http://midway-service'
+      host: 'http://midway-service',
+      external: 'http://api.baixing.com.cn'
     },
     'zhidao-service': {
       host: 'http://zhidao-service'

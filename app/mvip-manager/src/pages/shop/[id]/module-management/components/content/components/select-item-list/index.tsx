@@ -12,6 +12,7 @@ import { getModuleInfoApi, setModuleProductInfoApi, setModuleHomeArticleListApi,
 import styles from './index.less'
 import { mockData } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
+import { useDebounce } from '@/hooks/debounce';
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId,
@@ -62,7 +63,7 @@ const AboutUs: FC<Props> = (props) => {
     getDetail()
   }, [])
 
-  const handleSubmit = async (values: ModuleArticleInfo | ModuleProductInfo) => {
+  const handleSubmit = useDebounce(async (values: ModuleArticleInfo | ModuleProductInfo) => {
     setUpDataLoading(true)
     let res
     if (type === "product") {
@@ -90,7 +91,7 @@ const AboutUs: FC<Props> = (props) => {
       errorMessage(res.message)
     }
     setUpDataLoading(false)
-  }
+  }, 300)
 
   return <div className={styles["home-hot-product-container"]}>
     <Spin spinning={getDataLoading || upDataLoading}>
@@ -102,7 +103,7 @@ const AboutUs: FC<Props> = (props) => {
           <Row className={styles["home-hot-product-submit-box"]}>
             <Col span={2}></Col>
             <Col className={styles['home-hot-product-content']}>
-              <Button loading={upDataLoading} className={styles['btn']}
+              <Button loading={upDataLoading} disabled={upDataLoading} className={styles['btn']}
                 type="primary" size="large" htmlType="submit">保存</Button>
             </Col>
           </Row>

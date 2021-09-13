@@ -7,7 +7,9 @@ import SubForm from '../subform/index'
 import InputLen from '@/components/input-len';
 import { errorMessage, successMessage } from '@/components/message';
 import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
-import { CustomerSetChildListItem, CustomerSetListItem } from '@/interfaces/shop';
+import { CustomerSetChildListItem, CustomerSetListItem, InitCustomerSetChildListItem } from '@/interfaces/shop';
+import { getImgUploadModelValue } from '@/components/img-upload';
+import { useDebounce } from '@/hooks/debounce';
 
 const notNull = (x: any): boolean => !!x
 
@@ -116,16 +118,18 @@ const ModuleForm: FC<Props> = (props) => {
   ])
 
   // 提交表单
-  const sumbit = async () => {
+  const sumbit = useDebounce(async () => {
     try {
       setFormLoading(true)
       await validateForm()
       const title = form.getFieldValue('title')
       const show = form.getFieldValue('show')
-      const values = forms.current.filter(notNull).map(item => {
+      const values: CustomerSetChildListItem[] = forms.current.filter(notNull).map(item => {
+        const value: InitCustomerSetChildListItem = item.form.getFieldsValue()
         return {
-          ...item.form.getFieldsValue(),
-          id: item.item.id
+          ...value,
+          id: item.item.id,
+          urlImg: getImgUploadModelValue(value.urlImg)
         }
       })
       const res = await setCustomerSetApi(Number(shopId), {
@@ -148,7 +152,8 @@ const ModuleForm: FC<Props> = (props) => {
     } finally {
       setFormLoading(false)
     }
-  }
+  }, 300)
+
   return <>
     <Spin spinning={getDataLoading}>
       <Form form={form} name={`form-${moduleID}`} className={styles['title-form-container']}>

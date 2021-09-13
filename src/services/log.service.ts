@@ -37,7 +37,7 @@ export class LogService {
       } else {
         getLogger().error(
           `request: ${JSON.stringify(err.config)}
-          err: ${JSON.stringify(err.response)}`)
+          err:response为${ JSON.stringify(err.response)}`)
       }
     } else {
       getLogger().error(err)

@@ -7,8 +7,9 @@ import { ConnectState } from '@/models/connect'
 import { ShopInfo } from '@/interfaces/shop';
 import BasisHeader from '@/pages/shop/[id]/components/basis-header'
 import { ShopBasisType } from '@/enums'
-import { InitShopBasicInfoParams } from '@/interfaces/shop'
+import { ShopItemBasicInfoParams, InitShopItemBasicInfoParams } from '@/interfaces/shop'
 import ShopBasicInfoForm from './components/form'
+import { getImgUploadValueModel } from '@/components/img-upload';
 
 
 
@@ -16,10 +17,14 @@ const CustomerSet: FC<{ curShopInfo: ShopInfo | null, loadingShopModel: boolean 
   const { curShopInfo, loadingShopModel } = props
 
   const { id } = useParams<{ id: string }>()
-  const initShopBasicInfoParams = useMemo<InitShopBasicInfoParams | {} | null>(() => {
+  const initShopBasicInfoParams = useMemo<InitShopItemBasicInfoParams | {} | null>(() => {
     if (curShopInfo) {
       if (curShopInfo.about && curShopInfo.about.length > 0) {
-        return JSON.parse(curShopInfo.about) as InitShopBasicInfoParams
+        const about: ShopItemBasicInfoParams = JSON.parse(curShopInfo.about)
+        return {
+          ...about,
+          promoteImg: getImgUploadValueModel('IMAGE', about.promoteImg)
+        }
       } else {
         return {}
       }

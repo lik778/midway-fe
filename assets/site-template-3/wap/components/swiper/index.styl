@@ -12,28 +12,6 @@
       display flex
       justify-content center
       align-items center
-      .video-cover
-        position absolute
-        top 0
-        left 0
-        width 100%
-        height 100%
-        z-index 9
-        cursor pointer
-        img
-          width 100%
-          height 100%
-      .video-wrapper 
-        display flex
-        justify-content center
-        align-items center
-        width 100%
-        height 100%
-        video
-          max-width 100%
-          heigh 100%
-          cursor pointer
-          z-index 9
   .swiper-pagination-bullet-active
     background-color $color-main
   .num-tip
@@ -49,13 +27,38 @@
     z-index 1000
     font-size: 12px;
 
+/* 轮播视频 */
+.swiper-container-small,
 .swiper-container
   .video-wrapper
+    display flex
+    justify-content center
+    align-items center
+    width 100%
+    height 100%
     background-color black
+    video
+      flex 1
+      width 100%
+      height 100%
+      pointer-events none
+      z-index 9
   .video-cover
-    position relative
-    img 
-      object-fit cover
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    z-index 9
+    cursor pointer
+    img
+      width 100%
+      height 100%
+    &.play-flag
+      img
+        display: none
+    &.play
+      opacity: 0
   .video-cover::after
     content ''
     position absolute
@@ -67,4 +70,22 @@
     background-size 100%
     cursor pointer
 
-
+/* 轮播全屏 */
+.swiper-container.fullscreen {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100vw;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+.swiper-container.fullscreen + .swiper-fullscreen-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 110vw;
+  height: 300vh;
+  background: #000;
+  transform: translateY(-150vh);
+  z-index: 999;
+}

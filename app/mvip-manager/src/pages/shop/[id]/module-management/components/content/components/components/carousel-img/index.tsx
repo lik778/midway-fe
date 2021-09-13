@@ -8,37 +8,40 @@ import { DeviceType } from '@/enums';
 import { errorMessage } from '@/components/message';
 import Loading from '@/components/loading';
 import ImgUpload from "@/components/img-upload";
-import { ActionBtnListItem } from '@/components/img-upload/data';
+import { ActionBtnListItem, MediaItem } from '@/components/img-upload/data';
+import { getImgUploadValueModel, getImgUploadModelValue } from '@/components/img-upload';
 import { UploadFile } from "antd/lib/upload/interface";
 import { Spin } from 'antd'
 import styles from './index.less'
 import { forwardRef } from "react";
 import { ModulePageType } from '@/interfaces/shop'
 interface Props {
+  showVideo?: boolean,
   autoUpdata?: boolean, // 是否操作后自动更新数据
   type: DeviceType,
   position: ModulePageType,
   txt: string,
-  tip: string,
+  tip: string | JSX.Element
   aspectRatio: number
 }
 
 const CarouselItem = (props: Props, parentRef: Ref<any>) => {
-  const { autoUpdata = true, type, txt, tip, position, aspectRatio } = props
+  const { showVideo = false, autoUpdata = true, type, txt, tip, position, aspectRatio } = props
+  const [editData, setEditData] = useState<"" | MediaItem | MediaItem[] | undefined>()
   const [bannerList, setBannerList] = useState<BannerListItem[]>([])
   // 当前banner是否被修改过
   const [changeFlag, setChangeFlag] = useState<boolean>(false)
   // 需要删除的bannerId
   const [delBannerIds, setDelBannerIds] = useState<number[]>([])
-  const editData = useMemo(() => {
-    if (bannerList.length === 0) {
-      return ''
-    } else if (bannerList.length === 1) {
-      return bannerList[0].displayImgUrl
+
+  const initBannerItem = (bannerItem: BannerListItem) => {
+    if (bannerItem.hrefUrl) {
+      return getImgUploadValueModel('VIDEO', bannerItem.hrefUrl, bannerItem.displayImgUrl) as MediaItem
     } else {
-      return bannerList.map(item => item.displayImgUrl)
+      return getImgUploadValueModel('IMAGE', bannerItem.displayImgUrl!) as MediaItem
     }
-  }, [bannerList])
+  }
+
   const [getDataLoading, setGetDataLoading] = useState(true)
   const [upDataLoading, setUpDataLoading] = useState(false)
   // 获取店铺id
@@ -47,6 +50,16 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   useEffect(() => {
     getBannerList()
   }, [])
+
+  const createEditData = (bannerList: BannerListItem[]) => {
+    if (bannerList.length === 0) {
+      setEditData('')
+    } else if (bannerList.length === 1) {
+      setEditData(initBannerItem(bannerList[0]))
+    } else {
+      setEditData(bannerList.map(item => initBannerItem(item)))
+    }
+  }
 
   const getBannerList = async () => {
     setGetDataLoading(true)
@@ -58,14 +71,20 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       position
     })
     if (res?.success) {
-      setBannerList(res.data.result!)
+      const { result } = res.data
+      if (!result) return
+      setBannerList(result)
+      createEditData(result)
     } else {
       errorMessage(`获取图片失败，请稍后重试。`)
     }
     setGetDataLoading(false)
   }
 
-  const createBannerImg = async (url: string) => {
+  const createBannerImg = async (data: {
+    hrefUrl: string,
+    imgUrl: string
+  }) => {
     setUpDataLoading(true)
     // 原有逻辑是权重控制排序
     // 现在每次修改都会更具图片id排次序所以可以忽略了权重
@@ -73,7 +92,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
       ? Math.max(...bannerList.map(x => +x.weight || 0))
       : 0) + 1
     const res = await createBannerApi(Number(params.id), {
-      url,
+      ...data,
       type,
       position,
       // weight 字段越大排序越靠后
@@ -108,36 +127,49 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
   }
 
   // 目前可以同时操纵多个图片 可同时新增删除
-  const handleChange = async (values: string | string[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
+  const handleChange = async (values: "" | MediaItem | MediaItem[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
     // oldFileList 对应bannerLiet的文件 ，且顺序相同。
     // 找到fileList与oldFileList的交集a。
     // 维持localValues的顺序等于values，并将已有的id记录在localValues里
     // 删除oldFileList中不存在于a的项
     // 新增localValues中不存在id的项
-
-    let localValues: { id?: number, url: string, preview: string }[] = fileList.map(item => ({
-      url: item.url!,
-      preview: item.preview!
-    }))
-
     const localBannerList = [...bannerList]
     const newBannerList: BannerListItem[] = []
-    localValues.forEach(item => {
-      const index = localBannerList.findIndex(oItem => oItem.displayImgUrl === item.url)
+    fileList.forEach(item => {
+      const index = localBannerList.findIndex(oItem => {
+        if (item.type === 'IMAGE') {
+          return oItem.displayImgUrl === item.url
+        } else {
+          return oItem.hrefUrl === item.url && oItem.displayImgUrl === item.thumbUrl
+        }
+      })
       if (index !== -1) {
         const dItem = localBannerList.splice(index, 1)[0]
         newBannerList.push(dItem)
       } else {
-        newBannerList.push({
-          ...item,
-          displayImgUrl: item.preview,
-          hrefUrl: '',
-          imgUrl: item.url,
-          position,
-          status: NaN,
-          weight: NaN,
-          id: NaN
-        })
+        if (item.type === 'IMAGE') {
+          newBannerList.push({
+            ...item,
+            displayImgUrl: item.preview!,
+            hrefUrl: '',
+            imgUrl: item.url!,
+            position,
+            status: NaN,
+            weight: NaN,
+            id: NaN
+          })
+        } else {
+          newBannerList.push({
+            ...item,
+            displayImgUrl: item.thumbUrl!,
+            hrefUrl: item.url!,
+            imgUrl: item.thumbUrl!,
+            position,
+            status: NaN,
+            weight: NaN,
+            id: NaN
+          })
+        }
       }
     })
     const newDelBannerIds = [...new Set([...delBannerIds, ...localBannerList.filter(item => item.id).map(item => item.id)])]
@@ -150,22 +182,8 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     }
   }
 
-  // 移动事件
-  const handleMove = useCallback(async (file: UploadFile, fileList: UploadFile[], order: number) => {
-    const newBannerList = [...bannerList]
-    const index = fileList.findIndex(item => item.uid === file.uid)
-    const item = newBannerList[index]
-    newBannerList[index] = newBannerList[index + order]
-    newBannerList[index + order] = item
-    if (autoUpdata) {
-      handleUpData('move', newBannerList, [])
-    } else {
-      setBannerList(newBannerList)
-      setChangeFlag(true)
-    }
-  }, [bannerList])
 
-  // 提交函数 单个move还是从弹窗中选择了多个图, 
+  // 提交函数 单个move还是从弹窗中选择了多个图,
   // 分自动更新还是手动更新，对应的数据源不同
   // 自动更新需要传 nowBannerList nowDelBannerIds
   const handleUpData = useCallback(async (type: 'move' | 'all', nowBannerList?: BannerListItem[], nowDelBannerIds?: number[]) => {
@@ -182,7 +200,10 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
         if (item.id) {
           return Promise.resolve(item.id)
         } else {
-          return createBannerImg(item.imgUrl)
+          return createBannerImg({
+            imgUrl: item.imgUrl,
+            hrefUrl: item.hrefUrl
+          })
         }
       }), ...(autoUpdata ? nowDelBannerIds! : delBannerIds).map(item => deleteBannerImg(item))])
       await handleOrdersChange(ids.filter(item => typeof item === 'number') as number[])
@@ -202,18 +223,27 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     disabled: upDataLoading || getDataLoading
   }), [upDataLoading, getDataLoading, handleUpData])
 
+  // 移动事件
+  const handleMove = async (file: UploadFile, fileList: UploadFile[], fileIndex: number, handleChangeFileList: (newFileList: UploadFile<any>[], oldFileList: UploadFile<any>[], file: UploadFile<any> | null) => void, order: number) => {
+    const newFileList = [...fileList]
+    const item = newFileList[fileIndex]
+    newFileList[fileIndex] = newFileList[fileIndex + order]
+    newFileList[fileIndex + order] = item
+    handleChangeFileList(newFileList, fileList, file)
+  }
+
   const renderIcons: ActionBtnListItem[] = useMemo(() => {
     return [
       {
-        title: "move-up",
-        action: (file, fileList) => handleMove(file, fileList, -1),
+        title: "上移",
+        action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, -1),
         icon: (file, fileList) => {
           return fileList.findIndex(item => item.uid === file.uid) === 0 ? null : <UpOutlined />
         },
       },
       {
-        title: "move-down",
-        action: (file, fileList) => handleMove(file, fileList, 1),
+        title: "下移",
+        action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, 1),
         icon: (file, fileList) => {
           return fileList.findIndex(item => item.uid === file.uid) === fileList.length - 1 ? null : <DownOutlined />
         },
@@ -230,6 +260,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
         <div className={styles['upload-container']}>
           <ImgUpload
             uploadType={2}
+            showVideo={showVideo}
             editData={editData}
             uploadBtnText="上传图片"
             maxSize={3}

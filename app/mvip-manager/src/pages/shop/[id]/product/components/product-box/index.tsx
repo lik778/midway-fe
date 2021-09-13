@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
 import { productForm } from './config';
@@ -13,6 +13,8 @@ import { isEmptyObject } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
 import GroupSelectBtn from './components/group-select-btn'
 import './index.less'
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
+import { MediaItem } from '@/components/img-upload/data';
 interface Props {
   cateList: CateItem[];
   editData?: any;
@@ -29,6 +31,15 @@ export default (props: Props) => {
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
+  const initEditData = useMemo(() => {
+    let media = editData ? editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg) : undefined
+    return {
+      ...editData,
+      media,
+      contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item))
+    }
+  }, [editData])
+
 
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
@@ -60,8 +71,15 @@ export default (props: Props) => {
   const sumbit = async (values: any) => {
     values.name = values.name.trim();
     const isEdit = !isEmptyObject(editData);
+
     if (!values.price) { values.price = '面议' }
-    values.contentImg = !values.contentImg || values.contentImg.length === 0 ? null : typeof values.contentImg === 'string' ? values.contentImg : values.contentImg.join(',')
+    const media = values.media
+    if (media) {
+      values.headImg = media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) : getImgUploadModelValue(values.media, true)
+      values.videoUrl = media.mediaType === 'VIDEO' ? getImgUploadModelValue(values.media) : undefined
+    }
+    values.contentImg = !values.contentImg || values.contentImg.length === 0 ? null : !Array.isArray(values.contentImg) ? getImgUploadModelValue(values.contentImg) : values.contentImg.map((item: MediaItem) => getImgUploadModelValue(item)).join(',')
+    delete values.media
     let resData: any;
     setFormLoading(true)
     if (isEdit) {
@@ -94,7 +112,7 @@ export default (props: Props) => {
       destroyOnClose={true}
     >
       <WildcatForm
-        editDataSource={editData}
+        editDataSource={initEditData}
         config={formConfig}
         submit={sumbit}
         onClick={onModalClick}

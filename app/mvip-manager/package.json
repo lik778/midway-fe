@@ -26,6 +26,7 @@
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.27",
     "axios": "^0.21.1",
+    "browser-md5-file": "^1.1.1",
     "classname": "0.0.0",
     "dayjs": "^1.9.6",
     "echarts": "^4.0.3",

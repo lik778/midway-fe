@@ -4,7 +4,7 @@ import { Spin, FormInstance } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { cloneDeepWith } from 'lodash';
 import { swiperProductForm } from './config'
-import { Detail } from './data'
+import { Detail, InitDetail } from './data'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { ModuleProductSwiper, ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 import { getModuleInfoApi, setModuleBannerInfoApi } from '@/api/shop'
@@ -14,6 +14,7 @@ import SelectItem from '../../../../../components/select-item'
 import { mockData } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
 import { SelectProductListItem } from '../../../../../components/select-item/data';
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId
@@ -23,7 +24,7 @@ interface Props {
 const Product = (props: Props, parentRef: Ref<any>) => {
   const params = useParams<{ id: string }>()
   const { setSwiperType, position, pageModule } = props
-  const [detail, setDetail] = useState<Detail>({
+  const [detail, setDetail] = useState<InitDetail>({
     backGroundImg: '',
     productList: [],
   })
@@ -49,7 +50,7 @@ const Product = (props: Props, parentRef: Ref<any>) => {
       position, pageModule
     })
     setDetail({
-      backGroundImg: res.data.backGroundImg,
+      backGroundImg: getImgUploadValueModel('IMAGE', res.data.backGroundImg),
       productList: res.data.productList
     })
     setSwiperType(res.data.bannerProduct ? 'product' : 'swiper')
@@ -62,11 +63,12 @@ const Product = (props: Props, parentRef: Ref<any>) => {
 
   const handleSubmit = async () => {
     await formRef.current.form?.validateFields()
-    const values = formRef.current.form?.getFieldsValue()
+    const values: InitDetail = formRef.current.form?.getFieldsValue()
     setUpDataLoading(true)
     const res = await setModuleBannerInfoApi(Number(params.id), {
       bannerProduct: true,
       ...values,
+      backGroundImg: getImgUploadModelValue(values.backGroundImg),
       productIdList: values.productList.map((item: SelectProductListItem) => item.id),
       position, pageModule
     })

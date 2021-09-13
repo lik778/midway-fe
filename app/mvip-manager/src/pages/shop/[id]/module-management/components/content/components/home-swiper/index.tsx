@@ -9,6 +9,7 @@ import PcSwiper from './components/pc'
 import WapSwiper from './components/wap'
 import { ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
 import { successMessage } from '@/components/message';
+import { useDebounce } from '@/hooks/debounce';
 
 interface Props {
   position: ModulePageType,
@@ -18,7 +19,7 @@ interface Props {
 
 const HomeSwiper: FC<Props> = (props) => {
   const { curShopInfo, loadingShopModel, position, pageModule } = props
-
+  const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const pcRef = useRef<{
     handleUpData: () => Promise<void>,
     disabledFc: () => boolean,
@@ -35,13 +36,16 @@ const HomeSwiper: FC<Props> = (props) => {
     disabled: false
   })
 
-  const handleClickSubmit = async () => {
-    if (pcRef.current.disabledFc() || wapRef.current.disabled) {
+  const handleClickSubmit = useDebounce(async () => {
+    const disabled = pcRef.current.disabledFc() || wapRef.current.disabled
+    if (disabled) {
       return
     }
+    setUpDataLoading(true)
     await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
     successMessage('保存成功')
-  }
+    setUpDataLoading(false)
+  }, 300)
 
   return <Spin spinning={loadingShopModel}>
     <div className={styles['home-swiper-container']}>
@@ -51,7 +55,7 @@ const HomeSwiper: FC<Props> = (props) => {
           <WapSwiper ref={wapRef} curShopInfo={curShopInfo} position={position} pageModule={pageModule}></WapSwiper>
         </div>
           <Button className={styles['btn']}
-            size="large" onClick={handleClickSubmit}>保存</Button>
+            size="large" onClick={handleClickSubmit} disabled={upDataLoading} loading={upDataLoading}>保存</Button>
         </>
       }
     </div>

@@ -1,21 +1,28 @@
-mixin swiper(height)
+mixin swiper(type)
   - const {bannerList} = renderData.banner
-  - const hasBannerList = bannerList && bannerList.length > 0
-  .swiper-container(style= height === '100vw'?"height: 100vw":"height: 152px")
+  //- 首页
+  .swiper-container(style= type === 'home'?"height: 100vw":"height: 152px")
     .swiper-wrapper
-      if hasBannerList
+      if bannerList && bannerList.length > 0
         each item in bannerList
           - const isVideo = item.hrefUrl
           if isVideo
             .swiper-slide
               .video-wrapper
-                video(src=item.hrefUrl, loop, preload, controls)
+                video(src=item.hrefUrl, loop, preload,  webkit-playsinline="webkit-playsinline", playsinline="playsinline",x5-video-player-type='h5-page')
               .video-cover
                 img(src=item.displayImgUrl)
           else
             .swiper-slide(style=`background-image:url(${item.displayImgUrl})`)
       else
-        .swiper-slide(style="background-image:url(//file.baixing.net/202108/288501b7594f8f641301712d80389603.png)")
-        .swiper-slide(style="background-image:url(//file.baixing.net/202108/93d79230ca39672ceced406c9203afde.png)")
-    if hasBannerList
-      .num-tip #{bannerList.length}张图片
+        if type === 'home'
+          .swiper-slide(style="background-image:url(//file.baixing.net/202108/288501b7594f8f641301712d80389603.png)")
+          .swiper-slide(style="background-image:url(//file.baixing.net/202108/93d79230ca39672ceced406c9203afde.png)")
+        else
+          .swiper-slide(style="background-image:url(//file.baixing.net/202103/410b62b875216c3267539be22288285f.png)")
+          .swiper-slide(style="background-image:url(//file.baixing.net/202103/0e18a589532358323c4946c53d35460c.png)")
+    if type !== 'home'
+      if bannerList && bannerList.length > 1
+        .swiper-pagination
+  #swiper-fullscreen-mask.swiper-fullscreen-mask
+

@@ -1,0 +1,39 @@
+.section-block {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 12px;
+  height: 40px;
+  line-height: 40px;
+  background: #f2f2f2;
+
+  :global {
+    .ant-btn-text {
+      color: #096dd9;
+
+      &:hover {
+        color: #096dd9;
+        opacity: 0.9;
+      }
+    }
+  }
+}
+.selection-count {
+  margin-left: -0.75em;
+
+  & + :global(.ant-btn-text) {
+    margin-left: 10px;
+  }
+}
+.count-info {
+  flex-grow: 1;
+  text-align: right;
+
+  .count-num {
+    color: #096dd9;
+  }
+}
+.tip {
+  font-size: 12px;
+  margin: -4px 0 16px;
+}

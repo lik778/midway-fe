@@ -2,8 +2,8 @@ export default {
   env: 'local',
   services: {
     'midway-service': {
-      host: 'http://172.30.2.14:30260'
-      // host: 'http://172.17.10.137:8080'
+      host: 'http://172.30.2.14:30257',
+      external: 'http://midway.test-cat.upyun.baixing.cn'
     },
     'zhidao-service': {
       host: 'http://172.30.2.14:31252'

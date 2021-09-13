@@ -7,6 +7,7 @@
   div
     box-sizing border-box
   .item
+    position relative
     display flex
     padding 24px 0
     justify-content flex-start
@@ -64,7 +65,16 @@
   .no-content
     line-height: 100px
 
-
+.play-icon.active
+	position: absolute;
+	top: 100px;
+	left: 110px;
+	width: 36px;
+	height: 36px;
+	background: url(//file.baixing.net/201709/1ae6e52bed21cee4b2e9f45be173d0f4.png)
+	background-size: 100%;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
 
 
 

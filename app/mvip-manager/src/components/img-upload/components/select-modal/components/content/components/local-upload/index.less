@@ -1,0 +1,20 @@
+.local-upload {
+  height: 315px;
+  overflow-y: scroll;
+  .line {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    :global {
+      .ant-upload-list-picture-card-container {
+        display: none;
+      }
+    }
+  }
+}
+.tip {
+  font-size: 14px;
+  color: #666666;
+  transform: translateY(-10px);
+}

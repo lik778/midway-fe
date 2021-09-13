@@ -5,7 +5,7 @@ block styles
 block header
   include ../components/header
   include ../components/swiper
-  +swiper('100vw')
+  +swiper('home')
   if isSem !== "2"
     - const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
     include ../components/company-info-home
@@ -40,7 +40,7 @@ block content
       +product-list-new(productList)
 
   include ../components/home-news-list-module.pug
-  - const { articleList:{result:articleList}, name:articleListName} = renderData.articleList
+  - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
   if articleList && articleList.length >0
     +news-module-list(articleList,articleListName)
 
