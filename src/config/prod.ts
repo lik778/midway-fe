@@ -3,7 +3,7 @@ export default {
   services: {
     'midway-service': {
       host: 'http://midway-service',
-      external: 'http://api.baixing.com.cn'
+      external: 'https://cloud.baixing.com.cn'
     },
     'zhidao-service': {
       host: 'http://zhidao-service'

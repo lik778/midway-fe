@@ -73,7 +73,7 @@ export class UpyunController {
     const { fileMD5, fileSuffix } = req.query
     const videoConfig = upyunVideoConfig
     const notifyBase = config().services['midway-service'].external
-    const notifyURL = notifyBase + '/api/midway/internal/material/decode'
+    const notifyURL = notifyBase + '/api/open/midway/up/decode'
     // * for test
     // const notifyURL = "https://enb6hk1stgczkkc.m.pipedream.net"
     console.log('notifyURL:', notifyURL)
