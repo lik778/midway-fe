@@ -72,7 +72,14 @@ const swiper = new Swiper('.swiper-container', {
             }
           }
           $swiper.addEventListener('click', addClickEvent)
-          $swiperMask.addEventListener('click', addClickEvent)
+          $swiperMask.addEventListener('click', function(){
+            const [$video, $cover] = getVideo()
+            if ($video) {
+              $video.pause()
+              $cover.classList.remove('play')
+              $swiper.classList.remove('fullscreen')
+            }
+          })
 
           /* 视频播放时暂停轮播 */
           $bannerVideos.map($video => {
