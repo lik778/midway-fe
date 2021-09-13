@@ -82,6 +82,7 @@ export class UpyunController {
       apps: [{
         "name": "naga",
         "type": "video",
+        "avopts": "",
         "save_as": `/nbhd_${fileMD5}${fileSuffix}`,
         "notify_url": notifyURL
       }],
