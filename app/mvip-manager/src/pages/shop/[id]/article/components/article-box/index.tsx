@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import './index.less';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
@@ -11,6 +11,7 @@ import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createArticleApi, updateArticleApi } from '@/api/shop';
 import { useParams } from 'umi';
 import { isEmptyObject } from '@/utils';
+import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { errorMessage, successMessage } from '@/components/message';
 import GroupSelectBtn from './components/group-select-btn'
 
@@ -32,6 +33,14 @@ export default (props: Props) => {
   const [formData, setFormData] = useState<any>({})
   const [modalLoading, setModalLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(articleForm)
+
+  const initEditData = useMemo(() => {
+    return {
+      ...editData,
+      contentImg: editData?.contentImg ? getImgUploadValueModel('IMAGE', editData.contentImg) : undefined
+    }
+  }, [editData])
+
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
   const params: RouteParams = useParams();
@@ -82,6 +91,7 @@ export default (props: Props) => {
     let resData: any;
     const isEdit = !isEmptyObject(editData);
     formValues = values
+    values.contentImg = getImgUploadModelValue(values.contentImg)
     setFormLoading(true)
     if (isEdit) {
       resData = await updateArticleApi(Number(params.id), { id: editData.id, ...values })
@@ -121,7 +131,7 @@ export default (props: Props) => {
     >
       <Form.Item>
         <WildcatForm
-          editDataSource={editData}
+          editDataSource={initEditData}
           config={formConfig}
           submit={sumbit}
           loading={formLoading}
