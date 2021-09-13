@@ -1,6 +1,7 @@
 import Swiper from 'swiper';
 
 const $bannerVideos = [...document.querySelectorAll('.swiper-container video')]
+const $coverVideos = [...document.querySelectorAll('.swiper-container .video-cover')]
 
 let $swiper, $slides
 
@@ -23,20 +24,12 @@ const swiper = new Swiper('.swiper-container', {
   on: {
     slideChange: function () {
       if (!$swiper) return
-      $bannerVideos.map((x, index) => x.pause())
-      if ($swiper.classList.contains('fullscreen')) {
-        this.autoplay.stop()
-        const $video = $slides[this.activeIndex].querySelector('video')
-        const $cover = $slides[this.activeIndex].querySelector('.video-cover')
-        if ($video) {
-          const isPaused = $video.paused
-          if (isPaused) {
-            $cover && $cover.remove()
-            $video.play()
-          }
-        }
-      } else {
+      $bannerVideos.forEach((x, index) => x.pause())
+      $coverVideos.forEach((x, index) => x.classList.remove('play'))
+      if (!$swiper.classList.contains('fullscreen')) {
         this.autoplay.start()
+      } else {
+        this.autoplay.stop()
       }
     },
     init: function () {
@@ -56,33 +49,41 @@ const swiper = new Swiper('.swiper-container', {
             ]
           }
           $swiper.addEventListener('click', function () {
-            $swiper.classList.toggle('fullscreen')
             const [$video, $cover] = getVideo()
             if ($video) {
               const isPaused = $video.paused
               if (isPaused) {
-                $cover && $cover.remove()
+                if (!$swiper.classList.contains('fullscreen')) {
+                  $swiper.classList.add('fullscreen')
+                }
+                if ($cover) {
+                  $cover.classList.add('play-flag')
+                  $cover.classList.add('play')
+                }
                 $video.play()
               } else {
                 $video.pause()
+                $cover.classList.remove('play')
+                $swiper.classList.remove('fullscreen')
+              }
+            } else {
+              $swiper.classList.toggle('fullscreen')
+            }
+          })
+          /* 视频播放时暂停轮播 */
+          $bannerVideos.map($video => {
+            $video.onplay = function () {
+              swiper.autoplay.stop()
+              window._cbs && window._cbs.pauseAll()
+            }
+            $video.onpause = function () {
+              if (!$swiper.classList.contains('fullscreen')) {
+                swiper.autoplay.start()
+                window._cbs && window._cbs.resumeAll()
               }
             }
           })
         }
-
-        /* 视频播放时暂停轮播 */
-        $bannerVideos.map($video => {
-          $video.onplay = function () {
-            swiper.autoplay.stop()
-            window._cbs && window._cbs.pauseAll()
-          }
-          $video.onpause = function () {
-            if (!$swiper.classList.contains('fullscreen')) {
-              swiper.autoplay.start()
-              window._cbs && window._cbs.resumeAll()
-            }
-          }
-        })
       }, 10)
     }
   }
