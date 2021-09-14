@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
-import { viewPhone } from '../components/home/viewPhoneNew';
+import { viewPhone } from '../components/home/about-us';
 import { initSem } from '../../../common/pc/contact-form-sem';
 
 import './index.styl';

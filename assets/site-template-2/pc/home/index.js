@@ -4,7 +4,7 @@ import $ from 'jquery';
 import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { initSem } from '../../../common/pc/contact-form-sem'
-import { aboutUs } from '../components/home/about-us-new'
+import { aboutUs } from '../components/home/about-us'
 
 leaveLeads()
 aboutUs()
