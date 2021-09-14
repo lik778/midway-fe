@@ -23,13 +23,12 @@ block content
 				- const { productList : proList, name: allTitle } = renderData.productRecommend
 				if proList && proList.length > 0
 						+home-title(allTitle)
-						//- include ../components/home/product-list.pug
 						- productListResult = renderData.productRecommend&&renderData.productRecommend.productList?renderData.productRecommend.productList:renderData.productList.result
-						include ../components/home/product-list-new.pug
+						include ../components/home/product-list.pug
 						+item(productListResult)
 
 				if isSem !== "2"
-					include ../components/home/about-us-new.pug
+					include ../components/home/about-us.pug
 					+about-us-new( renderData.about|| renderData.basic.aboutModule|| {})
 
 				//-自定义模块1（即之前的企业优势模块）

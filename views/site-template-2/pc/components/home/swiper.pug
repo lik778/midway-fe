@@ -10,7 +10,7 @@ if bannerProduct
         .swiper-wrapper
           if productList && productList.length > 0
             if productList.length == 1
-              a.swiper-slide(href=productList[0].urlSuffix)
+              a.swiper-slide(href=productList[0].urlSuffix,class=productList[0].videoUrl?'video':'')
                 img(src=productList[0].headImg || defaultImg)
                 p.only-oneline #{ productList[0].name }
               .swiper-slide
@@ -18,7 +18,7 @@ if bannerProduct
                 p.only-oneline &nbsp;&nbsp;
             else
               each item in productList.slice(0,5)
-                a.swiper-slide(href=item.urlSuffix)
+                a.swiper-slide(href=item.urlSuffix,class=item.videoUrl?'video':'')
                   img(src=item.headImg || defaultImg)
                   p.only-oneline #{ item.name }
           else
