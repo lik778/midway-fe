@@ -77,7 +77,7 @@ export function useUpload(props: Props) {
         signature: window.__upyunImgConfig?.uploadParams?.signature,
       }
     } : {
-      accept: ['video/mp4', 'video/mpeg', 'video/mov', 'video/quicktime'],
+      accept: ['video/mp4', 'video/mov', 'video/quicktime'],
       action: window.__upyunVideoConfig?.uploadUrl,
       async data(file: RcFile) {
         setCheckUploadLoading(true)
@@ -201,7 +201,7 @@ export function useUpload(props: Props) {
         if (!file) {
           return false
         }
-        const extNotShow = ['quicktime', 'mpeg']
+        const extNotShow = ['quicktime']
         const isValidType = exts.includes(file.type)
         if (!isValidType) {
           notification.open({
@@ -216,18 +216,6 @@ export function useUpload(props: Props) {
         switch (file.type) {
           case 'video/mp4':
             if (fileSuffix.indexOf('mp4') === -1 && fileSuffix.indexOf('MP4') === -1) {
-              notification.open({
-                key: 'media-upload-error-filetype',
-                message: `${uploadItemLabel}格式错误`,
-                description: '该文件类型与后缀名不符，请检查',
-              })
-              console.log('fileSuffix:', fileSuffix)
-              console.log('file.type:', file.type)
-              return false
-            }
-            break
-          case 'video/mpeg':
-            if (fileSuffix.indexOf('mpg') === -1 && fileSuffix.indexOf('MPG') === -1 && fileSuffix.indexOf('mpeg') === -1 && fileSuffix.indexOf('MPEG') === -1) {
               notification.open({
                 key: 'media-upload-error-filetype',
                 message: `${uploadItemLabel}格式错误`,
