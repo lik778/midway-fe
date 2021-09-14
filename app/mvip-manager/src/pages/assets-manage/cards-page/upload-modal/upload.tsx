@@ -64,7 +64,7 @@ type Props = {
 }
 export function useUpload(props: Props) {
   const { type, maxCount = 1, afterUploadHook } = props
-  const checkUploadLoadingHook = props.setCheckUploadLoading || (() => {})
+  const checkUploadLoadingHook = props.setCheckUploadLoading || (() => { })
   const [lists, setLists] = useState<UploadItem[]>([])
   const [checkUploadLoading, setCheckUploadLoading] = useState(false)
   const uploadItemLabel = useMemo(() => type === 'IMAGE' ? '图片' : '视频', [type])
@@ -90,17 +90,7 @@ export function useUpload(props: Props) {
             signature: window.__upyunVideoConfig?.uploadParams?.signature,
           }
           const fileMD5 = await getFileMD5(file)
-          let fileSuffix = ''
-          switch (file.type) {
-            case 'video/mp4':
-            case 'video/mpeg':
-              fileSuffix = '.mp4'
-              break
-            case 'video/mov':
-            case 'video/quicktime':
-              fileSuffix = '.mov'
-              break
-          }
+          let fileSuffix = `.${file.name.split('.').pop()}`
           const confWithMD5 = await window.__upyunGetTaskConfig({ fileMD5, fileSuffix })
           return {
             ...defaultConf,
@@ -136,7 +126,7 @@ export function useUpload(props: Props) {
     }
   }, [lists])
 
-  const updateRef = useRef<Function>(() => {})
+  const updateRef = useRef<Function>(() => { })
   useEffect(() => {
     updateRef.current = update
   }, [update])
@@ -221,6 +211,48 @@ export function useUpload(props: Props) {
           })
           return false
         }
+
+        let fileSuffix = `.${file.name.split('.').pop()}`
+        switch (file.type) {
+          case 'video/mp4':
+            if (fileSuffix.indexOf('mp4') === -1 && fileSuffix.indexOf('MP4') === -1) {
+              notification.open({
+                key: 'media-upload-error-filetype',
+                message: `${uploadItemLabel}格式错误`,
+                description: '该文件类型与后缀名不符，请检查',
+              })
+              console.log('fileSuffix:', fileSuffix)
+              console.log('file.type:', file.type)
+              return false
+            }
+            break
+          case 'video/mpeg':
+            if (fileSuffix.indexOf('mpg') === -1 && fileSuffix.indexOf('MPG') === -1 && fileSuffix.indexOf('mpeg') === -1 && fileSuffix.indexOf('MPEG') === -1) {
+              notification.open({
+                key: 'media-upload-error-filetype',
+                message: `${uploadItemLabel}格式错误`,
+                description: '该文件类型与后缀名不符，请检查',
+              })
+              console.log('fileSuffix:', fileSuffix)
+              console.log('file.type:', file.type)
+              return false
+            }
+            break
+          case 'video/mov':
+          case 'video/quicktime':
+            if (fileSuffix.indexOf('mov') === -1 && fileSuffix.indexOf('MOV') === -1) {
+              notification.open({
+                key: 'media-upload-error-filetype',
+                message: `${uploadItemLabel}格式错误`,
+                description: '该文件类型与后缀名不符，请检查',
+              })
+              console.log('fileSuffix:', fileSuffix)
+              console.log('file.type:', file.type)
+              return false
+            }
+            break
+        }
+
         const validSize = file.size / 1024 / 1024 < (window._max_size || size)
         if (!validSize) {
           notification.open({

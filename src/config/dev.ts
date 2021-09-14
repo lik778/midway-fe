@@ -3,7 +3,7 @@ export default {
   services: {
     'midway-service': {
       host: 'http://172.30.2.14:31257',
-      external: 'http://midway.cat.upyun.baixing.cn'
+      external: 'http://midway.cat.cloud.baixing.cn'
     },
     'zhidao-service': {
       host: 'http://172.30.2.14:31252'
