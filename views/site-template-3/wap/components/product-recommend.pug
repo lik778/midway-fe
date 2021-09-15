@@ -6,7 +6,7 @@ if proRec && proRec.length > 0
 						span 其他服务
 				.pro-box
 						each item in proRec
-								a.pro-box-product(href=item.urlSuffix)
+								a.pro-box-product(href=item.urlSuffix,class=item.videoUrl?'video':'')
 										img(src=item.headImg || defaultImg, alt="图片")
 										.pro-desc.only-twoline #{ item.name }
 

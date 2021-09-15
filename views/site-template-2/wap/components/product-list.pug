@@ -4,8 +4,7 @@ mixin product-list(type, productList)
 		.products
 			each item in productList
 				- const isVideo = item.videoUrl
-				a.product(href=item.urlSuffix)
-					.play-icon(class=isVideo?'active':'')
+				a.product(href=item.urlSuffix,class=item.videoUrl?'video':'')
 					.product__img
 						img(src=item.headImg || defaultImg)
 						if type === 'hot'
