@@ -5,7 +5,7 @@ if proRec && proRec.length > 0
             h4 #{ Protitle || '产品推荐'}
         .pro-box
             each item in proRec
-                a.pro-box-product(href=item.urlSuffix)
+                a.pro-box-product(href=item.urlSuffix,class=item.videoUrl?'video':'')
                     img(src=item.headImg || defaultImg, alt="产品图片")
                     .pro-desc.only-twoline #{ item.name }
 
