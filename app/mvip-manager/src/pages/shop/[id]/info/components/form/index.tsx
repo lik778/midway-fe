@@ -4,6 +4,7 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import WildcatForm from '@/components/wildcat-form';
 import styles from './index.less'
 import { ShopItemBasicInfoParams, InitShopItemBasicInfoParams, UploadShopBasicInfoParams } from '@/interfaces/shop';
+import { MetasItem } from '@/interfaces/user';
 import { errorMessage, successMessage } from '@/components/message';
 import { ShopBasicInfoForm } from './config';
 import { cloneDeepWith } from 'lodash';
@@ -16,11 +17,10 @@ interface Props {
   id: number,
   shopBasicInfoParams: InitShopItemBasicInfoParams | {},
   getDataLoading: boolean
-  onChange: () => void
 }
 
 const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
-  const { id, shopBasicInfoParams, onChange } = props
+  const { id, shopBasicInfoParams } = props
 
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(ShopBasicInfoForm));
   const [phoneTipShow, setPhoneTipShow] = useState(false)
@@ -72,7 +72,9 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
   const sumbit = async (values: InitShopItemBasicInfoParams) => {
     const requestData: UploadShopBasicInfoParams = {
       ...values,
-      promoteImg: getImgUploadModelValue(values.promoteImg)
+      promoteImg: getImgUploadModelValue(values.promoteImg),
+      firstCategory: (values.metas[0] as MetasItem).value,
+      secondCategory: (values.metas[1] as MetasItem).value,
     }
     // 下面两个是表单里的额外字段，用于保存类目的，避免接口有多余字段，所以删除
     // @ts-ignore
@@ -83,7 +85,6 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     const { success, message, data } = await setShopBasicInfoApi(id, requestData)
     if (success) {
       successMessage('保存成功')
-      onChange()
     } else {
       errorMessage(message || '出错了')
     }
