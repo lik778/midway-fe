@@ -1,0 +1,88 @@
+mixin mediaShow()
+	- const { headImg, name, price, contentImg, videoUrl,params } = renderData.productInfo;
+	- const { address,name: compayname } = renderData.basic.company;
+
+	.media-show-container
+		.media-show-left
+			.left-headImg
+				if headImg
+					img(src=headImg, alt="")
+				else
+					img(src="http://img6.baixing.net/e692f8b6c28e085c29d30803a43ef752.png_sv1", alt="")
+			.left-contentImg
+				.swiper-container
+					.swiper-wrapper
+						if headImg
+							if videoUrl
+								.swiper-slide
+									video(poster=headImg object-fit)
+										source(src=videoUrl, type="video/mp4")
+							else 
+								.swiper-slide
+									img(src=headImg)
+						else 
+							if videoUrl
+								.swiper-slide
+									video(object-fit)
+										source(src=videoUrl, type="video/mp4")
+						if contentImg && contentImg.length > 0
+							each val in contentImg
+								.swiper-slide
+									img(src=val, alt="alt")
+						.swiper-slide
+							img(src="http://img5.baixing.net/438f18a892a0b1d2697d19f8deeaba20.png_sv1", alt="")
+						.swiper-slide
+							img(src="http://img5.baixing.net/438f18a892a0b1d2697d19f8deeaba20.png_sv1", alt="")
+						.swiper-slide
+							img(src="http://img5.baixing.net/438f18a892a0b1d2697d19f8deeaba20.png_sv1", alt="")
+						.swiper-slide
+								img(src="http://img5.baixing.net/438f18a892a0b1d2697d19f8deeaba20.png_sv1", alt="")
+					.swiper-button-next
+					.swiper-button-prev
+		.media-show-middle
+			.detail-title #{name}
+			.detail-price 价格
+				span(class="prices") #{price}/台
+			.detail-setting 
+				.setting-title 产品参数
+				.detail-product 
+					ul 
+						li 
+							span(class="setting-key") 名称
+							span(class="setting-value") 值
+						li 
+							span(class="setting-key") 名称
+							span(class="setting-value") 值
+						li 
+							span(class="setting-key") 名称
+							span(class="setting-value") 值
+			.detail-contact
+				include ../../../../common/pc/official-400-btn
+				+official400Btn({backgroundColor:'#ED4646',borderColor:'#ED4646',phone:phone.content,naviconw:'20px',naviconh: '20px',naviconm: '8px',navRadius: '4px',navMarginTop: '0',BtnHeight:'40px',BtnWidth:'140px'})
+				if kf53StyleUrl && kf53StyleUrl.length > 0
+					a.online-btn(href=kf53StyleUrl)
+						img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
+						span 在线咨询
+		.media-show-right
+			.company-record
+				img(src="//file.baixing.net/202109/d39cb98c1e78604a91b7ee7484d4e7d1.png", alt="")
+				span(class="company-dangan") 企业档案
+			.baixing-accord
+				.accord-title 
+					.accord-line 
+					.accord-content 百姓认证
+					.accord-line 
+				.accord-icon 
+					ul 
+						li 
+							img(src="//file.baixing.net/202109/d03d680831ae225279e2708897ee0b2d.png", alt="")
+						li 
+							img(src="//file.baixing.net/202109/c08f0ba6c033405e78be9968bfeccc00.png", alt="")
+						li 
+							img(src="//file.baixing.net/202109/eeed98a3f88a4b239c3e0542de4ac0e7.png", alt="")
+						li 
+							img(src="//file.baixing.net/202109/d2779c5e58588f3dee60f6a5d6fb36fc.png", alt="")
+				.accord-wd
+				.contact-name 联系卖家：#{compayname}
+				.contanct-address 所在地区：#{address}
+				.contant-btn 给我留言

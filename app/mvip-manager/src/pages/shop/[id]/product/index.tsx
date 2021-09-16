@@ -9,15 +9,17 @@ import { ContentCateType, ShopModuleType, ProductType } from '@/enums';
 import { getProductListApi } from '@/api/shop';
 import { addKeyForListData, removeOverflow, removeOverflowY } from '@/utils';
 import './index.less'
-import { CateItem, RouteParams, ShopProductListItem } from '@/interfaces/shop';
+import { CateItem, RouteParams, ProductListItem } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
+
+const initeditProductData = { params: [{ key: '', value: '' }, { key: '', value: '' }] }
 
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 const ShopProductPage = (props: any) => {
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [productFormVisible, setProductFormVisible] = useState<boolean>(false);
-  const [productList, setProductList] = useState<ShopProductListItem[]>([]);
-  const [editProductData, setEditProductData] = useState<any>(null);
+  const [productList, setProductList] = useState<ProductListItem[]>([]);
+  const [editProductData, setEditProductData] = useState<ProductListItem | { params: { key: string, value: string }[] }>({ ...initeditProductData });
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [listLoading, setListLoading] = useState<boolean>(false);
@@ -53,13 +55,13 @@ const ShopProductPage = (props: any) => {
   }
 
   const handleClickCreateProduct = () => {
-    setEditProductData({})
+    setEditProductData({ ...initeditProductData })
     setProductFormVisible(true)
   }
 
 
-  const handleClickEditProduct = (item: ShopProductListItem) => {
-    setEditProductData({ ...item });
+  const handleClickEditProduct = (item: ProductListItem) => {
+    setEditProductData({ ...item, params: item.params && item.params.length >= 2 ? item.params : [...initeditProductData.params] });
     setProductFormVisible(true);
   }
 

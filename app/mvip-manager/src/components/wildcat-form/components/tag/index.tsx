@@ -101,7 +101,7 @@ export const TagModule = (props: Props) => {
       )}
       {!inputVisible && tags.length < props.maxNum && (
         <Tag onClick={showInput} className="site-tag-plus">
-          <PlusOutlined /> 新增
+          <PlusOutlined /> 添加
         </Tag>
       )}
     </div>

@@ -7,6 +7,9 @@ import styles from './index.less'
 export const productForm: FormConfig = {
   name: 'productForm',
   width: 650,
+  useLabelCol: {
+    span: 3
+  },
   children: [
     { formItemWidth: 260, label: '服务分组', name: 'contentCateId', type: FormType.GroupSelect, options: [], required: true, placeholder: '暂无分组', slotDom: { text: '新建分组' } },
     { formItemWidth: 395, label: '服务名称', name: 'name', type: FormType.Input, required: true, maxLength: 50, placeholder: '请输入标题，2~50个字', minLength: 2, patternList: [{ pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }], showCount: true },
