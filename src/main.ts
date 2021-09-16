@@ -8,7 +8,7 @@ import pugFilters, { setPugViewEngineHeplers } from './view-helpers'
 import { PORT } from './constant';
 import { exceptionFilters } from './filters';
 import './base/sentry';
-import { LogService } from './services/log.service'
+
 /**
  * 创建应用实例
  * 用来启动http服务器，它允许应用程序等待入站http请求
