@@ -16,38 +16,48 @@ export const mediaShow = function() {
     slidesPerView: 4,
     spaceBetween: 10,
     slidesPerGroup: 3,
-    // loop: true,
     loopFillGroupWithBlank: true,
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
     },
     navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
+      nextEl: '.left-contentImg .swiper-button-next',
+      prevEl: '.left-contentImg .swiper-button-prev',
     },
   });
-  $('.swiper-wrapper').on('click', '.swiper-slide', function(e) {
-    console.log(
-      $(e.target).children('source').attr('src')
-    );
-    // 判断当前点击的是不是视频
-    if ($(e.target) && $(e.target).children('source').attr('src')) {
-      const videoSrc = $(e.target).children('source').attr('src');
-      const posterSrc = $(e.target).attr('poster')
-      // 将上面的标签替换成视频
-      const video = `<video poster=${posterSrc} object-fit><source src=${videoSrc} type="video/mp4"><source/><video/>`
-      $('.left-headImg').html(video)
-    } else {
-      // 不存在视频
-      const nowSrc = $(e.target).attr('src');
-      // 更换上面的链接
-      const img = `<img src=${nowSrc}>`
-      $('.left-headImg').html(img)
+  // 缩略图
+  $('.swiper-wrapper').on('click', '.swiper-slide img', function(e) {
+    const  $ThisImg = $(this);
+    const  $Imgsrc =  $ThisImg.attr('src')
+    $('.left-headImg img').attr('src',$Imgsrc)
+    if ($ThisImg && $ThisImg.data('video')) {
+      // 显示视频和按钮，替换图片 
+      const $Videosrc =  $ThisImg.data('video')
+      $('.left-headImg video').attr('src',$Videosrc)
+      $('.left-headImg .video-wrapper').css('display','block')
+      $('#cover').removeClass('video-img')
+      $('#cover').addClass('video-cover')
+    }else {
+      //  隐藏视频和按钮，替换成图片
+      $('.left-headImg .video-wrapper').css('display','none')
+      $('#cover').removeClass('video-cover')
+      $('#cover').addClass('video-img')
     }
-    $('.swiper-slide img').removeClass('add-border');
-    $('.swiper-slide video').removeClass('add-border');
-    $(e.target).addClass('add-border');
-
+    // 设置高亮
+    $ThisImg.parent('.swiper-slide').addClass('my-slide-active');
+    $ThisImg.parent('.swiper-slide').siblings().removeClass('my-slide-active');
   });
+  // 默认选中第一项
+  $('.swiper-slide:first').addClass('my-slide-active')
+    // 视频初始化
+    const $productVideo = document.querySelector('.left-headImg video');
+    if ($productVideo) {
+      const $cover = document.querySelector('.left-headImg .video-cover');
+      $cover.addEventListener('click', evt => {
+        $productVideo.play();
+        $cover.remove();
+        evt.stopPropagation();
+      });
+    }
 };

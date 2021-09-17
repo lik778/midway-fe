@@ -1,36 +1,99 @@
 @import 'swiper/dist/css/swiper.min.css'
-.add-border
+  @import "../../../../../common/pc/official-400-btn";
+.my-slide-active
   border: 1px solid #ED4646
 .media-show-container
   display: flex
   justify-content space-between
   height: 376px
-  padding: 10px 0 20px 0
+  padding: 10px 0 0px 0
   margin-bottom 20px
   background-color: #FFFFFF
   .media-show-left
     width: 406px
     .left-headImg
-      width: 100%
-      height: 270px
+      margin-bottom: 20px
       border-radius: 4px
-      margin-bottom: 10px
-      video
-        width: 100%
-        height: 270px
-        source
-          width: 100%
-          height: 270px
+      overflow hidden
+      .video-con
+        position relative
+        height 270px
+        width 406px
+        flex-shrink 0
+      .video-wrapper
+        display flex
+        justify-content center
+        align-items center
+        width 100%
+        height 100%
+        background-color black
+        video
+          flex 1
+          width 100%
+          height 100%
+          cursor pointer
+          z-index 9
+      .video-cover
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        z-index 9
+        cursor pointer
+        img
+          width 100%
+          height 100%
+      .video-cover::after
+        content ''
+        position absolute
+        left calc(50% - 28px)
+        top calc(50% - 28px)
+        width 55px
+        height 55px
+        background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAMAAAC4uKf/AAAAqFBMVEUAAAAAAAAAAAAAAAAAAAAAAAC/v78AAAAAAAAAAAAAAAAAAAAAAAAAAAAMDAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/v4+PhtbW01NTXu7u7n5+coKCj////JycnFxcWhoaGZmZmTk5NgYGBCQkL19fXr6+vk5OTi4uLR0dHNzc24uLipqal6enpUVFQhISHY2NjW1taKior////luF/rAAAAN3RSTlOAAAN8eGTMCls1D0tDKIJwamBXUEhGPyMeG/r4oo7v6Yr+0s+7trOckvXs5uTY1ce+qJiJ3NyvtZcixAAAAsVJREFUaN7VmolS2zAQhv/owJZs5z4JN4VytLT0yvu/WTMpIJgA0a6Omu8FvpkdWdbu/ugQsDNTlbrfU1KqXl+XlZnZDgFfmZhPBxKvIAfTuYgpK0yp8A6qNEUcmWiGEjuRw0YEy4pawRNVF0EyO5YgIMeWLSsqCSKyKlgyYRQYKCPosoUGE70gysQEAUwERWY1gtDWX9YoBKIaX1mNCNReMjFCFEZit0yUiEQpdskKjWjo4n2Z0IiIFlsySg35ldyWjRCZ0duyGtGp35I1SEDzuswqJEBZZwD9IPKPpJNNkIjJtmyBZCycjFhEfiGdzCAh5qWsUEiIKl7IKiSlei6zEkmR9plsjMSMnayQSIwsnmQ1klM/yoRCcpR4kDXIQPMgGyIDw42MfDz4RwT+N9XJ+fXy7ApczEZWwovu8WrN/vcueJRrmfdZ/LP6x9EB+zyiM4cf31aPfD0Eh/laNoUfe6sn9j9xajldywb+MscNo5aDtUxSZI4zci1lBxYkmWNJrqXFjCpzHH8GiRkMXeY4PwEBg4ohcywv4E+FkiVz3PrXsoTmyRynez/hh0afK3NcX8KLPnp8mePLD3jQgwqQOfZ9bhQFGSJzHHl84TJQ5rjykal8MoVeHNmt1wHpR5EdHXodfU2V8b9rTb2u+F8ZUKIKlS0v/S9iEyY7JfxlDP3nyf9/zqjPAv7fDLDoSLbs7AQUJPkp5zg+AI0B/ZHq3qmcR+qcI7s75D2/hSLLbg64jUWnpDQW/K6ppDSD92E9DAypzb3bXO/37DaX1MB3L3//uuiCyTDraCLr0CXnOCnroCznCDDrcDPn2DbrQDrnqD3rEiHneiTn4ifrSivnsu7/ryHTLFjbsTpOsBRvy7o/dpChTRGNmOGTtsVqIgWG2hmFCg95tTe+FhTMa3vkkBem/CgxUVoA9qNFeyOGlrPGsf8C2eyo8x7aSZcAAAAASUVORK5CYII=")
+        background-size 100%
+        cursor pointer
+      .video-img
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        z-index 9
+        // cursor pointer
+        img
+          width 100%
+          height 100%
+      .video-cover::after
+        content: ''
       img
-        width: 100%
-        height: 100%
-        border-radius: 4px
+        height 270px
+        width 406px
+        border-radius 4px
     .left-contentImg
       width: 100%
-      height: 66px
+      height: 72px
       .swiper-container
         width: 100%
         height: 100%
+        .swiper-button-prev
+          left: 5px
+          width: 30px
+          height: 30px
+          background: url('http://file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png') no-repeat center center/100%
+          &:hover
+            background url(//file.baixing.net/202108/a74c1d873881392c12a23826cd4e1a37) no-repeat center center/100%
+            transform rotate(0)
+        .swiper-button-next
+          right: 5px
+          width: 30px
+          height: 30px
+          background: url('http://file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png') no-repeat center center/100%
+          transform: rotate(180deg)
+          &:hover
+            background url(//file.baixing.net/202108/af2916a86a85a940625a4a47c70d5fb3) no-repeat center center/100%
+            transform rotate(0)
         .swiper-slide
           width: 99px
           height: 66px
@@ -91,7 +154,7 @@
         font-weight: 500px
     .detail-setting
       padding: 24px 0px 12px 16px
-      margin-bottom: 28px
+      margin-bottom: 0px
       color: #333333 
       font-size: 12px
       .setting-title
@@ -108,9 +171,11 @@
             justify-content: flex-start
             width: 248px
             margin-bottom: 15px
-            overflow hidden
-            text-overflow ellipsis
-            white-space: nowrap
+            padding-right: 10px
+            display: -webkit-box
+            -webkit-box-orient: vertical
+            -webkit-line-clamp: 1
+            overflow: hidden
             .setting-key
               margin-right 20px
               color: #999999
@@ -120,6 +185,7 @@
       display: flex
       justify-content flex-start
       align-items center
+      padding-left: 14px
       .online-btn
         display: flex
         justify-content: center
@@ -134,88 +200,3 @@
           width: 20px;
           height: 19px
           margin-right 8px
-  .media-show-right
-    width: 224px
-    height: 258px
-    margin-top: 62.5px
-    background: blue
-    border-radius: 4px
-    border: 1px solid #EEEEEE
-    background: #FFFEFB
-    .company-record
-      position relative
-      width: 100%
-      height: 36px
-      img
-        width: 100%
-        height: 100%
-      .company-dangan
-        position absolute
-        top: 8px
-        right: 103px
-        color: #F7E5A5
-        font-size: 14px
-        font-weight: 600
-    .baixing-accord
-      width: 100%
-      height: 222px
-      padding-top: 10px
-      display: flex
-      flex-direction: column
-      justify-content center
-      align-items center
-      .accord-title
-        display: flex
-        justify-content: center
-        align-items: center
-        margin-bottom: 10px
-        .accord-line
-          width: 22px
-          height: 1px
-          background: #D4B87F
-        .accord-content
-          margin: 0 10px 
-          color:#333333
-          font-size: 12px
-          font-weight: bold
-      .accord-icon
-        width: 100%
-        margin-bottom 17px
-        ul
-          display: flex
-          justify-content center
-          li
-            width: 18px
-            height: 20px
-            margin-right 24px
-            &:last-child
-              margin-right 0
-      .accord-wd
-        width: 180px
-        border-top: 1px dashed #EADFC9
-        margin-bottom: 20px
-      .contact-name
-        width: 180px
-        font-size: 12px 
-        color: #333333
-        margin-bottom: 10px
-        overflow: hidden
-        text-overflow:ellipsis
-        white-space: nowrap
-      .contanct-address
-        width: 180px
-        font-size: 12px
-        color: #333333
-        overflow: hidden
-        text-overflow:ellipsis
-        white-space: nowrap
-      .contant-btn
-        width: 180px
-        height: 30px
-        margin: 20px 0
-        line-height: 30px
-        border: 1px solid #D4B87F
-        border-radius: 4px
-        color: #B17F19
-        font-size: 12px
-        text-align: center

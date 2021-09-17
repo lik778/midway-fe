@@ -279,9 +279,11 @@ export interface InitShopItemBasicInfoParams extends ShopItemBasicInfo {
 export interface UploadShopBasicInfoParams extends ShopItemBasicInfo {
   promoteImg: string;
   area: {
-    [key: string]: string;
-  };
-  metas: ShopMetas;
+    [key: string]: string
+  },
+  metas: ShopMetas,
+  firstCategory: string, // 后来添加的一级类目拼音
+  secondCategory: string, // 后来添加的二级类目拼音
 }
 
 // 请求填充参数

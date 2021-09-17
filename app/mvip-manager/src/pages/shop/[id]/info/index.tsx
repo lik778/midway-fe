@@ -40,9 +40,7 @@ const CustomerSet: FC<{ curShopInfo: ShopInfo | null, loadingShopModel: boolean 
     <Spin spinning={loadingShopModel}>
       <div className="container">
         {
-          initShopBasicInfoParams && <ShopBasicInfoForm id={Number(id)} shopBasicInfoParams={initShopBasicInfoParams} getDataLoading={loadingShopModel} onChange={() => {
-            window.location.reload()
-          }}></ShopBasicInfoForm>
+          initShopBasicInfoParams && <ShopBasicInfoForm id={Number(id)} shopBasicInfoParams={initShopBasicInfoParams} getDataLoading={loadingShopModel}></ShopBasicInfoForm>
         }
       </div>
     </Spin>
