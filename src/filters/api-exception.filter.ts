@@ -9,6 +9,10 @@ export class ApiExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Response>();
     sentryCaptureException(exception);
-    res.send(exception);
+    res.send({
+      code: exception.getCode(),
+      message: exception.getMessage(),
+      success: exception.getSuccess()
+    });
   }
 }
