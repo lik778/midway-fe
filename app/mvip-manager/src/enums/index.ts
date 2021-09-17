@@ -114,6 +114,7 @@ export enum AiTaskAction {
 export enum ServicePath {
   SHOP = '/management/api',
   ZHIDAO = '/zhidao/api',
+  POST_TOOL = '/post-tool/api',
   REPORT = '/report/api',
   TRACKER = '/tracker'
 }

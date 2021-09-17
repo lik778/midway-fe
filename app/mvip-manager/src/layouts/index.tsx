@@ -80,6 +80,12 @@ const Layouts = (props: any) => {
                 )
               })
             }
+            <SubMenu style={{ marginBottom: '10px' }} key={'ai-module'} title={'Ai内容发布'}
+              className={'ai-module'}>
+              <Menu.Item key='ai-list'>
+                <Link to='/ai-module/ai-list'>创建推广</Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1350 : '' }}>

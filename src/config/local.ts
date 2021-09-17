@@ -9,6 +9,9 @@ export default {
       host: 'http://172.30.2.14:31252'
       // host: 'http://172.17.3.110:8080'
     },
+    'post-tool-service': {
+      host: 'http://172.30.2.14:31204'
+    },
     'reporting-service': {
       host: 'http://dev-api.baixing.cn'
     }

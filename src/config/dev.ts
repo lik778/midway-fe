@@ -8,6 +8,9 @@ export default {
     'zhidao-service': {
       host: 'http://172.30.2.14:31252'
     },
+    'post-tool-service': {
+      host: 'http://172.30.2.14:31204'
+    },
     'reporting-service': {
       host: 'http://dev-api.baixing.cn'
     }
