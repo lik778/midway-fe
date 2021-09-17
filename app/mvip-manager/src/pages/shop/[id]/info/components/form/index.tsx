@@ -85,7 +85,9 @@ const ShopBasicInfoSetForm = (props: Props, parentRef: Ref<any>) => {
     const { success, message, data } = await setShopBasicInfoApi(id, requestData)
     if (success) {
       successMessage('保存成功')
-      window.location.reload()
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500)
     } else {
       errorMessage(message || '出错了')
     }
