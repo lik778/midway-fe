@@ -281,7 +281,9 @@ export interface UploadShopBasicInfoParams extends ShopItemBasicInfo {
   area: {
     [key: string]: string
   },
-  metas: ShopMetas
+  metas: ShopMetas,
+  firstCategory: string, // 后来添加的一级类目拼音
+  secondCategory: string, // 后来添加的二级类目拼音
 }
 
 // 请求填充参数
