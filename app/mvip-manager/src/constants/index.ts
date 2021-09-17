@@ -90,3 +90,4 @@ export const ZhidaoAiTaskStatusText: any = {
   [ZhidaoAiTaskStatus.ABORTED]: '已停止',
   [ZhidaoAiTaskStatus.DONE]: '已完成',
 }
+

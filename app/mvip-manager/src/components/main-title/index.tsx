@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-  title: string;
+  title: React.ReactNode;
 }
 
 const style = {
@@ -13,7 +13,7 @@ const style = {
 export default (props: Props) => {
   return (
     <div className="page-main-title" style={style}>
-      <div>{ props.title }</div>
+      <div>{props.title}</div>
     </div>
   );
 }

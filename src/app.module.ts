@@ -52,6 +52,7 @@ import { SemController } from './controllers/sem.controller'
     UpyunController,
     TrackerController,
     ZhidaoController,
+    PostToolController,
     SemController
   ],
   providers: [

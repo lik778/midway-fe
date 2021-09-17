@@ -7,7 +7,7 @@ import { ErrorCode } from '../enums/error';
 import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
 import { midwayAdminAPISecret } from '../constant'
-import { AxiosResponse } from 'axios';
+import { ServiceResponse } from '../interface/index'
 
 @Injectable()
 export class ManagementService {
@@ -27,7 +27,7 @@ export class ManagementService {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
-      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig,'').split('-')[0]) || '',
+      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }
@@ -54,7 +54,7 @@ export class ManagementService {
       { headers: this.setApiAHeaders(req.cookies) }).toPromise()
   }
 
-  public getManagementData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
+  public getManagementData(req: Request, input: ApiReqParams): Promise<ServiceResponse<any>> {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']
@@ -76,7 +76,7 @@ export class ManagementService {
     }
   }
 
-  public requestInternal(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
+  public requestInternal(req: Request, input: ApiReqParams): Promise<ServiceResponse<any>> {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     switch (method) {

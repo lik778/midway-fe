@@ -10,7 +10,10 @@ export interface AiModuleContextProps {
   copyDataType: ModuleKey | null
   // 记录分页
   pageInfo: {
-    [key in ModuleKey]: number
+    [key in ModuleKey]: {
+      page: number,
+      pageTotal: number
+    }
   },
   handleChangeContextData: (data: Partial<AiModuleContextProps>) => void
 }

@@ -13,9 +13,18 @@ export const defaultValue: AiModuleContextProps = {
   copyDataType: null,
   // 记录分页
   pageInfo: {
-    postTool: 1,
-    shop: 1,
-    zhidao: 1
+    postTool: {
+      page: 1,
+      pageTotal: 1,
+    },
+    shop: {
+      page: 1,
+      pageTotal: 1,
+    },
+    zhidao: {
+      page: 1,
+      pageTotal: 1,
+    },
   },
   handleChangeContextData: () => { }
 }

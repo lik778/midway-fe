@@ -50,9 +50,8 @@ const isMillisecond = (timeStamp: number | string) => {
   return timeStr.length > 10
 }
 
-export const formatTime = (time: string | number): string => {
-
-  return dayjs(Number(time) * (isMillisecond(time) ? 1 : 1000)).format('YYYY-MM-DD')
+export const formatTime = (time: string | number, type?: string): string => {
+  return dayjs(Number(time) * (isMillisecond(time) ? 1 : 1000)).format(type ? type : 'YYYY-MM-DD')
 }
 
 export const checkHasShow = function <T>(list: T[] | null): string {
