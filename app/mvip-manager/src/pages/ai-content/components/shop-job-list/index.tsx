@@ -5,13 +5,13 @@ import Loading from '@/components/loading';
 import AiEditModal from '@/pages/ai-content/components/shop-job-list/components/ai-edit-modal';
 import AiChooseModal from '@/pages/ai-content/components/shop-job-list/components/ai-choose-modal';
 import AiPackageModal from '@/pages/ai-content/components/shop-job-list/components/ai-package-modal';
-import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-content';
+import { getAiListApi, pauseAiTaskApi, startAiTaskApi } from '@/api/ai-module';
 import './index.less';
-import { AiContentItem } from '@/interfaces/ai-content';
+import { AiContentItem } from '@/interfaces/ai-module';
 import { addKeyForListData, formatTime, mockData } from '@/utils';
 import { errorMessage } from '@/components/message';
-import { AiTaskAction, AiTaskStatus } from '@/enums';
-import { AiTaskStatusText } from '@/constants';
+import { AiTaskAction, AiTaskStatus } from '@/enums/ai-module';
+import { AiTaskStatusText } from '@/constants/ai-module';
 
 export default (props: any) => {
   const [aiEditModalVisible, setAiEditModalVisible] = useState<boolean>(false);

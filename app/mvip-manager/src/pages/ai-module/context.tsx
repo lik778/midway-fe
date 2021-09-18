@@ -2,11 +2,11 @@ import React, { FC, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface'
 import { AiModuleContextProps } from './data'
 import { ShopInfo } from '@/interfaces/shop';
-import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-content'
+import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-module'
 import { ModuleKey } from './data'
 
 export const defaultValue: AiModuleContextProps = {
-  activeModuleKey: 'postTool' as ModuleKey,
+  activeModuleKey: 'zhidao' as ModuleKey,
   // 拷贝数据
   copyData: null,
   // 拷贝数据类型
@@ -15,15 +15,15 @@ export const defaultValue: AiModuleContextProps = {
   pageInfo: {
     postTool: {
       page: 1,
-      pageTotal: 1,
+      dataTotal: 0,
     },
     shop: {
       page: 1,
-      pageTotal: 1,
+      dataTotal: 0,
     },
     zhidao: {
       page: 1,
-      pageTotal: 1,
+      dataTotal: 0,
     },
   },
   handleChangeContextData: () => { }

@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Col, Form, Input, Modal, Row } from 'antd';
-import { updateAiTaskApi } from '@/api/ai-content';
+import { updateAiTaskApi } from '@/api/ai-module';
 import { wordsItemConfig } from '@/constants';
-import { AiContentItem } from '@/interfaces/ai-content';
-import { AiTaskStatus } from '@/enums';
+import { AiContentItem } from '@/interfaces/ai-module';
+import { AiTaskStatus } from '@/enums/ai-module';
 import { errorMessage, successMessage } from '@/components/message';
 
 interface Props {

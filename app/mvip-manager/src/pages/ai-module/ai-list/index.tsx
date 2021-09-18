@@ -16,8 +16,8 @@ const AiModule: FC = (props) => {
     <MainTitle title={'创建推广'}></MainTitle>
     <Tabs className={styles['ai-list']} activeKey={activeModuleKey} onChange={(activeModuleKey) => handleChangeContextData({ activeModuleKey: activeModuleKey as ModuleKey })}>
       <TabPane tab="贴子" key="postTool"><PostTool></PostTool></TabPane>
-      <TabPane tab="知道" key="shop"><Zhidao></Zhidao></TabPane>
-      <TabPane tab="店铺文章" key="zhidao"><Shop></Shop></TabPane>
+      <TabPane tab="知道" key="zhidao"><Zhidao></Zhidao></TabPane>
+      <TabPane tab="店铺文章" key="shop"><Shop></Shop></TabPane>
     </Tabs>
   </>
 }

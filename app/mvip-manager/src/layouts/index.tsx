@@ -65,27 +65,13 @@ const Layouts = (props: any) => {
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
             onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
             {
-              menuList && menuList.map((subMenu: MidMenuItem) => {
-                return (
-                  <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
-                    className={subMenu.key}>
-                    { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
-                      return (
-                        <Menu.Item key={menu.key}>
-                          <Link to={menu.path || ''}>{menu.menuName}</Link>
-                        </Menu.Item>
-                      )
-                    })}
-                  </SubMenu>
-                )
-              })
+              menuList && menuList.map((subMenu: MidMenuItem) => <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
+                className={subMenu.key}>
+                {subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => <Menu.Item key={menu.key}>
+                  <Link to={menu.path || ''}>{menu.menuName}</Link>
+                </Menu.Item>)}
+              </SubMenu>)
             }
-            <SubMenu style={{ marginBottom: '10px' }} key={'ai-module'} title={'Ai内容发布'}
-              className={'ai-module'}>
-              <Menu.Item key='ai-list'>
-                <Link to='/ai-module/ai-list'>创建推广</Link>
-              </Menu.Item>
-            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ minWidth: notInIframe() ? 1350 : '' }}>

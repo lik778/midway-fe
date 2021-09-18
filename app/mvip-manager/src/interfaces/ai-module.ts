@@ -1,5 +1,5 @@
 import { CateItem } from '@/interfaces/shop';
-import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus } from '@/enums';
+import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus } from '@/enums/ai-module';
 import { COLLECTION_STATUS } from '@/enums/ai-module';
 
 export interface AiTaskApiParams {

@@ -3,12 +3,13 @@ import { Table, Tooltip, TableColumnProps, Button } from 'antd';
 import { Link, useHistory } from "umi";
 import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi, setTaskStatusApi } from '@/api/ai-module';
 import styles from '../../index.less';
+import zhidaoStyles from './index.less';
 import { QuestionTaskListItem, GetQuotaNumRes, CollectionListItem } from '@/interfaces/ai-module';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
 import { warnMessage, errorMessage, successMessage } from '@/components/message';
-import { ZhidaoAiTaskStatus } from '@/enums';
-import { ZhidaoAiTaskStatusText } from '@/constants';
+import { ZhidaoAiTaskStatus } from '@/enums/ai-module';
+import { ZhidaoAiTaskStatusText } from '@/constants/ai-module';
 import AiModuleContext from '../../../context'
 
 
@@ -20,7 +21,7 @@ interface QuotaNumInterface extends GetQuotaNumRes {
 const Zhidao: FC = () => {
   const history = useHistory()
   const { activeModuleKey, pageInfo, handleChangeContextData } = useContext(AiModuleContext)
-  const { postTool: { page, pageTotal } } = pageInfo
+  const { zhidao: { page, dataTotal } } = pageInfo
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [dataList, setDataList] = useState<QuestionTaskListItem[]>([])
@@ -44,13 +45,13 @@ const Zhidao: FC = () => {
     const res = await getQuestionTaskListApi({ page, size: 10 })
     if (res.success) {
       setDataList(addKeyForListData(res.data.result || [], page))
-      if (pageTotal !== res.data.totalRecord || 0) {
+      if (dataTotal !== res.data.totalRecord || 0) {
         handleChangeContextData({
           pageInfo: {
             ...pageInfo,
             [activeModuleKey]: {
               page,
-              pageTotal: res.data.totalRecord || 0
+              dataTotal: res.data.totalRecord || 0
             }
           }
         })
@@ -86,8 +87,7 @@ const Zhidao: FC = () => {
     setGetDataLoading(true)
     const res = await getQuestionTaskStatusApi(id)
     if (res.success && res.data === 'true') {
-      // TODO;
-      history.push(`/ai-content/ai-zhidao/${id}/ai-zhidao-detail?pageType=see`)
+      history.push(`/ai-module/zhidao-detail?pageType=see&&id=${id}`)
     } else {
       warnMessage('数据处理中，请稍后再试~')
     }
@@ -114,10 +114,10 @@ const Zhidao: FC = () => {
     {
       title: '状态', dataIndex: 'status', key: 'status', render: (text: string, record: QuestionTaskListItem) => {
         if (record.status === ZhidaoAiTaskStatus.ABORTED || record.status === ZhidaoAiTaskStatus.PAUSED) {
-          return <div className={`${styles["ai-status-reject"]} ${styles[record.status === ZhidaoAiTaskStatus.ABORTED ? 'aborted' : 'pause']}`}>
-            <div className={styles["status"]}>{ZhidaoAiTaskStatusText[text]}</div>
+          return <div className={`${zhidaoStyles["ai-status-reject"]} ${zhidaoStyles[record.status === ZhidaoAiTaskStatus.ABORTED ? 'aborted' : 'pause']}`}>
+            <div className={zhidaoStyles["status"]}>{ZhidaoAiTaskStatusText[text]}</div>
             {record.memo && <Tooltip placement="bottom" title={record.memo} >
-              <span className={styles["reason"]}>{`${record.memo.substring(0, 6)}${record.memo.length > 6 ? '...' : ''} `}</span>
+              <span className={zhidaoStyles["reason"]}>{`${record.memo.substring(0, 6)}${record.memo.length > 6 ? '...' : ''} `}</span>
             </Tooltip>}
           </div>
         } else {
@@ -146,7 +146,7 @@ const Zhidao: FC = () => {
         ...pageInfo,
         [activeModuleKey]: {
           page,
-          pageTotal: pageTotal
+          dataTotal: dataTotal
         }
       }
     })
@@ -155,7 +155,7 @@ const Zhidao: FC = () => {
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
-        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-content/ai-zhidao?activeKey=create-job'}>+AI批量创建推广</Link>
+        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/zhidao-create'}>+AI批量创建推广</Link>
         <Link className={styles['action-btn']} to={'/ai-content/ai-zhidao?activeKey=basic-material'}>基础素材</Link>
         <Button className={styles['action-btn']}>手动发布</Button>
       </div>
@@ -163,18 +163,17 @@ const Zhidao: FC = () => {
       <p className={styles['page-tip']}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</p>
 
       {
-        pageTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>
+        dataTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>
       }
       {
-        pageTotal > 0 && <Table className={styles['table']} rowKey="id" columns={columns} loading={getDataLoading} dataSource={dataList || []} pagination={{
+        dataTotal > 0 && <Table className={styles['table']} rowKey="key" columns={columns} loading={getDataLoading} dataSource={dataList || []} pagination={{
           onChange: changePage,
           current: page,
-          total: pageTotal,
+          total: dataTotal,
           showSizeChanger: false,
-          hideOnSinglePage: (dataList && dataList.length < 10) || undefined,
           pageSize: 10,
           position: ['bottomCenter']
         }} />

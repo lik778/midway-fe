@@ -1,4 +1,4 @@
-import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-content'
+import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-module'
 
 export type ModuleKey = 'postTool' | 'shop' | 'zhidao'
 
@@ -12,7 +12,7 @@ export interface AiModuleContextProps {
   pageInfo: {
     [key in ModuleKey]: {
       page: number,
-      pageTotal: number
+      dataTotal: number
     }
   },
   handleChangeContextData: (data: Partial<AiModuleContextProps>) => void

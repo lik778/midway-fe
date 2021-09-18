@@ -2,16 +2,16 @@ import React, { forwardRef, Ref, useEffect, useState, useImperativeHandle } from
 import { Table, Tooltip } from 'antd';
 import { useHistory, useParams } from "umi";
 import Loading from '@/components/loading';
-import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi, setTaskStatusApi } from '@/api/ai-content';
+import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi, setTaskStatusApi } from '@/api/ai-module';
 import styles from './index.less';
-import { QuestionTaskListItem, GetQuotaNumRes } from '@/interfaces/ai-content';
+import { QuestionTaskListItem, GetQuotaNumRes } from '@/interfaces/ai-module';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
 import { warnMessage, errorMessage, successMessage } from '@/components/message';
 import { TableColumnProps } from 'antd'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index';
-import { ZhidaoAiTaskStatus } from '@/enums';
-import { ZhidaoAiTaskStatusText } from '@/constants';
+import { ZhidaoAiTaskStatus } from '@/enums/ai-module';
+import { ZhidaoAiTaskStatusText } from '@/constants/ai-module';
 
 interface QuotaNumInterface extends GetQuotaNumRes {
   consumeCount: number,

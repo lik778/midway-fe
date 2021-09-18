@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { AiShopList } from '@/interfaces/ai-content';
+import { AiShopList } from '@/interfaces/ai-module';
 import { Link } from 'umi';
 import { CateItem } from '@/interfaces/shop';
-import { getAiShopListApi } from '@/api/ai-content';
+import { getAiShopListApi } from '@/api/ai-module';
 import { checkHasShow } from '@/utils';
 import { Form, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';

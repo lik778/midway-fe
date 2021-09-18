@@ -3,9 +3,9 @@ import { Link, history } from 'umi'
 import { Progress, Spin } from 'antd'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'
 import { ExclamationCircleOutlined, InfoCircleOutlined, CloseOutlined } from '@ant-design/icons'
-import { CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData } from '@/interfaces/ai-content'
+import { CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData } from '@/interfaces/ai-module'
 import styles from './index.less'
-import { getQuestionBuildStatusApi } from '@/api/ai-content'
+import { getQuestionBuildStatusApi } from '@/api/ai-module'
 import MyModal, { ModalType } from '@/components/modal';
 import { delay } from '@/utils/index'
 interface TipModalProp {

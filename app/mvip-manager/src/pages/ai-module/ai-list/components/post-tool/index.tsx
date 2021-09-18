@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { TableColumnProps, Button, InputNumber, Table } from 'antd'
+import { Link } from 'umi'
 import { formatTime } from '@/utils';
 import { useDebounce } from '@/hooks/debounce'
 import AiModuleContext from '../../../context'
@@ -12,7 +13,7 @@ import { COLLECTION_STATUS } from '@/enums/ai-module'
 
 const PostTool: FC = (props) => {
   const { activeModuleKey, pageInfo, handleChangeContextData } = useContext(AiModuleContext)
-  const { postTool: { page, pageTotal } } = pageInfo
+  const { postTool: { page, dataTotal } } = pageInfo
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [dataList, setDataList] = useState<CollectionListItem[]>([])
@@ -29,7 +30,7 @@ const PostTool: FC = (props) => {
           ...pageInfo,
           [activeModuleKey]: {
             page,
-            pageTotal: res.data.length
+            dataTotal: res.data.length
           }
         }
       })
@@ -42,10 +43,6 @@ const PostTool: FC = (props) => {
   useEffect(() => {
     getList()
   }, [])
-
-  useEffect(() => {
-    console.log(activeModuleKey, pageInfo)
-  })
 
   const handleBlurCollectionLimit = async (e: React.FocusEvent<HTMLInputElement>, key: 'dailyPostLimit' | 'postLimit', record: CollectionListItem) => {
     const { value } = e.target
@@ -164,7 +161,7 @@ const PostTool: FC = (props) => {
         ...pageInfo,
         [activeModuleKey]: {
           page,
-          pageTotal: pageTotal
+          dataTotal: dataTotal
         }
       }
     })
@@ -173,7 +170,7 @@ const PostTool: FC = (props) => {
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
-        <Button className={`${styles['action-btn']} ${styles['create-action-btn']}`}>+AI批量创建推广</Button>
+        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/shop-create'}>+AI批量创建推广</Link>
         <Button className={styles['action-btn']}>填写基础信息</Button>
         <Button className={styles['action-btn']}>发帖通帖子列表</Button>
         <Button className={styles['action-btn']}>手动发布</Button>
@@ -182,18 +179,17 @@ const PostTool: FC = (props) => {
       <p className={styles['page-tip']}>“预估生成帖子数”是系统预估的最大可生成帖子数，会有一定误差，仅供参考</p>
       <p className={styles['page-tip']}>您已添加素材包数：<span className={styles['num']}>0</span> ；发帖通已发布当前在线帖子数：<span className={styles['num']}>7</span>;</p>
       {
-        pageTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>
+        dataTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />
           <p>暂无进行的任务，你可以去新建任务</p>
         </div>
       }
       {
-        pageTotal > 0 && <Table className={styles['table']} rowKey="id" columns={columns} loading={getDataLoading} dataSource={dataList || []} pagination={{
+        dataTotal > 0 && <Table className={styles['table']} rowKey="id" columns={columns} loading={getDataLoading} dataSource={dataList || []} pagination={{
           onChange: changePage,
           current: page,
-          total: pageTotal,
+          total: dataTotal,
           showSizeChanger: false,
-          hideOnSinglePage: (dataList && dataList.length < 10) || undefined,
           pageSize: 10,
           position: ['bottomCenter']
         }} />

@@ -6,7 +6,7 @@ import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE } from '@/models/shop';
 import { wordsItemConfig } from '@/constants';
 import './index.less';
-import { createAiJobApi } from '@/api/ai-content';
+import { createAiJobApi } from '@/api/ai-module';
 import { CreateAiContentNav } from './components/nav';
 import { randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
@@ -15,7 +15,7 @@ import MyModal, { ModalType } from '@/components/modal';
 import { ShopStatus, } from '@/interfaces/shop';
 import { DomainStatus } from '@/enums'
 import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
-import { AiShopList } from '@/interfaces/ai-content';
+import { AiShopList } from '@/interfaces/ai-module';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;

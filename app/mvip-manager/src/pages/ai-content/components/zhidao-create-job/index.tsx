@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useState, useMemo, useCallback } from 'r
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { useHistory } from 'umi'
 import styles from './index.less';
-import { getCreateQuestionTaskPageStatusApi, getCreateQuestionTaskBasicDataApi, submitCoreWordsApi, getQuotaNumApi } from '@/api/ai-content';
-import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo, GetQuotaNumRes } from '@/interfaces/ai-content'
+import { getCreateQuestionTaskPageStatusApi, getCreateQuestionTaskBasicDataApi, submitCoreWordsApi, getQuotaNumApi } from '@/api/ai-module';
+import { QuestionTaskApiParams, InterrogativeChildListItem, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo, GetQuotaNumRes } from '@/interfaces/ai-module'
 import { getCookie, mockData, randomList, translateProductText } from '@/utils';
 import { aiDefaultWord } from './data'
 import { ActiveKey } from '@/pages/ai-content/ai-zhidao/index'

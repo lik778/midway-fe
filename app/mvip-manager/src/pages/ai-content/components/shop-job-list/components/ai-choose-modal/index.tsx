@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Table, Menu, Dropdown, Select } from 'antd';
 import { errorMessage, successMessage } from '@/components/message';
 import { history } from 'umi';
-import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-content';
-import { ChooseWord } from '@/interfaces/ai-content';
+import { getAiChooseWordListApi, submitAiChooseWordListApi } from '@/api/ai-module';
+import { ChooseWord } from '@/interfaces/ai-module';
 import { DownOutlined } from '@ant-design/icons';
 import './index.less';
 

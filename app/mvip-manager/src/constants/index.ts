@@ -1,4 +1,4 @@
-import { AuditStatus, ArticleSource, AiTaskStatus, DomainStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus } from '@/enums';
+import { AuditStatus, ArticleSource, } from '@/enums';
 
 export const COOKIE_TOKEN_KEY = '__t'
 export const COOKIE_USER_KEY = '__u'
@@ -20,34 +20,6 @@ export const ArticleSourceText: any = {
   [ArticleSource.AI]: 'AI',
 }
 
-export const AiTaskStatusText: any = {
-  [AiTaskStatus.ON_TASK]: '发文中',
-  [AiTaskStatus.ON_PAUSE]: '已暂停',
-  [AiTaskStatus.DONE]: '已发完',
-  [AiTaskStatus.REJECT]: '审核驳回',
-  [AiTaskStatus.DEFAULT]: '待审核',
-  [AiTaskStatus.ON_SELECT]: '审核通过'
-}
-
-// ZhidaoAiTaskQuestionStatus
-export const ZhidaoAiTaskQuestionStatusText: any = {
-  [ZhidaoAiTaskQuestionStatus.WIATING]: '待发布',
-  [ZhidaoAiTaskQuestionStatus.DONE]: '发布成功',
-  [ZhidaoAiTaskQuestionStatus.REJECT]: '发布失败',
-}
-
-export const productText = (): any => {
-  return {
-    [DomainStatus.PREFIX]: {
-      main: '产品',
-      aiRecommond: '产品通用后缀'
-    },
-    [DomainStatus.SUFFIX]: {
-      main: '服务',
-      aiRecommond: '服务通用后缀'
-    }
-  }
-}
 
 export const wordsItemConfig: any = {
   wordA: {
@@ -83,11 +55,3 @@ export const wordsItemConfig: any = {
     rules: '10-15个'
   }
 }
-
-export const ZhidaoAiTaskStatusText: any = {
-  [ZhidaoAiTaskStatus.ACTIVE]: '发文中',
-  [ZhidaoAiTaskStatus.PAUSED]: '已暂停',
-  [ZhidaoAiTaskStatus.ABORTED]: '已停止',
-  [ZhidaoAiTaskStatus.DONE]: '已完成',
-}
-

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { TableColumnProps, Table, Spin, Tooltip, Button } from 'antd'
 import { useHistory, useParams } from "umi";
 import MainTitle from '@/components/main-title';
-import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-content'
-import { getQuestionTaskDetailApi, getQuestionListApi, editQuestionApi, submitTaskApi, cancalTaskApi } from '@/api/ai-content'
+import { EditQuestion, QuestionListItem, } from '@/interfaces/ai-module'
+import { getQuestionTaskDetailApi, getQuestionListApi, editQuestionApi, submitTaskApi, cancalTaskApi } from '@/api/ai-module'
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
 import EditableRow from './components/editable/row'
 import EditableCell from './components/editable/cell'
 import EditableExpandable from './components/expandable'
-import { ZhidaoAiTaskQuestionStatusText } from '@/constants/index'
-import { ZhidaoAiTaskQuestionStatus } from '@/enums'
+import { ZhidaoAiTaskQuestionStatusText } from '@/constants/ai-module'
+import { ZhidaoAiTaskQuestionStatus } from '@/enums/ai-module'
 import MyModal, { ModalType } from '@/components/modal';
 import { mockData } from '@/utils/index'
 

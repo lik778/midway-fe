@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import BMF from 'browser-md5-file';
 import { DomainStatus } from '@/enums';
-import { productText } from '@/constants';
+import { productText } from '@/constants/ai-module';
 
 const bmf = new BMF()
 // 计算文件的MD5值

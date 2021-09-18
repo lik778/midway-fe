@@ -1,3 +1,4 @@
+
 export enum ZhidaoAiTaskQuestionStatus {
   WIATING = 0, // 待发送
   DONE = 1, // 发送成功
@@ -11,12 +12,6 @@ export enum AiTaskStatus {
   REJECT = 3, // 审核驳回
   DEFAULT = 4, // 待审核
   ON_SELECT = 5 //待用户选词
-}
-
-export enum DomainStatus {
-  PREFIX = "PREFIX", // 前缀
-  SUFFIX = "SUFFIX", // 后缀
-  CUSTOM = "CUSTOM" // 自定义
 }
 
 export enum AiTaskAction {
