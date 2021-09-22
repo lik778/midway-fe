@@ -1,7 +1,8 @@
-import { postApiData, getApiData } from './base';
+import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CreateTitleParmas, CollectionTitleListItem } from '@/interfaces/ai-module';
+import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 
 // 获取ai列表页
@@ -130,10 +131,118 @@ export const setTaskStatusApi = (id: number) => {
 /**
  * @param page 从第0页开始 
  */
+// 获取素材包列表
 export const getCollectionList = (parmas: { page: number, size: number }) => {
   return getApiData<CollectionListItem[]>(ServicePath.POST_TOOL, 'post-tool/v1/collections', parmas)
 }
 
-export const updateCollection = (parmas: Partial<CollectionListItem> & { id: number }) => {
-  return getApiData<CollectionListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}`, parmas)
+// 创建素材包
+export const createCollection = () => {
+  return postApiData<CollectionDetail>(ServicePath.POST_TOOL, `post-tool/v1/collections`)
 }
+
+// 获取素材包
+export const getCollection = (parmas: { id: number }) => {
+  return getApiData<CollectionDetail>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}`)
+}
+
+// 更新素材包
+export const updateCollection = (parmas: Partial<UpdataCollectionParams> & { id: number }) => {
+  return putApiData<CollectionListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}`, parmas)
+}
+
+// 删除素材包
+export const deleteCollection = (parmas: { id: number }) => {
+  return deleteApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}`)
+}
+
+// 获取素材包文本
+export const getCollectionFragments = (parmas: { id: number, type: string, page: number, size: number }) => {
+  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/fragments/${parmas.type}?page=${parmas.page || 0}&size=${parmas.size || 10}`)
+}
+
+// 获取素材包图片
+export const getCollectionImages = (parmas: { id: number, page: number, size: number }) => {
+  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/images?page=${parmas.page || 0}&size=${parmas.size || 10}`)
+}
+
+// 获取素材包标题
+export const getCollectionTitles = (parmas: { id: number, page: number, size: number }) => {
+  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/titles?page=${parmas.page || 0}&size=${parmas.size || 10}`)
+}
+
+// 获取素材包视频
+export const getCollectionVideos = (parmas: { id: number, page: number, size: number }) => {
+  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/video`)
+}
+
+// 更新素材包视频
+export const updateCollectionVideos = (parmas: { id: number, videoUrls: string[] }) => {
+  return putApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/update/video`, { videoUrls: parmas.videoUrls })
+}
+
+// 更新状态(*)
+export const updateCollectionStatus = (parmas: { id: number, action: CollectionAction }) => {
+  return putApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/${parmas.action}`)
+}
+
+// 素材包新增图片
+export const addCollectionImage = (parmas: { id: number, content: string }) => {
+  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/images/one/${parmas.id}`, { content: parmas.content })
+}
+
+// 素材包批量增加图片
+export const addCollectionImages = (parmas: { id: number, content: string }) => {
+  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/images/${parmas.id}`, { content: parmas.content })
+}
+
+// 素材包删除图片
+export const deleteCollectionImage = (parmas: { id: number }) => {
+  return deleteApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/images/${parmas.id}`)
+}
+
+// 创建标题
+export const createCollectionTitles = (parmas: CreateTitleParmas) => {
+  return postApiData<CollectionTitleListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/titles/calc`, parmas)
+}
+
+// 删除标题
+export const deleteCollectionTitle = (parmas: { id: number }) => {
+  return deleteApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/titles/${parmas.id}`)
+}
+
+// 批量删除标题
+export const deleteCollectionTitles = (parmas: { ids: number[] }) => {
+  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/titles/deleteBatch`, parmas)
+}
+
+// 添加标题到素材包
+export const addCollectionTitles = (parmas: CollectionTitleListItem[]) => {
+  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/titles/calc`, parmas)
+}
+
+// 创建公司简介、公司优势等字段 
+export const createFragments = (parmas: { id: number, type: CollectionFragmentsType, content: any }) => {
+  return postApiData<CollectionDetail>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}`, { content: parmas.content })
+}
+
+// 获取公司简介、公司优势等字段
+export const getFragments = (parmas: { id: number }) => {
+  return getApiData<CollectionDetail>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`)
+}
+
+// 更新公司简介、公司优势等字段
+export const updateFragments = (parmas: { id: number, content: any }) => {
+  return putApiData<CollectionListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`, { content: parmas.content })
+}
+
+// 删除公司简介、公司优势等字段
+export const deleteFragments = (parmas: { id: number, type: CollectionFragmentsType }) => {
+  return deleteApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`)
+}
+
+// 素材包获取公司简介、公司优势等字段
+export const batchAddFragment = (parmas: { id: number, type: CollectionFragmentsType, materialIds: number[] }) => {
+  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}/downloadFromMaterial`)
+}
+

@@ -60,14 +60,14 @@ export class ZhidaoService {
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
       case 'post':
         return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
+      case 'put':
+        return this.requestService.put(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
+      case 'delete':
+        return this.requestService.delete(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
-        break;
     }
   }
-
 }

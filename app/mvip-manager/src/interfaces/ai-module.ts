@@ -1,7 +1,7 @@
 import { CateItem } from '@/interfaces/shop';
-import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus } from '@/enums/ai-module';
-import { COLLECTION_STATUS } from '@/enums/ai-module';
-
+import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus, CollectionStatus, PostToolTitleKeys, CollectionAction } from '@/enums/ai-module';
+import { PostToolTitleKeysMap } from '@/constants/ai-module'
+import { ShopMetas } from '@/interfaces/user'
 export interface AiTaskApiParams {
   contentCateId: number;
   shopId: number;
@@ -45,10 +45,10 @@ export interface ChooseWord {
 /** 优选词列表 **/
 export interface ChooseWordList {
   wordsGrouped: {
-    "AC": ChooseWord[],
-    "ABC": ChooseWord[],
-    "ACD": ChooseWord[],
-    "ABCD": ChooseWord[],
+    AC: ChooseWord[],
+    ABC: ChooseWord[],
+    ACD: ChooseWord[],
+    ABCD: ChooseWord[],
   }
 }
 
@@ -199,6 +199,7 @@ export interface GetQuotaNumRes {
 
 
 /** 发帖通开始 */
+// 素材包列表
 export interface CollectionListItem {
   adsSuccess: number
   adsTotal: number
@@ -209,10 +210,56 @@ export interface CollectionListItem {
   hasRichContent: true
   id: number
   message: string
-  metas: { [key: string]: string }
+  metas?: { [key: string]: string }
   modifiedTime: number
   name: string
   postLimit: number
-  status: COLLECTION_STATUS
+  status: CollectionStatus
 }
 
+export interface CollectionDetailthirdMeta {
+  id: string,
+  name: string
+}
+
+// 素材包详情
+export interface CollectionDetail extends CollectionListItem {
+  thirdMeta: CollectionDetailthirdMeta[]
+}
+
+export interface InitCollectionForm {
+  name: string,
+  metas: ShopMetas,
+  componyName?: string
+}
+
+// 更新素材包详情
+export interface UpdataCollectionParams {
+  action?: CollectionAction,
+  categoryId: string, // 一级类目
+  dailyPostLimit?: number,
+  metas?: { [key: string]: string },
+  name: string,
+  postLimit?: number,
+  thirdMetaIds: string
+}
+
+
+// 创建标题 
+export interface CreateTitleParmas {
+  cityNum: 0,
+  groupWords: {
+    [key in keyof PostToolTitleKeys]: string[]
+  }
+}
+
+export interface CollectionTitleListItem {
+  areaName: string,
+  cityName: string,
+  city_id: string,
+  content: string,
+  coreWord: string,
+  modal: string,
+  prefix: string,
+  suffix: string
+}

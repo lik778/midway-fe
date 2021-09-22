@@ -5,7 +5,7 @@ import MyModal, { ModalType } from '@/components/modal';
 import { BasicMaterialApiParams, BasicMaterialForm } from '@/interfaces/ai-module'
 import { submitBasicMaterialApi, getBasicMaterialApi } from '@/api/ai-module'
 import { errorMessage, successMessage } from '@/components/message';
-import { mockData } from '@/utils';
+import MainTitle from '@/components/main-title'
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -158,6 +158,7 @@ export default () => {
 
   return (
     <>
+      <MainTitle title="知道AI基础素材" showJumpIcon={true} />
       <div className={styles['ai-content-container']} >
         <Form className={styles['base-information-box']} form={form} labelCol={{ span: 4 }} >
           {
@@ -175,8 +176,6 @@ export default () => {
             <Button className={styles['submit-btn']} onClick={handleClickValidate} htmlType="submit">提交</Button>
           </FormItem>
         </Form>
-
-
       </div>
       <MyModal
         title="确认提交"

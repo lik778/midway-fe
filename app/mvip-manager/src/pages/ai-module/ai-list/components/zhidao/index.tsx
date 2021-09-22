@@ -152,12 +152,18 @@ const Zhidao: FC = () => {
     })
   }
 
+  
+  const handleClickA = (url: string) => {
+    window.open(url, '_blank')
+  }
+
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
         <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/zhidao-create'}>+AI批量创建推广</Link>
-        <Link className={styles['action-btn']} to={'/ai-content/ai-zhidao?activeKey=basic-material'}>基础素材</Link>
-        <Button className={styles['action-btn']}>手动发布</Button>
+        <Link className={styles['action-btn']} to={'/ai-module/zhidao-basic-material'}>基础素材</Link>
+        {/* TODO; */}
+        <Button className={styles['action-btn']} onClick={()=>handleClickA('https://www.baixing.com/vip/manager/service/12/enterpriseQA/release')}>手动发布</Button>
       </div>
 
       <p className={styles['page-tip']}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</p>

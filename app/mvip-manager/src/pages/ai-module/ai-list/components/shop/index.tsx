@@ -203,11 +203,15 @@ const Shop: FC = () => {
     })
   }
 
+  const handleClickA = (url: string) => {
+    window.open(url, '_blank')
+  }
+
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
         <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/shop-create'}>+AI批量创建推广</Link>
-        <Button className={styles['action-btn']}>手动发布</Button>
+        <Link className={`${styles['action-btn']}`} to={'/management/shop'}>手动发布</Link>
       </div>
       {
         dataTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>

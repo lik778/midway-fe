@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ServiceResponse } from '@/interfaces/api'
-
+// 开始的设计没有考虑更多情况
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
@@ -45,6 +45,21 @@ export const getApiData = <T>(servicePath: string, path: string, params: any = {
 export const postApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
   return postApi<T>(servicePath, {
     method: 'post', path: `/api/${path}`,
+    params,
+  }, headers)
+}
+
+export const putApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
+  return postApi<T>(servicePath, {
+    method: 'put', path: `/api/${path}`,
+    params,
+  }, headers)
+}
+
+
+export const deleteApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
+  return postApi<T>(servicePath, {
+    method: 'delete', path: `/api/${path}`,
     params,
   }, headers)
 }

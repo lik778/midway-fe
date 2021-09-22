@@ -63,6 +63,10 @@ export class ManagementService {
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
       case 'post':
         return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
+      case 'put':
+        return this.requestService.put(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
+      case 'delete':
+        return this.requestService.delete(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
     }

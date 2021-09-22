@@ -6,7 +6,9 @@ import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-module'
 import { ModuleKey } from './data'
 
 export const defaultValue: AiModuleContextProps = {
-  activeModuleKey: 'zhidao' as ModuleKey,
+  shopStatus: null,
+  loadingShop: false,
+  activeModuleKey: 'postTool' as ModuleKey,
   // 拷贝数据
   copyData: null,
   // 拷贝数据类型

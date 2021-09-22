@@ -77,9 +77,14 @@ export class PostToolService {
       case 'post':
         res = await this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
         break;
+      case 'put':
+        res = this.requestService.put(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
+        break;
+      case 'delete':
+        res = this.requestService.delete(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
+        break;
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
-        break;
     }
     return this.setDataFormat(res)
   }

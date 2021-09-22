@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Form, Button, Input, Row, Col } from 'antd';
 import { history } from 'umi'
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
-import { wordsItemConfig } from '@/constants';
+import { wordsItemConfig } from '@/constants/ai-module';
 import styles from './index.less';
 import { createAiJobApi } from '@/api/ai-module';
 import { CreateAiContentNav } from './components/nav';
@@ -12,7 +12,6 @@ import MainTitle from '@/components/main-title'
 import { aiDefaultWord } from './data'
 import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
-import { ShopStatus, } from '@/interfaces/shop';
 import { DomainStatus } from '@/enums'
 import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
 import { AiShopList } from '@/interfaces/ai-module';
@@ -20,9 +19,8 @@ import { AiShopList } from '@/interfaces/ai-module';
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const CreateShop = (props: { shopStatus: ShopStatus | null, getShopStatus: any }) => {
+const CreateShop = () => {
   // 店铺信息
-  const { shopStatus, getShopStatus } = props
   const [form] = Form.useForm();
   const [nowShopInfo, setNowShopInfo] = useState<AiShopList>()
   const defaultCounters: any = {};
@@ -116,12 +114,6 @@ const CreateShop = (props: { shopStatus: ShopStatus | null, getShopStatus: any }
     }
   }
 
-  useEffect(() => {
-    if (!shopStatus || Object.keys(shopStatus).length === 0) {
-      getShopStatus()
-    }
-  }, [shopStatus])
-
   const handleChangeShop = (shopInfo: AiShopList) => {
     setNowShopInfo(shopInfo)
   }
@@ -204,12 +196,4 @@ const CreateShop = (props: { shopStatus: ShopStatus | null, getShopStatus: any }
   </div>)
 }
 
-export default connect((state: ConnectState) => {
-  return {
-    ...shopMapStateToProps(state),
-  }
-}, (dispatch) => {
-  return {
-    ...shopMapDispatchToProps(dispatch),
-  }
-})(CreateShop)
+export default CreateShop

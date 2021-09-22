@@ -182,11 +182,9 @@ const AiZhidaoDetail = (props: any) => {
 
   return (
     <>
-      <div className={pageType === 'see' ? styles['go-back'] : ''} onClick={handleClickBack}>
-        <MainTitle title={
-          `${pageType === 'see' ? '< 返回查看任务列表' : '生成问答列表'}`
-        } showJumpIcon={true}></MainTitle>
-      </div>
+      <MainTitle title={
+        `${pageType === 'see' ? '返回查看任务列表' : '生成问答列表'}`
+      } showJumpIcon={true}></MainTitle>
       <Spin spinning={getDataLoading}>
         <div className={styles['ai-list-container']} >
           <Table components={{
