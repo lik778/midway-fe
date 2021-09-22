@@ -27,26 +27,25 @@ export const mediaShow = function() {
     },
   });
   // 缩略图
-  $('.swiper-wrapper').on('click', '.swiper-slide img', function(e) {
-    const  $ThisImg = $(this);
-    const  $Imgsrc =  $ThisImg.attr('src')
+  $('.swiper-wrapper').on('click', '.swiper-slide', function(e) {
+    const  $ThisImg = $(this)
+    const  $Imgsrc =  $ThisImg.data('src')
     $('.left-headImg img').attr('src',$Imgsrc)
     if ($ThisImg && $ThisImg.data('video')) {
-      // 显示视频和按钮，替换图片 
+      // 显示视频和按钮，替换图片
       const $Videosrc =  $ThisImg.data('video')
       $('.left-headImg video').attr('src',$Videosrc)
       $('.left-headImg .video-wrapper').css('display','block')
-      $('#cover').removeClass('video-img')
-      $('#cover').addClass('video-cover')
+      $('#cover').removeClass('video-img').addClass('video-cover')
     }else {
       //  隐藏视频和按钮，替换成图片
       $('.left-headImg .video-wrapper').css('display','none')
-      $('#cover').removeClass('video-cover')
-      $('#cover').addClass('video-img')
+      $('#cover').removeClass('video-cover').addClass('video-img')
     }
     // 设置高亮
-    $ThisImg.parent('.swiper-slide').addClass('my-slide-active');
-    $ThisImg.parent('.swiper-slide').siblings().removeClass('my-slide-active');
+ 
+    $ThisImg.addClass('my-slide-active');
+    $ThisImg.siblings().removeClass('my-slide-active');
   });
   // 默认选中第一项
   $('.swiper-slide:first').addClass('my-slide-active')
@@ -60,4 +59,30 @@ export const mediaShow = function() {
         evt.stopPropagation();
       });
     }
+
+    // 点击查看更多
+    const settingCount = $('table tr').length
+    if(settingCount>=4) {
+      // 隐藏后四个
+      let flag = true
+      $('table tr:gt(3)').each(function() {
+        if(flag) {
+          $(this).hide()
+          flag = false
+        }
+      });
+      $('.read-more').css('display','block')
+      $('.read-more').on('click',function() {
+        $('table tr:gt(3)').each(function() {
+          $(this).toggle()
+        });
+          if ($('.read-more').text() === '展开查看更多') {
+            $('.read-more').html('折叠')
+          }else {
+            $('.read-more').html('展开查看更多')
+          }
+       
+      })
+    }
+
 };

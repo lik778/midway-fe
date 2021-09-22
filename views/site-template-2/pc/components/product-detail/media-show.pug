@@ -20,29 +20,44 @@ mixin mediaShow()
 				.swiper-container
 					.swiper-wrapper
 						if headImg
-							.swiper-slide
-								img(src=headImg data-video= videoUrl?"videoUrl":'')
+							if videoUrl
+								.swiper-slide(data-src=headImg data-video=videoUrl)
+									.video-cover
+										img(src=headImg)
+							else
+								.swiper-slide(data-src=headImg)
+									img(src=headImg)
 						else
-							img(src=defaultImg, alt="logo")
+							.swiper-slide(data-src=defaultImg)
+								img(src=defaultImg, alt="logo")
 						if contentImg && contentImg.length > 0
 							each val in contentImg
-								.swiper-slide
+								.swiper-slide(data-src=val)
 									img(src=val, alt="logo")
 					.swiper-button-next
 					.swiper-button-prev
 		.media-show-middle
 			.detail-title #{name}
-			.detail-price 价格
+			.detail-price 
+				img(src="//file.baixing.net/202109/e4e5005507b6b7ce4434fd28c5f7a54e.png", alt="")
+				| 价格:
 				span(class="prices") #{price}/台
 			.detail-setting 
-				.setting-title 产品参数
+				//- .setting-title 产品参数
 				.detail-product 
-					ul
-						if params && params.length > 0
-							each value in params
-								li 
-									span(class="setting-key") #{value.key}
-									span(class="setting-value") #{value.value}
+					.detail-table
+						table(id="table-setting" cellpadding="0" cellspacing="0")
+							thead
+								tr(style="background-color: #F6F6F6")
+									td(class="setting-key") 参数名称
+									td(class="setting-value") 参数描述
+							tbody
+								if params && params.length > 0
+									each value in params
+										tr
+											td(class="setting-key") #{value.key}
+											td(class="setting-value") #{value.value}
+					p.read-more 展开查看更多
 			.detail-contact
 				include ../../../../common/pc/official-400-btn
 				+official400Btn({backgroundColor:'#ED4646',borderColor:'#ED4646',phone:phone.content,naviconw:'20px',naviconh: '20px',naviconm: '8px',navRadius: '4px',navMarginTop: '0',BtnHeight:'40px',BtnWidth:'140px'})
@@ -51,4 +66,4 @@ mixin mediaShow()
 						img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
 						span 在线咨询
 		include ../common/company-record
-		+companyRecord()
+		+companyRecord(address,compayname)
