@@ -56,6 +56,7 @@ const LocalUpload: FC = () => {
         <div>
           <Upload1 fileList={fileList} initConfig={{
             uploadType: 1,
+            unique: false,
             showImage: true,
             showVideo: false,
             uploadBtnText,

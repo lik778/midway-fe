@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CreateTitleParmas, CollectionTitleListItem } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CreateTitleParmas, CollectionTitleListItem, CollectionImageListItem } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 
@@ -157,22 +157,25 @@ export const deleteCollection = (parmas: { id: number }) => {
 }
 
 // 获取素材包文本
-export const getCollectionFragments = (parmas: { id: number, type: string, page: number, size: number }) => {
-  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/fragments/${parmas.type}?page=${parmas.page || 0}&size=${parmas.size || 10}`)
+export const getCollectionFragments = (parmas: { id: number, type: string, page?: number, size?: number }) => {
+  const query = typeof parmas.page === 'number' ? `?page=${parmas.page}&size=${parmas.size || 10}` : ''
+  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/fragments/${parmas.type}${query}`)
 }
 
 // 获取素材包图片
-export const getCollectionImages = (parmas: { id: number, page: number, size: number }) => {
-  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/images?page=${parmas.page || 0}&size=${parmas.size || 10}`)
+export const getCollectionImages = (parmas: { id: number, page?: number, size?: number }) => {
+  const query = typeof parmas.page === 'number' ? `?page=${parmas.page}&size=${parmas.size || 10}` : ''
+  return getApiData<CollectionImageListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/images${query}`)
 }
 
 // 获取素材包标题
-export const getCollectionTitles = (parmas: { id: number, page: number, size: number }) => {
-  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/titles?page=${parmas.page || 0}&size=${parmas.size || 10}`)
+export const getCollectionTitles = (parmas: { id: number, page?: number, size?: number }) => {
+  const query = typeof parmas.page === 'number' ? `?page=${parmas.page}&size=${parmas.size || 10}` : ''
+  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/titles${query}`)
 }
 
 // 获取素材包视频
-export const getCollectionVideos = (parmas: { id: number, page: number, size: number }) => {
+export const getCollectionVideos = (parmas: { id: number }) => {
   return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/video`)
 }
 
@@ -192,8 +195,8 @@ export const addCollectionImage = (parmas: { id: number, content: string }) => {
 }
 
 // 素材包批量增加图片
-export const addCollectionImages = (parmas: { id: number, content: string }) => {
-  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/images/${parmas.id}`, { content: parmas.content })
+export const addCollectionImages = (parmas: { id: number, content: { content: string }[] }) => {
+  return postApiData<CollectionImageListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/images/${parmas.id}`, parmas.content)
 }
 
 // 素材包删除图片

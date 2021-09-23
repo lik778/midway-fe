@@ -263,3 +263,10 @@ export interface CollectionTitleListItem {
   prefix: string,
   suffix: string
 }
+
+// 获取以填充的图片列表
+export interface CollectionImageListItem {
+  id: number,
+  content: string,
+  status: string
+}

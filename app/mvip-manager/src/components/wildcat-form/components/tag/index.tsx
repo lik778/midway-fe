@@ -5,6 +5,7 @@ import { TweenOneGroup } from 'rc-tween-one'
 import './index.less';
 
 interface Props {
+  disabled?: boolean;
   value: string[];
   maxLength: number;
   minLength: number;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export const TagModule = (props: Props) => {
-  const { onChange, value } = props
+  const { disabled, onChange, value } = props
 
   const [tags, setTags] = useState<string[]>([])
   const [inputVisible, setInputVisible] = useState(false)
@@ -75,7 +76,7 @@ export const TagModule = (props: Props) => {
             tags.length > 0 && tags.map((tag: string, index: number) => {
               return (
                 <span key={tag}>
-                  <Tag className="mini-tag" key={index} closable
+                  <Tag className="mini-tag" key={index} closable={!disabled}
                     onClose={e => {
                       e.preventDefault();
                       handleClose(tag)
@@ -99,7 +100,7 @@ export const TagModule = (props: Props) => {
           maxLength={props.maxLength}
         />
       )}
-      {!inputVisible && tags.length < props.maxNum && (
+      {!disabled && !inputVisible && tags.length < props.maxNum && (
         <Tag onClick={showInput} className="site-tag-plus">
           <PlusOutlined /> 新增
         </Tag>

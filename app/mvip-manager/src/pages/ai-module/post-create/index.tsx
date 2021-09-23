@@ -1,20 +1,29 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Row, Col, Spin } from 'antd';
+import { Button, Form, Spin, Input } from 'antd';
 import { useHistory } from 'umi'
 import MainTitle from '@/components/main-title';
 import { cloneDeepWith } from 'lodash';
 import { postForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-
+import { connect } from 'dva';
+import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
+import { ConnectState } from '@/models/connect';
+import { USER_NAMESPACE } from '@/models/user';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less';
 import { objToTargetObj } from '@/utils';
 import { createCollection, getCollection, updateCollection } from '@/api/ai-module'
 import { CollectionDetail, UpdataCollectionParams, InitCollectionForm } from '@/interfaces/ai-module'
-import { MetasItem } from '@/interfaces/user';
+import { MetasItem, UserEnterpriseInfo } from '@/interfaces/user';
+import SelectImage from './components/select-image'
+interface Props {
+  companyInfo: UserEnterpriseInfo | null,
+  loadingUser: boolean
+}
 
-const CreatePost: FC = (props: any) => {
+const CreatePost: FC<Props> = (props) => {
+  const { companyInfo, loadingUser } = props
   const history = useHistory<{ query: { id?: string } }>()
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
@@ -25,13 +34,8 @@ const CreatePost: FC = (props: any) => {
   const [enterpriseInfo, setEnterpriseInfo] = useState<InitCollectionForm | null>(null)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(postForm));
   const [collectionId, setCollectionId] = useState<number>(Number(id))
-  const [companyInfo, setCompanyInfo] = useState<any>()
-
-
-
 
   const updateConfigData = () => {
-    console.log(123456)
     if (!collection) {
       setGetDataLoading(true)
       return
@@ -65,11 +69,7 @@ const CreatePost: FC = (props: any) => {
         key: '服务',
         value: 'fuwu',
         label: '服务'
-      }, {
-        key: collection.categoryId,
-        value: collection.categoryId,
-        label: collection.categoryId,
-      }, collection.thirdMeta.map(item => item.id)],
+      }, undefined, collection.thirdMeta.map(item => item.id)],
     })
     updateConfigData()
   }
@@ -83,13 +83,11 @@ const CreatePost: FC = (props: any) => {
   const getDetail = async () => {
     setGetDataLoading(true)
     const res = await getCollection({ id })
-    console.log(res)
     setCollection(res.data)
     setGetDataLoading(false)
   }
 
   useEffect(() => {
-    console.log(collectionId)
     if (collectionId > 0) {
       getDetail()
     }
@@ -98,7 +96,6 @@ const CreatePost: FC = (props: any) => {
   const createCollectionFc = async () => {
     setUpDataLoading(true)
     const res = await createCollection()
-    console.log(res)
     history.replace(`${history.location.pathname}?id=${res.data.id}`)
     setCollectionId(res.data.id)
     setUpDataLoading(false)
@@ -110,8 +107,6 @@ const CreatePost: FC = (props: any) => {
       createCollectionFc()
     }
   }, [])
-
-
 
   const sumbit = async (values: UpdataCollectionParams) => {
     setUpDataLoading(true)
@@ -127,23 +122,34 @@ const CreatePost: FC = (props: any) => {
   }
 
   const formChange = (...arg: any) => {
-    //console.log(arg)
+    console.log(arg)
   }
 
   return (
     <>
-      <MainTitle title="问答素材" />
-      <div className="container">
-        <Spin spinning={getDataLoading}>
-          <WildcatForm
-            editDataSource={enterpriseInfo}
-            submit={sumbit}
-            config={config}
-            formChange={formChange}
-          />
+      <MainTitle title="帖子AI任务填写" showJumpIcon />
+      <div className={`${styles['post-create-container']} container`}>
+        <Spin spinning={getDataLoading || loadingUser}>
+          <div className={styles['form-container']}>
+            <WildcatForm
+              editDataSource={enterpriseInfo}
+              submit={sumbit}
+              config={config}
+              formChange={formChange}
+            />
+            <Form.Item label={'公司名称'} labelCol={{ span: 2 }}>
+              <Input style={{ width: 260 }} disabled value={companyInfo?.companyName || ''} size={'large'}></Input>
+            </Form.Item>
+            <SelectImage collectionId={collectionId}></SelectImage>
+          </div>
         </Spin>
       </div>
     </>)
 }
 
-export default CreatePost
+
+export default connect((state: ConnectState) => {
+  const { companyInfo } = state[USER_NAMESPACE]
+  const { loading } = state
+  return { companyInfo, loadingUser: loading.models.user }
+})(CreatePost)

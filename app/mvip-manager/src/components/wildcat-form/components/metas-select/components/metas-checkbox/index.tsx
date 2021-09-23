@@ -11,6 +11,7 @@ import { ShopMetas } from '@/interfaces/user'
 const CheckboxGroup = Checkbox.Group
 
 interface Props {
+  disabled?: boolean,
   item: FormItem,
   initialValues: ShopMetas | undefined,
   cascaderValue: (MetasItem | undefined)[],
@@ -22,7 +23,7 @@ interface Props {
 
 const MetasCheckbox: FC<Props> = (props) => {
   const componentUnmounted = useRef<Boolean>(false)
-  const { item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange, setThirdDataLength } = props
+  const { disabled, item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange, setThirdDataLength } = props
   const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
   // 缓存一下请求数据
   const [thirdMates, setThirdMates] = useState<{
@@ -100,7 +101,7 @@ const MetasCheckbox: FC<Props> = (props) => {
     handleChangeCheckboxValue(checkedValue as string[])
   }
 
-  return <CheckboxGroup value={checkboxValue} onChange={handleChangeValue} options={showData} />
+  return <CheckboxGroup disabled={disabled} value={checkboxValue} onChange={handleChangeValue} options={showData} />
 }
 
 export default MetasCheckbox

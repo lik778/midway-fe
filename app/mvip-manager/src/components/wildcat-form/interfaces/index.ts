@@ -64,6 +64,7 @@ export interface FormItem {
 
 export interface ImagesItem {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
+  unique?: boolean,// 是否禁止选择重复图片
   text: string;
   name: string;
   shopImage?: boolean,
@@ -81,6 +82,7 @@ export interface ImagesItem {
 
 export interface WildcatFormProps {
   config: FormConfig;
+  disabled?: boolean;
   onInit?(form: any): void;
   //父传的表单数据
   editDataSource?: any;
