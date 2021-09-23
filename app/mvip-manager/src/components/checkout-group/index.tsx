@@ -7,11 +7,10 @@ interface Iprop {
 const CheckoutGroup: FC<Iprop> = (): ReactElement => {
   return (
     <>
-      <Form.Item name="radio-group" label="Radio.Group">
+      <Form.Item name="radio-group" label="您的身份：" rules={[{ required: true, message: '请选择你的身份' }]}>
         <Radio.Group>
-          <Radio value="a">item 1</Radio>
-          <Radio value="b">item 2</Radio>
-          <Radio value="c">item 3</Radio>
+          <Radio value="SALES">百姓销售</Radio>
+          <Radio value="CLIENT">商家</Radio>
         </Radio.Group>
       </Form.Item>
     </>
