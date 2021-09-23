@@ -1,4 +1,4 @@
-mixin companyRecord()
+mixin companyRecord(contanct,contanctname,unio400)
   .media-show-right
     .company-record
       img(src="//file.baixing.net/202109/d39cb98c1e78604a91b7ee7484d4e7d1.png", alt="")
@@ -19,8 +19,8 @@ mixin companyRecord()
           li 
             img(src="//file.baixing.net/202109/d2779c5e58588f3dee60f6a5d6fb36fc.png", alt="")
       .accord-wd
-      .contact-name 联系卖家：#{compayname}
+      .contact-name 联系人：#{contanctname.name}
       if isSem !== "1"
-        .contanct-address 所在地区：#{address}
+        .contanct-address 联系电话：#{contanct.content}
       if kf53StyleUrl && kf53StyleUrl.length > 0
         a(class="contant-btn" href=kf53StyleUrl) 给我留言

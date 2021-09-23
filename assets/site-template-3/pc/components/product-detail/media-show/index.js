@@ -64,24 +64,29 @@ export const mediaShow = function() {
     const settingCount = $('table tr').length
     if(settingCount>=4) {
       // 隐藏后四个
-      let flag = true
-      $('table tr:gt(3)').each(function() {
-        if(flag) {
+      $('.read-more').css('display','block')
+      $('table tr').each(function(index) {
+        if(index>3) {
           $(this).hide()
-          flag = false
         }
       });
-      $('.read-more').css('display','block')
+      // $('.read-more').css('display','block')
       $('.read-more').on('click',function() {
-        $('table tr:gt(3)').each(function() {
-          $(this).toggle()
-        });
-          if ($('.read-more').text() === '展开查看更多') {
-            $('.read-more').html('折叠')
-          }else {
-            $('.read-more').html('展开查看更多')
-          }
-       
+        if ($('.read-more').text() === '展开查看更多') {
+          $('table tr').each(function(index) {
+            if(index > 3) {
+              $(this).show()
+            }
+          });
+          $('.read-more').html('折叠')
+        }else if($('.read-more').text() === '折叠') {
+          $('table tr').each(function(index) {
+            if(index>3) {
+              $(this).hide()
+            }
+          });
+          $('.read-more').html('展开查看更多')
+        }
       })
     }
 

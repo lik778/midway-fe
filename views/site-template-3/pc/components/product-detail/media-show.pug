@@ -1,6 +1,6 @@
 mixin mediaShow()
 	- const { headImg, name, price, contentImg, videoUrl,params } = renderData.productInfo;
-	- const { address,name: compayname } = renderData.basic.company;
+	- const { contactName,phone,union400 } = renderData.basic.contact;
 	- const defaultImg = 'http://img6.baixing.net/e692f8b6c28e085c29d30803a43ef752.png_sv1';
 	.media-show-container
 		.media-show-left
@@ -66,4 +66,4 @@ mixin mediaShow()
 						img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
 						span 在线咨询
 		include ../common/company-record
-		+companyRecord(address,compayname)
+		+companyRecord(phone,contactName,union400)

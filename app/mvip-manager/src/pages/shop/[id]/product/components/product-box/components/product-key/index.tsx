@@ -12,13 +12,24 @@ const FormList = Form.List
 const FormItem = Form.Item
 
 const ProductKey: FC<Props> = (props) => {
+  const [showElem, setShowElem] = useState(false)
+  const mouseover = () => {
+    setShowElem(true)
+  }
+  const mouseout = () => {
+    setShowElem(false)
+  }
   return <>
     <Form.Item
       className={styles['product-key-container']}
-      label={'添加参数'}
+      label={'产品/服务参数:'}
       required={true}
       key={'params'}
     >
+      <p className={styles['setting-tip']}
+      >输入参数名和参数值，例如"品牌"，"奥迪"，<span className={styles['tip-img']} onMouseOver={mouseover} onMouseOut={mouseout}>参数示意</span>
+        <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/8303ff6a2e65a18d609511642db07c03.png" alt="logo" />
+      </p>
       <FormList name="params">
         {(fields, { add, remove }, { errors }) => (
           <>
@@ -28,10 +39,10 @@ const ProductKey: FC<Props> = (props) => {
                 key={key}
               >
                 <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, message: '请输入标题' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
-                  <Input maxLength={10} className={styles['formItem']} placeholder="请输入内容" size="large" />
+                  <Input maxLength={10} className={styles['formItem']} placeholder={index === 0 ? '品牌' : (index === 1 ? '型号' : '')} size="large" />
                 </FormItem>
                 <FormItem className={styles['form-item']} name={[name, 'value']} rules={[{ required: true, message: '请输入内容' }, { pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }]}>
-                  <Input maxLength={50} className={styles['formItem']} placeholder="请输入内容" size="large" />
+                  <Input maxLength={50} className={styles['formItem']} size="large" />
                 </FormItem>
                 {
                   fields.length > 2 && <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
@@ -39,7 +50,7 @@ const ProductKey: FC<Props> = (props) => {
               </div>
             ))}
             {
-              fields && fields.length <= 7 && <span className={styles['add']} onClick={() => add()} ><PlusOutlined color={'#333333'} />添加</span>
+              fields && fields.length <= 7 && <span className={styles['add']} onClick={() => add()} ><PlusOutlined color={'#333333'} />添加参数</span>
             }
           </>
         )}
