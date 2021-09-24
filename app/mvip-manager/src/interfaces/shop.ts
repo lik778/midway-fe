@@ -625,4 +625,11 @@ export interface InitModuleABoutABoutInfo {
 
 export interface ModuleABoutABoutInfoParam extends ModuleRequestParam, ModuleABoutABoutInfo { }
 
+
+export interface AdviceRecord {
+  content: string,
+  contact: string,
+  identity: string,
+}
+
 /** 店铺模块管理相关 结束 */

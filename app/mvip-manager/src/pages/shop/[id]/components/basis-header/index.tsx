@@ -3,12 +3,14 @@ import ShopBasisTab from '../shop-basis-tab';
 import MainTitle from '@/components/main-title';
 import { ShopBasisType } from '@/enums';
 import { Link, useParams } from 'umi';
-import { ShopInfo } from '@/interfaces/shop';
+import { ShopInfo, AdviceRecord, RouteParams } from '@/interfaces/shop';
 import './index.less';
 import { connect, Dispatch } from 'dva';
 import { GET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
+import { setAdviceRecordApi } from '@/api/shop';
 import { relative } from 'path/posix';
 import AdivceRecord from '../advice-record/index'
+import { errorMessage, successMessage } from '@/components/message';
 interface Props {
   type: ShopBasisType;
   curShopInfo?: ShopInfo | null;
@@ -18,7 +20,8 @@ interface Props {
 const BasicHeader = (props: Props) => {
   const { type, curShopInfo } = props
   const [isModalVisible, setIsModalVisible] = useState(false)
-
+  const [formLoading, setFormLoading] = useState<boolean>(false)
+  const params: RouteParams = useParams();
 
 
   const { id } = useParams<{ id: string }>()
@@ -28,15 +31,19 @@ const BasicHeader = (props: Props) => {
   const showModal = () => {
     setIsModalVisible(true)
   }
-  const handleOk = () => {
+  const onCancel = () => {
     setIsModalVisible(false)
   }
-  const handleCancel = () => {
+  const sumbit = async (values: AdviceRecord) => {
+    setFormLoading(true)
+    const res = await setAdviceRecordApi(Number(params.id), values)
+    setFormLoading(false)
+    if (res?.success) {
+      successMessage('提交成功')
+    } else {
+      errorMessage('提交失败')
+    }
     setIsModalVisible(false)
-  }
-
-  const sumbit = (values: any) => {
-    console.log(values)
   }
   return (
     <>
@@ -52,7 +59,7 @@ const BasicHeader = (props: Props) => {
 
         <ShopBasisTab type={type} />
       </div>
-      <AdivceRecord isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} sumbit={sumbit} />
+      <AdivceRecord isModalVisible={isModalVisible} sumbit={sumbit} onCancel={onCancel} loading={formLoading} />
     </>
   );
 }

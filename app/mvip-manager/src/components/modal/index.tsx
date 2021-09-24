@@ -21,10 +21,11 @@ interface Props {
   confirmLoading?: boolean;
   onOk(): void;
   onCancel(): void;
+  width?: number
 }
 export default (props: Props) => {
   const { visible, onOk, onCancel, title, content, type, footer, closable, maskClosable,
-    confirmLoading } = props
+    confirmLoading, width } = props
 
   const createTitle = (type: ModalType = ModalType.superWarning) => {
     if (type === ModalType.info) {
@@ -44,15 +45,18 @@ export default (props: Props) => {
   }
 
   return <Modal
-            className="my-modal-box"
-            title={createTitle(type)}
-            closable={ closable ===false? false: true }
-            maskClosable={ maskClosable ===false? false: true }
-            footer={footer}
-            onCancel={onCancel}
-            onOk={onOk}
-            confirmLoading={confirmLoading}
-            visible={visible}>
+    className="my-modal-box"
+    title={createTitle(type)}
+    closable={closable === false ? false : true}
+    maskClosable={maskClosable === false ? false : true}
+    footer={footer}
+    onCancel={onCancel}
+    onOk={onOk}
+    confirmLoading={confirmLoading}
+    visible={visible}
+    width={width}
+  >
+
     <div>{content}</div>
   </Modal>
 }

@@ -21,7 +21,7 @@ import {
   ReAuditMediaAssetsParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion,
   ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo,
   ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam,
-  ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam
+  ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam,AdviceRecord
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -339,5 +339,10 @@ export const setModuleHomeABoutInfoApi = (shopId: number, params: ModuleHomeABou
 
 // 修改关于我们模块 关于我们页面
 export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutInfoParam) => postApiData<ModuleABoutABoutInfo>(ServicePath.SHOP, 'midway/backend/module/update/about', params, setShopHeader(shopId))
+
+// 店铺反馈入口
+export const setAdviceRecordApi = (shopId: number, params: AdviceRecord) => {
+  return postApiData<any>(ServicePath.SHOP,'midway/backend/feedback/create',params, setShopHeader(shopId))
+}
 
 /** 模块管理 结束 */

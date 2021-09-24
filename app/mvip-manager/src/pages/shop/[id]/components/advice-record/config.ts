@@ -8,8 +8,8 @@ export const RecordForm: FormConfig = {
   name: 'tdkForm',
   labelAlign:"left",
   children: [
-    { label: '问题描述和建议', name: 'description', type: FormType.Textarea, required: true, minLength: 2, maxLength: 50, patternList: [{ pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }], placeholder: '请输入描述，1～50个字',labelCol:{ style: {width: '100%'} } },
-    { label: '联系电话', name: 'contactMobile', type: FormType.Input, required: false, patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]},
+    { label: '问题描述和建议', name: 'content', type: FormType.Textarea, required: true, minLength: 2, maxLength: 1000, patternList: [{ pattern: /^[\s\S]{2,1000}$/, message: '2～1000个字' }], placeholder: '请输入描述，2～1000个字',labelCol:{ style: {width: '100%'} } },
+    { label: '联系电话', name: 'contact', type: FormType.Input, required: false, patternList: [{ pattern: phoneFliterRules, message: '请输入正确的联系方式' }]},
   ],
   buttonConfig: { text: '提交', size: 'large', className: styles['record-btn'] }
 }

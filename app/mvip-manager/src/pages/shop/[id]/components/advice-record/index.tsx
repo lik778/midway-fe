@@ -1,23 +1,26 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Modal, Form } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { cloneDeepWith } from 'lodash';
 import CheckoutGroup from '@/components/checkout-group'
 import { RecordForm } from './config'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
+import MyModal from '@/components/modal/index'
 import styles from './index.less'
 interface Iprop {
   isModalVisible: boolean,
-  handleOk: () => void,
-  handleCancel: () => void,
+  loading: boolean,
+  onCancel: () => void,
   sumbit: (value: any) => void
 }
 
-const AdivceRecord: FC<Iprop> = ({ isModalVisible, handleOk, handleCancel, sumbit }) => {
+const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) => {
   const [editData, setEditData] = useState<any>(null)
-  const [formLoading, setFormLoading] = useState<boolean>(false)
   // const [config, setConfig] = useState<FormConfig>(() => {
   const configs = cloneDeepWith(RecordForm)
+  useEffect(() => {
+    console.log(editData)
+  }, [editData])
   configs.customerFormItemList = [{
     index: 2,
     key: 'checkbox',
@@ -35,32 +38,35 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, handleOk, handleCancel, sumbi
   const [config, setConfig] = useState<FormConfig>(configs)
   const creatTitle = () => {
     return (
-      <p className={styles['diamond-title']}>您好！以下是您对&nbsp;<span className={styles['diamond-company']}>钻石店铺&nbsp;</span>的意见反馈</p >
+      <span className={styles['diamond-title']}>您好！以下是您对&nbsp;<span className={styles['diamond-company']}>钻石店铺&nbsp;</span>的意见反馈</span>
     )
   }
+  const createContent = () => {
+    return (
+      <div className={styles["diamond-form"]}>
+        <Form.Item>
+          <WildcatForm
+            editDataSource={editData}
+            config={config}
+            submit={sumbit}
+            loading={loading}
+          />
+        </Form.Item>
+      </div>
+    )
+  }
+  const onOk = () => { }
   return (
     <>
-      <Modal
+      <MyModal
         title={creatTitle()}
+        content={createContent()}
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={1000}
-        centered
+        onCancel={onCancel}
         footer={null}
-        className={styles['modal']}
-      >
-        <div className={styles["diamond-form"]}>
-          <Form.Item>
-            <WildcatForm
-              editDataSource={editData}
-              config={config}
-              submit={sumbit}
-              loading={formLoading}
-            />
-          </Form.Item>
-        </div>
-      </Modal>
+        onOk={onOk}
+        width={1000}
+      />
     </>
   )
 }
