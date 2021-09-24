@@ -22,7 +22,7 @@ const ProductKey: FC<Props> = (props) => {
   return <>
     <Form.Item
       className={styles['product-key-container']}
-      label={'产品/服务参数:'}
+      label={'参数:'}
       required={true}
       key={'params'}
     >

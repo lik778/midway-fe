@@ -8,7 +8,7 @@ export const productForm = (type: string): FormConfig => ({
   name: 'productForm',
   width: 650,
   useLabelCol: {
-    span: 4
+    span: 3
   },
   children: [
     { formItemWidth: 260, label: `${type}分组`, name: 'contentCateId', type: FormType.GroupSelect, options: [], required: true, placeholder: '暂无分组', slotDom: { text: '新建分组' } },
