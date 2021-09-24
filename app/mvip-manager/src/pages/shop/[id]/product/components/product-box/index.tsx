@@ -17,6 +17,7 @@ import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
 interface Props {
+  typeTxt: string
   cateList: CateItem[];
   editData: ProductListItem | { params: { key: string, value: string }[], [key: string]: any }
   visible: boolean;
@@ -25,12 +26,12 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const { onClose, visible, editData, cateList, updateCateList } = props;
+  const { typeTxt, onClose, visible, editData, cateList, updateCateList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
-  const [formConfig, setformConfig] = useState<FormConfig>(productForm)
+  const [formConfig, setformConfig] = useState<FormConfig>(productForm(typeTxt))
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
     let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
@@ -46,8 +47,9 @@ export default (props: Props) => {
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
   const initForm = () => {
+    const newFormConfig = productForm(typeTxt)
     // 初始化表单----> value
-    const newArticleFormChildren = productForm.children.map(item => {
+    const newArticleFormChildren = newFormConfig.children.map(item => {
       if (item.name === 'contentCateId') {
         return {
           ...item,
@@ -57,20 +59,20 @@ export default (props: Props) => {
       }
       return item
     })
-    productForm.customerFormItemList = [{
+    newFormConfig.customerFormItemList = [{
       key: 'params',
       index: 5,
       node: <ProductKey key={'params'}></ProductKey>
     }]
     setformConfig({
-      ...productForm,
+      ...newFormConfig,
       children: newArticleFormChildren
     })
   }
 
   useEffect(() => {
     initForm()
-  }, [cateList])
+  }, [cateList, typeTxt])
 
   const sumbit = async (values: any) => {
     values.name = values.name.trim();
@@ -106,7 +108,7 @@ export default (props: Props) => {
 
   return (
     <Drawer
-      title="新建服务"
+      title={`新建${typeTxt}`}
       placement={placement}
       closable={true}
       onClose={() => setQuitModalVisible(true)}

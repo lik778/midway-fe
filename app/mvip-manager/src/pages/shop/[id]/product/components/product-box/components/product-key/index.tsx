@@ -28,9 +28,9 @@ const ProductKey: FC<Props> = (props) => {
     >
       <p className={styles['setting-tip']}
       >输入参数名和参数值，例如"品牌"，"奥迪"，<span className={styles['tip-img']} onMouseOver={mouseover} onMouseOut={mouseout}>参数示意</span>
-        <div className={styles['imgs-tips']}>
+        <span className={styles['imgs-tips']}>
           <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/8303ff6a2e65a18d609511642db07c03.png" alt="logo" />
-        </div>
+        </span>
       </p>
       <FormList name="params">
         {(fields, { add, remove }, { errors }) => (
@@ -40,10 +40,10 @@ const ProductKey: FC<Props> = (props) => {
                 className={styles['product-key-line']}
                 key={key}
               >
-                <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, message: '请输入标题' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
+                <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
                   <Input maxLength={10} className={styles['formItem']} placeholder={index === 0 ? '品牌' : (index === 1 ? '型号' : '')} size="large" />
                 </FormItem>
-                <FormItem className={styles['form-item']} name={[name, 'value']} rules={[{ required: true, message: '请输入内容' }, { pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }]}>
+                <FormItem className={styles['form-item']} name={[name, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }]}>
                   <Input maxLength={50} className={styles['formItem']} size="large" />
                 </FormItem>
                 {

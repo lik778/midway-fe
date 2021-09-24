@@ -86,6 +86,7 @@ const ShopProductPage = (props: any) => {
           visible={moduleGroupVisible}
           save={() => removeOverflow(() => setModuleGroupVisible(false))} />
         <ProductBox
+          typeTxt={typeTxt}
           cateList={cateList}
           editData={editProductData}
           updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}

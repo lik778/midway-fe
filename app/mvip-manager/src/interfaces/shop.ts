@@ -39,6 +39,7 @@ export interface ProductListItem {
   tags: string[];
   urlSuffix: string;
   createdTime: number;
+  videoUrl: string | null;
   params: ProductListItemInfoKey[];
 }
 
@@ -468,20 +469,20 @@ type TabScopeItemBase = {
 
 export type TabScopeItem =
   | (TabScopeItemBase & {
-      type: 'album';
-      label: '相册' | '分组';
-      countLabel: '个';
-    })
+    type: 'album';
+    label: '相册' | '分组';
+    countLabel: '个';
+  })
   | (TabScopeItemBase & {
-      type: 'image';
-      label: '图片' | '视频';
-      countLabel: '张';
-    })
+    type: 'image';
+    label: '图片' | '视频';
+    countLabel: '张';
+  })
   | (TabScopeItemBase & {
-      type: 'audit';
-      label: '资源';
-      countLabel: '项';
-    });
+    type: 'audit';
+    label: '资源';
+    countLabel: '项';
+  });
 export type TabScope = TabScopeItem[];
 
 /* 店铺图集相关定义 End */
@@ -552,7 +553,7 @@ export interface ModuleProductSwiper {
 
 export interface ModuleProductSwiperParam
   extends ModuleRequestParam,
-    ModuleProductSwiper {
+  ModuleProductSwiper {
   productIdList: number[];
 }
 
@@ -600,7 +601,7 @@ export interface InitModuleHomeABoutInfo {
 
 export interface ModuleHomeABoutInfoParam
   extends ModuleRequestParam,
-    ModuleHomeABoutInfo {}
+  ModuleHomeABoutInfo { }
 
 export interface ModuleABoutABoutInfo {
   backImg: string;
@@ -612,6 +613,6 @@ export interface InitModuleABoutABoutInfo {
 
 export interface ModuleABoutABoutInfoParam
   extends ModuleRequestParam,
-    ModuleABoutABoutInfo {}
+  ModuleABoutABoutInfo { }
 
 /** 店铺模块管理相关 结束 */
