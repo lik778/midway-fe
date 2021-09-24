@@ -27,9 +27,6 @@ mixin mediaShow()
 							else
 								.swiper-slide(data-src=headImg)
 									img(src=headImg)
-						else
-							.swiper-slide(data-src=defaultImg)
-								img(src=defaultImg, alt="logo")
 						if contentImg && contentImg.length > 0
 							each val in contentImg
 								.swiper-slide(data-src=val)
