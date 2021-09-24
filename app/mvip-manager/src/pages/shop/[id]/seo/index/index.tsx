@@ -69,7 +69,6 @@ export default (props: any) => {
                 config={formConfig}
                 submit={sumbit}
                 loading={formLoading} />
-
             </Form.Item>
           </div>
         </div>

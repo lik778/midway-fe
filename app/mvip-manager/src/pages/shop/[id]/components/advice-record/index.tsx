@@ -18,27 +18,27 @@ export enum ModalType {
 }
 const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) => {
   const [editData, setEditData] = useState<any>(null)
-  // const [config, setConfig] = useState<FormConfig>(() => {
-  const configs = cloneDeepWith(RecordForm)
+  const [config, setConfig] = useState<FormConfig>(RecordForm)
   useEffect(() => {
-    console.log(editData)
-  }, [editData])
+    const addConfig = () => {
+      const configs = cloneDeepWith(RecordForm)
+      configs.customerFormItemList = [{
+        index: 2,
+        key: 'radiaoGrounp',
+        node: <CheckoutGroup />
+      },
+      {
+        index: 1,
+        key: 'advice',
+        node: <p className={styles['record-icon']} key="advice">请不要输入敏感信息，例如：账号密码</p>
+      }
+      ]
+      return configs
+    }
+    setConfig(addConfig())
+  }, [])
 
-  configs.customerFormItemList = [{
-    index: 2,
-    key: 'checkbox',
-    node: <CheckoutGroup />
-  },
-  {
-    index: 1,
-    key: 'advice',
-    node: <p className={styles['record-icon']}>请不要输入敏感信息，例如：账号密码</p>
-  }
-  ]
 
-  //   return config
-  // })
-  const [config, setConfig] = useState<FormConfig>(configs)
   const creatTitle = () => {
     return (
       <span className={styles['diamond-title']}>您好！以下是您对&nbsp;<span className={styles['diamond-company']}>钻石店铺&nbsp;</span>的意见反馈</span>
@@ -47,7 +47,7 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
   const createContent = () => {
     return (
       <div className={styles["diamond-form"]}>
-        <Form.Item>
+        <Form.Item key="diamondform">
           <WildcatForm
             editDataSource={editData}
             config={config}
