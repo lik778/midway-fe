@@ -13,7 +13,9 @@ interface Iprop {
   onCancel: () => void,
   sumbit: (value: any) => void
 }
-
+export enum ModalType {
+  info = "info"
+}
 const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) => {
   const [editData, setEditData] = useState<any>(null)
   // const [config, setConfig] = useState<FormConfig>(() => {
@@ -21,6 +23,7 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
   useEffect(() => {
     console.log(editData)
   }, [editData])
+
   configs.customerFormItemList = [{
     index: 2,
     key: 'checkbox',
@@ -66,6 +69,8 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
         footer={null}
         onOk={onOk}
         width={1000}
+        type={ModalType.info}
+        maskClosable={false}
       />
     </>
   )
