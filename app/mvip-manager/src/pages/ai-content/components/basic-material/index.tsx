@@ -6,6 +6,8 @@ import { BasicMaterialApiParams, BasicMaterialForm } from '@/interfaces/ai-conte
 import { submitBasicMaterialApi, getBasicMaterialApi } from '@/api/ai-content'
 import { errorMessage, successMessage } from '@/components/message';
 import { mockData } from '@/utils';
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -108,6 +110,15 @@ export default () => {
       })
       form.setFieldsValue(formData)
     }
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        tm: +new Date(),
+        action: 'entry-page',
+        action_page: 'zhidao-basic-materia',
+      }
+    })
   }
 
   useEffect(() => {
@@ -148,6 +159,15 @@ export default () => {
     const res = await submitBasicMaterialApi(requestData)
     if (res.success) {
       successMessage(res.message || '添加成功')
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          tm: +new Date(),
+          action: 'time-end',
+          action_page: 'zhidao-basic-materia',
+        }
+      })
     } else {
       errorMessage(res.message || '添加失败')
     }
