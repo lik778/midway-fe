@@ -37,7 +37,9 @@ const SelectImage: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    getImage()
+    if (collectionId) {
+      getImage()
+    }
   }, [])
 
   // 需要删除的Id
@@ -92,7 +94,6 @@ const SelectImage: FC<Props> = (props) => {
       addDataList[index].status = item.status
       addDataList[index].content = item.content
     })
-    console.log(nowDataList)
     setDataList(nowDataList)
     setUpDataLoading(false)
   }

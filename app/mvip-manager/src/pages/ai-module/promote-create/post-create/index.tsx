@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Button, Form, Spin, Input } from 'antd';
+import React, { FC, useEffect, useRef, useState, useContext } from 'react';
+import { Button, Form, Spin, Input, FormInstance } from 'antd';
 import { useHistory } from 'umi'
 import MainTitle from '@/components/main-title';
 import { cloneDeepWith } from 'lodash';
@@ -7,44 +7,78 @@ import { postForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { connect } from 'dva';
-import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import { ConnectState } from '@/models/connect';
 import { USER_NAMESPACE } from '@/models/user';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less';
-import { objToTargetObj } from '@/utils';
 import { createCollection, getCollection, updateCollection } from '@/api/ai-module'
 import { CollectionDetail, UpdataCollectionParams, InitCollectionForm } from '@/interfaces/ai-module'
 import { MetasItem, UserEnterpriseInfo } from '@/interfaces/user';
 import SelectImage from './components/select-image'
+import { CollectionStatus } from '@/enums/ai-module';
+import AiModuleContext from '../context'
+
+
 interface Props {
   companyInfo: UserEnterpriseInfo | null,
   loadingUser: boolean
 }
 
-const CreatePost: FC<Props> = (props) => {
+const CreatePost = (props: Props) => {
   const { companyInfo, loadingUser } = props
-  const history = useHistory<{ query: { id?: string } }>()
+  const history = useHistory()
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
+  const { postToolData, handleChangeContextData } = useContext(AiModuleContext)
   const [getDataLoading, setGetDataLoading] = React.useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   const [collection, setCollection] = useState<CollectionDetail | null>()
-  const [enterpriseInfo, setEnterpriseInfo] = useState<InitCollectionForm | null>(null)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(postForm));
   const [collectionId, setCollectionId] = useState<number>(Number(id))
+  const [formData, setFormData] = useState<InitCollectionForm | null>(null)
+  const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
 
-  const updateConfigData = () => {
-    if (!collection) {
-      setGetDataLoading(true)
-      return
+  // 初始化表单的数据
+  const initComponent = async (collection: CollectionDetail) => {
+    if (!collection) return
+    const draftCollectionData = postToolData.formData[`draftCollection_${id}`]
+    if (collection.status === CollectionStatus.COLLECTION_ADVANCE_STATUS && draftCollectionData) {
+      setFormData(draftCollectionData)
+    } else {
+      setFormData({
+        name: collection.name,
+        metas: [{
+          key: '服务',
+          value: 'fuwu',
+          label: '服务'
+        }, undefined, collection.thirdMeta.map(item => item.id)],
+      })
     }
-    const { categoryId, categoryName } = collection
+  }
+
+  // 获取当前任务详情
+  const getDetail = async () => {
+    setGetDataLoading(true)
+    const res = await getCollection({ id })
+    const collection = res.data
+    setCollection(res.data)
+    setGetDataLoading(false)
+    initComponent(collection)
+  }
+
+  useEffect(() => {
+    if (collectionId) {
+      getDetail()
+    }
+  }, [collectionId])
+
+  // 更新表单的配置
+  const updateConfigData = () => {
     const newChildren = config.children.map(item => {
+      //  这里需要请求来一级类目
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {
-        console.log(item)
         const options: MetasItem[] = [{
           key: '服务',
           value: 'fuwu',
@@ -61,38 +95,6 @@ const CreatePost: FC<Props> = (props) => {
     setConfig({ ...config, children: newChildren })
   }
 
-  const initComponent = async () => {
-    if (!collection) return
-    setEnterpriseInfo({
-      name: collection.name,
-      metas: [{
-        key: '服务',
-        value: 'fuwu',
-        label: '服务'
-      }, undefined, collection.thirdMeta.map(item => item.id)],
-    })
-    updateConfigData()
-  }
-
-  useEffect(() => {
-    if (collection) {
-      initComponent()
-    }
-  }, [collection])
-
-  const getDetail = async () => {
-    setGetDataLoading(true)
-    const res = await getCollection({ id })
-    setCollection(res.data)
-    setGetDataLoading(false)
-  }
-
-  useEffect(() => {
-    if (collectionId > 0) {
-      getDetail()
-    }
-  }, [collectionId])
-
   const createCollectionFc = async () => {
     setUpDataLoading(true)
     const res = await createCollection()
@@ -106,6 +108,8 @@ const CreatePost: FC<Props> = (props) => {
     if (!collectionId) {
       createCollectionFc()
     }
+    // 更新下表单的配置项
+    updateConfigData()
   }, [])
 
   const sumbit = async (values: UpdataCollectionParams) => {
@@ -122,7 +126,20 @@ const CreatePost: FC<Props> = (props) => {
   }
 
   const formChange = (...arg: any) => {
-    console.log(arg)
+    // console.log(arg)
+  }
+
+  const handleClickCreateTitle = async () => {
+    const { form } = formRef.current
+    try {
+      await form?.validateFields()
+      const values = form?.getFieldsValue()
+      postToolData.formData[`draftCollection_${id}`] = values
+      handleChangeContextData({ postToolData })
+      history.push('/ai-module/promote-create/post-title-create?id=810')
+    } catch (e) {
+      errorMessage('请检查素材包名称与类目')
+    }
   }
 
   return (
@@ -132,13 +149,20 @@ const CreatePost: FC<Props> = (props) => {
         <Spin spinning={getDataLoading || loadingUser}>
           <div className={styles['form-container']}>
             <WildcatForm
-              editDataSource={enterpriseInfo}
+              ref={formRef}
+              editDataSource={formData}
               submit={sumbit}
               config={config}
               formChange={formChange}
             />
             <Form.Item label={'公司名称'} labelCol={{ span: 2 }}>
               <Input style={{ width: 260 }} disabled value={companyInfo?.companyName || ''} size={'large'}></Input>
+            </Form.Item>
+            <Form.Item label={'标题'} labelCol={{ span: 2 }} required={true}>
+              <div className={styles['add-title']}>
+                <Button className={styles['add-title-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
+                <span className={styles['preview-title']}>预览标题</span>
+              </div>
             </Form.Item>
             <SelectImage collectionId={collectionId}></SelectImage>
           </div>
@@ -147,9 +171,14 @@ const CreatePost: FC<Props> = (props) => {
     </>)
 }
 
+CreatePost.wrappers = ['@/wrappers/path-auth']
 
-export default connect((state: ConnectState) => {
+const CreatePostConnect = connect((state: ConnectState) => {
   const { companyInfo } = state[USER_NAMESPACE]
   const { loading } = state
   return { companyInfo, loadingUser: loading.models.user }
 })(CreatePost)
+
+CreatePostConnect.wrappers = ['@/wrappers/path-auth']
+
+export default CreatePostConnect

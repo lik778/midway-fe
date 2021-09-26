@@ -185,7 +185,7 @@ const PostTool: FC = (props) => {
 
   const handleCheckBaseInfo = () => {
     if (shopStatus?.isUserPerfect) {
-      history.push('/ai-module/post-create')
+      history.push('/ai-module/promote-create/post-create')
     } else {
       setShowBaseInfoModal(true)
     }

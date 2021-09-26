@@ -86,7 +86,7 @@ const TipModal: FC<TipModalProp> = (props) => {
         if (nextAction === 'USER_PROFILE') {
           history.push('/company-info/base')
         } else if (nextAction === 'USER_MATERIAL') {
-          history.push('/ai-module/zhidao-basic-material')
+          history.push('/ai-module/promote-create/zhidao-basic-material')
         }
       }}
       visible={pageStatus === 'SHOW_CREATE' && showModal} />

@@ -1,5 +1,6 @@
 import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-module'
 import { ShopStatus } from '@/interfaces/shop'
+import { InitCollectionForm } from '@/interfaces/ai-module'
 
 export type ModuleKey = 'postTool' | 'shop' | 'zhidao'
 
@@ -18,5 +19,10 @@ export interface AiModuleContextProps {
       dataTotal: number
     }
   },
+  postToolData: {
+    formData: {
+      [key: string]: InitCollectionForm
+    }
+  }
   handleChangeContextData: (data: Partial<AiModuleContextProps>) => void
 }

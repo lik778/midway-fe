@@ -87,7 +87,7 @@ const Zhidao: FC = () => {
     setGetDataLoading(true)
     const res = await getQuestionTaskStatusApi(id)
     if (res.success && res.data === 'true') {
-      history.push(`/ai-module/zhidao-detail?pageType=see&&id=${id}`)
+      history.push(`/ai-module/promote-create/zhidao-detail?pageType=see&&id=${id}`)
     } else {
       warnMessage('数据处理中，请稍后再试~')
     }
@@ -160,8 +160,8 @@ const Zhidao: FC = () => {
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
-        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/zhidao-create'}>+AI批量创建推广</Link>
-        <Link className={styles['action-btn']} to={'/ai-module/zhidao-basic-material'}>基础素材</Link>
+        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/promote-create/zhidao-create'}>+AI批量创建推广</Link>
+        <Link className={styles['action-btn']} to={'/ai-module/promote-create/zhidao-basic-material'}>基础素材</Link>
         {/* TODO; */}
         <Button className={styles['action-btn']} onClick={()=>handleClickA('https://www.baixing.com/vip/manager/service/12/enterpriseQA/release')}>手动发布</Button>
       </div>

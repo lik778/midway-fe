@@ -33,6 +33,11 @@ const AiModule: FC<Props> = (props) => {
     await getShopStatus()
   }
 
+
+  useEffect(() => {
+    console.log(contextValue)
+  }, [contextValue])
+
   useEffect(() => {
     initPage()
   }, [])

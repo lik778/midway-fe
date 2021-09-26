@@ -28,6 +28,10 @@ export const defaultValue: AiModuleContextProps = {
       dataTotal: 0,
     },
   },
+  // 发帖通发帖页面数据缓存
+  postToolData: {
+    formData:{}
+  },
   handleChangeContextData: () => { }
 }
 

@@ -1,15 +1,15 @@
 import React, { FC, useContext } from 'react';
 import { Tabs } from 'antd';
 import MainTitle from '@/components/main-title';
-import AiModuleContext from '@/pages/ai-module/context'
-import { ModuleKey } from '@/pages/ai-module/data'
+import AiModuleContext from '@/pages/ai-module/promote-create/context'
+import { ModuleKey } from '@/pages/ai-module/promote-create/data'
 import PostTool from './components/post-tool'
 import Shop from './components/shop'
 import Zhidao from './components/zhidao'
 import styles from './index.less'
 const { TabPane } = Tabs;
 
-const AiModule: FC = (props) => {
+const AiList = () => {
   const { activeModuleKey, handleChangeContextData } = useContext(AiModuleContext)
 
   return <>
@@ -22,5 +22,7 @@ const AiModule: FC = (props) => {
   </>
 }
 
-export default AiModule
+AiList.wrappers = ['@/wrappers/path-auth']
+
+export default AiList
 

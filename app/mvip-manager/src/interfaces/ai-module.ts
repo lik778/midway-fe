@@ -230,7 +230,6 @@ export interface CollectionDetail extends CollectionListItem {
 export interface InitCollectionForm {
   name: string,
   metas: ShopMetas,
-  componyName?: string
 }
 
 // 更新素材包详情
@@ -269,4 +268,18 @@ export interface CollectionImageListItem {
   id: number,
   content: string,
   status: string
+}
+
+/** 问答任务生成问答请求参数 */
+export interface CollectionTitleApiParams {
+  /** 地区 */
+  area: string[];
+  /** 核心词 */
+  coreWords: string[];
+  /** 辅助词 */
+  modal: string[];
+  /** 前缀 */
+  prefix: string[];
+  /** 疑问词 */
+  suffix: string[];
 }

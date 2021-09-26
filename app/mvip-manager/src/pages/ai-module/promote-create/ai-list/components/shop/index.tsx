@@ -8,9 +8,9 @@ import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
 import { errorMessage, } from '@/components/message';
 import AiModuleContext from '../../../context'
-import AiEditModal from '@/pages/ai-module/ai-list/components/shop/components/ai-edit-modal';
-import AiChooseModal from '@/pages/ai-module/ai-list/components/shop/components/ai-choose-modal';
-import AiPackageModal from '@/pages/ai-module/ai-list/components/shop/components/ai-package-modal';
+import AiEditModal from '@/pages/ai-module/promote-create/ai-list/components/shop/components/ai-edit-modal';
+import AiChooseModal from '@/pages/ai-module/promote-create/ai-list/components/shop/components/ai-choose-modal';
+import AiPackageModal from '@/pages/ai-module/promote-create/ai-list/components/shop/components/ai-package-modal';
 import shopStyles from './index.less';
 import { AiTaskAction, AiTaskStatus } from '@/enums/ai-module';
 import { AiTaskStatusText } from '@/constants/ai-module';
@@ -210,7 +210,7 @@ const Shop: FC = () => {
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
-        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/shop-create'}>+AI批量创建推广</Link>
+        <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/promote-create/shop-create'}>+AI批量创建推广</Link>
         <Link className={`${styles['action-btn']}`} to={'/management/shop'}>手动发布</Link>
       </div>
       {

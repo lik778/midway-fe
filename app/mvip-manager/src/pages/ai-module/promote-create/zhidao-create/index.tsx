@@ -11,7 +11,7 @@ import { errorMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
 import { debounce } from 'lodash'
-
+import { modal, prefix } from '@/constants/ai-module'
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
@@ -293,7 +293,7 @@ const CreateZhidao: FC = () => {
     setGetDataLoading(true)
     const pageStatus = await getComponentStatus()
     if (pageStatus === 'SHOW_QA_LIST') {
-      history.push(`/ai-module/zhidao-detail?pageType=edit`)
+      history.push(`/ai-module/promote-create/zhidao-detail?pageType=edit`)
     } else if (pageStatus === 'SHOW_CREATE') {
       await getCreateQuestionTaskBasicDataFn()
     }
@@ -373,7 +373,8 @@ const CreateZhidao: FC = () => {
   const obtainData = (key: string) => {
     const value: string | undefined = form.getFieldValue(key)
     const formItem = formItemList.find(item => item.key === key)
-    const concatWords: string[] = randomList(aiDefaultWord[key], formItem!.auto || formItem!.max)
+    const data = key === 'prefix' ? prefix : modal
+    const concatWords: string[] = randomList(data, formItem!.auto || formItem!.max)
     let words: string[] = []
     if (key === 'prefix' && !!value) {
       words = value.split('\n').concat(concatWords)
