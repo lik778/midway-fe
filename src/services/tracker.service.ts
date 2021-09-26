@@ -6,6 +6,7 @@ import { LogService } from './log.service';
 import { apiSecret, midwayAdminAPISecret } from '../constant';
 import { TrackerDTO } from '../dto/tracker.dto';
 import { ApiException } from '../exceptions/api.exception';
+import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
 
 @Injectable()
 export class TrackerService {
@@ -30,6 +31,7 @@ export class TrackerService {
     const { eventType, data } = body
     const url = `${this.host}/api/midway/internal/event/tracking/report`
     const requestData = JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) })
+    console.log(requestData)
     return this.httpService.post(url,
       requestData, { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err);
@@ -49,7 +51,8 @@ export class TrackerService {
       ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
       ua: req.headers['user-agent'],
       refer: refer || '',
-      refer_keywords: referKey
+      refer_keywords: referKey,
+      u_id: req.cookies[COOKIE_USER_KEY]
     };
   }
 
