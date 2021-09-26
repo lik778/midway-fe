@@ -38,6 +38,7 @@ const CreatePost = (props: Props) => {
   const [collectionId, setCollectionId] = useState<number>(Number(id))
   const [formData, setFormData] = useState<InitCollectionForm | null>(null)
   const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
+  const [disabled, setDisabled] = useState<boolean>(false)
 
   // 初始化表单的数据
   const initComponent = async (collection: CollectionDetail) => {
@@ -62,8 +63,10 @@ const CreatePost = (props: Props) => {
     setGetDataLoading(true)
     const res = await getCollection({ id })
     const collection = res.data
-    setCollection(res.data)
+    setCollection(collection)
     setGetDataLoading(false)
+    // 在这里判断是否能禁用表单
+    setDisabled([CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(collection.status))
     initComponent(collection)
   }
 
@@ -150,6 +153,7 @@ const CreatePost = (props: Props) => {
           <div className={styles['form-container']}>
             <WildcatForm
               ref={formRef}
+              disabled={disabled}
               editDataSource={formData}
               submit={sumbit}
               config={config}

@@ -10,9 +10,9 @@ export const defaultValue: AiModuleContextProps = {
   loadingShop: false,
   activeModuleKey: 'postTool' as ModuleKey,
   // 拷贝数据
-  copyData: null,
+  copyId: null,
   // 拷贝数据类型
-  copyDataType: null,
+  copyIdType: null,
   // 记录分页
   pageInfo: {
     postTool: {
@@ -30,7 +30,7 @@ export const defaultValue: AiModuleContextProps = {
   },
   // 发帖通发帖页面数据缓存
   postToolData: {
-    formData:{}
+    formData: {}
   },
   handleChangeContextData: () => { }
 }

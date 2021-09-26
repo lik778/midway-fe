@@ -8,10 +8,9 @@ export interface AiModuleContextProps {
   shopStatus: ShopStatus | null,
   loadingShop: boolean,
   activeModuleKey: ModuleKey
-  // 拷贝数据
-  copyData: QuestionTaskListItem | AiContentItem | null,
+  copyId: number | null,
   // 拷贝数据类型
-  copyDataType: ModuleKey | null
+  copyIdType: ModuleKey | null
   // 记录分页
   pageInfo: {
     [key in ModuleKey]: {

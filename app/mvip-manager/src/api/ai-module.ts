@@ -186,7 +186,7 @@ export const updateCollectionVideos = (parmas: { id: number, videoUrls: string[]
 
 // 更新状态(*)
 export const updateCollectionStatus = (parmas: { id: number, action: CollectionAction }) => {
-  return putApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/${parmas.action}`)
+  return putApiData<CollectionListItem>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/${parmas.action}`)
 }
 
 // 素材包新增图片

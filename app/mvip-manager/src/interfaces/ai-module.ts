@@ -215,6 +215,7 @@ export interface CollectionListItem {
   name: string
   postLimit: number
   status: CollectionStatus
+  copyId?: number
 }
 
 export interface CollectionDetailthirdMeta {

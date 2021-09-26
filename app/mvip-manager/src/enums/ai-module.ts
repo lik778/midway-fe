@@ -61,9 +61,9 @@ export enum PostToolTitleKeys {
 
 
 export enum CollectionAction {
+  PAUSE = 'pause',
+  AUDIT = 'audit',
   DRAFT = 'draft',
-  PUBLISH = 'publish',
-  DELETE = 'delete',
 }
 
 export enum CollectionFragmentsType {

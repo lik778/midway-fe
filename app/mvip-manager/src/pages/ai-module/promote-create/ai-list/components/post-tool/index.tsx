@@ -1,16 +1,17 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { TableColumnProps, Button, InputNumber, Table } from 'antd'
+import { TableColumnProps, Button, InputNumber, Table, Tooltip } from 'antd'
 import { Link, useHistory } from 'umi'
 
 import { formatTime } from '@/utils';
 import { useDebounce } from '@/hooks/debounce'
 import AiModuleContext from '../../../context'
 import styles from '../../index.less'
+import postToolstyles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
-import { getCollectionList, updateCollection } from '@/api/ai-module'
+import { getCollectionList, updateCollection, updateCollectionStatus, deleteCollection } from '@/api/ai-module'
 import { CollectionListItem } from '@/interfaces/ai-module';
 import { collectionTranslateStatus, collectionText } from '@/constants/ai-module'
-import { CollectionStatus } from '@/enums/ai-module'
+import { CollectionStatus, CollectionAction } from '@/enums/ai-module'
 import MyModal, { ModalType } from '@/components/modal';
 
 
@@ -75,9 +76,35 @@ const PostTool: FC = (props) => {
     }
   }
 
+  const handleChangeCollectionAction = async (id: number, action: CollectionAction) => {
+    setUpDataLoading(true)
+    const res = await updateCollectionStatus({ id, action })
+    successMessage('修改素材包状态成功')
+    const editCollection = dataList.find(x => x.id === id)
+    editCollection!.status = res.data.status
+    setDataList(dataList)
+    setUpDataLoading(false)
+  }
+
+  const handleClickDel = async (id: number) => {
+    setUpDataLoading(true)
+    const res = await deleteCollection({ id })
+    successMessage('删除成功')
+    setUpDataLoading(false)
+    getList()
+  }
+
+  const handleClickCopy = async (copyId: number) => {
+    handleChangeContextData({
+      copyId,
+      copyIdType: 'postTool'
+    })
+  }
+
   const columns: TableColumnProps<CollectionListItem>[] = [
     {
       title: '编号',
+      width: 60,
       dataIndex: 'id',
       key: 'id'
     },
@@ -147,14 +174,38 @@ const PostTool: FC = (props) => {
       }
     },
     {
-      title: '操作', dataIndex: 'action', render: (text: any, record) => {
+      title: '操作', dataIndex: 'action', width: 200, render: (text: any, record) => {
+
         return <>
-          {/* <div className={styles['list-action-btn-box']}>
-            {
-              (record.status === ZhidaoAiTaskStatus.ACTIVE || record.status === ZhidaoAiTaskStatus.PAUSED) && getActionBtn(record)
-            }
-          </div>
-          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</span> */}
+          {/* 暂停 */}
+          {
+            record.status === CollectionStatus.COLLECTION_PUBLISH_STATUS && <div className={postToolstyles['list-action-btn-box']}>
+              <img className={postToolstyles['table-action-btn']} src='//file.baixing.net/202101/409a5ac0d04377f8468872274863f539.png' alt="" onClick={() => handleChangeCollectionAction(record.id, CollectionAction.PAUSE)} />
+            </div>
+          }
+          {/* 启动 */}
+          {
+            record.status === CollectionStatus.COLLECTION_PAUSED_STATUS && <div className={postToolstyles['list-action-btn-box']}>
+              <img className={postToolstyles['table-action-btn']} src='//file.baixing.net/202101/061832d76086d8f5844d98d495f1b992.png' alt="" onClick={() => handleChangeCollectionAction(record.id, CollectionAction.AUDIT)} />
+            </div>
+          }
+          {/* 查看 */}
+          {
+
+            ([CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS]).includes(record.status) && <Link className={postToolstyles['func-btn']} to={`/ai-module/promote-create/post-create?id=${record.id}`}>查看</Link>
+          }
+          {/* 编辑 */}
+          {
+            ([CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_REJECT_STATUS].includes(record.status)) && <Link className={postToolstyles['func-btn']} to={`/ai-module/promote-create/post-create?id=${record.id}`}>编辑</Link>
+          }
+          {/* 复制 */}
+          {
+            record.copyId && <span className={postToolstyles['func-btn']} onClick={() => handleClickCopy(record.copyId!)}>复制</span>
+          }
+          {/* 删除 */}
+          {
+            [CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(record.status) && <span className={postToolstyles['func-btn']} onClick={() => handleClickDel(record.id)}>删除</span>
+          }
         </>
       }
     },
