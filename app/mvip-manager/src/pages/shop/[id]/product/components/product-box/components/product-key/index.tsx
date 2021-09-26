@@ -29,7 +29,7 @@ const ProductKey: FC<Props> = (props) => {
       <p className={styles['setting-tip']}
       >输入参数名和参数值，例如"品牌"，"奥迪"，<span className={styles['tip-img']} onMouseOver={mouseover} onMouseOut={mouseout}>参数示意</span>
         <span className={styles['imgs-tips']}>
-          <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/8303ff6a2e65a18d609511642db07c03.png" alt="logo" />
+          <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/18cfbd879b579812ea7d146a56e9bc37.png" alt="logo" />
         </span>
       </p>
       <FormList name="params">
