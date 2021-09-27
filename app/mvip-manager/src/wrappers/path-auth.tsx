@@ -1,4 +1,4 @@
-import React from 'react'
+import React  from 'react'
 import { Skeleton } from 'antd'
 import { connect } from 'dva'
 import { isNull } from 'lodash'
@@ -12,12 +12,12 @@ const PathAuth = (props: any) => {
   const { route: { path: urlPath }, menuAuthList } = props
 
   if (notInIframe() && isNull(menuAuthList)) return <>
-    <MainTitle title="加载中..." />
+    <MainTitle title="加载中..."/>
     <div className="container"><Skeleton active paragraph={{ rows: 12 }} /></div>
   </>
 
   if (inIframe() || menuAuthList.some((x: string) => urlPath.includes(x))) {
-    return <div>{props.children}</div>
+    return <div>{ props.children }</div>
   }
 
   return <Redirect to="/no-auth" />

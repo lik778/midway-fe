@@ -3,7 +3,7 @@ import { Table, Popover } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import MyModal from '@/components/modal';
 import { deleteProductApi } from '@/api/shop';
-import { RouteParams, ProductListItem } from '@/interfaces/shop';
+import { RouteParams, ShopProductListItem } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { auditStatusText } from '@/constants';
 import { errorMessage, successMessage } from '@/components/message';
@@ -68,7 +68,7 @@ export default (props: Props) => {
     { title: `${type}分组`, dataIndex: 'cateName', key: 'cateName' },
     {
       title: '审核结果', dataIndex: 'status', key: 'status',
-      render: (text: AuditStatus, record: ProductListItem) => {
+      render: (text: AuditStatus, record: ShopProductListItem) => {
         return <>
           <span style={{
             color: text === AuditStatus.APPROVE ? '#999' :

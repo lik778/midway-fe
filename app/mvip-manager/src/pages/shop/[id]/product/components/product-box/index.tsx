@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
 import { productForm } from './config';
-import { Drawer } from 'antd';
-import { CateItem, RouteParams, ProductListItem } from '@/interfaces/shop';
+import { Drawer, Form } from 'antd';
+import { CateItem, RouteParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
@@ -12,29 +12,27 @@ import MyModal from '@/components/modal';
 import { isEmptyObject } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
 import GroupSelectBtn from './components/group-select-btn'
-import ProductKey from './components/product-key'
 import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
 interface Props {
-  typeTxt: string
   cateList: CateItem[];
-  editData: ProductListItem | { params: { key: string, value: string }[], [key: string]: any }
+  editData?: any;
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;
 }
 
 export default (props: Props) => {
-  const { typeTxt, onClose, visible, editData, cateList, updateCateList } = props;
+  const { onClose, visible, editData, cateList, updateCateList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
-  const [formConfig, setformConfig] = useState<FormConfig>(productForm(typeTxt))
+  const [formConfig, setformConfig] = useState<FormConfig>(productForm)
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
-    let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
+    let media = editData ? editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg) : undefined
     return {
       ...editData,
       media,
@@ -46,10 +44,10 @@ export default (props: Props) => {
   // 弹窗错误显示
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
+
   const initForm = () => {
-    const newFormConfig = productForm(typeTxt)
     // 初始化表单----> value
-    const newArticleFormChildren = newFormConfig.children.map(item => {
+    const newArticleFormChildren = productForm.children.map(item => {
       if (item.name === 'contentCateId') {
         return {
           ...item,
@@ -59,24 +57,20 @@ export default (props: Props) => {
       }
       return item
     })
-    newFormConfig.customerFormItemList = [{
-      key: 'params',
-      index: 5,
-      node: <ProductKey key={'params'}></ProductKey>
-    }]
+
     setformConfig({
-      ...newFormConfig,
+      ...productForm,
       children: newArticleFormChildren
     })
   }
 
   useEffect(() => {
     initForm()
-  }, [cateList, typeTxt])
+  }, [cateList])
 
   const sumbit = async (values: any) => {
     values.name = values.name.trim();
-    const isEdit = Boolean((editData as ProductListItem)?.id)
+    const isEdit = !isEmptyObject(editData);
 
     if (!values.price) { values.price = '面议' }
     const media = values.media
@@ -89,7 +83,7 @@ export default (props: Props) => {
     let resData: any;
     setFormLoading(true)
     if (isEdit) {
-      resData = await updateProductApi(Number(params.id), { id: (editData as ProductListItem).id, ...values })
+      resData = await updateProductApi(Number(params.id), { id: editData.id, ...values })
     } else {
       resData = await createProductApi(Number(params.id), values)
     }
@@ -108,7 +102,7 @@ export default (props: Props) => {
 
   return (
     <Drawer
-      title={`新建${typeTxt}`}
+      title="新建服务"
       placement={placement}
       closable={true}
       onClose={() => setQuitModalVisible(true)}

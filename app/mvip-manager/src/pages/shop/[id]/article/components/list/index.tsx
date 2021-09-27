@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Table, Popover } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons'
-import { RouteParams, ArticleListItem } from '@/interfaces/shop';
+import { RouteParams, ShopArticleListItem } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ArticleSource, AuditStatus } from '@/enums';
 import Loading from '@/components/loading';
@@ -59,7 +59,7 @@ export default (props: Props) => {
     },
     {
       title: '审核结果', dataIndex: 'status', key: 'status',
-      render: (text: AuditStatus, record: ArticleListItem) => {
+      render: (text: AuditStatus, record: ShopArticleListItem) => {
         return <>
           <span style={{
             color: text === AuditStatus.APPROVE ? '#999' :

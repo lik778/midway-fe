@@ -21,7 +21,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
       return []
-    } else if (!config.customerFormItemList || config.customerFormItemList.length === 0) {
+    } else if (!config.customerFormItemList) {
       return config.children
     } else {
       const customerFormItemList = [...config.customerFormItemList]
@@ -29,7 +29,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const arr: (FormItem | CustomerFormItem)[] = []
       let i = 0
       while (true) {
-        const cItem = customerFormItemList.findIndex(cItem => (cItem.index - 1) === i)
+        const cItem = customerFormItemList.findIndex(cItem => cItem.index === i)
         if (cItem !== -1) {
           arr.push(...customerFormItemList.splice(cItem, 1))
         } else {
@@ -43,7 +43,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           arr.push(...children)
           break
         }
-        if (i >= config.customerFormItemList.length + config.children.length) {
+        if (i >= customerFormItemList.length + children.length) {
           break
         }
         i++

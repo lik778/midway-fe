@@ -1,0 +1,94 @@
+@import "../../../../../common/pc/official-400-btn";
+	
+.company
+	display flex
+	&-left
+		width 980px
+		height 270px
+		display flex
+		justify-content space-between
+		margin-bottom 20px
+		>img
+			height 270px
+			width 406px
+			flex-shrink 0
+		.company-text
+			width 574px
+			padding 25px 36px 0
+			margin-left 10px
+			font-size 14px
+			background-color #fff
+			h3
+				font-size 18px
+			.company-address
+				display flex
+				color #666
+				>span
+					display inline-block
+					&:first-child
+						min-width 80px
+			p
+				color #666
+				margin 20px 0
+			img
+				width 20px
+				height 20px
+				margin-right 8px
+			.online-btn
+				width 178px
+				height 46px
+				text-align center
+				border 1px solid 
+				border-radius 2px
+				margin-right 20px
+				display inline-flex
+				align-items center
+				justify-content center
+				margin-top 36px
+				font-size 16px
+				border-color #FF2D38
+				color #FF2D38
+	&-right
+		margin-left 15px
+		width 224px
+
+.company
+	.video-con
+		position relative
+		height 270px
+		width 406px
+		flex-shrink 0
+	.video-wrapper
+		display flex
+		justify-content center
+		align-items center
+		width 100%
+		height 100%
+		background-color black
+		video
+			flex 1
+			width 100%
+			height 100%
+			cursor pointer
+			z-index 9
+	.video-cover
+		position absolute
+		top 0
+		left 0
+		width 100%
+		height 100%
+		z-index 9
+		cursor pointer
+		img
+			width 100%
+			height 270px
+	.video-cover::after
+		content ''
+		position absolute
+		left calc(50% - 28px)
+		top calc(50% - 28px)
+		width 55px
+		height 55px
+		background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAMAAAC4uKf/AAAAqFBMVEUAAAAAAAAAAAAAAAAAAAAAAAC/v78AAAAAAAAAAAAAAAAAAAAAAAAAAAAMDAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/v4+PhtbW01NTXu7u7n5+coKCj////JycnFxcWhoaGZmZmTk5NgYGBCQkL19fXr6+vk5OTi4uLR0dHNzc24uLipqal6enpUVFQhISHY2NjW1taKior////luF/rAAAAN3RSTlOAAAN8eGTMCls1D0tDKIJwamBXUEhGPyMeG/r4oo7v6Yr+0s+7trOckvXs5uTY1ce+qJiJ3NyvtZcixAAAAsVJREFUaN7VmolS2zAQhv/owJZs5z4JN4VytLT0yvu/WTMpIJgA0a6Omu8FvpkdWdbu/ugQsDNTlbrfU1KqXl+XlZnZDgFfmZhPBxKvIAfTuYgpK0yp8A6qNEUcmWiGEjuRw0YEy4pawRNVF0EyO5YgIMeWLSsqCSKyKlgyYRQYKCPosoUGE70gysQEAUwERWY1gtDWX9YoBKIaX1mNCNReMjFCFEZit0yUiEQpdskKjWjo4n2Z0IiIFlsySg35ldyWjRCZ0duyGtGp35I1SEDzuswqJEBZZwD9IPKPpJNNkIjJtmyBZCycjFhEfiGdzCAh5qWsUEiIKl7IKiSlei6zEkmR9plsjMSMnayQSIwsnmQ1klM/yoRCcpR4kDXIQPMgGyIDw42MfDz4RwT+N9XJ+fXy7ApczEZWwovu8WrN/vcueJRrmfdZ/LP6x9EB+zyiM4cf31aPfD0Eh/laNoUfe6sn9j9xajldywb+MscNo5aDtUxSZI4zci1lBxYkmWNJrqXFjCpzHH8GiRkMXeY4PwEBg4ohcywv4E+FkiVz3PrXsoTmyRynez/hh0afK3NcX8KLPnp8mePLD3jQgwqQOfZ9bhQFGSJzHHl84TJQ5rjykal8MoVeHNmt1wHpR5EdHXodfU2V8b9rTb2u+F8ZUKIKlS0v/S9iEyY7JfxlDP3nyf9/zqjPAv7fDLDoSLbs7AQUJPkp5zg+AI0B/ZHq3qmcR+qcI7s75D2/hSLLbg64jUWnpDQW/K6ppDSD92E9DAypzb3bXO/37DaX1MB3L3//uuiCyTDraCLr0CXnOCnroCznCDDrcDPn2DbrQDrnqD3rEiHneiTn4ifrSivnsu7/ryHTLFjbsTpOsBRvy7o/dpChTRGNmOGTtsVqIgWG2hmFCg95tTe+FhTMa3vkkBem/CgxUVoA9qNFeyOGlrPGsf8C2eyo8x7aSZcAAAAASUVORK5CYII=")
+		background-size 100%
+		cursor pointer

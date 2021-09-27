@@ -14,8 +14,7 @@ block content
   if isSem !== "1"
     include ../components/common/breadcrumbs.pug
   .container.clearfix
-    include ../components/product-detail/media-show.pug
-    +mediaShow()
+    include ../components/product-detail/company-top.pug
     - const { productList, name: productRecommendName} = renderData.productRecommend
     include ../components/product-detail/product-recom-title.pug
     include ../components/product/product-list.pug

@@ -14,12 +14,11 @@ block content
   if isSem !== "1"
     include ../components/common/breadcrumbs.pug
   .container.clearfix
-    .company-top 
-      include ../components/product-detail/media-show.pug
-      +mediaShow()
+    include ../components/product-detail/company-top.pug
 
     - let { productList:productRecommendList,name:productRecommendName } = renderData.productRecommend
     - productRecommendList = productRecommendList.slice(0,5)
+
     include ../components/product-detail/product-recom.pug
 
     .main
