@@ -1,12 +1,10 @@
 .product-detail
   .pro-title
-    p 产品详情
-  - const { content } = renderData.productInfo
+    p 详情描述
+  - const { content,contentImg } = renderData.productInfo
   .pro-content
     | !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
     if contentImg && contentImg.length > 0
       each item in contentImg
         .pro-pic
           img(src=item, alt="")
-
-
