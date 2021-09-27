@@ -31,7 +31,6 @@ export class TrackerService {
     const { eventType, data } = body
     const url = `${this.host}/api/midway/internal/event/tracking/report`
     const requestData = JSON.stringify({ eventType, data: Object.assign(this.trackerBasicData(req, res), data) })
-    console.log(requestData)
     return this.httpService.post(url,
       requestData, { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err);
