@@ -1,7 +1,7 @@
 mixin official400Btn(config)
   - let union400num =  union400 && union400.length? union400[0]: ''
-  button.official-400-btn(data-phone=config.phone ,data-union400num=union400num style=" background-color:"+config.backgroundColor+";border-color:"+config.borderColor)
-    img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon")
+  button.official-400-btn(data-phone=config.phone ,data-union400num=union400num style=" background-color:"+config.backgroundColor+";border-color:"+config.borderColor+";border-radius:"+config.navRadius+";margin-top:"+config.navMarginTop+";height:"+config.BtnHeight+";width:"+config.BtnWidth)
+    img(src="//file.baixing.net/202102/5a8ddc4c386e711b11a078b49b8f9655.png", alt="icon" style="width:"+config.naviconw+";height:"+config.naviconh+";margin-right:"+config.naviconm)
     span 查看电话
     .official-nav-phone-num-tip.hide(style="border-color:"+config.navTipBorderColor+";background:"+config.navTipBackgroundColor)
       .triangle
