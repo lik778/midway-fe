@@ -31,7 +31,7 @@ const CreatePost = (props: Props) => {
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
   const { postToolData, handleChangeContextData } = useContext(AiModuleContext)
-  const [getDataLoading, setGetDataLoading] = React.useState<boolean>(false);
+  const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   const [collection, setCollection] = useState<CollectionDetail | null>()
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(postForm));
@@ -43,19 +43,27 @@ const CreatePost = (props: Props) => {
   // 初始化表单的数据
   const initComponent = async (collection: CollectionDetail) => {
     if (!collection) return
+    const { form } = formRef.current
     const draftCollectionData = postToolData.formData[`draftCollection_${id}`]
-    if (collection.status === CollectionStatus.COLLECTION_ADVANCE_STATUS && draftCollectionData) {
-      setFormData(draftCollectionData)
+    console.log(postToolData, draftCollectionData)
+    let newFormData: InitCollectionForm | null = null
+
+    if ([CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_ADVANCE_STATUS].includes(collection.status) && draftCollectionData) {
+      newFormData = draftCollectionData
     } else {
-      setFormData({
+      // TODO;
+      newFormData = {
         name: collection.name,
         metas: [{
           key: '服务',
           value: 'fuwu',
           label: '服务'
         }, undefined, collection.thirdMeta.map(item => item.id)],
-      })
+      }
     }
+    console.log(newFormData)
+    setFormData(newFormData)
+    form?.setFieldsValue(draftCollectionData)
   }
 
   // 获取当前任务详情
@@ -139,7 +147,7 @@ const CreatePost = (props: Props) => {
       const values = form?.getFieldsValue()
       postToolData.formData[`draftCollection_${id}`] = values
       handleChangeContextData({ postToolData })
-      history.push('/ai-module/promote-create/post-title-create?id=810')
+      history.push(`/ai-module/promote-create/post-title-create?id=${id}`)
     } catch (e) {
       errorMessage('请检查素材包名称与类目')
     }

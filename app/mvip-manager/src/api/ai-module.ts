@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CreateTitleParmas, CollectionTitleListItem, CollectionImageListItem } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CreateTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 
@@ -247,5 +247,10 @@ export const deleteFragments = (parmas: { id: number, type: CollectionFragmentsT
 // 素材包获取公司简介、公司优势等字段
 export const batchAddFragment = (parmas: { id: number, type: CollectionFragmentsType, materialIds: number[] }) => {
   return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}/downloadFromMaterial`)
+}
+
+// 生成标题前获取
+export const getCreateTitleCityList = (parmas: { id: number, type: CollectionFragmentsType, materialIds: number[] }) => {
+  return postApiData<CollectionCityListItem>(ServicePath.POST_TOOL, `post-tool/v1/`)
 }
 

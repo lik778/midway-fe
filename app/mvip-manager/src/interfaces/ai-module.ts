@@ -271,16 +271,22 @@ export interface CollectionImageListItem {
   status: string
 }
 
-/** 问答任务生成问答请求参数 */
+/** 发帖通生成标题字段 */
 export interface CollectionTitleApiParams {
+  /** 城市 */
+  city: string[];
   /** 地区 */
   area: string[];
-  /** 核心词 */
-  coreWords: string[];
-  /** 辅助词 */
-  modal: string[];
   /** 前缀 */
   prefix: string[];
-  /** 疑问词 */
+  /** 核心词 */
+  main: string[];
+  /** 后缀 */
   suffix: string[];
+}
+
+export interface CollectionCityListItem {
+  id: string,
+  name: string,
+  areas: string[]
 }
