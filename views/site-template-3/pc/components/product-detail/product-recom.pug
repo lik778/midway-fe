@@ -5,6 +5,7 @@
 			each item in productRecommendList
 				a.recommend-item(href=item.urlSuffix ,target="_blank",class=item.videoUrl?'video':'')
 					img.img(src=item.headImg || defaultImg)
-					p.only-oneline.oneLine #{ item.name }
+					p.only-twoline #{ item.name }
+					.show-desc 查看详情
 		else
 			p.no-content 当前页面暂无内容，敬请期待...

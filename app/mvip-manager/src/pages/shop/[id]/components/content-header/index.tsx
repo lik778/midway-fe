@@ -10,6 +10,7 @@ import { GET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop'
 
 interface Props extends BaseProps {
   type: ShopModuleType;
+  onChangeType(type: ProductType): void;
   curShopInfo?: ShopInfo | null;
   dispatch: Dispatch;
 }
