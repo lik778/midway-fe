@@ -9,7 +9,7 @@ import SwitchShopType from './pages/SwitchShopType';
 import StoreWhitelist from './pages/StoreWhitelist';
 import CleanCache from './pages/CleanCache';
 import ModifyStore from './pages/ModifyStore';
-import AdviceRecord from './pages/AdviceRecord'
+import AdviceRecord from './pages/AdviceRecord';
 
 
 export default () => {

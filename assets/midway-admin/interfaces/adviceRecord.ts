@@ -1,5 +1,5 @@
 export interface resultList {
-  cellStyleMap: {},
+  cellStyleMap?: {},
   time: string,
   usrId: number,
   shopId: number,
