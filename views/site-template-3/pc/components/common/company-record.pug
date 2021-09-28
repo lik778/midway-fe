@@ -1,12 +1,25 @@
-mixin companyRecord(contanct,contanctname,unio400)
+mixin companyRecord(logo,name)
   .media-show-right
     .company-record
       img(src="//file.baixing.net/202109/d39cb98c1e78604a91b7ee7484d4e7d1.png", alt="")
       span(class="company-dangan") 企业档案
     .baixing-accord
+      .accord-headImg
+        .headImg
+          img(src=logo, alt="logo")
+        .headImg-p #{name}
+      .comapny-icon
+        .icon-left
+          span
+            img(src="//file.baixing.net/202109/2cc6a455ebd74a84f08593ba7a001c53.png", alt="logo")
+          | 实力商家
+        .icon-right
+          span
+            img(src="//file.baixing.net/202109/7b6d7546ac560f48c7d9e2ffb1a9e5b0.png", alt="logo")
+          | 百姓认证
       .accord-title 
         .accord-line 
-        .accord-content 百姓认证
+        .accord-content 商家信用
         .accord-line 
       .accord-icon 
         ul 
@@ -18,9 +31,3 @@ mixin companyRecord(contanct,contanctname,unio400)
             img(src="//file.baixing.net/202109/eeed98a3f88a4b239c3e0542de4ac0e7.png", alt="")
           li 
             img(src="//file.baixing.net/202109/d2779c5e58588f3dee60f6a5d6fb36fc.png", alt="")
-      .accord-wd
-      .contact-name 联系人：#{contanctname.content}
-      if isSem !== "1"
-        .contanct-address 联系电话：#{contanct.content}
-      if kf53StyleUrl && kf53StyleUrl.length > 0
-        a(class="contant-btn" href=kf53StyleUrl) 给我留言

@@ -39,9 +39,9 @@ block content
     if isSem !== "1"
       .sidebar
         //- include ../components/sidebar/company-card.pug
-        - const { address,name: compayname } = renderData.basic.company;
+        - const { address,name: companyName,logo } = renderData.basic.company;
         include ../components/common/company-record.pug
-        +companyRecord(address,compayname)
+        +companyRecord(logo,companyName)
         include ../components/sidebar/news-list.pug
         
         - const sidecateList = renderData.articleCateList

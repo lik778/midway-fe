@@ -1,13 +1,15 @@
 .product-detail
-    .pro-title
-        p 产品详情
-    - const { content,contentImg } = renderData.productInfo
-    .pro-content
-        | !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
-        if contentImg && contentImg.length > 0
-            each item in contentImg
-                .pro-pic
-                    img(src=item, alt="")
-
-
-
+  .pro-title
+    p 详情描述
+  - const { content,contentImg,params } = renderData.productInfo
+  if params && params.length > 0
+    .setting-title 参数描述
+    .product-detail-table
+      include ./setting-table
+      +settingTbale(params)
+  .pro-content
+    | !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+    if contentImg && contentImg.length > 0
+      each item in contentImg
+        .pro-pic
+          img(src=item, alt="")

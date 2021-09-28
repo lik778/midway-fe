@@ -37,9 +37,9 @@ block content
       include ../components/common/contact-form-companyInfo.pug
     if isSem !== "1"
       .sidebar
-        - const { address,name: compayname } = renderData.basic.company;
+        - const { address,name: companyName,logo } = renderData.basic.company;
         include ../components/common/company-record.pug
-        +companyRecord(address,compayname)
+        +companyRecord(logo,companyName)
         include ../components/sidebar/news-list.pug
         - const sidecateList = renderData.articleCateList
         include ../components/sidebar/cateList.pug

@@ -7,17 +7,16 @@
   justify-content space-between
   padding: 10px 0 0px 0
   margin-bottom 20px
-  background-color: #FFFFFF
   .media-show-left
-    width: 406px
+    width: 370px
     .left-headImg
-      margin-bottom: 20px
+      margin-bottom: 9px
       border-radius: 4px
       overflow hidden
       .video-con
         position relative
-        height 270px
-        width 406px
+        height 246px
+        width 370px
         flex-shrink 0
         .video-wrapper
           display flex
@@ -72,31 +71,35 @@
         border-radius 4px
     .left-contentImg
       width: 100%
-      height: 72px
+      height: 65px
+      background-color: #ffffff
       .swiper-container
         width: 100%
         height: 100%
+        .swiper-wrapper
+          overflow hidden
+          width: 303px
+          margin: 0 auto
+          display: flex
+          align-items: center
         .swiper-button-prev
-          left: 5px
-          width: 30px
-          height: 30px
-          background: url('http://file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png') no-repeat center center/100%
-          &:hover
-            background url(//file.baixing.net/202108/a74c1d873881392c12a23826cd4e1a37) no-repeat center center/100%
-            transform rotate(0)
+          left: 10px
+          top: 48px
+          width: 12px
+          height: 17px
+          cursor: pointer
+          background: url('//file.baixing.net/202109/be6a80b3ef4863dd32a6450b5a23efa5.png') no-repeat center center/100%
         .swiper-button-next
-          right: 5px
-          width: 30px
-          height: 30px
-          background: url('http://file.baixing.net/202105/05348a4efc053232fdd668940bd756a8.png') no-repeat center center/100%
-          transform: rotate(180deg)
-          &:hover
-            background url(//file.baixing.net/202108/af2916a86a85a940625a4a47c70d5fb3) no-repeat center center/100%
-            transform rotate(0)
+          right: 13px
+          top: 48px
+          width: 11px
+          height: 15px
+          cursor: pointer
+          background: url('//file.baixing.net/202109/3f10676e75f1e75af1c8d285e26db3fd.png') no-repeat center center/100%
         .swiper-slide
           position relative
-          width: 99px
-          height: 66px
+          width: 69px !important
+          height: 42px
           margin-right: 7px !important
           border-radius: 4px
           display: -webkit-box;
@@ -137,95 +140,66 @@
         .swiper-slide-thumb-active
           border: 1px solid #ED4646
   .media-show-middle
+    box-sizing: border-box
+    display flex
+    justify-content: space-between
     width: 100%
-    margin 15px 0 0 20px
-    .detail-title
-      width: 100%
-      max-width 781px
-      overflow: hidden
-      text-overflow:ellipsis
-      white-space: nowrap
-      margin-bottom 24px
-      color: #333333
-      font-size: 18px
-      font-weight: bold
+    min-height: 320px
+    margin 0 0 0 20px
+    padding: 24px 31px 0
+    background-color: #FFFFFF
     .media-middle-left
-      display: flex
-      justify-content: space-between
+      .detail-title
+        overflow: hidden
+        max-width: 490px
+        text-overflow:ellipsis
+        white-space: nowrap
+        margin-bottom 24px
+        color: #333333
+        font-size: 18px
+        font-weight: bold
       .product-left
+        width: 490px
         .detail-price
           box-sizing: border-box
           display: flex
           justify-content: flex-start
           align-items: center
           width: 100%
-          padding-left: 9px
+          height: 50px
+          padding-left: 16px
+          border-top: 1px solid #F3B5B5
+          background-color: #FFF8F8
           color: #ED4646
           font-size: 14px
           font-weight: bold
-          img
-            width: 28px
-            height: 23px
-            margin-right: 7px
           .prices
             margin-left: 24px
-            font-size: 20px
+            font-size: 18px
+            line-height: 20px
             font-weight: 500px
         .detail-setting
-          padding: 24px 0px 12px 0px
-          margin-bottom:12px
-          color: #333333 
+          padding: 20px 0px 0px 15px
+          margin-bottom: 30px
+          color: #666666
           font-size: 12px
-          .setting-title
+          .contact
+            display flex
+            align-items: flex-start
+            margin-bottom: 10px
+            color: #666666
             font-size: 14px
-            font-weight: bold
-            margin-bottom 8px
-            text-align: left
-          .detail-product
-            .detail-table
-              overflow hidden
-              table
-                border-collapse: collapse
-                overflow hidden
-                tr
-                  display: flex
-                  .setting-key
-                    display: flex
-                    justify-content flex-start
-                    align-items center
-                    width: 120px
-                    padding: 12px 0 12px 16px
-                    font-size: 12px
-                    color: #999999
-                    border-right: 1px solid #EEEEEE
-                    border-bottom: 1px solid #EEEEEE
-                  .setting-value
-                    display: flex
-                    justify-content flex-start
-                    align-items center
-                    width: 388px
-                    padding: 12px 0 12px 16px
-                    color: #333333
-                    font-size: 12px
-                    border-bottom: 1px solid #EEEEEE
-              table
-                border: 1px solid #EEEEEE
-                border-bottom: 0
-            .read-more
-              display: none
-              height: 32px
-              width: 541px
-              line-height 32px
-              text-align: center
-              color: #999999
-              border: 1px solid #EEEEEE
-              border-top: 0 !important
-              cursor pointer
-              z-index 999
+            &:last-child
+              margin-bottom: 0
+            .span-address
+              display: inline-block
+              max-width: 407px
+              white-space: wrap
         .detail-contact
           display: flex
           justify-content flex-start
           align-items center
+          padding-left: 15px
           .online-btn
             display: flex
             justify-content: center
