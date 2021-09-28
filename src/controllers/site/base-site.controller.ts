@@ -33,31 +33,18 @@ export class BaseSiteController {
   }
 
   private checkSem(sem: string | undefined, bannerId: string | undefined, account: string) {
-    // tapd https://www.tapd.cn/20095111/prong/stories/view/1120095111001038855
-    // 恢复小微权益  所以不接收sem参数，代码里关于sem的判断暂时不删除，留着备用
-    // 投放页改成店铺首页
-
-    // sem = 1   百度投放
-    // 1.先判断bannerid是否包含凤鸣id：
-    // a.无bannerid的按KA要求页面显示（400电话样式）；
-    // b.有bannerid的判断有无account参数：
-    // b-1.无account按account=0处理，代表小微账号，店铺落地页显示单品页面，即用户自己电话的页面；
-    // b-2.有account且=1，代表KA账户，店铺落地页显示sem=1的页面，即400电话的页面；
-    // const bannerIdList = ['2192', '2195', '2005', '2241']
-    // if (bannerId && bannerIdList.indexOf(bannerId) !== -1) {
-    //   if (account === '1') {
-    //     return '1'
-    //   } else {
-    //     return undefined
-    //   }
-    // } else {
-    //   // 这里 isSem: sem === "1" 是为了和isRedTopbar的逻辑保持一致，如果传false，在模板层检测的是'true/false'，是string
-    //   return "1"
-    // }
+    // https://www.tapd.cn/20097551/prong/stories/view/1120097551001039216
 
     //sem = 2 头条投放
-    if (sem === "2") {
-      return "2"
+    if (sem === '2') {
+      return '2'
+    }
+
+    // 
+    if (account === '0' || account === '2') {
+      return '1'
+    } else if (account === '1') {
+      return undefined
     }
 
     // 其他
