@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CreateTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 
@@ -170,8 +170,7 @@ export const getCollectionImages = (parmas: { id: number, page?: number, size?: 
 
 // 获取素材包标题
 export const getCollectionTitles = (parmas: { id: number, page?: number, size?: number }) => {
-  const query = typeof parmas.page === 'number' ? `?page=${parmas.page}&size=${parmas.size || 10}` : ''
-  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/titles${query}`)
+  return getApiData<CollectionPreviewTitleListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/titles?size=1000`)
 }
 
 // 获取素材包视频
@@ -205,8 +204,11 @@ export const deleteCollectionImage = (parmas: { id: number }) => {
 }
 
 // 创建标题
-export const createCollectionTitles = (parmas: CreateTitleParmas) => {
-  return postApiData<CollectionTitleListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/titles/calc`, parmas)
+export const previewCollectionTitles = (parmas: CollectionPreviewTitleParmas) => {
+  return postApiData<{
+    remainSize: number,
+    titles: CollectionTitleListItem[]
+  }>(ServicePath.POST_TOOL, `post-tool/v1/titles/calc`, parmas)
 }
 
 // 删除标题
@@ -220,8 +222,11 @@ export const deleteCollectionTitles = (parmas: { ids: number[] }) => {
 }
 
 // 添加标题到素材包
-export const addCollectionTitles = (parmas: CollectionTitleListItem[]) => {
-  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/titles/calc`, parmas)
+export const createCollectionTitles = (parmas: {
+  id: number,
+  data: string
+}) => {
+  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/titles/${parmas.id}`, parmas.data)
 }
 
 // 创建公司简介、公司优势等字段 

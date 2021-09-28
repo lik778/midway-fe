@@ -3,6 +3,7 @@ import moment from 'moment';
 import BMF from 'browser-md5-file';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants/ai-module';
+import { COOKIE_USER_KEY } from '@/constants/index'
 
 const bmf = new BMF()
 // 计算文件的MD5值
@@ -191,7 +192,7 @@ export const getCookie = (name: string): string => {
 }
 
 export const isLogin = (): boolean => {
-  return getCookie('__u') !== ''
+  return getCookie(COOKIE_USER_KEY) !== ''
 }
 
 export const isUrl = (text: string): boolean => {

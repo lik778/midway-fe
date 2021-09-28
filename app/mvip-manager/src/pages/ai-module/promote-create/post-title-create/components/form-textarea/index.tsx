@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
 import { Form, Button, Input, Col, FormInstance } from 'antd';
 import styles from './index.less';
-import { modal, prefix } from '@/constants/ai-module'
+import { CollectionTitleApiParams } from '@/interfaces/ai-module'
+import { prefix, productSuffix, serviceSuffix } from '@/constants/ai-module'
 import { getCookie, randomList, } from '@/utils';
 import { Rule, FormItemListItem } from '../../data'
 import { useDebounce } from '@/hooks/debounce';
@@ -57,10 +58,8 @@ const FormTextarea: FC<Props> = (props) => {
   /**
 * 获取通用数据
 *  */
-  const obtainData = (key: string) => {
+  const obtainData = (key: keyof CollectionTitleApiParams, data: string[]) => {
     const value: string | undefined = form.getFieldValue(key)
-
-    const data = key === 'prefix' ? prefix : modal
     const concatWords: string[] = randomList(data, item.auto || item.max)
     let words: string[] = []
     if (key === 'prefix' && !!value) {
@@ -90,8 +89,8 @@ const FormTextarea: FC<Props> = (props) => {
     <div className={styles['words-num']}>已输入：{wordNum}/{item.max}</div>
     <div className={styles["ai-content-actions"]}>
       <ButtonGroup>
-        {item.key === 'prefix' && <Button onClick={() => obtainData(item.key)} >通用前缀</Button>}
-        {item.key === 'suffix' && <> <Button onClick={() => obtainData(item.key)} >产品后缀</Button><Button onClick={() => obtainData(item.key)} >服务后缀</Button></>}
+        {item.key === 'prefix' && <Button onClick={() => obtainData(item.key, prefix)} >通用前缀</Button>}
+        {item.key === 'suffix' && <> <Button onClick={() => obtainData(item.key, productSuffix)} >产品后缀</Button><Button onClick={() => obtainData(item.key, serviceSuffix)} >服务后缀</Button></>}
         <Button onClick={() => handleClickClearItem(item.key)} >清空</Button>
       </ButtonGroup>
     </div>

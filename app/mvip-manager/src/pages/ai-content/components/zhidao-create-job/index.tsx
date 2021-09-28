@@ -11,6 +11,7 @@ import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
 import { debounce } from 'lodash'
+import { COOKIE_USER_KEY } from '@/constants/index'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -78,7 +79,7 @@ interface ZhidaoCreateJobProp {
 export default (props: ZhidaoCreateJobProp) => {
   const history = useHistory()
   const { activeKey, changeActiveKey } = props
-  const [uid, setUid] = useState<string>(() => getCookie('__u'))
+  const [uid, setUid] = useState<string>(() => getCookie(COOKIE_USER_KEY))
   const [form] = Form.useForm();
   const [wordsNum, setWordsNum] = useState({
     area: 0,
@@ -427,7 +428,7 @@ export default (props: ZhidaoCreateJobProp) => {
 
 
   const validateUserId = (): boolean => {
-    const nowUserId = getCookie('__u')
+    const nowUserId = getCookie(COOKIE_USER_KEY)
     return uid === nowUserId
   }
 

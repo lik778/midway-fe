@@ -56,7 +56,6 @@ export enum PostToolTitleKeys {
   PREFIX = '前置修饰词',
   MAIN = '主关键词',
   SUFFIX = '后置修饰词',
-  SUB = '副标题'
 }
 
 

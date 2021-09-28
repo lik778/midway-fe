@@ -246,11 +246,11 @@ export interface UpdataCollectionParams {
 
 
 // 创建标题 
-export interface CreateTitleParmas {
-  cityNum: 0,
-  groupWords: {
-    [key in keyof PostToolTitleKeys]: string[]
-  }
+export interface CollectionPreviewTitleParmas {
+  cityNum: number,
+  groupWords: Partial<{
+    [key in PostToolTitleKeys]: string[]
+  }>
 }
 
 export interface CollectionTitleListItem {
@@ -262,6 +262,17 @@ export interface CollectionTitleListItem {
   modal: string,
   prefix: string,
   suffix: string
+}
+
+export interface CollectionPreviewTitleListItem {
+  id: number
+  city_id: string
+  content: string
+  status: string
+}
+
+export interface CollectionCreateTitleParmas extends CollectionTitleListItem {
+  city_id: string,
 }
 
 // 获取以填充的图片列表

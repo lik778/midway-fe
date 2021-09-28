@@ -1,8 +1,8 @@
-import React, { FC, Ref, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Form, Checkbox, Col, FormInstance, Spin } from 'antd';
 import styles from './index.less';
 import SelectBox from './components/select-box'
-import { SelectConfig, SelectListItem } from './data'
+import { SelectListItem, SelectConfig } from '../../data'
 import { CollectionCityListItem } from '@/interfaces/ai-module'
 import { getCreateTitleCityList } from '@/api/ai-module'
 import { mockData } from '@/utils';
@@ -17,39 +17,42 @@ interface Props {
 const FormArea: FC<Props> = (props) => {
   const { form } = props
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
-  const [city, setCity] = useState<string[]>([])
+  const [city, setCity] = useState<SelectListItem[]>([])
   const [cityList, setCityList] = useState<SelectListItem[]>([])
   const areaList = useMemo<SelectListItem[]>(() => {
     if (city.length !== 1) {
       return []
     } else {
-      const cityId = city[0]
-      const cityItem = cityList.find(item => item.value === cityId)
-      return cityItem!.children!
+      return cityList.find(item => item.value === city[0].value)?.children!
     }
   }, [cityList, city])
 
   const [citySelectAll, setCitySelectAll] = useState<boolean>(false)
   const [areaSelectAll, setAreaSelectAll] = useState<boolean>(false)
-
+  const [notCityWord, setNotCityWord] = useState<boolean>(false)
   const selectRef = useRef<any>([])
+
+  const validateCityRules = useMemo(() => [
+    {
+      required: !notCityWord,
+      // message: `请输入核心词！(3-100个)`,
+      validator: (rule: Rule, value: any) => {
+        // 不需要城市在标题时，
+        if (!notCityWord) {
+          if (!value || value.length <= 0) {
+            return Promise.reject(new Error(`城市数不得少于1个`));
+          }
+        }
+        return Promise.resolve()
+      }
+    }
+  ], [notCityWord])
 
   const formItemList: SelectConfig[] = [{
     key: 'city',
     label: '城市',
     tip: '请选择城市',
-    rules: [
-      {
-        required: true,
-        // message: `请输入核心词！(3-100个)`,
-        validator: (rule: Rule, value: any) => {
-          if (!value || value.length <= 0) {
-            return Promise.reject(new Error(`城市数不得少于1个`));
-          }
-          return Promise.resolve()
-        }
-      }
-    ]
+    rules: validateCityRules
   }, {
     key: 'area',
     label: '行政区',
@@ -82,13 +85,9 @@ const FormArea: FC<Props> = (props) => {
 
   useEffect(() => {
     getCreateTitleCityListFc()
-    // 设置defaultChecked无效
-    form.setFieldsValue({
-      useCityWord: true
-    })
   }, [])
 
-  const handleChangeItemValue = (name: string, value: string[]) => {
+  const handleChangeItemValue = (name: string, value: SelectListItem[]) => {
     if (name === 'city') {
       setCity(value)
       setCitySelectAll(value.length === cityList.length)
@@ -103,7 +102,6 @@ const FormArea: FC<Props> = (props) => {
     } else {
       setAreaSelectAll(checked)
     }
-    console.log(selectRef)
     selectRef.current[index]?.onCheckAllChange(checked)
   }
 
@@ -118,12 +116,12 @@ const FormArea: FC<Props> = (props) => {
             <SelectBox ref={(ref: Ref<any>) => selectRef.current[index] = ref} name={item.key} selectAll={item.key === 'city' ? citySelectAll : areaSelectAll} selectList={item.key === 'city' ? cityList : areaList} onValueChange={handleChangeItemValue}></SelectBox>
           </FormItem>
           {
-            item.key == 'city' && <>
+            item.key == 'city' && <div>
               <Checkbox className={styles['checkall']} checked={citySelectAll} onChange={(e) => handleChangeCheckbox(e.target.checked, index)}>全选</Checkbox>
-              <FormItem name='useCityWord' valuePropName="checked">
-                <Checkbox>标题不含城市</Checkbox>
+              <FormItem name='notCityWord' valuePropName="checked">
+                <Checkbox onChange={(e) => setNotCityWord(e.target.checked)}>标题不含城市</Checkbox>
               </FormItem>
-            </>
+            </div>
           }
         </Spin>
       </Col>)

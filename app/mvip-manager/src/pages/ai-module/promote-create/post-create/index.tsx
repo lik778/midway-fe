@@ -17,6 +17,7 @@ import { MetasItem, UserEnterpriseInfo } from '@/interfaces/user';
 import SelectImage from './components/select-image'
 import { CollectionStatus } from '@/enums/ai-module';
 import AiModuleContext from '../context'
+import PostPreviewTitle from '../components/post-preview-title'
 
 
 interface Props {
@@ -39,6 +40,7 @@ const CreatePost = (props: Props) => {
   const [formData, setFormData] = useState<InitCollectionForm | null>(null)
   const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
   const [disabled, setDisabled] = useState<boolean>(false)
+  const [previewTitleVisible, setPreviewTitleVisible] = useState<boolean>(false)
 
   // 初始化表单的数据
   const initComponent = async (collection: CollectionDetail) => {
@@ -173,13 +175,14 @@ const CreatePost = (props: Props) => {
             <Form.Item label={'标题'} labelCol={{ span: 2 }} required={true}>
               <div className={styles['add-title']}>
                 <Button className={styles['add-title-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
-                <span className={styles['preview-title']}>预览标题</span>
+                <span className={styles['preview-title']} onClick={() => setPreviewTitleVisible(true)}>预览标题</span>
               </div>
             </Form.Item>
             <SelectImage collectionId={collectionId}></SelectImage>
           </div>
         </Spin>
       </div>
+      <PostPreviewTitle action='see' taskId={id} visible={previewTitleVisible} onCancel={setPreviewTitleVisible} ></PostPreviewTitle>
     </>)
 }
 

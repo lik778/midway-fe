@@ -1,14 +1,19 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useHistory } from 'umi'
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import MainTitle from '@/components/main-title';
 import styles from './index.less';
-import { getCookie, randomList, } from '@/utils';
+import { getCookie, randomList, translateProductText, } from '@/utils';
 import { modal, prefix } from '@/constants/ai-module'
-import { CollectionTitleApiParams } from '@/interfaces/ai-module'
-import { Rule, FormItemListItem } from './data'
+import { PostToolTitleKeys } from '@/enums/ai-module'
+import { CollectionTitleApiParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionCreateTitleParmas } from '@/interfaces/ai-module'
+import { createCollectionTitles, previewCollectionTitles } from '@/api/ai-module'
+import { Rule, FormItemListItem, FormParmas, SelectListItem } from './data'
 import FormTextarea from './components/form-textarea'
 import FormArea from './components/form-area'
+import { errorMessage, successMessage } from '@/components/message';
+import { COOKIE_USER_KEY } from '@/constants/index'
+import PostPreviewTitle from '../components/post-preview-title'
 
 const validateItem: (key: string, min: number, max: number, rule: Rule, value: string) => Promise<any> = (key, min, max, rule, value) => {
   if (key === 'area' || key === 'prefix' || key === 'coreWords' || key === 'modal') {
@@ -23,14 +28,16 @@ const validateItem: (key: string, min: number, max: number, rule: Rule, value: s
   return Promise.resolve()
 }
 
+
 const PostTitleCreate: FC = () => {
   const history = useHistory()
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FormParmas>();
   const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
-
+  const [dataList, setDataList] = useState<CollectionCreateTitleParmas[]>([])
+  const [selectTitleVisible, setSelectTitleVisible] = useState<boolean>(false)
   const formItemList: FormItemListItem[] = [{
     label: '前缀',
     key: 'prefix',
@@ -71,46 +78,77 @@ const PostTitleCreate: FC = () => {
     readOnly: false
   }]
 
-  const handleClickSubmit = async () => {
-    await form.validateFields();
-    const values = form.getFieldsValue()
-    console.log(values)
-    // const requestData: QuestionTaskApiParams = {
-    //   area: [],
-    //   prefix: [],
-    //   coreWords: [],
-    //   suffix: [],
-    //   modal: []
-    // }
-    // for (let i in values) {
-    //   if (i !== 'suffix') {
-    //     requestData[i as keyof QuestionTaskApiParams] = (values[i] as string).split('\n').filter(item => item)
-    //   } else {
-    //     requestData.suffix = interrogativeWord.filter(item => item.isSelect).reduce((total, item) => {
-    //       return total.concat(item.child.map(cItem => `${cItem.id}|||${cItem.content}|||${item.name}`))
-    //     }, [] as string[])
-    //   }
-    // }
-    // setUpdataLoading(true)
-    // if (!validateUserId()) {
-    //   errorMessage('当前用户已更换，在页面刷新后再试！')
-    //   setTimeout(() => {
-    //     window.location.reload()
-    //   }, 1500)
-    //   return
-    // }
-    // const res = await submitCoreWordsApi(requestData)
-    // setUpdataLoading(false)
-    // if (res.success) {
-    //   setModalVisible(false)
-    //   initCompoment()
-    // } else {
-    //   setModalVisible(false)
-    //   errorMessage(res.message || '提交失败')
-    // }
-    // const res = await mockData('data', {})
-    // 提交之后 重新请求用户状态
+  const setLastPreviewTime = () => {
+    const uid = getCookie(COOKIE_USER_KEY)
+    localStorage.setItem(`setLastPreviewTiem_${uid}`, String(new Date().getTime()))
   }
+
+  const checkLastPreviewTime = () => {
+    const uid = getCookie(COOKIE_USER_KEY)
+    const lastTime = localStorage.getItem(`setLastPreviewTiem_${uid}`)
+    if (lastTime) {
+      const nowTime = new Date().getTime()
+      const second = Math.floor((nowTime - Number(lastTime)) / 1000)
+      if (second < 30) {
+        errorMessage(`操作太快，请${30 - second}秒后再试!`)
+        return false
+      }
+      return true
+    }
+    return true
+  }
+
+  useEffect(() => {
+    console.log(dataList)
+  }, [dataList])
+
+  const handleClickPreview = async () => {
+    await form.validateFields();
+    if (!checkLastPreviewTime()) return
+    const values = form.getFieldsValue()
+    const { notCityWord } = values
+    const city = values.city || []
+    // 这里城市取选择的多城市的第一个，减少后端生成逻辑，获取的结果在前端替换城市就好
+    const params: CollectionPreviewTitleParmas = {
+      cityNum: values.city?.length || 0,
+      groupWords: {
+        [PostToolTitleKeys.CITY]: notCityWord ? undefined : [(city[0])?.label],
+        [PostToolTitleKeys.AREA]: values.area?.map(item => item.label) || [],
+        [PostToolTitleKeys.PREFIX]: values.prefix.split('\n'),
+        [PostToolTitleKeys.MAIN]: values.main.split('\n'),
+        [PostToolTitleKeys.SUFFIX]: values.suffix.split('\n'),
+      }
+    }
+    setUpdataLoading(true)
+    const res = await previewCollectionTitles(params)
+    if (res.success) {
+      const { remainSize, titles } = res.data
+      successMessage(`为您总共生成${remainSize * (city.length || 1)}个标题`)
+      // 多城市需要拷贝下结果
+      if (city.length > 1) {
+        setDataList(city.reduce<CollectionCreateTitleParmas[]>((value, item) => {
+          return value.concat(titles.map(cItem => {
+            return {
+              ...cItem,
+              city_id: item.value,
+              cityName: item.label,
+              content: notCityWord ? cItem.content : cItem.content.replace((city[0])?.label, item.label)
+            }
+          }))
+        }, []))
+      } else {
+        setDataList(titles.map(item => ({
+          ...item,
+          city_id: (city[0])?.value,
+        })))
+      }
+      setSelectTitleVisible(true)
+      setLastPreviewTime()
+    }
+    setUpdataLoading(false)
+  }
+
+
 
   return <>
     <MainTitle title="批量添加标题" showJumpIcon />
@@ -131,8 +169,9 @@ const PostTitleCreate: FC = () => {
           }
         </Row>
       </Form>
-      <Button className={styles['create-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickSubmit} >生成问答</Button>
+      <Button className={styles['create-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickPreview} >预览标题</Button>
     </div>
+    <PostPreviewTitle action='edit' taskId={id} editDataList={dataList} visible={selectTitleVisible} onCancel={setSelectTitleVisible} ></PostPreviewTitle>
   </>
 }
 

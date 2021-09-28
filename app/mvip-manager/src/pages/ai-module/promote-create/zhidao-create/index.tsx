@@ -12,6 +12,7 @@ import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
 import { debounce } from 'lodash'
 import { modal, prefix } from '@/constants/ai-module'
+import { COOKIE_USER_KEY } from '@/constants/index'
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
@@ -72,7 +73,7 @@ interface QuotaNumInterface {
 
 const CreateZhidao: FC = () => {
   const history = useHistory()
-  const [uid, setUid] = useState<string>(() => getCookie('__u'))
+  const [uid, setUid] = useState<string>(() => getCookie(COOKIE_USER_KEY))
   const [form] = Form.useForm();
   const [wordsNum, setWordsNum] = useState({
     area: 0,
@@ -417,7 +418,7 @@ const CreateZhidao: FC = () => {
 
 
   const validateUserId = (): boolean => {
-    const nowUserId = getCookie('__u')
+    const nowUserId = getCookie(COOKIE_USER_KEY)
     return uid === nowUserId
   }
 

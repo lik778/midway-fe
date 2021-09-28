@@ -1,25 +1,24 @@
-import React, { FC, forwardRef, Ref, useEffect, useState, useImperativeHandle } from 'react';
+import React, { FC, forwardRef, Ref, useEffect, useState, useImperativeHandle, useMemo, useCallback } from 'react';
 import { Form, Checkbox } from 'antd';
-import { SelectConfig, SelectListItem } from '../../data'
+import { SelectConfig, SelectListItem } from '../../../../data'
 import styles from './index.less';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group
 
 interface Props {
-  value?: string[],
-  onChange?: (value: string[]) => void,
+  value?: SelectListItem[],
+  onChange?: (value: SelectListItem[]) => void,
   name: string,
   selectList: SelectListItem[],
   selectAll: boolean
-  onValueChange: (name: string, value: string[]) => void,
+  onValueChange: (name: string, value: SelectListItem[]) => void,
 }
 
 const SelectBox = (props: Props, parentRef: Ref<any>) => {
 
   const { value, onChange, name, selectList, onValueChange } = props
 
-  // 是否有操作过， 操作过才会显示警告边框 
-  const [first, setFirst] = useState<boolean>(true)
+  const localValue = useMemo(() => (value || []).map(item => item.value), [value])
 
   useImperativeHandle(parentRef, () => ({
     onCheckAllChange
@@ -33,22 +32,32 @@ const SelectBox = (props: Props, parentRef: Ref<any>) => {
     }
   }, [selectList])
 
-  const onCheckAllChange = (checkAll: boolean) => {
-    const newValue = checkAll ? selectList.map(item => item.value) : []
+  const onCheckAllChange = useCallback((checkAll: boolean) => {
+    const newValue = checkAll ? selectList.map(item => ({
+      label: item.label,
+      value: item.value
+    })) : []
+    onChange!(newValue)
+    onValueChange(name, newValue)
+  }, [selectList])
+
+  const onCheckChange = (checkValue: any[]) => {
+    const checkValueMap: Map<string, boolean> = new Map()
+    checkValue.forEach(item => {
+      checkValueMap.set(item, true)
+    })
+    const newValue = selectList.filter(item => checkValueMap.has(item.value)).map(item => ({
+      label: item.label,
+      value: item.value
+    }))
     onChange!(newValue)
     onValueChange(name, newValue)
   }
 
-  const onCheckChange = (checkValue: any[]) => {
-    setFirst(false)
-    onChange!(checkValue)
-    onValueChange(name, checkValue)
-  }
-
   return <div className={`${styles['select-container']} select-container`}>
-    <CheckboxGroup value={value} onChange={onCheckChange}>
+    <CheckboxGroup value={localValue} onChange={onCheckChange}>
       {
-        selectList.map(item => <div className={styles['select-item']} key={item.value}>
+        (selectList || []).map(item => <div className={styles['select-item']} key={item.value}>
           <Checkbox value={item.value}>{item.label}</Checkbox>
         </div>)
       }
