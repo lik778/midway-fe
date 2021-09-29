@@ -14,8 +14,8 @@ import { errorMessage, successMessage } from '@/components/message';
 import { userMapStateToProps, userMapDispatchToProps } from '@/models/user';
 import { useDebounce } from '@/hooks/debounce';
 import styles from './index.less';
-
-
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 function ContactForm(props: any) {
   const { companyInfo, setCompanyInfo } = props
@@ -103,6 +103,15 @@ function ContactForm(props: any) {
     if (res?.success) {
       setCompanyInfo(info)
       successMessage('更新联系方式成功')
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          tm: +new Date(),
+          action: 'time-end',
+          action_page: 'company-info-base',
+        }
+      })
     } else {
       errorMessage(res?.message || '出错了')
     }
