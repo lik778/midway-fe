@@ -1,19 +1,17 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { Table, Button, Pagination } from 'antd';
+import { Table, Button, Pagination, Modal } from 'antd';
 import { getAdviceList, getDownload } from '../../api/adviceRecord'
 import { PageParams } from '../../interfaces/api'
 import { Advicerespone } from '../../interfaces/adviceRecord'
 import './index.css'
 
-interface tableAttr {
-
-}
 export default () => {
   // const [pagelist, setPagelist] = useState<PageParams>({ page: 1, size: 20 })
   const [listData, setListData] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
-
+  const [modalShow, setModalShow] = useState(false)
+  const [itemContent, setItemContent] = useState<string>('')
   const getList = async (page?: number) => {
     setLoading(true)
     page = page || 1
@@ -64,17 +62,20 @@ export default () => {
       dataIndex: 'content',
       key: 'content',
       render: (text, record) => (
-        <Button type="primary" size="small" onClick={() => handleClick(text, record)}> 查看</ Button>
+        <Button type="primary" size="small" onClick={() => renderPreviewModal(text, record)}> 查看</ Button>
       )
     }
   ]
-  const handleClick = (text: any, items: any) => {
+  // 点击查看
+  const renderPreviewModal = (text: any, items: any) => {
     setLoading(true)
-    console.log(items);
+    setItemContent(items.content)
     setLoading(false)
   }
+  // 分页
   const onChange = (event: any) => {
   }
+  // 点击下载
   const handleDown = async () => {
     const res = await getDownload()
     const blob = res.data
@@ -87,7 +88,23 @@ export default () => {
       a.click()
       document.body.removeChild(a)
     }
-
+  }
+  const closemodalShow = () => {
+    setModalShow(false)
+  }
+  const previewModal = () => {
+    return (
+      <Modal
+        title="详细建议"
+        footer={null}
+        visible={modalShow}
+        onCancel={closemodalShow}
+      >
+        <div className="showAdvice">
+          {itemContent}
+        </div>
+      </Modal>
+    )
   }
   return (
     <div className="advice-record">
@@ -97,8 +114,9 @@ export default () => {
         </div>
       </div>
       <div className="table-down">
-        <Table columns={columns} loading={loading} dataSource={listData}></Table>
+        <Table columns={columns} onChange={onChange} loading={loading} dataSource={listData}></Table>
       </div>
+      {previewModal()}
     </div>
   )
 }
