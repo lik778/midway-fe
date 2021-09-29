@@ -70,32 +70,37 @@
         width 406px
         border-radius 4px
     .left-contentImg
+      position relative
+      box-sizing: border-box
       width: 100%
       height: 65px
+      padding: 0 34px
       background-color: #ffffff
+      .swiper-button-prev
+        position absolute
+        left: 10px
+        top: 48px
+        width: 12px
+        height: 17px
+        cursor: pointer
+        background: url('//file.baixing.net/202109/be6a80b3ef4863dd32a6450b5a23efa5.png') no-repeat center center/100%
+      .swiper-button-next
+        position absolute
+        right: 13px
+        top: 48px
+        width: 11px
+        height: 15px
+        cursor: pointer
+        background: url('//file.baixing.net/202109/3f10676e75f1e75af1c8d285e26db3fd.png') no-repeat center center/100%
       .swiper-container
         width: 100%
         height: 100%
         .swiper-wrapper
-          overflow hidden
           width: 303px
           margin: 0 auto
           display: flex
           align-items: center
-        .swiper-button-prev
-          left: 10px
-          top: 48px
-          width: 12px
-          height: 17px
-          cursor: pointer
-          background: url('//file.baixing.net/202109/be6a80b3ef4863dd32a6450b5a23efa5.png') no-repeat center center/100%
-        .swiper-button-next
-          right: 13px
-          top: 48px
-          width: 11px
-          height: 15px
-          cursor: pointer
-          background: url('//file.baixing.net/202109/3f10676e75f1e75af1c8d285e26db3fd.png') no-repeat center center/100%
+
         .swiper-slide
           position relative
           width: 69px !important
