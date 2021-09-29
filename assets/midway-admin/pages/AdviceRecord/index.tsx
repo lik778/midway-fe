@@ -10,6 +10,24 @@ interface tableAttr {
 
 }
 export default () => {
+  // const [pagelist, setPagelist] = useState<PageParams>({ page: 1, size: 20 })
+  const [listData, setListData] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const getList = async (page?: number) => {
+    setLoading(true)
+    page = page || 1
+    const res = await getAdviceList({ page, size: 20 })
+    if (res?.success) {
+      setListData(((res.data as any).result).map((x, i) => ({ ...x, key: i })))
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
   const columns = [
     {
       title: '反馈时间',
@@ -50,26 +68,25 @@ export default () => {
       )
     }
   ]
-  const [pagelist, setPagelist] = useState<PageParams>({ page: 1, size: 20 })
-  const [listData, setListData] = useState<any[]>([])
-  useEffect(() => {
-    getList()
-  }, [])
-  const getList = async () => {
-    const res = await getAdviceList(pagelist)
-    if (res?.success) {
-      setListData(((res.data as any).result).map((x, i) => ({ ...x, key: i })))
-    }
-  }
   const handleClick = (text: any, items: any) => {
+    setLoading(true)
     console.log(items);
-
+    setLoading(false)
   }
   const onChange = (event: any) => {
   }
   const handleDown = async () => {
     const res = await getDownload()
-    console.log(res);
+    const blob = res.data
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      let a = document.createElement('a')
+      a.download = __filename
+      a.href = window.URL.createObjectURL(blob)
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    }
 
   }
   return (
@@ -80,9 +97,8 @@ export default () => {
         </div>
       </div>
       <div className="table-down">
-        <Table columns={columns} dataSource={listData}></Table>
+        <Table columns={columns} loading={loading} dataSource={listData}></Table>
       </div>
-      <Pagination onChange={onChange} total={50} />
     </div>
   )
 }
