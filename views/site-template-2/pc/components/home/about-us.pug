@@ -15,7 +15,7 @@ mixin about-Us-New(type,mediaImg,videoUrl)
           | !{ aboutText.length === 220?aboutText+'...':aboutText }
           if aboutText.length === 220
             a.view-detail(href=aboutLink) 查看详情
-      if phone.content
+      if isSem !== '1' && phone.content
         .content-right-bottom
           .bottom-left
             img(src="//file.baixing.net/202108/e9cd4572f5363e55005f0e8616be31c3.png")
