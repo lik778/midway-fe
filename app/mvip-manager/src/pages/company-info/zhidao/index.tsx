@@ -5,7 +5,6 @@ import { cloneDeepWith } from 'lodash';
 import { zhidaoInfoForm } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-
 import { ZhidaoMaterial, InitZhidaoMaterial } from '@/interfaces/user';
 import { setZhidaoMaterial, getZhidaoMaterial } from '@/api/user'
 import Loading from '@/components/loading';
@@ -13,7 +12,8 @@ import { errorMessage, successMessage } from '@/components/message';
 import './index.less';
 import { objToTargetObj } from '@/utils';
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
-
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 function CompanyInfoZhudao(props: any) {
   const [formLoading, setFormLoading] = React.useState<boolean>(false);
   const [enterpriseInfo, setEnterpriseInfo] = useState<InitZhidaoMaterial | null>({
@@ -45,6 +45,15 @@ function CompanyInfoZhudao(props: any) {
 
   useEffect(() => {
     getFormData()
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        tm: +new Date(),
+        action: 'entry-page',
+        action_page: 'company-info-zhidao',
+      }
+    })
   }, [])
 
   const sumbit = async (values: InitZhidaoMaterial) => {
@@ -56,6 +65,15 @@ function CompanyInfoZhudao(props: any) {
     })
     if (success) {
       successMessage('保存成功')
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          tm: +new Date(),
+          action:  'time-end',
+          action_page: 'company-info-zhidao',
+        }
+      })
     } else {
       errorMessage(message || '出错了')
     }

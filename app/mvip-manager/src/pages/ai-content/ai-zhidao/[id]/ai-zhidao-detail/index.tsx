@@ -13,10 +13,12 @@ import { ZhidaoAiTaskQuestionStatusText } from '@/constants/index'
 import { ZhidaoAiTaskQuestionStatus } from '@/enums'
 import MyModal, { ModalType } from '@/components/modal';
 import { mockData } from '@/utils/index'
-
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const AiZhidaoDetail = (props: any) => {
-  const history = useHistory<{ query: { pageType: 'see' | 'edit' } }>()
+  // { query: { pageType: 'see' | 'edit' } }
+  const history = useHistory()
   const params = useParams<{ id: string }>()
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
@@ -132,6 +134,16 @@ const AiZhidaoDetail = (props: any) => {
 
   useEffect(() => {
     getData()
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        tm: +new Date(),
+        action: 'entry-page',
+        action_page: 'zhidao-task-detail',
+        action_type: pageType // 当前动作产生:查看任务 | 修改任务
+      }
+    })
   }, [])
 
   // 这里传row是为了知道修改的序号
@@ -164,6 +176,16 @@ const AiZhidaoDetail = (props: any) => {
     if (res.success && res.data === 'true') {
       successMessage('新建任务成功')
       history.replace('/ai-content/ai-zhidao')
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          tm: +new Date(),
+          action: 'time-end',
+          action_page: 'zhidao-task-detail',
+          action_type: pageType // 当前动作产生:查看任务 | 修改任务
+        }
+      })
     } else {
       errorMessage(res.message || '发布失败')
     }
@@ -176,6 +198,16 @@ const AiZhidaoDetail = (props: any) => {
     if (res.success) {
       successMessage('撤销成功')
       history.goBack()
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          tm: +new Date(),
+          action: 'time-end',
+          action_page: 'zhidao-task-detail',
+          action_type: pageType // 当前动作产生:查看任务 | 修改任务
+        }
+      })
     } else {
       errorMessage(res.message || '撤销失败')
     }
