@@ -49,7 +49,6 @@ function CompanyInfoZhudao(props: any) {
       eventType: BXMAINSITE,
       data: {
         event_type: BXMAINSITE,
-        tm: +new Date(),
         action: 'entry-page',
         action_page: 'company-info-zhidao',
       }
@@ -69,7 +68,6 @@ function CompanyInfoZhudao(props: any) {
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          tm: +new Date(),
           action:  'time-end',
           action_page: 'company-info-zhidao',
         }
