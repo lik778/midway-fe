@@ -13,5 +13,10 @@
   border-radius: 16px;
   cursor: pointer;
 }
-.advice-record .table-down {
+
+.showModal {
+  font-size: 20px;
+}
+.showModal .ant-modal-content {
+  min-height: 300px;
 }

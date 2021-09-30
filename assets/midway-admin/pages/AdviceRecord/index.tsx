@@ -1,4 +1,5 @@
 import * as React from 'react'
+import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { Table, Button, Pagination, Modal } from 'antd';
 import { getAdviceList, getDownload } from '../../api/adviceRecord'
@@ -68,26 +69,64 @@ export default () => {
   ]
   // 点击查看
   const renderPreviewModal = (text: any, items: any) => {
-    setLoading(true)
+    setModalShow(true)
     setItemContent(items.content)
-    setLoading(false)
   }
   // 分页
   const onChange = (event: any) => {
   }
   // 点击下载
+  const baseURL = '/management/api/internal'
   const handleDown = async () => {
-    const res = await getDownload()
-    const blob = res.data
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      let a = document.createElement('a')
-      a.download = __filename
-      a.href = window.URL.createObjectURL(blob)
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-    }
+    const request = axios.create({
+      timeout: 10000,
+      // withCredentials: true,
+      headers: {
+        // "Content-Type": "application/json;charset=utf-8"
+      },
+      responseType: "blob"
+    })
+    const res = await request.post(baseURL, { method: 'get', path: '/api/midway/internal/feedback/download' })
+    console.log(res);
+
+    // axios({
+    //   method: 'get',
+    //   url: 'http://172.17.14.106:8080/api/midway/test/test',
+    //   responseType: 'blob',
+    //   headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    // }).then(res => {
+    //   console.log(res);
+    //   // const blob = new Blob([res.data]);, { type: 'application/vnd.ms-excel' }
+    //   let blob = new Blob([res.data])
+    //   let url = URL.createObjectURL(blob)
+    //   let ele = document.createElement("a")
+    //   ele.style.display = 'none'
+    //   ele.href = url
+    //   ele.download = "反馈收集表.xlsx"
+    //   // 将a标签添加到页面并模拟点击
+    //   document.querySelectorAll("body")[0].appendChild(ele)
+    //   ele.click()
+    //   // 移除a标签
+    //   ele.remove()
+    // })
+
+    // const res: any = await getDownload()
+    // console.log(res);
+
+    let blob = new Blob([res.data])
+    let url = URL.createObjectURL(blob)
+    let ele = document.createElement("a")
+    ele.style.display = 'none'
+    ele.href = url
+    ele.download = "反馈收集表.xlsx"
+    // 将a标签添加到页面并模拟点击
+    document.querySelectorAll("body")[0].appendChild(ele)
+    ele.click()
+    // 移除a标签
+    ele.remove()
+
+
+
   }
   const closemodalShow = () => {
     setModalShow(false)
@@ -95,15 +134,20 @@ export default () => {
   const previewModal = () => {
     return (
       <Modal
+        className="showModal"
+        width={700}
         title="详细建议"
         footer={null}
         visible={modalShow}
         onCancel={closemodalShow}
+        maskClosable={false}
+        centered
+
       >
         <div className="showAdvice">
           {itemContent}
         </div>
-      </Modal>
+      </Modal >
     )
   }
   return (
