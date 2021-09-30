@@ -11,17 +11,53 @@ import {
   ImgListParam,
   TdkSaveMeta,
   BannerListItem,
-  TdkDetailMeta, ShopStatus, ShopInfo, CustomerSetListItem, CustomerSetChildListItem, CustomerListItem,
-  MediaCateItem, MediaAssetsItem,
-  CreateShopParams, RenewShopParams, ShopBasicInfo, UploadShopBasicInfoParams,
-  GetMediaAssetsRes, GetMediaCatesRes,
-  GetMediaCatesParam, getMediaCatesNameListParam, CreateMediaCatesParam, UpdateMediaCatesParam, DelMediaCatesParam,
-  GetMediaFailedAssetsParam, GetMediaFailedAssetsRes,
-  GetMediaAssetsParam, CreateMediaAssetsParam, DelMediaAssetsParam, UpdateMediaAssetsInCateParam, UpdateMediaAssetsParam, MoveMediaAssetsParam, MediaCatesNameListItem,
-  ReAuditMediaAssetsParam, ShopProductListItem, ShopArticleListItem, NewestDataVersion,
-  ModulePageType, ModuleComponentId, ModuleInitPage, ModuleProductSwiper, ModuleProductInfo,
-  ModuleHomeABoutInfo, ModuleArticleInfo, ModuleABoutABoutInfo, ModuleRequestParam, ModuleProductSwiperParam,
-  ModuleProductInfoParam, ModuleArticleInfoParam, ModuleHomeABoutInfoParam, ModuleABoutABoutInfoParam, ModuleProductSwiperNoParam
+  TdkDetailMeta,
+  ShopStatus,
+  ShopInfo,
+  CustomerSetListItem,
+  CustomerSetChildListItem,
+  CustomerListItem,
+  MediaCateItem,
+  MediaAssetsItem,
+  CreateShopParams,
+  RenewShopParams,
+  ShopBasicInfo,
+  UploadShopBasicInfoParams,
+  GetMediaAssetsRes,
+  GetMediaCatesRes,
+  GetMediaCatesParam,
+  getMediaCatesNameListParam,
+  CreateMediaCatesParam,
+  UpdateMediaCatesParam,
+  DelMediaCatesParam,
+  GetMediaFailedAssetsParam,
+  GetMediaFailedAssetsRes,
+  GetMediaAssetsParam,
+  CreateMediaAssetsParam,
+  DelMediaAssetsParam,
+  UpdateMediaAssetsInCateParam,
+  UpdateMediaAssetsParam,
+  MoveMediaAssetsParam,
+  MediaCatesNameListItem,
+  ReAuditMediaAssetsParam,
+  ProductListItem,
+  ArticleListItem,
+  NewestDataVersion,
+  ModulePageType,
+  ModuleComponentId,
+  ModuleInitPage,
+  ModuleProductSwiper,
+  ModuleProductInfo,
+  ModuleHomeABoutInfo,
+  ModuleArticleInfo,
+  ModuleABoutABoutInfo,
+  ModuleRequestParam,
+  ModuleProductSwiperParam,
+  ModuleProductInfoParam,
+  ModuleArticleInfoParam,
+  ModuleHomeABoutInfoParam,
+  ModuleABoutABoutInfoParam,
+  ModuleProductSwiperNoParam
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -109,7 +145,7 @@ export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {
   return postApiData<{
-    productList: ListRes<ShopProductListItem[]>,
+    productList: ListRes<ProductListItem[]>,
     cateList: any
   }>(ServicePath.SHOP, 'midway/backend/product/list', params, setShopHeader(shopId))
 }
@@ -129,7 +165,7 @@ export const deleteProductApi = (shopId: number, params: HandleApiParams) => {
 // api: 获取店铺文章列表
 export const getArticleListApi = (shopId: number, params: GetContentApiParams) => {
   return postApiData<{
-    articleList: ListRes<ShopArticleListItem[]>,
+    articleList: ListRes<ArticleListItem[]>,
     cateList: any
   }>(ServicePath.SHOP, 'midway/backend/article/list', params, setShopHeader(shopId))
 }
@@ -310,7 +346,7 @@ export const getMediaFailedAssets = (params: GetMediaFailedAssetsParam) => {
 }
 
 // 删除申诉素材（专用来删除审核失败的素材）
-export const delMediaFailedAssets = (params: Pick<DelMediaAssetsParam, 'ids'|'source'>) => {
+export const delMediaFailedAssets = (params: Pick<DelMediaAssetsParam, 'ids' | 'source'>) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/material/deleteFailed', params)
 }
 
