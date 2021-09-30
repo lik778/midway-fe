@@ -34,6 +34,9 @@ export class BaseSiteController {
 
   private checkSem(sem: string | undefined, bannerId: string | undefined, account: string) {
     // https://www.tapd.cn/20097551/prong/stories/view/1120097551001039216
+    // sem = 2 头条
+    // sem = 1 百度处理过的样式
+
 
     //sem = 2 头条投放
     if (sem === '2') {
