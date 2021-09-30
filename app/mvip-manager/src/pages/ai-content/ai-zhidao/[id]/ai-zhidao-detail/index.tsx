@@ -138,7 +138,6 @@ const AiZhidaoDetail = (props: any) => {
       eventType: BXMAINSITE,
       data: {
         event_type: BXMAINSITE,
-        tm: +new Date(),
         action: 'entry-page',
         action_page: 'zhidao-task-detail',
         action_type: pageType // 当前动作产生:查看任务 | 修改任务
@@ -180,7 +179,6 @@ const AiZhidaoDetail = (props: any) => {
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          tm: +new Date(),
           action: 'time-end',
           action_page: 'zhidao-task-detail',
           action_type: pageType // 当前动作产生:查看任务 | 修改任务
@@ -202,7 +200,6 @@ const AiZhidaoDetail = (props: any) => {
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          tm: +new Date(),
           action: 'time-end',
           action_page: 'zhidao-task-detail',
           action_type: pageType // 当前动作产生:查看任务 | 修改任务

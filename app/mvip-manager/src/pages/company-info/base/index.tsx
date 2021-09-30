@@ -103,12 +103,11 @@ function CompanyInfoBase(props: Props) {
 
 
   useEffect(() => {
-    getShopStatus()
+    getShopStatus() 
     track({
       eventType: BXMAINSITE,
       data: {
         event_type: BXMAINSITE,
-        tm: +new Date(),
         action: 'entry-page',
         action_page: 'company-info-base',
       }
@@ -165,7 +164,6 @@ function CompanyInfoBase(props: Props) {
         eventType: BXMAINSITE,
         data: {
           event_type: BXMAINSITE,
-          tm: +new Date(),
           action: 'time-end',
           action_page: 'company-info-base',
         }

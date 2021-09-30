@@ -65,6 +65,12 @@ html
       } else {
           window.isCn =  '';
       }
+      let isAccount = '#{ isAccount }';
+      if(isAccount){
+          window.isAccount = isAccount
+      } else {
+          window.isAccount =  '';
+      }
     include ../vendor/baidutongji.pug
     //-TODO:开发阶段先注释掉
     include ../vendor/53kf.pug

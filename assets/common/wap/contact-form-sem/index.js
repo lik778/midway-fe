@@ -26,15 +26,15 @@ const setForm = (contactForm, contactFormParent, formA) => {
   });
 }
 
-function gotoDetail(e, sem) {
+function gotoDetail(e, sem, account) {
   e.preventDefault()
   const href = $(e.currentTarget).attr('href')
   if (!href) return
   const target = $(e.currentTarget).attr('target') || '_self'
   if (href.indexOf('?') !== -1) {
-    window.open(`${href}&sem=${sem}`, target,)
+    window.open(`${href}&sem=${sem}&account=${account}`, target,)
   } else {
-    window.open(`${href}?sem=${sem}`, target,)
+    window.open(`${href}?sem=${sem}&account=${account}`, target,)
   }
 }
 
@@ -53,7 +53,7 @@ function disable(e) {
  * @param {*} gotoOtherPageA 需要前往详情页的a标签
  * @param {*} disableA 被禁用的a标签
  */
-export const initSem = function ({ sem, type, contactForm, contactFormParent, formA, gotoOtherPageA, disableA }) {
+export const initSem = function ({account, sem, type, contactForm, contactFormParent, formA, gotoOtherPageA, disableA }) {
   console.log(sem)
   if (sem === "1") {
     // 不跳转的链接则谈窗
@@ -63,7 +63,7 @@ export const initSem = function ({ sem, type, contactForm, contactFormParent, fo
 
     // 跳转的链接则加上sem的参数
     gotoOtherPageA && gotoOtherPageA.on('click', function (e) {
-      gotoDetail(e, sem)
+      gotoDetail(e, sem, account)
     })
 
     // 被禁用的a标签点击无反应
@@ -71,7 +71,7 @@ export const initSem = function ({ sem, type, contactForm, contactFormParent, fo
   } else if (sem === "2") {
     // 跳转的链接则加上sem的参数
     gotoOtherPageA && gotoOtherPageA.on('click', function (e) {
-      gotoDetail(e, sem)
+      gotoDetail(e, sem, account)
     })
   }
 }
