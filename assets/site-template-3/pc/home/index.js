@@ -94,22 +94,23 @@ $(document).on('ready', function() {
   // sem部分链接需要禁止二跳
   if (isSem === '1') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'home',
       contactForm: $('#contactUs .contact-us__message'),
       contactFormParent: $('#contactUs'),
       formA: $(
         '.official-nav-block-bgc a,.banner-list a,#layout-content a',
-      ).not('.products a,.about-us-bgc a,.new-center .news-data-box a'),
+      ).not('#product-list-box a,.about-us-bgc a,.new-center .news-box a'),
       gotoOtherPageA: $(
-        '.products a,.about-us-bgc a,.new-center .news-data-box a',
+        '#product-list-box a,.about-us-bgc a,.new-center .news-box a',
       ),
     });
   }
-
   
   if (isSem === '2') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'home',
       gotoOtherPageA: $('a')

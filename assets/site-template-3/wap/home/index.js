@@ -18,6 +18,7 @@ initCompanyInfo()
 $(document).on("ready", function () {
   if (isSem === '1') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'home',
       contactForm: $('#contactForm'),
@@ -29,6 +30,7 @@ $(document).on("ready", function () {
 
   if (isSem === '2') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'home',
       gotoOtherPageA: $('a')
