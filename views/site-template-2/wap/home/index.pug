@@ -6,7 +6,7 @@ block header
   include ../components/header
   include ../components/swiper
   +swiper('home')
-  if isSem !== "2"
+  if isSem !== "2" && isSem !== "1"
     - const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
     include ../components/company-info-home
     +company-info-home(tags)
