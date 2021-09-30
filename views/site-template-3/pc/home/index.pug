@@ -27,7 +27,7 @@ block content
 						include ../components/home/product-list.pug
 						+item(productListResult)
 
-				if isSem !== "2"
+				if isSem !== "2"&&isSem !== "1"
 					include ../components/home/about-us.pug
 					+about-us-new( renderData.about|| renderData.basic.aboutModule|| {})
 
