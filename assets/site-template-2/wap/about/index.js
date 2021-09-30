@@ -13,6 +13,7 @@ $(document).on('ready', function () {
 
   if (isSem === '2') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'about',
       gotoOtherPageA: $('a')

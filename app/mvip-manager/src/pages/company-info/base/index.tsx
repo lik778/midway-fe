@@ -18,6 +18,8 @@ import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import styles from './index.less';
 import { ShopStatus } from '@/interfaces/shop';
 import { objToTargetObj } from '@/utils';
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const { Step } = Steps;
 
@@ -101,7 +103,15 @@ function CompanyInfoBase(props: Props) {
 
 
   useEffect(() => {
-    getShopStatus()
+    getShopStatus() 
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'company-info-base',
+      }
+    })
   }, [])
 
   const next = () => {
@@ -150,6 +160,14 @@ function CompanyInfoBase(props: Props) {
       successMessage('修改基础资料成功')
       setCompanyInfo(data)
       next()
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          action: 'time-end',
+          action_page: 'company-info-base',
+        }
+      })
     } else {
       errorMessage(message || '出错啦')
     }

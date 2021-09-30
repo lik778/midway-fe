@@ -11,7 +11,8 @@ import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import TipModal from './components/tip-modal'
 import { debounce } from 'lodash'
-
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
@@ -72,7 +73,6 @@ interface ZhidaoCreateJobProp {
   activeKey: ActiveKey,
   changeActiveKey(activeKey: ActiveKey): void
 }
-
 
 
 export default (props: ZhidaoCreateJobProp) => {
@@ -209,6 +209,14 @@ export default (props: ZhidaoCreateJobProp) => {
 
   useEffect(() => {
     getQuotaNum()
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'zhidao-task-create',
+      }
+    })
   }, [])
 
 
@@ -462,6 +470,14 @@ export default (props: ZhidaoCreateJobProp) => {
     if (res.success) {
       setModalVisible(false)
       initCompoment()
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          action: 'time-end',
+          action_page: 'zhidao-task-create',
+        }
+      })
     } else {
       setModalVisible(false)
       errorMessage(res.message || '提交失败')
