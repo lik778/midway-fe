@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import { Modal, Form } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { cloneDeepWith } from 'lodash';
@@ -11,14 +11,16 @@ interface Iprop {
   isModalVisible: boolean,
   loading: boolean,
   onCancel: () => void,
-  sumbit: (value: any) => void
+  sumbit: (value: any) => void,
+  onInit: (item: any) => void
 }
 export enum ModalType {
   info = "info"
 }
-const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) => {
+const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading, onInit }) => {
   const [editData, setEditData] = useState<any>(null)
   const [config, setConfig] = useState<FormConfig>(RecordForm)
+  const ref = useRef()
   useEffect(() => {
     const addConfig = () => {
       const configs = cloneDeepWith(RecordForm)
@@ -38,6 +40,12 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
     setConfig(addConfig())
   }, [])
 
+  useEffect(() => {
+    const form: any = ref.current
+    if (form) {
+      form.form.resetFields()
+    }
+  }, [isModalVisible])
 
   const creatTitle = () => {
     return (
@@ -53,6 +61,8 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
             config={config}
             submit={sumbit}
             loading={loading}
+            onInit={onInit}
+            ref={ref}
           />
         </Form.Item>
       </div>
@@ -70,7 +80,7 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
         onOk={onOk}
         width={1000}
         type={ModalType.info}
-        maskClosable={false}
+        maskClosable={true}
       />
     </>
   )
