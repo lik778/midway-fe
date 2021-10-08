@@ -2,7 +2,7 @@ mixin mediaShow()
 	- const { headImg, name, price, contentImg, videoUrl,params } = renderData.productInfo;
 	- const { contactName,phone,union400 } = renderData.basic.contact;
 	- const { address, logo, name: companyName} = renderData.basic.company
-	- const { metas } = JSON.parse(renderData.basic.shop.about)
+	- const { metas } = renderData.basic.shop.about? JSON.parse(renderData.basic.shop.about):{}
 	- const defaultImg = '//file.baixing.net/202109/e9a1688b5c861d17484d61515c207390.png';
 	.media-show-container
 		.media-show-left
