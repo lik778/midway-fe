@@ -13,7 +13,6 @@ import AdivceRecord from '../advice-record'
 
 interface Props extends BaseProps {
   type: ShopModuleType;
-  onChangeType(type: ProductType): void;
   curShopInfo?: ShopInfo | null;
   dispatch: Dispatch;
 }

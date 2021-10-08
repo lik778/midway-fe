@@ -1,7 +1,7 @@
 import { ContentCateType, DomainStatus, ShopIndustryType } from '@/enums';
 import { AppSourceEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ListRes } from '@/interfaces/base';
-import { ShopMetas } from '@/interfaces/user'
+import { ShopMetas } from '@/interfaces/user';
 import { AuditStatus } from '@/enums';
 import { MediaItem } from '@/components/img-upload/data';
 
@@ -20,20 +20,27 @@ export interface CreateProductApiParams extends CreateArticleApiParams {
   headImg?: string;
 }
 
+export interface ProductListItemInfoKey {
+  key: string;
+  value: string;
+}
+
 export interface ProductListItem {
-  cateName: string
-  content: string
-  contentCateId: number
-  contentImg: string[]
-  headImg: string
-  id: number
-  memo: string
-  name: string
-  price: string
-  status: AuditStatus
-  tags: string[]
-  urlSuffix: string
-  createdTime: number
+  cateName: string;
+  content: string;
+  contentCateId: number;
+  contentImg: string[];
+  headImg: string;
+  id: number;
+  memo: string;
+  name: string;
+  price: string;
+  status: AuditStatus;
+  tags: string[];
+  urlSuffix: string;
+  createdTime: number;
+  videoUrl: string | null;
+  params: ProductListItemInfoKey[];
 }
 
 export interface CreateArticleApiParams {
@@ -48,18 +55,18 @@ export interface CreateArticleApiParams {
 }
 
 export interface ArticleListItem {
-  cateName: string
-  content: string
-  contentCateId: number
-  contentImg: string
-  id: number
-  memo: string
-  name: string
-  source: number
-  status: AuditStatus
-  tags: string[]
-  urlSuffix: string
-  createdTime: number
+  cateName: string;
+  content: string;
+  contentCateId: number;
+  contentImg: string;
+  id: number;
+  memo: string;
+  name: string;
+  source: number;
+  status: AuditStatus;
+  tags: string[];
+  urlSuffix: string;
+  createdTime: number;
 }
 
 export interface HandleApiParams {
@@ -75,13 +82,12 @@ export interface CateItem {
   num: number;
 }
 
-
 export interface NavItem {
   content: string;
   desc: string;
   display: number | undefined;
   id: number;
-  isDisabled?: boolean
+  isDisabled?: boolean;
   key: string;
   name: string;
   position: string;
@@ -95,7 +101,6 @@ export interface ModifyNavItem {
   display: number | undefined;
   id: number;
 }
-
 
 export interface ImgItemParam {
   type: number;
@@ -126,7 +131,6 @@ export interface CreateContentCateApiParams {
   type: ContentCateType;
 }
 
-
 export interface TdkSaveMeta {
   description: string;
   keywords: string[];
@@ -142,7 +146,7 @@ export interface ShopStatus {
   isUserPerfect: boolean;
   isTicketAvailable: boolean;
   userValidTickets: Ticket[];
-  hasMultiShopRights: boolean
+  hasMultiShopRights: boolean;
 }
 
 export interface QuotaInfo {
@@ -151,19 +155,17 @@ export interface QuotaInfo {
   buyUrl: string;
 }
 
-
 export interface CreateShopParams {
-  id?: number,
-  name: string,
+  id?: number;
+  name: string;
   /** 行业属性 */
-  shopType: ShopIndustryType,
+  shopType: ShopIndustryType;
   /** 域名类型 */
-  domainType: DomainStatus,
+  domainType: DomainStatus;
   /** 店铺域名 */
-  domain: string,
+  domain: string;
   ticketId?: number;
 }
-
 
 export interface RenewShopParams {
   ticketId: number;
@@ -171,9 +173,9 @@ export interface RenewShopParams {
 }
 
 export interface NewestDataVersion {
-  id: number,
-  status: ShopVersionStatusEnum,
-  memo: string
+  id: number;
+  status: ShopVersionStatusEnum;
+  memo: string;
 }
 
 export interface ShopInfo {
@@ -182,7 +184,7 @@ export interface ShopInfo {
   createdTime: number;
   domain: string;
   domainType: DomainStatus;
-  shopType: ShopIndustryType,
+  shopType: ShopIndustryType;
   expiredTime: number;
   id: number;
   modifiedTime: number;
@@ -195,39 +197,38 @@ export interface ShopInfo {
   thumb: string;
   type: string;
   usrId: number;
-  newestDataVersion: NewestDataVersion | null
+  newestDataVersion: NewestDataVersion | null;
 }
 
 export interface CustomerListItem {
-  mainModuleId: number,
-  title: string
+  mainModuleId: number;
+  title: string;
 }
 
 export interface CustomerSetChildListItem {
-  id?: number,
-  title: string,
-  content: string,
-  urlImg: string,
+  id?: number;
+  title: string;
+  content: string;
+  urlImg: string;
   /** 自用字段 因为是数字 一定要保证唯一 */
-  key: string
+  key: string;
 }
 
 export interface InitCustomerSetChildListItem {
-  id?: number,
-  title: string,
-  content: string,
-  urlImg: MediaItem | '',
+  id?: number;
+  title: string;
+  content: string;
+  urlImg: MediaItem | '';
   /** 自用字段 因为是数字 一定要保证唯一 */
-  key: string
+  key: string;
 }
-
 
 // 自定义设置
 export interface CustomerSetListItem {
-  mainModuleId?: number,
-  mainModuleTitle: string,
-  show: boolean,
-  subModuleBos: CustomerSetChildListItem[]
+  mainModuleId?: number;
+  mainModuleTitle: string;
+  show: boolean;
+  subModuleBos: CustomerSetChildListItem[];
 }
 
 export interface Quota {
@@ -248,32 +249,32 @@ export interface Ticket {
 
 // 店铺自己的基础信息模块 设置参数
 export interface ShopItemBasicInfo {
-  companyName: string,
-  companyAlias: string,// 店铺名称 默认值取得店铺名称
-  companyAddress: string,
-  companyDescription: string,
-  contactName: string,
-  contactMobile: string,
-  contactMobile2: string,
-  wechat: string,
+  companyName: string;
+  companyAlias: string; // 店铺名称 默认值取得店铺名称
+  companyAddress: string;
+  companyDescription: string;
+  contactName: string;
+  contactMobile: string;
+  contactMobile2: string;
+  wechat: string;
 }
 
 export interface ShopItemBasicInfoParams extends ShopItemBasicInfo {
   promoteImg: string;
   firstCategory: { [key: string]: string };
-  metas: ShopMetas
+  metas: ShopMetas;
   area: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }
 
 export interface InitShopItemBasicInfoParams extends ShopItemBasicInfo {
   promoteImg: MediaItem | '';
   firstCategory: { [key: string]: string };
-  metas: ShopMetas
+  metas: ShopMetas;
   area: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }
 
 export interface UploadShopBasicInfoParams extends ShopItemBasicInfo {
@@ -289,41 +290,41 @@ export interface UploadShopBasicInfoParams extends ShopItemBasicInfo {
 // 请求填充参数
 export interface ShopBasicInfo {
   company?: {
-    name: string,
-    alias: string,
-    address: string,
-    about: string,
-    logo: string
-  },
-  person?: { name: string, uid: number },
-  copyRight?: string,
-  city?: { id: string, name: string },
+    name: string;
+    alias: string;
+    address: string;
+    about: string;
+    logo: string;
+  };
+  person?: { name: string; uid: number };
+  copyRight?: string;
+  city?: { id: string; name: string };
   area?: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
   contact?: {
-    contactName: { type: number, name: string, content: string },
-    weChat: { type: number, name: string, content: string },
-    phone: { type: number, name: string, content: string },
-    phone2: { type: number, name: string, content: string },
-    qq: [{ type: number, name: string, content: string }],
-    kf53: any,
-    kf53StyleUrl: any,
-    union400: string[]
-  },
+    contactName: { type: number; name: string; content: string };
+    weChat: { type: number; name: string; content: string };
+    phone: { type: number; name: string; content: string };
+    phone2: { type: number; name: string; content: string };
+    qq: [{ type: number; name: string; content: string }];
+    kf53: any;
+    kf53StyleUrl: any;
+    union400: string[];
+  };
 }
 
 export interface BannerListItem {
-  displayImgUrl: string
-  hrefUrl: string
-  id: number
-  imgUrl: string
-  position: ModulePageType
-  status: number
-  weight: number
+  displayImgUrl: string;
+  hrefUrl: string;
+  id: number;
+  imgUrl: string;
+  position: ModulePageType;
+  status: number;
+  weight: number;
 }
 
-export type MediaCateSource = 'IMAGE' | 'VIDEO'
+export type MediaCateSource = 'IMAGE' | 'VIDEO';
 
 export interface GetMediaCatesParam {
   page: number;
@@ -346,7 +347,7 @@ export interface UpdateMediaCatesParam {
 }
 
 export interface GetMediaAssetsParam {
-  mediaCateId?: number;// 获取用户所有图片则不传分类ID
+  mediaCateId?: number; // 获取用户所有图片则不传分类ID
   page: number;
   size: number;
   source: MediaCateSource;
@@ -362,10 +363,10 @@ export interface CreateMediaAssetsParam {
 }
 
 export interface ReAuditMediaAssetsParam {
-  id: number
+  id: number;
 }
 
-export type DelMediaCatesParam = number[]
+export type DelMediaCatesParam = number[];
 
 export interface DelMediaAssetsParam {
   ids: number[];
@@ -391,12 +392,12 @@ export interface MoveMediaAssetsParam {
 export interface GetMediaCatesRes {
   mediaCateBos: {
     totalRecord: number;
-    result: MediaCateItem[]
-  }
+    result: MediaCateItem[];
+  };
 }
 
 export interface GetMediaAssetsRes {
-  mediaImgBos: ListRes<MediaAssetsItem[]>
+  mediaImgBos: ListRes<MediaAssetsItem[]>;
 }
 
 export interface GetMediaFailedAssetsParam {
@@ -406,26 +407,26 @@ export interface GetMediaFailedAssetsParam {
 }
 
 export interface GetMediaFailedAssetsRes {
-  mediaImgBos: ListRes<MediaAssetsItem[]>
+  mediaImgBos: ListRes<MediaAssetsItem[]>;
 }
 
 export interface MediaCatesNameListItem {
-  id: number,
-  name: string,
-  type: MediaCateNameListItemType
+  id: number;
+  name: string;
+  type: MediaCateNameListItemType;
 }
 
 // 资源分类类型（默认分类不能编辑、删除）
-type MediaCateNameListItemType = 'DEFAULT' | 'NORMAL'
+type MediaCateNameListItemType = 'DEFAULT' | 'NORMAL';
 
 // 相册
 export type MediaCateItem = {
-  id: number,
-  name: string,
-  coverUrl: string,
-  totalImg: number,
-  type: MediaCateNameListItemType
-}
+  id: number;
+  name: string;
+  coverUrl: string;
+  totalImg: number;
+  type: MediaCateNameListItemType;
+};
 
 /**
  * DEFAULT          初始化
@@ -435,195 +436,184 @@ export type MediaCateItem = {
  * REJECT_BYHUMAN   人审驳回
  * ENCODE_FAILED    视频转码失败
  */
-export type CheckStatusType = 'DEFAULT' | 'APPROVE' | 'REJECT_BYMACHINE' | 'REAPPLY' | 'REJECT_BYHUMAN' | 'ENCODE_FAILED'
-export type ImageType = 'NOT_COVER' | 'COVER'
-export type MediaType = 'IMAGE' | 'VIDEO'
-export type DecodeStatus = 'DEFAULT' | 'DECODING' | 'SUCCESS' | 'FAILED'
+export type CheckStatusType =
+  | 'DEFAULT'
+  | 'APPROVE'
+  | 'REJECT_BYMACHINE'
+  | 'REAPPLY'
+  | 'REJECT_BYHUMAN'
+  | 'ENCODE_FAILED';
+export type ImageType = 'NOT_COVER' | 'COVER';
+export type MediaType = 'IMAGE' | 'VIDEO';
+export type DecodeStatus = 'DEFAULT' | 'DECODING' | 'SUCCESS' | 'FAILED';
 // 分类内资源类型
 // TODO rename
 export type MediaAssetsItem = {
-  id: number,
-  imgUrl: string,
-  videoUrl: string,
-  source: MediaType
-  type: ImageType,
-  checkStatus: CheckStatusType,
-  reason: string,
-  title: string
-  decodeStatus: DecodeStatus
-}
+  id: number;
+  imgUrl: string;
+  videoUrl: string;
+  source: MediaType;
+  type: ImageType;
+  checkStatus: CheckStatusType;
+  reason: string;
+  title: string;
+  decodeStatus: DecodeStatus;
+};
 
-export type CardItem = MediaCateItem | MediaAssetsItem
+export type CardItem = MediaCateItem | MediaAssetsItem;
 
 // 相册管理目录层级类型
 type TabScopeItemBase = {
-  item: CardItem | null
-}
+  item: CardItem | null;
+};
 
-export type TabScopeItem = (
-  TabScopeItemBase & {
-    type: 'album',
-    label: '相册' | '分组',
-    countLabel: '个'
-  }
-) | (
-    TabScopeItemBase & {
-      type: 'image',
-      label: '图片' | '视频',
-      countLabel: '张'
-    }
-  ) | (
-    TabScopeItemBase & {
-      type: 'audit',
-      label: '资源',
-      countLabel: '项'
-    }
-  )
-export type TabScope = TabScopeItem[]
-
+export type TabScopeItem =
+  | (TabScopeItemBase & {
+    type: 'album';
+    label: '相册' | '分组';
+    countLabel: '个';
+  })
+  | (TabScopeItemBase & {
+    type: 'image';
+    label: '图片' | '视频';
+    countLabel: '张';
+  })
+  | (TabScopeItemBase & {
+    type: 'audit';
+    label: '资源';
+    countLabel: '项';
+  });
+export type TabScope = TabScopeItem[];
 
 /* 店铺图集相关定义 End */
 
-
-export interface ShopProductListItem {
-  cateName: string
-  content: string
-  contentCateId: number
-  contentImg: string[]
-  id: number
-  memo: string
-  name: string
-  price: string
-  status: number
-  tags: string[]
-  urlSuffix: string
-}
-
-export interface ShopArticleListItem {
-  cateName: string
-  content: string
-  contentCateId: number
-  contentImg: string
-  id: number
-  memo: string
-  name: string
-  source: number
-  status: number
-  tags: string[]
-  urlSuffix: string
-}
-
 /** 店铺模块管理相关 开始 */
-export type ModulePageType = 'homePage' | 'productListPage' | 'articleListPage' | 'productInfoPage' | 'articleInfoPage' | 'aboutPage'
+export type ModulePageType =
+  | 'homePage'
+  | 'productListPage'
+  | 'articleListPage'
+  | 'productInfoPage'
+  | 'articleInfoPage'
+  | 'aboutPage';
 
-export type ModuleComponentId = 'banner' | 'productRecommend' | 'autoConfig' | 'articleList' | 'about' | 'articleRecommend'
+export type ModuleComponentId =
+  | 'banner'
+  | 'productRecommend'
+  | 'autoConfig'
+  | 'articleList'
+  | 'about'
+  | 'articleRecommend';
 
 export interface ModuleInitPage {
-  position: ModulePageType,
-  name: string,
-  infoList: ModuleInitComponent[]
+  position: ModulePageType;
+  name: string;
+  infoList: ModuleInitComponent[];
 }
 
 export interface ModuleInitComponent {
-  pageModule: string,
-  name: string,
-  max: number
+  pageModule: string;
+  name: string;
+  max: number;
 }
 
 export interface ModuleSelectProductListItem {
-  id: number,
-  name: string,
-  price: string,
-  headImg: string,
-  urlSuffix: string
-  createdTime: number,
-  memo: string
-  status: AuditStatus
-  [key: string]: any
+  id: number;
+  name: string;
+  price: string;
+  headImg: string;
+  urlSuffix: string;
+  createdTime: number;
+  memo: string;
+  status: AuditStatus;
+  [key: string]: any;
 }
 
 export interface ModuleSelectArticleListItem {
-  id: number,
-  name: string,
-  urlSuffix: string
-  createdTime: number,
-  modifiedTime: number
-  memo: string
-  status: AuditStatus
-  [key: string]: any
+  id: number;
+  name: string;
+  urlSuffix: string;
+  createdTime: number;
+  modifiedTime: number;
+  memo: string;
+  status: AuditStatus;
+  [key: string]: any;
 }
 
 export interface ModuleRequestParam {
-  position: ModulePageType,
-  pageModule: ModuleComponentId,
+  position: ModulePageType;
+  pageModule: ModuleComponentId;
 }
 
 export interface ModuleProductSwiper {
-  backGroundImg: string,
-  productList: ModuleSelectProductListItem[],
+  backGroundImg: string;
+  productList: ModuleSelectProductListItem[];
   /** 判断是选择了店铺还是 */
-  bannerProduct: boolean
+  bannerProduct: boolean;
 }
 
-export interface ModuleProductSwiperParam extends ModuleRequestParam, ModuleProductSwiper {
-  productIdList: number[]
+export interface ModuleProductSwiperParam
+  extends ModuleRequestParam,
+  ModuleProductSwiper {
+  productIdList: number[];
 }
 
 export interface ModuleProductSwiperNoParam extends ModuleRequestParam {
-  bannerProduct: boolean
+  bannerProduct: boolean;
 }
 
-
 export interface ModuleProductInfo {
-  name: string,
-  productList: ModuleSelectProductListItem[]
+  name: string;
+  productList: ModuleSelectProductListItem[];
 }
 
 export interface ModuleProductInfoParam extends ModuleRequestParam {
-  name: string,
-  productIdList: number[]
+  name: string;
+  productIdList: number[];
 }
 
 export interface ModuleArticleInfo {
-  name: string,
-  articleList: ModuleSelectArticleListItem[]
+  name: string;
+  articleList: ModuleSelectArticleListItem[];
 }
 
 export interface ModuleHomeArticleListInfo {
-  name: string,
-  articleList: ListRes<ModuleSelectArticleListItem[]>
+  name: string;
+  articleList: ListRes<ModuleSelectArticleListItem[]>;
 }
 
 export interface ModuleArticleInfoParam extends ModuleRequestParam {
-  name: string,
-  articleIdList: number[]
+  name: string;
+  articleIdList: number[];
 }
 
-
 export interface ModuleHomeABoutInfo {
-  name: string,
-  tags: string[],
-  media: string,
-  videoUrl: string
+  name: string;
+  tags: string[];
+  media: string;
+  videoUrl: string;
 }
 
 export interface InitModuleHomeABoutInfo {
-  name: string,
-  tags: string[],
-  media: MediaItem | ''
+  name: string;
+  tags: string[];
+  media: MediaItem | '';
 }
 
-export interface ModuleHomeABoutInfoParam extends ModuleRequestParam, ModuleHomeABoutInfo { }
+export interface ModuleHomeABoutInfoParam
+  extends ModuleRequestParam,
+  ModuleHomeABoutInfo { }
 
 export interface ModuleABoutABoutInfo {
-  backImg: string,
+  backImg: string;
 }
 
 export interface InitModuleABoutABoutInfo {
-  backImg: MediaItem | '',
+  backImg: MediaItem | '';
 }
 
-export interface ModuleABoutABoutInfoParam extends ModuleRequestParam, ModuleABoutABoutInfo { }
+export interface ModuleABoutABoutInfoParam
+  extends ModuleRequestParam,
+  ModuleABoutABoutInfo { }
 
 
 export interface AdviceRecord {
