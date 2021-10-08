@@ -23,12 +23,12 @@ const AdivceRecord: FC<Iprop> = ({ isModalVisible, onCancel, sumbit, loading }) 
     const addConfig = () => {
       const configs = cloneDeepWith(RecordForm)
       configs.customerFormItemList = [{
-        index: 2,
+        index: 3,
         key: 'radiaoGrounp',
         node: <CheckoutGroup />
       },
       {
-        index: 1,
+        index: 2,
         key: 'advice',
         node: <p className={styles['record-icon']} key="advice">请不要输入敏感信息，例如：账号密码</p>
       }

@@ -57,7 +57,8 @@ import {
   ModuleArticleInfoParam,
   ModuleHomeABoutInfoParam,
   ModuleABoutABoutInfoParam,
-  ModuleProductSwiperNoParam
+  ModuleProductSwiperNoParam,
+  AdviceRecord
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';

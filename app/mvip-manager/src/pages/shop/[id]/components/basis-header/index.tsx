@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Form } from 'antd';
 import ShopBasisTab from '../shop-basis-tab';
 import MainTitle from '@/components/main-title';
 import { ShopBasisType } from '@/enums';
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const BasicHeader = (props: Props) => {
+  const [form] = Form.useForm();
   const { type, curShopInfo } = props
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
@@ -44,6 +46,7 @@ const BasicHeader = (props: Props) => {
       errorMessage('提交失败')
     }
     setIsModalVisible(false)
+    form.resetFields()
   }
   return (
     <>
