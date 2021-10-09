@@ -16,6 +16,7 @@ $(document).on('ready', function () {
   // sem部分链接需要禁止二跳
   if (isSem === '1') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'listing',
       gotoOtherPageA: $('#layout-content a')
@@ -24,6 +25,7 @@ $(document).on('ready', function () {
 
   if (isSem === '2') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'listing',
       gotoOtherPageA: $('a')

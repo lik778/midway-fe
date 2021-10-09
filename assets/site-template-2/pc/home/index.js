@@ -136,28 +136,23 @@ $(document).on('ready', function () {
 	// tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
 	if (isSem === '1') {
 		initSem({
+			account: isAccount,
 			sem: isSem,
 			type: 'home',
 			contactForm: $('#contactUs .contact-us__message'),
 			contactFormParent: $('#contactUs'),
-			formA: $('.official-nav-block-bgc a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a'),
-			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-box .content a')
+			formA: $('.official-nav-block-bgc a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-list a'),
+			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-list a')
 		})
 	}
 
 	if (isSem === '2') {
 		initSem({
+			account: isAccount,
 			sem: isSem,
 			type: 'home',
 			gotoOtherPageA: $('a')
 		})
 	}
-	// 新闻模块
-	// var nowWord = $('.item-card .item-content').text().length
-	// var newWord
-	// if (nowWord > 44) {
-	// 	newWord = $('.item-card .item-content').text().slice(1,44) + '.......'
-	// }
-	// $('.item-card .item-content').text(newWord)
 })
 

@@ -27,7 +27,9 @@ html
     - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
     - defaultImg = "//file.baixing.net/202107/e9a1688b5c861d17484d61515c207390.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
-
+    //-为了提供给留咨参数
+    if shopName
+        p#shop-name(style="display:none") #{shopName}
     //- 每个页面的header有公共的也有页面特有的，所以在页面具体的地方再插入一个 block header修改
     block public-header
 
@@ -64,6 +66,12 @@ html
           window.isCn = isCn
       } else {
           window.isCn =  '';
+      }
+      let isAccount = '#{ isAccount }';
+      if(isAccount){
+          window.isAccount = isAccount
+      } else {
+          window.isAccount =  '';
       }
     include ../vendor/baidutongji.pug
     //-TODO:开发阶段先注释掉

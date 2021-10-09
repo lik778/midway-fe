@@ -19,6 +19,7 @@ $(document).on("ready", function () {
   // tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
   if (isSem === '1') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'home',
       contactForm: $('#contactForm'),
@@ -30,6 +31,7 @@ $(document).on("ready", function () {
   
   if (isSem === '2') {
     initSem({
+      account: isAccount,
       sem: isSem,
       type: 'home',
       gotoOtherPageA: $('a')

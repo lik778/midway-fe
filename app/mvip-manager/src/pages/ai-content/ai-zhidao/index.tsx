@@ -33,7 +33,7 @@ const AiZhidaoPage = (props: any) => {
 
   return (<div className={styles['ai-zhidao']}>
     <MainTitle title="问答AI" />
-    <Tabs activeKey={activeKey} onChange={(activeKey) => changeActiveKey(activeKey as ActiveKey)}>
+    <Tabs activeKey={activeKey} onChange={(activeKey) => changeActiveKey(activeKey as ActiveKey)} destroyInactiveTabPane>
       <TabPane tab="任务列表" key="job-list">
         <JobList {...props} activeKey={activeKey} />
       </TabPane>

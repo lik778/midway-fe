@@ -16,6 +16,8 @@ import { ShopStatus, } from '@/interfaces/shop';
 import { DomainStatus } from '@/enums'
 import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
 import { AiShopList } from '@/interfaces/ai-module';
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -109,12 +111,31 @@ const ShopCreateJob = (props: { shopStatus: ShopStatus | null, getShopStatus: an
       setSubmitLoading(false)
       if (res.success) {
         successMessage('添加成功')
+        track({
+          eventType: BXMAINSITE,
+          data: {
+            event_type: BXMAINSITE,
+            action: 'time-end',
+            action_page: 'shop-task-create',
+          }
+        })
         window.location.reload()
       } else {
         errorMessage(res.message)
       }
     }
   }
+
+  useEffect(() => {
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'shop-task-create',
+      }
+    })
+  }, [])
 
   useEffect(() => {
     if (!shopStatus || Object.keys(shopStatus).length === 0) {

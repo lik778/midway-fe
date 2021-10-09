@@ -16,13 +16,12 @@ import { getCookie, formatRange, decodeHTMLCodeSafe, isValidURL } from '@/utils'
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
 import { ReportListResData, getLeaveMessageListParams, LeaveMessageListData } from '@/interfaces/report'
-import { COOKIE_USER_KEY } from '@/constants/index'
+import { COOKIE_USER_KEY, BXMAINSITE } from '@/constants/index'
 
 import "./index.less"
 
 const TabPane = Tabs.TabPane
 const PAGESIZE = 10
-const BXMAINSITE = 'bxmainsite'
 const getTrackerPlatform = (from: string | null) => {
   switch (from) {
     case 'mvip':
@@ -42,7 +41,7 @@ function LeaveMessagePage() {
 
   const params = useMemo(() => new URLSearchParams(window.location.search), [])
   // FIXME type
-  const from = useMemo<LeaveMessagePageFromEnum | null>(() => params.get('from') || LeaveMessagePageFromEnum.MVIP, [params])
+  const from = useMemo<string | LeaveMessagePageFromEnum | null>(() => params.get('from') || LeaveMessagePageFromEnum.MVIP, [params])
   const isMobile = useMemo(() => params.get('mobile') === '1', [params])
   const isPC = useMemo(() => !isMobile, [isMobile])
   const uid = useMemo(() => getCookie(COOKIE_USER_KEY), [])
@@ -417,7 +416,7 @@ type CardProps = {
   uid: string,
   from: string | null
 }
-function Card (props: CardProps) {
+function Card(props: CardProps) {
   const { item, uid, from } = props
   const [shouldFold, setShouldFold] = useState(false)
   const [fold, setFold] = useState(true)
@@ -501,8 +500,8 @@ function Card (props: CardProps) {
           <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
           {item.sourceName}
         </a>
-      ):(
-          <a className="disabled" href="" onClick={e => e.stopPropagation()}>
+      ) : (
+        <a className="disabled" href="" onClick={e => e.stopPropagation()}>
           <span>来源【{LeaveMessageChannelMap[item.sourceType] || '未知'}】</span>
           {item.sourceName}
         </a>
@@ -511,7 +510,7 @@ function Card (props: CardProps) {
     {(shouldFold && fold) && (
       <span className="fold-btn" onClick={() => setFold(!fold)}>展开更多</span>
     )}
-</div>
+  </div>
 }
 
 LeaveMessagePage.wrappers = ['@/wrappers/path-auth']

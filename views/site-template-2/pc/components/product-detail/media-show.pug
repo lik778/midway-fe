@@ -1,0 +1,69 @@
+mixin mediaShow()
+	- const { headImg, name, price, contentImg, videoUrl,params } = renderData.productInfo;
+	- const { contactName,phone,union400 } = renderData.basic.contact;
+	- const { address, logo, name: companyName} = renderData.basic.company
+	- const { metas } = renderData.basic.shop.about? JSON.parse(renderData.basic.shop.about):{}
+	- const defaultImg = '//file.baixing.net/202109/e9a1688b5c861d17484d61515c207390.png';
+	.media-show-container
+		.media-show-left
+			.left-headImg
+				if headImg
+					if videoUrl
+						.video-con
+							.video-wrapper
+								video(src=videoUrl, loop, preload, controls)
+							.video-cover(id="cover")
+								img(src=headImg, alt="logo")
+					else
+						img(src=headImg, alt="logo")
+				else
+					img(src=defaultImg, alt="logo")
+			.left-contentImg
+				.swiper-container
+					.swiper-wrapper
+						if headImg
+							if videoUrl
+								.swiper-slide(data-src=headImg data-video=videoUrl)
+									.video-cover
+										img(src=headImg)
+							else
+								.swiper-slide(data-src=headImg)
+									img(src=headImg)
+						else
+							if !contentImg || contentImg.length === 0
+								.swiper-slide(data-src=defaultImg)
+									img(src=defaultImg)
+						if contentImg && contentImg.length > 0
+							each val in contentImg
+								.swiper-slide(data-src=val)
+									img(src=val, alt="logo")
+				.swiper-button-next
+				.swiper-button-prev
+		.media-show-middle
+			.media-middle-left
+				.detail-title #{name}
+				.product-left
+					.detail-price 
+						| 价格:
+						span(class="prices") #{price}
+					.detail-setting
+						if isSem !== "1"
+							.contact 联系商家：#{contactName.content}
+							if metas && metas.length > 0
+								.contact
+									| 服务类目：
+									span
+										| #{ metas[0] && metas[0]['label'] } / #{ metas[1]['label'] }
+							.contact 
+								| 商家地址： 
+								span(class="span-address") #{ address }
+					.detail-contact
+						include ../../../../common/pc/official-400-btn
+						+official400Btn({backgroundColor:'#ED4646',borderColor:'#ED4646',phone:phone.content,naviconw:'20px',naviconh: '20px',naviconm: '8px',navRadius: '4px',navMarginTop: '0',BtnHeight:'40px',BtnWidth:'140px'})
+						if kf53StyleUrl && kf53StyleUrl.length > 0
+							a.online-btn(href=kf53StyleUrl)
+								img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
+								span 在线咨询
+			.media-middle-right
+				include ../common/company-record
+				+companyRecord(logo,companyName)
