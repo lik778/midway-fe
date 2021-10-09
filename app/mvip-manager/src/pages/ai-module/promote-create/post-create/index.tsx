@@ -3,7 +3,7 @@ import { Button, Form, Spin, Input, FormInstance } from 'antd';
 import { useHistory } from 'umi'
 import MainTitle from '@/components/main-title';
 import { cloneDeepWith } from 'lodash';
-import { postForm } from './config';
+import { promoteCreateForm, fromLabelCol } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { connect } from 'dva';
@@ -37,7 +37,7 @@ const CreatePost = (props: Props) => {
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   // 当前任务内容
   const [collection, setCollection] = useState<CollectionDetail | null>(null)
-  const [config, setConfig] = useState<FormConfig>(cloneDeepWith(postForm));
+  const [config, setConfig] = useState<FormConfig>(cloneDeepWith(promoteCreateForm));
   // 当前表单的id
   const [collectionId, setCollectionId] = useState<number>(Number(id))
   // 当前任务内容转的表单内容
@@ -50,6 +50,7 @@ const CreatePost = (props: Props) => {
   // 初始化表单的数据
   const initComponent = async () => {
     if (!collection) return
+    if (!selectedVipResources) return
     const { form } = formRef.current
     const draftCollectionData = postToolData.formData[`draftCollection_${id}`]
     let newFormData: InitCollectionForm | null = null
@@ -60,9 +61,9 @@ const CreatePost = (props: Props) => {
       newFormData = {
         name: collection.name,
         metas: [{
-          key: selectedVipResources!.vipTypeName,
-          value: selectedVipResources!.vipTypeName,
-          label: selectedVipResources!.vipTypeName,
+          key: selectedVipResources.vipTypeName,
+          value: selectedVipResources.vipTypeName,
+          label: selectedVipResources.vipTypeName,
         }, {
           key: collection.categoryName,
           value: collection.categoryId,
@@ -139,7 +140,6 @@ const CreatePost = (props: Props) => {
   const getFormConfig = async () => {
     const res = await getSecondCategories({ productLine: selectedVipResources!.productLine, vipType: selectedVipResources!.vipType })
     if (res.success) {
-      console.log('secondCategoriesList', res.data)
       setSecondCategoriesList(res.data)
     }
   }
@@ -201,10 +201,10 @@ const CreatePost = (props: Props) => {
               config={config}
               formChange={formChange}
             />
-            <Form.Item label={'公司名称'} labelCol={{ span: 2 }}>
+            <Form.Item label={'公司名称'} labelCol={fromLabelCol}>
               <Input style={{ width: 260 }} disabled value={companyInfo?.companyName || ''} size={'large'}></Input>
             </Form.Item>
-            <Form.Item label={'标题'} labelCol={{ span: 2 }} required={true}>
+            <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
               <div className={styles['add-title']}>
                 <Button className={styles['add-title-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
                 <span className={styles['preview-title']} onClick={() => setPreviewTitleVisible(true)}>预览标题</span>

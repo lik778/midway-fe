@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 
@@ -159,7 +159,7 @@ export const deleteCollection = (parmas: { id: number }) => {
 // 获取素材包文本
 export const getCollectionFragments = (parmas: { id: number, type: string, page?: number, size?: number }) => {
   const query = typeof parmas.page === 'number' ? `?page=${parmas.page}&size=${parmas.size || 10}` : ''
-  return getApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/fragments/${parmas.type}${query}`)
+  return getApiData<FragmentsListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}/fragments/${parmas.type}`)
 }
 
 // 获取素材包图片
@@ -231,17 +231,17 @@ export const createCollectionTitles = (parmas: {
 
 // 创建公司简介、公司优势等字段 
 export const createFragments = (parmas: { id: number, type: CollectionFragmentsType, content: any }) => {
-  return postApiData<CollectionDetail>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}`, { content: parmas.content })
+  return postApiData<FragmentsListItem>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}`, { content: parmas.content })
 }
 
 // 获取公司简介、公司优势等字段
 export const getFragments = (parmas: { id: number }) => {
-  return getApiData<CollectionDetail>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`)
+  return getApiData<FragmentsListItem>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`)
 }
 
 // 更新公司简介、公司优势等字段
 export const updateFragments = (parmas: { id: number, content: any }) => {
-  return putApiData<CollectionListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`, { content: parmas.content })
+  return putApiData<FragmentsListItem>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`, { content: parmas.content })
 }
 
 // 删除公司简介、公司优势等字段
@@ -249,7 +249,7 @@ export const deleteFragments = (parmas: { id: number, type: CollectionFragmentsT
   return deleteApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}`)
 }
 
-// 素材包获取公司简介、公司优势等字段
+// 从素材库下载正文素材(*)
 export const batchAddFragment = (parmas: { id: number, type: CollectionFragmentsType, materialIds: number[] }) => {
   return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}/downloadFromMaterial`)
 }
@@ -287,3 +287,11 @@ export const getSecondCategories = (parmas: {
 }) => {
   return postApiData<SecondCategoriesListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/loadCategories`, parmas)
 }
+
+export const getMaterialList = (parmas: { tags: string[], page: number, size: number, "category": "jiameng" }) => {
+  return getApiData<{
+    content: MaterialListItem[],
+    totalPage: number
+  }>(ServicePath.POST_TOOL, `post-tool/v1/material`, parmas)
+}
+

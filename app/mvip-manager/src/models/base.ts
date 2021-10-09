@@ -57,7 +57,7 @@ export default <Model>{
       const menuList: MidMenuItem[] | null = yield select((state: any) => state[BASE_NAMESPACE].menuList)
       if (isNull(menuList)) {
         const { success, message, data: { menuList } } = yield getMenuApi()
-        menuList.push(...[{ "menuName": "AI内容发布", "menuList": [{ "menuName": "创建推广", "path": "/ai-module/promote-create", "key": "ai-list" }], "key": "ai-module", "path": "/ai-module" }])
+        menuList.push(...[{ "menuName": "AI内容生成", "menuList": [{ "menuName": "店铺AI", "path": "/ai-content/ai-shop", "key": "ai-shop" }, { "menuName": "问答AI", "path": "/ai-content/ai-zhidao", "key": "ai-zhidao" }], "key": "ai-content" }])
         if (success) {
           yield put({ type: SET_MENU_LIST_ACTION, payload: menuList })
           yield put({ type: SET_MENU_AUTH_LIST_ACTION, payload: traverseMenuList(menuList) })

@@ -1,5 +1,5 @@
 import { CateItem } from '@/interfaces/shop';
-import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus, CollectionStatus, PostToolTitleKeys, CollectionAction } from '@/enums/ai-module';
+import { AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus, CollectionStatus, PostToolTitleKeys, CollectionAction, CollectionFragmentsType } from '@/enums/ai-module';
 import { PostToolTitleKeysMap } from '@/constants/ai-module'
 import { ShopMetas } from '@/interfaces/user'
 export interface AiTaskApiParams {
@@ -319,4 +319,21 @@ export interface SecondCategoriesListItem {
 export interface ImgWholeUrlParmas {
   suffix: '_bi' // 图片格式
   images: string[]
+}
+
+export interface FragmentsListItem {
+  content: string
+  id: number,
+  label: string
+  status: string
+  type: CollectionFragmentsType
+}
+
+
+export interface MaterialListItem {
+  content: string
+  id: "5f4ca2eeb8dc1059d23e440a"
+  tags: string[]
+  title: string,
+  [key: string]: any
 }

@@ -5,6 +5,7 @@ import { MediaItem } from '@/components/img-upload/data'
 import { UploadFile } from 'antd/lib/upload/interface'
 import { getCollectionImages, addCollectionImages, addCollectionImage, deleteCollectionImage, getImgWholeUrl } from '@/api/ai-module'
 import { CollectionImageListItem } from '@/interfaces/ai-module'
+import { fromLabelCol } from '../../config'
 import styles from './index.less'
 
 interface Props {
@@ -19,8 +20,8 @@ const SelectImage: FC<Props> = (props) => {
   const initEditData = useMemo(() => {
     return dataList.map((item) => getImgUploadValueModel('IMAGE', item.content) as MediaItem)
   }, [dataList])
-  const [validateStatus, setValidateStatus] = useState<'' | 'error'>('error')
-  const [help, setHelp] = useState<string>('')
+  const [validateStatus, setValidateStatus] = useState<'' | 'error'>('')
+  const [help, setHelp] = useState<string | undefined>()
   const [minLength] = useState<number>(5)
   const [maxLength] = useState<number>(30)
 
@@ -29,7 +30,6 @@ const SelectImage: FC<Props> = (props) => {
       images: dataList.map(item => item.content),
       suffix: '_bi'
     })
-    console.log(res.data)
     return dataList.map((item, index) => ({
       ...item,
       content: res.data[index].ext
@@ -108,18 +108,18 @@ const SelectImage: FC<Props> = (props) => {
 
   const validateFc = async (nowDataList?: CollectionImageListItem[]) => {
     const validate = nowDataList || dataList
-    if (validate.length <= 0) {
+    if (validate.length <= minLength) {
       setValidateStatus('error')
-      setHelp('图片数量：3张以上')
+      setHelp(`图片数量：${minLength}张以上`)
       return false
     } else {
       setValidateStatus('')
-      setHelp('')
+      setHelp(undefined)
       return true
     }
   }
 
-  return <Form.Item labelCol={{ span: 2 }} label="图片" required={true} help={help} validateStatus={validateStatus}>
+  return <Form.Item labelCol={fromLabelCol} label="图片" required={true} help={help} validateStatus={validateStatus}>
     <div className={styles['img-upload-container']}>
       <ImgUpload editData={initEditData} uploadType={2} unique={true} uploadBtnText={'选择照片'} maxSize={2} maxLength={maxLength} cropProps={{ aspectRatio: 1024 / 768 }} onChange={handleChangeImg} />
     </div>

@@ -1,5 +1,5 @@
 
-import { CollectionStatus, AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus, PostToolTitleKeys, CollectionFragmentsType } from '@/enums/ai-module'
+import { CollectionStatus, AiTaskStatus, ZhidaoAiTaskQuestionStatus, ZhidaoAiTaskStatus, PostToolTitleKeys, CollectionFragmentsType, } from '@/enums/ai-module'
 import { DomainStatus } from '@/enums'
 
 
@@ -100,7 +100,7 @@ export const wordsItemConfig: any = {
 export const collectionFragmentsTypeMap = {
   [CollectionFragmentsType.COMPANY_INFO]: '公司介绍',
   [CollectionFragmentsType.QA_INFO]: '产品/服务介绍',
-  [CollectionFragmentsType.COMPANY_INFO]: '小知识/问答',
+  [CollectionFragmentsType.PRODUCT_INFO]: '小知识/问答',
 }
 
 export const PostToolTitleKeysMap = {
@@ -109,7 +109,6 @@ export const PostToolTitleKeysMap = {
   [PostToolTitleKeys.PREFIX]: 'prefix',//"前置修饰词",
   [PostToolTitleKeys.MAIN]: 'main',//"主关键词",
   [PostToolTitleKeys.SUFFIX]: 'suffix',//"后置修饰词" ,
-  [PostToolTitleKeys.SUB]: 'sub' //"副标题"
 }
 
 // 前缀
