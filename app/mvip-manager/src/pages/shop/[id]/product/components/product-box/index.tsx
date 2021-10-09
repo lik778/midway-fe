@@ -19,7 +19,7 @@ import { MediaItem } from '@/components/img-upload/data';
 interface Props {
   typeTxt: string
   cateList: CateItem[];
-  editData: ProductListItem | { params: { key: string, value: string }[], [key: string]: any }
+  editData: ProductListItem | { [key: string]: any }
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem): void;

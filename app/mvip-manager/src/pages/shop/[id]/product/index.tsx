@@ -14,15 +14,13 @@ import { CateItem, RouteParams, ProductListItem } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
 import { SHOP_NAMESPACE } from '@/models/shop'
 
-const initeditProductData = { params: [{ key: '', value: '' }, { key: '', value: '' }] }
-
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 const ShopProductPage = (props: any) => {
   const { curShopInfo } = props
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [productFormVisible, setProductFormVisible] = useState<boolean>(false);
   const [productList, setProductList] = useState<ProductListItem[]>([]);
-  const [editProductData, setEditProductData] = useState<ProductListItem | { params: { key: string, value: string }[] }>({ ...initeditProductData });
+  const [editProductData, setEditProductData] = useState<ProductListItem | {}>({});
   const [cateList, setCateList] = useState<CateItem[]>([]);
   const [contentCateId, setContentCateId] = useState<number>(0);
   const [listLoading, setListLoading] = useState<boolean>(false);
@@ -50,12 +48,12 @@ const ShopProductPage = (props: any) => {
   }, [page, contentCateId])
 
   const handleClickCreateProduct = () => {
-    setEditProductData({ ...initeditProductData })
+    setEditProductData({})
     setProductFormVisible(true)
   }
 
   const handleClickEditProduct = (item: ProductListItem) => {
-    setEditProductData({ ...item, params: item.params && item.params.length >= 2 ? item.params : [...initeditProductData.params] });
+    setEditProductData({ ...item, params: item.params || [] });
     setProductFormVisible(true);
   }
 
