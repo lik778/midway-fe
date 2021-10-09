@@ -11,14 +11,14 @@ import { ConnectState } from '@/models/connect';
 import { USER_NAMESPACE } from '@/models/user';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less';
-import { createCollection, getCollection, updateCollection } from '@/api/ai-module'
-import { CollectionDetail, UpdataCollectionParams, InitCollectionForm } from '@/interfaces/ai-module'
+import { createCollection, getCollection, updateCollection, getSecondCategories } from '@/api/ai-module'
+import { CollectionDetail, UpdataCollectionParams, InitCollectionForm, SecondCategoriesListItem } from '@/interfaces/ai-module'
 import { MetasItem, UserEnterpriseInfo } from '@/interfaces/user';
 import SelectImage from './components/select-image'
 import { CollectionStatus } from '@/enums/ai-module';
 import AiModuleContext from '../context'
 import PostPreviewTitle from '../components/post-preview-title'
-
+import SetText from './components/set-text'
 
 interface Props {
   companyInfo: UserEnterpriseInfo | null,
@@ -32,41 +32,51 @@ const CreatePost = (props: Props) => {
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
   const { postToolData, handleChangeContextData } = useContext(AiModuleContext)
+  const { selectedVipResources } = postToolData
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
-  const [collection, setCollection] = useState<CollectionDetail | null>()
+  // 当前任务内容
+  const [collection, setCollection] = useState<CollectionDetail | null>(null)
   const [config, setConfig] = useState<FormConfig>(cloneDeepWith(postForm));
+  // 当前表单的id
   const [collectionId, setCollectionId] = useState<number>(Number(id))
+  // 当前任务内容转的表单内容
   const [formData, setFormData] = useState<InitCollectionForm | null>(null)
   const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
   const [disabled, setDisabled] = useState<boolean>(false)
   const [previewTitleVisible, setPreviewTitleVisible] = useState<boolean>(false)
+  const [secondCategoriesList, setSecondCategoriesList] = useState<SecondCategoriesListItem[]>([])
 
   // 初始化表单的数据
-  const initComponent = async (collection: CollectionDetail) => {
+  const initComponent = async () => {
     if (!collection) return
     const { form } = formRef.current
     const draftCollectionData = postToolData.formData[`draftCollection_${id}`]
-    console.log(postToolData, draftCollectionData)
     let newFormData: InitCollectionForm | null = null
 
     if ([CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_ADVANCE_STATUS].includes(collection.status) && draftCollectionData) {
       newFormData = draftCollectionData
     } else {
-      // TODO;
       newFormData = {
         name: collection.name,
         metas: [{
-          key: '服务',
-          value: 'fuwu',
-          label: '服务'
-        }, undefined, collection.thirdMeta.map(item => item.id)],
+          key: selectedVipResources!.vipTypeName,
+          value: selectedVipResources!.vipTypeName,
+          label: selectedVipResources!.vipTypeName,
+        }, {
+          key: collection.categoryName,
+          value: collection.categoryId,
+          label: collection.categoryName,
+        }, collection.thirdMeta.map(item => item.id)],
       }
     }
-    console.log(newFormData)
     setFormData(newFormData)
     form?.setFieldsValue(draftCollectionData)
   }
+
+  useEffect(() => {
+    initComponent()
+  }, [collection])
 
   // 获取当前任务详情
   const getDetail = async () => {
@@ -77,7 +87,6 @@ const CreatePost = (props: Props) => {
     setGetDataLoading(false)
     // 在这里判断是否能禁用表单
     setDisabled([CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(collection.status))
-    initComponent(collection)
   }
 
   useEffect(() => {
@@ -88,25 +97,36 @@ const CreatePost = (props: Props) => {
 
   // 更新表单的配置
   const updateConfigData = () => {
+    if (secondCategoriesList.length < 0) return
+    if (!selectedVipResources) return
     const newChildren = config.children.map(item => {
       //  这里需要请求来一级类目
       //修改config里类目选择组件的配置信息，并给select加了onChange
       if (item.type === 'MetaSelect') {
+        // 这里的一级选择器是没有任何用处的摆设 请勿使用
         const options: MetasItem[] = [{
-          key: '服务',
-          value: 'fuwu',
-          label: '服务'
+          key: selectedVipResources!.vipTypeName,
+          value: selectedVipResources!.vipType.toString(),
+          label: selectedVipResources!.vipTypeName,
         }]
-        // const secondCategoriesArr = [{ key: categoryId, value: categoryId, label: categoryName }]
-        // if (options.length > 0 && secondCategoriesArr.length > 0) {
-        //   options[0].children = secondCategoriesArr
-        // }
+        const secondCategoriesArr = secondCategoriesList.map(item => ({
+          key: item.name,
+          value: item.value,
+          label: item.name,
+        }))
+        if (options.length > 0 && secondCategoriesArr.length > 0) {
+          options[0].children = secondCategoriesArr
+        }
         item.options = options
       }
       return item
     })
     setConfig({ ...config, children: newChildren })
   }
+
+  useEffect(() => {
+    updateConfigData()
+  }, [secondCategoriesList])
 
   const createCollectionFc = async () => {
     setUpDataLoading(true)
@@ -116,13 +136,25 @@ const CreatePost = (props: Props) => {
     setUpDataLoading(false)
   }
 
+  const getFormConfig = async () => {
+    const res = await getSecondCategories({ productLine: selectedVipResources!.productLine, vipType: selectedVipResources!.vipType })
+    if (res.success) {
+      console.log('secondCategoriesList', res.data)
+      setSecondCategoriesList(res.data)
+    }
+  }
+
+  useEffect(() => {
+    if (selectedVipResources) {
+      getFormConfig()
+    }
+  }, [selectedVipResources])
+
   useEffect(() => {
     // 不存在id则创建一个id
     if (!collectionId) {
       createCollectionFc()
     }
-    // 更新下表单的配置项
-    updateConfigData()
   }, [])
 
   const sumbit = async (values: UpdataCollectionParams) => {
@@ -139,7 +171,7 @@ const CreatePost = (props: Props) => {
   }
 
   const formChange = (...arg: any) => {
-    // console.log(arg)
+    // console.log('formChange', arg)
   }
 
   const handleClickCreateTitle = async () => {
@@ -179,6 +211,7 @@ const CreatePost = (props: Props) => {
               </div>
             </Form.Item>
             <SelectImage collectionId={collectionId}></SelectImage>
+            <SetText collectionId={collectionId}></SetText>
           </div>
         </Spin>
       </div>

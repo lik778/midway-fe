@@ -22,7 +22,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [delIds, setDelIds] = useState<string[]>([])
-  const delKeyMap = useRef<Map<string, boolean>>(new Map())
+  const delKeyMap = useRef<{ [key: string]: boolean }>({})
   // const 
   useEffect(() => {
     if (editDataList) {
@@ -45,9 +45,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
     setGetDataLoading(false)
   }
 
-  console.log(action)
   useEffect(() => {
-    console.log('useEffect', action)
     if (action === 'see') {
       getTaskTitle()
     }
@@ -57,14 +55,14 @@ const PostPreviewTitle: FC<Props> = (props) => {
     const newLocalEditDataList = [...localEditDataList]
     newLocalEditDataList.splice(index, 1)
     setLocalEditDataList(newLocalEditDataList)
-    delKeyMap.current.delete(record.content)
+    delete delKeyMap.current[record.content]
     successMessage('删除成功')
   }, [localEditDataList])
 
   const handleClickDels = () => {
-    setLocalEditDataList(localEditDataList.filter(item => !delKeyMap.current.get(item.content)))
+    setLocalEditDataList(localEditDataList.filter(item => !delKeyMap.current[item.content]))
     setDelIds([])
-    delKeyMap.current.clear()
+    delKeyMap.current = {}
     successMessage('删除成功')
   }
 
@@ -85,18 +83,6 @@ const PostPreviewTitle: FC<Props> = (props) => {
     }
   ]
 
-  // [
-  //   {
-  //     "areaName": "浦东新区",
-  //     "cityName": "上海",
-  //     "city_id": "m30",
-  //     "content": "上海浦东新区房地产公司注册怎么办理哪家安全可靠",
-  //     "coreWord": "公司注册",
-  //     "modal": "哪家安全可靠",
-  //     "prefix": "房地产",
-  //     "suffix": "怎么办理"
-  //   }
-  // ]
   const editColumns: TableColumnProps<CollectionCreateTitleParmas>[] = [
     {
       title: '编号',
@@ -144,22 +130,19 @@ const PostPreviewTitle: FC<Props> = (props) => {
             Table.SELECTION_NONE,
           ],
           onChange: (selectedRowKeys: any[], selectedRows: CollectionCreateTitleParmas[]) => {
-            console.log('onChange', selectedRows, selectedRowKeys)
             setDelIds(selectedRowKeys)
           },
           onSelect: (record: CollectionCreateTitleParmas, selected: boolean) => {
-            console.log('onSelect', selected, record)
             // 用来删除行
-            delKeyMap.current.set(record.content, selected)
+            delKeyMap.current[record.content] = selected
           },
           onSelectAll: (selected: boolean, selectedRows: CollectionCreateTitleParmas[], changeRows: CollectionCreateTitleParmas[]) => {
-            console.log('onSelectAll', selected, selectedRows, changeRows)
             if (selected) {
               localEditDataList.forEach(item => {
-                delKeyMap.current.set(item.content, selected)
+                delKeyMap.current[item.content] = selected
               })
             } else {
-              delKeyMap.current.clear()
+              delKeyMap.current = {}
             }
           },
         }

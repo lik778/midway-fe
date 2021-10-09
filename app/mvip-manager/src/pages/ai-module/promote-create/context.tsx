@@ -30,7 +30,12 @@ export const defaultValue: AiModuleContextProps = {
   },
   // 发帖通发帖页面数据缓存
   postToolData: {
-    formData: {}
+    // 表单数据缓存
+    formData: {},
+    // 一级类目列表缓存
+    vipResourcesList: [],
+    // 一级类目列表选择值缓存
+    selectedVipResources: null
   },
   handleChangeContextData: () => { }
 }

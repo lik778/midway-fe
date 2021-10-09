@@ -3,7 +3,7 @@ import { Form } from 'antd'
 import ImgUpload, { getImgUploadValueModel } from '@/components/img-upload'
 import { MediaItem } from '@/components/img-upload/data'
 import { UploadFile } from 'antd/lib/upload/interface'
-import { getCollectionImages, addCollectionImages, addCollectionImage, deleteCollectionImage } from '@/api/ai-module'
+import { getCollectionImages, addCollectionImages, addCollectionImage, deleteCollectionImage, getImgWholeUrl } from '@/api/ai-module'
 import { CollectionImageListItem } from '@/interfaces/ai-module'
 import styles from './index.less'
 
@@ -19,16 +19,24 @@ const SelectImage: FC<Props> = (props) => {
   const initEditData = useMemo(() => {
     return dataList.map((item) => getImgUploadValueModel('IMAGE', item.content) as MediaItem)
   }, [dataList])
+  const [validateStatus, setValidateStatus] = useState<'' | 'error'>('error')
+  const [help, setHelp] = useState<string>('')
+  const [minLength] = useState<number>(5)
+  const [maxLength] = useState<number>(30)
 
-  const getImageUrl = async (dataList: CollectionImageListItem[]): Promise<CollectionImageListItem[]> => {
-    return dataList.map(item => ({
+  const getImageUrl = async (dataList: CollectionImageListItem[]) => {
+    const res = await getImgWholeUrl({
+      images: dataList.map(item => item.content),
+      suffix: '_bi'
+    })
+    console.log(res.data)
+    return dataList.map((item, index) => ({
       ...item,
-      content: `http://img4.baixing.net${item.content}_bi`
+      content: res.data[index].ext
     }))
   }
 
   const getImage = async () => {
-    // TODO; 图片转完整
     setGetDataLoading(true)
     const res = await getCollectionImages({ id: collectionId })
     const data = await getImageUrl(res.data)
@@ -50,7 +58,6 @@ const SelectImage: FC<Props> = (props) => {
 
   const addImage = async (imageUrls: { content: string }[]) => {
     if (imageUrls.length === 0) return
-    // TODO; 图片转完整
     const res = await addCollectionImages({ id: collectionId, content: imageUrls })
     const data = await getImageUrl(res.data)
     return data
@@ -85,6 +92,7 @@ const SelectImage: FC<Props> = (props) => {
 
   const handleUpData = async (nowDataList: CollectionImageListItem[], nowDelIds: number[]) => {
     setUpDataLoading(true)
+    validateFc(nowDataList)
     const addDataList = nowDataList.filter(item => !item.id)
     // 这里的ids会混入删除接口传进来的空，所以下面要过滤
     const [addData, ...delData] = await Promise.all([addImage(addDataList.map(item => ({ content: item.content }))), ...nowDelIds.map(item => delImage(item))])
@@ -98,9 +106,22 @@ const SelectImage: FC<Props> = (props) => {
     setUpDataLoading(false)
   }
 
-  return <Form.Item labelCol={{ span: 2 }} label="图片" required={true}>
+  const validateFc = async (nowDataList?: CollectionImageListItem[]) => {
+    const validate = nowDataList || dataList
+    if (validate.length <= 0) {
+      setValidateStatus('error')
+      setHelp('图片数量：3张以上')
+      return false
+    } else {
+      setValidateStatus('')
+      setHelp('')
+      return true
+    }
+  }
+
+  return <Form.Item labelCol={{ span: 2 }} label="图片" required={true} help={help} validateStatus={validateStatus}>
     <div className={styles['img-upload-container']}>
-      <ImgUpload editData={initEditData} uploadType={2} unique={true} uploadBtnText={'选择照片'} maxSize={2} maxLength={30} cropProps={{ aspectRatio: 1024 / 768 }} onChange={handleChangeImg} />
+      <ImgUpload editData={initEditData} uploadType={2} unique={true} uploadBtnText={'选择照片'} maxSize={2} maxLength={maxLength} cropProps={{ aspectRatio: 1024 / 768 }} onChange={handleChangeImg} />
     </div>
   </Form.Item>
 }

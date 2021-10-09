@@ -261,7 +261,6 @@ export const getMediaAssets = (params: GetMediaAssetsParam) => {
 }
 
 // 获取分类内可选用的素材列表
-// TODO
 export const getSelectableMediaAssets = (params: GetMediaAssetsParam) => {
   return postApiData<GetMediaAssetsRes>(
     ServicePath.SHOP,

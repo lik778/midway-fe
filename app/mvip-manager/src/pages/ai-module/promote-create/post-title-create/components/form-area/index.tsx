@@ -1,4 +1,4 @@
-import React, { FC, Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, Ref, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Form, Checkbox, Col, FormInstance, Spin } from 'antd';
 import styles from './index.less';
 import SelectBox from './components/select-box'
@@ -7,6 +7,7 @@ import { CollectionCityListItem } from '@/interfaces/ai-module'
 import { getCreateTitleCityList } from '@/api/ai-module'
 import { mockData } from '@/utils';
 import { Rule } from '../../data'
+import AiModuleContext from '../../../context'
 
 const FormItem = Form.Item;
 
@@ -16,6 +17,8 @@ interface Props {
 
 const FormArea: FC<Props> = (props) => {
   const { form } = props
+  const { postToolData } = useContext(AiModuleContext)
+  const { selectedVipResources } = postToolData
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [city, setCity] = useState<SelectListItem[]>([])
   const [cityList, setCityList] = useState<SelectListItem[]>([])
@@ -65,10 +68,10 @@ const FormArea: FC<Props> = (props) => {
   }]
 
   const getCreateTitleCityListFc = async () => {
+    if (!selectedVipResources) return
     setGetDataLoading(true)
-    // const res = await getCreateTitleCityList()
-    const res = await mockData<{ cities: CollectionCityListItem[] }>('data', { "cities": [{ "name": "上海", "id": "m30", "areas": ["浦东新区", "闵行", "徐汇", "嘉定", "松江", "宝山", "普陀", "长宁", "黄浦", "青浦", "杨浦", "虹口", "静安", "闸北", "奉贤", "上海周边", "南汇", "金山", "卢湾", "崇明"] }, { "name": "天津", "id": "m31", "areas": ["南开", "河西", "塘沽", "河东", "西青", "东丽", "北辰", "和平", "河北", "武清", "红桥", "滨海新区", "津南", "静海", "大港", "宝坻", "蓟县", "宁河", "汉沽"] }, { "name": "重庆", "id": "m32", "areas": ["江北", "九龙坡", "沙坪坝", "渝北", "渝中", "南岸", "巴南", "大渡口", "北碚", "开州", "万州", "江津", "永川", "涪陵", "合川", "璧山", "长寿", "铜梁", "云阳", "南川", "万盛", "大足", "双桥", "石柱", "黔江", "荣昌", "綦江", "巫溪", "潼南", "城口", "奉节", "巫山", "丰都", "秀山", "彭水", "垫江", "梁平", "武隆", "忠县", "酉阳"] }] })
-    const { cities } = res.data
+    const res = await getCreateTitleCityList({ productLine: selectedVipResources.productLine, vipType: selectedVipResources.vipType })
+    const cities = res.data
     const newCityList: SelectListItem[] = cities.map(item => {
       return {
         value: item.id,
@@ -85,7 +88,7 @@ const FormArea: FC<Props> = (props) => {
 
   useEffect(() => {
     getCreateTitleCityListFc()
-  }, [])
+  }, [selectedVipResources])
 
   const handleChangeItemValue = (name: string, value: SelectListItem[]) => {
     if (name === 'city') {
@@ -116,10 +119,10 @@ const FormArea: FC<Props> = (props) => {
             <SelectBox ref={(ref: Ref<any>) => selectRef.current[index] = ref} name={item.key} selectAll={item.key === 'city' ? citySelectAll : areaSelectAll} selectList={item.key === 'city' ? cityList : areaList} onValueChange={handleChangeItemValue}></SelectBox>
           </FormItem>
           {
-            item.key == 'city' && <div>
-              <Checkbox className={styles['checkall']} checked={citySelectAll} onChange={(e) => handleChangeCheckbox(e.target.checked, index)}>全选</Checkbox>
+            item.key == 'city' && <div className={styles['checkbox-group']}>
+              <Checkbox className={styles['checkbox']} checked={citySelectAll} onChange={(e) => handleChangeCheckbox(e.target.checked, index)}>全选</Checkbox>
               <FormItem name='notCityWord' valuePropName="checked">
-                <Checkbox onChange={(e) => setNotCityWord(e.target.checked)}>标题不含城市</Checkbox>
+                <Checkbox className={styles['checkbox']} onChange={(e) => setNotCityWord(e.target.checked)}>标题不含城市</Checkbox>
               </FormItem>
             </div>
           }

@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 
@@ -254,8 +254,36 @@ export const batchAddFragment = (parmas: { id: number, type: CollectionFragments
   return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}/downloadFromMaterial`)
 }
 
-// 生成标题前获取
-export const getCreateTitleCityList = (parmas: { id: number, type: CollectionFragmentsType, materialIds: number[] }) => {
-  return postApiData<CollectionCityListItem>(ServicePath.POST_TOOL, `post-tool/v1/`)
+// 获取图片完整url
+export const getImgWholeUrl = (parmas: ImgWholeUrlParmas) => {
+  return postApiData<{ id: string, ext: string }[]>(ServicePath.SHOP, `midway/internal/imageParse/batchGet`, parmas)
 }
 
+// 生成标题时的城市接口
+// TODO;
+export const getCreateTitleCityList = (parmas: {
+  productLine: number,
+  vipType: number
+}) => {
+  return postApiData<CollectionCityListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/loadCities`, parmas)
+}
+
+// 获取发帖通在线帖子数量
+export const getOnlineADCount = () => {
+  return postApiData<{
+    totalCount: number
+  }>(ServicePath.POST_TOOL, `post-tool/v1/ad/adCount`)
+}
+
+// 获取用户vip 一级类目
+export const getUserVipResources = () => {
+  return postApiData<UserVipResourcesListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/userVipResources`)
+}
+
+// 获取二级类目
+export const getSecondCategories = (parmas: {
+  productLine: number,
+  vipType: number
+}) => {
+  return postApiData<SecondCategoriesListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/loadCategories`, parmas)
+}

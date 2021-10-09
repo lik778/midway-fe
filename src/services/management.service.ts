@@ -4,9 +4,9 @@ import { LogService } from './log.service';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { ErrorCode } from '../enums/error';
+import { apiSecret, midwayAdminAPISecret } from '../constant';
 import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
-import { midwayAdminAPISecret } from '../constant'
 import { ServiceResponse } from '../interface/index'
 
 @Injectable()
@@ -29,7 +29,8 @@ export class ManagementService {
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
       'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
-      'x-api-src': 'web'
+      'x-api-src': 'web',
+      'x-api-secret': apiSecret
     }
     if (shopId) {
       headers['x-api-shop-id'] = Number(shopId)

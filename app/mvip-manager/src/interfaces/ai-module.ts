@@ -301,3 +301,22 @@ export interface CollectionCityListItem {
   name: string,
   areas: string[]
 }
+
+
+export interface UserVipResourcesListItem {
+  name: string,
+  productLine: number,
+  productLineName: string,
+  vipType: number
+  vipTypeName: string
+}
+
+export interface SecondCategoriesListItem {
+  value: string,
+  name: string
+}
+
+export interface ImgWholeUrlParmas {
+  suffix: '_bi' // 图片格式
+  images: string[]
+}
