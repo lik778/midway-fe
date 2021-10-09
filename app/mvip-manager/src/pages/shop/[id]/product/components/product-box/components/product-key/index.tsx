@@ -23,7 +23,6 @@ const ProductKey: FC<Props> = (props) => {
     <Form.Item
       className={styles['product-key-container']}
       label={'参数:'}
-      required={true}
       key={'params'}
     >
       <p className={styles['setting-tip']}
@@ -46,9 +45,7 @@ const ProductKey: FC<Props> = (props) => {
                 <FormItem className={styles['form-item']} name={[name, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }]}>
                   <Input maxLength={50} className={styles['formItem']} size="large" />
                 </FormItem>
-                {
-                  fields.length > 2 && <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
-                }
+                <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
               </div>
             ))}
             {
