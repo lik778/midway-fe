@@ -30,6 +30,7 @@ export const defaultValue: AiModuleContextProps = {
   },
   // 发帖通发帖页面数据缓存
   postToolData: {
+    disabled: false,
     // 表单数据缓存
     formData: {},
     // 一级类目列表缓存

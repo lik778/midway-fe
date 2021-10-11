@@ -19,6 +19,7 @@ export interface AiModuleContextProps {
     }
   },
   postToolData: {
+    disabled: boolean,
     // 发帖表单数据缓存
     formData: {
       [key: string]: InitCollectionForm

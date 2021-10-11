@@ -28,7 +28,7 @@ const AiModule: FC<Props> = (props) => {
     const newContextValue = Object.assign({}, contextValue, ...cacheData.current)
     cacheData.current = []
     setContextValue(newContextValue)
-  }, 100, { trailing: true, leading: false })
+  }, 10, { trailing: true, leading: false })
 
   const handleChangeContextData = (data: {
     [key in keyof AiModuleContextProps]?: any

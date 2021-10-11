@@ -22,7 +22,7 @@ interface Props {
 const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   const { collectionId, config, onShowRichTextModal } = props
   const { postToolData } = useContext(AiModuleContext)
-  const { formData } = postToolData
+  const { formData, disabled } = postToolData
   const [validateStatus, setValidateStatus] = useState<'' | 'error'>('')
   const [help, setHelp] = useState<string>('')
   const [dataList, setDataList] = useState<FragmentsListItem[]>([])
@@ -81,7 +81,7 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   }
 
   const handleClickDelItem = async (fragment: FragmentsListItem) => {
-    
+
     track({
       eventType: BXMAINSITE,
       data: {
@@ -126,9 +126,13 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   return <>
     <Form.Item labelCol={fromLabelCol} wrapperCol={{ span: 20 }} label={config.label} required={true} help={help} validateStatus={validateStatus}>
       <div>
-        <Button className={styles['add-text-btn']} onClick={handleClickAddItem}>添加</Button>
         {
-          config.type === 'qaInfo' && <Button className={styles['add-text-btn']} onClick={handleClickSpeedAdd}>快速批量添加</Button>
+          !disabled && <>
+            <Button className={styles['add-text-btn']} onClick={handleClickAddItem}>添加</Button>
+            {
+              config.type === 'qaInfo' && <Button className={styles['add-text-btn']} onClick={handleClickSpeedAdd}>快速批量添加</Button>
+            }
+          </>
         }
         <span>{config.tip}</span>
       </div>
@@ -136,11 +140,13 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
       <ScrollBox className={styles['textarea-block']} height="220px" scrollY>
         {
           dataList.map(item => <div className={styles['textarea-item']} key={item.id}>
-            <div className={styles['textarea-box']} dangerouslySetInnerHTML={{ __html: item.content }}></div>
-            <div className={styles['button']}>
-              <Button className={styles['edit-text-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={() => handleClickEditItem(item)}>编辑</Button>
-              <Button className={styles['del-text-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={() => handleClickDelItem(item)}> 删除</Button>
-            </div>
+            <div className={`${styles['textarea-box']} ${disabled ? styles['width-auto'] : ''}`} dangerouslySetInnerHTML={{ __html: item.content }}></div>
+            {
+              !disabled && <div className={styles['button']}>
+                <Button className={styles['edit-text-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={() => handleClickEditItem(item)}>编辑</Button>
+                <Button className={styles['del-text-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={() => handleClickDelItem(item)}> 删除</Button>
+              </div>
+            }
           </div>)
         }
       </ScrollBox>

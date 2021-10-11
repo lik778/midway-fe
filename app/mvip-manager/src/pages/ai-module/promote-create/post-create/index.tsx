@@ -112,8 +112,13 @@ const CreatePost = (props: Props) => {
       const collection = res.data
       setCollection(collection)
       setCategoryId(collection.categoryId)
+      const disabled = [CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(collection.status)
       // 在这里判断是否能禁用表单
-      setDisabled([CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(collection.status))
+      setDisabled(disabled)
+      postToolData.disabled = disabled
+      handleChangeContextData({
+        postToolData
+      })
     } else {
       errorMessage(res.message)
     }
@@ -314,7 +319,9 @@ const CreatePost = (props: Props) => {
             </Form.Item>
             <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
               <div className={styles['add-title']}>
-                <Button className={styles['blue-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
+                {
+                  !disabled && <Button className={styles['blue-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
+                }
                 <span className={styles['preview-title']} onClick={() => handlePreviewTitle()}>预览标题</span>
               </div>
             </Form.Item>
@@ -322,10 +329,12 @@ const CreatePost = (props: Props) => {
             <SetText collectionId={collectionId}></SetText>
           </div>
         </Spin>
-        <div className={styles['btn-line']}>
-          <Button className={`${styles['draft-btn']} ${styles['white-btn']}`} disabled={getDataLoading || upDataLoading} loading={upDataLoading} onClick={() => handleClickUpdate(CollectionAction.DRAFT)}>保存草稿</Button>
-          <Button className={styles['blue-btn']} disabled={getDataLoading || upDataLoading} loading={upDataLoading} onClick={() => handleClickUpdate(CollectionAction.AUDIT)}>提交审核</Button>
-        </div>
+        {
+          !disabled && <div className={styles['btn-line']}>
+            <Button className={`${styles['draft-btn']} ${styles['white-btn']}`} disabled={getDataLoading || upDataLoading} loading={upDataLoading} onClick={() => handleClickUpdate(CollectionAction.DRAFT)}>保存草稿</Button>
+            <Button className={styles['blue-btn']} disabled={getDataLoading || upDataLoading} loading={upDataLoading} onClick={() => handleClickUpdate(CollectionAction.AUDIT)}>提交审核</Button>
+          </div>
+        }
       </div>
       <CatchComponent visible={previewTitleVisible}>
         <PostPreviewTitle action='see' taskId={id} visible={previewTitleVisible} onCancel={setPreviewTitleVisible} ></PostPreviewTitle>
