@@ -31,7 +31,7 @@ const SetText: FC<Props> = (props) => {
     setRichTextEditVisible(true)
   }
 
-  const richTextEditCancel = () => {
+  const richTextEditClose = () => {
     setEditFragments(null)
     setRichTextEditType('')
     setRichTextEditVisible(false)
@@ -40,14 +40,14 @@ const SetText: FC<Props> = (props) => {
   const richTextEditOk = (fragment: FragmentsListItem) => {
     if (!richTextEditType) return
     previewBlockRef.current[richTextEditType].onChangeData(richTextEditType, fragment, editFragments)
-    richTextEditCancel()
+    richTextEditClose()
   }
 
   return <>
     {
       formItemConfig.map((item) => <PreviewBlock ref={(ref) => previewBlockRef.current[item.type] = ref} collectionId={collectionId} config={item} key={item.type} onShowRichTextModal={onShowRichTextModal}></PreviewBlock>)
     }
-    <RichTextEdit collectionId={collectionId} type={richTextEditType} visible={richTextEditVisible} fragments={editFragments} onCancel={richTextEditCancel} onOk={richTextEditOk}></RichTextEdit>
+    <RichTextEdit collectionId={collectionId} type={richTextEditType} visible={richTextEditVisible} fragments={editFragments} onCancel={richTextEditClose} onOk={richTextEditOk}></RichTextEdit>
   </>
 }
 

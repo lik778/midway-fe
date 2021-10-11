@@ -1,11 +1,12 @@
-import React, { FC, useEffect, useState, useMemo } from 'react';
-import { Form, Modal, Button, Checkbox } from 'antd';
+import React, { FC, useEffect, useState, useContext } from 'react';
+import { Form, Modal, Button, Checkbox, Spin } from 'antd';
 import { FragmentsListItem, MaterialListItem } from '@/interfaces/ai-module';
 import { CollectionFragmentsType } from '@/enums/ai-module'
 import { collectionFragmentsTypeMap } from '@/constants/ai-module'
-import { createFragments, getMaterialList, updateFragments, } from '@/api/ai-module'
+import { createFragments, getMaterialList, updateFragments, batchAddFragment } from '@/api/ai-module'
 import styles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
+import AiModuleContext from '../../../../../../../context'
 import MaterialTag from './components/material-tag'
 import ScrollBox from '@/components/scroll-box'
 
@@ -20,6 +21,8 @@ interface Props {
 }
 
 const SpeedAdd: FC<Props> = (props) => {
+  const { postToolData } = useContext(AiModuleContext)
+  const { formData } = postToolData
   const { collectionId, type, addFragment, visible, onCancel } = props
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
@@ -30,19 +33,25 @@ const SpeedAdd: FC<Props> = (props) => {
 
   const [checkIds, setCheckIds] = useState<string[]>([])
 
-  const handleClickSubmit = () => {
-
+  const handleClickSubmit = async () => {
+    if (checkIds.length > 0) {
+      setUpDataLoading(true)
+      const res = await batchAddFragment({ id: collectionId, type, materialIds: checkIds })
+      addFragment(res.data)
+      setUpDataLoading(false)
+    }
+    onCancel()
   }
 
   const onTagChange = (tags: string[]) => {
     setPage(1)
     setTotalPage(1)
     setDataList([])
+    setCheckIds([])
     setTags(tags)
   }
 
   useEffect(() => {
-
     getDataList()
   }, [tags])
 
@@ -50,10 +59,10 @@ const SpeedAdd: FC<Props> = (props) => {
     if (tags.length <= 0) return
     if (page > totalPage) return
     setGetDataLoading(true)
-    const res = await getMaterialList({ page, size: 10, tags, "category": "jiameng" })
+    const res = await getMaterialList({ page, size: 10, tags, category: formData[collectionId].metas[1]?.value || '' })
     if (res.data && res.data.content) {
-      console.log(res.data)
       setDataList([...dataList, ...res.data.content])
+      setPage(page + 1)
       setTotalPage(res.data.totalPage)
     }
     setGetDataLoading(false)
@@ -88,15 +97,17 @@ const SpeedAdd: FC<Props> = (props) => {
             <p>暂未搜索到，请选择更多标签。</p>
           </div>
         }
-        <CheckboxGroup className={styles['row']} onChange={handleChangeCheck} >
-          {
-            dataList.map(item => <div className={styles['col']} >
-              <Checkbox value={item.id}></Checkbox>
-              <div className={styles['text']} dangerouslySetInnerHTML={{ __html: item.content }}>
-              </div>
-            </div>)
-          }
-        </CheckboxGroup>
+        <Spin spinning={getDataLoading}>
+          <CheckboxGroup className={styles['row']} onChange={handleChangeCheck} value={checkIds}>
+            {
+              dataList.map(item => <div className={styles['col']} key={item.id}>
+                <Checkbox value={item.id}></Checkbox>
+                <div className={styles['text']} dangerouslySetInnerHTML={{ __html: item.content }}>
+                </div>
+              </div>)
+            }
+          </CheckboxGroup>
+        </Spin>
       </ScrollBox>
     </div>
   </Modal>

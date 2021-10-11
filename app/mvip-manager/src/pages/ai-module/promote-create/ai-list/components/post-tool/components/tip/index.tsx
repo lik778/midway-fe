@@ -5,7 +5,8 @@ import styles from '../../../../index.less'
 import tipStyles from './index.less'
 import AiModuleContext from '../../../../../context'
 import MyModal, { ModalType } from '@/components/modal';
-import { getOnlineADCount, getUserVipResources } from '@/api/ai-module'
+import { getOnlineADCount, getCompanyInfo } from '@/api/ai-module'
+import { CompanyInfo } from '@/interfaces/ai-module';
 const { Option } = Select
 
 interface Props {
@@ -15,13 +16,22 @@ interface Props {
 const Tip: FC<Props> = (props) => {
   const { dataTotal } = props
   const history = useHistory()
-  const { activeModuleKey, pageInfo, handleChangeContextData, shopStatus, postToolData, } = useContext(AiModuleContext)
+  const { activeModuleKey, handleChangeContextData, postToolData, } = useContext(AiModuleContext)
   const { vipResourcesList, selectedVipResources } = postToolData
   const [showBaseInfoModal, setShowBaseInfoModal] = useState<boolean>(false)
   const [adCount, setAdCount] = useState<number>(0)
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null)
+
+  const getCompanyInfoFn = async () => {
+    const res = await getCompanyInfo()
+    if (res.success) {
+      setCompanyInfo(res.data)
+      console.log('getCompanyInfo,', res)
+    }
+  }
 
   const handleCheckBaseInfo = () => {
-    if (shopStatus?.isUserPerfect) {
+    if (companyInfo?.isUserPerfect) {
       history.push('/ai-module/promote-create/post-create')
     } else {
       setShowBaseInfoModal(true)
@@ -59,6 +69,7 @@ const Tip: FC<Props> = (props) => {
   }, [activeModuleKey])
 
   useEffect(() => {
+    getCompanyInfoFn()
   }, [])
 
   return <>
@@ -92,4 +103,5 @@ const Tip: FC<Props> = (props) => {
       visible={showBaseInfoModal} />
   </>
 }
+
 export default Tip

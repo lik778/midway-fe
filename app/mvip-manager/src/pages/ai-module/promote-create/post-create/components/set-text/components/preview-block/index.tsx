@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useMemo, Ref, forwardRef, useImperativeHandle } from 'react';
+import React, { FC, useEffect, useState, useContext, Ref, forwardRef, useImperativeHandle } from 'react';
 import { Form, Button } from 'antd';
 import { FormItemConfig } from '../../data';
 import { fromLabelCol } from '../../../../config'
@@ -6,9 +6,12 @@ import { getCollectionFragments, deleteFragments } from '@/api/ai-module'
 import { FragmentsListItem } from '@/interfaces/ai-module'
 import ScrollBox from '@/components/scroll-box'
 import styles from './index.less'
-import { successMessage } from '@/components/message';
+import { errorMessage, successMessage } from '@/components/message';
 import { CollectionFragmentsType } from '@/enums/ai-module'
+import AiModuleContext from '../../../../../context'
 import SpeedAdd from './components/speed-add'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 interface Props {
   collectionId: number,
@@ -18,6 +21,8 @@ interface Props {
 
 const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   const { collectionId, config, onShowRichTextModal } = props
+  const { postToolData } = useContext(AiModuleContext)
+  const { formData } = postToolData
   const [validateStatus, setValidateStatus] = useState<'' | 'error'>('')
   const [help, setHelp] = useState<string>('')
   const [dataList, setDataList] = useState<FragmentsListItem[]>([])
@@ -62,9 +67,33 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
 
   const handleClickEditItem = (fragment: FragmentsListItem) => {
     onShowRichTextModal(config.type, fragment)
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        site_id: 'post_tool',
+        tracktype: 'event',
+        button_name: '编辑',
+        page_id: '素材包编辑主界面',
+        position: config.label,
+        _refer: document.referrer
+      }
+    })
   }
 
   const handleClickDelItem = async (fragment: FragmentsListItem) => {
+    
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        site_id: 'post_tool',
+        tracktype: 'event',
+        button_name: '删除',
+        page_id: '素材包编辑主界面',
+        position: config.label,
+        _refer: document.referrer
+      }
+    })
+
     setUpDataLoading(true)
     const res = await deleteFragments({ id: fragment.id, type: config.type })
     if (res.success) {
@@ -75,6 +104,10 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   }
 
   const handleClickSpeedAdd = () => {
+    if (!formData[collectionId] || !formData[collectionId].metas || !formData[collectionId].metas[1]) {
+      errorMessage('请选择类目')
+      return
+    }
     setSpeedAddVisible(true)
   }
 
@@ -95,7 +128,7 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
       <div>
         <Button className={styles['add-text-btn']} onClick={handleClickAddItem}>添加</Button>
         {
-          config.type === 'qaInfo' && <Button className={styles['add-text-btn']} onClick={handleClickSpeedAdd}>快速匹配添加</Button>
+          config.type === 'qaInfo' && <Button className={styles['add-text-btn']} onClick={handleClickSpeedAdd}>快速批量添加</Button>
         }
         <span>{config.tip}</span>
       </div>

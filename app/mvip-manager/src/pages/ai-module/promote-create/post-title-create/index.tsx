@@ -14,6 +14,8 @@ import FormArea from './components/form-area'
 import { errorMessage, successMessage } from '@/components/message';
 import { COOKIE_USER_KEY } from '@/constants/index'
 import PostPreviewTitle from '../components/post-preview-title'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const validateItem: (key: string, min: number, max: number, rule: Rule, value: string) => Promise<any> = (key, min, max, rule, value) => {
   if (key === 'area' || key === 'prefix' || key === 'coreWords' || key === 'modal') {
@@ -99,8 +101,18 @@ const PostTitleCreate: FC = () => {
   }
 
   useEffect(() => {
-    console.log(dataList)
-  }, [dataList])
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        site_id: 'post_tool',
+        tracktype: 'event',
+        action_id: 'entry-page',
+        page_id: '标题组合工具界面',
+        task_id: id,
+        _refer: document.referrer
+      }
+    })
+  }, [])
 
   const handleClickPreview = async () => {
     await form.validateFields();

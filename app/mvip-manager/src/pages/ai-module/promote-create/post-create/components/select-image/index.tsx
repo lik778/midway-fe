@@ -26,14 +26,18 @@ const SelectImage: FC<Props> = (props) => {
   const [maxLength] = useState<number>(30)
 
   const getImageUrl = async (dataList: CollectionImageListItem[]) => {
-    const res = await getImgWholeUrl({
-      images: dataList.map(item => item.content),
-      suffix: '_bi'
-    })
-    return dataList.map((item, index) => ({
-      ...item,
-      content: res.data[index].ext
-    }))
+    if (dataList.length > 0) {
+      const res = await getImgWholeUrl({
+        images: dataList.map(item => item.content),
+        suffix: '_bi'
+      })
+      return dataList.map((item, index) => ({
+        ...item,
+        content: res.data[index].ext
+      }))
+    } else {
+      return dataList
+    }
   }
 
   const getImage = async () => {
@@ -108,9 +112,9 @@ const SelectImage: FC<Props> = (props) => {
 
   const validateFc = async (nowDataList?: CollectionImageListItem[]) => {
     const validate = nowDataList || dataList
-    if (validate.length <= minLength) {
+    if (validate.length < minLength) {
       setValidateStatus('error')
-      setHelp(`图片数量：${minLength}张以上`)
+      setHelp(`图片数量：${minLength}张及以上`)
       return false
     } else {
       setValidateStatus('')

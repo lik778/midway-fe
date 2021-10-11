@@ -13,6 +13,8 @@ import { CollectionListItem } from '@/interfaces/ai-module';
 import { collectionTranslateStatus, collectionText } from '@/constants/ai-module'
 import { CollectionStatus, CollectionAction } from '@/enums/ai-module'
 import Tip from './components/tip'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const PostTool: FC = (props) => {
   const { activeModuleKey, pageInfo, handleChangeContextData, } = useContext(AiModuleContext)
@@ -45,6 +47,16 @@ const PostTool: FC = (props) => {
 
   useEffect(() => {
     getList()
+    
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        site_id: 'post_tool',
+        tracktype: 'pageview',
+        pageId: '素材包列表页',
+        _refer: document.referrer
+      }
+    })
   }, [])
 
   const handleBlurCollectionLimit = async (e: React.FocusEvent<HTMLInputElement>, key: 'dailyPostLimit' | 'postLimit', record: CollectionListItem) => {

@@ -307,8 +307,10 @@ export interface UserVipResourcesListItem {
   name: string,
   productLine: number,
   productLineName: string,
-  vipType: number
-  vipTypeName: string
+  productLineValue: string,
+  vipType: number,
+  vipTypeName: string,
+  vipTypeValue: string,
 }
 
 export interface SecondCategoriesListItem {
@@ -332,8 +334,29 @@ export interface FragmentsListItem {
 
 export interface MaterialListItem {
   content: string
-  id: "5f4ca2eeb8dc1059d23e440a"
+  id: string
   tags: string[]
   title: string,
   [key: string]: any
+}
+
+export interface CompanyMetas {
+  controlType: string
+  maxlength: string
+  name: string
+  readonly: boolean
+  remember: string
+  required: boolean
+  tips: string
+  type: string
+  value: string
+}
+
+export interface CompanyInfo {
+  isUserPerfect: boolean,
+  contact: string,
+  contactName: string,
+  qq: string,
+  weixin: string,
+  address: string
 }

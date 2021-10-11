@@ -9,6 +9,8 @@ import { createFragments, updateFragments } from '@/api/ai-module'
 import { reactQuillToolbar } from './config'
 import styles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 interface Props {
   collectionId: number
@@ -53,6 +55,10 @@ const RichTextEdit: FC<Props> = (props) => {
     const res = await updateFragments({ id: fragments!.id, content: localValue })
     if (res.success) {
       successMessage(res.message)
+      onOk({
+        ...res.data,
+        content: localValue
+      })
     } else {
       errorMessage(res.message)
     }
@@ -76,12 +82,44 @@ const RichTextEdit: FC<Props> = (props) => {
     }
   }
 
+  const handleClickCancel = () => {
+    Modal.confirm({
+      content: '您有编辑的内容未保存，需要保存后再关闭界面吗？',
+      cancelText: '丢弃',
+      onCancel: () => {
+        onCancel()
+        track({
+          eventType: BXMAINSITE,
+          data: {
+            site_id: 'post_tool',
+            tracktype: 'event',
+            button_name: '不保存',
+            page_id: '素材包编辑主界面',
+            _refer: document.referrer
+          }
+        })
+      },
+      onOk: () => {
+        track({
+          eventType: BXMAINSITE,
+          data: {
+            site_id: 'post_tool',
+            tracktype: 'event',
+            button_name: '保存',
+            page_id: '素材包编辑主界面',
+            _refer: document.referrer
+          }
+        })
+      }
+    })
+  }
+
   return <Modal
     width={600}
     title={type ? collectionFragmentsTypeMap[type] : ''}
     footer={
       <div>
-        <Button disabled={upDataLoading} onClick={onCancel}>取消</Button>
+        <Button disabled={upDataLoading} onClick={handleClickCancel}>取消</Button>
         <Button disabled={upDataLoading} loading={upDataLoading} onClick={handleClickSubmit} type="primary">
           确认添加
         </Button>

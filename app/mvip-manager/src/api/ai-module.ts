@@ -1,9 +1,11 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, CompanyMetas, CompanyInfo } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
+import { getCookie } from '@/utils';
+import { COOKIE_USER_KEY } from '@/constants/index'
 
 // 获取ai列表页
 export const getAiListApi = (params: PageParams) => {
@@ -148,7 +150,7 @@ export const getCollection = (parmas: { id: number }) => {
 
 // 更新素材包
 export const updateCollection = (parmas: Partial<UpdataCollectionParams> & { id: number }) => {
-  return putApiData<CollectionListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}`, parmas)
+  return putApiData<any>(ServicePath.POST_TOOL, `post-tool/v1/collections/${parmas.id}`, parmas)
 }
 
 // 删除素材包
@@ -250,8 +252,8 @@ export const deleteFragments = (parmas: { id: number, type: CollectionFragmentsT
 }
 
 // 从素材库下载正文素材(*)
-export const batchAddFragment = (parmas: { id: number, type: CollectionFragmentsType, materialIds: number[] }) => {
-  return postApiData<never>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}/downloadFromMaterial`)
+export const batchAddFragment = (parmas: { id: number, type: CollectionFragmentsType, materialIds: string[] }) => {
+  return postApiData<FragmentsListItem[]>(ServicePath.POST_TOOL, `post-tool/v1/fragments/${parmas.id}/${parmas.type}/downloadFromMaterial`, { materialIds: parmas.materialIds })
 }
 
 // 获取图片完整url
@@ -288,10 +290,23 @@ export const getSecondCategories = (parmas: {
   return postApiData<SecondCategoriesListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/loadCategories`, parmas)
 }
 
-export const getMaterialList = (parmas: { tags: string[], page: number, size: number, "category": "jiameng" }) => {
+export const getMaterialList = (parmas: { tags: string[], page: number, size: number, "category": string }) => {
   return getApiData<{
     content: MaterialListItem[],
     totalPage: number
   }>(ServicePath.POST_TOOL, `post-tool/v1/material`, parmas)
+}
+
+// TODO;
+export const getCompanyMetas = (parmas: { categoryId: string }) => {
+  return getApiData<{
+    thirdMetas: { label: string, value: string }[],
+    companyMetas: CompanyMetas
+  }>(ServicePath.POST_TOOL, `post-tool/v1/ad/categoryInfos/${parmas.categoryId}`)
+}
+
+export const getCompanyInfo = () => {
+  const uid = getCookie(COOKIE_USER_KEY)
+  return getApiData<CompanyInfo>(ServicePath.SHOP, `midway/internal/user/getUserInfo`, { userId: uid })
 }
 
