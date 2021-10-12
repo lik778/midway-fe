@@ -9,11 +9,12 @@ import SwitchShopType from './pages/SwitchShopType';
 import StoreWhitelist from './pages/StoreWhitelist';
 import CleanCache from './pages/CleanCache';
 import ModifyStore from './pages/ModifyStore';
+import AdviceRecord from './pages/AdviceRecord';
 
 
 export default () => {
   return (
-    <Layout> 
+    <Layout>
       <Switch>
         <Route path="/audit-image" component={AuditImage} key="audit-image" />
         <Route path="/audit-video" component={AuditVideo} key="audit-video" />
@@ -22,6 +23,7 @@ export default () => {
         <Route path="/store-whitelist" component={StoreWhitelist} key="store-whitelist" />
         <Route path="/clean-cache" component={CleanCache} key="clean-cache" />
         <Route path="/modify-the-store" component={ModifyStore} key="modify-the-store" />
+        <Route path="/advice-record" component={AdviceRecord} key="advice-record" />
       </Switch>
     </Layout>
   )

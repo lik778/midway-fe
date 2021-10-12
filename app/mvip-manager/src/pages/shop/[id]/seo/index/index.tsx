@@ -69,7 +69,6 @@ export default (props: any) => {
                 config={formConfig}
                 submit={sumbit}
                 loading={formLoading} />
-
             </Form.Item>
           </div>
         </div>
@@ -84,7 +83,7 @@ export default (props: any) => {
         <div className="tdk-box">
           <h4>
             分页设置TDK
-           </h4>
+          </h4>
           {formPage()}
         </div>
       </div>
