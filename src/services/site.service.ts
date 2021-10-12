@@ -61,6 +61,7 @@ export class SiteService {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
       // domain = 'zmlc2b.shop-test.baixing.cn'
       // domain = 'kkkkk.shop-test.baixing.cn'
+      // domain = 'hongtest1.shop-test.baixing.cn'
       domain = 'zb2c.shop-test.baixing.cn'
 
       /*后端在test分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
