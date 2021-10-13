@@ -17,8 +17,7 @@ interface Props {
 
 const FormArea: FC<Props> = (props) => {
   const { form } = props
-  const { postToolData } = useContext(AiModuleContext)
-  const { selectedVipResources } = postToolData
+  const { selectedVipResources } = useContext(AiModuleContext)
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [city, setCity] = useState<SelectListItem[]>([])
   const [cityList, setCityList] = useState<SelectListItem[]>([])

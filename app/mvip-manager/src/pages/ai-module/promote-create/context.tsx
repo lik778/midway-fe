@@ -2,12 +2,11 @@ import React, { FC, useState } from 'react';
 import { UploadFile } from 'antd/lib/upload/interface'
 import { AiModuleContextProps } from './data'
 import { ShopInfo } from '@/interfaces/shop';
-import { QuestionTaskListItem, AiContentItem } from '@/interfaces/ai-module'
+import { QuestionTaskListItem, AiContentItem, AuthKey } from '@/interfaces/ai-module'
 import { ModuleKey } from './data'
 
 export const defaultValue: AiModuleContextProps = {
-  shopStatus: null,
-  loadingShop: false,
+  auth: null,
   activeModuleKey: 'postTool' as ModuleKey,
   // 拷贝数据
   copyId: null,
@@ -28,16 +27,11 @@ export const defaultValue: AiModuleContextProps = {
       dataTotal: 0,
     },
   },
-  // 发帖通发帖页面数据缓存
-  postToolData: {
-    disabled: false,
-    // 表单数据缓存
-    formData: {},
-    // 一级类目列表缓存
-    vipResourcesList: [],
-    // 一级类目列表选择值缓存
-    selectedVipResources: null
-  },
+  postToolFormDisabled: false,
+  postToolFormData: {},
+  vipResourcesList: [],
+  selectedVipResources: null,
+  
   handleChangeContextData: () => { }
 }
 

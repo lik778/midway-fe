@@ -14,6 +14,3 @@ export const promoteCreateForm: FormConfig = {
   ]
 }
 
-// export {
-//   fromLabelCol
-// }

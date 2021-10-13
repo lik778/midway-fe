@@ -45,13 +45,11 @@ const Shop: FC = () => {
     if (res.success) {
       setDataList(addKeyForListData(res.data.result || [], page))
       if (dataTotal !== res.data.totalRecord || 0) {
-        handleChangeContextData({
-          pageInfo: {
-            ...pageInfo,
-            [activeModuleKey]: {
-              page,
-              dataTotal: res.data.totalRecord || 0
-            }
+        handleChangeContextData('pageInfo', {
+          ...pageInfo,
+          [activeModuleKey]: {
+            page,
+            dataTotal: res.data.totalRecord || 0
           }
         })
       }
@@ -192,15 +190,15 @@ const Shop: FC = () => {
 
   // 修改分页后也修改url
   const changePage = (page: number) => {
-    handleChangeContextData({
-      pageInfo: {
-        ...pageInfo,
-        [activeModuleKey]: {
-          page,
-          dataTotal: dataTotal
-        }
+
+    handleChangeContextData('pageInfo', {
+      ...pageInfo,
+      [activeModuleKey]: {
+        page,
+        dataTotal: dataTotal
       }
     })
+
   }
 
   const handleClickA = (url: string) => {

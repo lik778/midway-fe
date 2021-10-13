@@ -16,15 +16,20 @@ import { BXMAINSITE } from '@/constants/index'
 interface Props {
   collectionId: number,
   config: FormItemConfig,
-  onShowRichTextModal: (type: CollectionFragmentsType, fragment: FragmentsListItem | null) => void
+  blockInfo: {
+    help: string,
+    validateStatus: '' | 'error',
+    min: number,
+    max: number,
+  }
+  onShowRichTextModal: (type: CollectionFragmentsType, fragment: FragmentsListItem | null) => void,
+  handleChangeBlockData: (type: CollectionFragmentsType, dataList: FragmentsListItem[]) => void
 }
 
 const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
-  const { collectionId, config, onShowRichTextModal } = props
-  const { postToolData } = useContext(AiModuleContext)
-  const { formData, disabled } = postToolData
-  const [validateStatus, setValidateStatus] = useState<'' | 'error'>('')
-  const [help, setHelp] = useState<string>('')
+  const { collectionId, config, onShowRichTextModal, blockInfo, handleChangeBlockData } = props
+  const { min, max, help, validateStatus } = blockInfo
+  const { postToolFormDisabled, postToolFormData } = useContext(AiModuleContext)
   const [dataList, setDataList] = useState<FragmentsListItem[]>([])
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
@@ -41,24 +46,28 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   }
 
   const onChangeData = (richTextEditType: CollectionFragmentsType, newFragment: FragmentsListItem, oldFragment: FragmentsListItem | null) => {
+    let newDataList = [...dataList]
     if (oldFragment) {
-      setDataList(dataList.map(item => {
+      newDataList = newDataList.map(item => {
         if (item.id === oldFragment.id) {
           return newFragment
         } else {
           return item
         }
-      }))
+      })
+
     } else {
-      setDataList([newFragment, ...dataList])
+      newDataList = [newFragment, ...newDataList]
     }
+    setDataList(newDataList)
   }
 
   useImperativeHandle(parentRef, () => {
     return {
-      onChangeData
+      onChangeData,
+      dataList
     }
-  }, [])
+  }, [dataList])
 
 
   const handleClickAddItem = () => {
@@ -81,7 +90,6 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   }
 
   const handleClickDelItem = async (fragment: FragmentsListItem) => {
-
     track({
       eventType: BXMAINSITE,
       data: {
@@ -98,13 +106,19 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
     const res = await deleteFragments({ id: fragment.id, type: config.type })
     if (res.success) {
       successMessage(res.message)
-      setDataList(dataList.filter(item => item.id !== fragment.id))
+      const newDataList = dataList.filter(item => item.id !== fragment.id)
+      setDataList(newDataList)
     }
     setUpDataLoading(false)
   }
 
+
+  useEffect(() => {
+    handleChangeBlockData(config.type, dataList)
+  }, [dataList])
+
   const handleClickSpeedAdd = () => {
-    if (!formData[collectionId] || !formData[collectionId].metas || !formData[collectionId].metas[1]) {
+    if (!postToolFormData[collectionId] || !postToolFormData[collectionId].metas || !postToolFormData[collectionId].metas[1]) {
       errorMessage('请选择类目')
       return
     }
@@ -116,7 +130,8 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   }, [])
 
   const speedAddFragment = (fragments: FragmentsListItem[]) => {
-    setDataList([...fragments, ...dataList])
+    const newDataList = [...fragments, ...dataList]
+    setDataList(newDataList)
   }
 
   const speedAddCancel = () => {
@@ -127,8 +142,10 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
     <Form.Item labelCol={fromLabelCol} wrapperCol={{ span: 20 }} label={config.label} required={true} help={help} validateStatus={validateStatus}>
       <div>
         {
-          !disabled && <>
-            <Button className={styles['add-text-btn']} onClick={handleClickAddItem}>添加</Button>
+          !postToolFormDisabled && <>
+            {
+              dataList.length < max && <Button className={styles['add-text-btn']} onClick={handleClickAddItem}>添加</Button>
+            }
             {
               config.type === 'qaInfo' && <Button className={styles['add-text-btn']} onClick={handleClickSpeedAdd}>快速批量添加</Button>
             }
@@ -140,9 +157,9 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
       <ScrollBox className={styles['textarea-block']} height="220px" scrollY>
         {
           dataList.map(item => <div className={styles['textarea-item']} key={item.id}>
-            <div className={`${styles['textarea-box']} ${disabled ? styles['width-auto'] : ''}`} dangerouslySetInnerHTML={{ __html: item.content }}></div>
+            <div className={`${styles['textarea-box']} ${postToolFormDisabled ? styles['width-auto'] : ''}`} dangerouslySetInnerHTML={{ __html: item.content }}></div>
             {
-              !disabled && <div className={styles['button']}>
+              !postToolFormDisabled && <div className={styles['button']}>
                 <Button className={styles['edit-text-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={() => handleClickEditItem(item)}>编辑</Button>
                 <Button className={styles['del-text-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={() => handleClickDelItem(item)}> 删除</Button>
               </div>

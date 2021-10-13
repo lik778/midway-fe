@@ -99,8 +99,8 @@ export const wordsItemConfig: any = {
 
 export const collectionFragmentsTypeMap = {
   [CollectionFragmentsType.COMPANY_INFO]: '公司介绍',
-  [CollectionFragmentsType.QA_INFO]: '产品/服务介绍',
-  [CollectionFragmentsType.PRODUCT_INFO]: '小知识/问答',
+  [CollectionFragmentsType.PRODUCT_INFO]: '产品/服务介绍',
+  [CollectionFragmentsType.QA_INFO]: '小知识/问答',
 }
 
 export const PostToolTitleKeysMap = {

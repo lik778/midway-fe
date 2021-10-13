@@ -74,7 +74,6 @@ const RichTextEdit: FC<Props> = (props) => {
       errorMessage('您填写的信息描述过长，请修改后重新发布');
       return;
     }
-    console.log(localValue)
     if (fragments) {
       updateFragmentsFn()
     } else {

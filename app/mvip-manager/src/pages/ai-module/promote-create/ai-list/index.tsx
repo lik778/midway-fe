@@ -10,14 +10,24 @@ import styles from './index.less'
 const { TabPane } = Tabs;
 
 const AiList = () => {
-  const { activeModuleKey, handleChangeContextData } = useContext(AiModuleContext)
+  const { auth, activeModuleKey, handleChangeContextData } = useContext(AiModuleContext)
 
   return <>
     <MainTitle title={'创建推广'}></MainTitle>
-    <Tabs className={styles['ai-list']} activeKey={activeModuleKey} onChange={(activeModuleKey) => handleChangeContextData({ activeModuleKey: activeModuleKey as ModuleKey })}>
-      <TabPane tab="贴子" key="postTool"><PostTool></PostTool></TabPane>
-      <TabPane tab="知道" key="zhidao"><Zhidao></Zhidao></TabPane>
-      <TabPane tab="店铺文章" key="shop"><Shop></Shop></TabPane>
+    <Tabs className={styles['ai-list']} activeKey={activeModuleKey} onChange={(activeModuleKey) => handleChangeContextData('activeModuleKey', activeModuleKey as ModuleKey)}>
+      {
+        auth && <>
+          {
+            auth.postTool && <TabPane tab="贴子" key="postTool"><PostTool></PostTool></TabPane>
+          }
+          {
+            auth.zhidao && <TabPane tab="知道" key="zhidao"><Zhidao></Zhidao></TabPane>
+          }
+          {
+            auth.shop && <TabPane tab="店铺文章" key="shop"><Shop></Shop></TabPane>
+          }
+        </>
+      }
     </Tabs>
   </>
 }

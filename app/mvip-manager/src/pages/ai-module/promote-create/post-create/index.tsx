@@ -32,8 +32,7 @@ const CreatePost = (props: Props) => {
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
-  const { postToolData, handleChangeContextData } = useContext(AiModuleContext)
-  const { selectedVipResources } = postToolData
+  const { selectedVipResources, postToolFormData, handleChangeContextData } = useContext(AiModuleContext)
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   // 当前任务内容
@@ -44,19 +43,31 @@ const CreatePost = (props: Props) => {
   // 当前任务内容转的表单内容
   const [formData, setFormData] = useState<InitCollectionForm | null>(null)
   const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
-  const [disabled, setDisabled] = useState<boolean>(false)
+  const [disabled, setDisabled] = useState<boolean>(true)
   const [previewTitleVisible, setPreviewTitleVisible] = useState<boolean>(false)
   const [secondCategoriesList, setSecondCategoriesList] = useState<SecondCategoriesListItem[]>([])
   const [categoryId, setCategoryId] = useState<string>('')
   const [companyMetas, setCompanyMetas] = useState<CompanyMetas | null>(null)
+  const [init, setInit] = useState<boolean>(false)
+  const ImageRef = useRef<{
+    validateFc: () => Promise<any>
+  }>({
+    validateFc: async () => { }
+  })
 
-  // TODO;
+  const textRef = useRef<{
+    validateFc: () => Promise<any>
+  }>({
+    validateFc: async () => { }
+  })
+
   const getCompanyMetasFn = useDebounce(async () => {
     setGetDataLoading(true)
     const res = await getCompanyMetas({ categoryId })
-    console.log(res)
     if (res.success) {
-      setCompanyMetas(res.data.companyMetas)
+      console.log(res.data)
+      res.data.companyMeta.value = res.data.companyMeta.value || ' '
+      setCompanyMetas(res.data.companyMeta)
     } else {
       errorMessage(res.message || ' ')
     }
@@ -64,6 +75,7 @@ const CreatePost = (props: Props) => {
   }, 100)
 
   useEffect(() => {
+    console.log(categoryId)
     if (categoryId) {
       getCompanyMetasFn()
     }
@@ -74,7 +86,7 @@ const CreatePost = (props: Props) => {
     if (!collection) return
     if (!selectedVipResources) return
     const { form } = formRef.current
-    const draftCollectionData = postToolData.formData[id]
+    const draftCollectionData = postToolFormData[id]
     let newFormData: InitCollectionForm | null = null
 
     if ([CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_ADVANCE_STATUS].includes(collection.status) && draftCollectionData) {
@@ -93,16 +105,17 @@ const CreatePost = (props: Props) => {
         }, collection.thirdMeta.map(item => item.id)],
       }
       // 初始化好就存一份到缓存中
-      postToolData.formData[id] = { ...newFormData }
-      handleChangeContextData({ postToolData })
+      postToolFormData[id] = { ...newFormData }
+      handleChangeContextData('postToolFormData', postToolFormData)
     }
     setFormData(newFormData)
     form?.setFieldsValue(draftCollectionData)
+    setInit(true)
   }
 
   useEffect(() => {
     initComponent()
-  }, [collection])
+  }, [collection, selectedVipResources])
 
   // 获取当前任务详情
   const getDetail = async () => {
@@ -115,10 +128,7 @@ const CreatePost = (props: Props) => {
       const disabled = [CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(collection.status)
       // 在这里判断是否能禁用表单
       setDisabled(disabled)
-      postToolData.disabled = disabled
-      handleChangeContextData({
-        postToolData
-      })
+      handleChangeContextData('postToolFormDisabled', disabled)
     } else {
       errorMessage(res.message)
     }
@@ -179,7 +189,6 @@ const CreatePost = (props: Props) => {
     }
   }
 
-
   useEffect(() => {
     if (selectedVipResources) {
       getFormConfig()
@@ -200,8 +209,6 @@ const CreatePost = (props: Props) => {
         _refer: document.referrer
       }
     })
-
-
   }, [])
 
   const handlePreviewTitle = () => {
@@ -218,10 +225,11 @@ const CreatePost = (props: Props) => {
     })
   }
 
-  const formChange = (changeTarget: any, value: InitCollectionForm) => {
-    console.log('formChange', changeTarget, value)
-    if (changeTarget.metaCascaderValue && changeTarget.metaCascaderValue[1] && changeTarget.metaCascaderValue[1].value) {
-      setCategoryId(changeTarget.metaCascaderValue[1].value)
+  const formChange = (changeTarget: Partial<InitCollectionForm>, values: InitCollectionForm) => {
+    postToolFormData[id] = values
+    handleChangeContextData('postToolFormData', postToolFormData)
+    if (changeTarget.metas && changeTarget.metas[1] && changeTarget.metas[1].value) {
+      setCategoryId(changeTarget.metas[1].value)
     }
   }
 
@@ -230,8 +238,8 @@ const CreatePost = (props: Props) => {
     try {
       await form?.validateFields()
       const values = form?.getFieldsValue()
-      postToolData.formData[id] = values
-      handleChangeContextData({ postToolData })
+      postToolFormData[id] = values
+      handleChangeContextData('postToolFormData', postToolFormData)
       history.push(`/ai-module/promote-create/post-title-create?id=${id}`)
     } catch (e) {
       errorMessage('请检查素材包名称与类目')
@@ -254,8 +262,14 @@ const CreatePost = (props: Props) => {
     }
   }
 
-  const handleClickUpdate = async (action: CollectionAction.AUDIT | CollectionAction.DRAFT) => {
+  const validateForm = () => {
+    return Promise.all([formRef.current.form?.validateFields(), ImageRef.current.validateFc(), textRef.current.validateFc()])
+  }
 
+  const handleClickUpdate = async (action: CollectionAction.AUDIT | CollectionAction.DRAFT) => {
+    if (action === CollectionAction.AUDIT) {
+      await validateForm()
+    }
     track({
       eventType: BXMAINSITE,
       data: {
@@ -269,7 +283,6 @@ const CreatePost = (props: Props) => {
 
     const { form } = formRef.current
     const values = form?.getFieldsValue()
-    console.log(values)
     const requestData = {
       id: collectionId,
       name: values.name,
@@ -299,35 +312,37 @@ const CreatePost = (props: Props) => {
   }
 
 
-
-
   return (
     <>
       <MainTitle title="帖子AI任务填写" showJumpIcon />
       <div className={`${styles['post-create-container']} container`}>
         <Spin spinning={getDataLoading}>
-          <div className={styles['form-container']}>
-            <WildcatForm
-              ref={formRef}
-              disabled={disabled}
-              editDataSource={formData}
-              config={config}
-              formChange={formChange}
-            />
-            <Form.Item label={'公司名称'} labelCol={fromLabelCol}>
-              <Input style={{ width: 260 }} disabled value={companyMetas?.value || ''} size={'large'} placeholder={'请选择类目'}></Input>
-            </Form.Item>
-            <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
-              <div className={styles['add-title']}>
-                {
-                  !disabled && <Button className={styles['blue-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
-                }
-                <span className={styles['preview-title']} onClick={() => handlePreviewTitle()}>预览标题</span>
+          {
+            init && <>
+              <div className={styles['form-container']}>
+                <WildcatForm
+                  ref={formRef}
+                  disabled={disabled}
+                  editDataSource={formData}
+                  config={config}
+                  formChange={formChange}
+                />
+                <Form.Item label={'公司名称'} labelCol={fromLabelCol}>
+                  <Input style={{ width: 260 }} disabled value={companyMetas?.value || ''} size={'large'} placeholder={'请选择类目'}></Input>
+                </Form.Item>
+                <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
+                  <div className={styles['add-title']}>
+                    {
+                      !disabled && <Button className={styles['blue-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
+                    }
+                    <span className={styles['preview-title']} onClick={() => handlePreviewTitle()}>预览标题</span>
+                  </div>
+                </Form.Item>
+                <SelectImage collectionId={collectionId} ref={ImageRef}></SelectImage>
+                <SetText collectionId={collectionId} ref={textRef}></SetText>
               </div>
-            </Form.Item>
-            <SelectImage collectionId={collectionId}></SelectImage>
-            <SetText collectionId={collectionId}></SetText>
-          </div>
+            </>
+          }
         </Spin>
         {
           !disabled && <div className={styles['btn-line']}>

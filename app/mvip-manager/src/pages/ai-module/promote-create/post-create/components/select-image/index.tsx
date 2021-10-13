@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useMemo } from 'react';
+import React, { FC, useEffect, useState, useMemo, forwardRef, Ref, useImperativeHandle } from 'react';
 import { Form } from 'antd'
 import ImgUpload, { getImgUploadValueModel } from '@/components/img-upload'
 import { MediaItem } from '@/components/img-upload/data'
@@ -12,7 +12,7 @@ interface Props {
   collectionId: number
 }
 
-const SelectImage: FC<Props> = (props) => {
+const SelectImage = (props: Props, parentRef: Ref<any>) => {
   const { collectionId } = props
   const [getDataLoading, setGetDataLoading] = React.useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
@@ -24,6 +24,10 @@ const SelectImage: FC<Props> = (props) => {
   const [help, setHelp] = useState<string | undefined>()
   const [minLength] = useState<number>(5)
   const [maxLength] = useState<number>(30)
+
+  useImperativeHandle(parentRef, () => ({
+    validateFc
+  }))
 
   const getImageUrl = async (dataList: CollectionImageListItem[]) => {
     if (dataList.length > 0) {
@@ -68,11 +72,6 @@ const SelectImage: FC<Props> = (props) => {
   }
 
   const handleChangeImg = (values: "" | MediaItem | MediaItem[], fileList: UploadFile<any>[], oldFileList: UploadFile<any>[]) => {
-    // oldFileList 对应bannerLiet的文件 ，且顺序相同。
-    // 找到fileList与oldFileList的交集a。
-    // 维持localValues的顺序等于values，并将已有的id记录在localValues里
-    // 删除oldFileList中不存在于a的项
-    // 新增localValues中不存在id的项
     const localDataList = [...dataList]
     const newDataList: CollectionImageListItem[] = []
     fileList.forEach(item => {
@@ -96,7 +95,6 @@ const SelectImage: FC<Props> = (props) => {
 
   const handleUpData = async (nowDataList: CollectionImageListItem[], nowDelIds: number[]) => {
     setUpDataLoading(true)
-    validateFc(nowDataList)
     const addDataList = nowDataList.filter(item => !item.id)
     // 这里的ids会混入删除接口传进来的空，所以下面要过滤
     const [addData, ...delData] = await Promise.all([addImage(addDataList.map(item => ({ content: item.content }))), ...nowDelIds.map(item => delImage(item))])
@@ -108,6 +106,7 @@ const SelectImage: FC<Props> = (props) => {
     })
     setDataList(nowDataList)
     setUpDataLoading(false)
+    validateFc(nowDataList)
   }
 
   const validateFc = async (nowDataList?: CollectionImageListItem[]) => {
@@ -115,11 +114,11 @@ const SelectImage: FC<Props> = (props) => {
     if (validate.length < minLength) {
       setValidateStatus('error')
       setHelp(`图片数量：${minLength}张及以上`)
-      return false
+      return Promise.reject()
     } else {
       setValidateStatus('')
       setHelp(undefined)
-      return true
+      return Promise.resolve()
     }
   }
 
@@ -130,4 +129,4 @@ const SelectImage: FC<Props> = (props) => {
   </Form.Item>
 }
 
-export default SelectImage
+export default forwardRef(SelectImage)

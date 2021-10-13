@@ -21,8 +21,7 @@ interface Props {
 }
 
 const SpeedAdd: FC<Props> = (props) => {
-  const { postToolData } = useContext(AiModuleContext)
-  const { formData } = postToolData
+  const { postToolFormData } = useContext(AiModuleContext)
   const { collectionId, type, addFragment, visible, onCancel } = props
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
@@ -59,7 +58,7 @@ const SpeedAdd: FC<Props> = (props) => {
     if (tags.length <= 0) return
     if (page > totalPage) return
     setGetDataLoading(true)
-    const res = await getMaterialList({ page, size: 10, tags, category: formData[collectionId].metas[1]?.value || '' })
+    const res = await getMaterialList({ page, size: 10, tags, category: postToolFormData[collectionId].metas[1]?.value || '' })
     if (res.data && res.data.content) {
       setDataList([...dataList, ...res.data.content])
       setPage(page + 1)

@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, CompanyMetas, CompanyInfo } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, companyMeta, CompanyInfo, AuthKey } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 import { getCookie } from '@/utils';
@@ -301,7 +301,7 @@ export const getMaterialList = (parmas: { tags: string[], page: number, size: nu
 export const getCompanyMetas = (parmas: { categoryId: string }) => {
   return getApiData<{
     thirdMetas: { label: string, value: string }[],
-    companyMetas: CompanyMetas
+    companyMeta: companyMeta
   }>(ServicePath.POST_TOOL, `post-tool/v1/ad/categoryInfos/${parmas.categoryId}`)
 }
 
@@ -310,3 +310,6 @@ export const getCompanyInfo = () => {
   return getApiData<CompanyInfo>(ServicePath.SHOP, `midway/internal/user/getUserInfo`, { userId: uid })
 }
 
+export const getAiModuleTabList = () => {
+  return postApiData<AuthKey[]>(ServicePath.SHOP, `midway/menu/getAiTabMenuList`)
+}

@@ -30,13 +30,11 @@ const PostTool: FC = (props) => {
     const res = await getCollectionList({ page: 0, size: 1000 })
     if (res.success) {
       setDataList(res.data)
-      handleChangeContextData({
-        pageInfo: {
-          ...pageInfo,
-          [activeModuleKey]: {
-            page,
-            dataTotal: res.data.length
-          }
+      handleChangeContextData('pageInfo', {
+        ...pageInfo,
+        [activeModuleKey]: {
+          page,
+          dataTotal: res.data.length
         }
       })
     } else {
@@ -47,7 +45,7 @@ const PostTool: FC = (props) => {
 
   useEffect(() => {
     getList()
-    
+
     track({
       eventType: BXMAINSITE,
       data: {
@@ -103,10 +101,8 @@ const PostTool: FC = (props) => {
   }
 
   const handleClickCopy = async (copyId: number) => {
-    handleChangeContextData({
-      copyId,
-      copyIdType: 'postTool'
-    })
+    handleChangeContextData('copyId', copyId)
+    handleChangeContextData('copyIdType', 'postTool')
   }
 
   const columns: TableColumnProps<CollectionListItem>[] = [
@@ -221,13 +217,11 @@ const PostTool: FC = (props) => {
 
   // 分页变化
   const changePage = (page: number) => {
-    handleChangeContextData({
-      pageInfo: {
-        ...pageInfo,
-        [activeModuleKey]: {
-          page,
-          dataTotal: dataTotal
-        }
+    handleChangeContextData('pageInfo', {
+      ...pageInfo,
+      [activeModuleKey]: {
+        page,
+        dataTotal: dataTotal
       }
     })
   }

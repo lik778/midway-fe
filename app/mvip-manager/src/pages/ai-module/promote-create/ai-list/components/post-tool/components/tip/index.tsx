@@ -16,8 +16,8 @@ interface Props {
 const Tip: FC<Props> = (props) => {
   const { dataTotal } = props
   const history = useHistory()
-  const { activeModuleKey, handleChangeContextData, postToolData, } = useContext(AiModuleContext)
-  const { vipResourcesList, selectedVipResources } = postToolData
+  const { activeModuleKey, handleChangeContextData, vipResourcesList, selectedVipResources } = useContext(AiModuleContext)
+
   const [showBaseInfoModal, setShowBaseInfoModal] = useState<boolean>(false)
   const [adCount, setAdCount] = useState<number>(0)
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null)
@@ -52,13 +52,7 @@ const Tip: FC<Props> = (props) => {
 
   // 这里的option 是 Option的props
   const handleChangeSelectedVipResources = (value: string, option: any) => {
-    console.log(value, option)
-    handleChangeContextData({
-      postToolData: {
-        ...postToolData,
-        selectedVipResources: option.item
-      }
-    })
+    handleChangeContextData('selectedVipResources', option.item)
   }
 
   useEffect(() => {
@@ -84,7 +78,7 @@ const Tip: FC<Props> = (props) => {
     <div className={styles['page-action-btn-line']}>
       <Button className={`${styles['action-btn']} ${styles['create-action-btn']}`} onClick={handleCheckBaseInfo}>+AI批量创建推广</Button>
       <Link className={styles['action-btn']} to={'/company-info/base'}>填写基础信息</Link>
-      <Button className={styles['action-btn']} onClick={() => handleClickA(`https://www.baixing.com/vip/manager/service/${selectedVipResources?.vipType}/postTool/adList`)}>发帖通帖子列表</Button>
+      <Button className={styles['action-btn']} onClick={() => handleClickA(`https://www.baixing.com/vip/manager/service/${selectedVipResources?.productLine}/postTool/adList`)}>发帖通帖子列表</Button>
       <Button className={styles['action-btn']} onClick={() => handleClickA('https://www.baixing.com/fabu/jiameng')}>手动发布</Button>
     </div>
     <p className={styles['page-tip']}>发帖通是您的发帖小助手，通过发帖通添加素材包、设置发帖内容，系统将每天自动发布帖子。</p>

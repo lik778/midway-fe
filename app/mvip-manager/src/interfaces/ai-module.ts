@@ -340,7 +340,7 @@ export interface MaterialListItem {
   [key: string]: any
 }
 
-export interface CompanyMetas {
+export interface companyMeta {
   controlType: string
   maxlength: string
   name: string
@@ -360,3 +360,5 @@ export interface CompanyInfo {
   weixin: string,
   address: string
 }
+
+export type AuthKey = 'SHOP' | 'ZHIDAO' | 'POSTTOOL'
