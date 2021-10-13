@@ -104,7 +104,7 @@ const AiZhidaoDetail = (props: any) => {
     if (res.success) {
       // 这里是为了处理测试提出的bug
       if (!res.data || res.data.length === 0) {
-        history.replace('/ai-content/ai-zhidao?activeKey=create-job')
+        history.replace('/ai-module/promote-create/zhidao-create')
         return
       }
       setDataList(res.data.map((item, index) => ({
@@ -116,17 +116,6 @@ const AiZhidaoDetail = (props: any) => {
     }
     setGetDataLoading(false)
   }
-
-  const handleClickBack = () => {
-    if (pageType === 'edit') return
-    // 复制到新页面 history长度是2
-    if (history.length <= 2) {
-      history.replace('/ai-content/ai-zhidao?activeKey=job-list')
-    } else {
-      history.goBack()
-    }
-  }
-
 
   useEffect(() => {
     getData()
@@ -161,7 +150,7 @@ const AiZhidaoDetail = (props: any) => {
     const res = await submitTaskApi()
     if (res.success && res.data === 'true') {
       successMessage('新建任务成功')
-      history.replace('/ai-content/ai-zhidao')
+      history.goBack()
     } else {
       errorMessage(res.message || '发布失败')
     }
@@ -182,9 +171,7 @@ const AiZhidaoDetail = (props: any) => {
 
   return (
     <>
-      <MainTitle title={
-        `${pageType === 'see' ? '返回查看任务列表' : '生成问答列表'}`
-      } showJumpIcon={true}></MainTitle>
+      <MainTitle title='返回查看任务列表' showJumpIcon={true}></MainTitle>
       <Spin spinning={getDataLoading}>
         <div className={styles['ai-list-container']} >
           <Table components={{

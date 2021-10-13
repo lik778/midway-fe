@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { wordsItemConfig } from '@/constants/ai-module';
 import styles from './index.less';
-import { createAiJobApi } from '@/api/ai-module';
+import { createAiJobApi, saveWord, getWord } from '@/api/ai-module';
 import { CreateAiContentNav } from './components/nav';
 import { randomList, translateProductText } from '@/utils';
 import MainTitle from '@/components/main-title'
@@ -14,12 +14,14 @@ import { errorMessage, successMessage } from '@/components/message';
 import MyModal, { ModalType } from '@/components/modal';
 import { DomainStatus } from '@/enums'
 import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
-import { AiShopList } from '@/interfaces/ai-module';
+import { AiShopList, AiTaskApiParams } from '@/interfaces/ai-module';
+import AiModuleContext from '../context'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
 const CreateShop = () => {
+  const { copyId, copyIdType } = useContext(AiModuleContext)
   // 店铺信息
   const [form] = Form.useForm();
   const [nowShopInfo, setNowShopInfo] = useState<AiShopList>()
@@ -72,6 +74,32 @@ const CreateShop = () => {
     form.setFieldsValue(formValues)
   }
 
+  const getWordFn = async () => {
+    if (copyId && copyIdType) {
+      const res = await getWord({ wordId: copyId })
+      const { area, prefix, coreWords, suffix } = res.data
+      form.setFieldsValue({
+        wordA: (area || []).join('\n'),
+        wordB: (prefix || []).join('\n'),
+        wordC: (coreWords || []).join('\n'),
+        wordD: (suffix || []).join('\n'),
+      })
+      setCounters({
+        wordA:area.length,
+        wordB:prefix.length,
+        wordC:coreWords.length,
+        wordD:suffix.length,
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (visiblePanel) {
+      console.log(copyId, copyIdType)
+      getWordFn()
+    }
+  }, [visiblePanel])
+
   const isValidForm = (): boolean => {
     const errorList: string[] = []
     Object.keys(counters).forEach(x => {
@@ -89,6 +117,22 @@ const CreateShop = () => {
     }
   }
 
+  const saveWordFn = async (params: AiTaskApiParams) => {
+    const res = await saveWord({
+      aiSource: 'shop',
+      area: params.wordA,
+      prefix: params.wordB,
+      coreWords: params.wordC,
+      suffix: params.wordD
+    })
+    if (res.success) {
+      return res.data
+    } else {
+      errorMessage(res.message)
+      return Promise.reject()
+    }
+  }
+
   const submitData = async () => {
     if (!form.getFieldValue('contentCateId')) {
       errorMessage('请选择文章分组')
@@ -103,7 +147,12 @@ const CreateShop = () => {
         }
       })
       setSubmitLoading(true)
-      const res = await createAiJobApi(values)
+      const wordId = await saveWordFn(values)
+      console.log('saveWordFn', values, wordId)
+      const res = await createAiJobApi({
+        ...values,
+        wordId,
+      })
       setSubmitLoading(false)
       if (res.success) {
         successMessage('添加成功')

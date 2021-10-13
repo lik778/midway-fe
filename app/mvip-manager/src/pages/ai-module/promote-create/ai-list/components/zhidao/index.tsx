@@ -18,7 +18,13 @@ interface QuotaNumInterface extends GetQuotaNumRes {
   buyUrl?: string
 }
 
-const Zhidao: FC = () => {
+interface Props {
+  onCopy: () => void
+}
+
+
+const Zhidao: FC<Props> = (props) => {
+  const { onCopy } = props
   const history = useHistory()
   const { activeModuleKey, pageInfo, handleChangeContextData } = useContext(AiModuleContext)
   const { zhidao: { page, dataTotal } } = pageInfo
@@ -98,6 +104,12 @@ const Zhidao: FC = () => {
     </Tooltip>
   }
 
+  const handleClickCopy = async (wordId: number) => {
+    handleChangeContextData('copyId', wordId)
+    handleChangeContextData('copyIdType', 'postTool')
+    onCopy()
+  }
+
   const columns: TableColumnProps<QuestionTaskListItem>[] = [
     { title: '编号', dataIndex: 'taskId' },
     {
@@ -131,7 +143,12 @@ const Zhidao: FC = () => {
               (record.status === ZhidaoAiTaskStatus.ACTIVE || record.status === ZhidaoAiTaskStatus.PAUSED) && getActionBtn(record)
             }
           </div>
-          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</span>
+          <span className={zhidaoStyles['func-btn']} style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => getQuestionTaskStatus(record.taskId)}>查看详情</span>
+          {
+            typeof record.wordId === 'number' && record.wordId > 0 && <>
+              <span className={zhidaoStyles['func-btn']} onClick={() => handleClickCopy(record.wordId!)}>复制</span>
+            </>
+          }
         </>
       }
     },

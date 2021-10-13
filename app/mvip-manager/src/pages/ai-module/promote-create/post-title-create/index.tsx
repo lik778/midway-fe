@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useContext, useRef } from 'react';
 import { useHistory } from 'umi'
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import MainTitle from '@/components/main-title';
@@ -6,8 +6,8 @@ import styles from './index.less';
 import { getCookie, randomList, translateProductText, } from '@/utils';
 import { modal, prefix } from '@/constants/ai-module'
 import { PostToolTitleKeys } from '@/enums/ai-module'
-import { CollectionTitleApiParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionCreateTitleParmas } from '@/interfaces/ai-module'
-import { createCollectionTitles, previewCollectionTitles } from '@/api/ai-module'
+import { CollectionTitleApiParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionCreateTitleParmas, SaveWordParmes } from '@/interfaces/ai-module'
+import { createCollectionTitles, previewCollectionTitles, updateCollection, saveWord, getWord } from '@/api/ai-module'
 import { Rule, FormItemListItem, FormParmas, SelectListItem } from './data'
 import FormTextarea from './components/form-textarea'
 import FormArea from './components/form-area'
@@ -16,6 +16,7 @@ import { COOKIE_USER_KEY } from '@/constants/index'
 import PostPreviewTitle from '../components/post-preview-title'
 import { track } from '@/api/common'
 import { BXMAINSITE } from '@/constants/index'
+import AiModuleContext from '../context'
 
 const validateItem: (key: string, min: number, max: number, rule: Rule, value: string) => Promise<any> = (key, min, max, rule, value) => {
   if (key === 'area' || key === 'prefix' || key === 'coreWords' || key === 'modal') {
@@ -36,10 +37,22 @@ const PostTitleCreate: FC = () => {
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
+  const { copyId, copyIdType } = useContext(AiModuleContext)
   const [form] = Form.useForm<FormParmas>();
   const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
   const [dataList, setDataList] = useState<CollectionCreateTitleParmas[]>([])
   const [selectTitleVisible, setSelectTitleVisible] = useState<boolean>(false)
+  const [saveWordData, setSaveWordData] = useState<Partial<SaveWordParmes>>({})
+  const textareaRef = useRef<{
+    prefix: { setWordNum: (number: number) => void },
+    main: { setWordNum: (number: number) => void },
+    suffix: { setWordNum: (number: number) => void },
+  }>({
+    prefix: { setWordNum: (number: number) => { } },
+    main: { setWordNum: (number: number) => { } },
+    suffix: { setWordNum: (number: number) => { } }
+  })
+
   const formItemList: FormItemListItem[] = [{
     label: '前缀',
     key: 'prefix',
@@ -85,6 +98,7 @@ const PostTitleCreate: FC = () => {
     localStorage.setItem(`setLastPreviewTiem_${uid}`, String(new Date().getTime()))
   }
 
+
   const checkLastPreviewTime = () => {
     const uid = getCookie(COOKIE_USER_KEY)
     const lastTime = localStorage.getItem(`setLastPreviewTiem_${uid}`)
@@ -100,7 +114,24 @@ const PostTitleCreate: FC = () => {
     return true
   }
 
+
+  const getWordFn = async () => {
+    if (copyId && copyIdType) {
+      const res = await getWord({ wordId: copyId })
+      const { area, prefix, coreWords, suffix } = res.data
+      form.setFieldsValue({
+        prefix: (prefix || []).join('\n'),
+        main: (coreWords || []).join('\n'),
+        suffix: (suffix || []).join('\n'),
+      })
+      textareaRef.current.prefix.setWordNum(prefix.length)
+      textareaRef.current.main.setWordNum(coreWords.length)
+      textareaRef.current.suffix.setWordNum(suffix.length)
+    }
+  }
+
   useEffect(() => {
+    getWordFn()
     track({
       eventType: BXMAINSITE,
       data: {
@@ -126,15 +157,16 @@ const PostTitleCreate: FC = () => {
       groupWords: {
         [PostToolTitleKeys.CITY]: notCityWord ? undefined : [(city[0])?.label],
         [PostToolTitleKeys.AREA]: values.area?.map(item => item.label) || [],
-        [PostToolTitleKeys.PREFIX]: values.prefix.split('\n'),
-        [PostToolTitleKeys.MAIN]: values.main.split('\n'),
-        [PostToolTitleKeys.SUFFIX]: values.suffix.split('\n'),
+        [PostToolTitleKeys.PREFIX]: values.prefix.split('\n').filter(item => item),
+        [PostToolTitleKeys.MAIN]: values.main.split('\n').filter(item => item),
+        [PostToolTitleKeys.SUFFIX]: values.suffix.split('\n').filter(item => item),
       }
     }
     setUpdataLoading(true)
     const res = await previewCollectionTitles(params)
     if (res.success) {
       const { remainSize, titles } = res.data
+      console.log(res.data)
       successMessage(`为您总共生成${remainSize * (city.length || 1)}个标题`)
       // 多城市需要拷贝下结果
       if (city.length > 1) {
@@ -156,11 +188,22 @@ const PostTitleCreate: FC = () => {
       }
       setSelectTitleVisible(true)
       setLastPreviewTime()
+      setSaveWordData({
+        aiSource: 'posttool',
+        area: values.area?.map(item => item.label) || [],
+        prefix: values.prefix.split('\n'),
+        coreWords: values.main.split('\n'),
+        suffix: values.suffix.split('\n'),
+      })
     }
     setUpdataLoading(false)
   }
 
-
+  // 保存wordId
+  const saveWordFn = async () => {
+    const res = await saveWord(saveWordData)
+    await updateCollection({ id, wordId: res.data })
+  }
 
   return <>
     <MainTitle title="批量添加标题" showJumpIcon />
@@ -175,15 +218,15 @@ const PostTitleCreate: FC = () => {
         <Row className={styles["group-words-list"]} gutter={24}>
           <FormArea form={form} key={'FormArea'}></FormArea>
           {
-            formItemList.map((item) => {
-              return <FormTextarea item={item} form={form} key={item.key}></FormTextarea>
+            formItemList.map((item, index) => {
+              return <FormTextarea item={item} form={form} key={item.key} ref={ref => textareaRef.current[item.key as keyof Omit<Omit<CollectionTitleApiParams, 'area'>, 'city'>] = ref}></FormTextarea>
             })
           }
         </Row>
       </Form>
       <Button className={styles['create-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickPreview} >预览标题</Button>
     </div>
-    <PostPreviewTitle action='edit' taskId={id} editDataList={dataList} visible={selectTitleVisible} onCancel={setSelectTitleVisible} ></PostPreviewTitle>
+    <PostPreviewTitle page='titlePage' action='edit' taskId={id} editDataList={dataList} visible={selectTitleVisible} onCancel={setSelectTitleVisible} onOk={saveWordFn}></PostPreviewTitle>
   </>
 }
 

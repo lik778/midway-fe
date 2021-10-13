@@ -6,13 +6,10 @@ import { cloneDeepWith } from 'lodash';
 import { promoteCreateForm, fromLabelCol } from './config';
 import WildcatForm from '@/components/wildcat-form';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-import { connect } from 'dva';
-import { ConnectState } from '@/models/connect';
-import { USER_NAMESPACE } from '@/models/user';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less';
-import { createCollection, getCollection, updateCollection, getSecondCategories, getCompanyMetas } from '@/api/ai-module'
-import { CollectionDetail, UpdataCollectionParams, InitCollectionForm, SecondCategoriesListItem, CompanyMetas } from '@/interfaces/ai-module'
+import { createCollection, getCollection, updateCollection, getSecondCategories, getCompanyMeta } from '@/api/ai-module'
+import { CollectionDetail, UpdataCollectionParams, InitCollectionForm, SecondCategoriesListItem, CompanyMeta } from '@/interfaces/ai-module'
 import { MetasItem, UserEnterpriseInfo } from '@/interfaces/user';
 import SelectImage from './components/select-image'
 import { CollectionStatus, CollectionAction } from '@/enums/ai-module';
@@ -47,7 +44,7 @@ const CreatePost = (props: Props) => {
   const [previewTitleVisible, setPreviewTitleVisible] = useState<boolean>(false)
   const [secondCategoriesList, setSecondCategoriesList] = useState<SecondCategoriesListItem[]>([])
   const [categoryId, setCategoryId] = useState<string>('')
-  const [companyMetas, setCompanyMetas] = useState<CompanyMetas | null>(null)
+  const [companyMeta, setCompanyMeta] = useState<CompanyMeta | null>(null)
   const [init, setInit] = useState<boolean>(false)
   const ImageRef = useRef<{
     validateFc: () => Promise<any>
@@ -61,13 +58,13 @@ const CreatePost = (props: Props) => {
     validateFc: async () => { }
   })
 
-  const getCompanyMetasFn = useDebounce(async () => {
+  const getCompanyMetaFn = useDebounce(async () => {
     setGetDataLoading(true)
-    const res = await getCompanyMetas({ categoryId })
+    const res = await getCompanyMeta({ categoryId })
     if (res.success) {
       console.log(res.data)
       res.data.companyMeta.value = res.data.companyMeta.value || ' '
-      setCompanyMetas(res.data.companyMeta)
+      setCompanyMeta(res.data.companyMeta)
     } else {
       errorMessage(res.message || ' ')
     }
@@ -75,9 +72,8 @@ const CreatePost = (props: Props) => {
   }, 100)
 
   useEffect(() => {
-    console.log(categoryId)
     if (categoryId) {
-      getCompanyMetasFn()
+      getCompanyMetaFn()
     }
   }, [categoryId])
 
@@ -225,11 +221,11 @@ const CreatePost = (props: Props) => {
     })
   }
 
-  const formChange = (changeTarget: Partial<InitCollectionForm>, values: InitCollectionForm) => {
+  const formChange = (changeTarget: any, values: InitCollectionForm) => {
     postToolFormData[id] = values
     handleChangeContextData('postToolFormData', postToolFormData)
-    if (changeTarget.metas && changeTarget.metas[1] && changeTarget.metas[1].value) {
-      setCategoryId(changeTarget.metas[1].value)
+    if (changeTarget.metaCascaderValue && changeTarget.metaCascaderValue[1] && changeTarget.metaCascaderValue[1].value) {
+      setCategoryId(changeTarget.metaCascaderValue[1].value)
     }
   }
 
@@ -290,12 +286,13 @@ const CreatePost = (props: Props) => {
       thirdMetaIds: values.metas[2].join(','),
       action,
       metas: {
-        [companyMetas?.name || '公司名称']: companyMetas?.value || ''
-      }
+        [companyMeta?.name || '公司名称']: companyMeta?.value || ''
+      },
+      wordId: collection?.wordId
     }
-    if (companyMetas) {
+    if (companyMeta) {
       requestData.metas = {
-        [companyMetas.name || '公司名称']: companyMetas.value || '123'
+        [companyMeta.name || '公司名称']: companyMeta.value || '123'
       }
     }
 
@@ -328,7 +325,7 @@ const CreatePost = (props: Props) => {
                   formChange={formChange}
                 />
                 <Form.Item label={'公司名称'} labelCol={fromLabelCol}>
-                  <Input style={{ width: 260 }} disabled value={companyMetas?.value || ''} size={'large'} placeholder={'请选择类目'}></Input>
+                  <Input style={{ width: 260 }} disabled value={companyMeta?.value || ''} size={'large'} placeholder={'请选择类目'}></Input>
                 </Form.Item>
                 <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
                   <div className={styles['add-title']}>
@@ -352,7 +349,7 @@ const CreatePost = (props: Props) => {
         }
       </div>
       <CatchComponent visible={previewTitleVisible}>
-        <PostPreviewTitle action='see' taskId={id} visible={previewTitleVisible} onCancel={setPreviewTitleVisible} ></PostPreviewTitle>
+        <PostPreviewTitle page='formPage' action={disabled ? 'see' : 'edit'} taskId={id} visible={previewTitleVisible} onCancel={setPreviewTitleVisible} ></PostPreviewTitle>
       </CatchComponent>
     </>)
 }

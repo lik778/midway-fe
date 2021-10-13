@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, companyMeta, CompanyInfo, AuthKey } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, CompanyMeta, CompanyInfo, AuthKey, SaveWordParmes } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 import { getCookie } from '@/utils';
@@ -298,10 +298,10 @@ export const getMaterialList = (parmas: { tags: string[], page: number, size: nu
 }
 
 // TODO;
-export const getCompanyMetas = (parmas: { categoryId: string }) => {
+export const getCompanyMeta = (parmas: { categoryId: string }) => {
   return getApiData<{
     thirdMetas: { label: string, value: string }[],
-    companyMeta: companyMeta
+    companyMeta: CompanyMeta
   }>(ServicePath.POST_TOOL, `post-tool/v1/ad/categoryInfos/${parmas.categoryId}`)
 }
 
@@ -312,4 +312,12 @@ export const getCompanyInfo = () => {
 
 export const getAiModuleTabList = () => {
   return postApiData<AuthKey[]>(ServicePath.SHOP, `midway/menu/getAiTabMenuList`)
+}
+
+export const saveWord = (parmes: Partial<SaveWordParmes>) => {
+  return postApiData<number>(ServicePath.SHOP, `midway/backend/aiUserWords/save`, parmes)
+}
+
+export const getWord = (prames: { wordId: number }) => {
+  return getApiData<SaveWordParmes>(ServicePath.SHOP, `midway/backend/aiUserWords/get/${prames.wordId}`)
 }

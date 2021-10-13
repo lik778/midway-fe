@@ -20,7 +20,12 @@ interface QuotaNumInterface extends GetQuotaNumRes {
   buyUrl?: string
 }
 
-const Shop: FC = () => {
+interface Props {
+  onCopy: () => void
+}
+
+const Shop: FC<Props> = (props) => {
+  const { onCopy } = props
   const history = useHistory()
   const { activeModuleKey, pageInfo, handleChangeContextData } = useContext(AiModuleContext)
   const { shop: { page, dataTotal } } = pageInfo
@@ -113,6 +118,14 @@ const Shop: FC = () => {
     return <span onClick={() => viewPackage(record)}>{text}</span>
   }
 
+
+  const handleClickCopy = async (wordId: number) => {
+    handleChangeContextData('copyId', wordId)
+    handleChangeContextData('copyIdType', 'postTool')
+    onCopy()
+  }
+
+
   const aiAction = (record: AiContentItem) => {
     const status = record.status
     if (status === AiTaskStatus.ON_TASK) {
@@ -184,7 +197,14 @@ const Shop: FC = () => {
     },
     {
       title: '操作', dataIndex: '', key: 'x',
-      render: (text: string, record: AiContentItem) => aiAction(record)
+      render: (text: string, record: AiContentItem) => {
+        return <>
+          {aiAction(record)}
+          {
+            typeof record.wordId === 'number' && record.wordId > 0 && <div className={shopStyles["ai-action-box"]}> <span style={{ color: 'black' }}> | </span>  <span className={shopStyles['func-btn']} onClick={() => handleClickCopy(record.wordId!)}>复制</span></div>
+          }
+        </>
+      }
     },
   ];
 
@@ -199,10 +219,6 @@ const Shop: FC = () => {
       }
     })
 
-  }
-
-  const handleClickA = (url: string) => {
-    window.open(url, '_blank')
   }
 
   return <>

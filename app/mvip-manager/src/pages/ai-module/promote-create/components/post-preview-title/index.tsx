@@ -2,26 +2,28 @@ import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 're
 import { Modal, TableColumnProps, Table, Button } from 'antd'
 import { useHistory } from 'umi';
 import { CollectionCreateTitleParmas, CollectionPreviewTitleListItem } from '@/interfaces/ai-module';
-import { getCollectionTitles } from '@/api/ai-module'
+import { getCollectionTitles, deleteCollectionTitle, deleteCollectionTitles } from '@/api/ai-module'
 import styles from './index.less'
 import { errorMessage, successMessage } from '@/components/message';
 import { createCollectionTitles } from '@/api/ai-module'
 interface Props {
   action: 'see' | 'edit',
+  page: 'formPage' | 'titlePage'
   editDataList?: CollectionCreateTitleParmas[],
   taskId: number,
   visible: boolean,
   onCancel: (visible: boolean) => void,
+  onOk?: () => void
 }
 
 const PostPreviewTitle: FC<Props> = (props) => {
   const history = useHistory()
-  const { action, editDataList, taskId, visible, onCancel, } = props
-  const [seeDataList, setSeeDataList] = useState<CollectionPreviewTitleListItem[]>()
+  const { page, action, editDataList, taskId, visible, onCancel, onOk } = props
+  const [seeDataList, setSeeDataList] = useState<CollectionPreviewTitleListItem[]>([])
   const [localEditDataList, setLocalEditDataList] = useState<CollectionCreateTitleParmas[]>([])
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
-  const [delIds, setDelIds] = useState<string[]>([])
+  const [delIds, setDelIds] = useState<string[] | number[]>([])
   const delKeyMap = useRef<{ [key: string]: boolean }>({})
   // const 
   useEffect(() => {
@@ -46,24 +48,45 @@ const PostPreviewTitle: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    if (action === 'see') {
+    if (action === 'see' || (page === 'formPage' && action === 'edit')) {
       getTaskTitle()
     }
   }, [])
 
-  const handleClickDel = useCallback((record: CollectionCreateTitleParmas, index: number) => {
-    const newLocalEditDataList = [...localEditDataList]
-    newLocalEditDataList.splice(index, 1)
-    setLocalEditDataList(newLocalEditDataList)
-    delete delKeyMap.current[record.content]
-    successMessage('删除成功')
-  }, [localEditDataList])
+  const handleClickDel = useCallback(async (record: CollectionCreateTitleParmas | CollectionPreviewTitleListItem, index: number) => {
+    if (page === 'titlePage') {
+      const newLocalEditDataList = [...localEditDataList]
+      newLocalEditDataList.splice(index, 1)
+      setLocalEditDataList(newLocalEditDataList)
+      delete delKeyMap.current[record.content]
+      successMessage('删除成功')
+    } else {
+      setUpDataLoading(true)
+      const res = await deleteCollectionTitle({ id: (record as CollectionPreviewTitleListItem).id })
+      if (res.success) {
+        setSeeDataList(seeDataList.filter(item => item.id !== (record as CollectionPreviewTitleListItem).id))
+        delete delKeyMap.current[(record as CollectionPreviewTitleListItem).id]
+        successMessage('删除成功')
+      }
+      setUpDataLoading(false)
+    }
+  }, [localEditDataList, seeDataList])
 
-  const handleClickDels = () => {
-    setLocalEditDataList(localEditDataList.filter(item => !delKeyMap.current[item.content]))
-    setDelIds([])
-    delKeyMap.current = {}
-    successMessage('删除成功')
+  const handleClickDels = async () => {
+    if (page === 'titlePage') {
+      setLocalEditDataList(localEditDataList.filter(item => !delKeyMap.current[item.content]))
+      setDelIds([])
+      delKeyMap.current = {}
+      successMessage('删除成功')
+    } else {
+      setUpDataLoading(true)
+      const res = await deleteCollectionTitles({ ids: delIds as number[] })
+      if (res.success) {
+        setSeeDataList(seeDataList.filter(item => !delKeyMap.current[item.id]))
+        successMessage('删除成功')
+      }
+      setUpDataLoading(false)
+    }
   }
 
   const seeColumns: TableColumnProps<CollectionPreviewTitleListItem>[] = [
@@ -118,37 +141,60 @@ const PostPreviewTitle: FC<Props> = (props) => {
         rowSelection: undefined
       }
     } else {
-      return {
-        rowKey: 'content',
+      const config = {
         columns: editColumns,
-        dataList: localEditDataList,
         rowSelection: {
           selectedRowKeys: delIds,
+          hideSelectAll: true,
           selections: [
-            Table.SELECTION_ALL,
+            // Table.SELECTION_ALL,
             // Table.SELECTION_INVERT,
-            Table.SELECTION_NONE,
+            // Table.SELECTION_NONE,
           ],
           onChange: (selectedRowKeys: any[], selectedRows: CollectionCreateTitleParmas[]) => {
             setDelIds(selectedRowKeys)
           },
-          onSelect: (record: CollectionCreateTitleParmas, selected: boolean) => {
-            // 用来删除行
-            delKeyMap.current[record.content] = selected
+          onSelect: (record: CollectionCreateTitleParmas | CollectionPreviewTitleListItem, selected: boolean) => {
+            if (page === 'formPage') {
+              // 用来删除行
+              delKeyMap.current[(record as CollectionPreviewTitleListItem).id] = selected
+            } else if (page === 'titlePage') {
+              // 用来删除行
+              delKeyMap.current[record.content] = selected
+            }
           },
-          onSelectAll: (selected: boolean, selectedRows: CollectionCreateTitleParmas[], changeRows: CollectionCreateTitleParmas[]) => {
+          onSelectAll: (selected: boolean, selectedRows: CollectionCreateTitleParmas[] | CollectionPreviewTitleListItem[], changeRows: CollectionCreateTitleParmas[] | CollectionPreviewTitleListItem[]) => {
             if (selected) {
-              localEditDataList.forEach(item => {
-                delKeyMap.current[item.content] = selected
-              })
+              if (page === 'formPage') {
+                seeDataList.forEach(item => {
+                  delKeyMap.current[(item as CollectionPreviewTitleListItem).id] = selected
+                })
+              } else if (page === 'titlePage') {
+                localEditDataList.forEach(item => {
+                  delKeyMap.current[item.content] = selected
+                })
+              }
             } else {
               delKeyMap.current = {}
             }
           },
         }
       }
+      if (page === 'formPage') {
+        return {
+          ...config,
+          rowKey: 'id',
+          dataList: seeDataList || []
+        }
+      } else {
+        return {
+          ...config,
+          rowKey: 'content',
+          dataList: localEditDataList
+        }
+      }
     }
-  }, [localEditDataList, seeDataList, delIds])
+  }, [localEditDataList, seeDataList, delIds, page])
 
   const handleClickOk = async () => {
     setUpDataLoading(true)
@@ -158,6 +204,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
     })
     if (res.success) {
       successMessage('提交成功')
+      onOk && onOk()
       setTimeout(() => {
         history.goBack()
       }, 1500)
@@ -186,10 +233,12 @@ const PostPreviewTitle: FC<Props> = (props) => {
     {
       action === 'edit' && <div className={styles['footer']}>
         <span className={styles['dels']} onClick={handleClickDels}>批量删除</span>
-        <div className={styles['buttons']}>
-          <Button className={styles['cancal']} onClick={() => onCancel(false)}>取消</Button>
-          <Button className={styles['ok']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickOk}>生成标题</Button>
-        </div>
+        {
+          page === 'titlePage' && <div className={styles['buttons']}>
+            <Button className={styles['cancal']} onClick={() => onCancel(false)}>取消</Button>
+            <Button className={styles['ok']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickOk}>生成标题</Button>
+          </div>
+        }
       </div>
     }
   </Modal >

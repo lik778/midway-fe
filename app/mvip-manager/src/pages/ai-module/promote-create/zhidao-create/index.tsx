@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useEffect, useState, useMemo, useCallback, FC } from 'react';
+import React, { useContext, useEffect, useState, useMemo, useCallback, FC } from 'react';
 import { Form, Button, Input, Row, Col, Select, Spin } from 'antd';
 import { useHistory } from 'umi'
 import styles from './index.less';
-import { getCreateQuestionTaskPageStatusApi, getCreateQuestionTaskBasicDataApi, submitCoreWordsApi, getQuotaNumApi } from '@/api/ai-module';
+import { getCreateQuestionTaskPageStatusApi, getCreateQuestionTaskBasicDataApi, submitCoreWordsApi, getQuotaNumApi, saveWord, getWord } from '@/api/ai-module';
 import { QuestionTaskApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, InterrogativeDataVo } from '@/interfaces/ai-module'
 import { getCookie, randomList, } from '@/utils';
 import MainTitle from '@/components/main-title'
@@ -13,6 +13,7 @@ import TipModal from './components/tip-modal'
 import { debounce } from 'lodash'
 import { modal, prefix } from '@/constants/ai-module'
 import { COOKIE_USER_KEY } from '@/constants/index'
+import AiModuleContext from '../context'
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
@@ -24,7 +25,7 @@ interface Rule {
 }
 
 interface FormItemListItem {
-  key: keyof QuestionTaskApiParams,
+  key: keyof Omit<QuestionTaskApiParams, 'wordId'>,
   label: string,
   min: number,
   max: number,
@@ -74,6 +75,7 @@ interface QuotaNumInterface {
 const CreateZhidao: FC = () => {
   const history = useHistory()
   const [uid, setUid] = useState<string>(() => getCookie(COOKIE_USER_KEY))
+  const { copyId, copyIdType } = useContext(AiModuleContext)
   const [form] = Form.useForm();
   const [wordsNum, setWordsNum] = useState({
     area: 0,
@@ -202,54 +204,35 @@ const CreateZhidao: FC = () => {
     }
   }
 
+
+  const getWordFn = async () => {
+    if (copyId && copyIdType) {
+      const res = await getWord({ wordId: copyId })
+      const { area, prefix, coreWords, suffix } = res.data
+      form.setFieldsValue({
+        area: (area || []).join('\n'),
+        prefix: (prefix || []).join('\n'),
+        coreWords: (coreWords || []).join('\n'),
+      })
+
+      setWordsNum({
+        area: area.length,
+        prefix: prefix.length,
+        coreWords: coreWords.length,
+        suffix: 0,
+        modal: 0,
+      })
+    }
+  }
+
   useEffect(() => {
+    console.log(copyId, copyIdType)
+    getWordFn()
     getQuotaNum()
   }, [])
 
-
-  const mockInterrogativeWord = (): InterrogativeDataVo => {
-    const word = ['品牌宣传', '价格决策', '品质决策', '联系方式', '注意事项']
-
-    return word.reduce((total, item, index) => {
-      const childObj: {
-        [key: string]: string
-      } = {}
-      let i = 0;
-      while (i < 10) {
-        childObj[`${index * 10 + i}`] = `${item}-数据${i}`
-        i++
-      }
-      total[item] = childObj
-      return total
-    }, {} as InterrogativeDataVo)
-  }
-
   const getCreateQuestionTaskBasicDataFn = async () => {
     const res = await getCreateQuestionTaskBasicDataApi()
-    // const res = await mockData<CreateQuestionTaskBasicData>('data', {
-    //   canCreateTask: false,
-    //   forceNotice: true,
-    //   nextAction: 'USER_QA_MATERIAL',
-    //   notice: '填充问答素材',
-    //   suggestSuffix: null
-
-    //   // forceNotice: true,
-    //   // nextAction: 'USER_PROFILE',
-    //   // notice: '填充用户基础信息',
-    //   // suggestSuffix: mockInterrogativeWord()
-
-    //   // canCreateTask: false,
-    //   // forceNotice: true,
-    //   // nextAction: 'USER_MATERIAL',
-    //   // notice: '补充基础素材库',
-    //   // suggestSuffix: mockInterrogativeWord()
-
-    //   // canCreateTask: true,
-    //   // forceNotice: false,
-    //   // nextAction: 'SHOW_CREATE',
-    //   // notice: '可以创建',
-    //   // suggestSuffix: mockInterrogativeWord()
-    // })
     if (res.success) {
       const { canCreateTask, suggestSuffix } = res.data
       setComponentBasicData(res.data)
@@ -294,7 +277,7 @@ const CreateZhidao: FC = () => {
     setGetDataLoading(true)
     const pageStatus = await getComponentStatus()
     if (pageStatus === 'SHOW_QA_LIST') {
-      history.push(`/ai-module/promote-create/zhidao-detail?pageType=edit`)
+      history.replace(`/ai-module/promote-create/zhidao-detail?pageType=edit`)
     } else if (pageStatus === 'SHOW_CREATE') {
       await getCreateQuestionTaskBasicDataFn()
     }
@@ -422,6 +405,22 @@ const CreateZhidao: FC = () => {
     return uid === nowUserId
   }
 
+  const saveWordFn = async (params: QuestionTaskApiParams) => {
+    const res = await saveWord({
+      aiSource: 'zhidao',
+      area: params.area,
+      prefix: params.prefix,
+      coreWords: params.coreWords,
+    })
+    if (res.success) {
+      return res.data
+    } else {
+      errorMessage(res.message)
+      return Promise.reject()
+    }
+  }
+
+
   const submit = async () => {
     const values = form.getFieldsValue()
     const requestData: QuestionTaskApiParams = {
@@ -429,11 +428,13 @@ const CreateZhidao: FC = () => {
       prefix: [],
       coreWords: [],
       suffix: [],
-      modal: []
+      modal: [],
+      wordId: NaN
     }
     for (let i in values) {
+      if (i === 'wordId') continue;
       if (i !== 'suffix') {
-        requestData[i as keyof QuestionTaskApiParams] = (values[i] as string).split('\n').filter(item => item)
+        requestData[i as keyof Omit<QuestionTaskApiParams, 'wordId'>] = (values[i] as string).split('\n').filter(item => item)
       } else {
         requestData.suffix = interrogativeWord.filter(item => item.isSelect).reduce((total, item) => {
           return total.concat(item.child.map(cItem => `${cItem.id}|||${cItem.content}|||${item.name}`))
@@ -448,7 +449,13 @@ const CreateZhidao: FC = () => {
       }, 1500)
       return
     }
-    const res = await submitCoreWordsApi(requestData)
+    console.log(requestData)
+    const wordId = await saveWordFn(requestData)
+    console.log('saveWordFn', values, wordId)
+    const res = await submitCoreWordsApi({
+      ...requestData,
+      wordId
+    })
     setUpdataLoading(false)
     if (res.success) {
       setModalVisible(false)

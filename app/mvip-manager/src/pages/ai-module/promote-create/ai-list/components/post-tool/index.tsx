@@ -16,7 +16,12 @@ import Tip from './components/tip'
 import { track } from '@/api/common'
 import { BXMAINSITE } from '@/constants/index'
 
-const PostTool: FC = (props) => {
+interface Props {
+  onCopy: () => void
+}
+
+const PostTool: FC<Props> = (props) => {
+  const { onCopy } = props
   const { activeModuleKey, pageInfo, handleChangeContextData, } = useContext(AiModuleContext)
   const { postTool: { page, dataTotal } } = pageInfo
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false)
@@ -60,6 +65,7 @@ const PostTool: FC = (props) => {
   const handleBlurCollectionLimit = async (e: React.FocusEvent<HTMLInputElement>, key: 'dailyPostLimit' | 'postLimit', record: CollectionListItem) => {
     const { value } = e.target
     const inputValue = value ? value : 'null'
+    console.log()
     if (Number(inputValue) === Number(record[key])) return
     if (!/^([1-9]\d*)|null$/.test(inputValue)) {
       errorMessage('请输入正整数');
@@ -100,9 +106,10 @@ const PostTool: FC = (props) => {
     getList()
   }
 
-  const handleClickCopy = async (copyId: number) => {
-    handleChangeContextData('copyId', copyId)
+  const handleClickCopy = async (wordId: number) => {
+    handleChangeContextData('copyId', wordId)
     handleChangeContextData('copyIdType', 'postTool')
+    onCopy()
   }
 
   const columns: TableColumnProps<CollectionListItem>[] = [
@@ -204,7 +211,7 @@ const PostTool: FC = (props) => {
           }
           {/* 复制 */}
           {
-            record.copyId && <span className={postToolstyles['func-btn']} onClick={() => handleClickCopy(record.copyId!)}>复制</span>
+            (typeof record.wordId === 'number' && record.wordId > 0) && <span className={postToolstyles['func-btn']} onClick={() => handleClickCopy(record.wordId!)}>复制</span>
           }
           {/* 删除 */}
           {

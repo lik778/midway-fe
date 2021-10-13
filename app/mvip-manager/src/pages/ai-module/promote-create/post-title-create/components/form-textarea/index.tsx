@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, forwardRef, useImperativeHandle, Ref } from 'react';
 import { Form, Button, Input, Col, FormInstance } from 'antd';
 import styles from './index.less';
 import { CollectionTitleApiParams } from '@/interfaces/ai-module'
@@ -15,9 +15,14 @@ interface Props {
   form: FormInstance
 }
 
-const FormTextarea: FC<Props> = (props) => {
+const FormTextarea = (props: Props, parentRef: Ref<any>) => {
   const { item, form } = props
   const [wordNum, setWordNum] = useState<number>(0)
+
+  useImperativeHandle(parentRef, () => ({
+    setWordNum
+  }))
+
   /**
  * 去重 去特殊符号
  * @description 注意replace里要把单引号排除，因为中文输入时，输入未结束拼音是以单引号分割的
@@ -97,4 +102,4 @@ const FormTextarea: FC<Props> = (props) => {
   </Col>
 }
 
-export default FormTextarea
+export default forwardRef(FormTextarea)

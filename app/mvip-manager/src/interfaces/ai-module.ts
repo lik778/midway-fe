@@ -9,6 +9,7 @@ export interface AiTaskApiParams {
   wordB: string[];
   wordC: string[];
   wordD: string[];
+  wordId: number,
 }
 
 export interface AiShopList {
@@ -34,6 +35,7 @@ export interface AiContentItem {
   wordB: string[];
   wordC: string[];
   wordD: string[];
+  wordId?: number
 }
 
 /** 优选词 **/
@@ -88,6 +90,7 @@ export interface QuestionTaskApiParams {
   prefix: string[];
   /** 疑问词 */
   suffix: string[];
+  wordId: number
 }
 
 /** 问答任务列表 */
@@ -101,6 +104,7 @@ export interface QuestionTaskListItem {
   createdTime: number,
   status: ZhidaoAiTaskStatus,
   memo: string
+  wordId?: number
 }
 
 /** 问答任务详情（问答包列表） */
@@ -215,7 +219,7 @@ export interface CollectionListItem {
   name: string
   postLimit: number
   status: CollectionStatus
-  copyId?: number
+  wordId?: number
 }
 
 export interface CollectionDetailthirdMeta {
@@ -242,6 +246,7 @@ export interface UpdataCollectionParams {
   name: string,
   postLimit?: number,
   thirdMetaIds: string
+  wordId?: number
 }
 
 
@@ -340,7 +345,7 @@ export interface MaterialListItem {
   [key: string]: any
 }
 
-export interface companyMeta {
+export interface CompanyMeta {
   controlType: string
   maxlength: string
   name: string
@@ -362,3 +367,16 @@ export interface CompanyInfo {
 }
 
 export type AuthKey = 'SHOP' | 'ZHIDAO' | 'POSTTOOL'
+
+export interface SaveWordParmes {
+  "aiSource": 'shop' | 'zhidao' | 'posttool',
+  "area": string[],
+  "coreWords": string[],
+  "firstCategoryId": string,
+  "modal": string[],
+  "prefix": string[],
+  "secondCategoryId": string,
+  "subTitle": string[],
+  "suffix": string[],
+  "thirdCategoryId": string
+}
