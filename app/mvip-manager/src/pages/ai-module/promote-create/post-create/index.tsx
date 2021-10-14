@@ -10,6 +10,7 @@ import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less';
 import { createCollection, getCollection, updateCollection, getSecondCategories, getCompanyMeta } from '@/api/ai-module'
 import { CollectionDetail, UpdataCollectionParams, InitCollectionForm, SecondCategoriesListItem, CompanyMeta } from '@/interfaces/ai-module'
+import { ShopMetas } from '@/interfaces/user'
 import { MetasItem, UserEnterpriseInfo } from '@/interfaces/user';
 import SelectImage from './components/select-image'
 import { CollectionStatus, CollectionAction } from '@/enums/ai-module';
@@ -88,9 +89,9 @@ const CreatePost = (props: Props) => {
     if ([CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_ADVANCE_STATUS].includes(collection.status) && draftCollectionData) {
       newFormData = draftCollectionData
     } else {
-      newFormData = {
-        name: collection.name,
-        metas: [{
+      let metas: ShopMetas = [undefined, undefined, []]
+      if (collection.categoryId) {
+        metas = [{
           key: selectedVipResources.vipTypeName,
           value: selectedVipResources.vipTypeName,
           label: selectedVipResources.vipTypeName,
@@ -98,7 +99,11 @@ const CreatePost = (props: Props) => {
           key: collection.categoryName,
           value: collection.categoryId,
           label: collection.categoryName,
-        }, collection.thirdMeta.map(item => item.id)],
+        }, collection.thirdMeta.map(item => item.id)]
+      }
+      newFormData = {
+        name: collection.name,
+        metas,
       }
       // 初始化好就存一份到缓存中
       postToolFormData[id] = { ...newFormData }

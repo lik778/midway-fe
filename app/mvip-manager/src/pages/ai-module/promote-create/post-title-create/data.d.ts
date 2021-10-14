@@ -29,7 +29,9 @@ export interface SelectConfig {
   key: keyof CollectionTitleApiParams,
   label: string,
   tip: string,
-  rules: Rule[]
+  rules: Rule[],
+  selectAll: boolean,
+  selectList: SelectListItem[]
 }
 
 

@@ -50,21 +50,27 @@ const FormArea: FC<Props> = (props) => {
     }
   ], [notCityWord])
 
-  const formItemList: SelectConfig[] = [{
-    key: 'city',
-    label: '城市',
-    tip: '请选择城市',
-    rules: validateCityRules
-  }, {
-    key: 'area',
-    label: '行政区',
-    tip: '请选择行政区',
-    rules: [
-      {
-        required: false,
-      }
-    ]
-  }]
+  const formItemList: SelectConfig[] = useMemo(() => {
+    return [{
+      key: 'city',
+      label: '城市',
+      tip: '请选择城市',
+      rules: validateCityRules,
+      selectAll: citySelectAll,
+      selectList: cityList,
+    }, {
+      key: 'area',
+      label: '行政区',
+      tip: '请选择行政区',
+      rules: [
+        {
+          required: false,
+        }
+      ],
+      selectAll: areaSelectAll,
+      selectList: areaList,
+    }]
+  }, [citySelectAll, areaSelectAll, cityList, areaList])
 
   const getCreateTitleCityListFc = async () => {
     if (!selectedVipResources) return
@@ -92,9 +98,9 @@ const FormArea: FC<Props> = (props) => {
   const handleChangeItemValue = (name: string, value: SelectListItem[]) => {
     if (name === 'city') {
       setCity(value)
-      setCitySelectAll(value.length === cityList.length)
+      setCitySelectAll(cityList.length > 0 && value.length === cityList.length)
     } else {
-      setAreaSelectAll(value.length === areaList.length)
+      setAreaSelectAll(areaList.length > 0 && value.length === areaList.length)
     }
   }
 
@@ -115,16 +121,16 @@ const FormArea: FC<Props> = (props) => {
       </div>
         <Spin spinning={getDataLoading}>
           <FormItem name={item.key} rules={item.rules}>
-            <SelectBox ref={(ref: Ref<any>) => selectRef.current[index] = ref} name={item.key} selectAll={item.key === 'city' ? citySelectAll : areaSelectAll} selectList={item.key === 'city' ? cityList : areaList} onValueChange={handleChangeItemValue}></SelectBox>
+            <SelectBox ref={(ref: Ref<any>) => selectRef.current[index] = ref} name={item.key} selectAll={item.selectAll} selectList={item.selectList} onValueChange={handleChangeItemValue}></SelectBox>
           </FormItem>
-          {
-            item.key == 'city' && <div className={styles['checkbox-group']}>
-              <Checkbox className={styles['checkbox']} checked={citySelectAll} onChange={(e) => handleChangeCheckbox(e.target.checked, index)}>全选</Checkbox>
-              <FormItem name='notCityWord' valuePropName="checked">
+          <div className={styles['checkbox-group']}>
+            <Checkbox className={styles['checkbox']} checked={item.selectAll} onChange={(e) => handleChangeCheckbox(e.target.checked, index)}>全选</Checkbox>
+            {
+              item.key === 'city' && <FormItem name='notCityWord' valuePropName="checked">
                 <Checkbox className={styles['checkbox']} onChange={(e) => setNotCityWord(e.target.checked)}>标题不含城市</Checkbox>
               </FormItem>
-            </div>
-          }
+            }
+          </div>
         </Spin>
       </Col>)
     }
