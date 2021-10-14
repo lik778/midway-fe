@@ -1,26 +1,48 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { Select, Button, } from 'antd'
 import { Link, useHistory } from 'umi'
+import { connect } from 'dva';
+import { ConnectState } from '@/models/connect';
+import { USER_NAMESPACE } from '@/models/user';
 import styles from '../../../../index.less'
 import tipStyles from './index.less'
 import AiModuleContext from '../../../../../context'
 import MyModal, { ModalType } from '@/components/modal';
 import { getOnlineADCount, getCompanyInfo } from '@/api/ai-module'
 import { CompanyInfo } from '@/interfaces/ai-module';
+import { VerifyItem } from '@/interfaces/user';
+import { VerifyStatus } from '@/enums/index'
 const { Option } = Select
 
 interface Props {
-  dataTotal: number
+  dataTotal: number,
+  verifyList: VerifyItem[],
+  userLoading: boolean
+}
+
+const modalTip = {
+  companyInfo: {
+    title: '去完善信息',
+    content: '请填写用户基础资料',
+    okText: '去填写'
+  },
+  verifyList: {
+    title: '去认证信息',
+    content: '您未完成身份证或营业执照认证,完成认证后才能发帖',
+    okText: '去认证'
+  }
 }
 
 const Tip: FC<Props> = (props) => {
-  const { dataTotal } = props
+  const { dataTotal, verifyList, userLoading } = props
   const history = useHistory()
   const { activeModuleKey, handleChangeContextData, vipResourcesList, selectedVipResources } = useContext(AiModuleContext)
 
   const [showBaseInfoModal, setShowBaseInfoModal] = useState<boolean>(false)
   const [adCount, setAdCount] = useState<number>(0)
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null)
+
+  const [modalType, setModalType] = useState<'companyInfo' | 'verifyList'>('companyInfo')
 
   const getCompanyInfoFn = async () => {
     const res = await getCompanyInfo()
@@ -32,9 +54,23 @@ const Tip: FC<Props> = (props) => {
 
   const handleCheckBaseInfo = () => {
     if (companyInfo?.isUserPerfect) {
-      history.push('/ai-module/promote-create/post-create')
+      if (verifyList.some(item => item.status === VerifyStatus.ACCEPT)) {
+        history.push('/ai-module/promote-create/post-create')
+      } else {
+        setModalType('verifyList')
+        setShowBaseInfoModal(true)
+      }
     } else {
+      setModalType('companyInfo')
       setShowBaseInfoModal(true)
+    }
+  }
+
+  const handleClickModalOk = () => {
+    if (modalType === 'companyInfo') {
+      history.push('/company-info/base')
+    } else {
+      location.href = "//www.baixing.com/bind/"
     }
   }
 
@@ -76,7 +112,7 @@ const Tip: FC<Props> = (props) => {
     }
 
     <div className={styles['page-action-btn-line']}>
-      <Button className={`${styles['action-btn']} ${styles['create-action-btn']}`} onClick={handleCheckBaseInfo}>+AI批量创建推广</Button>
+      <Button className={`${styles['action-btn']} ${styles['create-action-btn']}`} onClick={handleCheckBaseInfo} disabled={userLoading}>+AI批量创建推广</Button>
       <Link className={styles['action-btn']} to={'/company-info/base'}>填写基础信息</Link>
       <Button className={styles['action-btn']} onClick={() => handleClickA(`https://www.baixing.com/vip/manager/service/${selectedVipResources?.productLine}/postTool/adList`)}>发帖通帖子列表</Button>
       <Button className={styles['action-btn']} onClick={() => handleClickA('https://www.baixing.com/fabu/jiameng')}>手动发布</Button>
@@ -85,17 +121,21 @@ const Tip: FC<Props> = (props) => {
     <p className={styles['page-tip']}>“预估生成帖子数”是系统预估的最大可生成帖子数，会有一定误差，仅供参考</p>
     <p className={styles['page-tip']}>您已添加素材包数：<span className={styles['num']}>{dataTotal}</span> ；发帖通已发布当前在线帖子数：<span className={styles['num']}>{adCount}</span> ；</p>
     <MyModal
-      title="去完善信息"
-      content={"请填写用户基础资料"}
+      title={modalTip[modalType].title}
+      content={modalTip[modalType].content}
       type={ModalType.info}
       closable={false}
       maskClosable={false}
       onCancel={() => { setShowBaseInfoModal(false) }}
-      onOk={() => {
-        history.push('/company-info/base')
-      }}
+      onOk={handleClickModalOk}
       visible={showBaseInfoModal} />
   </>
 }
 
-export default Tip
+
+export default connect((state: ConnectState) => {
+  const { verifyList } = state[USER_NAMESPACE]
+  console.log(state)
+  const userLoading = state.loading.models.user
+  return { verifyList, userLoading }
+})(Tip)

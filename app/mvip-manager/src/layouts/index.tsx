@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const Layouts = (props: any) => {
-  const { userInfo, menuList, getMenuList, getCompanyInfo, getUserInfo } = props
+  const { userInfo, menuList, getMenuList, getCompanyInfo, getUserInfo, getUserVerifyList } = props
   if (inIframe()) {
     return <Layout className="site-layout">
       <Content>
@@ -37,10 +37,12 @@ const Layouts = (props: any) => {
   // 处理overflow: hidden问题
   useEffect(() => removeOverflowY());
 
+  const initLayout = async () => {
+    await Promise.all([getUserInfo(), getCompanyInfo(), getMenuList(), getUserVerifyList()])
+  }
+
   useEffect(() => {
-    getUserInfo()
-    getCompanyInfo()
-    getMenuList()
+    initLayout()
   }, [])
 
   useEffect(() => {
