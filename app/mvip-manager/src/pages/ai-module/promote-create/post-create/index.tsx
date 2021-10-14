@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Button, Form, Spin, Input, FormInstance, Modal } from 'antd';
 import { useHistory } from 'umi'
 import MainTitle from '@/components/main-title';
@@ -142,6 +142,29 @@ const CreatePost = (props: Props) => {
     }
   }, [collectionId])
 
+  // 更新输入表单
+  const addCompanyInput = () => {
+    if (!companyMeta || !collection) return
+    config.customerFormItemList = [{
+      key: 'companyName',
+      index: 4,// 决定当前这个自定义组件放在第几位 不填就是最后
+      node: <Form.Item
+        name='companyName'
+        label={companyMeta.name}
+        required={companyMeta.required}
+        rules={[{ required: companyMeta.required, message: `请填写${companyMeta.name}` }]}
+        initialValue={(collection.metas && collection.metas[companyMeta.name]) || companyMeta.value}
+        key='companyName'>
+        <Input style={{ width: 260 }} disabled={companyMeta.readonly} value={companyMeta.value} size={'large'} placeholder={'请输入公司名称'} maxLength={Number(companyMeta.maxlength) || 30} autoComplete="off"></Input>
+      </Form.Item >// 自定义的组件
+    }]
+    setConfig({ ...config })
+  }
+
+  useEffect(() => {
+    addCompanyInput()
+  }, [companyMeta, collection])
+
   // 更新表单的配置
   const updateConfigData = () => {
     if (secondCategoriesList.length < 0) return
@@ -270,6 +293,8 @@ const CreatePost = (props: Props) => {
   const handleClickUpdate = async (action: CollectionAction.AUDIT | CollectionAction.DRAFT) => {
     if (action === CollectionAction.AUDIT) {
       await validateForm()
+    } else {
+      await formRef.current.form?.validateFields()
     }
     track({
       eventType: BXMAINSITE,
@@ -291,16 +316,10 @@ const CreatePost = (props: Props) => {
       thirdMetaIds: values.metas[2].join(','),
       action,
       metas: {
-        [companyMeta?.name || '公司名称']: companyMeta?.value || ''
+        [companyMeta?.name || '公司名称']: values.companyName || ''
       },
       wordId: collection?.wordId
     }
-    if (companyMeta) {
-      requestData.metas = {
-        [companyMeta.name || '公司名称']: companyMeta.value || '123'
-      }
-    }
-
 
     if (action === CollectionAction.AUDIT) {
       const res = await getCollection({ id })
@@ -329,9 +348,6 @@ const CreatePost = (props: Props) => {
                   config={config}
                   formChange={formChange}
                 />
-                <Form.Item label={'公司名称'} labelCol={fromLabelCol}>
-                  <Input style={{ width: 260 }} disabled value={companyMeta?.value || ''} size={'large'} placeholder={'请选择类目'}></Input>
-                </Form.Item>
                 <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
                   <div className={styles['add-title']}>
                     {
