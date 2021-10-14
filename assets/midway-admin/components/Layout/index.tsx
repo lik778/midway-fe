@@ -12,7 +12,8 @@ const routerKey = {
   '/switch-shop-type': 'switch-shop-type',
   '/store-whitelist': 'store-whitelist',
   '/clean-cache': 'clean-cache',
-  '/modify-the-store': 'modify-the-store'
+  '/modify-the-store': 'modify-the-store',
+  "/advice-record": 'advice-record'
 }
 export default withRouter((props) => {
   const menuKey = routerKey[props.location.pathname]
@@ -49,6 +50,9 @@ export default withRouter((props) => {
                 <Link to="/clean-cache" key="clean-cache">清53kf缓存</Link>
               </Menu.Item>
             </SubMenu>
+            <Menu.Item key="advice-record">
+              <Link to="/advice-record" key="advice-record">意见收集</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">

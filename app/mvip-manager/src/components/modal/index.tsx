@@ -21,10 +21,11 @@ interface Props {
   confirmLoading?: boolean;
   onOk(): void;
   onCancel(): void;
+  width?: number
 }
 export default (props: Props) => {
   const { visible, onOk, onCancel, title, content, type, footer, closable, maskClosable,
-    confirmLoading } = props
+    confirmLoading, width } = props
 
   const createTitle = (type: ModalType = ModalType.superWarning) => {
     if (type === ModalType.info) {
@@ -52,7 +53,10 @@ export default (props: Props) => {
     onCancel={onCancel}
     onOk={onOk}
     confirmLoading={confirmLoading}
-    visible={visible}>
+    visible={visible}
+    width={width}
+  >
+
     <div>{content}</div>
   </Modal>
 }
