@@ -34,21 +34,25 @@ const FormArea: FC<Props> = (props) => {
   const [notCityWord, setNotCityWord] = useState<boolean>(false)
   const selectRef = useRef<any>([])
 
-  const validateCityRules = useMemo(() => [
-    {
-      required: !notCityWord,
-      // message: `请输入核心词！(3-100个)`,
-      validator: (rule: Rule, value: any) => {
-        // 不需要城市在标题时，
-        if (!notCityWord) {
-          if (!value || value.length <= 0) {
-            return Promise.reject(new Error(`城市数不得少于1个`));
+  const validateCityRules = useMemo(() => {
+    console.log(notCityWord)
+    return [
+      {
+        required: !notCityWord,
+        // message: `请输入核心词！(3-100个)`,
+        validator: (rule: Rule, value: any) => {
+          // 不需要城市在标题时，
+          console.log(notCityWord)
+          if (!notCityWord) {
+            if (!value || value.length <= 0) {
+              return Promise.reject(new Error(`城市数不得少于1个`));
+            }
           }
+          return Promise.resolve()
         }
-        return Promise.resolve()
       }
-    }
-  ], [notCityWord])
+    ]
+  }, [notCityWord])
 
   const formItemList: SelectConfig[] = useMemo(() => {
     return [{
@@ -70,7 +74,7 @@ const FormArea: FC<Props> = (props) => {
       selectAll: areaSelectAll,
       selectList: areaList,
     }]
-  }, [citySelectAll, areaSelectAll, cityList, areaList])
+  }, [citySelectAll, areaSelectAll, cityList, areaList, validateCityRules])
 
   const getCreateTitleCityListFc = async () => {
     if (!selectedVipResources) return
@@ -113,6 +117,11 @@ const FormArea: FC<Props> = (props) => {
     selectRef.current[index]?.onCheckAllChange(checked)
   }
 
+  const handleChangeNotCityWord = (checked: boolean) => {
+    setNotCityWord(checked)
+    form.validateFields(['city'])
+  }
+
   return <>
     {
       formItemList.map((item, index) => <Col className={styles["group-words-item"]} flex="20%" key={item.key}>
@@ -127,7 +136,7 @@ const FormArea: FC<Props> = (props) => {
             <Checkbox className={styles['checkbox']} checked={item.selectAll} onChange={(e) => handleChangeCheckbox(e.target.checked, index)}>全选</Checkbox>
             {
               item.key === 'city' && <FormItem name='notCityWord' valuePropName="checked">
-                <Checkbox className={styles['checkbox']} onChange={(e) => setNotCityWord(e.target.checked)}>标题不含城市</Checkbox>
+                <Checkbox className={styles['checkbox']} onChange={(e) => handleChangeNotCityWord(e.target.checked)}>标题不含城市</Checkbox>
               </FormItem>
             }
           </div>
