@@ -10,19 +10,25 @@ export interface ApiReqParams {
 
 export const request = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 10000, // request timeout  设置请求超时时间
+  timeout: 30000, // request timeout  设置请求超时时间
   responseType: "json",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json;charset=utf-8"
-  }
+  },
 })
 
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res?.data)
 }, (err: AxiosError) => {
-  // console.error('[REQ ERROR]', err)
-  return Promise.resolve(err.response && err.response.data)
+  if (err.response) {
+    return Promise.resolve(err.response && err.response.data)
+  } else {
+    return Promise.resolve({
+      success: false,
+      message: '请求失败，请稍后再试！'
+    })
+  }
 })
 
 export const postApi = <T>(url: string, data: ApiReqParams, headers?: any): Promise<ServiceResponse<T>> => {

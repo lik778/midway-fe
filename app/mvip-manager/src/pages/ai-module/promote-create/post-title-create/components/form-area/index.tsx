@@ -35,14 +35,12 @@ const FormArea: FC<Props> = (props) => {
   const selectRef = useRef<any>([])
 
   const validateCityRules = useMemo(() => {
-    console.log(notCityWord)
     return [
       {
         required: !notCityWord,
         // message: `请输入核心词！(3-100个)`,
         validator: (rule: Rule, value: any) => {
           // 不需要城市在标题时，
-          console.log(notCityWord)
           if (!notCityWord) {
             if (!value || value.length <= 0) {
               return Promise.reject(new Error(`城市数不得少于1个`));

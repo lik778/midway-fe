@@ -92,7 +92,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
   const seeColumns: TableColumnProps<CollectionPreviewTitleListItem>[] = [
     {
       title: '编号',
-      width: 60,
+      width: 80,
       dataIndex: 'id',
       key: 'id',
       render: (text, record, index) => {
@@ -109,7 +109,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
   const editColumns: TableColumnProps<CollectionCreateTitleParmas>[] = [
     {
       title: '编号',
-      width: 60,
+      width: 80,
       dataIndex: 'city_id',
       key: 'city_id',
       render: (text, record, index) => {

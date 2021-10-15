@@ -195,6 +195,8 @@ const PostTitleCreate: FC = () => {
         coreWords: values.main.split('\n'),
         suffix: values.suffix.split('\n'),
       })
+    } else {
+      errorMessage(res.message)
     }
     setUpdataLoading(false)
   }
