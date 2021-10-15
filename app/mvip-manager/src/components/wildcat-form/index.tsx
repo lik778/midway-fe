@@ -194,7 +194,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>
       } else if (item.type === FormType.MetaSelect) {
         const value = getEditData(item.name || '');
-        dom = <MetasSelect disabled={item.disabled || disabled} item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} ></MetasSelect>
+        dom = <MetasSelect disabled={item.disabled || disabled} item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} showSelectAll={item.showMetaSelectAll}></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
         dom = <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
           {

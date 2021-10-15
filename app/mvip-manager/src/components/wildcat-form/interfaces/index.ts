@@ -44,7 +44,7 @@ export interface FormItem {
   patternList?: any[]; // 正则
   placeholder?: string; // 提示
   options?: OptionItem[];
-  maxLength?: number
+  maxLength?: number,
   minLength?: number,
   tip?: string | ReactNode, // 文案说明,
   slotDom?: ReactNode, // 需要增加额外节点
@@ -53,12 +53,13 @@ export interface FormItem {
   images?: ImagesItem[],// 图片多种情况
   imagesTipPosition?: 'bottom' | 'right',// 图片下的请求的位置
   disabled?: boolean;
-  showCount?: boolean;
+  showCount?: boolean;// 输入框计数
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性
-  formItemWidth?: number | string,
+  formItemWidth?: number | string,// 单独给表单项设置宽度
   className?: string, // 自定义样式,
   labelCol?: ColProps;
   hidden?: boolean,// 是否隐藏当前项
+  showMetaSelectAll?: boolean
   children?: FormItem[];// 嵌套表单
 }
 
