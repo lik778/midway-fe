@@ -34,6 +34,7 @@ export interface ActionBtnListItem {
 
 export interface ImgUploadProps {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
+  unique?: boolean,// 是否禁止选择重复图片
   showImage?: boolean,// 是否显示图片相关tab
   showVideo?: boolean,// 是否显示视频相关tab
   editData?: MediaItem | MediaItem[] | '';// 传入的数据
@@ -76,6 +77,7 @@ export interface MediaDataAlbumListItem {
 
 export interface ImgUploadContextInitConfig {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
+  unique: boolean,// 是否禁止选择重复图片
   showImage: boolean,// 是否显示图片相关tab
   showVideo: boolean,// 是否显示视频相关tab
   uploadBtnText: string;// 上传按钮上的提示文本
