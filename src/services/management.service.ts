@@ -4,10 +4,10 @@ import { LogService } from './log.service';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { ErrorCode } from '../enums/error';
-import { apiSecret, midwayAdminAPISecret } from '../constant';
 import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
-import { ServiceResponse } from '../interface/index'
+import { midwayAdminAPISecret } from '../constant'
+import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class ManagementService {
@@ -27,10 +27,9 @@ export class ManagementService {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
-      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
+      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig,'').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
-      'x-api-src': 'web',
-      'x-api-secret': apiSecret
+      'x-api-src': 'web'
     }
     if (shopId) {
       headers['x-api-shop-id'] = Number(shopId)
@@ -55,7 +54,7 @@ export class ManagementService {
       { headers: this.setApiAHeaders(req.cookies) }).toPromise()
   }
 
-  public getManagementData(req: Request, input: ApiReqParams): Promise<ServiceResponse<any>> {
+  public getManagementData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']
@@ -64,10 +63,6 @@ export class ManagementService {
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
       case 'post':
         return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-      case 'put':
-        return this.requestService.put(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-      case 'delete':
-        return this.requestService.delete(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -81,7 +76,7 @@ export class ManagementService {
     }
   }
 
-  public requestInternal(req: Request, input: ApiReqParams): Promise<ServiceResponse<any>> {
+  public requestInternal(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     switch (method) {

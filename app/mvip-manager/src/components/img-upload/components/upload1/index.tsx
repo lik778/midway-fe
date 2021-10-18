@@ -2,7 +2,7 @@ import React, { useMemo, useContext, FC } from 'react'
 import { Upload, } from 'antd';
 import { errorMessage } from '@/components/message';
 import ImgUploadContext from '@/components/img-upload/context'
-import { UploadChangeParam, UploadFile, RcFile } from 'antd/lib/upload/interface'
+import { UploadFile, RcFile } from 'antd/lib/upload/interface'
 import ImgItem from '@/components/img-upload/components/img-item'
 import UploadBtn from '@/components/img-upload/components/upload-btn'
 import { getFileBase64 } from '@/utils/index'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Upload1: FC<Props> = (props) => {
-  const { fileList, initConfig: { unique, maxSize, maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handleChangeFileList, handlePreview, handleRemove, handleCrop } = props
+  const { fileList, initConfig: { maxSize, maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handleChangeFileList, handlePreview, handleRemove, handleCrop } = props
 
   const setCropItem = async (file: RcFile,) => {
     const filrUrl = await getFileBase64(file)
@@ -44,34 +44,24 @@ const Upload1: FC<Props> = (props) => {
     return isJpgOrPng && overrun && !uploadBeforeCrop;
   }
 
-  const checkUrlUnique = (fileList: UploadFile<any>[], url: string) => {
-    return fileList.some(item => item.url?.indexOf(url) !== -1)
-  }
-
-  const handleChange = async (e: UploadChangeParam<UploadFile<any>>) => {
+  const handleChange = async (e: any) => {
     if (!!e.file.status) {
-      const oldFileList = fileList.filter(item => item.uid !== e.file.uid)
-      // 在禁止选择重复图片时需要在 status===’done‘下检查重复
-      if (e.file.status === 'done' && unique && checkUrlUnique(oldFileList, e.file.response.url)) {
-        handleChangeFileList(oldFileList, oldFileList, e.file)
-        errorMessage('请勿上传重复图片')
-      } else {
-        const nowFileList = e.fileList.map((item: any) => {
-          if (item.url) {
-            return {
-              ...item,
-              type: 'IMAGE'
-            }
-          } else {
-            return {
-              ...item,
-              url: item.response ? item.response.url : '',
-              type: 'IMAGE'
-            }
+      const nowFileList = e.fileList.map((item: any) => {
+        if (item.url) {
+          return {
+            ...item,
+            type: 'IMAGE'
           }
-        })
-        handleChangeFileList(nowFileList, oldFileList, e.file)
-      }
+        } else {
+          return {
+            ...item,
+            url: item.response ? item.response.url : '',
+            type: 'IMAGE'
+          }
+        }
+      })
+      const oldFileList = fileList.filter(item => item.uid !== e.file.uid)
+      handleChangeFileList(nowFileList, oldFileList, e.file)
     }
   }
 
@@ -90,7 +80,7 @@ const Upload1: FC<Props> = (props) => {
     isImageUrl={(file) => { return true }}
     disabled={disabled}
     //  itemRender 与 onRemove onCrop 是互斥的  
-    itemRender={itemRender ? itemRender : (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem disabled={disabled} fileIndex={(fileList || []).findIndex(item => item.uid === file.uid)} file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview!} onRemove={handleRemove!} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
+    itemRender={itemRender ? itemRender : (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => <ImgItem fileIndex={(fileList || []).findIndex(item => item.uid === file.uid)} file={file} fileList={fileList || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview!} onRemove={handleRemove!} onCrop={handleCrop} actionBtn={actionBtn}></ImgItem>}
   >
     {
       fileList.length < maxLength && <UploadBtn uploadType={1} text={uploadBtnText} disabled={disabled} itemWidth={itemWidth} />

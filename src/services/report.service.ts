@@ -26,7 +26,7 @@ export class ReportService {
   }
 
   public getReportData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
-    let { params } = input
+    let {  params } = input
     const { path } = input
     // tips: 在系统中userID数据的获取
     const mixObj = { userId: (req.query && req.query.userId) || (req.cookies && req.cookies[COOKIE_USER_KEY]) };
@@ -37,10 +37,6 @@ export class ReportService {
         return this.requestService.get(`${this.host}${this.report_base}${path}`, params, this.setHeader());
       case 'post':
         return this.requestService.post(`${this.host}${this.report_base}${path}`, params, this.setHeader());
-      case 'put':
-        return this.requestService.put(`${this.host}${path}`, params, this.setHeader());
-      case 'delete':
-        return this.requestService.delete(`${this.host}${path}`, params, this.setHeader());
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
     }

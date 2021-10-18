@@ -14,9 +14,9 @@ const Upload2: FC = () => {
       {
         fileList.map((item, index, arr) => {
           if (item.type === 'IMAGE') {
-            return <ImgItem disabled={disabled} fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>
+            return <ImgItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>
           } else if (item.type === 'VIDEO') {
-            return <VideoItem disabled={disabled} fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onSelectCover={handleSelectCover} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
+            return <VideoItem fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onSelectCover={handleSelectCover} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
           }
         })
       }

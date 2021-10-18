@@ -100,7 +100,6 @@ dev分支测试环境：http://shop.baixing.cn/management/shop
 
 midway-service: http://172.30.2.14:31257/doc.html#/home  
 zhidao-service：http://172.30.2.14:31252/doc.html#/home  
-post-tool-service：http://172.30.2.14:31204/doc.html#/home  
 
 全局参数设置里添加（下方`X-Api-Hash`、`X-Api-Token`、`X-Api-User`可替换为开发者的）  
 X-Api-Domain : agui.shop.baixing.cn（此处domain参考`site.service.ts`文件）  

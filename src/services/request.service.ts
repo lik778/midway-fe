@@ -12,29 +12,6 @@ export class RequestService {
     private readonly logService: LogService) {
   }
 
-  private errorHandle(err: any, type: 'get' | 'post' | 'put' | 'delete', url: string, data: any, headers?: any,): void {
-    this.logService.errorLog(err)
-    if (err.isAxiosError) {
-      if (err.response) {
-        const { message, code, success } = err.response.data
-        if (this.landPageRequestRegExp.test(url)) {
-          throw new PageException(code, success, message, `request.service ${type} PageException 1`, { url, data, headers });
-        } else {
-          throw new ApiException(code, success, message, `request.service ${type} ApiException 1`, { url, data, headers });
-        }
-      } else {
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
-          ${err}`, `request.service ${type} ApiException 2`, { url, data, headers });
-      }
-    } else {
-      if (this.landPageRequestRegExp.test(url)) {
-        throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', `request.service ${type} PageException 2`, { url, data, headers });
-      } else {
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', `request.service ${type} ApiException 3`, { url, data, headers });
-      }
-    }
-  }
-
   public get(url: string, params: any, headers?: any): Promise<any> {
     return new Promise((resolve, reject) => {
       /**
@@ -47,7 +24,26 @@ export class RequestService {
       }).catch((err: AxiosError) => reject(err))
     })
       .catch((err) => {
-        this.errorHandle(err, 'get', url, params, headers)
+        this.logService.errorLog(err)
+        if (err.isAxiosError) {
+          if (err.response) {
+            const { message, code, success } = err.response.data
+            if (this.landPageRequestRegExp.test(url)) {
+              throw new PageException(code, success, message, 'request.service get PageException 1', { url, params, headers });
+            } else {
+              throw new ApiException(code, success, message, 'request.service get ApiException 1', { url, params, headers });
+            }
+          } else {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
+          ${err}`, 'request.service get ApiException 2', { url, params, headers });
+          }
+        } else {
+          if (this.landPageRequestRegExp.test(url)) {
+            throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service get PageException 2', { url, params, headers });
+          } else {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service get ApiException 3', { url, params, headers });
+          }
+        }
       })
   }
 
@@ -59,36 +55,26 @@ export class RequestService {
       }).catch((err: AxiosError) => reject(err))
     })
       .catch((err) => {
-        this.errorHandle(err, 'post', url, data, headers)
-      })
-  }
-
-  public put(url: string, data: any, headers?: any, config?: AxiosRequestConfig): Promise<any> {
-    const options = config ? { headers, timeout: config.timeout } : { headers }
-    return new Promise((resolve, reject) => {
-      this.httpService.put(url, typeof data === 'number' ? data.toString() : data, options).toPromise().then((res: AxiosResponse) => {
-        resolve(res.data)
-      }).catch((err: AxiosError) => reject(err))
-    })
-      .catch((err) => {
-        this.errorHandle(err, 'post', url, data, headers)
-      })
-  }
-
-  public delete(url: string, params: any, headers?: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      /**
-       * axios.request get 请求中的 params 参数必须是无格式对象或者字符串
-       * @see http://www.axios-js.com/zh-cn/docs/#%E8%AF%B7%E6%B1%82%E9%85%8D%E7%BD%AE
-       */
-      const querys = toPlainObject(params)
-      this.httpService.delete(url, { params: querys, headers }).toPromise().then((res: AxiosResponse) => {
-        resolve(res?.data)
-      }).catch((err: AxiosError) => reject(err))
-    })
-      .catch((err) => {
-        this.errorHandle(err, 'delete', url, params, headers)
+        this.logService.errorLog(err)
+        if (err.isAxiosError) {
+          if (err.response) {
+            const { message, code, success } = err.response.data
+            if (this.landPageRequestRegExp.test(url)) {
+              throw new PageException(code, success, message, 'request.service post PageException 1', { url, data, headers });
+            } else {
+              throw new ApiException(code, success, message, 'request.service post ApiException 1', { url, data, headers });
+            }
+          } else {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
+          ${err}`, 'request.service post ApiException 2', { url, data, headers });
+          }
+        } else {
+          if (this.landPageRequestRegExp.test(url)) {
+            throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service post PageException 2', { url, data, headers });
+          } else {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', 'request.service post ApiException 3', { url, data, headers });
+          }
+        }
       })
   }
 }
-

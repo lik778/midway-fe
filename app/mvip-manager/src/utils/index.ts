@@ -2,8 +2,7 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import BMF from 'browser-md5-file';
 import { DomainStatus } from '@/enums';
-import { productText } from '@/constants/ai-module';
-import { COOKIE_USER_KEY } from '@/constants/index'
+import { productText } from '@/constants';
 
 const bmf = new BMF()
 // 计算文件的MD5值
@@ -51,8 +50,9 @@ const isMillisecond = (timeStamp: number | string) => {
   return timeStr.length > 10
 }
 
-export const formatTime = (time: string | number, type?: string): string => {
-  return dayjs(Number(time) * (isMillisecond(time) ? 1 : 1000)).format(type ? type : 'YYYY-MM-DD')
+export const formatTime = (time: string | number): string => {
+
+  return dayjs(Number(time) * (isMillisecond(time) ? 1 : 1000)).format('YYYY-MM-DD')
 }
 
 export const checkHasShow = function <T>(list: T[] | null): string {
@@ -192,7 +192,7 @@ export const getCookie = (name: string): string => {
 }
 
 export const isLogin = (): boolean => {
-  return getCookie(COOKIE_USER_KEY) !== ''
+  return getCookie('__u') !== ''
 }
 
 export const isUrl = (text: string): boolean => {

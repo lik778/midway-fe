@@ -1,3 +1,4 @@
+import { DomainStatus } from './site';
 
 export interface CommonRes {
   code: number;

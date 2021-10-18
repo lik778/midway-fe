@@ -9,7 +9,7 @@ interface Props {
   className?: string
   height?: string | number
   scrollY: boolean// 是否开启向下滚动事件
-  handleScrollToLower?: (...arg: any) => void
+  handleScrollToLower: (...arg: any) => void
 }
 
 
@@ -35,7 +35,7 @@ const ScrollBox: ForwardRefRenderFunction<unknown, Props> = (props, parentRef) =
     } else {
       //已到底部
       if (scrollY) {
-        handleScrollToLower && handleScrollToLower()
+        handleScrollToLower()
       }
     }
   }, 200)
