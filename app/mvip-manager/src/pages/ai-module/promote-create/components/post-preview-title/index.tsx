@@ -73,6 +73,10 @@ const PostPreviewTitle: FC<Props> = (props) => {
   }, [localEditDataList, seeDataList])
 
   const handleClickDels = async () => {
+    if (delIds.length === 0) {
+      errorMessage('请选择需要删除的标题')
+      return
+    }
     if (page === 'titlePage') {
       setLocalEditDataList(localEditDataList.filter(item => !delKeyMap.current[item.content]))
       setDelIds([])
@@ -145,11 +149,11 @@ const PostPreviewTitle: FC<Props> = (props) => {
         columns: editColumns,
         rowSelection: {
           selectedRowKeys: delIds,
-          hideSelectAll: true,
+          // hideSelectAll: true,
           selections: [
-            // Table.SELECTION_ALL,
-            // Table.SELECTION_INVERT,
-            // Table.SELECTION_NONE,
+            Table.SELECTION_ALL,
+            Table.SELECTION_INVERT,
+            Table.SELECTION_NONE,
           ],
           onChange: (selectedRowKeys: any[], selectedRows: CollectionCreateTitleParmas[]) => {
             setDelIds(selectedRowKeys)
@@ -205,9 +209,6 @@ const PostPreviewTitle: FC<Props> = (props) => {
     if (res.success) {
       successMessage('提交成功')
       onOk && onOk()
-      setTimeout(() => {
-        history.goBack()
-      }, 1500)
     } else {
       errorMessage(res.message)
       setUpDataLoading(false)
@@ -227,9 +228,10 @@ const PostPreviewTitle: FC<Props> = (props) => {
     onCancel={() => onCancel(false)}
     footer={null}
   >
-    <Table rowKey={config.rowKey} scroll={{
+
+    <Table loading={getDataLoading || upDataLoading} rowKey={config.rowKey} scroll={{
       y: 420
-    }} className={styles['table']} columns={config.columns as any} loading={getDataLoading} dataSource={config.dataList as any} pagination={false} rowSelection={config.rowSelection} />
+    }} className={styles['table']} columns={config.columns as any} dataSource={config.dataList as any} pagination={false} rowSelection={config.rowSelection} />
     {
       action === 'edit' && <div className={styles['footer']}>
         <span className={styles['dels']} onClick={handleClickDels}>批量删除</span>

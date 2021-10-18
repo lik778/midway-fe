@@ -72,7 +72,7 @@ export const CreateAiContentNav = (props: Props): any => {
     <div className={styles["ai-filters-box"]}>
       { checkHasShow<AiShopList>(shopList) === 'loading' && <Loading />}
       { checkHasShow<AiShopList>(shopList) === 'show' &&
-        <Form layout="inline" form={form}>
+        <Form className={styles["ai-form"]} layout="inline" form={form}>
           <FormItem label="所属店铺" name="shopId" key="shopId" normalize={(value: number, prevValue: number | undefined) => onShopChange(value, prevValue)}>
             <Select style={{ width: 200, marginRight: 40 }} placeholder="请选择所属店铺">
               {/* 待选项里，会先过滤掉，购买时套餐不含AI发文的店铺 */}

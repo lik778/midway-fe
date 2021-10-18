@@ -17,11 +17,12 @@ interface DataType {
 interface Props {
   visible: boolean;
   close(): void;
+  onSuccess(): void;
   chooseTaskId: number | null;
 }
 
 export default (props: Props) => {
-  const { visible, close, chooseTaskId } = props
+  const { visible, close, chooseTaskId, onSuccess } = props
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
@@ -78,7 +79,7 @@ export default (props: Props) => {
       const resData = await submitAiChooseWordListApi(value)
       if (resData.success) {
         successMessage(resData.message)
-        setTimeout(() => location.reload(), 500)
+        onSuccess()
       } else {
         errorMessage(resData.message)
       }

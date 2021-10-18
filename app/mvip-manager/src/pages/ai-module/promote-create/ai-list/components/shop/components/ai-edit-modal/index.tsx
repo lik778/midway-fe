@@ -10,6 +10,7 @@ import styles from './index.less'
 interface Props {
   visible: boolean;
   close(): void;
+  onSuccess(): void;
   editItem: AiContentItem | null;
 }
 
@@ -19,7 +20,7 @@ const TextArea = Input.TextArea;
 // tips：这个组件要提出去
 export default (props: Props) => {
   const [form] = Form.useForm();
-  const { visible, close, editItem } = props
+  const { visible, close, onSuccess, editItem } = props
   const [isRejectStatus, setIsRejectStatus] = useState<boolean>(false);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
@@ -95,7 +96,7 @@ export default (props: Props) => {
       const resData = await updateAiTaskApi(params)
       if (resData.success) {
         successMessage(resData.message)
-        setTimeout(() => location.reload(), 500)
+        onSuccess()
       } else {
         errorMessage(resData.message)
       }

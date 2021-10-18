@@ -97,7 +97,6 @@ const Shop: FC<Props> = (props) => {
   const viewWords = (record: AiContentItem) => {
     setEditAiTask(record)
     setAiEditModalVisible(true)
-
   }
 
   const chooseWords = (record: number) => {
@@ -244,8 +243,8 @@ const Shop: FC<Props> = (props) => {
         }} />
       }
     </div>
-    <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} />
-    <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId} />
+    <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} onSuccess={getList} />
+    <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId} onSuccess={getList} />
     <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} viewtaskId={viewtaskId} />
   </>
 }

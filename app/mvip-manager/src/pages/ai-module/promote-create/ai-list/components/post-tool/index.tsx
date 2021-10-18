@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { TableColumnProps, Button, InputNumber, Table, Tooltip } from 'antd'
+import { TableColumnProps, InputNumber, Table, Popconfirm } from 'antd'
 import { Link, useHistory } from 'umi'
 
 import { formatTime } from '@/utils';
@@ -101,9 +101,11 @@ const PostTool: FC<Props> = (props) => {
   const handleClickDel = async (id: number) => {
     setUpDataLoading(true)
     const res = await deleteCollection({ id })
-    successMessage('删除成功')
+    if(res.success){
+      successMessage('删除成功')
+      getList()
+    }
     setUpDataLoading(false)
-    getList()
   }
 
   const handleClickCopy = async (wordId: number) => {
@@ -215,7 +217,7 @@ const PostTool: FC<Props> = (props) => {
           }
           {/* 删除 */}
           {
-            [CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(record.status) && <span className={postToolstyles['func-btn']} onClick={() => handleClickDel(record.id)}>删除</span>
+            [CollectionStatus.COLLECTION_DRAFT_STATUS, CollectionStatus.COLLECTION_REJECT_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(record.status) && <span className={postToolstyles['func-btn']}><Popconfirm placement="topLeft" title={`素材包删除后将无法找回，确定删除素材包吗`} onConfirm={() => handleClickDel(record.id)} okText="确认" cancelText="取消"> 删除</Popconfirm></span>
           }
         </>
       }

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Form, Button, Input, Row, Col } from 'antd';
-import { history } from 'umi'
+import { useHistory } from 'umi'
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { wordsItemConfig } from '@/constants/ai-module';
@@ -21,6 +21,7 @@ const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
 const CreateShop = () => {
+  const history = useHistory()
   const { copyId, copyIdType } = useContext(AiModuleContext)
   // 店铺信息
   const [form] = Form.useForm();
@@ -85,10 +86,10 @@ const CreateShop = () => {
         wordD: (suffix || []).join('\n'),
       })
       setCounters({
-        wordA:area.length,
-        wordB:prefix.length,
-        wordC:coreWords.length,
-        wordD:suffix.length,
+        wordA: area.length,
+        wordB: prefix.length,
+        wordC: coreWords.length,
+        wordD: suffix.length,
       })
     }
   }
@@ -156,7 +157,7 @@ const CreateShop = () => {
       setSubmitLoading(false)
       if (res.success) {
         successMessage('添加成功')
-        window.location.reload()
+        history.goBack()
       } else {
         errorMessage(res.message)
       }

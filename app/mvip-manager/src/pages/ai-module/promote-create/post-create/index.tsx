@@ -276,7 +276,7 @@ const CreatePost = (props: Props) => {
     setUpDataLoading(true)
     const res = await updateCollection(values)
     if (res.success) {
-      successMessage(res.message)
+      successMessage('操作成功')
       setTimeout(() => {
         history.goBack()
       }, 1500)
@@ -358,16 +358,16 @@ const CreatePost = (props: Props) => {
                 </Form.Item>
                 <SelectImage collectionId={collectionId} ref={ImageRef}></SelectImage>
                 <SetText collectionId={collectionId} ref={textRef}></SetText>
+                {
+                  !disabled && <Form.Item label={' '} colon={false} labelCol={fromLabelCol}>
+                    <Button className={`${styles['draft-btn']} ${styles['white-btn']}`} disabled={getDataLoading || upDataLoading} onClick={() => handleClickUpdate(CollectionAction.DRAFT)}>保存草稿</Button>
+                    <Button className={styles['blue-btn']} disabled={getDataLoading || upDataLoading} onClick={() => handleClickUpdate(CollectionAction.AUDIT)}>提交审核</Button>
+                  </Form.Item>
+                }
               </div>
             </>
           }
         </Spin>
-        {
-          !disabled && <div className={styles['btn-line']}>
-            <Button className={`${styles['draft-btn']} ${styles['white-btn']}`} disabled={getDataLoading || upDataLoading} loading={upDataLoading} onClick={() => handleClickUpdate(CollectionAction.DRAFT)}>保存草稿</Button>
-            <Button className={styles['blue-btn']} disabled={getDataLoading || upDataLoading} loading={upDataLoading} onClick={() => handleClickUpdate(CollectionAction.AUDIT)}>提交审核</Button>
-          </div>
-        }
       </div>
       <CatchComponent visible={previewTitleVisible}>
         <PostPreviewTitle page='formPage' action={disabled ? 'see' : 'edit'} taskId={id} visible={previewTitleVisible} onCancel={setPreviewTitleVisible} ></PostPreviewTitle>

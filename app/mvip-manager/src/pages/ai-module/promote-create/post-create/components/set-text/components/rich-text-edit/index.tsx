@@ -117,9 +117,9 @@ const RichTextEdit: FC<Props> = (props) => {
     width={600}
     title={type ? collectionFragmentsTypeMap[type] : ''}
     footer={
-      <div>
-        <Button disabled={upDataLoading} onClick={handleClickCancel}>取消</Button>
-        <Button disabled={upDataLoading} loading={upDataLoading} onClick={handleClickSubmit} type="primary">
+      <div className={styles['btn-group']}>
+        <Button className={styles['btn']} disabled={upDataLoading} onClick={handleClickCancel}>取消</Button>
+        <Button className={styles['btn']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickSubmit} type="primary">
           确认添加
         </Button>
       </div>

@@ -139,8 +139,8 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
   }
 
   return <>
-    <Form.Item labelCol={fromLabelCol} wrapperCol={{ span: 20 }} label={config.label} required={true} help={help} validateStatus={validateStatus}>
-      <div>
+    <Form.Item className={styles['textarea-container']} labelCol={fromLabelCol} wrapperCol={{ span: 20 }} label={config.label} required={true} help={help} validateStatus={validateStatus}>
+      <div className={styles['header-box']}>
         {
           !postToolFormDisabled && <>
             {
@@ -151,7 +151,7 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
             }
           </>
         }
-        <span>{config.tip}</span>
+        <div className={styles['block-tip']}>{config.tip}</div>
       </div>
       <div>已填写：{dataList.length}</div>
       <ScrollBox className={styles['textarea-block']} height="220px" scrollY>

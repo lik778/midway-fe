@@ -24,6 +24,7 @@ const SelectImage = (props: Props, parentRef: Ref<any>) => {
   const [help, setHelp] = useState<string | undefined>()
   const [minLength] = useState<number>(5)
   const [maxLength] = useState<number>(30)
+  const [maxSize] = useState<number>(3)
 
   useImperativeHandle(parentRef, () => ({
     validateFc
@@ -124,8 +125,9 @@ const SelectImage = (props: Props, parentRef: Ref<any>) => {
 
   return <Form.Item labelCol={fromLabelCol} label="图片" required={true} help={help} validateStatus={validateStatus}>
     <div className={styles['img-upload-container']}>
-      <ImgUpload editData={initEditData} uploadType={2} unique={true} uploadBtnText={'选择照片'} maxSize={2} maxLength={maxLength} cropProps={{ aspectRatio: 1024 / 768 }} onChange={handleChangeImg} />
+      <ImgUpload editData={initEditData} uploadType={2} unique={true} uploadBtnText={'选择照片'} maxSize={maxSize} maxLength={maxLength} cropProps={{ aspectRatio: 1024 / 768 }} onChange={handleChangeImg} />
     </div>
+    <div className={styles['tip']}>{`图片格式：jpg、jpeg、png，大小不超过${maxSize}M；图片数量：最少上传${minLength}张，最多${maxLength}张；建议最佳尺寸1024*768`} </div>
   </Form.Item>
 }
 
