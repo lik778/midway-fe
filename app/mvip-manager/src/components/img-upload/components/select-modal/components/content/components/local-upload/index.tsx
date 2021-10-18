@@ -27,6 +27,7 @@ const LocalUpload: FC = () => {
     // 至于为什么不用最后一个，以免以后有裁剪功能什么的比对
     const file = fileList.find((item, index) => !oldFileList[index] || item.url !== oldFileList[index].url)
     if (file && file.status === 'done') {
+      // TODO FIXME TYPE
       const res = await createMediaAssets({
         imgUrl: file.url!,
         source: 'IMAGE'
@@ -55,7 +56,6 @@ const LocalUpload: FC = () => {
         <div>
           <Upload1 fileList={fileList} initConfig={{
             uploadType: 1,
-            unique: false,
             showImage: true,
             showVideo: false,
             uploadBtnText,

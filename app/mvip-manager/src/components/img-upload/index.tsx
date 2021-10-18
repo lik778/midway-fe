@@ -38,7 +38,7 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 // 当前组件不要使用useContext(ImgUploadContext)
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
-  const { uploadType, unique = false, showImage = true, showVideo = false, editData, maxSize = 1, uploadBtnText, maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
+  const { uploadType, showImage = true, showVideo = false, editData, maxSize = 1, uploadBtnText, maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
@@ -271,7 +271,6 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 
   const initConfig = {
     uploadType,
-    unique,
     showImage,
     showVideo,
     uploadBtnText,

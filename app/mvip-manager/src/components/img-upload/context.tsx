@@ -7,7 +7,6 @@ const defaultValue = {
   fileList: [],
   initConfig: {
     uploadType: 1 as 1,
-    unique: false,
     uploadBtnText: '',
     maxSize: 3,
     maxLength: 1,

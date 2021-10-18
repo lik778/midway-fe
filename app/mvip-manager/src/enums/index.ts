@@ -63,6 +63,21 @@ export enum VerifyStatus {
   REVOKE = 'REVOKE'
 }
 
+export enum ZhidaoAiTaskQuestionStatus {
+  WIATING = 0, // 待发送
+  DONE = 1, // 发送成功
+  REJECT = 2, // 发送失败
+}
+
+export enum AiTaskStatus {
+  ON_TASK = 0, // 发文中
+  ON_PAUSE = 1, // 已暂停
+  DONE = 2, // 已发完
+  REJECT = 3, // 审核驳回
+  DEFAULT = 4, // 待审核
+  ON_SELECT = 5 //待用户选词
+}
+
 export enum DeviceType {
   PC = 1,
   WAP = 2,
@@ -90,11 +105,36 @@ export enum KFStatus {
   OPEN = 'OPEN'
 }
 
+export enum AiTaskAction {
+  START = 'start',
+  PAUSE = 'pause'
+}
+
 /** 后端服务控制器path */
 export enum ServicePath {
   SHOP = '/management/api',
   ZHIDAO = '/zhidao/api',
-  POST_TOOL = '/post-tool/api',
   REPORT = '/report/api',
   TRACKER = '/tracker'
+}
+
+
+/** 问答AI任务状态 */
+export enum ZhidaoAiTaskStatus {
+  /**
+     * 任务启动中
+     */
+  ACTIVE = 'ACTIVE',
+  /**
+   * 任务暂停中
+   */
+  PAUSED = 'PAUSED',
+  /**
+   * 任务异常终止
+   */
+  ABORTED = 'ABORTED',
+  /**
+   * 任务已完成
+   */
+  DONE = 'DONE'
 }

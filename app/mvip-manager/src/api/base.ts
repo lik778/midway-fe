@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ServiceResponse } from '@/interfaces/api'
-// 开始的设计没有考虑更多情况
+
 // tips: 前端请求的需要的参数
 export interface ApiReqParams {
   method: string;
@@ -10,25 +10,19 @@ export interface ApiReqParams {
 
 export const request = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 30000, // request timeout  设置请求超时时间
+  timeout: 10000, // request timeout  设置请求超时时间
   responseType: "json",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json;charset=utf-8"
-  },
+  }
 })
 
 request.interceptors.response.use((res: AxiosResponse) => {
   return Promise.resolve(res?.data)
 }, (err: AxiosError) => {
-  if (err.response) {
-    return Promise.resolve(err.response && err.response.data)
-  } else {
-    return Promise.resolve({
-      success: false,
-      message: '请求失败，请稍后再试！'
-    })
-  }
+  // console.error('[REQ ERROR]', err)
+  return Promise.resolve(err.response && err.response.data)
 })
 
 export const postApi = <T>(url: string, data: ApiReqParams, headers?: any): Promise<ServiceResponse<T>> => {
@@ -51,21 +45,6 @@ export const getApiData = <T>(servicePath: string, path: string, params: any = {
 export const postApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
   return postApi<T>(servicePath, {
     method: 'post', path: `/api/${path}`,
-    params,
-  }, headers)
-}
-
-export const putApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
-  return postApi<T>(servicePath, {
-    method: 'put', path: `/api/${path}`,
-    params,
-  }, headers)
-}
-
-
-export const deleteApiData = <T>(servicePath: string, path: string, params: any = {}, headers?: any) => {
-  return postApi<T>(servicePath, {
-    method: 'delete', path: `/api/${path}`,
     params,
   }, headers)
 }

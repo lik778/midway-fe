@@ -32,7 +32,7 @@ const ImgItem: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
   const selectModalContext = useContext(SelectModalContext)
   const { maxLength, localFileList, handleChangeLocalFileList } = selectModalContext
-  const { handlePreview, initConfig: { cropProps, unique } } = context
+  const { handlePreview, initConfig: { cropProps } } = context
   const [originSize, setOriginSize] = useState<{
     width: number,
     heigth: number
@@ -88,23 +88,14 @@ const ImgItem: FC<Props> = (props) => {
     setCropVisible(false)
   }
 
-  const checkUrlUnique = (fileList: UploadFile<any>[], url: string) => {
-    return fileList.some(item => item.url?.indexOf(url) !== -1)
-  }
-
   // 传入url ，返回裁剪后的图的uid
   const handleCropSuccess = (uid: string, previewUrl: string) => {
     const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: uid, thumbUrl: uid, preview: previewUrl as string, size: 0, name: '', originFileObj: null as any, type: 'IMAGE' }
     if (maxLength === 1) {
       handleChangeLocalFileList([newFile])
     } else {
-      if (unique && checkUrlUnique(localFileList, newFile.url!)) {
-        handleChangeLocalFileList([...localFileList])
-        errorMessage('请勿设置重复图片')
-      } else {
-        const newLocalFileList = [...localFileList, newFile]
-        handleChangeLocalFileList(newLocalFileList)
-      }
+      const newLocalFileList = [...localFileList, newFile]
+      handleChangeLocalFileList(newLocalFileList)
     }
     setCropVisible(false)
   }

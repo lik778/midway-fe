@@ -26,10 +26,6 @@ export default defineConfig({
       "target": "http://localhost:7001",
       "changeOrigin": true
     },
-    "/post-tool/api": {
-      "target": "http://localhost:7001",
-      "changeOrigin": true
-    },
     "/haojing/*": {
       "target": "http://localhost:7001",
       "changeOrigin": true
