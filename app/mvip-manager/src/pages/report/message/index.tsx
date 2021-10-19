@@ -16,7 +16,8 @@ import { getCookie, formatRange, decodeHTMLCodeSafe, isValidURL } from '@/utils'
 import { LeaveMessagePageFromEnum } from '@/enums/report'
 import { LeaveMessageChannelMap } from '@/constants/report'
 import { ReportListResData, getLeaveMessageListParams, LeaveMessageListData } from '@/interfaces/report'
-import { BXMAINSITE } from '@/constants/index'
+import { COOKIE_USER_KEY, BXMAINSITE } from '@/constants/index'
+
 import "./index.less"
 
 const TabPane = Tabs.TabPane
@@ -43,7 +44,7 @@ function LeaveMessagePage() {
   const from = useMemo<string | LeaveMessagePageFromEnum | null>(() => params.get('from') || LeaveMessagePageFromEnum.MVIP, [params])
   const isMobile = useMemo(() => params.get('mobile') === '1', [params])
   const isPC = useMemo(() => !isMobile, [isMobile])
-  const uid = useMemo(() => getCookie('__u'), [])
+  const uid = useMemo(() => getCookie(COOKIE_USER_KEY), [])
 
   const [queryForm] = Form.useForm()
   const last3Years = useMemo(() => [

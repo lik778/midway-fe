@@ -29,8 +29,12 @@ const VideoItem: FC<Props> = (props) => {
   const { file, detail = {} as MediaAssetsItem, itemHeight, mediaType } = props
   const context = useContext(ImgUploadContext)
   const selectModalContext = useContext(SelectModalContext)
-  const { handlePreview, initConfig: { cropProps } } = context
+  const { handlePreview, initConfig: { cropProps, unique } } = context
   const { maxLength, localFileList, handleChangeLocalFileList } = selectModalContext
+
+  const checkUrlUnique = (fileList: UploadFile<any>[], url: string) => {
+    return fileList.some(item => item.url?.indexOf(url) !== -1)
+  }
 
   const handleSelectItem = () => {
     if (maxLength > 1 && localFileList.length >= maxLength) {
@@ -45,8 +49,13 @@ const VideoItem: FC<Props> = (props) => {
     if (maxLength === 1) {
       handleChangeLocalFileList([newFile])
     } else {
-      const newLocalFileList = [...localFileList, newFile]
-      handleChangeLocalFileList(newLocalFileList)
+      if (unique && checkUrlUnique(localFileList, newFile.url!)) {
+        handleChangeLocalFileList(localFileList)
+        errorMessage('请勿选择重复视频')
+      } else {
+        const newLocalFileList = [...localFileList, newFile]
+        handleChangeLocalFileList(newLocalFileList)
+      }
     }
   }
 

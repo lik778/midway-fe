@@ -4,6 +4,7 @@ import { getAreasApi } from '@/api/user';
 import { CascaderOption } from '@/interfaces/base';
 
 interface Props {
+  disabled?: boolean,
   //下面是返回area数据{m30: "上海", m7254: "闵行", m2212: "莘庄"}
   width?: number | string,
   initialValues: { [key: string]: string };
@@ -12,7 +13,7 @@ interface Props {
 export default (props: Props) => {
   const [areas, setAreas] = useState<CascaderOption[]>([]);
   const [selectValue, setSelectValue] = useState<string[]>([]);
-  const { initialValues, onChange, width } = props
+  const { disabled, initialValues, onChange, width } = props
 
   const formatAreas = (data: any, isLeaf: boolean, level: number): any => {
     if (!data) return;
@@ -61,7 +62,7 @@ export default (props: Props) => {
     setAreas([...areas])
   };
 
-  return (<Cascader style={{ width: width }} size='large' options={areas} value={selectValue}
+  return (<Cascader disabled={disabled} style={{ width: width }} size='large' options={areas} value={selectValue}
     onPopupVisibleChange={onPopupVisibleChange}
     loadData={loadData} onChange={onSelectChange} changeOnSelect />)
 }

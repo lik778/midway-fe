@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const Layouts = (props: any) => {
-  const { userInfo, menuList, getMenuList, getCompanyInfo, getUserInfo } = props
+  const { userInfo, menuList, getMenuList, getCompanyInfo, getUserInfo, getUserVerifyList } = props
   if (inIframe()) {
     return <Layout className="site-layout">
       <Content>
@@ -37,10 +37,12 @@ const Layouts = (props: any) => {
   // 处理overflow: hidden问题
   useEffect(() => removeOverflowY());
 
+  const initLayout = async () => {
+    await Promise.all([getUserInfo(), getCompanyInfo(), getMenuList(), getUserVerifyList()])
+  }
+
   useEffect(() => {
-    getUserInfo()
-    getCompanyInfo()
-    getMenuList()
+    initLayout()
   }, [])
 
   useEffect(() => {
@@ -65,20 +67,12 @@ const Layouts = (props: any) => {
           <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}
             onOpenChange={(openKeys: any) => { setOpenKeys(openKeys) }} id="base-menu">
             {
-              menuList && menuList.map((subMenu: MidMenuItem) => {
-                return (
-                  <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
-                    className={subMenu.key}>
-                    { subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => {
-                      return (
-                        <Menu.Item key={menu.key}>
-                          <Link to={menu.path || ''}>{menu.menuName}</Link>
-                        </Menu.Item>
-                      )
-                    })}
-                  </SubMenu>
-                )
-              })
+              menuList && menuList.map((subMenu: MidMenuItem) => <SubMenu style={{ marginBottom: '10px' }} key={subMenu.key} title={subMenu.menuName}
+                className={subMenu.key}>
+                {subMenu.menuList && subMenu.menuList.map((menu: MidMenuItem) => <Menu.Item key={menu.key}>
+                  <Link to={menu.path || ''}>{menu.menuName}</Link>
+                </Menu.Item>)}
+              </SubMenu>)
             }
           </Menu>
         </Sider>

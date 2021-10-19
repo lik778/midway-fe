@@ -8,6 +8,9 @@ export default {
     'zhidao-service': {
       host: 'http://zhidao-service'
     },
+    'post-tool-service': {
+      host: 'http://api.baixing.com.cn'
+    },
     'reporting-service': {
       host: 'http://api.baixing.com.cn'
     },
