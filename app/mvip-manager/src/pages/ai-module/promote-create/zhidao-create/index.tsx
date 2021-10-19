@@ -449,9 +449,7 @@ const CreateZhidao: FC = () => {
       }, 1500)
       return
     }
-    console.log(requestData)
     const wordId = await saveWordFn(requestData)
-    console.log('saveWordFn', values, wordId)
     const res = await submitCoreWordsApi({
       ...requestData,
       wordId
@@ -464,8 +462,6 @@ const CreateZhidao: FC = () => {
       setModalVisible(false)
       errorMessage(res.message || '提交失败')
     }
-    // const res = await mockData('data', {})
-    // 提交之后 重新请求用户状态
   }
 
   const taskBuildSuccess = () => {

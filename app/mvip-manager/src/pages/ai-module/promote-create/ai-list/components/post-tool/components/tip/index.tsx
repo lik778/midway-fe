@@ -48,7 +48,6 @@ const Tip: FC<Props> = (props) => {
     const res = await getCompanyInfo()
     if (res.success) {
       setCompanyInfo(res.data)
-      console.log('getCompanyInfo,', res)
     }
   }
 

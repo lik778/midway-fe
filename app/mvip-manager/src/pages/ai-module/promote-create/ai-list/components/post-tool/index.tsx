@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { TableColumnProps, InputNumber, Table, Popconfirm } from 'antd'
+import { TableColumnProps, InputNumber, Table, Popconfirm, Tooltip } from 'antd'
 import { Link, useHistory } from 'umi'
 
 import { formatTime } from '@/utils';
@@ -101,7 +101,7 @@ const PostTool: FC<Props> = (props) => {
   const handleClickDel = async (id: number) => {
     setUpDataLoading(true)
     const res = await deleteCollection({ id })
-    if(res.success){
+    if (res.success) {
       successMessage('删除成功')
       getList()
     }
@@ -162,7 +162,7 @@ const PostTool: FC<Props> = (props) => {
       render: (text, record) => {
         const max = undefined
         return <InputNumber size="small" placeholder={max ? `最多${max}条` : '请设置'} min={1} max={max} defaultValue={text === 0 ? '' : text}
-          maxLength={4} onBlur={(e) => { handleBlurCollectionLimit(e, 'dailyPostLimit', record) }} disabled={upDataLoading} />
+          maxLength={4} onBlur={(e) => { handleBlurCollectionLimit(e, 'postLimit', record) }} disabled={upDataLoading} />
       }
     },
     {

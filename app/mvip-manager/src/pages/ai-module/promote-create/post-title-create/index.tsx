@@ -207,6 +207,11 @@ const PostTitleCreate: FC = () => {
     await updateCollection({ id, wordId: res.data })
   }
 
+  const handleSaveTitleSuccess = () => {
+    saveWordFn()
+    setSelectTitleVisible(false)
+  }
+
   return <>
     <MainTitle title="批量添加标题" showJumpIcon />
     <div className={styles['post-title-create-container']}>
@@ -228,7 +233,7 @@ const PostTitleCreate: FC = () => {
       </Form>
       <Button className={styles['create-btn']} disabled={upDataLoading} loading={upDataLoading} onClick={handleClickPreview} >预览标题</Button>
     </div>
-    <PostPreviewTitle page='titlePage' action='edit' taskId={id} editDataList={dataList} visible={selectTitleVisible} onCancel={setSelectTitleVisible} onOk={saveWordFn}></PostPreviewTitle>
+    <PostPreviewTitle page='titlePage' action='edit' taskId={id} editDataList={dataList} visible={selectTitleVisible} onCancel={setSelectTitleVisible} onOk={handleSaveTitleSuccess}></PostPreviewTitle>
   </>
 }
 

@@ -42,7 +42,7 @@ const RichTextEdit: FC<Props> = (props) => {
     setUpDataLoading(true)
     const res = await createFragments({ id: collectionId, type: type as CollectionFragmentsType, content: localValue })
     if (res.success) {
-      successMessage(res.message)
+      successMessage(`添加${type ? collectionFragmentsTypeMap[type] : ''}成功`)
       onOk(res.data)
     } else {
       errorMessage(res.message)
@@ -54,7 +54,7 @@ const RichTextEdit: FC<Props> = (props) => {
     setUpDataLoading(true)
     const res = await updateFragments({ id: fragments!.id, content: localValue })
     if (res.success) {
-      successMessage(res.message)
+      successMessage(`编辑${type ? collectionFragmentsTypeMap[type] : ''}成功`)
       onOk({
         ...res.data,
         content: localValue

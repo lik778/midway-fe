@@ -59,14 +59,14 @@ const PostPreviewTitle: FC<Props> = (props) => {
       newLocalEditDataList.splice(index, 1)
       setLocalEditDataList(newLocalEditDataList)
       delete delKeyMap.current[record.content]
-      successMessage('删除成功')
+      successMessage('删除标题成功')
     } else {
       setUpDataLoading(true)
       const res = await deleteCollectionTitle({ id: (record as CollectionPreviewTitleListItem).id })
       if (res.success) {
         setSeeDataList(seeDataList.filter(item => item.id !== (record as CollectionPreviewTitleListItem).id))
         delete delKeyMap.current[(record as CollectionPreviewTitleListItem).id]
-        successMessage('删除成功')
+        successMessage('删除标题成功')
       }
       setUpDataLoading(false)
     }
@@ -79,18 +79,23 @@ const PostPreviewTitle: FC<Props> = (props) => {
     }
     if (page === 'titlePage') {
       setLocalEditDataList(localEditDataList.filter(item => !delKeyMap.current[item.content]))
+      successMessage('删除标题成功')
       setDelIds([])
       delKeyMap.current = {}
-      successMessage('删除成功')
     } else {
       setUpDataLoading(true)
       const res = await deleteCollectionTitles({ ids: delIds as number[] })
       if (res.success) {
         setSeeDataList(seeDataList.filter(item => !delKeyMap.current[item.id]))
-        successMessage('删除成功')
+        successMessage('删除标题成功')
+        setDelIds([])
+        delKeyMap.current = {}
+      } else {
+        errorMessage(res.message)
       }
       setUpDataLoading(false)
     }
+
   }
 
   const seeColumns: TableColumnProps<CollectionPreviewTitleListItem>[] = [
@@ -152,7 +157,6 @@ const PostPreviewTitle: FC<Props> = (props) => {
           // hideSelectAll: true,
           selections: [
             Table.SELECTION_ALL,
-            Table.SELECTION_INVERT,
             Table.SELECTION_NONE,
           ],
           onChange: (selectedRowKeys: any[], selectedRows: CollectionCreateTitleParmas[]) => {
@@ -182,6 +186,9 @@ const PostPreviewTitle: FC<Props> = (props) => {
               delKeyMap.current = {}
             }
           },
+          onSelectNone: () => {
+            delKeyMap.current = {}
+          }
         }
       }
       if (page === 'formPage') {
@@ -207,7 +214,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
       data: JSON.stringify(localEditDataList)
     })
     if (res.success) {
-      successMessage('提交成功')
+      successMessage('生成标题成功')
       onOk && onOk()
     } else {
       errorMessage(res.message)
@@ -222,9 +229,11 @@ const PostPreviewTitle: FC<Props> = (props) => {
       <span className={styles['blue']}>{localEditDataList.length || seeDataList?.length}</span>
       <span>）</span>
     </div>}
+    centered={true}
     className={styles['preview-title-modal']}
     width={940}
     visible={visible}
+    maskClosable={false}
     onCancel={() => onCancel(false)}
     footer={null}
   >

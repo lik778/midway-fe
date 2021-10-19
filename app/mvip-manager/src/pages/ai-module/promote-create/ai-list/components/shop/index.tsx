@@ -220,6 +220,16 @@ const Shop: FC<Props> = (props) => {
 
   }
 
+  const onAiEditModalSuccess = () => {
+    getList()
+    setAiEditModalVisible(false)
+  }
+
+  const onAiChooseModalSuccess = () => {
+    getList()
+    setAiChooseModalVisible(false)
+  }
+
   return <>
     <div className={styles['container-container']}>
       <div className={styles['page-action-btn-line']}>
@@ -243,8 +253,8 @@ const Shop: FC<Props> = (props) => {
         }} />
       }
     </div>
-    <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} onSuccess={getList} />
-    <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId} onSuccess={getList} />
+    <AiEditModal close={() => setAiEditModalVisible(false)} visible={aiEditModalVisible} editItem={editAiTask} onSuccess={onAiEditModalSuccess} />
+    <AiChooseModal close={() => setAiChooseModalVisible(false)} visible={aiChooseModalVisible} chooseTaskId={chooseTaskId} onSuccess={onAiChooseModalSuccess} />
     <AiPackageModal close={() => setAiPackageModalVisible(false)} visible={aiPackageModalVisible} viewtaskId={viewtaskId} />
   </>
 }

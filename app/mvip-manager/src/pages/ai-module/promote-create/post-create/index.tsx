@@ -150,7 +150,7 @@ const CreatePost = (props: Props) => {
       index: 4,// 决定当前这个自定义组件放在第几位 不填就是最后
       node: <Form.Item
         name='companyName'
-        label={companyMeta.name}
+        label={companyMeta.name || ' '}
         required={companyMeta.required}
         rules={[{ required: companyMeta.required, message: `请填写${companyMeta.name}` }]}
         initialValue={(collection.metas && collection.metas[companyMeta.name]) || companyMeta.value}
@@ -272,11 +272,11 @@ const CreatePost = (props: Props) => {
 
   const updateCollectionFn = async (values: Partial<UpdataCollectionParams> & {
     id: number;
-  }) => {
+  }, action: CollectionAction.AUDIT | CollectionAction.DRAFT) => {
     setUpDataLoading(true)
     const res = await updateCollection(values)
     if (res.success) {
-      successMessage('操作成功')
+      successMessage(action === CollectionAction.AUDIT ? '提交审核成功' : '保存草稿成功')
       setTimeout(() => {
         history.goBack()
       }, 1500)
@@ -325,10 +325,10 @@ const CreatePost = (props: Props) => {
       const res = await getCollection({ id })
       Modal.confirm({
         content: `您本次预估消耗${res.data.adsTotal}个发帖点，审核通过后素材包将无法修改，确认提交审核吗?`,
-        onOk() { updateCollectionFn(requestData) },
+        onOk() { updateCollectionFn(requestData, action) },
       })
     } else {
-      updateCollectionFn(requestData)
+      updateCollectionFn(requestData, action)
     }
   }
 
