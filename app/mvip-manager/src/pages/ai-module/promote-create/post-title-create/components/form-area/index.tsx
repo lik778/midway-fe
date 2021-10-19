@@ -34,30 +34,24 @@ const FormArea: FC<Props> = (props) => {
   const [notCityWord, setNotCityWord] = useState<boolean>(false)
   const selectRef = useRef<any>([])
 
-  const validateCityRules = useMemo(() => {
-    return [
-      {
-        required: !notCityWord,
-        // message: `请输入核心词！(3-100个)`,
-        validator: (rule: Rule, value: any) => {
-          // 不需要城市在标题时，
-          if (!notCityWord) {
-            if (!value || value.length <= 0) {
-              return Promise.reject(new Error(`城市数不得少于1个`));
-            }
-          }
-          return Promise.resolve()
-        }
-      }
-    ]
-  }, [notCityWord])
-
   const formItemList: SelectConfig[] = useMemo(() => {
     return [{
       key: 'city',
       label: '城市',
       tip: '请选择城市',
-      rules: validateCityRules,
+      rules: [
+        {
+          required: true,
+          // message: `请输入核心词！(3-100个)`,
+          validator: (rule: Rule, value: any) => {
+            // 不需要城市在标题时，
+            if (!value || value.length <= 0) {
+              return Promise.reject(new Error(`城市数不得少于1个`));
+            }
+            return Promise.resolve()
+          }
+        }
+      ],
       selectAll: citySelectAll,
       selectList: cityList,
     }, {
@@ -72,7 +66,7 @@ const FormArea: FC<Props> = (props) => {
       selectAll: areaSelectAll,
       selectList: areaList,
     }]
-  }, [citySelectAll, areaSelectAll, cityList, areaList, validateCityRules])
+  }, [citySelectAll, areaSelectAll, cityList, areaList])
 
   const getCreateTitleCityListFc = async () => {
     if (!selectedVipResources) return
