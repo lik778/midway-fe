@@ -75,7 +75,7 @@ const PcSwiper = (props: Props, parentRef: Ref<any>) => {
       <Radio.Group name="radiogroup" value={swiperType} onChange={handleChangeSwiperType}>
         <Radio value={'swiper'}>
           <span className={styles['radio-content']}>
-            <span className={styles['text']}>轮播图</span>
+            <span className={styles['text']}>轮播图/视频</span>
             <QuestionCircleOutlined className={styles['icon']} />
             <img className={styles['img']} src="//file.baixing.net/202108/55b3c7fdd0b145dff356be54220b5c2a.png" alt="" />
           </span>
