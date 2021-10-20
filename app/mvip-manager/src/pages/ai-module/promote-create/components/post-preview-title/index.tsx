@@ -216,10 +216,13 @@ const PostPreviewTitle: FC<Props> = (props) => {
     if (res.success) {
       successMessage('生成标题成功')
       onOk && onOk()
+      setTimeout(() => {
+        history.goBack()
+      }, 1500)
     } else {
       errorMessage(res.message)
-      setUpDataLoading(false)
     }
+    setUpDataLoading(false)
   }
 
   return <Modal

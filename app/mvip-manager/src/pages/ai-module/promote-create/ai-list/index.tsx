@@ -29,7 +29,7 @@ const AiList = () => {
       {
         auth && <>
           {
-            auth.postTool && <TabPane tab="贴子" key="postTool"><PostTool onCopy={onCopy}></PostTool></TabPane>
+            auth.postTool && <TabPane tab="帖子" key="postTool"><PostTool onCopy={onCopy}></PostTool></TabPane>
           }
           {
             auth.zhidao && <TabPane tab="知道" key="zhidao"><Zhidao onCopy={onCopy}></Zhidao></TabPane>

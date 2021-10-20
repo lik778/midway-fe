@@ -50,7 +50,6 @@ const PostTool: FC<Props> = (props) => {
 
   useEffect(() => {
     getList()
-
     track({
       eventType: BXMAINSITE,
       data: {

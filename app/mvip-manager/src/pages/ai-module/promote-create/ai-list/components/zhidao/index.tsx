@@ -176,7 +176,7 @@ const Zhidao: FC<Props> = (props) => {
         <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/promote-create/zhidao-create'}>+AI批量创建推广</Link>
         <Link className={styles['action-btn']} to={'/ai-module/promote-create/zhidao-basic-material'}>基础素材</Link>
         {/* TODO; */}
-        <Button className={styles['action-btn']} onClick={() => handleClickA('https://www.baixing.com/vip/manager/service/12/enterpriseQA/release')}>手动发布</Button>
+        <Button className={styles['action-btn']} onClick={() => handleClickA('//www.baixing.com/vip/manager/service/12/enterpriseQA/release')}>手动发布</Button>
       </div>
 
       <p className={styles['page-tip']}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</p>

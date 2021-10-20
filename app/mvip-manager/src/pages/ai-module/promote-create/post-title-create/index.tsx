@@ -219,7 +219,7 @@ const PostTitleCreate: FC = () => {
         <h3>组合规则说明：</h3>
         <li>1.  勾选“标题不含城市”后，标题中不会带有城市</li>
         <li>2.  行政区可以不选择，也可以选择1个或多个</li>
-        <li>3.  前置修饰词、主关键词、后置修饰词点击换行（enter）键实现添加，点击文字可以直接修改。</li>
+        <li>3.  前缀、核心词、后缀点击换行（enter）键实现添加，点击文字可以直接修改。</li>
       </ul>
       <Form name="create-task-form" form={form}>
         <Row className={styles["group-words-list"]} gutter={24}>
