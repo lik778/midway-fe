@@ -105,7 +105,7 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
     setUpDataLoading(true)
     const res = await deleteFragments({ id: fragment.id, type: config.type })
     if (res.success) {
-      successMessage(res.message)
+      successMessage('删除成功')
       const newDataList = dataList.filter(item => item.id !== fragment.id)
       setDataList(newDataList)
     }

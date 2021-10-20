@@ -1,9 +1,12 @@
+:global {
+  :local(.textarea-container) {
+    &.ant-form-item-with-help {
+      margin-bottom: 24px;
+    }
+  }
+}
 .textarea-container {
-  // :global {
-  //   &.ant-form-item-with-help {
-  //     margin-bottom: 24px;
-  //   }
-  // }
+
   .add-text-btn,
   .edit-text-btn,
   .del-text-btn {
@@ -23,6 +26,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     .block-tip {
+      max-width: calc(100% - 145px);
       line-height: 20px;
     }
   }

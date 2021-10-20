@@ -358,12 +358,14 @@ export interface CompanyMeta {
 }
 
 export interface CompanyInfo {
-  isUserPerfect: boolean,
+  isUserPerfect: boolean, // 这个是商户后台的企业资料是否填写
+  // 下面是老发帖通的资料
   contact: string,
   contactName: string,
   qq: string,
   weixin: string,
   address: string
+  maxOldTaskId: number // 老发帖通最大的id 用户判断老发帖通是否有进行中的任务
 }
 
 export type AuthKey = 'SHOP' | 'ZHIDAO' | 'POSTTOOL'

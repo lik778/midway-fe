@@ -279,7 +279,7 @@ export const getOnlineADCount = () => {
 
 // 获取用户vip 一级类目
 export const getUserVipResources = () => {
-  return postApiData<UserVipResourcesListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/userVipResources`)
+  return postApiData<UserVipResourcesListItem[]>(ServicePath.SHOP, `midway/backend/vipManager/userPostToolResources`)
 }
 
 // 获取二级类目

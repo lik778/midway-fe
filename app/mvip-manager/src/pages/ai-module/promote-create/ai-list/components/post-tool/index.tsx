@@ -203,7 +203,6 @@ const PostTool: FC<Props> = (props) => {
           }
           {/* 查看 */}
           {
-
             ([CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS]).includes(record.status) && <Link className={postToolstyles['func-btn']} to={`/ai-module/promote-create/post-create?id=${record.id}`}>查看</Link>
           }
           {/* 编辑 */}
@@ -236,7 +235,7 @@ const PostTool: FC<Props> = (props) => {
 
   return <>
     <div className={styles['container-container']}>
-      <Tip dataTotal={dataList.length}></Tip>
+      <Tip dataTotal={dataList.length} dataList={dataList}></Tip>
       {
         dataTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>
           <img src="//file.baixing.net/202012/a8df003f95591928fa10af0bbf904d6f.png" />

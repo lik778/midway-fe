@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { Select, Button, } from 'antd'
 import { Link, useHistory } from 'umi'
 import { connect } from 'dva';
@@ -12,9 +12,12 @@ import { getOnlineADCount, getCompanyInfo } from '@/api/ai-module'
 import { CompanyInfo } from '@/interfaces/ai-module';
 import { VerifyItem } from '@/interfaces/user';
 import { VerifyStatus } from '@/enums/index'
+import { CollectionListItem } from '@/interfaces/ai-module';
+import { CollectionStatus } from '@/enums/ai-module'
 const { Option } = Select
 
 interface Props {
+  dataList: CollectionListItem[],
   dataTotal: number,
   verifyList: VerifyItem[],
   userLoading: boolean
@@ -34,7 +37,7 @@ const modalTip = {
 }
 
 const Tip: FC<Props> = (props) => {
-  const { dataTotal, verifyList, userLoading } = props
+  const { dataList, dataTotal, verifyList, userLoading } = props
   const history = useHistory()
   const { activeModuleKey, handleChangeContextData, vipResourcesList, selectedVipResources } = useContext(AiModuleContext)
 
@@ -43,6 +46,16 @@ const Tip: FC<Props> = (props) => {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null)
 
   const [modalType, setModalType] = useState<'companyInfo' | 'verifyList'>('companyInfo')
+
+  const showGotoUserBtn = useMemo(() => {
+    if (companyInfo) {
+      return dataList.some(item => {
+        if (item.id <= companyInfo.maxOldTaskId) {
+          return item.status !== CollectionStatus.COLLECTION_FINISHED_STATUS
+        }
+      })
+    }
+  }, [companyInfo, dataList])
 
   const getCompanyInfoFn = async () => {
     const res = await getCompanyInfo()
@@ -112,7 +125,10 @@ const Tip: FC<Props> = (props) => {
 
     <div className={styles['page-action-btn-line']}>
       <Button className={`${styles['action-btn']} ${styles['create-action-btn']}`} onClick={handleCheckBaseInfo} disabled={userLoading}>+AI批量创建推广</Button>
-      <Link className={styles['action-btn']} to={'/company-info/base'}>填写基础信息</Link>
+
+      {
+        showGotoUserBtn && <Button className={styles['action-btn']} onClick={() => handleClickA(`//www.baixing.com/vip/manager/service/${selectedVipResources?.productLine}/postTool/addUserInfo`)}>填写基础信息</Button>
+      }
       <Button className={styles['action-btn']} onClick={() => handleClickA(`https://www.baixing.com/vip/manager/service/${selectedVipResources?.productLine}/postTool/adList`)}>发帖通帖子列表</Button>
       <Button className={styles['action-btn']} onClick={() => handleClickA('https://www.baixing.com/fabu/jiameng')}>手动发布</Button>
     </div>
