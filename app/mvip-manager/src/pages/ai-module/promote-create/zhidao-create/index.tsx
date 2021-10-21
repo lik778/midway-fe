@@ -14,6 +14,10 @@ import { debounce } from 'lodash'
 import { modal, prefix } from '@/constants/ai-module'
 import { COOKIE_USER_KEY } from '@/constants/index'
 import AiModuleContext from '../context'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
+
+
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const { Option } = Select;
@@ -230,9 +234,16 @@ const CreateZhidao: FC = () => {
   }
 
   useEffect(() => {
-    console.log(copyId, copyIdType)
     getWordFn()
     getQuotaNum()
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'zhidao-task-create',
+      }
+    })
   }, [])
 
   const getCreateQuestionTaskBasicDataFn = async () => {
@@ -462,6 +473,14 @@ const CreateZhidao: FC = () => {
     if (res.success) {
       setModalVisible(false)
       initCompoment()
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          action: 'time-end',
+          action_page: 'zhidao-task-create',
+        }
+      })
     } else {
       setModalVisible(false)
       errorMessage(res.message || '提交失败')

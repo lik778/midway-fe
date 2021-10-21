@@ -7,6 +7,8 @@ import { submitBasicMaterialApi, getBasicMaterialApi } from '@/api/ai-module'
 import { errorMessage, successMessage } from '@/components/message';
 import { FormKey } from './data.d'
 import MainTitle from '@/components/main-title'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -205,6 +207,14 @@ export default () => {
 
   useEffect(() => {
     getBasicMaterialFc()
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'zhidao-basic-materia',
+      }
+    })
   }, [])
 
   const getWordNum = (key: string, value: string) => {
@@ -256,6 +266,15 @@ export default () => {
     const res = await submitBasicMaterialApi(requestData)
     if (res.success) {
       successMessage(res.message || '添加成功')
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          tm: +new Date(),
+          action: 'time-end',
+          action_page: 'zhidao-basic-materia',
+        }
+      })
     } else {
       errorMessage(res.message || '添加失败')
     }

@@ -16,6 +16,8 @@ import { DomainStatus } from '@/enums'
 import { shopMapStateToProps, shopMapDispatchToProps } from '@/models/shop'
 import { AiShopList, AiTaskApiParams } from '@/interfaces/ai-module';
 import AiModuleContext from '../context'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -106,6 +108,17 @@ const CreateShop = () => {
     }
   }, [visiblePanel])
 
+  useEffect(() => {
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'shop-task-create',
+      }
+    })
+  }, [])
+
   const isValidForm = (): boolean => {
     const errorList: string[] = []
     Object.keys(counters).forEach(x => {
@@ -163,6 +176,14 @@ const CreateShop = () => {
       if (res.success) {
         successMessage('添加成功')
         history.goBack()
+        track({
+          eventType: BXMAINSITE,
+          data: {
+            event_type: BXMAINSITE,
+            action: 'time-end',
+            action_page: 'shop-task-create',
+          }
+        })
       } else {
         errorMessage(res.message)
       }

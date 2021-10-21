@@ -13,6 +13,8 @@ import { ZhidaoAiTaskQuestionStatusText } from '@/constants/ai-module'
 import { ZhidaoAiTaskQuestionStatus } from '@/enums/ai-module'
 import MyModal, { ModalType } from '@/components/modal';
 import { mockData } from '@/utils/index'
+import { track } from '@/api/common'
+import { BXMAINSITE } from '@/constants/index'
 
 
 const AiZhidaoDetail = (props: any) => {
@@ -119,6 +121,15 @@ const AiZhidaoDetail = (props: any) => {
 
   useEffect(() => {
     getData()
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        event_type: BXMAINSITE,
+        action: 'entry-page',
+        action_page: 'zhidao-task-detail',
+        action_type: pageType // 当前动作产生:查看任务 | 修改任务
+      }
+    })
   }, [])
 
   // 这里传row是为了知道修改的序号
@@ -151,6 +162,16 @@ const AiZhidaoDetail = (props: any) => {
     if (res.success && res.data === 'true') {
       successMessage('新建任务成功')
       history.goBack()
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          action: 'time-end',
+          action_page: 'zhidao-task-detail',
+          action_type: pageType // 当前动作产生:查看任务 | 修改任务
+        }
+      })
+
     } else {
       errorMessage(res.message || '发布失败')
     }
@@ -163,6 +184,15 @@ const AiZhidaoDetail = (props: any) => {
     if (res.success) {
       successMessage('撤销成功')
       history.goBack()
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          event_type: BXMAINSITE,
+          action: 'time-end',
+          action_page: 'zhidao-task-detail',
+          action_type: pageType // 当前动作产生:查看任务 | 修改任务
+        }
+      })
     } else {
       errorMessage(res.message || '撤销失败')
     }

@@ -118,6 +118,45 @@ const CreatePost = (props: Props) => {
     initComponent()
   }, [collection, selectedVipResources])
 
+  const isEditFn = (collection: CollectionDetail) => {
+    return Boolean(collection && collection.status && ![CollectionStatus.COLLECTION_PUBLISH_STATUS, CollectionStatus.COLLECTION_FINISHED_STATUS, CollectionStatus.COLLECTION_PENDING_STATUS, CollectionStatus.COLLECTION_PAUSED_STATUS].includes(collection.status))
+  }
+
+
+  const [timer, setTimer] = useState<any>()
+  useEffect(() => {
+    if (collection && collection.id) {
+      const isEdit = isEditFn(collection)
+      if (timer) {
+        clearInterval(timer)
+      }
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          action_id: 'entry-page',
+          page_id: '素材包编辑主界面',
+          task_id: collection.id,
+          action_type: isEdit ? 'edit' : 'see'
+        }
+      })
+      const number = setInterval(() => {
+        track({
+          eventType: BXMAINSITE,
+          data: {
+            action_id: 'exit-page',
+            page_id: '素材包编辑主界面',
+            task_id: collection.id,
+            action_type: isEdit ? 'edit' : 'see'
+          }
+        })
+      }, 60 * 1000)
+      setTimer(number)
+    }
+    return () => {
+      clearInterval(timer)
+    }
+  }, [collection])
+
   // 获取当前任务详情
   const getDetail = async () => {
     setGetDataLoading(true)

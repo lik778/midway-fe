@@ -136,6 +136,7 @@ const PostTitleCreate: FC = () => {
     }
   }
 
+  const [timer, setTimer] = useState<any>()
   useEffect(() => {
     getWordFn()
     track({
@@ -149,6 +150,32 @@ const PostTitleCreate: FC = () => {
         _refer: document.referrer
       }
     })
+
+    if (timer) {
+      clearInterval(timer)
+    }
+    track({
+      eventType: BXMAINSITE,
+      data: {
+        action_id: 'entry-page',
+        page_id: '标题组合工具界面',
+        task_id: id,
+      }
+    })
+    const number = setInterval(() => {
+      track({
+        eventType: BXMAINSITE,
+        data: {
+          action_id: 'exit-page',
+          page_id: '标题组合工具界面',
+          task_id: id,
+        }
+      })
+    }, 60 * 1000)
+    setTimer(number)
+    return () => {
+      clearInterval(timer)
+    }
   }, [])
 
   const handleClickPreview = async () => {
