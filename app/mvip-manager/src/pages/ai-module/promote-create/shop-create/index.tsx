@@ -102,7 +102,6 @@ const CreateShop = () => {
 
   useEffect(() => {
     if (visiblePanel) {
-      console.log(copyId, copyIdType)
       getWordFn()
     }
   }, [visiblePanel])

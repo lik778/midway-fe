@@ -1,26 +1,42 @@
 .ai-content-container {
-  position  : relative;
+  position: relative;
   min-height: calc(100vh - 160px);
-  margin    : 16px;
+  margin: 16px;
   background: #fff;
-  padding   : 60px 40px;
+  padding: 60px 40px;
 
   .base-information-box {
-    width: 1000px;
+    width: 1100px;
+    .tip {
+      line-height: 32px;
+      .popover {
+        color: #096dd9;
+      }
+    }
+    .num {
+      margin-bottom: 10px;
+    }
   }
 
   .submit-btn {
-    width       : 120px;
-    height      : 40px;
-    margin-top  : 20px;
-    color       : #fff;
-    background  : #096DD9;
-    border-color: #096DD9
+    width: 120px;
+    height: 40px;
+    margin-top: 20px;
+    color: #fff;
+    background: #096dd9;
+    border-color: #096dd9;
   }
 
   :global {
     .ant-form-item-label {
       padding-right: 16px;
     }
+  }
+}
+
+.popover-box {
+  // width: 300px;
+  .popover-item {
+    margin-bottom: 5px;
   }
 }
