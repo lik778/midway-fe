@@ -69,13 +69,13 @@ export default (props: Props) => {
   }
 
   const submitData = async () => {
-    setSubmitLoading(true)
     if (wordIds.length >= 200) {
       const notSelectWordIds: number[] = seoWord.filter(item => !item.isCheck).map(item => item.id)
       const value = {
         notSelectWordIds: notSelectWordIds,
         taskId: chooseTaskId,
       }
+      setSubmitLoading(true)
       const resData = await submitAiChooseWordListApi(value)
       if (resData.success) {
         successMessage(resData.message)
@@ -83,10 +83,10 @@ export default (props: Props) => {
       } else {
         errorMessage(resData.message)
       }
+      setSubmitLoading(false)
     } else {
       errorMessage("提交失败：请至少选择200个优选词")
     }
-    setSubmitLoading(false)
   }
 
   const columns = [

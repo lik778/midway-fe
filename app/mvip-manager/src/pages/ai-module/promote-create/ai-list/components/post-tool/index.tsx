@@ -63,21 +63,25 @@ const PostTool: FC<Props> = (props) => {
 
   const handleBlurCollectionLimit = async (e: React.FocusEvent<HTMLInputElement>, key: 'dailyPostLimit' | 'postLimit', record: CollectionListItem) => {
     const { value } = e.target
-    const inputValue = value ? value : 'null'
-    console.log()
-    if (Number(inputValue) === Number(record[key])) return
-    if (!/^([1-9]\d*)|null$/.test(inputValue)) {
-      errorMessage('请输入正整数');
+    let requestValue: number | string = value ? Number(value) : value;
+    if (value) {
+      if (!/^([1-9]\d*)$/.test(value)) {
+        errorMessage('每天发帖数最少1条');
+        requestValue = 1
+      }
+    } else {
+      errorMessage('请输入数量');
       return
     }
-    if (key === 'dailyPostLimit' && Number(inputValue) > 50) {
+
+    if (key === 'dailyPostLimit' && Number(value) > 50) {
       errorMessage('每天发帖数最多50条');
-      return
+      requestValue = 50
     }
     const { id } = record
     const params = {
       id,
-      [key]: value
+      [key]: requestValue
     }
     const res = await updateCollection(params)
     if (res.success) {
@@ -160,7 +164,7 @@ const PostTool: FC<Props> = (props) => {
       key: 'postLimit',
       render: (text, record) => {
         const max = undefined
-        return <InputNumber size="small" placeholder={max ? `最多${max}条` : '请设置'} min={1} max={max} defaultValue={text === 0 ? '' : text}
+        return <InputNumber size="small" placeholder={max ? `最多${max}条` : '请设置'} min={1} defaultValue={text === 0 ? '' : text}
           maxLength={4} onBlur={(e) => { handleBlurCollectionLimit(e, 'postLimit', record) }} disabled={upDataLoading} />
       }
     },
@@ -186,7 +190,7 @@ const PostTool: FC<Props> = (props) => {
       }
     },
     {
-      title: '操作', dataIndex: 'action', width: 200, render: (text: any, record) => {
+      title: '操作', dataIndex: 'action', width: 220, render: (text: any, record) => {
 
         return <>
           {/* 暂停 */}

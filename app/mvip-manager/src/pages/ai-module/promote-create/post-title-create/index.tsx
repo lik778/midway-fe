@@ -37,7 +37,7 @@ const PostTitleCreate: FC = () => {
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
-  const { copyId, copyIdType } = useContext(AiModuleContext)
+  const { copyId, copyIdType, handleChangeContextData } = useContext(AiModuleContext)
   const [form] = Form.useForm<FormParmas>();
   const [upDataLoading, setUpdataLoading] = useState<boolean>(false)
   const [dataList, setDataList] = useState<CollectionCreateTitleParmas[]>([])
@@ -118,15 +118,21 @@ const PostTitleCreate: FC = () => {
   const getWordFn = async () => {
     if (copyId && copyIdType) {
       const res = await getWord({ wordId: copyId })
-      const { area, prefix, coreWords, suffix } = res.data
-      form.setFieldsValue({
-        prefix: (prefix || []).join('\n'),
-        main: (coreWords || []).join('\n'),
-        suffix: (suffix || []).join('\n'),
-      })
-      textareaRef.current.prefix.setWordNum(prefix.length)
-      textareaRef.current.main.setWordNum(coreWords.length)
-      textareaRef.current.suffix.setWordNum(suffix.length)
+      if (res.success) {
+        const { area, prefix, coreWords, suffix } = res.data
+        form.setFieldsValue({
+          prefix: (prefix || []).join('\n'),
+          main: (coreWords || []).join('\n'),
+          suffix: (suffix || []).join('\n'),
+        })
+        textareaRef.current.prefix.setWordNum(prefix.length)
+        textareaRef.current.main.setWordNum(coreWords.length)
+        textareaRef.current.suffix.setWordNum(suffix.length)
+      } else {
+        console.log('请求拷贝数据失败')
+      }
+      handleChangeContextData('copyId', null)
+      handleChangeContextData('copyIdType', null)
     }
   }
 

@@ -150,7 +150,6 @@ const Tip: FC<Props> = (props) => {
 
 export default connect((state: ConnectState) => {
   const { verifyList } = state[USER_NAMESPACE]
-  console.log(state)
   const userLoading = state.loading.models.user
   return { verifyList, userLoading }
 })(Tip)

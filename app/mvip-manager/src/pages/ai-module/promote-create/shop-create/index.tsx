@@ -22,7 +22,7 @@ const TextArea = Input.TextArea;
 
 const CreateShop = () => {
   const history = useHistory()
-  const { copyId, copyIdType } = useContext(AiModuleContext)
+  const { copyId, copyIdType, handleChangeContextData } = useContext(AiModuleContext)
   // 店铺信息
   const [form] = Form.useForm();
   const [nowShopInfo, setNowShopInfo] = useState<AiShopList>()
@@ -78,19 +78,25 @@ const CreateShop = () => {
   const getWordFn = async () => {
     if (copyId && copyIdType) {
       const res = await getWord({ wordId: copyId })
-      const { area, prefix, coreWords, suffix } = res.data
-      form.setFieldsValue({
-        wordA: (area || []).join('\n'),
-        wordB: (prefix || []).join('\n'),
-        wordC: (coreWords || []).join('\n'),
-        wordD: (suffix || []).join('\n'),
-      })
-      setCounters({
-        wordA: area.length,
-        wordB: prefix.length,
-        wordC: coreWords.length,
-        wordD: suffix.length,
-      })
+      if (res.success) {
+        const { area, prefix, coreWords, suffix } = res.data
+        form.setFieldsValue({
+          wordA: (area || []).join('\n'),
+          wordB: (prefix || []).join('\n'),
+          wordC: (coreWords || []).join('\n'),
+          wordD: (suffix || []).join('\n'),
+        })
+        setCounters({
+          wordA: area.length,
+          wordB: prefix.length,
+          wordC: coreWords.length,
+          wordD: suffix.length,
+        })
+      } else {
+        console.log('请求拷贝数据失败')
+      }
+      handleChangeContextData('copyId', null)
+      handleChangeContextData('copyIdType', null)
     }
   }
 

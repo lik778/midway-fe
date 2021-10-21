@@ -75,7 +75,7 @@ interface QuotaNumInterface {
 const CreateZhidao: FC = () => {
   const history = useHistory()
   const [uid, setUid] = useState<string>(() => getCookie(COOKIE_USER_KEY))
-  const { copyId, copyIdType } = useContext(AiModuleContext)
+  const { copyId, copyIdType, handleChangeContextData } = useContext(AiModuleContext)
   const [form] = Form.useForm();
   const [wordsNum, setWordsNum] = useState({
     area: 0,
@@ -208,20 +208,24 @@ const CreateZhidao: FC = () => {
   const getWordFn = async () => {
     if (copyId && copyIdType) {
       const res = await getWord({ wordId: copyId })
-      const { area, prefix, coreWords, suffix } = res.data
-      form.setFieldsValue({
-        area: (area || []).join('\n'),
-        prefix: (prefix || []).join('\n'),
-        coreWords: (coreWords || []).join('\n'),
-      })
+      if (res.success) {
+        const { area, prefix, coreWords, suffix } = res.data
+        form.setFieldsValue({
+          area: (area || []).join('\n'),
+          prefix: (prefix || []).join('\n'),
+          coreWords: (coreWords || []).join('\n'),
+        })
 
-      setWordsNum({
-        area: area.length,
-        prefix: prefix.length,
-        coreWords: coreWords.length,
-        suffix: 0,
-        modal: 0,
-      })
+        setWordsNum({
+          area: area.length,
+          prefix: prefix.length,
+          coreWords: coreWords.length,
+          suffix: 0,
+          modal: 0,
+        })
+      }
+      handleChangeContextData('copyId', null)
+      handleChangeContextData('copyIdType', null)
     }
   }
 
