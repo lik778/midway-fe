@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext, useMemo } from 'react';
 import { Button, Form, Spin, Input, FormInstance, Modal } from 'antd';
 import { useHistory } from 'umi'
 import MainTitle from '@/components/main-title';
@@ -181,21 +181,30 @@ const CreatePost = (props: Props) => {
     }
   }, [collectionId])
 
-  // 更新输入表单
-  const addCompanyInput = () => {
-    if (!companyMeta || !collection) return
-    config.customerFormItemList = [{
-      key: 'companyName',
-      index: 4,// 决定当前这个自定义组件放在第几位 不填就是最后
-      node: <Form.Item
+  const InputComponent = useMemo(() => {
+    if (companyMeta && collection) {
+      return <Form.Item
         name='companyName'
         label={companyMeta.name || ' '}
         required={companyMeta.required}
         rules={[{ required: companyMeta.required, message: `请填写${companyMeta.name}` }]}
         initialValue={(collection.metas && collection.metas[companyMeta.name]) || companyMeta.value}
         key='companyName'>
-        <Input style={{ width: 260 }} disabled={companyMeta.readonly} value={companyMeta.value} size={'large'} placeholder={'请输入公司名称'} maxLength={Number(companyMeta.maxlength) || 30} autoComplete="off"></Input>
+        <Input style={{ width: 260 }} disabled={companyMeta.readonly || disabled} value={companyMeta.value} size={'large'} placeholder={'请输入公司名称'} maxLength={Number(companyMeta.maxlength) || 30} autoComplete="off" ></Input>
       </Form.Item >// 自定义的组件
+    } else {
+      return <></>
+    }
+
+  }, [disabled, companyMeta, collection])
+
+  // 更新输入表单
+  const addCompanyInput = () => {
+    if (!companyMeta || !collection) return
+    config.customerFormItemList = [{
+      key: 'companyName',
+      index: 4,// 决定当前这个自定义组件放在第几位 不填就是最后
+      node: InputComponent
     }]
     setConfig({ ...config })
   }
@@ -395,7 +404,7 @@ const CreatePost = (props: Props) => {
                     <span className={styles['preview-title']} onClick={() => handlePreviewTitle()}>预览标题</span>
                   </div>
                 </Form.Item>
-                <SelectImage collectionId={collectionId} ref={ImageRef}></SelectImage>
+                <SelectImage collectionId={collectionId} ref={ImageRef} disabled={disabled}></SelectImage>
                 <SetText collectionId={collectionId} ref={textRef}></SetText>
                 {
                   !disabled && <Form.Item label={' '} colon={false} labelCol={fromLabelCol}>

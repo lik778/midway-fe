@@ -18,12 +18,18 @@ const UploadBtn: FC<Props> = (props) => {
   }
 
   return (
-    <div className={styles['img-upload-btn-container']} style={{ width: itemWidth }} onClick={handleClick}>
-      <div className={`${styles['img-upload-btn']} ${disabled ? styles['disabled'] : ''}`} style={{ width: itemWidth }}>
-        <PlusOutlined className={styles['icon']} />
-        <div className={styles['tip']}>{text}</div>
-      </div>
-    </div>
+    <>
+      {
+        !disabled && <div className={styles['img-upload-btn-container']} style={{ width: itemWidth }} onClick={handleClick}>
+          <div className={`${styles['img-upload-btn']} ${disabled ? styles['disabled'] : ''}`} style={{ width: itemWidth }}>
+            <PlusOutlined className={styles['icon']} />
+            <div className={styles['tip']}>{text}</div>
+          </div>
+        </div>
+      }
+    </>
+
+
   );
 }
 

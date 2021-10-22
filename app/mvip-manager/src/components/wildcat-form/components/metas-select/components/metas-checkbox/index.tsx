@@ -131,7 +131,7 @@ const MetasCheckbox: FC<Props> = (props) => {
   return <>
     <CheckboxGroup disabled={disabled} value={checkboxValue} onChange={handleChangeValue} options={showData} />
     {
-      showSelectAll && <Checkbox checked={selectAll} onChange={handleChangeSelectAll}>全选</Checkbox>
+      showSelectAll && <Checkbox checked={selectAll} onChange={handleChangeSelectAll} disabled={disabled}>全选</Checkbox>
     }
   </>
 }
