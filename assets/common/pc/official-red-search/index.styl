@@ -29,18 +29,18 @@
       justify-content: flex-start
       width: 515px
       position: absolute
-      top: 24px;
-      left: 250px;
+      top: 32px;
+      left: 320px;
       .input
         width: 425px;
-        height: 40px;
-        line-height: 40px;
+        height: 42px;
+        line-height: 42px;
         padding: 0 15px;
-        border: 1px solid #f46;
+        border: 1px solid #ddd;
         font-size: 12px;
         outline: none;
         &:focus
-          box-shadow: 0 0 5px rgb(255 68 102 / 80%);
+          box-shadow: 0 0 5px rgb(221 221 221);
         &::-ms-clear
           display none
         &:valid + .clear
@@ -61,10 +61,11 @@
         border: 0;
         padding: 0;
         margin: 0 0 0 -1px;
-        height: 40px;
-        line-height: 40px;
-        background: #f46;
-        width: 90px;
+        height: 42px;
+        line-height: 42px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        width: 48px;
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
         color: #fff;
@@ -72,19 +73,17 @@
         cursor: pointer
         &:hover {
           text-decoration: none;
-          border-color: #e22754;
-          background-color: #e22754;
-          color: #fff;
         }
+        .search-icon
+          width: 15px
+          height: 15px
     .post
       width: 260px;
       height: 40px;
       padding: 0 38.5px;
       line-height: 40px;
-      transform: translateY(-9px)
       border: 1px solid #f46;
-      background-color: #f46;
-      color: #fff;
+      color: #f46;
       border-radius: 2px;
       font-size: 14px;
       text-align: center;
@@ -92,10 +91,3 @@
       text-decoration: none;
       display: inline-block;
       cursor: pointer;
-      &:hover {
-        text-decoration: none;
-        border-color: #e22754;
-        background-color: #e22754;
-        color: #fff;
-      }
-

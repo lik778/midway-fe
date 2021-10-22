@@ -9,6 +9,11 @@ if isSem !== "1"
           span.aboutus-text.only-oneline 公司地址：
             span.aboutus-info #{ company.address }
           .more
+        if contactName.content
+          .aboutus-item
+            img.aboutus-icon(src="//file.baixing.net/202110/a029d199d289aee6eeea5ebf1043664a.png", alt="wechat logo")
+            span.aboutus-text.only-oneline 联系人：
+              span.aboutus-info #{ contactName.content }
         a.aboutus-item(href="tel:" + phone.content)
           img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
           span.aboutus-text.only-oneline 联系电话：
