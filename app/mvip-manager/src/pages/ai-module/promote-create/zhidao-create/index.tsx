@@ -213,9 +213,9 @@ const CreateZhidao: FC = () => {
     if (copyId && copyIdType) {
       const res = await getWord({ wordId: copyId })
       if (res.success) {
-        const { area, prefix, coreWords, suffix } = res.data
+        const { city, area, prefix, coreWords, suffix } = res.data
         form.setFieldsValue({
-          area: (area || []).join('\n'),
+          area: area && area.length > 0 ? area.join('\n') : city && city.length > 0 ? city.join('\n') : undefined,
           prefix: (prefix || []).join('\n'),
           coreWords: (coreWords || []).join('\n'),
         })

@@ -372,6 +372,7 @@ export type AuthKey = 'SHOP' | 'ZHIDAO' | 'POSTTOOL'
 
 export interface SaveWordParmes {
   "aiSource": 'shop' | 'zhidao' | 'posttool',
+  "city": string[],
   "area": string[],
   "coreWords": string[],
   "firstCategoryId": string,

@@ -223,6 +223,7 @@ const PostTitleCreate: FC = () => {
       setLastPreviewTime()
       setSaveWordData({
         aiSource: 'posttool',
+        city: values.city?.map(item => item.label) || [],
         area: values.area?.map(item => item.label) || [],
         prefix: values.prefix.split('\n'),
         coreWords: values.main.split('\n'),

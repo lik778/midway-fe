@@ -81,9 +81,9 @@ const CreateShop = () => {
     if (copyId && copyIdType) {
       const res = await getWord({ wordId: copyId })
       if (res.success) {
-        const { area, prefix, coreWords, suffix } = res.data
+        const { city, area, prefix, coreWords, suffix } = res.data
         form.setFieldsValue({
-          wordA: (area || []).join('\n'),
+          wordA: area && area.length > 0 ? area.join('\n') : city && city.length > 0 ? city.join('\n') : undefined,
           wordB: (prefix || []).join('\n'),
           wordC: (coreWords || []).join('\n'),
           wordD: (suffix || []).join('\n'),
