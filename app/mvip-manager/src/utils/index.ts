@@ -316,3 +316,17 @@ export const decodeHTMLCodeSafe = (message: string) => {
 export const isValidURL = (url: string) => {
   return /(^https?)|(^\/\/)/.test(url)
 }
+
+
+// 设置referrer
+export const setReferrer = () => {
+  const nowHref = sessionStorage.getItem('nowHref') || ''
+  if (location.href !== nowHref) {
+    sessionStorage.setItem('prevHref', nowHref)
+    sessionStorage.setItem('nowHref', location.href)
+  }
+}
+
+export const getReferrer = () => {
+  return sessionStorage.getItem('prevHref') || ''
+}

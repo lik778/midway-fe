@@ -56,7 +56,6 @@ const PostTool: FC<Props> = (props) => {
         site_id: 'post_tool',
         tracktype: 'pageview',
         pageId: '素材包列表页',
-        _refer: document.referrer
       }
     })
   }, [])

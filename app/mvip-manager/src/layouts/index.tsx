@@ -10,11 +10,12 @@ import { userMapStateToProps, userMapDispatchToProps } from '@/models/user'
 import { ConnectState } from '@/models/connect'
 import { MidMenuItem } from '@/interfaces/base'
 import './index.less'
-
+import { setReferrer } from '@/utils/index'
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const Layouts = (props: any) => {
+  setReferrer()
   const { userInfo, menuList, getMenuList, getCompanyInfo, getUserInfo, getUserVerifyList } = props
   if (inIframe()) {
     return <Layout className="site-layout">

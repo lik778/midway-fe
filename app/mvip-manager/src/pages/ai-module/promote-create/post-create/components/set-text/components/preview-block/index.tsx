@@ -84,7 +84,6 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
         button_name: '编辑',
         page_id: '素材包编辑主界面',
         position: config.label,
-        _refer: document.referrer
       }
     })
   }
@@ -98,7 +97,6 @@ const PreviewBlock = (props: Props, parentRef: Ref<any>) => {
         button_name: '删除',
         page_id: '素材包编辑主界面',
         position: config.label,
-        _refer: document.referrer
       }
     })
 

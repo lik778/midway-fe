@@ -136,27 +136,23 @@ const PostTitleCreate: FC = () => {
     }
   }
 
-  const [timer, setTimer] = useState<any>()
+  const timer = useRef<any>()
   useEffect(() => {
     getWordFn()
     track({
       eventType: BXMAINSITE,
       data: {
         site_id: 'post_tool',
-        tracktype: 'event',
-        action_id: 'entry-page',
-        page_id: '标题组合工具界面',
-        task_id: id,
-        _refer: document.referrer
+        tracktype: 'pageview',
+        pageId: '标题组合工具界面',
       }
     })
 
-    if (timer) {
-      clearInterval(timer)
-    }
     track({
       eventType: BXMAINSITE,
       data: {
+        site_id: 'post_tool',
+        tracktype: 'event',
         action_id: 'entry-page',
         page_id: '标题组合工具界面',
         task_id: id,
@@ -166,15 +162,17 @@ const PostTitleCreate: FC = () => {
       track({
         eventType: BXMAINSITE,
         data: {
+          site_id: 'post_tool',
+          tracktype: 'event',
           action_id: 'exit-page',
           page_id: '标题组合工具界面',
           task_id: id,
         }
       })
     }, 60 * 1000)
-    setTimer(number)
+    timer.current = number
     return () => {
-      clearInterval(timer)
+      clearInterval(timer.current)
     }
   }, [])
 

@@ -123,16 +123,18 @@ const CreatePost = (props: Props) => {
   }
 
 
-  const [timer, setTimer] = useState<any>()
+  const timer = useRef<any>()
   useEffect(() => {
     if (collection && collection.id) {
       const isEdit = isEditFn(collection)
-      if (timer) {
-        clearInterval(timer)
+      if (timer.current) {
+        clearInterval(timer.current)
       }
       track({
         eventType: BXMAINSITE,
         data: {
+          site_id: 'post_tool',
+          tracktype: 'event',
           action_id: 'entry-page',
           page_id: '素材包编辑主界面',
           task_id: collection.id,
@@ -143,19 +145,24 @@ const CreatePost = (props: Props) => {
         track({
           eventType: BXMAINSITE,
           data: {
+            site_id: 'post_tool',
+            tracktype: 'event',
             action_id: 'exit-page',
             page_id: '素材包编辑主界面',
             task_id: collection.id,
             action_type: isEdit ? 'edit' : 'see'
           }
         })
-      }, 60 * 1000)
-      setTimer(number)
-    }
-    return () => {
-      clearInterval(timer)
+      }, 5 * 1000)
+      timer.current = number
     }
   }, [collection])
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timer.current)
+    }
+  }, [])
 
   // 获取当前任务详情
   const getDetail = async () => {
@@ -278,7 +285,6 @@ const CreatePost = (props: Props) => {
         site_id: 'post_tool',
         tracktype: 'pageview',
         pageId: '素材包编辑主界面',
-        _refer: document.referrer
       }
     })
   }, [])
@@ -292,7 +298,6 @@ const CreatePost = (props: Props) => {
         tracktype: 'event',
         button_name: '预览已添加的标题',
         page_id: '素材包编辑主界面',
-        _refer: document.referrer
       }
     })
   }
@@ -351,7 +356,6 @@ const CreatePost = (props: Props) => {
         tracktype: 'event',
         button_name: action === CollectionAction.AUDIT ? '提交审核' : '保存草稿',
         page_id: '素材包编辑主界面',
-        _refer: document.referrer
       }
     })
 

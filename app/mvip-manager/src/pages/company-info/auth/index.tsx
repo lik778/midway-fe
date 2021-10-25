@@ -78,7 +78,6 @@ const AuthPage: FC<Props> = (props) => {
 
 const WrapperCompanyInfoBase: any = connect((state: ConnectState) => {
   const { verifyList } = state[USER_NAMESPACE]
-  console.log(state)
   const userLoading = state.loading.models.user
   return { verifyList, userLoading }
 })(AuthPage)

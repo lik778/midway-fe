@@ -94,7 +94,6 @@ const RichTextEdit: FC<Props> = (props) => {
             tracktype: 'event',
             button_name: '不保存',
             page_id: '素材包编辑主界面',
-            _refer: document.referrer
           }
         })
       },
@@ -106,7 +105,6 @@ const RichTextEdit: FC<Props> = (props) => {
             tracktype: 'event',
             button_name: '保存',
             page_id: '素材包编辑主界面',
-            _refer: document.referrer
           }
         })
       }
