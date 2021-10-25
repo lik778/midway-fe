@@ -153,7 +153,7 @@ const CreatePost = (props: Props) => {
             action_type: isEdit ? 'edit' : 'see'
           }
         })
-      }, 5 * 1000)
+      }, 60 * 1000)
       timer.current = number
     }
   }, [collection])
