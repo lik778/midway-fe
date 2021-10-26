@@ -4,11 +4,7 @@ if isSem !== "1"
       .aboutus-title-box
         .title 联系公司
       .bottom-box
-        a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-          img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
-          span.aboutus-text.only-oneline 公司地址：
-            span.aboutus-info #{ company.address }
-          .more
+       
         if contactName.content
           .aboutus-item
             img.aboutus-icon(src="//file.baixing.net/202110/a029d199d289aee6eeea5ebf1043664a.png", alt="wechat logo")
@@ -25,6 +21,11 @@ if isSem !== "1"
             span.aboutus-text.only-oneline 联系电话2：
               span.aboutus-info #{ phone2.content }
             span.copy-data.phone(data-value=phone2.content) 点击拨打
+        a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
+          img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
+          span.aboutus-text.only-oneline 地址：
+            span.aboutus-info #{ company.address }
+          .more
         if weChat.content
           .aboutus-item
             img.aboutus-icon(src="//file.baixing.net/202105/436dfb09de131dedfe9ebaaee31474a5.png", alt="wechat logo")
