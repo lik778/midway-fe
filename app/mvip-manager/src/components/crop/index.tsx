@@ -28,9 +28,9 @@ const Crop: FC<Props> = (props) => {
         setReloadLoading(true)
         setPrevUrl(url)
         setTimeout(() => {
-          setReloadLoading(false)
           cropper.reset()
-        }, 500)
+          setReloadLoading(false)
+        }, 1000)
       }
     }
   }, [url, cropper])

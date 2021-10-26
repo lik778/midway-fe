@@ -262,7 +262,7 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
             uploadType={2}
             showVideo={showVideo}
             editData={editData}
-            uploadBtnText="上传图片"
+            uploadBtnText="上传图片/视频"
             maxSize={3}
             maxLength={5}
             aspectRatio={aspectRatio}
