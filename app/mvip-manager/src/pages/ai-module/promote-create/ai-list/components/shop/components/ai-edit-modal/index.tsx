@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Col, Form, Input, Modal, Row } from 'antd';
-import { updateAiTaskApi } from '@/api/ai-module';
+import { updateAiTaskApi, saveWord, } from '@/api/ai-module';
 import { wordsItemConfig } from '@/constants/ai-module';
-import { AiContentItem } from '@/interfaces/ai-module';
+import { AiContentItem, AiTaskApiParams } from '@/interfaces/ai-module';
 import { AiTaskStatus } from '@/enums/ai-module';
 import { errorMessage, successMessage } from '@/components/message';
 import styles from './index.less'
@@ -87,13 +87,33 @@ export default (props: Props) => {
     return ret
   }
 
+  const saveWordFn = async (params: AiTaskApiParams) => {
+    const res = await saveWord({
+      aiSource: 'shop',
+      area: params.wordA,
+      prefix: params.wordB,
+      coreWords: params.wordC,
+      suffix: params.wordD
+    })
+    if (res.success) {
+      return res.data
+    } else {
+      errorMessage(res.message)
+      return Promise.reject()
+    }
+  }
+
   const submitData = async () => {
     setSubmitLoading(true)
     const values = form.getFieldsValue()
     const ret = formatFormValues(values)
     if (isValidForm(ret)) {
       const params = { id: editItem?.id, ...ret }
-      const resData = await updateAiTaskApi(params)
+      const wordId = await saveWordFn(params)
+      const resData = await updateAiTaskApi({
+        ...params,
+        wordId
+      })
       if (resData.success) {
         successMessage(resData.message)
         onSuccess()
