@@ -213,6 +213,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
       id: taskId,
       data: JSON.stringify(localEditDataList)
     })
+    setUpDataLoading(false)
     if (res.success) {
       successMessage('生成标题成功')
       onOk && onOk()
@@ -220,9 +221,8 @@ const PostPreviewTitle: FC<Props> = (props) => {
         history.goBack()
       }, 1500)
     } else {
-      errorMessage(res.message)
+      errorMessage(res.message, 2)
     }
-    setUpDataLoading(false)
   }
 
   return <Modal
