@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <title><%= context.config.title %></title>
+    <script>
+        var userAgent = navigator.userAgent;
+        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;
+        var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+        if (isIE || isIE11) {
+          alert('请使用谷歌浏览器、火狐浏览器等现代浏览器！')
+        }
+    </script>
 </head>
 <body>
 <div id="root"></div>

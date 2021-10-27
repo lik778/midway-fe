@@ -44,6 +44,16 @@ html
   //-把打点值赋给window，便于传给node层和其他js层
   block append scripts
     script.
+      (function(){
+        var userAgent = navigator.userAgent; 
+        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;
+        var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+        if (isIE || isIE11) {
+          alert('请使用谷歌浏览器、火狐浏览器等现代浏览器！')
+        }
+      })()
+
+    script.
       window.domainType = '#{shop.domainType}';
       window.shopId = #{shopId};
       //  '#{ 变量 }'实际上是一个字符串 'true/false'
