@@ -13,7 +13,7 @@ interface Props {
 const SelectCopy: FC<Props> = (props) => {
   const { onClose, visible } = props
   const history = useHistory()
-  const { auth, handleChangeContextData } = useContext(AiModuleContext)
+  const { auth, pageInfo, handleChangeContextData } = useContext(AiModuleContext)
   const [moduleKey, setModuleKey] = useState<ModuleKey>('postTool')
   const handleClickCancel = () => {
     onClose()
@@ -34,6 +34,15 @@ const SelectCopy: FC<Props> = (props) => {
         history.push('/ai-module/promote-create/zhidao-create')
         break
     }
+    // 复制过来的需要跳转到对应的列表
+    handleChangeContextData('activeModuleKey', moduleKey)
+    handleChangeContextData('pageInfo', {
+      ...pageInfo,
+      [moduleKey]: {
+        page: 1,
+        dataTotal: 1
+      }
+    })
   }
 
   const handleChangeModuleKey = (e: RadioChangeEvent) => {

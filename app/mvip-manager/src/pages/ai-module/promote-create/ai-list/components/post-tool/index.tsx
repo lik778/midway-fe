@@ -142,6 +142,7 @@ const PostTool: FC<Props> = (props) => {
       title: '预估生成帖子数',
       dataIndex: 'adsTotal',
       key: 'adsTotal',
+      width: 140,
       render: (counts) => {
         return counts > 0 ? counts : ''
       }
@@ -150,6 +151,7 @@ const PostTool: FC<Props> = (props) => {
       title: '设置每天发帖数(次日生效)',
       dataIndex: 'dailyPostLimit',
       key: 'dailyPostLimit',
+      width: 140,
       render: (text, record) => {
         const max = 50
         return <InputNumber size="small" placeholder={max ? `最多${max}条` : '请设置'} min={1} max={max} defaultValue={text === 0 ? '' : text}
@@ -161,6 +163,7 @@ const PostTool: FC<Props> = (props) => {
       title: '设置最大发帖数(立即生效)',
       dataIndex: 'postLimit',
       key: 'postLimit',
+      width: 140,
       render: (text, record) => {
         const max = undefined
         return <InputNumber size="small" placeholder={max ? `最多${max}条` : '请设置'} min={1} defaultValue={text === 0 ? '' : text}
@@ -171,16 +174,22 @@ const PostTool: FC<Props> = (props) => {
       title: '添加时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      width: 160,
       render: (time) => {
         return time && formatTime(time, 'YYYY-MM-DD HH:mm')
       }
     },
     {
-      title: '状态', dataIndex: 'status', key: 'status', render: (text: CollectionStatus, record) => {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      fixed: 'right',
+      width: 160,
+      render: (text: CollectionStatus, record) => {
         const statusMap = collectionTranslateStatus[text]
         return <div>
           <span style={{ color: statusMap['color'] }}>{statusMap['name']}</span>
-          {status === CollectionStatus.COLLECTION_REJECT_STATUS ?
+          {text === CollectionStatus.COLLECTION_REJECT_STATUS ?
             <span style={{ display: 'block', fontSize: 12, color: statusMap['color'] }}>
               {record.message}
             </span> : ''
@@ -189,8 +198,11 @@ const PostTool: FC<Props> = (props) => {
       }
     },
     {
-      title: '操作', dataIndex: 'action', width: 220, render: (text: any, record) => {
-
+      title: '操作',
+      dataIndex: 'action',
+      fixed: 'right',
+      width: 220,
+      render: (text: any, record) => {
         return <>
           {/* 暂停 */}
           {
@@ -246,7 +258,7 @@ const PostTool: FC<Props> = (props) => {
         </div>
       }
       {
-        dataTotal > 0 && <Table className={styles['table']} rowKey="id" columns={columns} loading={getDataLoading} dataSource={dataList || []} pagination={{
+        dataTotal > 0 && <Table className={styles['table']} rowKey="id" columns={columns} loading={getDataLoading} dataSource={dataList || []} scroll={{ x: 1500 }} pagination={{
           onChange: changePage,
           current: page,
           total: dataTotal,

@@ -149,7 +149,7 @@ const AiZhidaoDetail = (props: any) => {
         errorMessage(res.message || '修改失败')
       }
       setUpDataLoading(false)
-    } catch (e) {
+    } catch (e: any) {
       errorMessage(e.message || '修改失败')
       setUpDataLoading(false)
       return
