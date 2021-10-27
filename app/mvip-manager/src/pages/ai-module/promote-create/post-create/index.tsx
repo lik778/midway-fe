@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext, useMemo } from 'react';
-import { Button, Form, Spin, Input, FormInstance, Modal } from 'antd';
+import { Button, Form, Spin, Input, FormInstance, Modal, Popover } from 'antd';
 import { useHistory } from 'umi'
 import MainTitle from '@/components/main-title';
 import { cloneDeepWith } from 'lodash';
@@ -30,7 +30,7 @@ const CreatePost = (props: Props) => {
   // @ts-ignore
   // 这里是history.location的类型定义里没有query字段
   const { id } = history.location.query
-  const { selectedVipResources, postToolFormData, handleChangeContextData } = useContext(AiModuleContext)
+  const { selectedVipResources, postToolFormData, copyId, copyIdType, handleChangeContextData } = useContext(AiModuleContext)
   const [getDataLoading, setGetDataLoading] = useState<boolean>(false);
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false);
   // 当前任务内容
@@ -47,6 +47,7 @@ const CreatePost = (props: Props) => {
   const [categoryId, setCategoryId] = useState<string>('')
   const [companyMeta, setCompanyMeta] = useState<CompanyMeta | null>(null)
   const [init, setInit] = useState<boolean>(false)
+  const [showTip, setShowTip] = useState<boolean>(false)
   const ImageRef = useRef<{
     validateFc: () => Promise<any>
   }>({
@@ -279,6 +280,14 @@ const CreatePost = (props: Props) => {
     if (!collectionId) {
       createCollectionFc()
     }
+
+    if (copyId && copyIdType === 'postTool') {
+      setShowTip(true)
+      setTimeout(() => {
+        setShowTip(false)
+      }, 3000)
+    }
+
     track({
       eventType: BXMAINSITE,
       data: {
@@ -403,7 +412,9 @@ const CreatePost = (props: Props) => {
                 <Form.Item label={'标题'} labelCol={fromLabelCol} required={true}>
                   <div className={styles['add-title']}>
                     {
-                      !disabled && <Button className={styles['blue-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
+                      !disabled && <Popover placement="right" title={undefined} content={'复制成功，任务内容已复制至【标题】中，点击【批量添加】查看'} visible={showTip}>
+                        <Button className={styles['blue-btn']} onClick={handleClickCreateTitle}>批量添加</Button>
+                      </Popover>
                     }
                     <span className={styles['preview-title']} onClick={() => handlePreviewTitle()}>预览标题</span>
                   </div>

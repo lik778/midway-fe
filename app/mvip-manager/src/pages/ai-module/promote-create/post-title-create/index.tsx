@@ -116,7 +116,7 @@ const PostTitleCreate: FC = () => {
 
 
   const getWordFn = async () => {
-    if (copyId && copyIdType) {
+    if (copyId && copyIdType === 'postTool') {
       const res = await getWord({ wordId: copyId })
       if (res.success) {
         const { area, prefix, coreWords, suffix } = res.data

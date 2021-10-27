@@ -120,7 +120,6 @@ const Shop: FC<Props> = (props) => {
 
   const handleClickCopy = async (wordId: number) => {
     handleChangeContextData('copyId', wordId)
-    handleChangeContextData('copyIdType', 'postTool')
     onCopy()
   }
 

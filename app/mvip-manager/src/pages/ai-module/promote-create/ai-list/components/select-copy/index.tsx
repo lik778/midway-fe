@@ -15,6 +15,11 @@ const SelectCopy: FC<Props> = (props) => {
   const history = useHistory()
   const { auth, pageInfo, handleChangeContextData } = useContext(AiModuleContext)
   const [moduleKey, setModuleKey] = useState<ModuleKey>('postTool')
+
+  useEffect(() => {
+    handleChangeContextData('copyIdType', moduleKey)
+  }, [])
+
   const handleClickCancel = () => {
     onClose()
     handleChangeContextData('copyId', null)
@@ -22,7 +27,6 @@ const SelectCopy: FC<Props> = (props) => {
   }
 
   const handleClickOk = () => {
-    onClose()
     switch (moduleKey) {
       case 'postTool':
         history.push('/ai-module/promote-create/post-create')
@@ -43,9 +47,11 @@ const SelectCopy: FC<Props> = (props) => {
         dataTotal: 1
       }
     })
+    onClose()
   }
 
   const handleChangeModuleKey = (e: RadioChangeEvent) => {
+    handleChangeContextData('copyIdType', e.target.value as ModuleKey)
     setModuleKey(e.target.value as ModuleKey)
   }
 

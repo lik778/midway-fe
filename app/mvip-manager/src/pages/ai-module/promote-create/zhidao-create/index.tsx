@@ -210,7 +210,7 @@ const CreateZhidao: FC = () => {
 
 
   const getWordFn = async () => {
-    if (copyId && copyIdType) {
+    if (copyId && copyIdType === 'zhidao') {
       const res = await getWord({ wordId: copyId })
       if (res.success) {
         const { city, area, prefix, coreWords, suffix } = res.data
