@@ -89,7 +89,7 @@ const SpeedAdd: FC<Props> = (props) => {
   >
     <div>
       <MaterialTag visible={visible} onTagChange={onTagChange} />
-      <ScrollBox height={"60vh"} scrollY handleScrollToLower={getDataList}>
+      <ScrollBox height={"40vh"} scrollY handleScrollToLower={getDataList}>
         {
           dataList.length === 0 && !getDataLoading && <div className={styles["empty-info"]}>
             <img src="//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png" />
