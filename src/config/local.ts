@@ -7,7 +7,7 @@ export default {
       external: 'http://midway.test-cat.cloud.baixing.cn'
     },
     'zhidao-service': {
-      host: 'http://172.30.2.14:31252'
+      host: 'http://172.30.2.14:31263'
       // host: 'http://172.17.3.110:8080'
     },
     'reporting-service': {
