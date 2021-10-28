@@ -155,10 +155,7 @@ const PostPreviewTitle: FC<Props> = (props) => {
         rowSelection: {
           selectedRowKeys: delIds,
           // hideSelectAll: true,
-          selections: [
-            Table.SELECTION_ALL,
-            Table.SELECTION_NONE,
-          ],
+          selections: undefined,
           onChange: (selectedRowKeys: any[], selectedRows: CollectionCreateTitleParmas[]) => {
             setDelIds(selectedRowKeys)
           },
