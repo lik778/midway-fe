@@ -8,6 +8,7 @@ import { mockData, objToTargetObj } from '@/utils';
 import { ShopMetas } from '@/interfaces/user'
 
 interface Props {
+  disabled?: boolean
   item: FormItem,
   initialValues: ShopMetas | undefined,
   handleChangeCascaderValue: (value: (MetasItem | undefined)[]) => void // 通知父组件
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const MetasCascader: FC<Props> = (props) => {
-  const { item, initialValues, value, onChange, handleChangeCascaderValue } = props
+  const { disabled, item, initialValues, value, onChange, handleChangeCascaderValue } = props
   const { options } = item // 解构出一级meta的数据结构
   const [cascaderOptions, setCascaderOptions] = useState<CascaderOptionType[]>([])
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
@@ -79,7 +80,7 @@ const MetasCascader: FC<Props> = (props) => {
     handleChangeCascaderValue(newCascaderValue)
   }
 
-  return <Cascader style={{ width: item.formItemWidth }} options={cascaderOptions} loadData={loadData} value={cascaderValue} onChange={handleChangeValue}></Cascader>
+  return <Cascader disabled={disabled} style={{ width: item.formItemWidth }} options={cascaderOptions} loadData={loadData} value={cascaderValue} onChange={handleChangeValue}></Cascader>
 }
 
 export default MetasCascader

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FC, useRef } from 'react';
 import { Checkbox } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { CheckboxChangeEvent, } from 'antd/lib/checkbox';
 import { MetasItem } from '@/interfaces/user';
 import { FormItem, OptionItem } from '@/components/wildcat-form/interfaces';
 import { CascaderOptionType, CascaderValueType } from 'antd/lib/cascader'
@@ -11,6 +12,7 @@ import { ShopMetas } from '@/interfaces/user'
 const CheckboxGroup = Checkbox.Group
 
 interface Props {
+  disabled?: boolean,
   item: FormItem,
   initialValues: ShopMetas | undefined,
   cascaderValue: (MetasItem | undefined)[],
@@ -18,16 +20,19 @@ interface Props {
   value?: any,
   onChange?: (value: string[]) => void, // 更新from表单的值
   setThirdDataLength: (length: number | undefined) => void
+  showSelectAll: boolean
 }
 
 const MetasCheckbox: FC<Props> = (props) => {
   const componentUnmounted = useRef<Boolean>(false)
-  const { item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange, setThirdDataLength } = props
+  const { disabled, item, initialValues, cascaderValue, handleChangeCheckboxValue, value, onChange, setThirdDataLength, showSelectAll } = props
   const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
+
   // 缓存一下请求数据
   const [thirdMates, setThirdMates] = useState<{
     [key: string]: MetasItem[]
   }>({})
+  const [selectAll, setSelectAll] = useState<boolean>(false)
 
   const [showData, setShowData] = useState<MetasItem[]>([])
 
@@ -98,9 +103,37 @@ const MetasCheckbox: FC<Props> = (props) => {
     setCheckboxValue(checkedValue as string[])
     onChange!(checkedValue as string[])
     handleChangeCheckboxValue(checkedValue as string[])
+    if (showData.length > 0 && checkedValue.length === showData.length) {
+      if (!selectAll) {
+        setSelectAll(true)
+      }
+    } else {
+      if (selectAll) {
+        setSelectAll(false)
+      }
+    }
   }
 
-  return <CheckboxGroup value={checkboxValue} onChange={handleChangeValue} options={showData} />
+  const handleChangeSelectAll = async (e: CheckboxChangeEvent) => {
+    const selectAll = e.target.checked
+    setSelectAll(selectAll)
+    if (selectAll) {
+      if (checkboxValue.length !== showData.length) {
+        handleChangeValue(showData.map(item => item.value))
+      }
+    } else {
+      if (checkboxValue.length !== 0) {
+        handleChangeValue([])
+      }
+    }
+  }
+
+  return <>
+    <CheckboxGroup disabled={disabled} value={checkboxValue} onChange={handleChangeValue} options={showData} />
+    {
+      showSelectAll && <Checkbox checked={selectAll} onChange={handleChangeSelectAll} disabled={disabled}>全选</Checkbox>
+    }
+  </>
 }
 
 export default MetasCheckbox

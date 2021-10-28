@@ -7,6 +7,7 @@ import StatusBox from '@/components/img-upload/components/status-box'
 import ImgUploadContext from '@/components/img-upload/context'
 
 interface Props {
+  disabled: boolean
   file: UploadFile,
   fileList: UploadFile[],
   fileIndex: number,
@@ -23,7 +24,7 @@ interface Props {
 const VideoItem: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
   const { handleChangeFileList } = context
-  const { file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover } = props
+  const { disabled, file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover } = props
 
   const localShopUploadList = useMemo<ExpandShowUploadListInterface>(() => {
     const initShowUploadList: ExpandShowUploadListInterface = {
@@ -53,7 +54,7 @@ const VideoItem: FC<Props> = (props) => {
 
 
   return <StatusBox file={file}>
-    <div className={styles['video-item']} style={{ width: itemWidth }}>
+    <div className={`${styles['video-item']} ${disabled ? styles['disabled'] : ''}`} style={{ width: itemWidth }}>
       <div className={styles['img']} style={{ backgroundImage: `url(${file.preview || file.thumbUrl})` }}>
         <div className={styles['play-icon']}></div>
         <div className={styles['mask']}>
@@ -66,43 +67,47 @@ const VideoItem: FC<Props> = (props) => {
             </div>
           }
           {
-            // 删除
-            (localShopUploadList.showRemoveIcon) && <div className={styles['action-btn']} title="删除视频" onClick={() => onRemove(file, fileIndex)}>
+            !disabled && <>
               {
-                localShopUploadList.removeIcon
+                // 删除
+                (localShopUploadList.showRemoveIcon) && <div className={styles['action-btn']} title="删除视频" onClick={() => onRemove(file, fileIndex)}>
+                  {
+                    localShopUploadList.removeIcon
+                  }
+                </div>
               }
-            </div>
-          }
-          {
-            // 选择封面图
-            file.type === 'VIDEO' && (localShopUploadList.showSelectCoverIcon) && <div className={styles['action-btn']} title="选择封面图" onClick={() => onSelectCover && onSelectCover(file, fileIndex)}>
               {
-                localShopUploadList.selectCoverIcon
+                // 选择封面图
+                file.type === 'VIDEO' && (localShopUploadList.showSelectCoverIcon) && <div className={styles['action-btn']} title="选择封面图" onClick={() => onSelectCover && onSelectCover(file, fileIndex)}>
+                  {
+                    localShopUploadList.selectCoverIcon
+                  }
+                </div>
               }
-            </div>
-          }
-          {
-            // 下载
-            localShopUploadList.showDownloadIcon && (onDownload ?
-              <div className={styles['action-btn']} title="下载图片" onClick={() => onDownload(file, fileIndex)}>
-                {
-                  localShopUploadList.downloadIcon
-                }
-              </div> : <a className={styles['action-btn']} title="下载图片" href={file.preview} target='_block'>
-                {
-                  localShopUploadList.downloadIcon
-                }
-              </a>)
-          }
-          {
-            actionBtn && actionBtn.map((item, index) => {
-              const icon = item.icon(file, fileList)
-              return icon && <div className={styles['action-btn']} title={item.title} onClick={
-                () => item.action(file, fileList, fileIndex, handleChangeFileList)
-              } key={`${index}-${item.title}`}>
-                {icon}
-              </div>
-            })
+              {
+                // 下载
+                localShopUploadList.showDownloadIcon && (onDownload ?
+                  <div className={styles['action-btn']} title="下载图片" onClick={() => onDownload(file, fileIndex)}>
+                    {
+                      localShopUploadList.downloadIcon
+                    }
+                  </div> : <a className={styles['action-btn']} title="下载图片" href={file.preview} target='_block'>
+                    {
+                      localShopUploadList.downloadIcon
+                    }
+                  </a>)
+              }
+              {
+                actionBtn && actionBtn.map((item, index) => {
+                  const icon = item.icon(file, fileList)
+                  return icon && <div className={styles['action-btn']} title={item.title} onClick={
+                    () => item.action(file, fileList, fileIndex, handleChangeFileList)
+                  } key={`${index}-${item.title}`}>
+                    {icon}
+                  </div>
+                })
+              }
+            </>
           }
         </div>
       </div>

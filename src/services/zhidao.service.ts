@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { ErrorCode } from '../enums/error';
 import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
-import { AxiosResponse } from 'axios';
+import { ServiceResponse } from '../interface/index'
 
 @Injectable()
 export class ZhidaoService {
@@ -26,7 +26,7 @@ export class ZhidaoService {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
-      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig,'').split('-')[0]) || '',
+      'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web'
     }
@@ -40,7 +40,7 @@ export class ZhidaoService {
     if (code === ErrorCode.ERR_AUTHENTICATION_ARGS) {
       res.redirect(`${this.haojingHost}/oz/login`)
       return
-    } else if (code === ErrorCode.ERR_MANAGEMENT) { 
+    } else if (code === ErrorCode.ERR_MANAGEMENT) {
       res.redirect(`${this.haojingHost}`)
       return
     } else {
@@ -53,21 +53,21 @@ export class ZhidaoService {
       { headers: this.setApiAHeaders(req.cookies) }).toPromise()
   }
 
-  public getZhidaoData(req: Request, input: ApiReqParams): Promise<AxiosResponse<any>> {
+  public getZhidaoData(req: Request, input: ApiReqParams): Promise<ServiceResponse<any>> {
     const { path, params } = input
     const method = input.method.toLocaleLowerCase()
     const shopId: any = req.headers['shop-id']
     switch (method) {
       case 'get':
         return this.requestService.get(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
       case 'post':
         return this.requestService.post(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
-        break;
+      case 'put':
+        return this.requestService.put(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
+      case 'delete':
+        return this.requestService.delete(`${this.host}${path}`, params, this.setApiAHeaders(req.cookies, shopId));
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
-        break;
     }
   }
-
 }

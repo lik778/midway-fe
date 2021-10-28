@@ -58,27 +58,29 @@ const ModalFooter: FC<Props> = (props) => {
       您一共选择了 <span className={styles['num']}>{localFileList.length}</span> 张图片<span className={styles['ps']}>（最多可添加<span>{maxLength}</span>张图片，支持鼠标拖拽排序）</span>
     </div>
     <div className={styles['line']}>
-      {
-        localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={`${item.uid}-${index}`} onDoubleClick={() => handleDoubleClick(item)}>
-          {
-            item.type === 'VIDEO' && <div className={styles['play-icon']}></div>
-          }
-          <img className={styles['img']} src={item.type === 'IMAGE' ? item.preview : item.thumbUrl} draggable={false}></img>
-          <div className={styles['delete']} onClick={() => handleDel(index)}>
-            <DeleteOutlined style={{
-              color: '#fff'
+      <div className={`${styles['item-box']}`}>
+        {
+          localFileList.map((item, index) => <div className={styles["item"]} draggable={true} onDragStart={(e) => handleDragStart(e, index)} onDrop={(e) => handleDrop(e, index)} onDragOver={handleDragOver} key={`${item.uid}-${index}`} onDoubleClick={() => handleDoubleClick(item)}>
+            {
+              item.type === 'VIDEO' && <div className={styles['play-icon']}></div>
+            }
+            <img className={styles['img']} src={item.type === 'IMAGE' ? item.preview : item.thumbUrl} draggable={false}></img>
+            <div className={styles['delete']} onClick={() => handleDel(index)}>
+              <DeleteOutlined style={{
+                color: '#fff'
+              }} />
+            </div>
+          </div>)
+        }
+        {
+          empty.map((_item, index) => <div className={styles['empty']} key={`${index}`}>
+            <PlusOutlined style={{
+              fontSize: 20,
+              color: '#999'
             }} />
-          </div>
-        </div>)
-      }
-      {
-        empty.map((_item, index) => <div className={styles['empty']} key={`${index}`}>
-          <PlusOutlined style={{
-            fontSize: 20,
-            color: '#999'
-          }} />
-        </div>)
-      }
+          </div>)
+        }
+      </div>
       <Button disabled={localFileList.length === 0} onClick={handleClickOk}>确定</Button>
     </div>
   </div>
