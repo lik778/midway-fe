@@ -501,7 +501,7 @@ const CreateZhidao: FC = () => {
       }</div>
       <ul className={styles["ai-handle-tips"]}>
         <h3>组合规则说明：</h3>
-        <li>1、请填写<span className={styles['tip']}>「地区+前缀+核心词+疑问词+辅助词」</span>，该信息将用于生成问答内容及站点SEO元素</li>
+        <li>1、请填写<span className={styles['tip']}>「地区+前缀+核心词+疑问词+辅助词」</span>，该信息将用于生成知道内容及站点SEO元素</li>
         <li>2、每个词语之间请换行</li>
         <li>3、避免填写标点符号、错别字、以及有违规风险的词</li>
         <li>4、提交并通过审核后，不可修改</li>
@@ -549,7 +549,7 @@ const CreateZhidao: FC = () => {
           }
         </Row>
       </Form>
-      <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成问答</Button>
+      <Button className={(componentBasicData ? !componentBasicData.canCreateTask : true) ? '' : styles['create-question-btn']} onClick={handleClickValidate} htmlType="submit" disabled={componentBasicData ? !componentBasicData.canCreateTask : true}>生成知道</Button>
     </div>
 
     <MyModal
