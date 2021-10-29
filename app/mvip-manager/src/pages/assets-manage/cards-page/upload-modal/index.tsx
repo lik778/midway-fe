@@ -15,8 +15,8 @@ import styles from './index.less'
 
 /**
  * base64 转 blob
- * @see https://zhuanlan.zhihu.com/p/57700185
- * @see https://stackoverflow.com/questions/38579262/uncaught-invalidcharactererror-failed-to-convert-to-blob-from-base64-image
+ * @see //zhuanlan.zhihu.com/p/57700185
+ * @see //stackoverflow.com/questions/38579262/uncaught-invalidcharactererror-failed-to-convert-to-blob-from-base64-image
  */
 async function base64ToBlob(b64data = '', contentType = '', sliceSize = 512): Promise<Blob> {
   return new Promise(resolve => {

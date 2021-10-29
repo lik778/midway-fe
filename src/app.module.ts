@@ -11,6 +11,7 @@ import { TrackerService } from './services/tracker.service';
 import { ManagementService } from './services/management.service';
 import { ReportService } from './services/report.service';
 import { ZhidaoService } from './services/zhidao.service';
+import { PostToolService } from './services/post-tool.service';
 import { SemApiService } from './services/sem.service';
 
 // 引入controller
@@ -24,6 +25,7 @@ import { B2cSiteController } from './controllers/site/b2c-site.controller';
 import { TrackerController } from './controllers/tracker.controller';
 import { ReportController } from './controllers/report.controller';
 import { ZhidaoController } from './controllers/zhidao.controller';
+import { PostToolController } from './controllers/post-tool.controller';
 import { SiteCommonController } from './controllers/site/site-common.controller';
 import { AnalyticsController } from './controllers/analytics.controller';
 import { SemController } from './controllers/sem.controller'
@@ -50,6 +52,7 @@ import { SemController } from './controllers/sem.controller'
     UpyunController,
     TrackerController,
     ZhidaoController,
+    PostToolController,
     SemController
   ],
   providers: [
@@ -61,6 +64,7 @@ import { SemController } from './controllers/sem.controller'
     TrackerService,
     ReportService,
     ZhidaoService,
+    PostToolService,
     SemApiService
   ],
 })
