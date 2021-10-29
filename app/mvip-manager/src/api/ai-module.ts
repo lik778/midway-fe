@@ -62,7 +62,7 @@ export const getQuestionTaskStatusApi = (id: number) => {
   return postApiData<'true' | 'false'>(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/checkShowQaList', id)
 }
 
-/** 生成问答进度 */
+/** 生成知道进度 */
 export const getQuestionBuildStatusApi = () => {
   return postApiData<'success' | 'start build'>(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/getQaBuildStatus', {})
 }

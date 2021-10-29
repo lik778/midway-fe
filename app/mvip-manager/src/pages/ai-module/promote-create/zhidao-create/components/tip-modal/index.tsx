@@ -91,7 +91,7 @@ const TipModal: FC<TipModalProp> = (props) => {
     {
       pageStatus === 'CREATE_WAITING' && <div className={styles["tip-modal"]}>
         <Progress className={styles['progress']} type="circle" percent={progress} />
-        <div className={styles["notice"]}>正在为您生成问答，请不要关闭页面</div>
+        <div className={styles["notice"]}>正在为您生成知道，请不要关闭页面</div>
         <div className={styles['spin-box']}>
           <Spin />
         </div>

@@ -78,7 +78,7 @@ export interface InterrogativeListItem {
   isSelect?: boolean
 }
 
-/** 问答任务生成问答请求参数 */
+/** 问答任务生成知道请求参数 */
 export interface QuestionTaskApiParams {
   /** 地区 */
   area: string[];
