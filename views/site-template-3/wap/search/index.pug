@@ -6,11 +6,11 @@ block header
 
 block content
     //- 变量初始化
-    - const { contentList, contentType, contentPage, contentKey } = renderData
+    - const { contentList, contentType:contentType1, contentPage, contentKey } = renderData
     - lists = contentList.result || []
 
     include ../components/search-tabs.pug
-    +tabs(contentType, contentKey, contentList.totalRecord)
+    +tabs(contentType1, contentKey, contentList.totalRecord)
     
     //- 搜索列表 因为product-list 还用在首页  不需要空状态
     if isTabProduct
@@ -36,5 +36,3 @@ block scripts
 block append scripts
     script.
         window.extraContactFormData = { position: 9 };
-        window.contentType = 'search';
-        window.trackSrc = 'listing';

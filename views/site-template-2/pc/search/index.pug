@@ -9,13 +9,13 @@ block content
 
   .container
     .main
-      - contentType = renderData.contentType
+      - var {contentType:contentType1} = renderData
       - contentList = renderData.contentList
       - contentKey = renderData.contentKey
       include ../components/search/tabs.pug
-      +tabs(contentType, contentKey, contentList.totalRecord)
+      +tabs(contentType1, contentKey, contentList.totalRecord)
 
-      if contentType === 'news'
+      if contentType1 === 'news'
         include ../components/news/news-list.pug
         +news-list(contentList.result)
       else
@@ -42,5 +42,3 @@ block scripts
 block append scripts
   script.
       window.extraContactFormData = { position: 9 };
-      window.contentType = 'search';
-      window.trackSrc = 'listing';
