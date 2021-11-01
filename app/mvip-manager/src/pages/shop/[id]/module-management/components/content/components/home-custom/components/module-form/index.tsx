@@ -6,7 +6,7 @@ import { FormWithVals } from './data'
 import SubForm from '../subform/index'
 import InputLen from '@/components/input-len';
 import { errorMessage, successMessage } from '@/components/message';
-import { getCustomerSetApi, setCustomerSetApi } from '@/api/shop'
+import { getCustomerSetApi, setCustomerSetApi, setCustomerSetShowApi } from '@/api/shop'
 import { CustomerSetChildListItem, CustomerSetListItem, InitCustomerSetChildListItem } from '@/interfaces/shop';
 import { getImgUploadModelValue } from '@/components/img-upload';
 import { useDebounce } from '@/hooks/debounce';
@@ -154,9 +154,25 @@ const ModuleForm: FC<Props> = (props) => {
     }
   }, 300)
 
+  const handleChangeShow = async (changedValues: any, values: any) => {
+    if (typeof changedValues.show === 'boolean') {
+      setFormLoading(true)
+      const res = await setCustomerSetShowApi(Number(shopId), {
+        mainModuleId: Number(moduleID),
+        show: changedValues.show,
+      })
+      if (res.success) {
+        successMessage(res.message || '保存成功')
+      } else {
+        errorMessage(res.message || '保存失败，请稍后再试！')
+      }
+      setFormLoading(false)
+    }
+  }
+
   return <>
     <Spin spinning={getDataLoading}>
-      <Form form={form} name={`form-${moduleID}`} className={styles['title-form-container']}>
+      <Form form={form} name={`form-${moduleID}`} className={styles['title-form-container']} onValuesChange={handleChangeShow}>
         <FormItem
           className={styles['form-item']}
           label={<span className={styles['form-label']}>是否在前端展现</span>}

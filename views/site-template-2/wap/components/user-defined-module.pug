@@ -2,9 +2,10 @@ mixin user-defined-module(pageType,userDefinedModuleList)
   each userDefinedModule in userDefinedModuleList
     if userDefinedModule.show
       .user-defined-module
-        h2.block-title #{ userDefinedModule.mainModuleTitle }
-          span
-          span
+        div.block-title-box
+          h2.block-title #{ userDefinedModule.mainModuleTitle }
+            span
+            span
         - const userDefinedList = userDefinedModule.subModuleBos
         - const isOdd = userDefinedList.length%2 === 0 ? false : true
         .user-defined-list
