@@ -10,6 +10,7 @@ import StoreWhitelist from './pages/StoreWhitelist';
 import CleanCache from './pages/CleanCache';
 import ModifyStore from './pages/ModifyStore';
 import AdviceRecord from './pages/AdviceRecord';
+import TemplateUpload from './pages/TemplateUpload';
 
 
 export default () => {
@@ -24,6 +25,7 @@ export default () => {
         <Route path="/clean-cache" component={CleanCache} key="clean-cache" />
         <Route path="/modify-the-store" component={ModifyStore} key="modify-the-store" />
         <Route path="/advice-record" component={AdviceRecord} key="advice-record" />
+        <Route path="/template-upload" component={TemplateUpload} key="template-upload" />
       </Switch>
     </Layout>
   )

@@ -13,7 +13,8 @@ const routerKey = {
   '/store-whitelist': 'store-whitelist',
   '/clean-cache': 'clean-cache',
   '/modify-the-store': 'modify-the-store',
-  "/advice-record": 'advice-record'
+  "/advice-record": 'advice-record',
+  "/template-upload": 'template-upload',
 }
 export default withRouter((props) => {
   const menuKey = routerKey[props.location.pathname]
@@ -53,6 +54,11 @@ export default withRouter((props) => {
             <Menu.Item key="advice-record">
               <Link to="/advice-record" key="advice-record">意见收集</Link>
             </Menu.Item>
+            <SubMenu key="templates-management" title="素材库管理">
+              <Menu.Item key="template-upload">
+                <Link to="/template-upload" key="template-upload">素材上传</Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout">

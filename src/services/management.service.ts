@@ -7,6 +7,9 @@ import { ErrorCode } from '../enums/error';
 import { apiSecret, midwayAdminAPISecret } from '../constant';
 import { HeaderAuthParams, ApiReqParams } from '../interface';
 import { COOKIE_HASH_KEY, COOKIE_TOKEN_KEY, COOKIE_USER_KEY, COOKIE_CHAOREN_USER_KEY } from '../constant/cookie';
+import * as FormData from 'form-data'
+import * as fs from 'fs'
+import { join } from 'path'
 import { ServiceResponse } from '../interface/index'
 
 @Injectable()
@@ -22,7 +25,7 @@ export class ManagementService {
     this.haojingHost = configService.get('haojing');
   }
 
-  private setApiAHeaders(cookies: any, shopId?: string): Partial<HeaderAuthParams> {
+  private setApiAHeaders(cookies: any, shopId?: string, others?:{[key:string]:string}): Partial<HeaderAuthParams> {
     const headers = {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
@@ -30,7 +33,8 @@ export class ManagementService {
       'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web',
-      'x-api-secret': apiSecret
+      'x-api-secret': apiSecret,
+      ...others,
     }
     if (shopId) {
       headers['x-api-shop-id'] = Number(shopId)
@@ -71,6 +75,38 @@ export class ManagementService {
       default:
         throw new HttpException('缺少method方法', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  public getManagementFileData(req: Request, input: ApiReqParams, file: any) {
+    const { path, type } = input
+    const shopId: any = req.headers['shop-id']
+
+    const filePath = join(__dirname, '../../', `/assets/file/tempFile.csv`)
+    fs.writeFileSync(filePath, file.buffer, { flag: 'w' });
+
+    const formData = new FormData()
+    formData.append('file', fs.createReadStream(filePath), file.originalname)
+    formData.append('type', type)
+
+    return this.requestService.post(
+      `${this.host}${path}`,
+      formData,
+      this.setApiAHeaders(req.cookies, shopId, { ...formData.getHeaders() }),
+      {
+        maxContentLength: 100000000,
+        maxBodyLength: 1000000000
+      }
+    );
+  }
+
+  public getManagementFile(req: Request, input: ApiReqParams) {
+    const { path, params } = input
+    const shopId: any = req.headers['shop-id']
+    return this.requestService.downloadFile(
+      `${this.host}${path}`,
+      { ids: params.ids },
+      this.setApiAHeaders(req.cookies, shopId)
+    )
   }
 
   private setApiInternalHeaders(cookies: any): Partial<HeaderAuthParams> {

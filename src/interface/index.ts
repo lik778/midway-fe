@@ -10,6 +10,7 @@ export interface ApiReqParams {
   method: string;
   path: string;
   params?: any;
+  type?: string;
 }
 
 // tips: 请求midway-service的头部参数
