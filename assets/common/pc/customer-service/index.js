@@ -54,6 +54,32 @@ export const qqModule = function (type) {
 				eventTracker("wechat-copy-pc", "float-pc")
 			}
 		})
+
+		//hover53图标event打点
+		$("#kf53").on('mouseenter', () => {
+			if (type === 'sem') {
+				semEventTracker("kf53-pc", "float-pc", "hover")
+			} else {
+				eventTracker("kf53-pc", "float-pc", "hover")
+			}
+		})
+		
+		//点击53客服event打点
+		$("#kf53").on('click', () => {
+			if (type === 'sem') {
+				semEventTracker("kf53-click-pc", "float-pc")
+			} else {
+				eventTracker("kf53-click-pc", "float-pc")
+			}
+			if (window.$53) {
+				var api = $53.createApi();
+				api.push('cmd', 'kfclient');
+				api.push('type', 'new');
+				api.query();
+			} else {
+				alert('请稍后再试！')
+			}
+		})
 	})
 }
 

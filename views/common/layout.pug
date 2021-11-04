@@ -83,10 +83,11 @@ html
       } else {
           window.isAccount =  '';
       }
+      window.contentType ='#{contentType}' ;
+      window.trackSrc = '#{pageType}';
+      window.pageStartRenderTime = '#{pageStartRenderTime}'
     include ../vendor/baidutongji.pug
     //-TODO:开发阶段先注释掉
     include ../vendor/53kf.pug
   :combine(fileName=["tb-vendors.js", "tb-commons.js"])
   block scripts
-
-

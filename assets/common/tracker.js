@@ -39,6 +39,30 @@ export const getBaxSemEventField = () => {
   return opts
 }
 
+export const loadTracker = () => {
+  const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgent);
+  $.post('/tracker', {
+    eventType: BXMAINSITE,
+    data: {
+      event_type: BXMAINSITE,
+      site_id: 'dianpu',
+      shop_id: window.shopId,
+      _ad: window.adId,
+      tracktype: 'loadview',
+      pageview: window.trackSrc,
+      contentType: window.contentType,
+      screenResolution: `${screen.width}*${screen.height}`,
+      accessTime: pageStartRenderTime,
+      pageOpeningSpeed: new Date().getTime() - pageStartRenderTime,
+      _platform: isWap ? 'wap' : 'pc',
+      refer: document.referrer,
+      url: location.href,
+      ual: navigator.language,
+      uae: document.characterSet
+    }
+  })
+}
+
 export const eventTracker = (clickType, clickPosition, action = 'click', extraData) => {
   const isWap = /android|iphone|ipod|ipad|micromessenger/i.test(navigator.userAgent);
   return new Promise((resolve, reject) => {
