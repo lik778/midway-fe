@@ -15,6 +15,7 @@ const routerKey = {
   '/modify-the-store': 'modify-the-store',
   "/advice-record": 'advice-record',
   "/template-upload": 'template-upload',
+  "/status-change": 'status-change'
 }
 export default withRouter((props) => {
   const menuKey = routerKey[props.location.pathname]
@@ -49,6 +50,9 @@ export default withRouter((props) => {
               </Menu.Item>
               <Menu.Item key="clean-cache">
                 <Link to="/clean-cache" key="clean-cache">清53kf缓存</Link>
+              </Menu.Item>
+              <Menu.Item key="status-change">
+                <Link to="/status-change" key="status-change">店铺状态管理</Link>
               </Menu.Item>
             </SubMenu>
             <Menu.Item key="advice-record">
