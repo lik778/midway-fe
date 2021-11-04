@@ -4,6 +4,8 @@ import { LogService } from './log.service';
 import { toPlainObject } from '../util/common'
 import { PageException } from '../exceptions/page.exception';
 import { ApiException } from '../exceptions/api.exception';
+import * as request from 'request'
+import * as qs from 'querystring'
 
 @Injectable()
 export class RequestService {
@@ -54,7 +56,10 @@ export class RequestService {
   public post(url: string, data: any, headers?: any, config?: AxiosRequestConfig): Promise<any> {
     const options = config ? { headers, timeout: config.timeout } : { headers }
     return new Promise((resolve, reject) => {
-      this.httpService.post(url, typeof data === 'number' ? data.toString() : data, options).toPromise().then((res: AxiosResponse) => {
+      this.httpService.post(url, typeof data === 'number' ? data.toString() : data, {
+        ...options,
+        maxContentLength: Infinity,
+      }).toPromise().then((res: AxiosResponse) => {
         resolve(res.data)
       }).catch((err: AxiosError) => reject(err))
     })
@@ -89,6 +94,19 @@ export class RequestService {
       .catch((err) => {
         this.errorHandle(err, 'delete', url, params, headers)
       })
+  }
+
+  public downloadFile(url: string, params: {[key:string]: string}, headers?: any) {
+    const querystring = qs.stringify(params);
+
+    return request.get({
+      url: `${url}?${querystring}`,
+      gzip: true,
+      headers: {
+        ...headers,
+        'Content-Type': 'application/octet-stream'
+      },
+    })
   }
 }
 

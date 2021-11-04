@@ -1,0 +1,13 @@
+.template-form-row:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.templates-filter {
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.download-btn {
+  align-self: flex-end;
+}

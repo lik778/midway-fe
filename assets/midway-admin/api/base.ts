@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { message } from 'antd';
 
 export interface ServiceResponse<T> {
   code: number;
@@ -39,6 +38,32 @@ const request = createRequest()
 
 export const postApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
   return request.post(config.baseURL || BASE_URL, { method: 'post', path: path, params: JSON.stringify(params) });
+}
+
+export const postFileUploadApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
+  return request.post('/management/api/file', (function () {
+    const formData = new FormData()
+    for (const key in params) {
+      formData.append(key, params[key])
+    }
+    formData.append('path', path)
+    formData.append('method', 'post')
+    return formData
+  })(), {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  });
+}
+
+export const getTemplateFile = <T>(params: any): Promise<AxiosResponse> => {
+  return axios.post('/management/api/download-template', { method: 'get', path: '', params });
+}
+
+export const downloadReport = <T>(path: string, params: any): Promise<AxiosResponse> => {
+  return axios.post('/management/api/download-file', { method: 'get', path, params }, {
+    responseType: 'blob'
+  });
 }
 
 export const getApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
