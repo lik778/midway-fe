@@ -234,6 +234,14 @@ export const setCustomerSetApi = (shopId: number, requestData: {
   return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
 }
 
+/** 保存某个自定义设置 */
+export const setCustomerSetShowApi = (shopId: number, requestData: {
+  mainModuleId?: number,
+  show: boolean,
+}) => {
+  return postApiData<never>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModuleShow', requestData, setShopHeader(shopId))
+}
+
 /** 获取店铺基础信息设置 */
 export const getShopBasicInfoApi = (shopId: number) => {
   return postApiData<ShopBasicInfo>(ServicePath.SHOP, 'midway/backend/shop/getShopEnterprise', {}, setShopHeader(shopId))
@@ -378,7 +386,7 @@ export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutIn
 
 // 店铺反馈入口
 export const setAdviceRecordApi = (shopId: number, params: AdviceRecord) => {
-  return postApiData<any>(ServicePath.SHOP,'midway/backend/feedback/create',params, setShopHeader(shopId))
+  return postApiData<any>(ServicePath.SHOP, 'midway/backend/feedback/create', params, setShopHeader(shopId))
 }
 
 /** 模块管理 结束 */

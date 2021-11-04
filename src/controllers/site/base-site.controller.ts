@@ -97,7 +97,18 @@ export class BaseSiteController {
     if (!data.autoConfig) {
       data.autoConfig = []
     } else {
-      data.autoConfig = [data.autoConfig[1] || defaultAutoConfig1, data.autoConfig[2] || defaultAutoConfig2]
+      let newAutoConfig = []
+      if (!data.autoConfig[1] || (data.autoConfig[1].show && (!data.autoConfig[1].subModuleBos || data.autoConfig[1].subModuleBos.length === 0))) {
+        newAutoConfig[0] = defaultAutoConfig1
+      } else {
+        newAutoConfig[0] = data.autoConfig[1]
+      }
+      if (!data.autoConfig[2] || (data.autoConfig[2].show && (!data.autoConfig[2].subModuleBos || data.autoConfig[2].subModuleBos.length === 0))) {
+        newAutoConfig[1] = defaultAutoConfig2
+      } else {
+        newAutoConfig[1] = data.autoConfig[2]
+      }
+      data.autoConfig = newAutoConfig
     }
     //红白头开关
     // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
