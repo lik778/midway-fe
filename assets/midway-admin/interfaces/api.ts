@@ -20,7 +20,4 @@ export interface ListRes<T> {
   totalRecord: number;
   pageSize: number;
 }
-export interface StatusChange {
-  shopid: string,
-  operationreason?: string,
-}
+

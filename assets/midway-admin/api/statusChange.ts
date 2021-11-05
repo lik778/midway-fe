@@ -1,5 +1,5 @@
-import { postApi,getApi } from '../api/base'
-
-export const statusChange = (params: any) => {
-  return  postApi<any>('/api/midway/internal/feedback/download',params,{ baseURL: '/management/api/internal' })
+import { getApi } from './base'
+import { StatusChange } from '../interfaces/statusChange'
+export const statusChange = (params: StatusChange) => {
+  return  getApi<any>('/api/midway/manager/shop/changeStatus', params)
 }

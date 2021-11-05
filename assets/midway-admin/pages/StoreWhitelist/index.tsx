@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Button, Input, Form, message } from 'antd';
+import { Button, InputNumber, Form, message } from 'antd';
 import { Getshopmodifystore } from '../../interfaces/commonFunction'
 import { setStoreWhitelistApi } from '../../api/commonFunction'
 
@@ -32,7 +32,7 @@ const StoreWhiteList = () => {
         name="userId"
         rules={[{ required: true, message: '请输入用户id' }]}
       >
-        <Input placeholder="请输入用户id" />
+        <InputNumber style={{ width: 300 }} placeholder="请输入用户id" />
       </Form.Item>
       <Form.Item >
         <Button

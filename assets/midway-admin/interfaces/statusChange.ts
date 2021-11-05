@@ -1,4 +1,8 @@
 export interface statusChangeForm {
-  shopid: string,
-  operationreason?: string
+  id: number,
+  status: string
+}
+export interface StatusChange {
+  id: number,
+  status: string,
 }

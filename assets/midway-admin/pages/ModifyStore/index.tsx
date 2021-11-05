@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Button, Input, Form, message } from 'antd';
+import { Button, Input, Form, message, InputNumber } from 'antd';
 import { Getshopmodifystore } from '../../interfaces/commonFunction'
 import { setStoreNameApi } from '../../api/commonFunction'
 
@@ -30,14 +30,14 @@ const ModifyStore = () => {
         name="id"
         rules={[{ required: true, message: '请输入店铺id' }]}
       >
-        <Input placeholder="请输入店铺id" />
+        <InputNumber style={{ width: 300 }} placeholder="请输入店铺id" />
       </Form.Item>
       <Form.Item
         label="店铺名称"
         name="domain"
         rules={[{ required: true, message: '请输入店铺名称' }]}
       >
-        <Input placeholder="请输入店铺名称" />
+        <Input style={{ width: 300 }} placeholder="请输入店铺名称" />
       </Form.Item>
       <Form.Item >
         <Button

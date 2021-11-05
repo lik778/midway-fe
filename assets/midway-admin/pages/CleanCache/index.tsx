@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, Input, Form, message } from 'antd';
+import { Button, Input, Form, message, InputNumber } from 'antd';
 import { Getshopmodifystore } from '../../interfaces/commonFunction'
 import { setStoreCleanCatchApi } from '../../api/commonFunction'
 
@@ -31,7 +31,7 @@ const StoreWhiteList = () => {
         name="userId"
         rules={[{ required: true, message: '请输入用户id' }]}
       >
-        <Input placeholder="请输入用户id" />
+        <InputNumber placeholder="请输入用户id" style={{ width: 300 }} />
       </Form.Item>
       <Form.Item >
         <Button
