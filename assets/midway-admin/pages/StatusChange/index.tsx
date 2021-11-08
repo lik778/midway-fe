@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import { Button, InputNumber, Form, message, Select } from 'antd';
+import { Button, InputNumber, Input, Form, message, Select } from 'antd';
 import { statusChangeForm } from '../../interfaces/statusChange'
 import { statusChange } from '../../api/statusChange'
+import './index.css'
 const StatusChange = () => {
   const [form] = Form.useForm<statusChangeForm>()
   const onFinish = async () => {
     const value = form.getFieldsValue()
-    const res = await statusChange({ id: Number(value.id), status: value.status })
+    const res = await statusChange({ id: Number(value.id), status: value.status, reason: value.reason })
     if (res.success) {
       message.success(res.message)
     } else {
@@ -50,6 +51,9 @@ const StatusChange = () => {
               审核驳回下线
             </Select.Option>
           </Select>
+        </Form.Item>
+        <Form.Item name="reason" label="操作原因" rules={[{ required: true, message: '请输入操作原因' }]}>
+          <Input.TextArea className="textareas" showCount maxLength={50} style={{ width: 300, height: 100 }} />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 0, span: 6 }}>
           <Button type="primary" htmlType="submit">
