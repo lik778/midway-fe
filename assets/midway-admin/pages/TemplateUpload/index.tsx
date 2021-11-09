@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { Table } from 'antd'
 import { getTemplateHistory } from '../../api/template'
 import { TEMPLATE_TYPES } from '../../constants/templates'
-import { Template as TemplateType } from '../../interfaces/template'
 import { Moment } from 'moment'
 
 import Filter from './Filter'
@@ -21,8 +20,11 @@ const COLUMNS = [{
   title: '操作人',
   dataIndex: 'operator',
 }, {
-  title: '数量',
+  title: '上传数量',
   dataIndex: 'num',
+}, {
+  title: '成功数量',
+  dataIndex: 'successNum',
 }, {
   title: '素材类型',
   dataIndex: 'type',

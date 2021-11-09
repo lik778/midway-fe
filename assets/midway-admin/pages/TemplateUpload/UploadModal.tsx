@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { Button, Modal, Select, Upload, message, Dropdown, Menu, Tooltip } from 'antd'
 import { UploadOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { TEMPLATE_TYPES } from '../../constants/templates'
+import { TEMPLATE_TYPES, TEMPLATE_FILENAMES } from '../../constants/templates'
 import { uploadTemplate, downloadTemplate } from '../../api/template';
 
 const { Option } = Select;
@@ -10,7 +10,7 @@ const { Option } = Select;
 const templateDownloadMenu = () => {
 
   const handleDownload = async (key) => {
-    await downloadTemplate(key, TEMPLATE_TYPES[key])
+    await downloadTemplate(key, TEMPLATE_FILENAMES[key])
   }
 
   return (
@@ -92,13 +92,14 @@ const UploadModal = ({
                 setFileList([])
                 return
               }
-              if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
+              if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                  && file.type !== 'application/vnd.ms-excel') {
                 message.error('文件格式错误')
                 return
               }
               setFileList(file.status === 'removed' ? [] : [file])
             }}
-            accept=".csv"
+            accept=".xls,.xlsx"
           >
             <Button icon={<UploadOutlined />}>点击选择文件</Button>
           </Upload>
