@@ -93,8 +93,8 @@ const UploadModal = ({
                 return
               }
               if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-                  && file.type !== 'application/vnd.ms-excel'
-                  && (file.type === '' && !file.name.includes('.xlsx'))) { // 兼容Safari
+                && file.type !== 'application/vnd.ms-excel'
+                && !(file.type === '' && file.name.includes('.xlsx'))) {
                 message.error('文件格式错误')
                 return
               }
