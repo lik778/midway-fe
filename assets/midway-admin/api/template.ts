@@ -1,7 +1,17 @@
 // 获取审核列表页
-import { downloadReport, postApi, postFileUploadApi, getTemplateFile } from '../api/base'
+import { postApi, getApi, postFileUploadApi, postApiData } from '../api/base'
 import { Template, TemplateType } from '../interfaces/template'
 import { message } from 'antd'
+
+export const getTemplateFile = (params: any) => {
+  return getApi("", params, { baseURL: '/management/api/download-template', responseType: 'text' })
+}
+
+export const downloadReport = (path: string, params: any) => {
+  return getApi('/api/midway/manager/material/download', params, {
+    baseURL: '/management/api/download-file', responseType: 'blob'
+  });
+}
 
 export const uploadTemplate = (params: {
   type: string
@@ -19,8 +29,8 @@ export const getTemplateHistory = (params) => {
 }
 
 export const downloadTemplate = async (type, filename) => {
-  const { data } = await getTemplateFile(type)
-  const blob = new Blob(['\ufeff' + data], { type: 'text/csv,charset=GB2312' })
+  const res = await getTemplateFile(type)
+  const blob = new Blob(['\ufeff' + res], { type: 'text/csv,charset=GB2312' })
   const a = document.createElement('a');
   const url = window.URL.createObjectURL(blob);
   a.href = url;
@@ -31,12 +41,10 @@ export const downloadTemplate = async (type, filename) => {
 export const downloadFile = async (params: {
   ids: string
 }) => {
-  const response = await downloadReport('/api/midway/manager/material/download', params)
-  const { data, headers } = response;
+  const data = await downloadReport('/api/midway/manager/material/download', params)
   try {
-    // const filename = headers['content-disposition'].match(/filename="(.+)"/)[1];
     const a = document.createElement('a');
-    const url = window.URL.createObjectURL(new Blob([data], { type: "application/octet-stream" }));
+    const url = window.URL.createObjectURL(new Blob([data as any], { type: "application/octet-stream" }));
     a.href = url;
     a.download = '导出结果.csv';
     a.click();

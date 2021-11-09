@@ -15,7 +15,8 @@ const routerKey = {
   '/modify-the-store': 'modify-the-store',
   "/advice-record": 'advice-record',
   "/template-upload": 'template-upload',
-  "/status-change": 'status-change'
+  "/status-change": 'status-change',
+  "/bx-gallery": 'bx-gallery',
 }
 export default withRouter((props) => {
   const menuKey = routerKey[props.location.pathname]
@@ -38,10 +39,10 @@ export default withRouter((props) => {
                 <Link to="/verify-word" key="verify-word">词根审核</Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="switch-shop-type">
-              <Link to="/switch-shop-type" key="switch-shop-type">模板切换</Link>
-            </Menu.Item>
             <SubMenu key="common-function" title="常用功能">
+              <Menu.Item key="switch-shop-type">
+                <Link to="/switch-shop-type" key="switch-shop-type">模板切换</Link>
+              </Menu.Item>
               <Menu.Item key="modify-the-store">
                 <Link to="/modify-the-store" key="modify-the-store">修改店铺名称</Link>
               </Menu.Item>
@@ -61,6 +62,9 @@ export default withRouter((props) => {
             <SubMenu key="templates-management" title="素材库管理">
               <Menu.Item key="template-upload">
                 <Link to="/template-upload" key="template-upload">素材上传</Link>
+              </Menu.Item>
+              <Menu.Item key="bx-gallery">
+                <Link to="/bx-gallery" key="bx-gallery">百姓图库上传</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
