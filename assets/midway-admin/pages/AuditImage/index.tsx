@@ -7,6 +7,8 @@ import { getAuditMaterialList, auditMaterial } from '../../api/shop'
 
 import { MediaAssetsItem } from '../../interfaces/shop'
 
+import PreviewImage from '../../components/PreviewImage'
+
 import './index.css'
 
 export default () => {
@@ -108,25 +110,6 @@ export default () => {
     },
   ]
 
-  const renderPreviewModal = () => {
-    if (!previewURL) {
-      return
-    }
-    return (
-      <Modal
-        wrapClassName="image-preview-modal"
-        width="100vw"
-        footer={null}
-        visible={previewModal}
-        onCancel={closePreviewModal}
-      >
-        <div className={"image-wrapper " + ((previewModal && previewURL) ? 'active' : '')}>
-          <img src={previewURL} alt="预览图片" />
-        </div>
-      </Modal>
-    )
-  }
-
   return (
     <div className="page-audit-image">
       <Table
@@ -134,7 +117,7 @@ export default () => {
         dataSource={lists}
         columns={columns}
       />
-      {renderPreviewModal()}
+      <PreviewImage visible={previewModal} url={previewURL} onClose={closePreviewModal}></PreviewImage>
     </div>
   )
 }
