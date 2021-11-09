@@ -11,6 +11,12 @@ export interface ServiceResponse<T> {
   exceptionClass: string;
 }
 
+export interface ApiReqParams {
+  method: string;
+  path: string;
+  params?: any;
+}
+
 
 export function createRequest() {
   const request = axios.create({
@@ -23,9 +29,12 @@ export function createRequest() {
   })
 
   request.interceptors.response.use((res: AxiosResponse) => {
-    return Promise.resolve(res?.data)
+    if (res.data) {
+      return res.data
+    } else {
+      return res
+    }
   }, (err: AxiosError) => {
-    // console.error('[REQ ERROR]', err)
     return Promise.resolve(err.response && err.response.data)
   })
 
@@ -36,36 +45,45 @@ const BASE_URL = '/management/api'
 
 const request = createRequest()
 
-export const postApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
-  return request.post(config.baseURL || BASE_URL, { method: 'post', path: path, params: JSON.stringify(params) });
-}
-
 export const postFileUploadApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
-  return request.post('/management/api/file', (function () {
+  return request.post(config.baseURL ? '' : '/management/api/file', (function () {
     const formData = new FormData()
     for (const key in params) {
       formData.append(key, params[key])
     }
-    formData.append('path', path)
-    formData.append('method', 'post')
+    // 该函数也需要打第三方，需兼容。
+    if (path) {
+      formData.append('path', path)
+      formData.append('method', 'post')
+    }
     return formData
   })(), {
     headers: {
       'content-type': 'multipart/form-data'
-    }
+    },
+    ...config
   });
 }
 
-export const getTemplateFile = <T>(params: any): Promise<AxiosResponse> => {
-  return axios.post('/management/api/download-template', { method: 'get', path: '', params });
+// tips: 这边传输数据返回格式还是太随意了，需要修改
+export const getApiData = (url: string, params: any, config: any = {}): Promise<any> => {
+  return request.get(url, { params, ...config });
 }
 
-export const downloadReport = <T>(path: string, params: any): Promise<AxiosResponse> => {
-  return axios.post('/management/api/download-file', { method: 'get', path, params }, {
-    responseType: 'blob'
-  });
+export const postApiData = <T>(url: string, data: ApiReqParams, config: any = {}): Promise<ServiceResponse<T>> => {
+  return request.post(url, data, config);
 }
 
-export const getApi = <T>(path: string, params: any, config: any = {}): Promise<ServiceResponse<T>> => {
-  return request.post(config.baseURL || BASE_URL, { method: 'get', path, params });
+export const getApi = <T>(path: string, params: any, config: any = {}) => {
+  return postApiData<T>(config.baseURL ? "" : BASE_URL, {
+    method: 'get', path: path,
+    params,
+  }, config)
+}
+
+export const postApi = <T>(path: string, params: any, config: any = {}) => {
+  return postApiData<T>(config.baseURL ? "" : BASE_URL, {
+    method: 'post', path: path,
+    params,
+  }, config)
 }

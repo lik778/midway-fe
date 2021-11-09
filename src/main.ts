@@ -17,8 +17,8 @@ import './base/sentry';
 async function bootstrap() {
   // 默认情况下使用@nestjs/plateform-express 包。
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
-  app.use(json({ limit: '10mb' }));
-  app.use(urlencoded({ extended: true, limit: '10mb' }));
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'dist/public'), {
     prefix: '/assets',

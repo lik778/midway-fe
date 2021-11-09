@@ -28,6 +28,7 @@ export class ManagementController {
     res.json(managementData)
   }
 
+  // 上传文件
   @Post('/api/file')
   @UseInterceptors(FileInterceptor('file'))
   async managementFileApi(@UploadedFile() file, @Req() req: Request, @Res() res: Response, @Body() body: ApiQeqDTO) {
@@ -35,6 +36,7 @@ export class ManagementController {
     res.json(managementData)
   }
   
+  // 从node下载模板文件
   @Post('/api/download-template')
   async managementDownloadTemplateApi(@Res() res: Response, @Body() body: any) {
     const { params } = body
@@ -44,7 +46,8 @@ export class ManagementController {
       .pipe(iconv.decodeStream('gb2312'))
       .pipe(res)
   }
-  
+
+  // 从远程下载文件
   @Post('/api/download-file')
   async managementDownloadFileApi(@Req() req: Request, @Res() res: Response, @Body() body: any) {
     const fileResponse = await this.managementService.getManagementFile(req, body);

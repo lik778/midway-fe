@@ -1,17 +1,17 @@
-.page-audit-image .preview-img-con {
+.page-info-image .preview-img-con {
   position: relative;
   width: 150px;
 }
-.page-audit-image .preview-img-con:hover .mask {
+.page-info-image .preview-img-con:hover .mask {
   opacity: 1;
 }
-.page-audit-image .preview-sm-image {
+.page-info-image .preview-sm-image {
   width: 150px;
   max-height: 150px;
   object-fit: cover;
   object-position: top;
 }
-.page-audit-image .mask {
+.page-info-image .mask {
   position: absolute;
   left: 0;
   bottom: 0;
