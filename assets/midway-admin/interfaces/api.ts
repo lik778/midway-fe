@@ -20,3 +20,4 @@ export interface ListRes<T> {
   totalRecord: number;
   pageSize: number;
 }
+

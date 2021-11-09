@@ -15,6 +15,7 @@ const routerKey = {
   '/modify-the-store': 'modify-the-store',
   "/advice-record": 'advice-record',
   "/template-upload": 'template-upload',
+  "/status-change": 'status-change',
   "/bx-gallery": 'bx-gallery',
 }
 export default withRouter((props) => {
@@ -51,6 +52,9 @@ export default withRouter((props) => {
               <Menu.Item key="clean-cache">
                 <Link to="/clean-cache" key="clean-cache">清53kf缓存</Link>
               </Menu.Item>
+              <Menu.Item key="status-change">
+                <Link to="/status-change" key="status-change">店铺状态管理</Link>
+              </Menu.Item>
             </SubMenu>
             <Menu.Item key="advice-record">
               <Link to="/advice-record" key="advice-record">意见收集</Link>
@@ -59,10 +63,10 @@ export default withRouter((props) => {
               <Menu.Item key="template-upload">
                 <Link to="/template-upload" key="template-upload">素材上传</Link>
               </Menu.Item>
+              <Menu.Item key="bx-gallery">
+                <Link to="/bx-gallery" key="bx-gallery">百姓图库上传</Link>
+              </Menu.Item>
             </SubMenu>
-            <Menu.Item key="bx-gallery">
-              <Link to="/bx-gallery" key="bx-gallery">百姓图库上传</Link>
-            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">
