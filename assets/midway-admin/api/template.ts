@@ -1,10 +1,10 @@
 // 获取审核列表页
-import { postApi, getApi, postFileUploadApi, postApiData } from '../api/base'
-import { Template, TemplateType } from '../interfaces/template'
+import { postApi, getApi, postFileUploadApi } from '../api/base'
+import { Template } from '../interfaces/template'
 import { message } from 'antd'
 
 export const getTemplateFile = (params: any) => {
-  return getApi("", params, { baseURL: '/management/api/download-template', responseType: 'text' })
+  return getApi<string>("", params, { baseURL: '/management/api/download-template', responseType: 'blob' })
 }
 
 export const downloadReport = (path: string, params: any) => {
@@ -29,12 +29,12 @@ export const getTemplateHistory = (params) => {
 }
 
 export const downloadTemplate = async (type, filename) => {
-  const res = await getTemplateFile(type)
-  const blob = new Blob(['\ufeff' + res], { type: 'text/csv,charset=GB2312' })
+  const data = await getTemplateFile(type) as any
+  const blob = new Blob([data])
   const a = document.createElement('a');
   const url = window.URL.createObjectURL(blob);
   a.href = url;
-  a.download = filename + '.csv';
+  a.download = filename;
   a.click();
 }
 

@@ -6,12 +6,11 @@ import { join } from 'path'
 import { ManagementService } from '../services/management.service';
 import config from '../config';
 import * as fs from 'fs'
-import * as iconv from 'iconv-lite'
 
 @Controller({ host: config().hostType.base, path: '/management' })
 export class ManagementController {
   constructor(private managementService: ManagementService) {}
-  
+
   @Get('*')
   managementView(@Req() req: Request, @Res() res: Response) {
     // const goto = () => res.sendFile(join(__dirname, '../../', '/dist/public/index.html'))
@@ -40,11 +39,16 @@ export class ManagementController {
   @Post('/api/download-template')
   async managementDownloadTemplateApi(@Res() res: Response, @Body() body: any) {
     const { params } = body
-    const filePath = join(__dirname, `../../assets/file/${params}.csv`)
+    const filename = {
+      KNOWLEDGE: 'jiadianweixiu空调维修.xlsx',
+      SHOP_ARTICLE: '文章模板.xlsx',
+      QUESTION_D: '问答回答模板.xlsx',
+      QUESTION_ANSWER: '问答D词模板.xlsx'
+    }[params]
+    const filePath = join(__dirname, `../../assets/file/${filename}`)
     const file = fs.createReadStream(filePath)
-    file
-      .pipe(iconv.decodeStream('gb2312'))
-      .pipe(res)
+
+    file.pipe(res)
   }
 
   // 从远程下载文件
