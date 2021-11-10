@@ -1,10 +1,10 @@
-import { postApi,getApi } from '../api/base'
+import { postApi, getApi } from '../api/base'
 import { PageParams } from '../interfaces/api';
-import {Advicerespone} from '../interfaces/adviceRecord';
+import { Advicerespone } from '../interfaces/adviceRecord';
 
 export const getAdviceList = (params: PageParams) => {
-  return postApi<Advicerespone[]>('/api/midway/internal/feedback/listing', params,{ baseURL: '/management/api/internal' })
+  return postApi<Advicerespone[]>('/api/midway/manager/feedback/listing', params)
 }
 export const getDownload = () => {
-  return  getApi<any>('/api/midway/internal/feedback/download',{},{ baseURL: '/management/api/internal' })
+  return getApi<any>('/api/midway/manager/feedback/download', {})
 }

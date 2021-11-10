@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-
+import { HAO_JING_HOST } from '../constants'
 export interface ServiceResponse<T> {
   code: number;
   data: T;
@@ -17,6 +17,15 @@ export interface ApiReqParams {
   params?: any;
 }
 
+const NotAuthCode = [1002, 1029]
+
+const verifyAuthCode = (res: AxiosResponse) => {
+  if (NotAuthCode.includes(res.data.code)) {
+    alert("该账号暂无权限，请登录管理员账号");
+    // const haojingHost = config().env;
+    location.href = `${HAO_JING_HOST}/oz/login`
+  }
+}
 
 export function createRequest() {
   const request = axios.create({
@@ -30,6 +39,7 @@ export function createRequest() {
 
   request.interceptors.response.use((res: AxiosResponse) => {
     if (res.data) {
+      verifyAuthCode(res)
       return res.data
     } else {
       return res
