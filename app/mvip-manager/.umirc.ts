@@ -46,5 +46,6 @@ export default defineConfig({
   dva: {
     skipModelValidate: true,
     immer: true,
-  }
+  },
+  mfsu:{}
 });

@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState, useMemo, useContext } from 'react'
 import { Button, Modal, Spin } from "antd"
 import { DeleteOutlined, PlusOutlined, LoadingOutlined } from "@ant-design/icons"
-const crypto = require('crypto')
 
 import { upImageToYoupai } from '@/api/common'
 import { reAuditMediaAssets, createMediaAssets, delMediaAssets } from '@/api/shop'

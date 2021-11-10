@@ -1,6 +1,3 @@
-// 必须引入crypto
-// eslint-disable-next-line
-const crypto = require('crypto');
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { upyunImgConfig, upyunVideoConfig } from '../config/upyun'
