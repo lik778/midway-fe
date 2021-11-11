@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import moment from 'moment';
+// @ts-ignore
 import BMF from 'browser-md5-file';
 import { DomainStatus } from '@/enums';
 import { productText } from '@/constants/ai-module';
@@ -122,40 +122,40 @@ export const stringify = (params: any): string => JSON.stringify(params)
 
 // 许多图表组件需要一个默认的选中时间，
 // 默认为上一个月
-// 给第一个 moment 减去一天而不是给第二个 moment 加一天是因为，
+// 给第一个 dayjs 减去一天而不是给第二个 dayjs 加一天是因为，
 // 这个值要放回 range-picker 组件进行展示
 export const getLastMonth = (anchor?: any, classic?: boolean) => {
-  anchor = anchor || moment()
+  anchor = anchor || dayjs()
   return classic ? [
-    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'months'),
-    moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+    dayjs(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'months'),
+    dayjs(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
   ] : [
-    moment(moment().format('YYYY-MM-DD')).subtract(1, 'months'),
-    moment(moment().format('YYYY-MM-DD'))
+    dayjs(dayjs().format('YYYY-MM-DD')).subtract(1, 'months'),
+    dayjs(dayjs().format('YYYY-MM-DD'))
   ]
 }
 
 // 获取上一周的时间区间
 export const getLastWeek = (anchor?: any, classic?: boolean) => {
-  anchor = anchor || moment()
+  anchor = anchor || dayjs()
   return classic ? [
-    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'weeks'),
-    moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+    dayjs(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'weeks'),
+    dayjs(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
   ] : [
-    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'weeks'),
-    moment(anchor.clone().format('YYYY-MM-DD'))
+    dayjs(dayjs().format('YYYY-MM-DD')).subtract(1, 'weeks'),
+    dayjs(dayjs().format('YYYY-MM-DD'))
   ]
 }
 
 // 获取过去24小时时间区间
 export const getLast24Hours = (anchor?: any, classic?: boolean) => {
-  anchor = anchor || moment()
+  anchor = anchor || dayjs()
   return classic ? [
-    moment(anchor.clone().format('YYYY-MM-DD')),
-    moment(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
+    dayjs(anchor.clone().format('YYYY-MM-DD')),
+    dayjs(anchor.clone().format('YYYY-MM-DD')).add(1, 'day').subtract(1, 'second')
   ] : [
-    moment(anchor.clone().format('YYYY-MM-DD')).subtract(1, 'day'),
-    moment(anchor.clone().format('YYYY-MM-DD'))
+    dayjs(dayjs().format('YYYY-MM-DD')).subtract(1, 'day'),
+    dayjs(dayjs().format('YYYY-MM-DD'))
   ]
 }
 

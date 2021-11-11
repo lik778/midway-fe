@@ -1,4 +1,6 @@
 import { defineConfig } from 'umi';
+//@ts-ignore
+import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
 
 export default defineConfig({
   title: '优选推后台管理',
@@ -48,5 +50,33 @@ export default defineConfig({
     immer: true,
   },
   mfsu: {},
-  esbuild: {}
+  esbuild: {},
+  chainWebpack(config) {
+    config.plugin('antd-dayjs-webpack-plugin').use(AntdDayjsWebpackPlugin)
+    config.merge({
+      optimization: {
+        splitChunks: {
+          automaticNameDelimiter: '.',
+          name: true,
+          minSize: 30000,
+          minChunks: 1,
+          cacheGroups: {
+            vendors: {
+              name: 'vendors',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/]/,
+              priority: -12,
+            },
+            echarts: {
+              name: 'chunk-echarts',
+              chunks: 'all',
+              test: /[\\/]echarts(.*)/,
+              priority: 20
+            }
+          },
+        },
+      },
+    });
+  },
+  chunks: ['vendors', 'umi']
 });

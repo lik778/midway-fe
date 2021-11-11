@@ -8,7 +8,9 @@
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
+    "test:coverage": "umi-test --coverage",
+    "start:ANALYZE": "cross-env ANALYZE=1 umi dev",
+    "build:ANALYZE": "cross-env ANALYZE=1 umi build"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -26,6 +28,7 @@
     "@umijs/plugin-esbuild": "^1.4.1",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.27",
+    "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.21.1",
     "browser-md5-file": "^1.1.1",
     "classname": "0.0.0",
@@ -34,7 +37,6 @@
     "echarts-for-react": "^2.0.16",
     "lint-staged": "^10.0.7",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
     "prettier": "^1.19.1",
     "rc-tween-one": "^2.7.3",
     "react": "^16.14.0",

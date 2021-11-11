@@ -6,10 +6,10 @@ import { QueryConfigItem } from '@/pages/report/components/quick-form/interface'
 
 export interface SearchListConfig {
   form: any
-  dataSource: any
+  dataSource?: any
   query: any
-  autoLayout: boolean
-  table: any
+  autoLayout?: boolean
+  table?: any
   pagiQueryKeys?: {
     pageKey: string,
     sizeKey: string,
@@ -25,6 +25,7 @@ interface Props {
   loading?: boolean
   onQueryChange?: (queries: any) => void;
 }
+
 export default function SearchList (props: Props) {
   const { bindForm, config, onQuery, onQueryChange, loading } = props
   const { form, dataSource, query, table, pagiQueryKeys, autoLayout } = config
