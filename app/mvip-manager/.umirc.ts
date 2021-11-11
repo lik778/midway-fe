@@ -47,5 +47,6 @@ export default defineConfig({
     skipModelValidate: true,
     immer: true,
   },
-  mfsu:{}
+  mfsu: {},
+  esbuild: {}
 });
