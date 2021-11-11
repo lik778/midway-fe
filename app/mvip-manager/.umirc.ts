@@ -51,23 +51,22 @@ export default defineConfig({
   },
   mfsu: {},
   esbuild: {},
-  webpack5: {},
   chainWebpack(config) {
-    config.plugin('antd-dayjs-webpack-plugin').use(AntdDayjsWebpackPlugin)
     config.merge({
+      plugins: [new AntdDayjsWebpackPlugin()],
       optimization: {
         splitChunks: {
           automaticNameDelimiter: '.',
           minSize: 30000,
           minChunks: 1,
           cacheGroups: {
-            vendors: {
+            'vendors': {
               name: 'vendors',
               chunks: 'all',
               test: /[\\/]node_modules[\\/]/,
-              priority: -12,
+              priority: 10,
             },
-            echarts: {
+            'chunk-echarts': {
               name: 'chunk-echarts',
               chunks: 'all',
               test: /[\\/]echarts(.*)/,
@@ -78,5 +77,5 @@ export default defineConfig({
       },
     });
   },
-  chunks: ['vendors', 'umi']
+  chunks: ['vendors', 'chunk-echarts', 'umi']
 });
