@@ -60,34 +60,4 @@ export const mediaShow = function() {
       });
     }
 
-    // // 点击查看更多
-    // const settingCount = $('table tr').length
-    // if(settingCount>=4) {
-    //   // 隐藏后四个
-    //   $('.read-more').css('display','block')
-    //   $('table tr').each(function(index) {
-    //     if(index>3) {
-    //       $(this).hide()
-    //     }
-    //   });
-    //   // $('.read-more').css('display','block')
-    //   $('.read-more').on('click',function() {
-    //     if ($('.read-more').text() === '展开查看更多') {
-    //       $('table tr').each(function(index) {
-    //         if(index > 3) {
-    //           $(this).show()
-    //         }
-    //       });
-    //       $('.read-more').html('折叠')
-    //     }else if($('.read-more').text() === '折叠') {
-    //       $('table tr').each(function(index) {
-    //         if(index>3) {
-    //           $(this).hide()
-    //         }
-    //       });
-    //       $('.read-more').html('展开查看更多')
-    //     }
-    //   })
-    // }
-
 };
