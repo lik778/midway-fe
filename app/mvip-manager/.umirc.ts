@@ -51,13 +51,13 @@ export default defineConfig({
   },
   mfsu: {},
   esbuild: {},
+  webpack5: {},
   chainWebpack(config) {
     config.plugin('antd-dayjs-webpack-plugin').use(AntdDayjsWebpackPlugin)
     config.merge({
       optimization: {
         splitChunks: {
           automaticNameDelimiter: '.',
-          name: true,
           minSize: 30000,
           minChunks: 1,
           cacheGroups: {
