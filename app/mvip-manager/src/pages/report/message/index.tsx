@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Tabs, Form } from 'antd'
 import { throttle } from 'lodash'
 
@@ -48,8 +48,8 @@ function LeaveMessagePage() {
 
   const [queryForm] = Form.useForm()
   const last3Years = useMemo(() => [
-    moment(moment().format('YYYY-MM-DD')).subtract(3, 'years'),
-    moment(moment().format('YYYY-MM-DD')).endOf('day')
+    dayjs(dayjs().format('YYYY-MM-DD')).subtract(3, 'years'),
+    dayjs(dayjs().format('YYYY-MM-DD')).endOf('day')
   ], [])
   const [query, setQuery] = useState<any>()
   const [page, setPage] = useState(1)
@@ -190,26 +190,26 @@ function LeaveMessagePage() {
     switch (key) {
       case '3years':
         range = [
-          moment(moment().format('YYYY-MM-DD')).subtract(3, 'years'),
-          moment(moment().format('YYYY-MM-DD')).endOf('day')
+          dayjs(dayjs().format('YYYY-MM-DD')).subtract(3, 'years'),
+          dayjs(dayjs().format('YYYY-MM-DD')).endOf('day')
         ]
         break
       case '1mon':
         range = [
-          moment(moment().format('YYYY-MM-DD')).subtract(1, 'months'),
-          moment(moment().format('YYYY-MM-DD')).endOf('day')
+          dayjs(dayjs().format('YYYY-MM-DD')).subtract(1, 'months'),
+          dayjs(dayjs().format('YYYY-MM-DD')).endOf('day')
         ]
         break
       case '3mon':
         range = [
-          moment(moment().format('YYYY-MM-DD')).subtract(3, 'months'),
-          moment(moment().format('YYYY-MM-DD')).endOf('day')
+          dayjs(dayjs().format('YYYY-MM-DD')).subtract(3, 'months'),
+          dayjs(dayjs().format('YYYY-MM-DD')).endOf('day')
         ]
         break
       case '6mon':
         range = [
-          moment(moment().format('YYYY-MM-DD')).subtract(6, 'months'),
-          moment(moment().format('YYYY-MM-DD')).endOf('day')
+          dayjs(dayjs().format('YYYY-MM-DD')).subtract(6, 'months'),
+          dayjs(dayjs().format('YYYY-MM-DD')).endOf('day')
         ]
         break
     }

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PlatformLabelMap } from '@/constants/report'
 import { FlowDetailData } from '@/interfaces/report'
 import { getLastMonth, formatDateRange, isUrl } from '@/utils';
@@ -20,7 +20,7 @@ export const flowConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: dayjs.Dayjs ) => date > dayjs().endOf('day')
     }
   ]
 })
@@ -38,7 +38,7 @@ export const visitListConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: dayjs.Dayjs ) => date > dayjs().endOf('day')
     }
   ],
   table: {

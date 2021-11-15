@@ -3,7 +3,7 @@ import React from 'react';
 import { history } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import styles from './index.less';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { ShopStatus as ShopStatusEnum, ShopVersionStatusEnum } from '@/enums/shop';
 import { ShopInfo, ShopStatus } from '@/interfaces/shop';
 import { useMemo } from 'react';
@@ -168,7 +168,7 @@ const ShopBox = (props: Props) => {
         {genEditBtn}
       </div>
       <div className={styles["dead-time"]}>
-        到期时间：{moment(shopInfo.expiredTime * 1000).format('YYYY/MM/DD')}
+        到期时间：{dayjs(shopInfo.expiredTime * 1000).format('YYYY/MM/DD')}
         {genRenewBtn}
       </div>
       {genLinkPanel}

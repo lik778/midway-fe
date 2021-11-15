@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { createOptions } from '@/utils'
 import { CateProductLabelMap } from '@/constants/report'
 import { getLastMonth, formatDateRange } from '@/utils'
@@ -21,7 +21,7 @@ export const publishConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: dayjs.Dayjs) => date > dayjs().endOf('day')
     },
     {
       label: '所属产品',
@@ -51,7 +51,7 @@ export const publishListConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: dayjs.Dayjs) => date > dayjs().endOf('day')
     },
     {
       label: '所属产品',
@@ -96,7 +96,7 @@ export const publishListConfig = ({
         title: '总发布量',
         dataIndex: 'all',
         key: 'all',
-        render: (_, r) => r.tiezi + r.wenda + r.article + r.product
+        render: (_: any, r: any) => r.tiezi + r.wenda + r.article + r.product
       },
     ]
   }

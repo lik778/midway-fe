@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { QueryConfigItem } from '@/pages/report/components/quick-form/interface'
 import { getLastMonth, formatDateRange, isUrl } from '@/utils';
 import React from 'react';
@@ -21,7 +21,7 @@ export const flowConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: dayjs.Dayjs) => date > dayjs().endOf('day')
     }
   ]
 })
@@ -40,7 +40,7 @@ export const pvListConfig = ({
       type: 'range-picker',
       value: getLastMonth(),
       format: formatDateRange,
-      disabledDate: (date: moment.Moment) => date > moment().endOf('day')
+      disabledDate: (date: dayjs.Dayjs) => date > dayjs().endOf('day')
     }
   ],
   table: {
