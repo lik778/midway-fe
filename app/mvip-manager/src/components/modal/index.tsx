@@ -19,7 +19,7 @@ interface Props {
   type?: ModalType;
   footer?: any;
   confirmLoading?: boolean;
-  onOk(): void;
+  onOk?(): void;
   onCancel(): void;
   width?: number
 }

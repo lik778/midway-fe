@@ -1,105 +1,107 @@
-.container {
-  position: relative;
-  padding: 30px;
-  background: #fff;
-  min-height: calc(100vh - 164px);
-  margin: 16px;
-}
-
-.primary-btn {
-  background: #096dd9 !important;
-}
-
-.p-btn {
-  width: 120px;
-  height: 40px;
-  color: #ffffff;
-}
-
-.ant-btn-primary[disabled] {
-  background: #d9d9d9 !important;
-  color: #ffffff;
-}
-
-.f-input {
-  position: relative;
-  .f-len {
-    position: absolute;
-    right: 15px;
-    color: #999999;
-    top: 10px;
+#root {
+  .container {
+    position: relative;
+    padding: 30px;
+    background: #fff;
+    min-height: calc(100vh - 164px);
+    margin: 16px;
   }
-}
 
-.a-menu {
-  background: none;
-  font-size: 16px;
-  margin-left: 36px;
-  .ant-menu-item {
-    color: #666666 !important;
-    a {
+  .primary-btn {
+    background: #096dd9 !important;
+  }
+
+  .p-btn {
+    width: 120px;
+    height: 40px;
+    color: #ffffff;
+  }
+
+  .ant-btn-primary[disabled] {
+    background: #d9d9d9 !important;
+    color: #ffffff;
+  }
+
+  .f-input {
+    position: relative;
+    .f-len {
+      position: absolute;
+      right: 15px;
+      color: #999999;
+      top: 10px;
+    }
+  }
+
+  .a-menu {
+    background: none;
+    font-size: 16px;
+    margin-left: 36px;
+    .ant-menu-item {
       color: #666666 !important;
+      a {
+        color: #666666 !important;
+      }
+    }
+    .ant-menu-item.ant-menu-item-selected {
+      color: #096dd9;
+      a {
+        color: #096dd9 !important;
+      }
     }
   }
-  .ant-menu-item.ant-menu-item-selected {
-    color: #096dd9;
-    a {
-      color: #096dd9 !important;
+  .shop-nav {
+    .ant-checkbox-wrapper-checked .ant-checkbox-inner {
+      background-color: #ff8d19;
+      border-color: #ff8d19;
+    }
+
+    .ant-checkbox-disabled .ant-checkbox-inner {
+      background-color: #f2f2f2;
+      border-color: #f2f2f2;
     }
   }
-}
-.shop-nav {
-  .ant-checkbox-wrapper-checked .ant-checkbox-inner {
-    background-color: #ff8d19;
-    border-color: #ff8d19;
+
+  /** 解决火狐下，table表格展开的按钮内 横线不出现的问题 */
+  .ant-table-row-expand-icon-collapsed::before {
+    transform: scale(1, 0.5) rotate(-180deg) !important;
+  }
+  .ant-table-row-expand-icon::before {
+    height: 2px !important;
   }
 
-  .ant-checkbox-disabled .ant-checkbox-inner {
-    background-color: #f2f2f2;
-    border-color: #f2f2f2;
+  .ant-drawer-header {
+    padding: 25px 32px;
   }
-}
 
-/** 解决火狐下，table表格展开的按钮内 横线不出现的问题 */
-.ant-table-row-expand-icon-collapsed::before {
-  transform: scale(1, 0.5) rotate(-180deg) !important;
-}
-.ant-table-row-expand-icon::before {
-  height: 2px !important;
-}
-
-.ant-drawer-header {
-  padding: 25px 32px;
-}
-
-.ant-modal-footer {
-  border-top: none !important;
-  margin-top: -27px;
-  padding: 10px 26px 40px 10px !important;
-  .ant-btn {
-    width: 86px;
-    height: 32px;
-  }
-  .ant-btn-primary {
-    background: #096dd9;
-  }
-}
-
-.g-modal {
   .ant-modal-footer {
-    margin-top: 0px;
+    border-top: none !important;
+    margin-top: -27px;
+    padding: 10px 26px 40px 10px !important;
+    .ant-btn {
+      width: 86px;
+      height: 32px;
+    }
+    .ant-btn-primary {
+      background: #096dd9;
+    }
   }
-}
 
-.no-list-data {
-  text-align: center;
-  margin-top: 20vh;
-  img {
-    height: 130px;
+  .g-modal {
+    .ant-modal-footer {
+      margin-top: 0px;
+    }
   }
-  p {
-    font-size: 14px;
-    color: #999;
-    margin-top: 24px;
+
+  .no-list-data {
+    text-align: center;
+    margin-top: 20vh;
+    img {
+      height: 130px;
+    }
+    p {
+      font-size: 14px;
+      color: #999;
+      margin-top: 24px;
+    }
   }
 }

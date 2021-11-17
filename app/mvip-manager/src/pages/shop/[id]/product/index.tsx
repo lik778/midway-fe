@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from "umi";
-import ContentHeader from '../components/content-header';
+import BasisHeader from '../components/basis-header';
 import ShopModuleGroup from '../components/shop-module-group';
 import ProductBox from './components/product-box';
 import ProductList from './components/list';
@@ -59,7 +59,7 @@ const ShopProductPage = (props: any) => {
 
   return (
     <div>
-      <ContentHeader {...props} type={ShopModuleType.PRODUCT} />
+      <BasisHeader {...props} type={ShopModuleType.PRODUCT} />
       <div className="container">
         <ProductNav
           onChange={(cateId: number) => { setPage(1); setContentCateId(cateId) }}
@@ -79,7 +79,7 @@ const ShopProductPage = (props: any) => {
           type={ContentCateType.PRODUCT}
           title={`${typeTxt}分组`}
           cateList={cateList}
-          updateCateList={(list) => setCateList(list)}
+          updateCateList={setCateList}
           onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
           visible={moduleGroupVisible}
           save={() => removeOverflow(() => setModuleGroupVisible(false))} />
@@ -87,7 +87,7 @@ const ShopProductPage = (props: any) => {
           typeTxt={typeTxt}
           cateList={cateList}
           editData={editProductData}
-          updateCateList={(x) => addKeyForListData(setCateList([x, ...cateList]))}
+          updateCateList={setCateList}
           visible={productFormVisible}
           onClose={() => removeOverflow(() => setProductFormVisible(false))} />
       </div>

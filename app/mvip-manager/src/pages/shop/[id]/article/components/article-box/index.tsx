@@ -21,7 +21,7 @@ interface Props {
   visible: boolean;
   quota?: any;
   onClose(): void;
-  updateCateList(item: CateItem): void;
+  updateCateList(item: CateItem[]): void;
 }
 export default (props: Props) => {
   const { quota, visible, editData, cateList, updateCateList, onClose } = props
@@ -141,8 +141,8 @@ export default (props: Props) => {
         type={ContentCateType.ARTICLE}
         editItem={null}
         visible={modalVisible}
-        groupUpdate={(item: CateItem) => { console.log(null) }}
-        groupCreate={(item: CateItem) => updateCateList(item)}
+        cateList={cateList}
+        updateCateList={updateCateList}
         onClose={() => setModalVisible(false)} />
       <MyModal
         title="确认关闭"

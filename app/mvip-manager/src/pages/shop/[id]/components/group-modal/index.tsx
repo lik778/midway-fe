@@ -1,225 +1,118 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import './index.less';
-import { Modal, Input } from 'antd';
-import classNames from 'classnames';
+import { Modal, FormInstance } from 'antd';
 import { createContentCateApi, updateContentCateApi } from '@/api/shop'
-import { CateItem, RouteParams, ShopInfo } from '@/interfaces/shop';
+import { CateItem, RouteParams, CreateContentCateApiParams, } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { ContentCateType, ProductType } from '@/enums';
+import { ContentCateType } from '@/enums';
+import WildcatForm from '@/components/wildcat-form';
 import { errorMessage, successMessage } from '@/components/message';
-import { SHOP_NAMESPACE } from '@/models/shop';
-import { connect } from 'dva';
+import { contentGroupForm } from './config'
 
-// 分组tkd配置
-const groupConfig = [
-  {
-    label: '分组名称',
-    placeholder: "请输入名称, 2~8个字",
-    required: true,
-    maxLength: 8,
-    minLength: 2,
-    id: 'name',
-    value: '',
-    initLen: 0,
-    err: '请输入大于2个字的名称',
-    errClass: '',
-    visible: true
-  },
-  {
-    label: 'SEO标题',
-    placeholder: "请输入标题, 9~50个字",
-    required: false,
-    maxLength: 50,
-    minLength: 9,
-    id: 'seoT',
-    value: '',
-    initLen: 0,
-    err: '请输入大于9个字的SEO标题',
-    errClass: '',
-    visible: true
-  },
-  {
-    label: 'SEO关键词',
-    placeholder: "请输入关键词",
-    required: false,
-    id: 'seoK',
-    value: '',
-    initLen: 0,
-    minLength: 0,
-    maxLength: 100,
-    err: '',
-    errClass: '',
-    visible: true
-  },
-  {
-    label: 'SEO描述',
-    placeholder: "请输入描述, 40~80个字",
-    required: false,
-    maxLength: 80,
-    minLength: 40,
-    id: 'seoD',
-    value: '',
-    initLen: 0,
-    err: '请输入大于40个字的SEO描述',
-    errClass: '',
-    visible: true
-  },
-]
-
-
-const errClass = 'input-error'
 
 interface Props {
-  editItem?: any;
+  cateList: CateItem[]
+  updateCateList: (val: CateItem[]) => void
+  editItem: CateItem | null;
   type: ContentCateType;
   visible: boolean;
-  groupCreate(item: CateItem): void;
-  groupUpdate(item: CateItem): void;
   onClose(): void;
 }
 const NewCate = (props: Props) => {
   const params: RouteParams = useParams();
-  const { editItem, type, onClose, groupCreate, groupUpdate } = props;
-  const [config, setConfig] = useState(groupConfig)
-  const [err, setError] = useState('')
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  useEffect(() => {
-    const groupCloneConfig = groupConfig.concat()
+  const { cateList, updateCateList, editItem, type, onClose } = props;
+  const [config] = useState(contentGroupForm)
+  const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
+  const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
+
+  const initEditData = useMemo(() => {
     if (editItem) {
-      setConfig(config.map(g => {
-        g.value = editItem[g.id]
-        g.initLen = editItem[g.id].length
-        if (g.required && g.value) {
-          g['errClass'] = ''
-          setError('')
-        }
-
-        if (g.value && g.initLen > g.minLength) {
-          g['errClass'] = ''
-          setError('')
-        }
-        return g
-      }))
-    } else {
-      setConfig(groupCloneConfig.map(x => {
-        x.value = (editItem && editItem[x.id]) || '';
-        return x;
-      }))
-    }
-  }, [editItem]);
-
-  const resetConfigValue = (config: any) => {
-    setConfig(config.map((x: any) => { x.value = ''; x.initLen = 0; return x }))
-  }
-
-  const handleOk = async () => {
-    if (confirmLoading) {
-      return
-    }
-    const r: any = {}
-    let errInfo: string = ''
-    const newConfig = config.concat()
-    newConfig.forEach((c, i) => {
-      r[c.id] = c.value
-      if (c.required && !c.value) {
-        newConfig[i]['errClass'] = errClass
-        errInfo = `您输入${c.label}不能为空`
-        setConfig(newConfig)
-      }
-
-      if (c.value && c.initLen < c.minLength) {
-        errInfo = c.err
-        newConfig[i]['errClass'] = errClass
-
-      }
-    })
-
-    setError(errInfo)
-    setConfig(newConfig)
-
-    if (errInfo.length) {
-      return;
-    }
-    setConfirmLoading(true)
-    // to api
-    if (editItem) {
-      const mergeItem = Object.assign(editItem, r);
-      const res = await updateContentCateApi(Number(params.id), { ...mergeItem, type })
-      setConfirmLoading(false)
-      if (res?.success) {
-        successMessage('编辑成功');
-        groupUpdate(res?.data as any);
-        resetConfigValue(config);
-        onClose();
-      } else {
-        errorMessage(res?.message)
+      return {
+        ...editItem,
       }
     } else {
-      const res = await createContentCateApi(Number(params.id), { ...r, type })
-      setConfirmLoading(false)
-      if (res?.success) {
-        successMessage('新增分组成功');
-        groupCreate(res?.data as any);
-        resetConfigValue(config);
-        onClose();
-      } else {
-        errorMessage(res?.message)
-      }
+      return { rank: 1 }
     }
-  };
+  }, [editItem])
 
-  // 输入框
-  const handleChange = (e: any) => {
-    const target = e.target
-    const name = target.name
-    const value = target.value
-
-    setConfig(config.map(g => {
-      if (g.id === name) {
-        // 去掉空格
-        g.value = value.replace(/\s/g, '')
-        g.initLen = value.length
-      }
-      if (g.required && g.value) {
-        g['errClass'] = ''
-        setError('')
-      }
-
-      if (g.value && g.initLen > g.minLength) {
-        g['errClass'] = ''
-        setError('')
-      }
-      return g
-    }))
+  const delItem = (list: CateItem[], val: CateItem) => {
+    const oldIndex = list.findIndex((item: CateItem) => item.id === val.id)
+    list.splice(oldIndex, 1)
+    return list
   }
 
-  return (
-    <div className="group-modal">
-      <Modal
-        title="新建分组"
-        visible={props.visible}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={props.onClose}
-        className="g-modal"
-      >
-        <p className="error">{err}</p>
-        <ul className="g-main">
-          {config && config.map(g => {
-            return (
-              g.visible && <li className="f-input" key={g.id}>
-                <label htmlFor={g.id} className={classNames({ 'required': g.required })}>{g.label}</label>
-                <Input placeholder={g.placeholder} id={g.id} name={g.id} className={g.errClass} maxLength={g.maxLength} minLength={g.minLength} onChange={handleChange}
-                  value={g.value} />
-                {g.maxLength && <span className="f-len">{g.initLen}/{g.maxLength}</span>}
-              </li>
-            )
-          })}
-        </ul>
-      </Modal>
-    </div>
-  );
+  const addItem = (list: CateItem[], val: CateItem) => {
+    const newIndex = list.findIndex((item: CateItem) => !item.weight || item.weight < val.weight
+    )
+    list.splice(newIndex === -1 ? list.length : newIndex, 0, val)
+    return list
+  }
+
+  const groupCreate = (val: CateItem) => {
+    let newCateList = [...cateList]
+    newCateList = addItem(newCateList, val)
+    updateCateList(newCateList)
+  }
+
+  const groupUpdate = (val: CateItem) => {
+    let newCateList = [...cateList]
+    newCateList = delItem(newCateList, val)
+    newCateList = addItem(newCateList, val)
+    updateCateList(newCateList)
+  }
+
+  const handleSubmit = async (values: CreateContentCateApiParams) => {
+    const requestData: CreateContentCateApiParams = {
+      id: editItem?.id,
+      name: values.name,
+      seoD: values.seoD || '',
+      seoK: values.seoK || '',
+      seoT: values.seoT || '',
+      weight: values.weight,
+      type,
+    }
+    setUpDataLoading(true)
+
+    const res = await (editItem ? updateContentCateApi : createContentCateApi)(Number(params.id), requestData)
+    console.log(res)
+    if (res.success) {
+      if (editItem) {
+        successMessage('修改成功')
+        groupUpdate(res.data);
+      } else {
+        groupCreate(res.data);
+        successMessage('新建成功')
+      }
+      handleClose()
+    } else {
+      errorMessage(res.message)
+    }
+    setUpDataLoading(false)
+  }
+
+  const handleClose = () => {
+    formRef.current.form?.resetFields()
+    onClose();
+  }
+
+  return <Modal
+    width={580}
+    title={`${editItem ? '编辑' : '新建'}分组`}
+    visible={props.visible}
+    confirmLoading={upDataLoading}
+    onCancel={handleClose}
+    className="g-modal"
+    footer={null}
+  >
+    <WildcatForm
+      ref={formRef}
+      editDataSource={initEditData}
+      config={config}
+      submit={handleSubmit}
+      loading={upDataLoading}
+    />
+  </Modal>
 }
 
 //取状态管理里的当前店铺信息，用于判断店铺类型，是否显示SEO设置
