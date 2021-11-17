@@ -43,8 +43,7 @@ import {
   ProductListItem,
   ArticleListItem,
   NewestDataVersion,
-  ModulePageType,
-  ModuleComponentId,
+  CateItem,
   ModuleInitPage,
   ModuleProductSwiper,
   ModuleProductInfo,
@@ -185,12 +184,12 @@ export const deleteArticleApi = (shopId: number, params: HandleApiParams) => {
 
 // api: 新增分类
 export const createContentCateApi = (shopId: number, params: CreateContentCateApiParams) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/contentCate/create', params, setShopHeader(shopId))
+  return postApiData<CateItem>(ServicePath.SHOP, 'midway/backend/contentCate/create', params, setShopHeader(shopId))
 }
 
 // api: 更新分类
 export const updateContentCateApi = (shopId: number, params: CreateContentCateApiParams) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/contentCate/update', params, setShopHeader(shopId))
+  return postApiData<CateItem>(ServicePath.SHOP, 'midway/backend/contentCate/update', params, setShopHeader(shopId))
 }
 
 // api: 删除分类

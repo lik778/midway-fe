@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ShopBasisTab from '../shop-basis-tab';
+import ShopModuleTab from '../shop-module-tab'
 import MainTitle from '@/components/main-title';
-import { ShopBasisType } from '@/enums';
+import { ShopBasisType, ShopModuleType, ProductType } from '@/enums';
 import { Link, useParams } from 'umi';
-import { ShopInfo, AdviceRecord, RouteParams } from '@/interfaces/shop';
-import './index.less';
+import { ShopInfo } from '@/interfaces/shop';
+import styles from './index.less';
 import { connect, Dispatch } from 'dva';
+import { BaseProps } from '@/interfaces/base'
 import { GET_CUR_SHOP_INFO_ACTION, SHOP_NAMESPACE } from '@/models/shop';
-import { setAdviceRecordApi } from '@/api/shop';
-import { relative } from 'path/posix';
+
 import AdivceRecord from '../advice-record/index'
-import { errorMessage, successMessage } from '@/components/message';
-interface Props {
-  type: ShopBasisType;
+interface Props extends BaseProps {
+  type: ShopBasisType | ShopModuleType;
   curShopInfo?: ShopInfo | null;
   dispatch: Dispatch;
 }
 
-const BasicHeader = (props: Props) => {
+const BasicHeader: FC<Props> = (props) => {
   const { type, curShopInfo } = props
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [formLoading, setFormLoading] = useState<boolean>(false)
-  const params: RouteParams = useParams();
-
-
   const { id } = useParams<{ id: string }>()
+  const [isModalVisible, setIsModalVisible] = useState(false)
   useEffect(() => {
     props.dispatch({ type: `${SHOP_NAMESPACE}/${GET_CUR_SHOP_INFO_ACTION}`, id: Number(id) })
   }, [])
@@ -34,35 +30,29 @@ const BasicHeader = (props: Props) => {
   const onCancel = () => {
     setIsModalVisible(false)
   }
-  const sumbit = async (values: AdviceRecord) => {
-    setFormLoading(true)
-    const res = await setAdviceRecordApi(Number(params.id), values)
-    setFormLoading(false)
-    if (res?.success) {
-      successMessage('提交成功')
-    } else {
-      errorMessage('提交失败')
-    }
-    setIsModalVisible(false)
-  }
-  const onInit = (item: any) => {
-    item.resetFields()
-  }
+
   return (
     <>
-      <div className="basis-header">
+      <div className={`${styles["basis-header"]}`}>
         {
           curShopInfo?.name && <>
-            <Link className="arrow" to="/shop"></Link>
+            <Link className={`${styles["arrow"]}`} to="/shop"></Link>
             <MainTitle title={curShopInfo?.name} />
-            <a className="feed-back" href="#" onClick={showModal}>我要吐槽</a>
-            <a className="visit-online" href={curShopInfo?.shopDomain} target="_blank">访问线上</a>
+            <a className={`${styles["feed-back"]}`} href="#" onClick={showModal}>我要吐槽</a>
+            <a className={`${styles["visit-online"]}`} href={curShopInfo?.shopDomain} target="_blank">访问线上</a>
           </>
         }
-
-        <ShopBasisTab type={type} />
+        {
+          Object.values(ShopBasisType).includes(type as ShopBasisType) && <ShopBasisTab type={type as ShopBasisType} />
+        }
+        {
+          Object.values(ShopModuleType).includes(type as ShopModuleType) && <ShopModuleTab
+            type={type as ShopModuleType}
+            tabType={curShopInfo?.type === ProductType.B2B ? '产品' : '服务'}
+          />
+        }
       </div>
-      <AdivceRecord isModalVisible={isModalVisible} sumbit={sumbit} onCancel={onCancel} loading={formLoading} onInit={onInit} />
+      <AdivceRecord id={id} isModalVisible={isModalVisible} onCancel={onCancel} />
     </>
   );
 }

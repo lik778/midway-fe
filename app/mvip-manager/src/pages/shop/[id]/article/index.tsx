@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ContentHeader from '../components/content-header';
+import BasisHeader from '../components/basis-header';
 import ShopModuleGroup from '../components/shop-module-group';
 import ArticleBox from './components/article-box';
 import ArticleList from './components/list';
@@ -54,7 +54,7 @@ const ShopArticlePage = (props: any) => {
   }}
 
   return (<div>
-    <ContentHeader {...props} type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
+    <BasisHeader {...props} type={ShopModuleType.ARTICLE} onChangeType={onChangeType}/>
     <div className="container">
       <ArticleNav
         cateList={cateList}
@@ -70,7 +70,7 @@ const ShopArticlePage = (props: any) => {
         type={ContentCateType.ARTICLE}
         title="文章分组"
         cateList={cateList}
-        updateCateList={(list) => setCateList(list)}
+        updateCateList={setCateList}
         onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
         visible={moduleGroupVisible}
         save={() => removeOverflow(() => setModuleGroupVisible(false))}
@@ -89,7 +89,7 @@ const ShopArticlePage = (props: any) => {
       <ArticleBox
         cateList={cateList}
         editData={editArticleData}
-        updateCateList={(x) => setCateList(addKeyForListData([x, ...cateList]))}
+        updateCateList={setCateList}
         visible={articleFormVisible}
         onClose={() => removeOverflow(() => setArticleFormVisible(false)) }
         quota={quota} />

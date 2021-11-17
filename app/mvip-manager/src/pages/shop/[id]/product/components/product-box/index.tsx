@@ -22,7 +22,7 @@ interface Props {
   editData: ProductListItem | { [key: string]: any }
   visible: boolean;
   onClose(): void;
-  updateCateList(item: CateItem): void;
+  updateCateList(item: CateItem[]): void;
 }
 
 export default (props: Props) => {
@@ -128,8 +128,8 @@ export default (props: Props) => {
         type={ContentCateType.PRODUCT}
         editItem={null}
         visible={modalVisible}
-        groupUpdate={(item: CateItem) => { console.log(null) }}
-        groupCreate={(item: CateItem) => updateCateList(item)}
+        cateList={cateList}
+        updateCateList={updateCateList}
         onClose={() => setModalVisible(false)} />
       <MyModal
         title="确认关闭"

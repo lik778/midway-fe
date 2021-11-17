@@ -79,6 +79,7 @@ export interface CateItem {
   seoD?: string;
   seoK?: string;
   seoT?: string;
+  weight: number;
   num: number;
 }
 
@@ -128,6 +129,7 @@ export interface CreateContentCateApiParams {
   seoD: string;
   seoK: string;
   seoT: string;
+  weight: number;
   type: ContentCateType;
 }
 
