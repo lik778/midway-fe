@@ -198,7 +198,8 @@ const PostTitleCreate: FC = () => {
     if (res.success) {
       const { remainSize, titles } = res.data
       console.log(res.data)
-      successMessage(`为您总共生成${remainSize * (city.length || 1)}个标题`)
+      // 标题数量 如果单城市 ×1，多城市在勾选标题不放城市时×1,否则乘以数组长度
+      successMessage(`为您总共生成${remainSize * (city.length ? (notCityWord ? 1 : city.length) : 1)}个标题`)
       // 多城市需要拷贝下结果
       if (city.length > 1) {
         setDataList(city.reduce<CollectionCreateTitleParmas[]>((value, item) => {
