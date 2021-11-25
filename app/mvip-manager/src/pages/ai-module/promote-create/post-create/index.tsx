@@ -64,9 +64,10 @@ const CreatePost = (props: Props) => {
     setGetDataLoading(true)
     const res = await getCompanyMeta({ categoryId })
     if (res.success) {
-      console.log(res.data)
-      res.data.companyMeta.value = res.data.companyMeta.value || ' '
-      setCompanyMeta(res.data.companyMeta)
+      if (res.data.companyMeta && Object.prototype.toString.call(res.data.companyMeta) === '[object Object]') {
+        res.data.companyMeta.value = res.data.companyMeta.value || ' '
+        setCompanyMeta(res.data.companyMeta)
+      }
     } else {
       errorMessage(res.message || ' ')
     }
