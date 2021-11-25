@@ -102,9 +102,10 @@ export class ManagementService {
   public getManagementFile(req: Request, input: ApiReqParams) {
     const { path, params } = input
     const shopId: any = req.headers['shop-id']
+    console.log(input)
     return this.requestService.downloadFile(
       `${this.host}${path}`,
-      { ids: params.ids },
+      params,
       this.setApiAHeaders(req.cookies, shopId)
     )
   }

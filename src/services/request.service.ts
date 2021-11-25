@@ -98,9 +98,13 @@ export class RequestService {
 
   public downloadFile(url: string, params: {[key:string]: string}, headers?: any) {
     const querystring = qs.stringify(params);
-
+    console.log(`${url}${querystring?'?'+querystring:''}`)
+    console.log({
+      ...headers,
+      'Content-Type': 'application/octet-stream'
+    })
     return request.get({
-      url: `${url}?${querystring}`,
+      url: `${url}${querystring?'?'+querystring:''}`,
       gzip: true,
       headers: {
         ...headers,

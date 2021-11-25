@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Table, Button, message, Modal } from 'antd';
-import { getAdviceList, getDownload } from '../../api/adviceRecord'
-import { PageParams } from '../../interfaces/api'
-import { Advicerespone } from '../../interfaces/adviceRecord'
+import { getAdviceList, downloadFC } from '../../api/adviceRecord'
 import './index.css'
 
 export default () => {
@@ -75,7 +73,7 @@ export default () => {
   }
   // 点击下载
   const handleDown = async () => {
-    message.info('此功能待开发')
+    await downloadFC()
   }
   const closemodalShow = () => {
     setModalShow(false)
