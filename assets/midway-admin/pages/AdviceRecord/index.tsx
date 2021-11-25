@@ -75,7 +75,7 @@ export default () => {
   }
   // 点击下载
   const handleDown = async () => {
-    message.info('此功能待开发')
+    await getDownload()
   }
   const closemodalShow = () => {
     setModalShow(false)
