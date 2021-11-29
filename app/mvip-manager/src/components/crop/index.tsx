@@ -46,12 +46,15 @@ const Crop: FC<Props> = (props) => {
     if (!cropper) {
       return
     }
-    cropper.getCroppedCanvas().toBlob(async (blob) => {
+    cropper.getCroppedCanvas({
+      maxWidth: 3840,
+      maxHeight: 2580
+    }).toBlob(async (blob) => {
       // 创建formData数据,因为图片上传的请求支持格式
       if (!blob) return
       setUpDataLoading(true)
       const base64 = cropper.getCroppedCanvas().toDataURL(blob.type)
-      const suffix = blob?.type.split('/')[1] || 'png'
+      const suffix = blob.type.split('/')[1] || 'jpeg'
       const formData = new FormData()
       formData.append('policy', window.__upyunImgConfig?.uploadParams?.policy)
       formData.append('signature', window.__upyunImgConfig?.uploadParams?.signature)
@@ -59,7 +62,7 @@ const Crop: FC<Props> = (props) => {
       const res = await upImageToYoupai(formData)
       handleCropSuccess(res.data.url, base64)
       setUpDataLoading(false)
-    }/*, 'image/png' */);
+    }, "image/jpeg", 0.85);
   };
 
   return <Spin spinning={reloadLoading}> <div className={styles["crop-container"]}>
