@@ -103,19 +103,19 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const patternList = item.patternList ? item.patternList : [];
       let dom = <></>
       if (item.type === FormType.Input) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} showCount={item.showCount} />
         </Form.Item>
       } else if (item.type === FormType.InputNumber) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
         </Form.Item>
       } else if (item.type === FormType.Textarea) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} />
         </Form.Item>
       } else if (item.type === FormType.Select) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol} extra={item.extra}>
           <Select
             onChange={(newValue) => onChange(newValue, item.name || '')}
             placeholder={item.placeholder} size='large'
@@ -125,11 +125,11 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>
       } else if (item.type === FormType.ImgUpload) {
         dom = <Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
-          label={item.label} required={item.required} labelCol={item.labelCol}>
+          label={item.label} required={item.required} labelCol={item.labelCol} extra={item.extra}>
           <div className={styles['flex-box']}>
             {
               (item.images || []).map((img) => {
-                return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined}>
+                return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined} extra={img.extra}>
                   <ImgUpload uploadType={img.uploadType} unique={img.unique} showImage={img.shopImage} showVideo={img.showVideo} key={img.text} uploadBtnText={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled || disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
                 </Form.Item>
                 )
@@ -156,11 +156,11 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>
       } else if (item.type === FormType.AreaSelect) {
         const value = getEditData(item.name || '');
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <AreaSelect disabled={item.disabled || disabled} width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
         </Form.Item>
       } else if (item.type === FormType.GroupSelect) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol} extra={item.extra}>
           <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled || disabled}>
             {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
           </Select>
@@ -183,7 +183,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
             }
             return Promise.resolve()
           }
-        }]} labelCol={item.labelCol}>
+        }, ...patternList]} labelCol={item.labelCol} extra={item.extra} >
           <TagModule
             disabled={item.disabled || disabled}
             value={value || []}

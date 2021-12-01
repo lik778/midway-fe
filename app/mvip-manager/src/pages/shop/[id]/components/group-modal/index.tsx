@@ -1,14 +1,18 @@
 
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import './index.less';
+import { connect } from 'dva';
+import { ConnectState } from '@/models/connect';
+import { SHOP_NAMESPACE } from '@/models/shop';
+import { ShopInfo } from '@/interfaces/shop';
 import { Modal, FormInstance } from 'antd';
 import { createContentCateApi, updateContentCateApi } from '@/api/shop'
-import { CateItem, RouteParams, CreateContentCateApiParams, } from '@/interfaces/shop';
+import { CateItem, RouteParams, CreateContentCateApiParams, CreateContentCateParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
-import { ContentCateType } from '@/enums';
+import { ContentCateType, ProductType } from '@/enums';
 import WildcatForm from '@/components/wildcat-form';
 import { errorMessage, successMessage } from '@/components/message';
 import { contentGroupForm } from './config'
+import styles from './index.less';
 
 
 interface Props {
@@ -18,11 +22,12 @@ interface Props {
   type: ContentCateType;
   visible: boolean;
   onClose(): void;
+  curShopInfo: ShopInfo | null
 }
 const NewCate = (props: Props) => {
   const params: RouteParams = useParams();
-  const { cateList, updateCateList, editItem, type, onClose } = props;
-  const [config] = useState(contentGroupForm)
+  const { cateList, updateCateList, editItem, type, onClose, curShopInfo } = props;
+  const [config] = useState(contentGroupForm(curShopInfo?.type === ProductType.B2B, type))
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
 
@@ -30,6 +35,7 @@ const NewCate = (props: Props) => {
     if (editItem) {
       return {
         ...editItem,
+        seoK: editItem.seoK ? editItem.seoK.split(',') : []
       }
     } else {
       return { rank: 1 }
@@ -62,12 +68,12 @@ const NewCate = (props: Props) => {
     updateCateList(newCateList)
   }
 
-  const handleSubmit = async (values: CreateContentCateApiParams) => {
+  const handleSubmit = async (values: CreateContentCateParams) => {
     const requestData: CreateContentCateApiParams = {
       id: editItem?.id,
       name: values.name,
       seoD: values.seoD || '',
-      seoK: values.seoK || '',
+      seoK: values.seoK ? values.seoK.join(',') : '',
       seoT: values.seoT || '',
       weight: values.weight,
       type,
@@ -102,7 +108,7 @@ const NewCate = (props: Props) => {
     visible={props.visible}
     confirmLoading={upDataLoading}
     onCancel={handleClose}
-    className="g-modal"
+    className={styles["g-modal"]}
     footer={null}
   >
     <WildcatForm
@@ -116,4 +122,8 @@ const NewCate = (props: Props) => {
 }
 
 //取状态管理里的当前店铺信息，用于判断店铺类型，是否显示SEO设置
-export default NewCate
+export default connect((state: ConnectState) => {
+  const { curShopInfo } = state[SHOP_NAMESPACE];
+  return { curShopInfo }
+}
+)(NewCate)

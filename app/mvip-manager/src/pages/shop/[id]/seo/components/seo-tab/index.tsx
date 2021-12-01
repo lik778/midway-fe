@@ -1,66 +1,83 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Menu } from 'antd';
-import { Link } from 'umi';
-import { ShopBasisType, ShopTDKType } from '@/enums';
-import { useParams } from 'umi';
+import { Link, useParams } from 'umi';
+import { ShopInfo, ShopStatus } from '@/interfaces/shop';
+import { ProductType, ShopBasisType, ShopTDKType } from '@/enums';
 import { RouteParams } from '@/interfaces/shop';
-
 
 interface Props {
   type: ShopTDKType;
   nav: any[];
+  curShopInfo: ShopInfo | null,
+  shopStatus: ShopStatus | null
 }
 
-export default (props: Props) => {
+
+
+const SeoTab = (props: Props) => {
+  const { type, nav, curShopInfo, shopStatus } = props
   const params: RouteParams = useParams();
-  const [current, setCurrent] = useState(props.type)
-  const [nav, setNav] = useState(props.nav)
-  const handleClick = (e: { key: any; }) => {
-    setCurrent(e.key)
-  };
 
-  useEffect(() => {
-    setNav(props.nav)
-  }, [nav]);
-
-  let menuList = [
-    {
-      link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
-      label: "首页",
-      key: ShopTDKType.INDEX,
-      position: 'homePage',
-    },
-    {
-      link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.PRODUCT}`,
-      label: "服务页面",
-      key: ShopTDKType.PRODUCT,
-      position: 'productListPage',
-    },
-    {
-      link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.ARTICLE}`,
-      label: "文章页面",
-      key: ShopTDKType.ARTICLE,
-      position: 'articleListPage',
-    }
-  ]
-
-  nav.forEach((n, i) => {
-    menuList.map(m => {
-      if(m.position === n.position) {
-        m.label = n.name
+  const menuList = useMemo(() => {
+    let menuList = [
+      {
+        link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.INDEX}`,
+        label: "首页",
+        key: ShopTDKType.INDEX,
+        position: 'homePage',
+      },
+      {
+        link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.PRODUCT}`,
+        label: "产品服务",
+        key: ShopTDKType.PRODUCT,
+        position: 'productListPage',
+      },
+      {
+        link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.ARTICLE}`,
+        label: "新闻资讯",
+        key: ShopTDKType.ARTICLE,
+        position: 'articleListPage',
       }
+
+    ]
+
+    if (curShopInfo && curShopInfo.type === ProductType.B2B) {
+      menuList.push({
+        link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.AREA}`,
+        label: "通用地域/后缀",
+        key: ShopTDKType.AREA,
+        position: ''
+      })
+      if (shopStatus && shopStatus.hasTkdOptimizeRights) {
+        menuList.push({
+          link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.OPTIMIZATION}`,
+          label: "SEO优化",
+          key: ShopTDKType.OPTIMIZATION,
+          position: ''
+        })
+      }
+    }
+
+    nav.forEach((n, i) => {
+      menuList = menuList.map(m => {
+        return {
+          ...m,
+          label: m.position === n.position ? n.name : m.label
+        }
+      })
     })
-  })
+    return menuList
+  }, [nav, curShopInfo, shopStatus])
 
-
-  
   return (
-      <Menu onClick={handleClick} selectedKeys={[current]}  className="a-menu">
-        {menuList.map(item => {
-          return  <Menu.Item key={item.key}>
-            <Link to={item.link}>{item.label}</Link>
-          </Menu.Item>
-        })}
-      </Menu>
+    <Menu selectedKeys={[type]} className="a-menu">
+      {
+        menuList.map(item => <Menu.Item key={item.key}>
+          <Link to={item.link}>{item.label}</Link>
+        </Menu.Item>)
+      }
+    </Menu>
   );
 }
+
+export default SeoTab

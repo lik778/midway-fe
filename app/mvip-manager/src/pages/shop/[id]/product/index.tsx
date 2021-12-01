@@ -26,9 +26,14 @@ const ShopProductPage = (props: any) => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number | null>(null);
-  const typeTxt = useMemo(() => {
-    return curShopInfo?.type === ProductType.B2B ? '产品' : '服务'
+  const isB2B = useMemo(() => {
+    return curShopInfo?.type === ProductType.B2B
   }, [curShopInfo])
+
+  const typeTxt = useMemo(() => {
+    return isB2B ? '产品' : '服务'
+  }, [isB2B])
+
   // 获取店铺id
   const params: RouteParams = useParams();
 
@@ -84,6 +89,7 @@ const ShopProductPage = (props: any) => {
           visible={moduleGroupVisible}
           save={() => removeOverflow(() => setModuleGroupVisible(false))} />
         <ProductBox
+          isB2B={isB2B}
           typeTxt={typeTxt}
           cateList={cateList}
           editData={editProductData}

@@ -56,26 +56,20 @@ export default defineConfig({
       plugins: [new AntdDayjsWebpackPlugin()],
       optimization: {
         splitChunks: {
-          automaticNameDelimiter: '.',
+          chunks: 'all',
           minSize: 30000,
           minChunks: 1,
+          automaticNameDelimiter: '.',
           cacheGroups: {
             'vendors': {
               name: 'vendors',
-              chunks: 'all',
               test: /[\\/]node_modules[\\/]/,
               priority: 10,
-            },
-            'chunk-echarts': {
-              name: 'chunk-echarts',
-              chunks: 'all',
-              test: /[\\/]echarts(.*)/,
-              priority: 20
             }
           },
         },
       },
     });
   },
-  chunks: ['vendors', 'chunk-echarts', 'umi']
+  chunks: ['vendors', 'umi']
 });

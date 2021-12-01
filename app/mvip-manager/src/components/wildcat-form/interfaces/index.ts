@@ -61,6 +61,7 @@ export interface FormItem {
   hidden?: boolean,// 是否隐藏当前项
   showMetaSelectAll?: boolean
   children?: FormItem[];// 嵌套表单
+  extra?: ReactNode
 }
 
 export interface ImagesItem {
@@ -77,6 +78,7 @@ export interface ImagesItem {
   showUploadList?: ExpandShowUploadListInterface,
   cropProps: CropProps,
   uploadBeforeCrop?: boolean,// 上传前裁剪
+  extra?: ReactNode
 }
 
 

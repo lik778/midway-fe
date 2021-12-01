@@ -6,12 +6,13 @@ import { ProductListItem, ProductListItemInfoKey } from '@/interfaces/shop';
 import { PlusOutlined } from '@ant-design/icons'
 
 interface Props {
-
+  isB2B: boolean
 }
 const FormList = Form.List
 const FormItem = Form.Item
 
 const ProductKey: FC<Props> = (props) => {
+  const { isB2B } = props
   const [showElem, setShowElem] = useState(false)
   const mouseover = () => {
     setShowElem(true)
@@ -27,10 +28,13 @@ const ProductKey: FC<Props> = (props) => {
     >
       <p className={styles['setting-tip']}
       >输入参数名和参数值，例如"品牌"，"奥迪"，<span className={styles['tip-img']} onMouseOver={mouseover} onMouseOut={mouseout}>参数示意</span>
-        <span className={styles['imgs-tips']}>
+        <div className={styles['imgs-tips']}>
           <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/18cfbd879b579812ea7d146a56e9bc37.png" alt="logo" />
-        </span>
+        </div>
       </p>
+      {
+        isB2B && <p className={styles['seo-tip']}>如需获取自然排名，请填写产品参数，此举会大大提高排名概率。</p>
+      }
       <FormList name="params">
         {(fields, { add, remove }, { errors }) => (
           <>

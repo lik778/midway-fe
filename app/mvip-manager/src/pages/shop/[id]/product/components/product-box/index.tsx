@@ -17,6 +17,7 @@ import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
 interface Props {
+  isB2B: boolean,
   typeTxt: string
   cateList: CateItem[];
   editData: ProductListItem | { [key: string]: any }
@@ -25,8 +26,8 @@ interface Props {
   updateCateList(item: CateItem[]): void;
 }
 
-export default (props: Props) => {
-  const { typeTxt, onClose, visible, editData, cateList, updateCateList } = props;
+const ProductBox = (props: Props) => {
+  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -62,7 +63,7 @@ export default (props: Props) => {
     newFormConfig.customerFormItemList = [{
       key: 'params',
       index: 5,
-      node: <ProductKey key={'params'}></ProductKey>
+      node: <ProductKey key={'params'} isB2B={isB2B}></ProductKey>
     }]
     setformConfig({
       ...newFormConfig,
@@ -72,7 +73,7 @@ export default (props: Props) => {
 
   useEffect(() => {
     initForm()
-  }, [cateList, typeTxt])
+  }, [cateList, isB2B])
 
   const sumbit = async (values: any) => {
     values.name = values.name.trim();
@@ -142,3 +143,5 @@ export default (props: Props) => {
     </Drawer>
   );
 }
+
+export default ProductBox

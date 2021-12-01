@@ -21,7 +21,9 @@ export enum ShopBasisType {
 export enum ShopTDKType {
   INDEX = 'index',
   PRODUCT = 'product',
-  ARTICLE = 'article'
+  ARTICLE = 'article',
+  AREA = 'area',
+  OPTIMIZATION = 'optimization'
 }
 
 export enum ShopTDKPosition {

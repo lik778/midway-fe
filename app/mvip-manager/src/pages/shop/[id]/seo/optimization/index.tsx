@@ -3,5 +3,5 @@ import { ShopTDKType, ShopTDKPosition } from '@/enums';
 import SeoPage from '../components/page';
 
 export default () => {
-  return <SeoPage pagePosition={ShopTDKPosition.ARTICLE} pageType={ShopTDKType.ARTICLE}></SeoPage>
+  return <SeoPage pageType={ShopTDKType.OPTIMIZATION}></SeoPage>
 }
