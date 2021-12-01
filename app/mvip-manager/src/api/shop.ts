@@ -57,7 +57,10 @@ import {
   ModuleHomeABoutInfoParam,
   ModuleABoutABoutInfoParam,
   ModuleProductSwiperNoParam,
-  AdviceRecord
+  AdviceRecord,
+  TdkDetail,
+  TdkNav,
+  TdkSaveAreaSuffix
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -135,12 +138,24 @@ export const getBannerListApi = (shopId: number, params: ImgListParam) => {
 
 // 获取tdk List
 export const getMetaDetailApi = (shopId: number, params: TdkDetailMeta) => {
-  return postApiData<any>(ServicePath.SHOP, `midway/backend/meta/detail`, params, setShopHeader(shopId))
+  return postApiData<{
+    tkd: TdkDetail,
+    navigation: TdkNav[]
+  }>(ServicePath.SHOP, `midway/backend/meta/detail`, params, setShopHeader(shopId))
 }
 
 // 保存tdk信息
 export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
   return postApiData(ServicePath.SHOP, `midway/backend/meta/save`, params, setShopHeader(shopId))
+}
+
+// TODO;保存通用地域、后缀
+export const saveMateAreaSuffix = (shopId: number, params: TdkSaveAreaSuffix) => {
+  return postApiData(ServicePath.SHOP, `midway/backend/shop/saveTkdCommonParams`, params, setShopHeader(shopId))
+}
+
+export const optimizationMeta = (shopId: number) => {
+  return getApiData(ServicePath.SHOP, `midway/backend/shop/optimizeTkd`, {}, setShopHeader(shopId))
 }
 
 export const getProductListApi = (shopId: number, params: GetContentApiParams) => {

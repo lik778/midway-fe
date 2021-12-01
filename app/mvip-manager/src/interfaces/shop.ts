@@ -133,6 +133,30 @@ export interface CreateContentCateApiParams {
   type: ContentCateType;
 }
 
+export interface CreateContentCateParams {
+  id?: number;
+  name: string;
+  seoD: string;
+  seoK: string[];
+  seoT: string;
+  weight: number;
+  type: ContentCateType;
+}
+
+export interface TdkNav {
+  desc: string
+  display: number
+  id: string
+  name: string
+  position: string
+}
+
+export interface TdkDetail {
+  description: string | null
+  keywords: string[]
+  title: string | null
+}
+
 export interface TdkSaveMeta {
   description: string;
   keywords: string[];
@@ -140,6 +164,10 @@ export interface TdkSaveMeta {
   title: string;
 }
 
+export interface TdkSaveAreaSuffix {
+  areas: string[],
+  suffixs: string[]
+}
 export interface TdkDetailMeta {
   position: string;
 }
@@ -149,6 +177,7 @@ export interface ShopStatus {
   isTicketAvailable: boolean;
   userValidTickets: Ticket[];
   hasMultiShopRights: boolean;
+  hasTkdOptimizeRights: boolean;
 }
 
 export interface QuotaInfo {
@@ -200,6 +229,11 @@ export interface ShopInfo {
   type: string;
   usrId: number;
   newestDataVersion: NewestDataVersion | null;
+  tkdCommonParams: {
+    areas: string[] //用于seo
+    suffixs: string[] //用于seo
+  },
+  canOptimizeFlag: boolean// 用于seo一键优化
 }
 
 export interface CustomerListItem {

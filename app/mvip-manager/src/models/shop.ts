@@ -44,7 +44,7 @@ export const shopMapDispatchToProps = (dispatch: Dispatch): any => {
     getShopList: (data?: { reloadList?: boolean }) => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_LIST_ACTION), data: data || {} }),
     setShopList: (payload: ShopInfo[]) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_LIST_ACTION), payload }),
     setCurShopInfo: (shopInfo: ShopInfo) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_CUR_SHOP_INFO_ACTION), payload: shopInfo }),
-    getCurShopInfo: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_CUR_SHOP_INFO_ACTION) }),
+    getCurShopInfo: (id: number, data?: { reloadData?: boolean }) => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_CUR_SHOP_INFO_ACTION), id, data: data || {} }),
     getShopTotal: () => dispatch({ type: getFullAction(SHOP_NAMESPACE, GET_SHOP_TOTAL_ACTION) }),
     setShopTotal: (payload: number) => dispatch({ type: getFullAction(SHOP_NAMESPACE, SET_SHOP_TOTAL_ACTION), payload })
   }
@@ -57,7 +57,7 @@ export default <Model>{
     [GET_CUR_SHOP_INFO_ACTION]: function* (action: AnyAction, effects: EffectsCommandMap) {
       const { put, select } = effects
       const shopList: ShopInfo[] | null = yield select((state: any) => state[SHOP_NAMESPACE].shopList)
-      if (isNull(shopList)) {
+      if (isNull(shopList) || action?.data?.reloadData) {
         const { success, message, data } = yield getShopInfoApi(action.id)
         if (success) {
           yield put({ type: SET_CUR_SHOP_INFO_ACTION, payload: data })

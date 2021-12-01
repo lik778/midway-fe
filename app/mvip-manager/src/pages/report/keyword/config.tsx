@@ -9,9 +9,12 @@ import {
 import { BaxProductType, CateProductType, DisplayType } from '@/enums/report';
 
 const SearchEngineOptions = createOptions(PlatformLabelMap)
-const ProductOptions = createOptions({...BaxProductLabelMap, ...{
-  [CateProductType.SHOP]: '快照'
-}})
+
+const ProductOptions = createOptions({
+  [BaxProductType.BIAO_WANG]: BaxProductLabelMap[BaxProductType.BIAO_WANG],
+  [BaxProductType.YI_HUI_TUI]: BaxProductLabelMap[BaxProductType.YI_HUI_TUI],
+  [CateProductType.SHOP]: '快照',
+})
 const DisplayOptions = createOptions(DisplayLabelMap)
 
 interface Config {
@@ -70,14 +73,14 @@ export const keywordRankListConfig = ({
         render: (keyword: string, row: KeywordDetailListData) => {
           const { url, product, device } = row
           const productType: any = product;
-          const showContent = <i className="highlight left-m">{ `${keyword}` }</i>
+          const showContent = <i className="highlight left-m">{`${keyword}`}</i>
           if ([BaxProductType.BIAO_WANG, BaxProductType.YI_HUI_TUI].includes(productType)) {
             return url ?
-                <a href={url} target="_blank">{ showContent }</a> :
-                <span>{ showContent }</span>
+              <a href={url} target="_blank">{showContent}</a> :
+              <span>{showContent}</span>
           } else {
-            return <a href={`//${ device === DisplayType.PC ? 'www' : 'm' }.baidu.com/s?wd=${keyword}`}
-                    target="_blank">{ showContent }</a>
+            return <a href={`//${device === DisplayType.PC ? 'www' : 'm'}.baidu.com/s?wd=${keyword}`}
+              target="_blank">{showContent}</a>
           }
         }
       },
@@ -103,7 +106,7 @@ export const keywordRankListConfig = ({
         dataIndex: 'product',
         key: 'product',
         render: (product: any): string => {
-          const labels: any  = { ...BaxProductLabelMap, [CateProductType.SHOP]: '快照' };
+          const labels: any = { ...BaxProductLabelMap, [CateProductType.SHOP]: '快照' };
           return labels[product]
         }
       },

@@ -27,12 +27,12 @@ function genChartOptions(data: KeywordOverviewData | null) {
       left: 'left',
       textStyle: { fontSize: 18 }
     },
-    series : [
+    series: [
       {
         name: '关键词',
         type: 'pie',
-        radius : ['45%', '80%'],
-        data:[
+        radius: ['45%', '80%'],
+        data: [
           { name: '广告', value: data?.searchTotal || 0 },
           { name: '快照', value: data?.mainTotal || 0 }
         ],
@@ -50,21 +50,21 @@ function genChartOptions(data: KeywordOverviewData | null) {
 
 function KeyWordPage() {
   const [queryKeywordDetailForm] = Form.useForm()
-  const [ detailListData, , queryDetailList ] = useApi<ReportListResData<KeywordDetailListData[]> | null, KeywordDetailListParams>(null, getKeywordDetailList)
-  const [ overview, loading ] = useApi<KeywordOverviewData | null>(null, getKeywordOverview)
+  const [detailListData, , queryDetailList] = useApi<ReportListResData<KeywordDetailListData[]> | null, KeywordDetailListParams>(null, getKeywordDetailList)
+  const [overview, loading] = useApi<KeywordOverviewData | null>(null, getKeywordOverview)
 
   const genMainTitle = (key: string) => {
     const tooltipsMap: any = {
       total: { name: '总关键词数', tips: '总关键词数包括快照（SEO）关键词数与广告（SEM）关键词数总和' },
       mainTotal: { name: '快照关键词数', tips: '快照（SEO）关键词数包括店铺、帖子等关键词总和。店铺仅2-180天内有创建过AI发文的才会统计关键词数。' },
-      searchTotal: { name: '广告关键词数', tips: '广告（SEM）关键词总数包括凤鸣广告、标王广告、易慧推广告（SEM）关键词数总和。'  },
+      searchTotal: { name: '广告关键词数', tips: '广告（SEM）关键词总数包括凤鸣广告、标王广告、易慧推广告（SEM）关键词数总和。' },
       yihuitui: { name: '易慧推广告关键词数', tips: '易慧推广告（SEM）关键词数仅含广告关键词，易慧推广告（SEM）总关键词请结合快照（SEO）关键词数一起分析。' }
     }
     const titleItem = tooltipsMap[key]
     return (<Tooltip placement="top"
-        title={titleItem.tips}>
+      title={titleItem.tips}>
       <p style={{ marginBottom: 4 }}>{titleItem.name}
-      <span className="tips">?</span>
+        <span className="tips">?</span>
       </p>
     </Tooltip>)
   }
@@ -73,44 +73,25 @@ function KeyWordPage() {
     <div className="page-report page-report-keyword">
       <MainTitle title="关键词报表" />
       <div className="container">
-        { loading && <Loading/> }
-        { !loading && <div>
+        {loading && <Loading />}
+        {!loading && <div>
           <div className="segment">
             <h2>概览<span style={{ fontSize: 12, color: 'rgba(0, 0, 0, 0.45)' }}>
               （说明：关键词数据为7天内最新一次查询数据；快照数据包含店铺、帖子、问答；广告数据包含标王广告、凤鸣广告、易慧推广告。因时间周期问题，关键词上词数据存在不稳定性，统计数字仅供参考。）</span></h2>
             <Row className="statics-con" gutter={16}>
               <Col className="statics" span={8}>
                 <CountTo title={genMainTitle('total')}
-                 value={overview?.total} />
+                  value={overview?.total} />
               </Col>
               <Col className="statics" span={8}>
                 <CountTo title={genMainTitle('mainTotal')}
-                 type={ReportProductType.CATE} value={overview?.mainTotal} />
+                  type={ReportProductType.CATE} value={overview?.mainTotal} />
               </Col>
               <Col className="statics" span={8}>
                 <CountTo title={genMainTitle('searchTotal')}
-                 value={overview?.searchTotal} />
+                  value={overview?.searchTotal} />
               </Col>
             </Row>
-            <Divider />
-            <Row className="statics-con" gutter={16}>
-              <Col className="statics" span={8}>
-                <CountTo title="标王广告关键词数" isSub={true} type={ReportProductType.BIAOWANG}
-                   value={overview?.biaoWangKeyword} />
-              </Col>
-              <Col className="statics" span={8}>
-                <CountTo title="凤鸣广告关键词数" isSub={true} type={ReportProductType.FENGMING}
-                   value={overview?.fengMingKeyword} />
-              </Col>
-              <Col className="statics" span={8}>
-                <CountTo title={genMainTitle('yihuitui')} isSub={true} type={ReportProductType.YIHUITUI}
-                   value={overview?.yiHuiTuiKeyword} />
-              </Col>
-            </Row>
-          </div>
-          <div className="segment">
-            <h2>关键词统计</h2>
-            <PieChart option={ genChartOptions(overview) } />
           </div>
           <div className="segment">
             <h2>关键词排名明细</h2>
@@ -122,7 +103,7 @@ function KeyWordPage() {
               })}
             />
           </div>
-        </div> }
+        </div>}
       </div>
     </div>
   )
