@@ -1,7 +1,7 @@
 import { postApiData, getApiData, putApiData, deleteApiData } from './base';
 import { ServiceResponse } from '@/interfaces/api';
 import { ListRes, PageParams } from '@/interfaces/base';
-import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, CompanyMeta, CompanyInfo, AuthKey, SaveWordParmes } from '@/interfaces/ai-module';
+import { AiContentItem, AiShopList, AiTaskApiParams, ChooseWordList, QuestionTaskListItem, QuestionListItem, EditQuestion, BasicMaterialApiParams, InterrogativeListItem, CreateQuestionTaskPageStatus, CreateQuestionTaskBasicData, QuestionTaskApiParams, BasicMaterialDataItem, GetQuotaNumRes, CollectionListItem, CollectionDetail, UpdataCollectionParams, CollectionPreviewTitleParmas, CollectionTitleListItem, CollectionImageListItem, CollectionCityListItem, CollectionPreviewTitleListItem, CollectionCreateTitleParmas, UserVipResourcesListItem, SecondCategoriesListItem, ImgWholeUrlParmas, FragmentsListItem, MaterialListItem, CompanyMeta, CompanyInfo, AuthKey, SaveWordParmes, GetZhidaoAINavInfo } from '@/interfaces/ai-module';
 import { CollectionAction, CollectionFragmentsType } from '@/enums/ai-module'
 import { ServicePath } from '@/enums/index'
 import { getCookie } from '@/utils';
@@ -115,11 +115,7 @@ export const editQuestionApi = (requestData: EditQuestion) => {
 
 /** 获取当前免费数量 剩余信息发布点 */
 export const getQuotaNumApi = () => {
-  return postApiData<{
-    queryResultVo: GetQuotaNumRes,
-    consumeCount: number,
-    buyUrl?: string
-  }>(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/getQaAiPostQuota', {})
+  return postApiData<GetZhidaoAINavInfo>(ServicePath.ZHIDAO, 'zhidao/v1/backend/ai/getQaAiPostQuota', {})
 }
 
 /** 暂停启动任务 */

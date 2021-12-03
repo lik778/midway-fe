@@ -201,6 +201,15 @@ export interface GetQuotaNumRes {
   aiRemain: number,// AI剩余发布数
 }
 
+export interface GetZhidaoAINavInfo {
+  buyUrl: string
+  consumeCount: number
+  productLineId: number
+  queryResultVo: GetQuotaNumRes
+  vipId: number
+  vipType: string
+}
+
 
 /** 发帖通开始 */
 // 素材包列表
