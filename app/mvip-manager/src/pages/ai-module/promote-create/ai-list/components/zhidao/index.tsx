@@ -4,7 +4,7 @@ import { Link, useHistory } from "umi";
 import { getQuestionTaskListApi, getQuestionTaskStatusApi, getQuotaNumApi, setTaskStatusApi } from '@/api/ai-module';
 import styles from '../../index.less';
 import zhidaoStyles from './index.less';
-import { QuestionTaskListItem, GetQuotaNumRes, CollectionListItem } from '@/interfaces/ai-module';
+import { QuestionTaskListItem, GetQuotaNumRes, GetZhidaoAINavInfo } from '@/interfaces/ai-module';
 import { useDebounce } from '@/hooks/debounce'
 import { addKeyForListData, formatTime } from '@/utils';
 import { warnMessage, errorMessage, successMessage } from '@/components/message';
@@ -13,10 +13,7 @@ import { ZhidaoAiTaskStatusText } from '@/constants/ai-module';
 import AiModuleContext from '../../../context'
 
 
-interface QuotaNumInterface extends GetQuotaNumRes {
-  consumeCount: number,
-  buyUrl?: string
-}
+interface QuotaNumInterface extends GetQuotaNumRes, GetZhidaoAINavInfo { }
 
 interface Props {
   onCopy: () => void
@@ -36,11 +33,10 @@ const Zhidao: FC<Props> = (props) => {
   const getQuotaNum = async () => {
     const res = await getQuotaNumApi()
     if (res.success) {
-      const { queryResultVo, consumeCount, buyUrl } = res.data
+      const { queryResultVo } = res.data
       setQuotaNum({
-        ...queryResultVo,
-        consumeCount,
-        buyUrl
+        ...res.data,
+        ...queryResultVo
       })
     }
   }
@@ -175,7 +171,7 @@ const Zhidao: FC<Props> = (props) => {
         <Link className={`${styles['action-btn']} ${styles['create-action-btn']}`} to={'/ai-module/promote-create/zhidao-create'}>+AI批量创建推广</Link>
         <Link className={styles['action-btn']} to={'/ai-module/promote-create/zhidao-basic-material'}>基础素材</Link>
         {/* TODO; */}
-        <Button className={styles['action-btn']} onClick={() => handleClickA('//www.baixing.com/vip/manager/service/12/enterpriseQA/release')}>手动发布</Button>
+        <Button className={styles['action-btn']} onClick={() => handleClickA(`//www.baixing.com/vip/manager/service/${quotaNum.productLineId}/enterpriseQA/release`)}>手动发布</Button>
       </div>
 
       <p className={styles['page-tip']}>当前AI剩余问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</p>
