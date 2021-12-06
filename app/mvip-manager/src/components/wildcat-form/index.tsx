@@ -217,7 +217,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           props.submitBtn || config && config.buttonConfig &&
           (<Row>
-            <Col span={3}></Col>
+            <Col span={config.useLabelCol ? config.useLabelCol.span : 3}></Col>
             <Col> <Button loading={loading} className={`${styles['sumbit-btn']} ${config.buttonConfig.className}`} type="primary" size={config.buttonConfig.size} htmlType="submit" style={{ marginLeft: '16px' }}>
               {config.buttonConfig.text}</Button></Col>
           </Row>)
