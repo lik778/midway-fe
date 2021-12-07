@@ -6,6 +6,7 @@ block header
   include ../components/header
   include ../components/swiper
   +swiper('home')
+
   if isSem !== "2" && isSem !== "1"
     - const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
     include ../components/company-info-home
@@ -14,6 +15,10 @@ block header
       include ../components/nav
 
 block content
+  - const { autoConfig } = renderData
+  if autoConfig[3]&&autoConfig[3].show
+    include ../components/home-big-image.pug
+    +big-image(autoConfig[3])
   - hotProductList = renderData.productRecommend.productList.slice(0,12)
   - name = renderData.productRecommend.name || '热门推荐'
   .block-container 
@@ -23,10 +28,9 @@ block content
       +product-list-hot(hotProductList)
 
   //-自定义模块1（即之前的企业优势模块）
-  - const { autoConfig } = renderData
-  if autoConfig && autoConfig[0] && autoConfig[0].show
+  if autoConfig[1] && autoConfig[1].show
     include ../components/user-defined-module-new.pug
-    +user-defined-module-new(autoConfig[0])
+    +user-defined-module-new(autoConfig[1])
 
   if isSem !== "1"
     include ../components/aboutus.pug

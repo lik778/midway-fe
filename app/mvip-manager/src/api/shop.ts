@@ -15,9 +15,9 @@ import {
   ShopStatus,
   ShopInfo,
   CustomerSetListItem,
-  CustomerSetChildListItem,
+  CustomerSetBigImage,
   CustomerListItem,
-  MediaCateItem,
+  CustomerSetBigImageDetail,
   MediaAssetsItem,
   CreateShopParams,
   RenewShopParams,
@@ -234,21 +234,24 @@ export const getCustomerModuleListApi = (shopId: number) => {
 
 /** 获取某个自定义设置 */
 export const getCustomerSetApi = (shopId: number, id: string) => {
-  return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id: Number(id) }, setShopHeader(shopId))
+  return postApiData<CustomerSetListItem | CustomerSetBigImageDetail>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/mainModuleContent', { id: Number(id) }, setShopHeader(shopId))
 }
 
+
 /** 保存某个自定义设置 */
-export const setCustomerSetApi = (shopId: number, requestData: {
-  mainModuleId?: number,
-  mainModuleTitle: string,
-  show: boolean,
-  subModuleVos: CustomerSetChildListItem[],
+export const setCustomerSetApi = (shopId: number, requestData: CustomerSetListItem & {
   subModulesToDelete: number[]
 }) => {
   return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))
 }
 
 /** 保存某个自定义设置 */
+export const setCustomerBigImageSetApi = (shopId: number, requestData: CustomerSetBigImage) => {
+  return postApiData<CustomerSetBigImage>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyImgAuto', requestData, setShopHeader(shopId))
+}
+
+
+/** 保存某个自定义是否显示设置 */
 export const setCustomerSetShowApi = (shopId: number, requestData: {
   mainModuleId?: number,
   show: boolean,

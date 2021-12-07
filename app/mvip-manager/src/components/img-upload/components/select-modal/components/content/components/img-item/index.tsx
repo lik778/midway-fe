@@ -59,7 +59,11 @@ const ImgItem: FC<Props> = (props) => {
       errorMessage(detail.reason)
       return
     }
-    setCropVisible(true)
+    if (cropProps.notSelectCrop) {
+      setImage(detail.imgUrl, detail.imgUrl)
+    } else {
+      setCropVisible(true)
+    }
   }
 
   const handleDoubleClick = () => {
@@ -93,7 +97,7 @@ const ImgItem: FC<Props> = (props) => {
   }
 
   // 传入url ，返回裁剪后的图的uid
-  const handleCropSuccess = (uid: string, previewUrl: string) => {
+  const setImage = (uid: string, previewUrl: string) => {
     const newFile: UploadFile = { uid: `${detail.id}`, status: 'done', url: uid, thumbUrl: uid, preview: previewUrl as string, size: 0, name: '', originFileObj: null as any, type: 'IMAGE' }
     if (maxLength === 1) {
       handleChangeLocalFileList([newFile])
@@ -150,7 +154,7 @@ const ImgItem: FC<Props> = (props) => {
       </div>
     </StatusBox>
     <CacheComponent visible={((file && file.status === 'done') || !file) && cropVisible}>
-      <CropModal cropVisible={((file && file.status === 'done') || !file) && cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={handleCropSuccess}></CropModal>
+      <CropModal cropVisible={((file && file.status === 'done') || !file) && cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={detail.imgUrl} handleCropSuccess={setImage}></CropModal>
     </CacheComponent>
   </>
 }

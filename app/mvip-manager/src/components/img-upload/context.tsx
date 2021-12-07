@@ -41,6 +41,7 @@ const defaultValue = {
   handleRemove: (file: UploadFile, fileIndex: number) => { },
   handleCrop: (file: UploadFile, fileIndex: number) => { },
   handleSelectCover: (file: UploadFile, fileIndex: number) => { },
+  handleMove: (file: UploadFile, fileIndex: number, order: -1 | 1) => { },
 }
 
 const ImgUploadContext = React.createContext<ImgUploadContextProps>(defaultValue);

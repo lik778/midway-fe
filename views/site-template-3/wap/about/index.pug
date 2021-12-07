@@ -10,9 +10,8 @@ block append header
 
 block content
 		- const userDefinedList = renderData.autoConfig
-		if userDefinedList && userDefinedList.length>0
-				include ../components/user-defined-module.pug
-				+user-defined-module('about',userDefinedList)
+		include ../components/user-defined-module.pug
+		+user-defined-module('about',userDefinedList)
 		include ../components/aboutus.pug
 		include ../components/contact-form.pug
 

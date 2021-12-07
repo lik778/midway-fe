@@ -1,5 +1,5 @@
-import React, { forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
-import { Button, Form, Input, Select, Checkbox, InputNumber, Row, Col } from 'antd';
+import React, { forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+import { Button, Form, Input, Select, Checkbox, InputNumber, Switch, Row, Col } from 'antd';
 import { FormItem, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
@@ -103,19 +103,19 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const patternList = item.patternList ? item.patternList : [];
       let dom = <></>
       if (item.type === FormType.Input) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} showCount={item.showCount} />
         </Form.Item>
       } else if (item.type === FormType.InputNumber) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
         </Form.Item>
       } else if (item.type === FormType.Textarea) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} />
         </Form.Item>
       } else if (item.type === FormType.Select) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol} extra={item.extra}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol} extra={item.extra}>
           <Select
             onChange={(newValue) => onChange(newValue, item.name || '')}
             placeholder={item.placeholder} size='large'
@@ -124,13 +124,13 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           </Select>
         </Form.Item>
       } else if (item.type === FormType.ImgUpload) {
-        dom = <Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.label}
+        dom = <Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.name}
           label={item.label} required={item.required} labelCol={item.labelCol} extra={item.extra}>
           <div className={styles['flex-box']}>
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined} extra={img.extra}>
-                  <ImgUpload uploadType={img.uploadType} unique={img.unique} showImage={img.shopImage} showVideo={img.showVideo} key={img.text} uploadBtnText={img.text} editData={editDataSource && editDataSource[img.name]} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled || disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
+                  <ImgUpload uploadType={img.uploadType} unique={img.unique} showImage={img.shopImage} showVideo={img.showVideo} key={img.text} uploadBtnText={img.text} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled || disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
                 </Form.Item>
                 )
               })
@@ -156,7 +156,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>
       } else if (item.type === FormType.AreaSelect) {
         const value = getEditData(item.name || '');
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[...patternList]} labelCol={item.labelCol} extra={item.extra}>
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} required={item.required} rules={[...patternList]} labelCol={item.labelCol} extra={item.extra}>
           <AreaSelect disabled={item.disabled || disabled} width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
         </Form.Item>
       } else if (item.type === FormType.GroupSelect) {
@@ -167,7 +167,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         </Form.Item>
       } else if (item.type === FormType.Tag) {
         const value = form.getFieldsValue()[item.name || ''];
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.label} required={item.required} rules={[{
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} required={item.required} rules={[{
           validator: async (rule: any, value: any) => {
             const minNum = item.minNum || 0
             const maxNum = item.maxNum || 1000000
@@ -196,35 +196,37 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         const value = getEditData(item.name || '');
         dom = <MetasSelect disabled={item.disabled || disabled} item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} showSelectAll={item.showMetaSelectAll}></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
-        dom = <Form.Item className={item.className} label={item.label} key={item.label} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        dom = <Form.Item className={item.className} label={item.label} key={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol}>
           {
             item.children ? creatForm(item.children) : ''
           }
         </Form.Item>
+      } else if (item.type === FormType.Switch) {
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required ,message:'请选择该项'}, ...patternList]} labelCol={item.labelCol} valuePropName="checked">
+          <Switch onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
+        </Form.Item>
       }
-      return <div className={styles['form-item-box']} key={item.label}>{dom}{item.slotDom}
+      return <div className={styles['form-item-box']} key={item.name}>{dom}{item.slotDom}
       </div>
     })
   }
 
-  return (
-    <>
-      <Form layout={config.layout || 'horizontal'} form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
-        onFinish={props.submit} onValuesChange={props.formChange} className={`${styles['form-styles']} ${props.className}`} labelAlign={config.labelAlign || 'right'}>
-        {
-          creatForm(FormItemList)
-        }
-        {
-          props.submitBtn || config && config.buttonConfig &&
-          (<Row>
-            <Col span={config.useLabelCol ? config.useLabelCol.span : 3}></Col>
-            <Col> <Button loading={loading} className={`${styles['sumbit-btn']} ${config.buttonConfig.className}`} type="primary" size={config.buttonConfig.size} htmlType="submit" style={{ marginLeft: '16px' }}>
-              {config.buttonConfig.text}</Button></Col>
-          </Row>)
-        }
-      </Form>
-    </>
-  )
+  return <>
+    <Form layout={config.layout || 'horizontal'} form={form} style={config && config.width ? { width: config.width } : {}} name={config && config.name} labelCol={config.useLabelCol ? config.useLabelCol : { span: 3 }}
+      onFinish={props.submit} onValuesChange={props.formChange} className={`${styles['form-styles']} ${props.className}`} labelAlign={config.labelAlign || 'right'}>
+      {
+        creatForm(FormItemList)
+      }
+      {
+        props.submitBtn || config && config.buttonConfig &&
+        (<Row>
+          <Col span={config.useLabelCol ? config.useLabelCol.span : 3}></Col>
+          <Col> <Button loading={loading} className={`${styles['sumbit-btn']} ${config.buttonConfig.className}`} type="primary" size={config.buttonConfig.size} htmlType="submit" style={{ marginLeft: '16px' }}>
+            {config.buttonConfig.text}</Button></Col>
+        </Row>)
+      }
+    </Form>
+  </>
 }
 
 export default forwardRef(WildcatForm)

@@ -7,16 +7,16 @@ import UploadBtn from '@/components/img-upload/components/upload-btn'
 
 const Upload2: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { fileList, initConfig: { maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handlePreview, handleRemove, handleCrop, handleSelectCover, handleChangeAlbumVisible } = context
+  const { fileList, initConfig: { maxLength, itemWidth, disabled, showUploadList, actionBtn, uploadBtnText }, handlePreview, handleRemove, handleCrop, handleSelectCover, handleMove, handleChangeAlbumVisible, } = context
 
   return <>
     <div className={styles['img-selected-list']}>
       {
         fileList.map((item, index, arr) => {
           if (item.type === 'IMAGE') {
-            return <ImgItem disabled={disabled} fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>
+            return <ImgItem disabled={disabled} fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onCrop={handleCrop} onMove={handleMove} actionBtn={actionBtn} key={`${item.uid}-${index}`}></ImgItem>
           } else if (item.type === 'VIDEO') {
-            return <VideoItem disabled={disabled} fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onSelectCover={handleSelectCover} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
+            return <VideoItem disabled={disabled} fileIndex={index} file={item} fileList={arr || []} showUploadList={showUploadList} itemWidth={itemWidth} onPreview={handlePreview} onRemove={handleRemove} onMove={handleMove} onSelectCover={handleSelectCover} actionBtn={actionBtn} key={`${item.uid}-${index}`}></VideoItem>
           }
         })
       }

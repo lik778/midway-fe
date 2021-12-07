@@ -267,6 +267,28 @@ export interface CustomerSetListItem {
   subModuleBos: CustomerSetChildListItem[];
 }
 
+export interface CustomerSetBigImageDetail {
+  id: 3
+  data: {
+    pcImgList: string[],
+    wapImgList: string[]
+  } | null
+  show: boolean
+  type: "THIRD"
+  dataId: number | null,
+  mainModuleTitle: string
+}
+
+// 自定义设置大图 
+export interface CustomerSetBigImage {
+  dataId: number | null,
+  mainModuleId: number,
+  show: boolean;
+  type: 'THIRD'
+  pcImgList: string[];
+  wapImgList: string[]
+}
+
 export interface Quota {
   id: number;
   postQuota: number; // 发文quota

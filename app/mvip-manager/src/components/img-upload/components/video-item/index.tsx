@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState, useContext } from 'react';
-import { EyeOutlined, DeleteOutlined, ScissorOutlined, DownloadOutlined } from '@ant-design/icons'
+import { EyeOutlined, DeleteOutlined, ScissorOutlined, DownloadOutlined, UpOutlined, DownOutlined } from '@ant-design/icons'
 import { UploadFile, } from 'antd/lib/upload/interface'
 import styles from './index.less'
 import { ActionBtnListItem, ExpandShowUploadListInterface } from '../../data'
@@ -19,12 +19,13 @@ interface Props {
   onCrop?: (file: UploadFile, fileIndex: number) => void,
   onDownload?: (file: UploadFile, fileIndex: number) => void,
   onSelectCover?: (file: UploadFile, fileIndex: number) => void
+  onMove?: (file: any, fileIndex: number, order: -1 | 1) => void
 }
 
 const VideoItem: FC<Props> = (props) => {
   const context = useContext(ImgUploadContext)
   const { handleChangeFileList } = context
-  const { disabled, file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover } = props
+  const { disabled, file, fileList, fileIndex, itemWidth, actionBtn, showUploadList, onPreview, onRemove, onDownload, onSelectCover, onMove } = props
 
   const localShopUploadList = useMemo<ExpandShowUploadListInterface>(() => {
     const initShowUploadList: ExpandShowUploadListInterface = {
@@ -39,6 +40,9 @@ const VideoItem: FC<Props> = (props) => {
         width: 14,
         height: 14
       }} src="//file.baixing.net/202108/be570e4aba6980dda40f5dfbb5cc2937.png"></img>,
+      showSortIcon: false,
+      sortForwardIcon: <UpOutlined color={'#fff'} />,
+      sortBackwardIcon: <DownOutlined color={'#fff'} />
     }
     if (showUploadList) {
       return {
@@ -96,6 +100,25 @@ const VideoItem: FC<Props> = (props) => {
                       localShopUploadList.downloadIcon
                     }
                   </a>)
+              }
+              {
+                // 排序
+                (localShopUploadList.showSortIcon) && file.status === 'done' && onMove && <>
+                  {
+                    fileIndex !== 0 && <div className={styles['action-btn']} title="前移" onClick={() => onMove(file, fileIndex, -1)}>
+                      {
+                        localShopUploadList.sortForwardIcon
+                      }
+                    </div>
+                  }
+                  {
+                    fileIndex !== fileList.length - 1 && <div className={styles['action-btn']} title="后移" onClick={() => onMove(file, fileIndex, 1)}>
+                      {
+                        localShopUploadList.sortBackwardIcon
+                      }
+                    </div>
+                  }
+                </>
               }
               {
                 actionBtn && actionBtn.map((item, index) => {

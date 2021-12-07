@@ -26,12 +26,12 @@ const ProductKey: FC<Props> = (props) => {
       label={'参数:'}
       key={'params'}
     >
-      <p className={styles['setting-tip']}
+      <div className={styles['setting-tip']}
       >输入参数名和参数值，例如"品牌"，"奥迪"，<span className={styles['tip-img']} onMouseOver={mouseover} onMouseOut={mouseout}>参数示意</span>
         <div className={styles['imgs-tips']}>
           <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/18cfbd879b579812ea7d146a56e9bc37.png" alt="logo" />
         </div>
-      </p>
+      </div>
       {
         isB2B && <p className={styles['seo-tip']}>如需获取自然排名，请填写产品参数，此举会大大提高排名概率。</p>
       }

@@ -9,6 +9,7 @@ import { CustomerSetChildListItem, InitCustomerSetChildListItem } from '@/interf
 
 import styles from './index.less'
 import { getImgUploadValueModel } from '@/components/img-upload';
+import { ModuleID } from '../../../../data'
 
 const FormItem = Form.Item
 
@@ -16,7 +17,7 @@ interface Props {
   index: number,
   item: CustomerSetChildListItem,
   key: string,
-  moduleID: string
+  moduleID: ModuleID
   total: number
   onDel: (item: CustomerSetChildListItem) => void
 }
