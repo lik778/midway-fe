@@ -2,9 +2,8 @@ import { FormType } from '../enums'
 import { ColProps } from 'antd'
 import { ReactNode } from 'react'
 import { ExpandShowUploadListInterface } from '@/components/img-upload/data'
-import { CropProps } from '@/components/crop/data'
 import { FormLayout } from 'antd/lib/form/Form'
-
+import { imageCropProps } from '@/components/img-upload/data'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -37,7 +36,7 @@ export interface CustomerFormItem {
   hidden?: boolean,// 是否隐藏
 }
 export interface FormItem {
-  label: string; // 页面标签
+  label: ReactNode; // 页面标签
   type: FormType; // 表单类型
   name: string; // 字段名
   required: boolean; // 是否必填
@@ -76,7 +75,7 @@ export interface ImagesItem {
   maxLength?: number
   aspectRatio?: number// 图片显示块的大小
   showUploadList?: ExpandShowUploadListInterface,
-  cropProps: CropProps,
+  cropProps: imageCropProps,
   uploadBeforeCrop?: boolean,// 上传前裁剪
   extra?: ReactNode
 }

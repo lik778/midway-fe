@@ -95,18 +95,23 @@ export class BaseSiteController {
     }
 
     if (!data.autoConfig) {
-      data.autoConfig = []
+      data.autoConfig = {
+        1: defaultAutoConfig1,
+        2: defaultAutoConfig2
+      }
     } else {
-      let newAutoConfig = []
+      let newAutoConfig = {
+        3: data.autoConfig[3]
+      }
       if (!data.autoConfig[1] || (data.autoConfig[1].show && (!data.autoConfig[1].subModuleBos || data.autoConfig[1].subModuleBos.length === 0))) {
-        newAutoConfig[0] = defaultAutoConfig1
+        newAutoConfig[1] = defaultAutoConfig1
       } else {
-        newAutoConfig[0] = data.autoConfig[1]
+        newAutoConfig[1] = data.autoConfig[1]
       }
       if (!data.autoConfig[2] || (data.autoConfig[2].show && (!data.autoConfig[2].subModuleBos || data.autoConfig[2].subModuleBos.length === 0))) {
-        newAutoConfig[1] = defaultAutoConfig2
+        newAutoConfig[2] = defaultAutoConfig2
       } else {
-        newAutoConfig[1] = data.autoConfig[2]
+        newAutoConfig[2] = data.autoConfig[2]
       }
       data.autoConfig = newAutoConfig
     }

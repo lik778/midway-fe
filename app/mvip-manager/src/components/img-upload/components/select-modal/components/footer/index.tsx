@@ -64,7 +64,7 @@ const ModalFooter: FC<Props> = (props) => {
             {
               item.type === 'VIDEO' && <div className={styles['play-icon']}></div>
             }
-            <img className={styles['img']} src={item.type === 'IMAGE' ? item.preview : item.thumbUrl} draggable={false}></img>
+            <img className={styles['img']} src={item.preview} draggable={false}></img>
             <div className={styles['delete']} onClick={() => handleDel(index)}>
               <DeleteOutlined style={{
                 color: '#fff'

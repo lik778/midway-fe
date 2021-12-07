@@ -1,0 +1,21 @@
+
+.info-icon {
+  position: absolute;
+  top: 5px;
+  left: calc(12.5% + 80px);
+  font-size: 14px;
+  color: #1890ff;
+  cursor: pointer;
+}
+.info-img {
+  display: none;
+  width: 560px;
+  position: absolute;
+  top: 30%;
+  left: calc(12.5% + 140px);
+  transform: translateY(-50%);
+  z-index: 100;
+}
+.info-icon:hover + .info-img {
+  display: inline-block;
+}

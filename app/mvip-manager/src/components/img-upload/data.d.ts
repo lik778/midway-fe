@@ -19,9 +19,12 @@ export type MediaItem = {
 }
 
 export interface ExpandShowUploadListInterface extends ShowUploadListInterface {
+  previewIcon?: React.ReactNode
+  showSortIcon?: boolean // 是否显示排序icon
+  sortForwardIcon?: React.ReactNode
+  sortBackwardIcon?: React.ReactNode
   showCropIcon?: boolean // 是否显示裁剪icon
   cropIcon?: React.ReactNode
-  previewIcon?: React.ReactNode
   showSelectCoverIcon?: boolean // 是否显示选择封面图
   selectCoverIcon?: React.ReactNode
 }
@@ -32,19 +35,23 @@ export interface ActionBtnListItem {
   title?: string // 动作描述
 }
 
+export interface imageCropProps extends CropProps {
+  notSelectCrop?: boolean // 选择的时候是否需要裁剪
+}
+
 export interface ImgUploadProps {
   uploadType: 1 | 2,//1：直接上传  2：打开图库
   unique?: boolean,// 是否禁止选择重复图片
   showImage?: boolean,// 是否显示图片相关tab
   showVideo?: boolean,// 是否显示视频相关tab
-  editData?: MediaItem | MediaItem[] | '';// 传入的数据
+  value?:MediaItem | MediaItem[] | '';
   uploadBtnText: string;// 上传按钮上的提示文本
   maxSize?: number;// 单个图片最大尺寸
   maxLength: number;// 本次上传个数上线
   disabled?: boolean | undefined;// 是否禁用
   aspectRatio?: number// 图片不是正方形的时候通过传比例去设置长度
   showUploadList?: ExpandShowUploadListInterface// 按钮控制
-  cropProps: CropProps,// 裁剪参数
+  cropProps: imageCropProps,// 裁剪参数
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
 
   // 当uploadType === 1 时的可选 开始
@@ -87,7 +94,7 @@ export interface ImgUploadContextInitConfig {
   aspectRatio?: number// 图片不是正方形的时候通过传比例去设置长度
   itemWidth?: number// 根据aspectRatio算出的长度
   showUploadList?: ExpandShowUploadListInterface// 按钮控制
-  cropProps: CropProps,// 裁剪参数
+  cropProps: imageCropProps,// 裁剪参数  用户可能不需要裁剪 所以添加禁止裁剪
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
   // 当uploadType === 1 时的可选 开始
   uploadBeforeCrop?: boolean,// 选择时裁剪
@@ -121,4 +128,5 @@ export interface ImgUploadContextProps {
   handleRemove: (file: UploadFile, fileIndex: number) => void
   handleCrop: (file: UploadFile, fileIndex: number) => void
   handleSelectCover: (file: UploadFile, fileIndex: number) => void
+  handleMove: (file: any, fileIndex: number, order: -1 | 1) => void
 }

@@ -19,6 +19,12 @@ block content
   if isSem !== "2"  && isSem !== "1"
     //-公司信息
     include ../components/company-info
+
+  - const { autoConfig } = renderData
+  if autoConfig[3]&&autoConfig[3].show
+    include ../components/home-big-image.pug
+    +big-image(autoConfig[3])
+    
   .contact-us-block
     .contact-us-block-title 
       | 联系我们，获取
@@ -32,10 +38,9 @@ block content
     +product-list(productList.slice(0,12))
 
   //-自定义模块
-  - const { autoConfig } = renderData
-  if autoConfig && autoConfig[0] && autoConfig[0].show
+  if autoConfig[1] && autoConfig[1].show
     include ../components/user-defined-module-new.pug
-    +user-defined-module-new(autoConfig[0])
+    +user-defined-module-new(autoConfig[1])
 
   //-TODO:新闻资讯模块
   include ../components/news-list-module.pug

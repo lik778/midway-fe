@@ -1,8 +1,23 @@
 .container {
+  position: relative;
   padding: 15px 20px 50px;
-  width: 920px;
-  .tabs{
+  .tabs {
     overflow: visible;
   }
-
+  .form-item {
+    :global {
+      .ant-form-item-label {
+        font-weight: bold;
+      }
+    }
+  }
+  .tip {
+    position: absolute;
+    right: 20px;
+    top: 28px;
+    color: #999;
+    .icon {
+      margin-right: 5px;
+    }
+  }
 }

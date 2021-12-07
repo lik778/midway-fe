@@ -88,10 +88,10 @@ const VideoItem: FC<Props> = (props) => {
       if (res.success) {
         successMessage('申诉成功，请到视频管理 - 申诉记录查看进度')
       } else {
-        throw new Error(res.message || '出错啦，请稍后重试')
+        errorMessage(res.message || '出错啦，请稍后重试')
       }
     } catch (e) {
-      errorMessage(e.message)
+      console.log(e)
     }
   }, [detail])
 
@@ -101,7 +101,7 @@ const VideoItem: FC<Props> = (props) => {
         height: itemHeight
       }} onClick={handleClickItem}>
         <div className={styles['play-icon']}></div>
-        <img className={styles['img']} src={detail.imgUrl || (file && file.thumbUrl)} />
+        <img className={styles['img']} src={detail.imgUrl || (file && (file.preview || file.thumbUrl))} />
         <div className={styles['title']}>{detail.title}</div>
         {
           typeof detail.checkStatus === 'string' && detail.checkStatus !== 'APPROVE' && (

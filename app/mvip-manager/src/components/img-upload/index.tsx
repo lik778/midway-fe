@@ -19,7 +19,26 @@ const getUrl = (url: string) => {
   if (url.indexOf('.baixing.') !== -1) {
     return url
   } else {
-    return `${url.slice(1,)}${window.__upyunImgConfig.imageSuffix}`
+    if (!url.startsWith('/')) {
+      return url
+    } else {
+      return `${url.slice(1,)}${window.__upyunImgConfig.imageSuffix}`
+    }
+  }
+}
+
+// 将图片的信息缓存到对象中 key是 当前资源的url 如果是视频还要加上封面图url  因为url值会被getUrl修改 导致触发修改前后 key不一样 所以 找到一个baseUrl就行~
+const getSaveImageOriginUrl = (url: string) => {
+  // 判断url里是否有二级域名baixing.
+  if (url.indexOf('.baixing.') !== -1) {
+    return url
+  } else {
+    let newUrlKey = url
+    if (newUrlKey.startsWith('/')) {
+      newUrlKey = newUrlKey.slice(1)
+    }
+    newUrlKey = newUrlKey.replace(window.__upyunImgConfig.imageSuffix, '')
+    return newUrlKey
   }
 }
 
@@ -38,9 +57,24 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 // 当前组件不要使用useContext(ImgUploadContext)
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
-  const { uploadType, unique = false, showImage = true, showVideo = false, editData, maxSize = 1, uploadBtnText, maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
+  const { uploadType, unique = false, showImage = true, showVideo = false, value, maxSize = 1, uploadBtnText, maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
+
+  // 用 file的url做key，然后存储对应的item 主要是为了存住图片对应的 preview 图片  所以 相同的图片会覆盖掉
+  const fileImageInfoObj = useMemo(() => {
+    const fileImageInfoObj: {
+      [key: string]: UploadFile
+    } = {}
+    fileList.forEach(item => {
+      if (item.type === 'IMAGE') {
+        fileImageInfoObj[getSaveImageOriginUrl(item.url!)] = item
+      } else {
+        fileImageInfoObj[`${item.url}-${getSaveImageOriginUrl(item.thumbUrl!)}`] = item
+      }
+    })
+    return fileImageInfoObj
+  }, [fileList])
 
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewMedia, setPreviewMedia] = useState<UploadFile>()
@@ -53,7 +87,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     return aspectRatio ? aspectRatio * 86 + 16 : undefined
   })
 
-  // 为了保证出参入参不被修改 从这以下不能修改
+  // 为了保证出参入参不被修改 从这以下不能修改 下面用for循环是因为 setFileList需要循环完全结束  二
   // [包装一下setFileList函数，不需要触发onChange时调用
   const createFileList = async (fileList: UploadFile[]) => {
     const newFileList: UploadFile<any>[] = []
@@ -102,13 +136,26 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   }, [onChange])
 
   const creatFileItem = (item: MediaItem, index: number): UploadFile => {
-    return { uid: `${item.url}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType, }
+    const fileItem: UploadFile = { uid: `${item.url}-${index}`, status: 'done', url: item.url, thumbUrl: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, preview: item.mediaType === 'VIDEO' ? item.coverUrl : item.url, size: 0, name: '', originFileObj: null as any, type: item.mediaType }
+
+    let fileImageInfoItem: UploadFile
+    if (item.mediaType === 'IMAGE') {
+      fileImageInfoItem = fileImageInfoObj[getSaveImageOriginUrl(item.url)]
+    } else {
+      fileImageInfoItem = fileImageInfoObj[`${item.url}-${getSaveImageOriginUrl(item.coverUrl || '')}`]
+    }
+    if (fileImageInfoItem) {
+      fileItem.preview = fileImageInfoItem.preview
+      fileItem.originFileObj = fileImageInfoItem.originFileObj
+      fileItem.size = fileImageInfoItem.size
+    }
+    return fileItem
   }
-  // 修改值初始化
-  // url 是当前媒体的url
-  // thumbUrl 是封面图字段 当mediaType==='VIDEO'时，可以为图片id
-  // preview 是图片预览字段 当mediaType==='VIDEO'时，是封面图预览 。当mediaType==='IMAGE'时，是图片的预览
-  const initEdit = () => {
+  // 修改值初始化 值是可以传给后端的
+  // url 是当前媒体的值
+  // thumbUrl mediaType==='VIDEO' ? 封面图的值 : 当前媒体的值
+  // preview  mediaType==='VIDEO'？封面图预览 : 图片的预览
+  const initEdit = (editData: "" | MediaItem | MediaItem[] | undefined) => {
     if (editData) {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
@@ -121,9 +168,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     }
   }
 
+  // 页面后续对value的更新会触发视图更新 但是感觉是重复渲染。淦  开始设计的时候没考虑 value字段
   useEffect(() => {
-    initEdit()
-  }, [editData])
+    initEdit(value)
+  }, [value])
 
   // 为了保证出参入参不被修改 从这以上不能修改
 
@@ -245,7 +293,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
         status: 'done',
         url: uid,
         preview: previewUrl,
-        thumbUrl: previewUrl
+        thumbUrl: uid
       }]
     } else {
       nowFileList = fileList.map((item, index) => {
@@ -254,7 +302,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
             ...item,
             url: uid,
             preview: previewUrl,
-            thumbUrl: previewUrl
+            thumbUrl: uid
           }
         } else {
           return item
@@ -265,6 +313,16 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     //  这里file的寻找用|| 是因为 当时上传前裁剪的话，将文件id作为图片的uid使用，保证唯一性
     decorateSetFileList(nowFileList, fileList)
     handleCropClose()
+  }
+
+  // 移动事件
+  const handleMove = async (file: UploadFile, fileIndex: number, order: -1 | 1) => {
+    if (fileList.length <= 1) return
+    const newFileList = [...fileList]
+    const item = newFileList[fileIndex]
+    newFileList[fileIndex] = newFileList[fileIndex + order]
+    newFileList[fileIndex + order] = item
+    decorateSetFileList(newFileList, fileList)
   }
 
   // TODO; 暂时没有下载功能就 a标签跳新页面了，就不写这个函数了
@@ -311,6 +369,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
           handlePreview,
           handleRemove,
           handleCrop,
+          handleMove,
           handleSelectCover,
         }}>
           {

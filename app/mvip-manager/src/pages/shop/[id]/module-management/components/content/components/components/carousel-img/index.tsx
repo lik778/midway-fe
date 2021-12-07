@@ -182,7 +182,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     }
   }
 
-
   // 提交函数 单个move还是从弹窗中选择了多个图,
   // 分自动更新还是手动更新，对应的数据源不同
   // 自动更新需要传 nowBannerList nowDelBannerIds
@@ -223,34 +222,6 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
     disabled: upDataLoading || getDataLoading
   }), [upDataLoading, getDataLoading, handleUpData])
 
-  // 移动事件
-  const handleMove = async (file: UploadFile, fileList: UploadFile[], fileIndex: number, handleChangeFileList: (newFileList: UploadFile<any>[], oldFileList: UploadFile<any>[], file: UploadFile<any> | null) => void, order: number) => {
-    const newFileList = [...fileList]
-    const item = newFileList[fileIndex]
-    newFileList[fileIndex] = newFileList[fileIndex + order]
-    newFileList[fileIndex + order] = item
-    handleChangeFileList(newFileList, fileList, file)
-  }
-
-  const renderIcons: ActionBtnListItem[] = useMemo(() => {
-    return [
-      {
-        title: "上移",
-        action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, -1),
-        icon: (file, fileList) => {
-          return fileList.findIndex(item => item.uid === file.uid) === 0 ? null : <UpOutlined />
-        },
-      },
-      {
-        title: "下移",
-        action: (file, fileList, fileIndex, handleChangeFileList) => handleMove(file, fileList, fileIndex, handleChangeFileList, 1),
-        icon: (file, fileList) => {
-          return fileList.findIndex(item => item.uid === file.uid) === fileList.length - 1 ? null : <DownOutlined />
-        },
-      },
-    ]
-  }, [handleMove])
-
   return (
     <div className={styles['carousel-img']} >
       <div className={styles["title"]}>{txt}: </div>
@@ -261,13 +232,13 @@ const CarouselItem = (props: Props, parentRef: Ref<any>) => {
           <ImgUpload
             uploadType={2}
             showVideo={showVideo}
-            editData={editData}
+            value={editData}
             uploadBtnText="上传图片/视频"
             maxSize={3}
             maxLength={5}
             aspectRatio={aspectRatio}
             cropProps={{ aspectRatio }}
-            actionBtn={renderIcons}
+            showUploadList={{ showSortIcon: true }}
             onChange={handleChange}
           />
         </div>
