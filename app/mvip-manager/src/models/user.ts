@@ -74,7 +74,7 @@ export default <Model>{
           yield put({
             type: SET_COMPANY_INFO_ACTION, payload: {
               ...data,
-              companyName: data.companyName || '个人'
+              companyName: data.companyNameLock ? data.companyName : '个人'
             }
           });
         } else {
