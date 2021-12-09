@@ -75,10 +75,10 @@ function CompanyInfoBase(props: Props) {
       setFormLoading(true)
       return
     }
-    const { companyNameLock, firstCategory, secondCategories } = companyInfo
+    const { firstCategory, secondCategories } = companyInfo
     const newChildren = config.children.map(item => {
       //目的：禁止企业名称改写
-      if (companyNameLock && item.name === 'companyName') {
+      if (item.name === 'companyName') {
         item.disabled = true
       }
 
@@ -103,7 +103,7 @@ function CompanyInfoBase(props: Props) {
 
 
   useEffect(() => {
-    getShopStatus() 
+    getShopStatus()
     track({
       eventType: BXMAINSITE,
       data: {
