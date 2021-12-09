@@ -71,7 +71,12 @@ export default <Model>{
       } else {
         const { success, message, data } = yield getEnterpriseForShopApi()
         if (success) {
-          yield put({ type: SET_COMPANY_INFO_ACTION, payload: data });
+          yield put({
+            type: SET_COMPANY_INFO_ACTION, payload: {
+              ...data,
+              companyName: data.companyName || '个人'
+            }
+          });
         } else {
           errorMessage(message)
           return
