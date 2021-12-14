@@ -20,19 +20,19 @@ export class RequestService {
       if (err.response) {
         const { message, code, success } = err.response.data
         if (this.landPageRequestRegExp.test(url)) {
-          throw new PageException(code, success, message, `request.service ${type} PageException 1`, { url, data, headers });
+          throw new PageException(code, success, message, `request.service ${type} PageException 1`, JSON.stringify({ url, data, headers }));
         } else {
-          throw new ApiException(code, success, message, `request.service ${type} ApiException 1`, { url, data, headers });
+          throw new ApiException(code, success, message, `request.service ${type} ApiException 1`, JSON.stringify({ url, data, headers }));
         }
       } else {
         throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
-          ${err}`, `request.service ${type} ApiException 2`, { url, data, headers });
+          ${err}`, `request.service ${type} ApiException 2`, JSON.stringify({ url, data, headers }));
       }
     } else {
       if (this.landPageRequestRegExp.test(url)) {
-        throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', `request.service ${type} PageException 2`, { url, data, headers });
+        throw new PageException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', `request.service ${type} PageException 2`, JSON.stringify({ url, data, headers }));
       } else {
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', `request.service ${type} ApiException 3`, { url, data, headers });
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '服务器异常', `request.service ${type} ApiException 3`, JSON.stringify({ url, data, headers }));
       }
     }
   }
@@ -96,15 +96,10 @@ export class RequestService {
       })
   }
 
-  public downloadFile(url: string, params: {[key:string]: string}, headers?: any) {
+  public downloadFile(url: string, params: { [key: string]: string }, headers?: any) {
     const querystring = qs.stringify(params);
-    console.log(`${url}${querystring?'?'+querystring:''}`)
-    console.log({
-      ...headers,
-      'Content-Type': 'application/octet-stream'
-    })
     return request.get({
-      url: `${url}${querystring?'?'+querystring:''}`,
+      url: `${url}${querystring ? '?' + querystring : ''}`,
       gzip: true,
       headers: {
         ...headers,

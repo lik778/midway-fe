@@ -34,9 +34,9 @@ export class TrackerService {
     return this.httpService.post(url,
       requestData, { headers: this.setTrackerHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err);
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '打点错误', 'tracker.service point ApiException 1', {
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '打点错误', 'tracker.service point ApiException 1', JSON.stringify({
           url, data: requestData,
-        });
+        }));
       })
   }
 
@@ -89,7 +89,7 @@ export class TrackerService {
     return this.httpService.post(url,
       requestData, { headers: this.setMediaImgHeaders() }).toPromise().catch(err => {
         this.logService.errorLog(err);
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '获取审核记录错误', 'tracker.service getAuditImgList ApiException 1', { url, data: requestData });
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '获取审核记录错误', 'tracker.service getAuditImgList ApiException 1', JSON.stringify({ url, data: requestData }));
       })
   }
 }
