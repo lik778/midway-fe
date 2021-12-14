@@ -27,10 +27,10 @@ export class SitemapService {
         headers: this.setSitemampHeaders()
       }).toPromise().catch(err => {
         this.logService.errorLog(err)
-        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '请求sitemap错误', 'sitemap.service getSitemapByDate ApiException 1', JSON.stringify({ url }));
+        throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '请求sitemap错误', 'sitemap.service getSitemapByDate ApiException 1', { url });
       })
     } else {
-      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, 'sitemap时间戳错误', 'sitemap.service getSitemapByDate ApiException 2', JSON.stringify({ url }));
+      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, 'sitemap时间戳错误', 'sitemap.service getSitemapByDate ApiException 2', { url });
     }
   }
 
@@ -40,7 +40,7 @@ export class SitemapService {
       headers: this.setSitemampHeaders()
     }).toPromise().catch(err => {
       this.logService.errorLog(err);
-      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '请求单店铺sitemap错误', 'sitemap.service getSitemapByShopName ApiException 1', JSON.stringify({ url }));
+      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, '请求单店铺sitemap错误', 'sitemap.service getSitemapByShopName ApiException 1', { url });
     })
   }
 
