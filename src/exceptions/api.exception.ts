@@ -6,13 +6,14 @@
  * @private type 用于定位是哪里出的报错
  * @private info 一些和请求有关的信息
  */
-export class ApiException {
+export class ApiException extends Error {
   private code: number;
   private success: boolean;
-  private message: string;
+  message: string;
   private type: string
   private info?: any;
-  constructor(code: number, success: boolean, message: string, type: string, info?: string) {
+  constructor(code: number, success: boolean, message: string, type: string, info?: any) {
+    super(message)
     this.code = code;
     this.success = success;
     this.message = message;

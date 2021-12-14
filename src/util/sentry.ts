@@ -3,7 +3,12 @@ import { isProd } from './common';
 
 export const sentryCaptureException = (exception: any) => {
   if (isProd()) {
-    Sentry.captureException(exception);
+    Sentry.captureException(exception, {
+      extra: {
+        info: exception.info,
+        type: exception.type
+      }
+    });
   } else {
     console.log('sentryCaptureException:', exception);
   }
