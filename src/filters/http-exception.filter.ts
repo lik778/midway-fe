@@ -24,9 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         res.status(404).render('common/404', { title: '页面找不到', haojingHost: config().haojing })
         return
       }
-    }
-
-    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+    } else if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       if (req.url.includes('api')) {
         res.send(exceptionRes);
         return
@@ -35,6 +33,5 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return
       }
     }
-
   }
 }

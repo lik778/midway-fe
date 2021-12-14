@@ -12,7 +12,7 @@ export class ApiException {
   private message: string;
   private type: string
   private info?: any;
-  constructor(code: number, success: boolean, message: string, type: string, info?: any) {
+  constructor(code: number, success: boolean, message: string, type: string, info?: string) {
     this.code = code;
     this.success = success;
     this.message = message;
