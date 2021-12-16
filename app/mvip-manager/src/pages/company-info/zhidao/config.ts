@@ -13,7 +13,7 @@ export const zhidaoInfoForm: FormConfig = {
       required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议尺寸为365px*304px'
     },
     {
-      className: 'zhidao-big-banner', label: '中部广告', name: 'banner1', maxLength: 2, type: FormType.ImgUpload, images: [{ uploadType: 2, text: '知道banner', name: 'banner1', aspectRatio: 815 / 108, maxSize: 3, cropProps: { aspectRatio: 815 / 108 } }],
+      className: 'zhidao-big-banner', label: '中部广告', name: 'banner1', maxLength: 1, type: FormType.ImgUpload, images: [{ uploadType: 2, text: '知道banner', name: 'banner1', aspectRatio: 815 / 108, maxSize: 3, cropProps: { aspectRatio: 815 / 108 } }],
       required: false, tip: '图片格式：jpg、jpeg、png，大小不超过3M，建议尺寸为815px*108px'
     }
   ]
