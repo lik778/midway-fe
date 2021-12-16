@@ -71,6 +71,7 @@ export interface ArticleListItem {
 
 export interface HandleApiParams {
   id: number | null | undefined;
+  isNavigation?: boolean // 删除分组需要  获取分组下的文章产品不需要
 }
 
 export interface CateItem {
@@ -81,26 +82,23 @@ export interface CateItem {
   seoT?: string;
   weight: number;
   num: number;
+  isNavigation?: boolean
 }
+
+export type NavPosition = "homePage" | "productListPage" | "productCatePage" | "articleListPage" | "articleCatePage" | "aboutPage" | "contactPage"
 
 export interface NavItem {
-  content: string;
-  desc: string;
-  display: number | undefined;
-  id: number;
-  isDisabled?: boolean;
-  key: string;
-  name: string;
-  position: string;
-  maxLength?: number;
-  minLength?: number;
-  isError?: boolean;
+  id: number
+  position: NavPosition,
+  name: string
+  display: number
+  desc: string
+  realName: string | null
 }
 
-export interface ModifyNavItem {
-  name: string;
-  display: number | undefined;
-  id: number;
+export interface NavInfo {
+  slogan: string,
+  qrImg: string
 }
 
 export interface ImgItemParam {
@@ -234,6 +232,7 @@ export interface ShopInfo {
     suffixs: string[] //用于seo
   },
   canOptimizeFlag: boolean// 用于seo一键优化
+  navInfo: NavInfo | null
 }
 
 export interface CustomerListItem {
@@ -265,6 +264,13 @@ export interface CustomerSetListItem {
   mainModuleTitle: string;
   show: boolean;
   subModuleBos: CustomerSetChildListItem[];
+}
+
+export interface SaveCustomerSetListItem {
+  mainModuleId?: number;
+  mainModuleTitle: string;
+  show: boolean;
+  subModuleVos: CustomerSetChildListItem[];
 }
 
 export interface CustomerSetBigImageDetail {

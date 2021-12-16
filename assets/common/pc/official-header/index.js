@@ -1,13 +1,10 @@
-import { initTopbar as initRedTopbar } from '../official-red-topbar'
-import { initTopbar as initWhiteTopbar } from '../official-white-topbar'
-import { initSearch as initRedSearch } from '../official-red-search'
-import '../official-nav-block'
+import $ from 'jquery'
+import { initTopbar } from '../official-topbar'
+import { initInfo } from '../official-info'
+import { initNav } from '../../nav'
 
-if (!window.isCn) {
-  if (window.isRedTopbar) {
-    initRedTopbar()
-    initRedSearch()
-  } else {
-    initWhiteTopbar()
-  }
+export const initHeader = () => {
+  initTopbar()
+  initInfo()
+  initNav($('.nav-item-box .nav-item'))
 }

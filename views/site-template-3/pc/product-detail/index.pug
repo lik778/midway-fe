@@ -4,11 +4,12 @@ block styles
     :combine(fileName="site-template-3-product-detail-pc.css")
 
 //- sem下去除导航栏的手机号
-block official-nav-phone
+block official-info-phone
   if isSem === '1'
     span 
   else 
-    include ../../../common/pc/official-nav-phone.pug
+    include ../../../common/pc/official-info-phone.pug
+    +officialInfoPhone()
 
 block content
   if isSem !== "1"

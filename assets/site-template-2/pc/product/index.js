@@ -16,7 +16,7 @@ $(document).on('ready', function () {
       account: isAccount,
       sem: isSem,
       type: 'listing',
-      gotoOtherPageA: $('#layout-content .container a,.official-nav-block-bgc a')
+      gotoOtherPageA: $('#layout-content .container a,.official-nav-container a')
     })
   }
 

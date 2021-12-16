@@ -12,7 +12,8 @@ block header
     include ../components/company-info-home
     +company-info-home(tags)
   if isSem !== "1"
-      include ../components/nav
+    include ../components/nav
+    +nav()
 
 block content
   - const { autoConfig } = renderData
@@ -48,7 +49,9 @@ block content
   if articleList && articleList.length >0
     +news-module-list(articleList,articleListName)
 
-  include ../components/contact-form.pug
+  //- 用于导航
+  #contactFormBox
+    include ../components/contact-form.pug
 
   //- 用于sem禁止外跳
   include ../../../common/wap/contact-form-sem.pug

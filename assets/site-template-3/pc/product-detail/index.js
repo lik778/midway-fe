@@ -18,7 +18,7 @@ $(document).on('ready', function() {
       sem: isSem,
       type: 'detail',
       gotoOtherPageA: $(
-        '#layout-content .container a,.official-nav-block-bgc a',
+        '#layout-content .container a,.official-nav-container a',
       ),
     });
   }

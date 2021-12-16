@@ -57,7 +57,7 @@ export default (props: Props) => {
 
   const deleteGroupItem = async () => {
     const deleteId = deleteItem?.id || 0
-    const res = await deleteContentCateApi(Number(params.id), { id: deleteId })
+    const res = await deleteContentCateApi(Number(params.id), { id: deleteId, isNavigation: Boolean(deleteItem?.isNavigation) })
     if (res?.success) {
       const deleteIndex = cateList.findIndex((x: CateItem) => x.id === deleteId)
       cateList.splice(deleteIndex, 1)
@@ -136,9 +136,18 @@ export default (props: Props) => {
         }} />
       <MyModal
         title="确认删除"
-        content={<p>删除后，“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
-          ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
-          {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗</p>}
+        content={<>
+          {
+            deleteItem?.isNavigation && <p>该分组已设置导航，删除后，已设置的导航及“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
+              ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
+              {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗？</p>
+          }
+          {
+            !deleteItem?.isNavigation && <p>删除后，“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
+              ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
+              {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗</p>
+          }
+        </>}
         visible={visibleDeleteDialog}
         onOk={() => deleteGroupItem()}
         onCancel={() => setVisibleDeleteDialog(false)} />

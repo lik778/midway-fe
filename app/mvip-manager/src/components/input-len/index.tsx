@@ -5,7 +5,7 @@ import styles from './index.less';
 interface inputItem {
   className?: string,
   value?: string;
-  onChange?: any;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   maxLength?: number;
   initLength?: number;
   name?: string | undefined;
