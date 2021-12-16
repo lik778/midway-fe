@@ -1,19 +1,69 @@
-.nav
-  display flex
-  justify-content space-between
-  padding 0 30px
-  margin-bottom 10px
-  font-size 16px
-  background-color #fff
-  border-top: 1px solid #F6F6F6
-  &-item
-    a
-      display inline-block
-      padding 15px 0
-      color #333
-      font-size 16px
-      white-space nowrap
-.nav-active
-  color #EC2525
-  border-bottom 2px solid #EC2525
-  font-weight: bold
+.nav-container
+  position relative
+  background: #fff
+  box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.07);
+  *
+    box-sizing: border-box
+  .trigger
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 56px
+    height: 56px
+    position: absolute
+    right: 0px
+    top 0
+    background: linear-gradient(to right,rgba(255,255,255,0),rgba(255,255,255,0.8) 20%,rgba(255,255,255,1) 100%);
+    .icon,.icon-active
+      width: 16px
+      height: 16px
+    .icon
+      display: block
+    .icon-active
+      display: none
+    &.active
+      .icon
+        display: none
+      .icon-active
+        display: block
+
+.nav-content,.nav-all
+  width 100vw
+  .nav-item
+    display: inline-block
+    padding: 0 10px
+    &.active
+      .nav-item-content
+        color #ED4646
+    .nav-item-content
+      min-width calc(calc(100vw - 100px) / 4)
+      font-size: 14px
+      color #666
+      line-height: 54px
+      text-align: center
+.nav-content
+  box-sizing: border-box
+  padding: 0 60px 0 10px 
+  overflow-x: auto
+  white-space: nowrap
+  border-bottom: 1px solid #f5f5f5
+  .nav-item-content
+    border-bottom: 2px solid transparent
+  .nav-item
+    &.active
+      .nav-item-content
+        font-size: 16px
+        border-bottom-color: #ED4646
+.nav-all
+  height: 0
+  opacity: 0
+  transition: height 0.5s ,opacity 0.2s
+  padding: 0 10px 
+  .nav-item
+    .nav-item-content
+      line-height: 44px
+  &.active
+    padding: 15px 10px 
+    opacity: 1
+    height: auto
+

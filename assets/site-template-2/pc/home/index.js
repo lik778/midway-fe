@@ -141,7 +141,7 @@ $(document).on('ready', function () {
 			type: 'home',
 			contactForm: $('#contactUs .contact-us__message'),
 			contactFormParent: $('#contactUs'),
-			formA: $('.official-nav-block-bgc a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-list a'),
+			formA: $('.official-nav-container a,.banner-content a,#layout-content a').not('.banner-content a,.product-list a,.about-us-bgc a,.news-list a'),
 			gotoOtherPageA: $('.banner-content a,.product-list a,.about-us-bgc a,.news-list a')
 		})
 	}

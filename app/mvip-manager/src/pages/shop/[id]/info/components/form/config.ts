@@ -36,7 +36,7 @@ export const ShopBasicInfoForm: FormConfig = {
           label: '电话号码', name: 'contactMobile', type: FormType.Input, required: true, placeholder: '请输入电话号码',
           patternList: [{
             pattern: phoneFliterRules,
-            message: '请输填写正确的号码，否则将影响留咨推送' 
+            message: '请输填写正确的号码，否则将影响留咨推送'
           }], labelCol: { span: 4 }
         },
         {

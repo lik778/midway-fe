@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Menu } from 'antd';
+import { Menu, Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
 import { useParams } from 'umi';
@@ -7,6 +8,7 @@ import { RouteParams, ShopInfo } from '@/interfaces/shop';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
+import styles from './index.less'
 import { ShopStatus } from '@/interfaces/shop';
 interface Props {
   type: ShopBasisType;
@@ -24,7 +26,7 @@ const BasisTab = (props: Props) => {
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
-      label: "导航设置",
+      label: "页头设置",
       key: ShopBasisType.NAV,
       display: true,
     },
@@ -82,7 +84,7 @@ const BasisTab = (props: Props) => {
   const handleClick = (e: { key: any; }) => { setCurrent(e.key) };
 
   return (
-    <div>
+    <div className={styles['tab-container']}>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
         {menuListNow.filter(x => x.display).map(item => {
           return <Menu.Item key={item.key}>
@@ -90,6 +92,11 @@ const BasisTab = (props: Props) => {
           </Menu.Item>
         })}
       </Menu>
+      <Tooltip color='#fff' overlayStyle={{ maxWidth: 600 }} overlayInnerStyle={{ color: '#999', padding: '10px 20px' }} title={<img style={{ width: '500px' }} src="//file.baixing.net/202112/ad8e1bd75395e197bd2d3f32cf7f386f.png" />} placement='bottomLeft'>
+        <div className={styles['tip']}>
+          <QuestionCircleOutlined className={styles['icon']} />使用指引
+        </div>
+      </Tooltip>
     </div>
   );
 }

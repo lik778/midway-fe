@@ -5,7 +5,8 @@ import {
   HandleApiParams,
   CreateContentCateApiParams,
   CreateArticleApiParams,
-  ModifyNavItem,
+  NavItem,
+  NavInfo,
   ImgItemParam,
   ImgDeleteParam,
   ImgListParam,
@@ -16,6 +17,7 @@ import {
   ShopInfo,
   CustomerSetListItem,
   CustomerSetBigImage,
+  SaveCustomerSetListItem,
   CustomerListItem,
   CustomerSetBigImageDetail,
   MediaAssetsItem,
@@ -103,11 +105,24 @@ export const getShopListApi = () => {
 // 基础配置
 // 获取导航列表
 export const getNavListingApi = (shopId: number) => {
-  return postApiData(ServicePath.SHOP, 'midway/backend/navigation/listing', {}, setShopHeader(shopId))
+  return postApiData<{
+    page: NavItem[],
+    defaultNavigation: NavItem[]
+  }>(ServicePath.SHOP, 'midway/backend/navigation/listing', {}, setShopHeader(shopId))
+}
+
+// 获取导航选择项列表
+export const getSelectNavListApi = (shopId: number) => {
+  return postApiData<{
+    productCate: NavItem[],
+    articleCate: NavItem[]
+  }>(ServicePath.SHOP, 'midway/backend/navigation/addListing', {}, setShopHeader(shopId))
 }
 
 // 更新导航列表
-export const updateNavApi = (shopId: number, params: ModifyNavItem[]) => {
+export const updateNavApi = (shopId: number, params: {
+  navVos: NavItem[],
+} & NavInfo) => {
   return postApiData(ServicePath.SHOP, 'midway/backend/navigation/update', params, setShopHeader(shopId))
 }
 
@@ -239,7 +254,7 @@ export const getCustomerSetApi = (shopId: number, id: string) => {
 
 
 /** 保存某个自定义设置 */
-export const setCustomerSetApi = (shopId: number, requestData: CustomerSetListItem & {
+export const setCustomerSetApi = (shopId: number, requestData: SaveCustomerSetListItem & {
   subModulesToDelete: number[]
 }) => {
   return postApiData<CustomerSetListItem>(ServicePath.SHOP, 'midway/backend/moduleAutoConfig/modifyMainModule', requestData, setShopHeader(shopId))

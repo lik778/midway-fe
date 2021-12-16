@@ -74,6 +74,14 @@ export class BaseSiteController {
         qq: {}, phone: { content: '' }, phone2: { content: '' }, weChat: {}, contactName: {}, kf53StyleUrl: '', kf53: '', union400: []
       }
     }
+
+    if (!data.basic.shop.navInfo) {
+      data.basic.shop.navInfo = {
+        qrImg: '',
+        slogan: ''
+      }
+    }
+
     data.basic.company.about = data.basic.company.about || '我们公司拥有雄厚的资本和资源，是经过长时间积累而成长壮大起来的企业，一直以来，坚持不断创新，提高公司核心竞争优势。重视用户的服务体验，将客户、产品与服务三合一放在同一重点维度上，以提升客户满意度为宗旨，欢迎大家来电咨询。'
     // 如果是sem情况下需要对数据做联系方式过滤
     if (isSem === '1') {
@@ -115,15 +123,13 @@ export class BaseSiteController {
       }
       data.autoConfig = newAutoConfig
     }
-    //红白头开关
-    // if (this.whiteList.indexOf(data.basic.shop.domain) !== -1) {
-    //   data.isRedTopbar = true
-    // }
-    // 2021年6月19日9点切到红色头部
-    const nowTime = new Date().getTime()
-    if (nowTime - 1624064400000 > 0) {
-      data.isRedTopbar = true
-    }
+
+    data.navigation.forEach(item => {
+      if (item.content.endsWith('/contact/')) {
+        item.content = `${data.navigation[0].content}#contactFormBox`
+      }
+    })
+
     return data
   }
 

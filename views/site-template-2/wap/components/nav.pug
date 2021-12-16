@@ -1,11 +1,17 @@
-//-这里前后设计矛盾，后台导航可人工设置显示隐藏，但前台要求全部显示且按照设计，所以导航名写死
-if nav && nav.length > 0
-  .nav
-    .nav-item
-      a(href=nav[0].content)  首页产品
-    .nav-item
-      a(href=productLink || "#")  全部产品
-    .nav-item
-      a(href=newsLink || "#")  新闻资讯
-    .nav-item
-      a(href=aboutLink)  关于我们
+
+mixin nav(newsList)
+  if nav && nav.length > 0
+    .nav-container 
+      .trigger
+        img.icon(src='//file.baixing.net/202112/9cf7fd5ce50f071cf5f753db73fc0cc2.png')
+        img.icon-active(src='//file.baixing.net/202112/ee291782a8610367faba0292935e1e1b.png')
+      .nav-content
+        each item in nav
+          a.nav-item(href=item.content)
+            .nav-item-content #{ item.name }
+      .nav-all 
+        each item in nav
+          a.nav-item(href=item.content)
+            .nav-item-content #{ item.name }
+
+

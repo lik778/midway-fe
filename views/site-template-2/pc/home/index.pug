@@ -63,7 +63,6 @@ block content
         - const shopProductLists = renderData.productList.result
         if shopProductLists && shopProductLists.length>0
             .block-title
-                //- img(src="//file.baixing.net/202102/e43385d2ad011934a51c42e92a5b7495.png",style="width:283px",alt="产品分类")
                 .point 
                     .littlePoint
                     .largePoint
@@ -80,7 +79,6 @@ block content
         include ../components/news/news-list.pug
         if articleList && articleList.length >0
             .block-title
-                //- img(src="//file.baixing.net/202102/e1a85f0fd13a3ecea1e1e5f541fde234.png", alt="新闻中心")
                 .point 
                     .littlePoint
                     .largePoint
@@ -90,19 +88,21 @@ block content
                     .littlePoint
             include ../components/home/news-list.pug
             +news-list(articleList)
-        .block-title
-            //- img(src="//file.baixing.net/202102/4be12cae4c491b647a8a2f69eafab548.png",alt="关于我们")
-            .point
-                .littlePoint
-                .largePoint
-            .h2 联系我们
-            .point
-                .largePoint
-                .littlePoint
-        include ../components/home/contact-us.pug
-        //- 用于sem禁止外跳
-        include ../../../common/pc/contact-form-sem.pug
-        +contactFormSem('#FF2D38')
+
+        //- 用于导航
+        #contactFormBox
+            .block-title
+                .point
+                    .littlePoint
+                    .largePoint
+                .h2 联系我们
+                .point
+                    .largePoint
+                    .littlePoint
+            include ../components/home/contact-us.pug
+            //- 用于sem禁止外跳
+            include ../../../common/pc/contact-form-sem.pug
+            +contactFormSem('#FF2D38')
         
 block scripts
     :combine(fileName="site-template-2-home-pc.js")

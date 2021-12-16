@@ -129,7 +129,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           <div className={styles['flex-box']}>
             {
               (item.images || []).map((img) => {
-                return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} style={{ display: 'inline-block' }} required={item.required} rules={img.rule ? img.rule : undefined} extra={img.extra}>
+                return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} required={item.required} rules={img.rule ? img.rule : undefined} extra={img.extra}>
                   <ImgUpload uploadType={img.uploadType} unique={img.unique} showImage={img.shopImage} showVideo={img.showVideo} key={img.text} uploadBtnText={img.text} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled || disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
                 </Form.Item>
                 )
@@ -141,7 +141,9 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
                   typeof item.tip === 'string' ? <p className={`${styles['image-tip']} ${item.required ? styles['tip-right-transform'] : ''}`}>{item.tip}</p>
                     : item.tip
                 }
-                <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+                {
+                  !item.imageTipHide && <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+                }
               </div>
             }
           </div>
@@ -150,7 +152,9 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
               {
                 (typeof item.tip === 'string' ? <p className={styles['image-tip']}>{item.tip}</p> : item.tip)
               }
-              <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+              {
+                !item.imageTipHide && <p className={`${styles['image-tip']} ${styles['red-tip']}`}>严禁上传侵权图片，被控侵权百姓网不承担任何责任，需用户自行承担</p>
+              }
             </>
           }
         </Form.Item>
@@ -171,17 +175,19 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           validator: async (rule: any, value: any) => {
             const minNum = item.minNum || 0
             const maxNum = item.maxNum || 1000000
-            if (item.required) {
-              if (!value || value.length === 0) {
-                return Promise.reject(`请输入${item.label}`)
-              }
-            }
-            if (value) {
+            const existValue = value && value.length > 0
+
+            if (existValue) {
               if (value.length < minNum || value.length > maxNum) {
                 return Promise.reject(`${item.label}数在${minNum}到${maxNum}个之间`)
               }
+            } else {
+              if (item.required) {
+                return Promise.reject(`请输入${item.label}`)
+              } else {
+                return Promise.resolve()
+              }
             }
-            return Promise.resolve()
           }
         }, ...patternList]} labelCol={item.labelCol} extra={item.extra} >
           <TagModule
@@ -202,7 +208,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           }
         </Form.Item>
       } else if (item.type === FormType.Switch) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required ,message:'请选择该项'}, ...patternList]} labelCol={item.labelCol} valuePropName="checked">
+        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required, message: '请选择该项' }, ...patternList]} labelCol={item.labelCol} valuePropName="checked">
           <Switch onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
         </Form.Item>
       }

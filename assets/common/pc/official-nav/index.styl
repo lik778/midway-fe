@@ -1,70 +1,70 @@
-.nav-right
-  display flex
-  align-items center
-  .nav-item
+.official-nav-container 
+  background-color: #fff
+  box-shadow 0 4px 4px rgba(#000, 0.2)
+.official-nav-content 
+  display: flex
+  align-items: center
+  width: 1200px
+  margin: 0 auto
+  * 
+    box-sizing: border-box
+  .nav-item-box
+    flex: 1
+    max-width: 200px
+  .hover-box
+    width 120px
     position relative
-    margin-right 30px
-    //hover后展示下拉列表
     &:hover
+      .nav-item
+        color #ff4365
+        font-weight: bold
+        .active-flag
+          display: block
       .nav-dropdown
-        display flex
-    > a
-      display block
+        transform: scale(1,1) translateX(-50%)
+        opacity: 1
+    .nav-item
+      display: block
+      height: 70px
+      padding: 0 5px
+      position relative
+      text-align: center
+      line-height: 68px
+      font-size: 18px
       color #333
-      line-height 40px
-      padding 0 20px
-      &:hover 
-        color #fff !important
-        border-radius 20px
-        background-color #f46
-        .down-arrow
-          border-color #fff
-      .down-arrow
-        display inline-block
-        margin 0 2px 6px 9px
-        width 8px
-        height 8px
-        border-top 1px solid #666
-        border-right 1px solid #666
-        transform rotate(135deg)
-      &.nav-active
-        color #fff !important
-        border-radius 20px
-        background-color #f46
-        .down-arrow
-          border-color #fff
-
-   
+      .active-flag
+        display: none
+        width: 113px
+        height: 4px
+        position: absolute
+        top 0
+        left: 50%
+        transform: translateX(-50%)
+      &.active
+        color #ff4365
+        font-weight: bold
+        .active-flag
+          display: block
     .nav-dropdown
-      display none
-      width 170px
-      padding-top: 14px
-      position absolute
-      left 0
-      top 99%
+      min-width 100%
+      opacity: 0
+      transition: all 0.3s
+      transform-origin: center top
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: scale(1,0) translateX(-50%)
       z-index 9999
-      line-height 1
-      flex-direction column
-      &::after
-        content ''
-        width 15px
-        height 15px
-        background-color #fff
-        position absolute
-        top 6px
-        left 15%
-        transform rotate(45deg)
-        box-shadow 0 4px 10px rgba(#000, 0.2)
-        z-index -1
-      .nav-dropdown-box
-        box-shadow 0 4px 10px rgba(#000, 0.2);
-        >a
-          display block
-          box-sizing border-box
-          padding 14px 20px
-          color #333
-          line-height 16px
-          background #fff
-          width 100%
-          &:hover
-            background #F7F7F7
+      background-color: #fff
+      box-shadow 0 4px 4px rgba(#000, 0.2)
+      .nav-dropdown-item
+        display: block
+        line-height: 50px
+        padding: 0 10px
+        text-align: center
+        color #333
+        &+.nav-dropdown-item
+          border-top: 1px solid #f7f7f7
+        &:hover
+          color #ff4365
+

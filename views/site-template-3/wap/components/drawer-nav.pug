@@ -4,13 +4,10 @@
 	.icon-line
 .drawer-nav-mask
 .drawer-nav-box
-	- iconSrc = {0:'//file.baixing.net/202105/0e698d1f3817be16091aaeee606759e2.png',1:'//file.baixing.net/202105/bda9713f68f146c3fb07be6d6a1093e0.png',2:'//file.baixing.net/202105/1aab9c49626b45158f8f22dcaa77ad10.png',3:'//file.baixing.net/202105/ae97787acbc1b3cdb967aae3d6cefdcd.png'}
+	- const iconSrc = {homePage:'//file.baixing.net/202105/0e698d1f3817be16091aaeee606759e2.png',productListPage:'//file.baixing.net/202105/bda9713f68f146c3fb07be6d6a1093e0.png',productCatePage:'//file.baixing.net/202105/bda9713f68f146c3fb07be6d6a1093e0.png',articleListPage:'//file.baixing.net/202105/1aab9c49626b45158f8f22dcaa77ad10.png',articleCatePage:'//file.baixing.net/202105/1aab9c49626b45158f8f22dcaa77ad10.png',aboutPage:'//file.baixing.net/202105/ae97787acbc1b3cdb967aae3d6cefdcd.png',contactPage:'//file.baixing.net/202105/ae97787acbc1b3cdb967aae3d6cefdcd.png'}
 	each item,index in renderData.navigation
 		a.nav-item(href=item.content)
-			img.nav-icon(src=iconSrc[index], alt="")
+			img.nav-icon(src=iconSrc[item.position], alt="" data-position=item.position)
 			span.nav-title #{item.name}
-	a.nav-item(href=aboutLink)
-		img.nav-icon(src=iconSrc[3], alt="")
-		span.nav-title 关于我们
 
 

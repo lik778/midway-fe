@@ -42,7 +42,7 @@ $(document).on('ready', function () {
       account: isAccount,
       sem: isSem,
       type: 'detail',
-      gotoOtherPageA: $('#layout-content .container a,.official-nav-block-bgc a')
+      gotoOtherPageA: $('#layout-content .container a,.official-nav-container a')
     })
   }
 

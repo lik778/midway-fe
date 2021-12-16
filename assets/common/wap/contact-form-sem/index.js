@@ -28,13 +28,20 @@ const setForm = (contactForm, contactFormParent, formA) => {
 
 function gotoDetail(e, sem, account) {
   e.preventDefault()
-  const href = $(e.currentTarget).attr('href')
+  let href = $(e.currentTarget).attr('href')
   if (!href) return
   const target = $(e.currentTarget).attr('target') || '_self'
-  if (href.indexOf('?') !== -1) {
-    window.open(`${href}&sem=${sem}&account=${account}`, target,)
+  const contactForm = '#contactForm'
+  const hasContactForm = href.indexOf(contactForm)
+  href = href.replace(contactForm, '')
+  if (hasContactForm !== -1) {
+    window.open(`${href}?sem=${sem}&account=${account}${contactForm}`, target,)
   } else {
-    window.open(`${href}?sem=${sem}&account=${account}`, target,)
+    if (href.indexOf('?') !== -1) {
+      window.open(`${href}&sem=${sem}&account=${account}`, target,)
+    } else {
+      window.open(`${href}?sem=${sem}&account=${account}`, target,)
+    }
   }
 }
 
@@ -53,7 +60,7 @@ function disable(e) {
  * @param {*} gotoOtherPageA 需要前往详情页的a标签
  * @param {*} disableA 被禁用的a标签
  */
-export const initSem = function ({account, sem, type, contactForm, contactFormParent, formA, gotoOtherPageA, disableA }) {
+export const initSem = function ({ account, sem, type, contactForm, contactFormParent, formA, gotoOtherPageA, disableA }) {
   console.log(sem)
   if (sem === "1") {
     // 不跳转的链接则谈窗

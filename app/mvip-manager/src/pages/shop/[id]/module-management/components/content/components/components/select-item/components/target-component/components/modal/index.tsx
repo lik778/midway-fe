@@ -98,7 +98,7 @@ const SelectModal: FC<Props> = (props) => {
             <div className="no-list-data" style={{ marginTop: '100px' }}>
               <img src={componentConfig.type === 'product' ? '//file.baixing.net/202012/6b1ce056c5c675ec3a92e8e70fed06ed.png' : '//file.baixing.net/202012/de46c0eceb014b71d86c304b20224032.png'} />
               <p>暂无{typeText}内容，你可以新建{typeText}</p>
-              <Link className={styles['btn']} to={`/shop/${params.id}/${componentConfig.type}`}>
+              <Link to={`/shop/${params.id}/${componentConfig.type}`}>
                 + 新建{typeText}
               </Link>
             </div>
