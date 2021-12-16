@@ -1,8 +1,9 @@
-import { defineConfig } from 'umi';
+import { defineConfig, IConfig } from 'umi';
 //@ts-ignore
 import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
+const isProd = () => process.env.ENV === 'production'
 
-export default defineConfig({
+const config: IConfig = {
   title: '优选推后台管理',
   locale: {},
   hash: true,
@@ -14,7 +15,7 @@ export default defineConfig({
   define: {
     CUR_ENV: process.env.ENV
   },
-  publicPath: process.env.ENV === 'production' ? '//yxt.baixing.net/assets/' : '/assets/',
+  publicPath: isProd() ? '//yxt.baixing.net/assets/' : '/assets/',
   "proxy": {
     "/management/api": {
       "target": "http://localhost:7001",
@@ -68,8 +69,10 @@ export default defineConfig({
             }
           },
         },
-      },
+      }
     });
   },
   chunks: ['vendors', 'umi']
-});
+}
+
+export default defineConfig(config);

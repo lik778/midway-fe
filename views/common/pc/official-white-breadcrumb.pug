@@ -1,7 +1,0 @@
-mixin breadcrumb(list)
-  ul.breadcrumb-white
-    each item, index in list
-      li.item
-        a.url(href=isSem==="1"?'#':item.url) #{ item.text }
-        if index < list.length-1
-          .and

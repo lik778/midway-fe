@@ -100,7 +100,7 @@ $(document).on('ready', function() {
       contactForm: $('#contactUs .contact-us__message'),
       contactFormParent: $('#contactUs'),
       formA: $(
-        '.official-nav-block-bgc a,.banner-list a,#layout-content a',
+        '.official-nav-container a,.banner-list a,#layout-content a',
       ).not('#product-list-box a,.about-us-bgc a,.new-center .news-box a'),
       gotoOtherPageA: $(
         '#product-list-box a,.about-us-bgc a,.new-center .news-box a',

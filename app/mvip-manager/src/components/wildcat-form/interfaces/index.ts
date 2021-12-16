@@ -51,6 +51,7 @@ export interface FormItem {
   minNum?: number,
   images?: ImagesItem[],// 图片多种情况
   imagesTipPosition?: 'bottom' | 'right',// 图片下的请求的位置
+  imageTipHide?: boolean,// 使用图片组件的警告是否出现
   disabled?: boolean;
   showCount?: boolean;// 输入框计数
   onChange?: (...args: any) => void; //给配置文件项，增加了onChange属性

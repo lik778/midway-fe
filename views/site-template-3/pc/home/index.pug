@@ -46,8 +46,10 @@ block content
 						.new-center.clearfix
 								+news-box(articleList)
 								
-				//- +home-title('联系我们')
-				include ../components/home/contact-us.pug
+				//- 用于导航
+				#contactFormBox
+					//- +home-title('联系我们')
+					include ../components/home/contact-us.pug
 				
 				//- 用于sem禁止外跳
 				include ../../../common/pc/contact-form-sem.pug

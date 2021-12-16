@@ -1,0 +1,57 @@
+.nav-info-form {
+  .tip {
+    display: flex;
+    align-items: stretch;
+    width: 405px;
+    position: relative;
+    color: #666;
+    .qr {
+      width: 104px;
+      height: 104px;
+      margin-right: 10px;
+    }
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .image-tip {
+        margin-bottom: 0;
+        color: #999;
+        font-size: 12px;
+        &.red-tip {
+          color: #f1492c;
+        }
+      }
+    }
+    .demo {
+      width: 104px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      line-height: 24px;
+      background-color: rgba(0, 0, 0, 0.6);
+      text-align: center;
+      color: #fff;
+      font-size: 12px;
+    }
+    & + p {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+.title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 20px;
+
+  .icon {
+    margin: 0 5px;
+    color: #096dd9;
+  }
+}
+
+.nav-textarea-box {
+  textarea {
+    height: 64px !important;
+  }
+}

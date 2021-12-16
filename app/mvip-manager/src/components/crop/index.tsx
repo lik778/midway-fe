@@ -62,7 +62,7 @@ const Crop: FC<Props> = (props) => {
       const res = await upImageToYoupai(formData)
       handleCropSuccess(res.data.url, base64)
       setUpDataLoading(false)
-    }, "image/jpeg", 0.85);
+    }, undefined, 0.75);
   };
 
   return <Spin spinning={reloadLoading}> <div className={styles["crop-container"]}>
