@@ -17,8 +17,9 @@ block append header
 
 block content
   if isSem !== "2"  && isSem !== "1"
-    //-公司信息
+    - const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
     include ../components/company-info
+    +company-info-home(tags)
 
   - const { autoConfig } = renderData
   if autoConfig[3]&&autoConfig[3].show

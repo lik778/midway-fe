@@ -49,11 +49,6 @@ mixin mediaShow()
 					.detail-setting
 						if isSem !== "1"
 							.contact 联系商家：#{contactName.content}
-							if metas && metas.length > 0
-								.contact
-									| 服务类目：
-									span
-										| #{ metas[0] && metas[0]['label'] } / #{ metas[1]['label'] }
 							.contact 
 								| 商家地址： 
 								span(class="span-address") #{ address }

@@ -1,21 +1,25 @@
 .company-info
-  padding 12px 15px 20px
   background-color #fff
   .info
     display flex
     justify-content flex-start
     align-items flex-start
-    margin-bottom 16px
+    padding 12px 0px 16px  15px
+    background: url(//file.baixing.net/202112/b0229d36a16089135c10ba84677f7389.png) center/ 100% 100%
     .info-logo
-      width 50px
       height 50px
+      max-width: 100px
       margin-right 10px
       border-radius 5px
     .info-text
+      height 50px
       max-width calc(100% - 62px)
       flex-grow  1
+      display: flex
+      flex-direction: column
+      justify-content space-between
+      align-items flex-start
       .info-name
-        margin-bottom 5px
         font-size 18px
         font-weight: bold;
         color: #333333;
@@ -25,22 +29,22 @@
         justify-content flex-start
         align-items  center
         .info-tag
-          height 16px
-          padding 0 4px
+          padding 2px 4px
           text-align center
           font-size 10px
-          color #D19960
+          color #fff
           border-radius: 2px;
-          border: 1px solid #D19960
+          background-color: #ED4646
           &+.info-tag
-            margin-left 10px
+            margin-left 6px
   .desc
-    padding 8px 10px 10px
+    padding 24px 28px 14px 24px
     position relative
     background #F6F6F6
     border-radius 8px
     font-size 12px
     line-height 20px
+    background-color: rgb(255,252,248)
     .desc-text
       margin-bottom 6px
       overflow hidden
@@ -54,11 +58,11 @@
       height 12px
       position absolute
     .top-left
-      top  -6px
-      left 5px
+      top  7px
+      left 11px
     .bottom-right
-      right 5px
-      bottom -6px
+      right 16px
+      bottom 11px
     .action-btn-box
       display flex
       justify-content flex-end
@@ -69,8 +73,8 @@
         padding 0 6px
         line-height 16px
         border-radius 2px
-        border 1px solid $color-main
+        border 1px solid #ED4646
         font-size 12px
-        color $color-main
+        color #ED4646
         &.hide
           display none

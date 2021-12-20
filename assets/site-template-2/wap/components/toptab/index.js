@@ -25,7 +25,8 @@ export const tabModule = function(){
 		})
 
 		//wapd端顶部的tab导航，与当前链接匹配时高亮
-		const windowPath=window.location.pathname;
+		const windowPath=window.location.pathname.replace(/\/([\s\S]{0,})l(-?)([\s\S]{0,}).html/, '/$1$2$3');
+		if (windowPath.indexOf('-') === -1) return
 		$(".tab-header a").each((index,tab) => {
 			const h = $(tab).attr('href')
 			if(h.indexOf(windowPath) != -1){
