@@ -558,6 +558,7 @@ export type ModulePageType =
   | 'articleListPage'
   | 'productInfoPage'
   | 'articleInfoPage'
+  | 'commonMessagePage'
   | 'aboutPage';
 
 export type ModuleComponentId =
@@ -566,7 +567,9 @@ export type ModuleComponentId =
   | 'autoConfig'
   | 'articleList'
   | 'about'
-  | 'articleRecommend';
+  | 'articleRecommend'
+  | 'messagemodule'
+  | 'message';
 
 export interface ModuleInitPage {
   position: ModulePageType;
@@ -684,6 +687,21 @@ export interface AdviceRecord {
   content: string,
   contact: string,
   identity: string,
+}
+
+export interface MessageModule {
+  industry: string
+}
+
+export interface detailParam {
+  value: string,
+  key: string,
+  status: boolean
+}
+export interface CommonMessageForm {
+  title: string,
+  detail: detailParam[],
+  button: string
 }
 
 /** 店铺模块管理相关 结束 */

@@ -62,7 +62,9 @@ import {
   AdviceRecord,
   TdkDetail,
   TdkNav,
-  TdkSaveAreaSuffix
+  TdkSaveAreaSuffix,
+  MessageModule,
+  CommonMessageForm
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -420,5 +422,15 @@ export const setModuleABoutInfoApi = (shopId: number, params: ModuleABoutABoutIn
 export const setAdviceRecordApi = (shopId: number, params: AdviceRecord) => {
   return postApiData<any>(ServicePath.SHOP, 'midway/backend/feedback/create', params, setShopHeader(shopId))
 }
+
+// 公共页面信息-留言表单
+export const setConsultMessageApi = (shopId: number,params: CommonMessageForm) => {
+  return postApiData<any>(ServicePath.SHOP, 'midway/backend/feedback/create', params, setShopHeader(shopId))
+}
+// 首页-留咨模块
+export const SetMessageModule = (shopId: number,params: MessageModule) => {
+  return postApiData<any>(ServicePath.SHOP, 'midway/backend/feedback/create', params, setShopHeader(shopId))
+}
+
 
 /** 模块管理 结束 */

@@ -15,7 +15,8 @@ export enum ShopBasisType {
   CUSTOMER = 'customer',
   SEO = 'seo',
   INFO = 'info',
-  MODULE = 'module-management'
+  MODULE = 'module-management',
+  CONSULTATION = 'consultation-setting'
 }
 
 export enum ShopTDKType {

@@ -10,7 +10,7 @@ import HomeSwiper from './components/home-swiper'
 import SelectItemList from './components/select-item-list'
 import HomeCustom from './components/home-custom'
 import ArticleInfoSwiper from './components/article-info-swiper'
-
+import HomeMessage from './components/home-message'
 interface Props {
   position: ModulePageType,
   pageModule: ModuleComponentId
@@ -20,7 +20,7 @@ interface Props {
 
 const Content: FC<Props> = (props) => {
   const { position, pageModule, handleChangeModuleName, curShopInfo } = props
-  
+
   const isB2B = useMemo(() => {
     if (curShopInfo) {
       const { type } = curShopInfo;
@@ -47,7 +47,12 @@ const Content: FC<Props> = (props) => {
     </CacheComponent>
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'about'}>
-      <HomeAboutUs position={position} pageModule={pageModule}></HomeAboutUs>
+      {/* <HomeAboutUs position={position} pageModule={pageModule}></HomeAboutUs> */}
+      <HomeMessage />
+    </CacheComponent>
+    {/* 留咨模块 */}
+    <CacheComponent visible={position === 'homePage' && pageModule === 'messagemodule'}>
+      <HomeMessage />
     </CacheComponent>
 
     <CacheComponent visible={position === 'productListPage' && pageModule === 'productRecommend'}>
@@ -81,6 +86,7 @@ const Content: FC<Props> = (props) => {
     <CacheComponent visible={position === 'aboutPage' && pageModule === 'about'}>
       <AboutAboutUs position={position} pageModule={pageModule}></AboutAboutUs>
     </CacheComponent>
+
   </>
 }
 
