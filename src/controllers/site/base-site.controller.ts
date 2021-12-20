@@ -224,6 +224,48 @@ export class BaseSiteController {
     return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'article', pageStartRenderTime: new Date().getTime() });
   }
 
+  @Get('/nl:id')
+  async newsListing(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
+    const isAccount = query.account
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
+
+    const currentPage = query.page || 1;
+
+    const id = params.id.replace('.html', '').replace('-', '')
+
+    const { data: originData } = await this.midwayApiService[id ? 'getNewsCateData' : 'getNewsPageData'](shopName, device, { cateId: id, page: currentPage, ...this.createParams(isSem, isCn) }, domain);
+    const data = this.setData(originData, isSem, isCn)
+
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        _platform: device,
+        tracktype: 'pageview',
+        contentType: 'article',
+        category: '',
+      }
+    })
+    const { templateId } = data.basic.shop
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/news/index`
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+
+
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'article', pageStartRenderTime: new Date().getTime() });
+  }
+
   @Get('/n-:id')
   async newschild(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
@@ -307,6 +349,45 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1
     const { data: originData } = await this.midwayApiService.getProductPageData(shopName, device, { page: currentPage, size: 5, ...this.createParams(isSem, isCn) }, domain);
+    const data = this.setData(originData, isSem, isCn)
+    // 打点
+    const shopId = data.basic.shop.id
+    this.trackerService.point(req, res, {
+      eventType: TrackerType.BXMAINSITE, data: {
+        event_type: TrackerType.BXMAINSITE,
+        site_id: 'dianpu',
+        shop_id: shopId,
+        pageType: 'view_listing',
+        _platform: device,
+        tracktype: 'pageview',
+        contentType: 'product',
+        category: '',
+      }
+    })
+    const { templateId } = data.basic.shop
+    const pageTemplate = SiteService.templateMapping[templateId]
+    const templateUrl = `${pageTemplate}/${device}/product/index`;
+    const currentPathname = req.originalUrl;
+    const { kf53 } = data.basic.contact;
+    const trackId = this.trackerService.getTrackId(req, res)
+
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
+  }
+
+  @Get('/pl:id')
+  async productListing(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+    const isSem = this.checkSem(query.sem, query.bannerId, query.account)
+    const isCn = this.checkCn(HostDomain)
+    const isAccount = query.account
+    const domain = req.hostname
+    const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+    const userInfo = await this.getUserInfo(req, domain)
+    const currentPage = query.page || 1
+
+    const id = params.id.replace('.html', '').replace('-', '')
+
+    const { data: originData } = await this.midwayApiService[id ? 'getProductCateData' : 'getProductPageData'](shopName, device, { cateId: id, page: currentPage, size: 5, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
     // 打点
     const shopId = data.basic.shop.id

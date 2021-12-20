@@ -7,7 +7,8 @@ export const initNav = function ($navs) {
   // 有全等得亮全等
   // 删除 / 下全等
   // 无全等得亮开头对应列表
-  const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '')
+  const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '').replace(/\/([\s\S]{0,})l(-?)([\s\S]{0,}).html/,'/$1$2$3')
+
 
   const urls = $.map($navs, function (item) {
     return item.getAttribute('href')
