@@ -33,7 +33,7 @@ const MessageList: FC = () => {
               <FormItem className={styles['form-item']} name={[item, 'key']} initialValue={item === 'name' ? '姓名' : '联系方式'} key={item + 'key'}>
                 <Input maxLength={10} className={styles['formItem']} disabled size="large" />
               </FormItem>
-              <FormItem className={styles['form-item']} name={[item, 'value']} key={item + 'value'} rules={[{ required: true, message: item === 'name' ? '请输入你的称呼' : '请输入你的姓名' }, { pattern: item === 'tel' ? phoneFliterRules : /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
+              <FormItem className={styles['form-item']} name={[item, 'value']} key={item + 'value'} rules={[{ required: false, message: item === 'name' ? '请输入你的称呼' : '请输入你的姓名' }, { pattern: item === 'tel' ? phoneFliterRules : /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
                 <Input maxLength={20} className={styles['formItem']} placeholder={item == 'name' ? '输入你的称呼' : '输入你的电话'} size="large" />
               </FormItem>
               <FormItem className={styles['form-swith']} key={item + 'switch'} initialValue={true} valuePropName="checked" label="是否必填" name={[item, 'switch']}>
