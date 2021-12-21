@@ -1,19 +1,12 @@
 import React, { FC, useState } from 'react'
-import { Form, Input, Button, Tag, Switch } from 'antd'
-import { PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Tag, Switch, Tooltip } from 'antd'
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less'
 const FormList = Form.List
 const FormItem = Form.Item
 const phoneFliterRules = /(^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$)|(^((86)|(\\+86))?1[3-9][0-9]{9}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
 const MessageList: FC = () => {
-  const [showElem, setShowElem] = useState(false)
 
-  const mouseover = () => {
-    setShowElem(true)
-  }
-  const mouseout = () => {
-    setShowElem(false)
-  }
   return <>
     <Form.Item
       className={styles['product-key-container']}
@@ -21,10 +14,10 @@ const MessageList: FC = () => {
       key={'formInfo'}
     >
       <div className={styles['setting-tip']}
-      >请输入参数名和参数值，例如"城市"，"输入你所在的城市"，<span className={styles['tip-img']} onMouseOver={mouseover} onMouseOut={mouseout}>参数示意</span>
-        <div className={styles['imgs-tips']}>
-          <img style={{ display: showElem ? 'block' : 'none' }} src="//file.baixing.net/202109/18cfbd879b579812ea7d146a56e9bc37.png" alt="logo" />
-        </div>
+      >请输入参数名和参数值，例如"城市"，"输入你所在的城市"，
+        <Tooltip color='#fff' placement="right" overlayInnerStyle={{ cursor: 'pointer' }} title={<img src="//file.baixing.net/202109/18cfbd879b579812ea7d146a56e9bc37.png" alt="logo" style={{ width: 520, height: 242 }} />}>
+          <QuestionCircleOutlined className={styles['tip-img']} />
+        </Tooltip >
       </div>
       {
         ['name', 'tel'].map(item => {
@@ -61,6 +54,7 @@ const MessageList: FC = () => {
                 <FormItem className={styles['form-swith']} valuePropName="checked" initialValue={true} label="是否必填" name={[name, 'switch']} fieldKey={[fieldKey, 'switch']}>
                   <Switch />
                 </FormItem>
+                <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
               </div>
             ))}
             {

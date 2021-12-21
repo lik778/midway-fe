@@ -51,7 +51,7 @@ const Content: FC<Props> = (props) => {
       <HomeMessage />
     </CacheComponent>
     {/* 留咨模块 */}
-    <CacheComponent visible={position === 'homePage' && pageModule === 'messagemodule'}>
+    <CacheComponent visible={position === 'homePage' && pageModule === 'messageModule'}>
       <HomeMessage />
     </CacheComponent>
 

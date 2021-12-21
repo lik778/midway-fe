@@ -568,7 +568,7 @@ export type ModuleComponentId =
   | 'articleList'
   | 'about'
   | 'articleRecommend'
-  | 'messagemodule'
+  | 'messageModule'
   | 'message';
 
 export interface ModuleInitPage {
@@ -693,14 +693,14 @@ export interface MessageModule {
   industry: string
 }
 
-export interface detailParam {
+export interface DetailParam {
   value: string,
   key: string,
   status: boolean
 }
 export interface CommonMessageForm {
   title: string,
-  detail: detailParam[],
+  detail: DetailParam[],
   button: string
 }
 
