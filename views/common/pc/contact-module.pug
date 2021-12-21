@@ -1,0 +1,35 @@
+mixin contactModule(src)
+  .contact-module
+    img.module(src=src)
+    .contact-postion 
+      -  wheather  =  'homePage'
+      -
+        list = [
+          {
+            key: '请输入你名字',
+            value: '请输入你的姓名',
+            status: true
+          },
+          {
+              key: '你的贵姓',
+              value: '请输入你的姓名',
+              status: true
+            },
+          {
+              key: '你的联系方式',
+              value: '请输入你的姓名',
+              status: true
+            },
+          {
+              key: '你的角色',
+              value: '请输入你的姓名',
+              status: true
+            },
+         {
+              key: '你的家人',
+              value: '请输入你的姓名',
+              status: true
+            },
+        ]
+      include ./contact-form.pug
+      +ContactForm(wheather,list,'马上提交')
