@@ -4,7 +4,6 @@ import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less'
 const FormList = Form.List
 const FormItem = Form.Item
-const phoneFliterRules = /(^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$)|(^((86)|(\\+86))?1[3-9][0-9]{9}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
 const MessageList: FC = () => {
 
   return <>
@@ -24,14 +23,14 @@ const MessageList: FC = () => {
           return (
             <div className={styles['product-key-line']} key={item}>
               <FormItem className={styles['form-item']} name={[item, 'key']} initialValue={item === 'name' ? '姓名' : '联系方式'} key={item + 'key'}>
-                <Input maxLength={10} className={styles['formItem']} disabled size="large" />
+                <Input maxLength={6} className={styles['formItem']} disabled size="large" />
               </FormItem>
-              <FormItem className={styles['form-item']} name={[item, 'value']} key={item + 'value'} rules={[{ required: false, message: item === 'name' ? '请输入你的称呼' : '请输入你的姓名' }, { pattern: item === 'tel' ? phoneFliterRules : /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
-                <Input maxLength={20} className={styles['formItem']} placeholder={item == 'name' ? '输入你的称呼' : '输入你的电话'} size="large" />
+              <FormItem className={styles['form-item'] + ' ' + styles['form-value']} name={[item, 'value']} key={item + 'value'} rules={[{ required: false, message: item === 'name' ? '请输入你的称呼' : '请输入你的姓名' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
+                <Input maxLength={20} className={styles['formItem']} placeholder="请输入" size="large" />
               </FormItem>
-              <FormItem className={styles['form-swith']} key={item + 'switch'} initialValue={true} valuePropName="checked" label="是否必填" name={[item, 'switch']}>
+              {/* <FormItem className={styles['form-swith']} key={item + 'switch'} initialValue={true} valuePropName="checked" label="是否必填" name={[item, 'switch']}>
                 <Switch disabled={item === 'tel' ? true : false} />
-              </FormItem>
+              </FormItem> */}
             </div>
           )
         })
@@ -46,14 +45,14 @@ const MessageList: FC = () => {
                 key={key}
               >
                 <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
-                  <Input maxLength={10} className={styles['formItem']} placeholder={'请输入'} size="large" />
+                  <Input maxLength={6} className={styles['formItem']} placeholder={'请输入'} size="large" />
                 </FormItem>
-                <FormItem className={styles['form-item']} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
-                  <Input maxLength={10} className={styles['formItem']} placeholder={'请输入'} size="large" />
+                <FormItem className={`${styles['form-item']} ${styles['form-value']}`} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
+                  <Input maxLength={20} className={styles['formItem']} placeholder={'请输入'} size="large" />
                 </FormItem>
-                <FormItem className={styles['form-swith']} valuePropName="checked" initialValue={true} label="是否必填" name={[name, 'switch']} fieldKey={[fieldKey, 'switch']}>
+                {/* <FormItem className={styles['form-swith']} valuePropName="checked" initialValue={true} label="是否必填" name={[name, 'switch']} fieldKey={[fieldKey, 'switch']}>
                   <Switch />
-                </FormItem>
+                </FormItem> */}
                 <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
               </div>
             ))}

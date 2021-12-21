@@ -47,12 +47,11 @@ const Content: FC<Props> = (props) => {
     </CacheComponent>
 
     <CacheComponent visible={position === 'homePage' && pageModule === 'about'}>
-      {/* <HomeAboutUs position={position} pageModule={pageModule}></HomeAboutUs> */}
-      <HomeMessage />
+      <HomeAboutUs position={position} pageModule={pageModule}></HomeAboutUs>
     </CacheComponent>
     {/* 留咨模块 */}
-    <CacheComponent visible={position === 'homePage' && pageModule === 'messageModule'}>
-      <HomeMessage />
+    <CacheComponent visible={position === 'homePage' && pageModule === 'contact'}>
+      <HomeMessage position={position} pageModule={pageModule} />
     </CacheComponent>
 
     <CacheComponent visible={position === 'productListPage' && pageModule === 'productRecommend'}>

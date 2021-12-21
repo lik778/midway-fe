@@ -232,7 +232,8 @@ export interface ShopInfo {
     suffixs: string[] //用于seo
   },
   canOptimizeFlag: boolean// 用于seo一键优化
-  navInfo: NavInfo | null
+  navInfo: NavInfo | null,
+  contactFields: CommonMessageSetting[]
 }
 
 export interface CustomerListItem {
@@ -569,6 +570,7 @@ export type ModuleComponentId =
   | 'about'
   | 'articleRecommend'
   | 'messageModule'
+  | 'contact'
   | 'message';
 
 export interface ModuleInitPage {
@@ -689,8 +691,13 @@ export interface AdviceRecord {
   identity: string,
 }
 
-export interface MessageModule {
-  industry: string
+export interface ContactStyleType {
+  styleType: string
+}
+
+export interface paramsItem {
+  key: string,
+  value: string
 }
 
 export interface DetailParam {
@@ -698,10 +705,28 @@ export interface DetailParam {
   key: string,
   status: boolean
 }
-export interface CommonMessageForm {
+export interface CommonMessageSetting {
   title: string,
-  detail: DetailParam[],
-  button: string
+  des: string,
+  position: string,
+  fixed: boolean
 }
+
+export interface MessageModule {
+  pageModule: ModuleComponentId,
+  position: ModulePageType,
+  styleType: ContactType
+}
+
+export type ContactType=
+ | 'B2C_NORMAL'
+ | 'B2B_NORMAL'
+ | 'HUANGJIN'
+ | 'BAOJIE'
+ | 'BAOMU'
+ | 'JIADIAN'
+ | 'WULIU'
+
+
 
 /** 店铺模块管理相关 结束 */
