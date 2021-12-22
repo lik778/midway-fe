@@ -20,9 +20,9 @@ export class RequestService {
       if (err.response) {
         const { message, code, success } = err.response.data
         if (this.landPageRequestRegExp.test(url)) {
-          throw new PageException(code, success, message, `request.service ${type} PageException 1`, { url, data, headers });
+          throw new PageException(code, success, message, `request.service ${type} PageException 1`, { url, data, headers, response: err.response.data });
         } else {
-          throw new ApiException(code, success, message, `request.service ${type} ApiException 1`, { url, data, headers });
+          throw new ApiException(code, success, message, `request.service ${type} ApiException 1`, { url, data, headers, response: err.response.data });
         }
       } else {
         throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, false, `请求没有返回，response为undefined
