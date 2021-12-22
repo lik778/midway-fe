@@ -64,7 +64,8 @@ import {
   TdkNav,
   TdkSaveAreaSuffix,
   MessageModule,
-  CommonMessageSetting
+  CommonMessageSetting,
+  FieldsParams
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -425,7 +426,7 @@ export const setAdviceRecordApi = (shopId: number, params: AdviceRecord) => {
 
 
 // 设置留咨设置初始值
-export const setConsultMessageApi = (shopId: number,params: CommonMessageSetting[]) => {
+export const setConsultMessageApi = (shopId: number,params: FieldsParams) => {
   return postApiData<any>(ServicePath.SHOP, 'midway/backend/shop/saveContactForm', params, setShopHeader(shopId))
 }
 // 首页-联系我们

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Form, Input, Button, Tag, Switch, Tooltip } from 'antd'
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less'
 const FormList = Form.List
 const FormItem = Form.Item
@@ -14,7 +14,7 @@ const MessageList: FC = () => {
     >
       <div className={styles['setting-tip']}
       >请输入参数名和参数值，例如"城市"，"输入你所在的城市"，
-        <Tooltip color='#fff' placement="right" overlayInnerStyle={{ cursor: 'pointer' }} title={<img src="//file.baixing.net/202109/18cfbd879b579812ea7d146a56e9bc37.png" alt="logo" style={{ width: 520, height: 242 }} />}>
+        <Tooltip color='#fff' placement="right" overlayInnerStyle={{ cursor: 'pointer' }} title={<img src="//file.baixing.net/202112/4520e5f513a8399b00c991af7f269c66.png" alt="logo" style={{ width: '100%', height: 263 }} />}>
           <QuestionCircleOutlined className={styles['tip-img']} />
         </Tooltip >
       </div>

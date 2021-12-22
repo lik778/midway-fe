@@ -3,10 +3,10 @@ import { Spin } from 'antd'
 import { useParams } from 'umi'
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
+import { successMessage } from '@/components/message'
 import { SHOP_NAMESPACE } from '@/models/shop';
 import WildcatForm from '@/components/wildcat-form';
-import { ShopInfo, CommonMessageSetting, paramsItem } from '@/interfaces/shop'
-// 留言表单创建接口
+import { ShopInfo, CommonMessageSetting, ParamsItem, CommonFormParams } from '@/interfaces/shop'
 import { setConsultMessageApi, } from '@/api/shop'
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { MessageForm } from './config'
@@ -21,13 +21,12 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   const [getDate, setGetDate] = useState<boolean>(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(MessageForm())
-  const [contactFields, setContactFields] = useState<CommonMessageSetting[]>([])
   const { id: shopId } = useParams<{ id: string }>()
   const sumbit = async (item: any) => {
     setFormLoading(true)
     // 发请求
-    const { button, name, params, tel, title } = item
-    const newParams = params && params.map((item: any) => {
+    const { button, name, params, tel, title }: CommonFormParams = item
+    const newParams: CommonMessageSetting[] = params && params.map((item: ParamsItem) => {
       return ({
         title: item.key,
         des: item.value,
@@ -35,7 +34,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         fixed: false
       })
     }) || []
-    const newContactFields = [
+    const newContactFields: CommonMessageSetting[] = [
       {
         title: '表单标题',
         des: title,
@@ -44,13 +43,13 @@ const CommonMessageForm: FC<Iprop> = (props) => {
       },
       {
         title: '姓名',
-        des: name,
+        des: name.value,
         position: 'content',
         fixed: true
       },
       {
         title: '联系方式',
-        des: tel,
+        des: tel.value,
         position: 'content',
         fixed: true
       },
@@ -62,7 +61,8 @@ const CommonMessageForm: FC<Iprop> = (props) => {
       },
       ...newParams
     ]
-    const res = await setConsultMessageApi(Number(shopId), newContactFields)
+    const res = await setConsultMessageApi(Number(shopId), { fields: newContactFields })
+    res.success ? successMessage('保存成功') : successMessage('保存失败')
     setFormLoading(false)
   }
 
@@ -100,9 +100,9 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         })
       } else {
         const listItem = { key: item.title, value: item.des }
-        const arry = []
+        const arry: ParamsItem[] = []
         form.setFieldsValue({
-          params: arry.push(listItem)
+          params: [...arry, listItem]
         })
       }
     })
@@ -111,7 +111,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   }
   useEffect(() => {
     initForm()
-  }, [])
+  }, [curShopInfo])
 
   return (
     <Spin spinning={getDate}>

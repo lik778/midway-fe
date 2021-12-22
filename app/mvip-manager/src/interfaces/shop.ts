@@ -695,7 +695,7 @@ export interface ContactStyleType {
   styleType: string
 }
 
-export interface paramsItem {
+export interface ParamsItem {
   key: string,
   value: string
 }
@@ -712,6 +712,11 @@ export interface CommonMessageSetting {
   fixed: boolean
 }
 
+export interface FieldsParams {
+  fields: CommonMessageSetting[]
+}
+
+
 export interface MessageModule {
   pageModule: ModuleComponentId,
   position: ModulePageType,
@@ -727,6 +732,13 @@ export type ContactType=
  | 'JIADIAN'
  | 'WULIU'
 
+export interface CommonFormParams {
+  button: string,
+  name: ParamsItem,
+  params: ParamsItem[],
+  tel: ParamsItem,
+  title: string
+}
 
 
 /** 店铺模块管理相关 结束 */
