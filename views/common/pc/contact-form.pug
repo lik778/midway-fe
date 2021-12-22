@@ -1,19 +1,22 @@
-mixin ContactForm(wheather,list,btn)
-  .a-container 
+mixin ContactForm(wheather)
+  - const {contactFields}  = renderData.basic.shop
+  - const list = contactFields.filter(item => item.position === 'content')
+  - const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
+  .a-container
     if wheather === 'homePage'
       p.a-title 留言咨询
     .a-content
       each item in list.length <= 3 && list
         .a-content-item
           .item-label
-            | #{item.key}
-            span.labe-icon #{ item.status ? '*' : '' }
-          input(type="text" placeholder=item.value)
+            | #{item.title}
+            span.labe-icon *
+          input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
       else 
         each items in list
           .a-content-items
             .items-label
-              | #{items.key}
-              .label-icons #{ items.status ? '*' : '' }
-            input(type="text" placeholder=items.value)
-      .a-button #{ btn || '立即提交' }
+              | #{items.title}
+              .label-icons *
+            input(type="text" name="contact" data-value=items.des data-key=items.title  placeholder=items.des)
+      .a-button#aBtn #{ btn || '马上提交' }

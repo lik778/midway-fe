@@ -1,35 +1,16 @@
-mixin contactModule(src)
+mixin contactModule(key)
+  -
+    const list = {
+      HUANGJIN: '//file.baixing.net/202112/711cbb47aa2f6a1965edf77d4e365f62.png',
+      BAOJIE: '//file.baixing.net/202112/9215278b9445b590eabd956a425abb4d.png',
+      SHECHIPIN: '//file.baixing.net/202112/5140423747752ff64a6af9a61d796e89.png',
+      JIAZHENG: '//file.baixing.net/202112/122947c3fef8a002b4b4e7d741535b51.png',
+      WULIU: '//file.baixing.net/202112/87e959e25d09830be6be3c976d2d9c3f.png',
+      WEIXIU: '//file.baixing.net/202112/32e1223ece2febbe9d7f01dadcd819c1.png'
+    }
   .contact-module
-    img.module(src=src)
-    .contact-postion 
-      -  wheather  =  'homePage'
-      -
-        list = [
-          {
-            key: '请输入你名字',
-            value: '请输入你的姓名',
-            status: true
-          },
-          {
-              key: '你的贵姓',
-              value: '请输入你的姓名',
-              status: true
-            },
-          {
-              key: '你的联系方式',
-              value: '请输入你的姓名',
-              status: true
-            },
-          {
-              key: '你的角色',
-              value: '请输入你的姓名',
-              status: true
-            },
-         {
-              key: '你的家人',
-              value: '请输入你的姓名',
-              status: true
-            },
-        ]
+    img.module(src=list[key])
+    .contact-postion
+      - const wheather  =  'homePage'
       include ./contact-form.pug
-      +ContactForm(wheather,list,'马上提交')
+      +ContactForm(wheather)

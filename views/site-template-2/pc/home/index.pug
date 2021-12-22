@@ -7,6 +7,7 @@ block styles
 block content
     include ../components/home/swiper.pug
     - const { autoConfig } = renderData
+    - const { styleType } = renderData.contact
     if autoConfig[3]&&autoConfig[3].show
         include ../components/home/big-image.pug
         +big-image(autoConfig[3])
@@ -90,22 +91,26 @@ block content
             +news-list(articleList)
 
         //- 用于导航
-        #contactFormBox
-            .block-title
-                .point
-                    .littlePoint
-                    .largePoint
-                .h2 联系我们
-                .point
-                    .largePoint
-                    .littlePoint
-            include ../components/home/contact-us.pug
-    include ../../../common/pc/contact-module.pug
-    +contactModule('//file.baixing.net/202112/122947c3fef8a002b4b4e7d741535b51.png')
-            //- 用于sem禁止外跳
-            include ../../../common/pc/contact-form-sem.pug
-            +contactFormSem('#FF2D38')
-        
+        if styleType === 'B2B_NORMAL'
+          #contactFormBox
+              .block-title
+                  .point
+                      .littlePoint
+                      .largePoint
+                  .h2 联系我们
+                  .point
+                      .largePoint
+                      .littlePoint
+              //- include ../components/home/contact-us.pug
+              //- 通用模板
+              include ../components/home/contact-message.pug
+              //- 用于sem禁止外跳
+              include ../../../common/pc/contact-form-sem.pug
+              +contactFormSem('#FF2D38')
+    //- 行业模板
+    if styleType !== 'B2B_NORMAL'
+      include ../../../common/pc/contact-module.pug
+      +contactModule(styleType)
 block scripts
     :combine(fileName="site-template-2-home-pc.js")
 block append scripts

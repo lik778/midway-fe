@@ -5,10 +5,10 @@ import Swiper from 'swiper';
 import { leaveLeads } from '../components/contact-us';
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { aboutUs } from '../components/home/about-us'
-
+import { contactForm } from '../../../common/pc/contact-form'
 leaveLeads()
 aboutUs()
-
+contactForm()
 $(document).on('ready', function () {
 	// 轮播产品
 	new Swiper('#banner-container  .swiper-container', {

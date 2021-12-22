@@ -3,7 +3,7 @@ import { Spin } from 'antd'
 import { useParams } from 'umi'
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
-import { successMessage } from '@/components/message'
+import { successMessage, errorMessage } from '@/components/message'
 import { SHOP_NAMESPACE } from '@/models/shop';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopInfo, CommonMessageSetting, ParamsItem, CommonFormParams } from '@/interfaces/shop'
@@ -62,7 +62,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
       ...newParams
     ]
     const res = await setConsultMessageApi(Number(shopId), { fields: newContactFields })
-    res.success ? successMessage('保存成功') : successMessage('保存失败')
+    res.success ? successMessage('保存成功') : errorMessage('保存失败')
     setFormLoading(false)
   }
 
@@ -81,6 +81,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   // 获取初始值
   const onInit = (form: any) => {
     setGetDate(true)
+    const arry: ParamsItem[] = []
     curShopInfo && curShopInfo.contactFields.forEach(item => {
       if (item.position === 'button') {
         form.setFieldsValue({
@@ -100,11 +101,11 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         })
       } else {
         const listItem = { key: item.title, value: item.des }
-        const arry: ParamsItem[] = []
-        form.setFieldsValue({
-          params: [...arry, listItem]
-        })
+        arry.push(listItem)
       }
+      form.setFieldsValue({
+        params: arry
+      })
     })
     setGetDate(false)
 
