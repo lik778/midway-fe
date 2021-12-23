@@ -1,18 +1,15 @@
 //- #contactForm 用于sem跳转
 .contact-form#contactForm
 	h4.block-title 留言咨询
+	- const {contactFields}  = renderData.basic.shop
+	- const list = contactFields.filter(item => item.position === 'content')
+	- const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
 	.contact-form-list
-		.form-item.required
-			label(for="") 姓名
-			.form-input
-				input#contactName(type="text", placeholder="请输入您的称呼")
-		.form-item.required
-			label(for="") 电话
-			.form-input
-				input#contactTel(type="text", placeholder="请输入电话号码")
-		.form-item
-			label(for="") 留言
-			.form-input
-				textarea#contactContent(rows="3", placeholder="请输入您的咨询留言")
+		each item in list.length  && list
+			.a-content-item
+				.item-label
+					| #{item.title}
+					span.labe-icon &nbsp;*
+				input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
 		.form-item
 			button#upContactForm.btn-animate-light 马上提交

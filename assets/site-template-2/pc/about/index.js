@@ -2,11 +2,12 @@ import $ from 'jquery';
 import './index.styl'
 import '../layout';
 //import { navModule } from '../components/header'
-import { leaveLeads } from '../components/contact-us'
+// import { leaveLeads } from '../components/contact-us'
 import { initSem } from '../../../common/pc/contact-form-sem'
-
+import { contactForm } from '../../../common/pc/contact-form'
 //navModule()
-leaveLeads()
+// leaveLeads()
+contactForm()
 
 $(document).on('ready', function () {
 

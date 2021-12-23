@@ -10,13 +10,13 @@ mixin ContactForm(wheather)
         .a-content-item
           .item-label
             | #{item.title}
-            span.labe-icon *
+            span.labe-icon &nbsp;*
           input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
       else 
         each items in list
           .a-content-items
             .items-label
               | #{items.title}
-              .label-icons *
+              .label-icons &nbsp;*
             input(type="text" name="contact" data-value=items.des data-key=items.title  placeholder=items.des)
       .a-button#aBtn #{ btn || '马上提交' }

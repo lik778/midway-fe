@@ -1,3 +1,4 @@
+@import '../../../common/pc/contact-form'
 .news-detail
     &__subtitle
         font-size 16px
@@ -6,24 +7,39 @@
         font-weight bold
 
     &__contact-us
+        box-sizing: border-box
         background-color #fff
         padding 30px
         display flex
         border: 1px solid #eeeeee
         border-radius: 4px
         .contact-form
-            width 530px
-            flex 1
-            .form-item
-                font-size 14px
-                input,
-                textarea
-                    font-size 14px
-                textarea
-                    min-height 90px
-
-                &__label
-                    font-weight 600
+          width 530px
+          flex 1
+          background: #FFFFFF
+          .a-container
+            justify-content: flex-start
+            padding: 15px 0 0
+            .a-content
+              flex-direction: row
+              flex-wrap: wrap
+              .a-content-items
+                flex-direction: column
+                align-items: flex-start
+                width: 45%
+                &:nth-child(2n+1)
+                  margin-right: 40px
+                .items-label
+                    margin: 0 0 8px 4px
+              .a-content-item
+                width: 45%
+                &:nth-child(2n+1)
+                  margin-right: 10%
+                .item-label
+                  margin: 0 0 8px 4px
+              .a-button
+                width: 45%
+                margin-left: 4px
         .company
             &-info
                 padding 15px 70px 0

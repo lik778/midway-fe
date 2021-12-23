@@ -1,11 +1,13 @@
 .contact-us-form
-  .form-item.required
-    label(for="") 称呼
-    .form-input
-      input#contactUsName(type="text", placeholder="请输入您的称呼")
-  .form-item.required
-    label(for="") 电话
-    .form-input
-      input#contactUsTel(type="text", placeholder="请输入电话号码")
+  - const  { contactFields: newContact } = renderData.basic.shop
+  - console.log(renderData)
+  - const usList = newContact.filter(item => item.position === 'content')
+  - const usBtn = newContact.filter(item => item.title === '表单按钮')[0].des
+  each item in usList.length  && usList
+    .a-content-item
+      .item-label
+        | #{item.title}
+        span.labe-icon &nbsp;*
+      input(type="text" name="contactUS" data-value=item.des data-key=item.title placeholder=item.des)
   .form-item
-    button#upContactUsForm.btn-animate-light 立即提交
+    button#upContactFormUs.btn-animate-light #{ usBtn || '立即提交' }

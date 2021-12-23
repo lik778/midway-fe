@@ -30,7 +30,7 @@ block content
     .contact-us-block-title 
       | 联系我们，获取
       span.red 详细信息
-    include ../components/contact-us-form 
+    include ../components/contact-us-form.pug
 
   - const { productList , name: allTitle } = renderData.productRecommend
   if productList && productList.length > 0

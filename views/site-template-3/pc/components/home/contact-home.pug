@@ -7,7 +7,8 @@
         .l-item 服务热线： #{ phone.content || '暂未添加微信号' }
         .l-item 微信号： #{ weChat.content || '暂未添加微信号' }
       .l-map 
-        .map-detail #{ company.address || '暂未添加地址' }
+        .map-detail
+          span.map-detail-content #{ company.address || '暂未添加地址' }
         .map-icon
     .c-rigth
       include ../../../../common/pc/contact-form.pug
