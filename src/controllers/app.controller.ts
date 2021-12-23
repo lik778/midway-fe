@@ -24,7 +24,7 @@ export class AppController {
     if (fs.existsSync(staticPath)) {
       res.sendFile(staticPath)
     } else {
-      throw new HttpException('没有存在的资源', HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException('没有存在的资源', HttpStatus.NOT_FOUND)
     }
   }
 

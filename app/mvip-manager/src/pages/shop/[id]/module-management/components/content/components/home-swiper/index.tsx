@@ -37,14 +37,19 @@ const HomeSwiper: FC<Props> = (props) => {
   })
 
   const handleClickSubmit = useDebounce(async () => {
-    const disabled = pcRef.current.disabledFc() || wapRef.current.disabled
-    if (disabled) {
-      return
+    try {
+      const disabled = pcRef.current.disabledFc() || wapRef.current.disabled
+      if (disabled) {
+        return
+      }
+      setUpDataLoading(true)
+      await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
+      successMessage('保存成功')
+      setUpDataLoading(false)
+    } catch (e) {
+      console.log(e)
+      setUpDataLoading(false)
     }
-    setUpDataLoading(true)
-    await Promise.all([pcRef.current.handleUpData(), wapRef.current.handleUpData('all')])
-    successMessage('保存成功')
-    setUpDataLoading(false)
   }, 300)
 
   return <Spin spinning={loadingShopModel}>
