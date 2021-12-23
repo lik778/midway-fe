@@ -13,4 +13,7 @@ export const setStoreWhitelistApi = (params: { id: number }) => {
 export const setStoreCleanCatchApi = (params: { id: number }) => {
   return getApi<any>('/api/midway/manager/user/freshKf53Cache', params)
 }
-
+// 添加tdk白名单 传入店铺id
+export const setTdkOptimizationAuthApi = (params: { id: number }) => {
+  return getApi<any>('/api/midway/manager/user/setTkdOptimizeRight', params)
+}

@@ -10,6 +10,7 @@ const routerKey = {
   '/audit-image': 'audit-image',
   '/verify-word': 'verify-word',
   '/switch-shop-type': 'switch-shop-type',
+  '/tdk-optimization-auth': 'tdk-optimization-auth',
   '/store-whitelist': 'store-whitelist',
   '/clean-cache': 'clean-cache',
   '/modify-the-store': 'modify-the-store',
@@ -48,6 +49,9 @@ export default withRouter((props) => {
               </Menu.Item>
               <Menu.Item key="store-whitelist">
                 <Link to="/store-whitelist" key="store-whitelist">添加多店铺权限</Link>
+              </Menu.Item>
+              <Menu.Item key="tdk-optimization-auth">
+                <Link to="/tdk-optimization-auth" key="stdk-optimization-auth">添加TDK一键优化</Link>
               </Menu.Item>
               <Menu.Item key="clean-cache">
                 <Link to="/clean-cache" key="clean-cache">清53kf缓存</Link>
