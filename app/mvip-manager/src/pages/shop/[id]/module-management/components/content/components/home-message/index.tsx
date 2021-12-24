@@ -7,7 +7,6 @@ import { successMessage } from '@/components/message';
 import { SHOP_NAMESPACE } from '@/models/shop';
 import { ProductType, IndursyModule } from '@/enums';
 import { ShopInfo, ModulePageType, ModuleComponentId, ContactStyleType, ContactType } from '@/interfaces/shop'
-// 首页-留咨模块接口 获取数据
 import { SetMessageModule, getModuleInfoApi } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
 import styles from './index.less'
@@ -27,7 +26,6 @@ const HomeMessage: FC<Iprop> = (props) => {
   const [upDate, setUpDate] = useState<boolean>(false)
   const [selectItem, setSelectItem] = useState<ContactType>('HUANGJIN')
   const { id: shopId } = useParams<{ id: string }>()
-  // 判断是否是b2b
   const selectOption = useMemo(() => {
     if (curShopInfo) {
       const { type } = curShopInfo;

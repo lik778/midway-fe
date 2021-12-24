@@ -26,7 +26,6 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   const sumbit = async (item: any) => {
     setFormLoading(true)
     setUpDate(true)
-    // 发请求
     const { button, name, params, tel, title }: CommonFormParams = item
     const newParams: CommonMessageSetting[] = params && params.map((item: ParamsItem) => {
       return ({

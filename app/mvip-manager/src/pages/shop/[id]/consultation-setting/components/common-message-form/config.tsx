@@ -1,6 +1,5 @@
 import { FormType } from '@/components/wildcat-form/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
-// 页面配置
 
 export const MessageForm = (): FormConfig => ({
   name: 'messageForm',

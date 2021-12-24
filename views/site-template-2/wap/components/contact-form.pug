@@ -1,15 +1,15 @@
 - const {contactFields}  = renderData.basic.shop
-- const list = contactFields.filter(item => item.position === 'content')
-- const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
+- const formListWap = contactFields.filter(item => item.position === 'content')
+- const formBtnWap = contactFields.filter(item => item.title === '表单按钮')[0].des
 - const contactTitleWap = contactFields.filter(item => item.title === '表单标题')[0].des
 .contact-form#contactForm
 	h4.block-title #{ contactTitleWap || '留言咨询'}
 	.contact-form-list
-		each item in list.length  && list
+		each item in formListWap.length  && formListWap
 			.a-content-item
 				.item-label
 					| #{item.title}
 					span.labe-icon &nbsp;*
 				input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
 		.form-item
-			button#SubmitButton.btn-animate-light 马上提交
+			button#SubmitButton.btn-animate-light #{formBtnWap || '马上提交'} 

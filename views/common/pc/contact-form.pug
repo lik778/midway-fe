@@ -1,23 +1,23 @@
 mixin ContactForm(wheather)
   - const {contactFields}  = renderData.basic.shop
-  - const list = contactFields.filter(item => item.position === 'content')
-  - const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
+  - const formList = contactFields.filter(item => item.position === 'content')
+  - const formBtn = contactFields.filter(item => item.title === '表单按钮')[0].des
   - const formTitle = contactFields.filter(item => item.title === '表单标题')[0].des
   .a-container
     if wheather === 'homePage'
       p.a-title #{formTitle || '留言咨询'}
     .a-content
-      each item in list.length <= 3 && list
+      each item in formList.length <= 3 && formList
         .a-content-item
           .item-label
             | #{item.title}
             span.labe-icon &nbsp;*
           input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
       else 
-        each items in list
+        each items in formList
           .a-content-items
             .items-label
               | #{items.title}
               .label-icons &nbsp;*
             input(type="text" name="contact" data-value=items.des data-key=items.title  placeholder=items.des)
-      .a-button#SubmitButton #{ btn || '马上提交' }
+      .a-button#SubmitButton #{ formBtn || '马上提交' }
