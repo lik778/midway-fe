@@ -19,11 +19,13 @@ interface Iprop {
 const CommonMessageForm: FC<Iprop> = (props) => {
   const { curShopInfo } = props
   const [getDate, setGetDate] = useState<boolean>(false)
+  const [upDate, setUpDate] = useState<boolean>(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(MessageForm())
   const { id: shopId } = useParams<{ id: string }>()
   const sumbit = async (item: any) => {
     setFormLoading(true)
+    setUpDate(true)
     // 发请求
     const { button, name, params, tel, title }: CommonFormParams = item
     const newParams: CommonMessageSetting[] = params && params.map((item: ParamsItem) => {
@@ -64,6 +66,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
     const res = await setConsultMessageApi(Number(shopId), { fields: newContactFields })
     res.success ? successMessage('保存成功') : errorMessage('保存失败')
     setFormLoading(false)
+    setUpDate(false)
   }
 
   // 初始化表单
@@ -78,7 +81,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
       ...newFormConfig
     })
   }
-  // 获取初始值
+  // 设置初始值
   const onInit = (form: any) => {
     setGetDate(true)
     const arry: ParamsItem[] = []
@@ -115,8 +118,8 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   }, [curShopInfo])
 
   return (
-    <Spin spinning={getDate}>
-      <div className={styles['common-title']}>表单创建</div>
+    <Spin spinning={getDate || upDate}>
+      <div className={styles['Form-creation']}>表单创建</div>
       <WildcatForm
         submit={sumbit}
         config={formConfig}

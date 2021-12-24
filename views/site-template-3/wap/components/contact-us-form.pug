@@ -1,6 +1,5 @@
 .contact-us-form
   - const  { contactFields: newContact } = renderData.basic.shop
-  - console.log(renderData)
   - const usList = newContact.filter(item => item.position === 'content')
   - const usBtn = newContact.filter(item => item.title === '表单按钮')[0].des
   each item in usList.length  && usList

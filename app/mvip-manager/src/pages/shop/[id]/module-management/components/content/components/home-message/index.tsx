@@ -28,16 +28,19 @@ const HomeMessage: FC<Iprop> = (props) => {
   const [selectItem, setSelectItem] = useState<ContactType>('HUANGJIN')
   const { id: shopId } = useParams<{ id: string }>()
   // 判断是否是b2b
-  const isB2B = useMemo(() => {
+  const selectOption = useMemo(() => {
     if (curShopInfo) {
       const { type } = curShopInfo;
-      return Boolean(type === ProductType.B2B)
+      return (Boolean(type === ProductType.B2B) ? Option1 : Option2).map((item, index) => {
+        return (
+          <Option value={item.key} key={index}>{item.value}</Option>
+        )
+      })
     }
-    return true
+    return []
   }, [curShopInfo])
 
   const getContact = async () => {
-    console.log(curShopInfo)
     setGetData(true)
     const res = await getModuleInfoApi<ContactStyleType>(Number(shopId), {
       position, pageModule
@@ -49,33 +52,28 @@ const HomeMessage: FC<Iprop> = (props) => {
 
   useEffect(() => {
     getContact()
-  }, [])
+  }, [curShopInfo])
 
   const handleChange = (item: ContactType) => {
     setSelectItem(item)
   }
   const handleSubmit = useDebounce(async () => {
-    setGetData(true)
+    setUpDate(true)
     const res = await SetMessageModule(Number(shopId), {
       pageModule,
       position,
       styleType: selectItem
     })
     successMessage('保存成功')
-    setGetData(false)
+    setUpDate(false)
   }, 300)
   return <Spin spinning={getData || upDate}>
     <div className={styles['home-message']}>
       <div className={styles['module-select']}>
         <p> <span className={styles['tip-i']}>*</span>&nbsp;行业模板：</p>
-        {/* defaultValue={IndursyModule[selectItem]} */}
-        <Select onChange={handleChange} defaultValue={selectItem} style={{ width: 200 }}>
+        <Select onChange={handleChange} value={selectItem} style={{ width: 200 }}>
           {
-            (isB2B ? Option1 : Option2).map(item => {
-              return (
-                <Option value={item.key}>{item.value}</Option>
-              )
-            })
+            selectOption
           }
         </Select>
       </div>

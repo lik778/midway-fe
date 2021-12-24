@@ -2,7 +2,7 @@ import $ from 'jquery';
 import './index.styl';
 import '../layout/index';
 import { mediaShow } from '../components/product-detail/media-show';
-import { leaveLeads } from '../components/contact-us';
+import { leaveLeads } from '../../../common/contact-form';
 import { viewPhone } from '../components/contact-form-companyInfo';
 import { initSem } from '../../../common/pc/contact-form-sem';
 

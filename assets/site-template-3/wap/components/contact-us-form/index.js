@@ -7,7 +7,8 @@ export const leaveLeads1 = function () {
       e.preventDefault();
       const data = {};
       const content = []
-      const flag = false
+      let flag = false
+      const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
       data.shopName = $('#shop-name').text()
       if (window.extraContactFormData) {
         Object
@@ -17,11 +18,15 @@ export const leaveLeads1 = function () {
       $(':input[name="contactUS"]').each((e,i) => {
         if($(i).val() === '') {
           alert($(i).data('value'))
-          flag = false
+          flag = true
         }
         if($(i).val().length  > 20) {
           alert(`${$(i).data('key')}字数最多20个字符`)
-          flag = false
+          flag = true
+        }
+        if($(i).data('key') === '联系方式' && !phoneFliterRules.test($(i).val())) {
+          alert('请输入正确的联系方式')
+          flag = true
         }
         if($(i).data('key') === '姓名') {
           data.name = $(i).val()

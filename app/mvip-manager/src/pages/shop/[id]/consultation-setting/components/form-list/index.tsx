@@ -15,7 +15,7 @@ const MessageList: FC = () => {
       <div className={styles['setting-tip']}
       >请输入参数名和参数值，例如"城市"，"输入你所在的城市"，
         <Tooltip color='#fff' placement="right" overlayInnerStyle={{ cursor: 'pointer' }} title={<img src="//file.baixing.net/202112/4520e5f513a8399b00c991af7f269c66.png" alt="logo" style={{ width: '100%', height: 263 }} />}>
-          <QuestionCircleOutlined className={styles['tip-img']} />
+          <QuestionCircleOutlined className={styles['parameter-example']} />
         </Tooltip >
       </div>
       {
@@ -25,12 +25,9 @@ const MessageList: FC = () => {
               <FormItem className={styles['form-item']} name={[item, 'key']} initialValue={item === 'name' ? '姓名' : '联系方式'} key={item + 'key'}>
                 <Input maxLength={6} className={styles['formItem']} disabled size="large" />
               </FormItem>
-              <FormItem className={styles['form-item'] + ' ' + styles['form-value']} name={[item, 'value']} key={item + 'value'} rules={[{ required: false, message: item === 'name' ? '请输入你的称呼' : '请输入你的姓名' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
+              <FormItem className={styles['form-item'] + ' ' + styles['form-value']} name={[item, 'value']} key={item + 'value'} rules={[{ required: false, message: item === 'name' ? '输入您的称呼' : '输入您的电话' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
                 <Input maxLength={20} className={styles['formItem']} placeholder="请输入" size="large" />
               </FormItem>
-              {/* <FormItem className={styles['form-swith']} key={item + 'switch'} initialValue={true} valuePropName="checked" label="是否必填" name={[item, 'switch']}>
-                <Switch disabled={item === 'tel' ? true : false} />
-              </FormItem> */}
             </div>
           )
         })
@@ -44,15 +41,12 @@ const MessageList: FC = () => {
                 className={styles['product-key-line']}
                 key={key}
               >
-                <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
+                <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,6}$/, message: '2～6个字' }]}>
                   <Input maxLength={6} className={styles['formItem']} placeholder={'请输入'} size="large" />
                 </FormItem>
-                <FormItem className={`${styles['form-item']} ${styles['form-value']}`} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,10}$/, message: '2～10个字' }]}>
+                <FormItem className={`${styles['form-item']} ${styles['form-value']}`} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
                   <Input maxLength={20} className={styles['formItem']} placeholder={'请输入'} size="large" />
                 </FormItem>
-                {/* <FormItem className={styles['form-swith']} valuePropName="checked" initialValue={true} label="是否必填" name={[name, 'switch']} fieldKey={[fieldKey, 'switch']}>
-                  <Switch />
-                </FormItem> */}
                 <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
               </div>
             ))}

@@ -1,7 +1,5 @@
 import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker'
-import { contactForm } from '../../../../common/pc/contact-form'
-contactForm()
 export const viewPhone = function() {
 	$(document).on('ready',function() {
 		$(".phone1 .view-phone").on('click',() => {

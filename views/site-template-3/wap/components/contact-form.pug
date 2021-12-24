@@ -1,9 +1,9 @@
-//- #contactForm 用于sem跳转
+- const {contactFields}  = renderData.basic.shop
+- const list = contactFields.filter(item => item.position === 'content')
+- const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
+- const contactTitleWap = contactFields.filter(item => item.title === '表单标题')[0].des
 .contact-form#contactForm
-	h4.block-title 留言咨询
-	- const {contactFields}  = renderData.basic.shop
-	- const list = contactFields.filter(item => item.position === 'content')
-	- const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
+	h4.block-title #{contactTitleWap || '留言咨询'}
 	.contact-form-list
 		each item in list.length  && list
 			.a-content-item
@@ -12,4 +12,4 @@
 					span.labe-icon &nbsp;*
 				input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
 		.form-item
-			button#upContactForm.btn-animate-light #{ btn || '马上提交'}
+			button#SubmitButton.btn-animate-light #{ btn || '马上提交'}

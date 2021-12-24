@@ -728,9 +728,10 @@ export type ContactType=
  | 'B2B_NORMAL'
  | 'HUANGJIN'
  | 'BAOJIE'
- | 'BAOMU'
- | 'JIADIAN'
+ | 'SHECHIPIN'
+ | 'JIAZHENG'
  | 'WULIU'
+ | 'WEIXIU'
 
 export interface CommonFormParams {
   button: string,

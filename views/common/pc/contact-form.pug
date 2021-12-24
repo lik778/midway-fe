@@ -2,9 +2,10 @@ mixin ContactForm(wheather)
   - const {contactFields}  = renderData.basic.shop
   - const list = contactFields.filter(item => item.position === 'content')
   - const btn = contactFields.filter(item => item.title === '表单按钮')[0].des
+  - const formTitle = contactFields.filter(item => item.title === '表单标题')[0].des
   .a-container
     if wheather === 'homePage'
-      p.a-title 留言咨询
+      p.a-title #{formTitle || '留言咨询'}
     .a-content
       each item in list.length <= 3 && list
         .a-content-item
@@ -19,4 +20,4 @@ mixin ContactForm(wheather)
               | #{items.title}
               .label-icons &nbsp;*
             input(type="text" name="contact" data-value=items.des data-key=items.title  placeholder=items.des)
-      .a-button#aBtn #{ btn || '马上提交' }
+      .a-button#SubmitButton #{ btn || '马上提交' }
