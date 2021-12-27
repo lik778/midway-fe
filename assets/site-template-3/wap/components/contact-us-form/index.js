@@ -16,7 +16,7 @@ export const leaveLeads1 = function () {
             .map(([k, v]) => data[k] = v)
     }
       $(':input[name="contactUS"]').each((e,i) => {
-        if($(i).val() === '') {
+        if($(i).val() === '' && Boolean($(i).data('fixed'))) {
           alert($(i).data('value'))
           flag = true
         }
@@ -24,7 +24,7 @@ export const leaveLeads1 = function () {
           alert(`${$(i).data('key')}字数最多20个字符`)
           flag = true
         }
-        if($(i).data('key') === '联系方式' && !phoneFliterRules.test($(i).val())) {
+        if($(i).data('key') === '联系方式' && !phoneFliterRules.test($(i).val()) && $(i).val() !== '') {
           alert('请输入正确的联系方式')
           flag = true
         }

@@ -6,7 +6,8 @@
     .a-content-item
       .item-label
         | #{item.title}
-        span.labe-icon &nbsp;*
-      input(type="text" name="contactUS" data-value=item.des data-key=item.title placeholder=item.des)
+        if item.fixed
+          span.labe-icon &nbsp;*
+      input(type="text" name="contactUS" data-fixed=item.fixed data-value=item.des data-key=item.title placeholder=item.des)
   .form-item
     button#upContactFormUs.btn-animate-light #{ usBtn || '立即提交' }

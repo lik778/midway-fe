@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useMemo } from 'react'
 import { Spin } from 'antd'
 import { useParams } from 'umi'
 import { connect } from 'dva';
@@ -23,7 +23,11 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(MessageForm())
   const { id: shopId } = useParams<{ id: string }>()
+  useEffect(() => {
+    initForm()
+  }, [curShopInfo])
   const sumbit = async (item: any) => {
+    console.log(item)
     setFormLoading(true)
     setUpDate(true)
     const { button, name, params, tel, title }: CommonFormParams = item
@@ -32,7 +36,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         title: item.key,
         des: item.value,
         position: 'content',
-        fixed: false
+        fixed: item.switch
       })
     }) || []
     const newContactFields: CommonMessageSetting[] = [
@@ -46,7 +50,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         title: '姓名',
         des: name.value,
         position: 'content',
-        fixed: true
+        fixed: name.switch
       },
       {
         title: '联系方式',
@@ -67,6 +71,32 @@ const CommonMessageForm: FC<Iprop> = (props) => {
     setFormLoading(false)
     setUpDate(false)
   }
+
+  const initShopBasicInfoParams = useMemo(() => {
+    const formparams: any = {}
+    const paramsArry: any = []
+    if (curShopInfo) {
+      if (curShopInfo.contactFields && curShopInfo.contactFields.length > 0) {
+        curShopInfo.contactFields.forEach(item => {
+          if (item.position === 'button') {
+            formparams.button = item.des
+          } else if (item.position === 'title') {
+            formparams.title = item.des
+          } else if (item.position === 'content' && item.title === '联系方式') {
+            formparams.tel = { key: item.title, value: item.des, switch: item.fixed }
+          } else if (item.position === 'content' && item.title === '姓名') {
+            formparams.name = { key: item.title, value: item.des, switch: item.fixed }
+          } else {
+            paramsArry.push(
+              { key: item.title, value: item.des, switch: item.fixed }
+            )
+            formparams.params = paramsArry
+          }
+        })
+      }
+    }
+    return formparams
+  }, [curShopInfo])
 
   // 初始化表单
   const initForm = () => {
@@ -95,14 +125,14 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         })
       } else if (item.position === 'content' && item.title === '联系方式') {
         form.setFieldsValue({
-          tel: { key: '联系方式', value: item.des }
+          tel: { key: '联系方式', value: item.des, switch: item.fixed }
         })
       } else if (item.position === 'content' && item.title === '姓名') {
         form.setFieldsValue({
-          name: { key: '姓名', value: item.des }
+          name: { key: '姓名', value: item.des, switch: item.fixed }
         })
       } else {
-        const listItem = { key: item.title, value: item.des }
+        const listItem = { key: item.title, value: item.des, switch: item.fixed }
         arry.push(listItem)
       }
       form.setFieldsValue({
@@ -112,19 +142,17 @@ const CommonMessageForm: FC<Iprop> = (props) => {
     setGetDate(false)
 
   }
-  useEffect(() => {
-    initForm()
-  }, [curShopInfo])
+
 
   return (
     <Spin spinning={getDate || upDate}>
       <div className={styles['Form-creation']}>表单创建</div>
       <WildcatForm
+        editDataSource={initShopBasicInfoParams}
         submit={sumbit}
         config={formConfig}
         loading={formLoading}
         className="product-form"
-        onInit={onInit}
       />
     </Spin>
   )

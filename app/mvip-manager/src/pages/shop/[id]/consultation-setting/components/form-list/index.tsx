@@ -28,6 +28,9 @@ const MessageList: FC = () => {
               <FormItem className={styles['form-item'] + ' ' + styles['form-value']} name={[item, 'value']} key={item + 'value'} rules={[{ required: false, message: item === 'name' ? '输入您的称呼' : '输入您的电话' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
                 <Input maxLength={20} className={styles['formItem']} placeholder="请输入" size="large" />
               </FormItem>
+              <FormItem className={styles['form-swith']} key={item + 'switch'} valuePropName="checked" label="是否必填" name={[item, 'switch']}>
+                <Switch disabled={item === 'tel' ? true : false} />
+              </FormItem>
             </div>
           )
         })
@@ -46,6 +49,9 @@ const MessageList: FC = () => {
                 </FormItem>
                 <FormItem className={`${styles['form-item']} ${styles['form-value']}`} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: true, message: '请输入' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
                   <Input maxLength={20} className={styles['formItem']} placeholder={'请输入'} size="large" />
+                </FormItem>
+                <FormItem className={styles['form-swith']} key={name + 'switch'} valuePropName="checked" label="是否必填" name={[name, 'switch']}>
+                  <Switch />
                 </FormItem>
                 <span className={styles['delete']} onClick={() => remove(name)}>删除</span>
               </div>

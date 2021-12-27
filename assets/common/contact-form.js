@@ -5,6 +5,7 @@ export const leaveLeads = () => {
   $(function() {
     $('#SubmitButton').on('click', (e) => {
       e.preventDefault();
+      const labeIcon = $('#labeIcon')
       const data = {};
       const content = []
       let flag = false
@@ -16,7 +17,7 @@ export const leaveLeads = () => {
             .map(([k, v]) => data[k] = v)
     }
       $(':input[name="contact"]').each((e,i) => {
-        if($(i).val() === '') {
+        if($(i).val() === '' && Boolean($(i).data('fixed'))) {
           alert($(i).data('value'))
           flag = true
         }
@@ -24,7 +25,7 @@ export const leaveLeads = () => {
           alert(`${$(i).data('key')}字数最多20个字符`)
           flag = true
         }
-        if($(i).data('key') === '联系方式' && !phoneFliterRules.test($(i).val())) {
+        if($(i).data('key') === '联系方式' && !phoneFliterRules.test($(i).val()) && $(i).val() !== '') {
           alert('请输入正确的联系方式')
           flag = true
         }

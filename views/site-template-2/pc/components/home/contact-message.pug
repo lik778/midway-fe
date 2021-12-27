@@ -11,6 +11,7 @@
       .company-title #{ companyName || '暂未添加公司名称' }
       .company-detail
         .title-1 公司地址
+        - console.log(company)
         .content-1 #{ company.address || '暂未添加地址' }
       .company-detail 
         .title-1 服务热线

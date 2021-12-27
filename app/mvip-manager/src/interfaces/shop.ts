@@ -697,7 +697,8 @@ export interface ContactStyleType {
 
 export interface ParamsItem {
   key: string,
-  value: string
+  value: string,
+  switch: boolean
 }
 
 export interface DetailParam {

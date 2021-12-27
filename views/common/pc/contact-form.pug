@@ -3,6 +3,7 @@ mixin ContactForm(wheather)
   - const formList = contactFields.filter(item => item.position === 'content')
   - const formBtn = contactFields.filter(item => item.title === '表单按钮')[0].des
   - const formTitle = contactFields.filter(item => item.title === '表单标题')[0].des
+  - console.log(contactFields)
   .a-container
     if wheather === 'homePage'
       p.a-title #{formTitle || '留言咨询'}
@@ -11,13 +12,15 @@ mixin ContactForm(wheather)
         .a-content-item
           .item-label
             | #{item.title}
-            span.labe-icon &nbsp;*
-          input(type="text" name="contact" data-value=item.des data-key=item.title placeholder=item.des)
+            if item.fixed
+              span.labe-icon &nbsp;*
+          input(type="text" name="contact" data-fixed=`${items.fixed}` data-value=item.des data-key=item.title placeholder=item.des)
       else 
         each items in formList
           .a-content-items
             .items-label
               | #{items.title}
-              .label-icons &nbsp;*
-            input(type="text" name="contact" data-value=items.des data-key=items.title  placeholder=items.des)
+              if items.fixed
+                .label-icons &nbsp;*
+            input(type="text" name="contact" data-fixed=`${items.fixed}` data-value=items.des data-key=items.title  placeholder=items.des)
       .a-button#SubmitButton #{ formBtn || '马上提交' }
