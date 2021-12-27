@@ -31,9 +31,9 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   // const repeatArray = (arr: ParamsItem[]) => {
   //   const hash: any = {}
   //   const newArr = arr.map((item: ParamsItem) => item.key)
-  //   for (const item of newArr) {
-  //     if (arr.hasOwnProperty(item)) return true
-  //     hash[item] = true
+  //   for (const i in newArr) {
+  //     if (arr.hasOwnProperty(newArr[i])) return true
+  //     hash[newArr[i]] = true
   //   }
   //   return false
   // }
