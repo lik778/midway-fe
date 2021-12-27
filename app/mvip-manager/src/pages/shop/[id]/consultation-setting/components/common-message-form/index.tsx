@@ -16,6 +16,7 @@ interface Iprop {
   curShopInfo?: ShopInfo | null
 }
 
+
 const CommonMessageForm: FC<Iprop> = (props) => {
   const { curShopInfo } = props
   const [getDate, setGetDate] = useState<boolean>(false)
@@ -26,8 +27,23 @@ const CommonMessageForm: FC<Iprop> = (props) => {
   useEffect(() => {
     initForm()
   }, [curShopInfo])
+  // 验证数组是否有重复的
+  // const repeatArray = (arr: ParamsItem[]) => {
+  //   const hash: any = {}
+  //   const newArr = arr.map((item: ParamsItem) => item.key)
+  //   for (const item of newArr) {
+  //     if (arr.hasOwnProperty(item)) return true
+  //     hash[item] = true
+  //   }
+  //   return false
+  // }
   const sumbit = async (item: any) => {
     console.log(item)
+    // const CustomParameters = item.params
+    // if (CustomParameters && CustomParameters.length > 0) {
+    //   const flag = CustomParameters.every((item: any) => item.key === '姓名' || item.key === '联系方式')
+    //   if (flag) return errorMessage('自定义参数名称重复')
+    // }
     setFormLoading(true)
     setUpDate(true)
     const { button, name, params, tel, title }: CommonFormParams = item
@@ -110,39 +126,6 @@ const CommonMessageForm: FC<Iprop> = (props) => {
       ...newFormConfig
     })
   }
-  // 设置初始值
-  const onInit = (form: any) => {
-    setGetDate(true)
-    const arry: ParamsItem[] = []
-    curShopInfo && curShopInfo.contactFields.forEach(item => {
-      if (item.position === 'button') {
-        form.setFieldsValue({
-          button: item.des
-        })
-      } else if (item.position === 'title') {
-        form.setFieldsValue({
-          title: item.des
-        })
-      } else if (item.position === 'content' && item.title === '联系方式') {
-        form.setFieldsValue({
-          tel: { key: '联系方式', value: item.des, switch: item.fixed }
-        })
-      } else if (item.position === 'content' && item.title === '姓名') {
-        form.setFieldsValue({
-          name: { key: '姓名', value: item.des, switch: item.fixed }
-        })
-      } else {
-        const listItem = { key: item.title, value: item.des, switch: item.fixed }
-        arry.push(listItem)
-      }
-      form.setFieldsValue({
-        params: arry
-      })
-    })
-    setGetDate(false)
-
-  }
-
 
   return (
     <Spin spinning={getDate || upDate}>
