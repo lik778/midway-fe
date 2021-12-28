@@ -52,27 +52,29 @@ const config: IConfig = {
   },
   mfsu: {},
   esbuild: {},
-  chainWebpack(config) {
-    config.merge({
-      plugins: [new AntdDayjsWebpackPlugin()],
-      optimization: {
-        splitChunks: {
-          chunks: 'all',
-          minSize: 30000,
-          minChunks: 1,
-          automaticNameDelimiter: '.',
-          cacheGroups: {
-            'vendors': {
-              name: 'vendors',
-              test: /[\\/]node_modules[\\/]/,
-              priority: 10,
-            }
+  ...(isProd() ? {
+    chainWebpack(config) {
+      config.merge({
+        plugins: [new AntdDayjsWebpackPlugin()],
+        optimization: {
+          splitChunks: {
+            chunks: 'all',
+            minSize: 30000,
+            minChunks: 1,
+            automaticNameDelimiter: '.',
+            cacheGroups: {
+              'vendors': {
+                name: 'vendors',
+                test: /[\\/]node_modules[\\/]/,
+                priority: 10,
+              }
+            },
           },
-        },
-      }
-    });
-  },
-  chunks: ['vendors', 'umi']
+        }
+      });
+    },
+    chunks: ['vendors', 'umi']
+  } : {})
 }
 
 export default defineConfig(config);
