@@ -47,7 +47,7 @@ const MessageList: FC = () => {
                 <FormItem className={styles['form-item']} name={[name, 'key']} fieldKey={[fieldKey, 'key']} rules={[{ required: true, whitespace: true, message: '请输入参数名' }, { pattern: /^[\s\S]{2,6}$/, message: '2～6个字' }]}>
                   <Input maxLength={6} className={styles['formItem']} placeholder={'请输入参数名'} size="large" />
                 </FormItem>
-                <FormItem className={`${styles['form-item']} ${styles['form-value']}`} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: true, whitespace: true, message: '请输入参数值' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
+                <FormItem className={`${styles['form-item']} ${styles['form-value']}`} name={[name, 'value']} fieldKey={[fieldKey, 'value']} rules={[{ required: false, whitespace: true, message: '请输入参数值' }, { pattern: /^[\s\S]{2,20}$/, message: '2～20个字' }]}>
                   <Input maxLength={20} className={styles['formItem']} placeholder={'请输入参数值'} size="large" />
                 </FormItem>
                 <FormItem className={styles['form-swith']} key={name + 'switch'} valuePropName="checked" label="是否必填" name={[name, 'switch']}>
