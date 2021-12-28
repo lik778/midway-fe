@@ -3,7 +3,6 @@ mixin ContactForm(wheather)
   - const formList = contactFields.filter(item => item.position === 'content')
   - const formBtn = contactFields.filter(item => item.title === '表单按钮')[0].des
   - const formTitle = contactFields.filter(item => item.title === '表单标题')[0].des
-  - console.log(contactFields)
   .a-container
     if wheather === 'homePage'
       p.a-title #{formTitle || '留言咨询'}

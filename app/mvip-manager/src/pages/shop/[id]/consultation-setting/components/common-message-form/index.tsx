@@ -28,29 +28,33 @@ const CommonMessageForm: FC<Iprop> = (props) => {
     initForm()
   }, [curShopInfo])
   // 验证数组是否有重复的
-  // const repeatArray = (arr: ParamsItem[]) => {
-  //   const hash: any = {}
-  //   const newArr = arr.map((item: ParamsItem) => item.key)
-  //   for (const i in newArr) {
-  //     if (arr.hasOwnProperty(newArr[i])) return true
-  //     hash[newArr[i]] = true
-  //   }
-  //   return false
-  // }
+  const repeatArray = (arr: ParamsItem[]) => {
+    const hash: any = {}
+    const newArr = arr.map((item: ParamsItem) => item.key.trim())
+    for (const i in newArr) {
+      if (hash.hasOwnProperty(newArr[i])) return true
+      hash[newArr[i]] = true
+    }
+    return false
+  }
   const sumbit = async (item: any) => {
-    console.log(item)
-    // const CustomParameters = item.params
-    // if (CustomParameters && CustomParameters.length > 0) {
-    //   const flag = CustomParameters.every((item: any) => item.key === '姓名' || item.key === '联系方式')
-    //   if (flag) return errorMessage('自定义参数名称重复')
-    // }
+    // item 预处理，去除多余的空格
+    const newItem = {
+      button: item.button.trim(),
+      name: { key: item.name.key.trim(), value: item.name.value.trim() }
+    }
+    const CustomParameters = item.params
+    if (CustomParameters && CustomParameters.length > 0) {
+      const flag = CustomParameters.some((item: any) => item.key.trim() === '姓名' || item.key.trim() === '联系方式') || repeatArray(CustomParameters)
+      if (flag) return errorMessage('自定义参数名重复')
+    }
     setFormLoading(true)
     setUpDate(true)
     const { button, name, params, tel, title }: CommonFormParams = item
     const newParams: CommonMessageSetting[] = params && params.map((item: ParamsItem) => {
       return ({
-        title: item.key,
-        des: item.value,
+        title: item.key.trim(),
+        des: item.value.trim(),
         position: 'content',
         fixed: item.switch
       })
@@ -58,25 +62,25 @@ const CommonMessageForm: FC<Iprop> = (props) => {
     const newContactFields: CommonMessageSetting[] = [
       {
         title: '表单标题',
-        des: title,
+        des: title.trim(),
         position: 'title',
         fixed: true
       },
       {
         title: '姓名',
-        des: name.value,
+        des: name.value.trim(),
         position: 'content',
         fixed: name.switch
       },
       {
         title: '联系方式',
-        des: tel.value,
+        des: tel.value.trim(),
         position: 'content',
         fixed: true
       },
       {
         title: '表单按钮',
-        des: button,
+        des: button.trim(),
         position: 'button',
         fixed: true
       },

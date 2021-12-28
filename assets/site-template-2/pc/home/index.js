@@ -5,6 +5,8 @@ import Swiper from 'swiper';
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { aboutUs } from '../components/home/about-us'
 import { leaveLeads } from '../../../common/contact-form'
+import { contactMessage } from '../components/contact-message'
+contactMessage()
 leaveLeads()
 aboutUs()
 $(document).on('ready', function () {

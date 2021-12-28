@@ -4,7 +4,9 @@ import { initSem } from '../../../common/pc/contact-form-sem';
 import { leaveLeads } from '../../../common/contact-form'
 import './index.styl';
 import '../layout/index';
+import { contactHome } from '../components/contact-home'
 leaveLeads();
+contactHome();
 $(document).on('ready', function() {
 
   const $bannerVideos = [...document.querySelectorAll('#banner-list .swiper-container video')]

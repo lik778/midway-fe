@@ -45,15 +45,28 @@
       flex-direction: column
       justify-content: flex-start
       .company-title
-        overflow hidden
-        text-overflow: ellipsis
-        white-space: nowrap
+        position relative
         max-width: 420px
         margin-bottom: 26px
         font-size: 20px
         font-weight: 600
         color: #333333
-        line-height: 20px
+        .company-icon
+          display: none
+          position absolute
+          transform: translateY(-110%)
+          left: -5px
+          width: 100%
+          padding: 5px
+          font-weight: normal
+          background: #ffffff
+          box-shadow: -1px 0px 12px #6e6d6e
+        .company-contect
+          width: 100%
+          overflow hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+          line-height: 20px
       .company-detail
         margin-bottom: 30px
         display: flex

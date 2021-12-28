@@ -1,7 +1,9 @@
 .container-contact
   .contact-center 
     .c-left
-      .l-title #{ companyName || '暂未添加公司名称' }
+      .l-title#address
+        .address-icon #{companyName}
+        .address-contect #{ companyName || '暂未添加公司名称' }
       .l-centent
         .l-item 公司地址：#{ company.address || '暂未添加地址' }
         .l-item 服务热线： #{ phone.content || '暂未添加微信号' }
