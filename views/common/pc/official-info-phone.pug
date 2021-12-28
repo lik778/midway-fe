@@ -1,10 +1,14 @@
 mixin createPhoneNum(phone)
   if phone&&phone.length>0
-    span.num #{phone.slice(0,3)}
-    span.line
-    span.num #{phone.slice(3,7)}
-    span.line
-    span.num #{phone.slice(7)}
+    - const notMobile = phone.startsWith('0') || phone.indexOf('-') !== -1
+    if notMobile
+      span.num #{ phone }
+    else 
+      span.num #{phone.slice(0,3)}
+      span.line
+      span.num #{phone.slice(3,7)}
+      span.line
+      span.num #{phone.slice(7)}
     
 mixin officialInfoPhone()
   if phone&&phone.content
