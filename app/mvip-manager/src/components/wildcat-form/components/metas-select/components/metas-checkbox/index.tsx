@@ -3,11 +3,10 @@ import { Checkbox } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { CheckboxChangeEvent, } from 'antd/lib/checkbox';
 import { MetasItem } from '@/interfaces/user';
-import { FormItem, } from '@/components/wildcat-form/interfaces';
+import { FormItem } from '@/components/wildcat-form/interfaces';
 import { getThirdCategoryMetas } from '@/api/user'
 import { objToTargetObj } from '@/utils';
 import { ShopMetas } from '@/interfaces/user'
-import { getCompanyMeta } from '@/api/ai-module'
 
 const CheckboxGroup = Checkbox.Group
 
@@ -84,22 +83,12 @@ const MetasCheckbox: FC<Props> = (props) => {
     }
   }, [cascaderValue])
 
-  // 是否是发帖通页
-  const isPostCreateFn = (): boolean => location.pathname === '/management/ai-module/promote-create/post-create'
-
   //获取三级类目meta
   const handleChangeSecondMates = async (catogoryName: any) => {
-    const isPostCreate = isPostCreateFn()
     setThirdDataLength(undefined)
-    const res = await (isPostCreate ? getCompanyMeta({ categoryId: catogoryName }) : getThirdCategoryMetas(catogoryName));
+    const res = await getThirdCategoryMetas(catogoryName);
     if (res?.success) {
-      const newShopData = isPostCreate ? res.data.thirdMetas?.map((item: {
-        label: string;
-        value: string;
-      }) => ({
-        ...item,
-        key: item.label
-      })) : objToTargetObj(res.data, "label")
+      const newShopData = objToTargetObj(res.data, "label")
       setThirdMates({
         ...thirdMates,
         [catogoryName]: newShopData
