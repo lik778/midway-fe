@@ -54,7 +54,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
     const newParams: CommonMessageSetting[] = params && params.map((item: ParamsItem) => {
       return ({
         title: item.key.trim(),
-        des: item.value.trim(),
+        des: (item.value || '').trim(),
         position: 'content',
         fixed: item.switch
       })
