@@ -8,6 +8,16 @@ export enum ProductType {
   VIP = 'SERVICE'
 }
 
+export enum  IndursyModule {
+  B2C_NORMAL='B2C行业通用模板',
+  B2B_NORMAL = 'B2B行业通用模板',
+  HUANGJIN= '黄金回收',
+  BAOJIE='保洁服务',
+  BAOMU='保姆月嫂',
+  JIADIAN='家电维修',
+  WULIU='物流'
+}
+
 
 export enum ShopBasisType {
   NAV = 'nav',
@@ -15,7 +25,8 @@ export enum ShopBasisType {
   CUSTOMER = 'customer',
   SEO = 'seo',
   INFO = 'info',
-  MODULE = 'module-management'
+  MODULE = 'module-management',
+  CONSULTATION = 'consultation-setting'
 }
 
 export enum ShopTDKType {

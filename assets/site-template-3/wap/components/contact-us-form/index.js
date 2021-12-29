@@ -2,63 +2,65 @@ import $ from 'jquery';
 import { eventTracker } from '../../../../common/tracker';
 
 export const leaveLeads1 = function () {
-    $(document).on('ready', function () {
-        $("#upContactUsForm").on('click', (e) => {
-            e.preventDefault();
-            const data = {};
-            data.name = $('#contactUsName').val();
-            data.contact = $('#contactUsTel').val();
-            data.content = '';
-            data.shopName = $('#shop-name').text();
-            if (window.extraContactFormData) {
-                Object
-                    .entries(window.extraContactFormData)
-                    .map(([k, v]) => data[k] = v)
+  $(document).on('ready',function() {
+    $('#upContactFormUs').on('click', (e) => {
+      e.preventDefault();
+      const data = {};
+      const content = []
+      let flag = false
+      const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
+      data.shopName = $('#shop-name').text()
+      if (window.extraContactFormData) {
+        Object
+            .entries(window.extraContactFormData)
+            .map(([k, v]) => data[k] = v)
+    }
+      $(':input[name="contactUS"]').each((e,i) => {
+        if($(i).val() === '' && Boolean($(i).data('fixed'))) {
+          alert($(i).data('value'))
+          flag = true
+        }
+        if($(i).val().length  > 20) {
+          alert(`${$(i).data('key')}字数最多20个字符`)
+          flag = true
+        }
+        if($(i).data('key') === '联系方式' && !phoneFliterRules.test($(i).val()) && $(i).val() !== '') {
+          alert('请输入正确的联系方式')
+          flag = true
+        }
+        if($(i).data('key') === '姓名') {
+          data.name = $(i).val()
+        } else if($(i).data('key') === '联系方式') {
+          data.contact = $(i).val()
+        } else {
+          const item = $(i).data('key')+ '：'+ $(i).val()
+          content.push(item)
+        }
+      })
+      if(flag) {
+        return false
+      }
+      data.content = content.join(';') || ''
+     // 添加leeds打点
+      eventTracker('comment-pc', '', 'click',
+      { mobile: data.contact })
+      $.ajax({
+        url:"/site-api/leads",
+        type:'POST',
+        dataType: 'json',
+        data: data,
+        async:true,
+        success:(res) =>{
+            if (res.success){
+                alert("提交成功")
+            }else{
+                alert(res.message)
             }
-            if (data.name === '') {
-                alert('请留下您的称呼')
-                return false
-            }
-            if (data.name.length > 50) {
-                alert('称呼最多50个字符')
-                return false
-            }
-            if (data.contact == '') {
-                alert('请留下您的联系方式')
-                return false
-            }
-            const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/;
-            if(!phoneFliterRules.test(data.contact)){
-                alert('请输入正确的联系方式')
-                return false
-            }
-            if (data.contact.length > 50) {
-                alert('联系方式最多50个字符')
-                return false
-            }
-            $('#upContactUsForm').attr('disabled', 'true')
-            // 添加leeds打点
-            eventTracker('comment-wap', '', 'click',
-                { mobile: data.contact })
-            $.ajax({
-                url: "/site-api/leads",
-                type: 'POST',
-                dataType: 'json',
-                data: data,
-                async: true,
-                success: (res) => {
-                    $('#upContactUsForm').attr('disabled', null)
-                    if (res.success) {
-                        alert("提交成功")
-                    } else {
-                        alert(res.message)
-                    }
-                },
-                error: (res) => {
-                    $('#upContactUsForm').attr('disabled', null)
-                    alert(res.message)
-                }
-            });
-        })
+        },
+        error:(res)=>{
+            alert(res.message)
+        }
+     })
     })
+  })
 }

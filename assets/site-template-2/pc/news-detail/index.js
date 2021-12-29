@@ -3,12 +3,11 @@ import './index.styl';
 import '../layout';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
-import { leaveLeads } from '../components/contact-us';
 import { initSem } from '../../../common/pc/contact-form-sem'
+import { leaveLeads } from '../../../common/contact-form'
 
 initializeSidebarProductSwiper()
 leaveLeads()
-
 $(document).on('ready', function () {
   new Swiper('#news-detail-swiper .swiper-container', {
     //spaceBetween: 30,

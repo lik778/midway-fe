@@ -1,0 +1,16 @@
+mixin contactModule(key)
+  -
+    const list = {
+      HUANGJIN: '//file.baixing.net/202112/711cbb47aa2f6a1965edf77d4e365f62.png',
+      BAOJIE: '//file.baixing.net/202112/9215278b9445b590eabd956a425abb4d.png',
+      SHECHIPIN: '//file.baixing.net/202112/5140423747752ff64a6af9a61d796e89.png',
+      JIAZHENG: '//file.baixing.net/202112/122947c3fef8a002b4b4e7d741535b51.png',
+      WULIU: '//file.baixing.net/202112/87e959e25d09830be6be3c976d2d9c3f.png',
+      WEIXIU: '//file.baixing.net/202112/54876ec9655f874eced9769b1e4214ac.png'
+    }
+  .contact-module
+    img.module(src=list[key])
+    .contact-postion
+      - const wheather  =  'homePage'
+      include ./contact-form.pug
+      +ContactForm(wheather)

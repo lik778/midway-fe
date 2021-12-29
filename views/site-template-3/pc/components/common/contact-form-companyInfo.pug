@@ -2,7 +2,8 @@ section.lz__section
 		.lz__subtitle 留言咨询
 		.lz__contact-us
 				.contact-form
-						include ./contact-form.pug
+						include ../../../../common/pc/contact-form.pug
+						+ContactForm('about')
 				if isSem !== "1"
 					.company-info
 							.info-label 公司信息

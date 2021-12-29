@@ -2,13 +2,13 @@ import './index.styl';
 import '../layout';
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { leaveLeads } from '../components/contact-us';
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { aboutUs } from '../components/home/about-us'
-
+import { leaveLeads } from '../../../common/contact-form'
+import { contactMessage } from '../components/contact-message'
+contactMessage()
 leaveLeads()
 aboutUs()
-
 $(document).on('ready', function () {
 	// 轮播产品
 	new Swiper('#banner-container  .swiper-container', {

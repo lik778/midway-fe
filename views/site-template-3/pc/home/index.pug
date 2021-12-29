@@ -12,6 +12,7 @@ block content
 		if autoConfig[3]&&autoConfig[3].show
 			include ../components/home/big-image.pug
 			+big-image(autoConfig[3])
+		- const { styleType } = renderData.contact
 		.container
 				//-自定义模块数据 
 				//-自定义模块2（即之前的自身优势模块）
@@ -49,8 +50,15 @@ block content
 				//- 用于导航
 				#contactFormBox
 					//- +home-title('联系我们')
-					include ../components/home/contact-us.pug
-				
+					//- include ../components/home/contact-us.pug
+
+					//- 行业模板
+					if styleType !== 'B2C_NORMAL'
+						include ../../../common/pc/contact-module.pug
+						+contactModule(styleType)
+					else
+						//- 通用模板
+						include ../components/home/contact-home.pug
 				//- 用于sem禁止外跳
 				include ../../../common/pc/contact-form-sem.pug
 				+contactFormSem('#F46')

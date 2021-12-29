@@ -1,0 +1,128 @@
+.container-contact
+  display: flex
+  justify-content: space-between
+  box-sizing: border-box
+  margin-top: 20px
+  .us2-left
+    box-sizing: border-box
+    display: flex
+    justify-content: center
+    align-items: flex-start
+    width: 742px
+    height: 470px
+    margin-right: 16px
+    padding: 30px 58px
+    background: #FFFFFF
+    border-radius: 3px
+    .left-nav
+      .us2-left-ul
+        display: flex
+        flex-direction: column
+        margin: 0
+        padding: 0
+        li
+          list-style: none
+          margin-bottom: 24px
+          font-size: 16px
+          min-width: 81px
+          a
+            text-decoration: none
+            cursor pointer
+            color: #333333
+          &:nth-child(1)
+            font-size: 20px
+            font-weight: 600
+
+    .left-line
+      width: 2px
+      height: 412px
+      margin:  0 57px
+      opacity: 0.3
+      background: #CECBCA
+      border: 1px solid #CECBCA
+    .left-address
+      display: flex
+      flex-direction: column
+      justify-content: flex-start
+      .company-title
+        position relative
+        max-width: 420px
+        margin-bottom: 26px
+        font-size: 20px
+        font-weight: 600
+        color: #333333
+        .company-icon
+          display: none
+          position absolute
+          transform: translateY(-110%)
+          left: -5px
+          width: 100%
+          padding: 5px
+          font-weight: 600
+          background: #ffffff
+          border: 1px solid rgba(0,0,0,0.1)
+          box-shadow: 0px 0px 11px #6e6d6e
+        .company-contect
+          width: 100%
+          overflow hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+          line-height: 20px
+      .company-detail
+        margin-bottom: 30px
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        font-size: 16px
+        line-height: 16px
+        color: #333333
+        .title-1
+          font-weight: 600
+          margin-bottom: 16px
+        .content-1
+          max-width: 420px
+          overflow hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+      .company-map
+        position relative
+        width: 430px
+        height: 145px
+        .map-bg
+          width: 100%
+          height: 100%
+        .map-mid
+          display: flex
+          justify-content: center
+          align-items: center
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%,-50%)
+          width: 238px
+          height: 48px
+          padding: 0 8px
+          background: #FFFFFF
+          box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.14)
+          border-radius: 3px
+          .map-mid-content
+            display: -webkit-box
+            overflow hidden
+            -webkit-box-orient: vertical
+            -webkit-line-clamp: 2
+            color: #3A50CB
+            font-size: 14px
+        .map-icon
+          position: absolute
+          width: 80px
+          height: 38px
+          bottom: 3px
+          left: 50%
+          transform: translateX(-50%)
+  .us2-right
+    width: 432px
+    height: 470px
+    background: #FFFFFF
+    border-radius: 6px
+    #aBtn
+      background: #ED4646 !important

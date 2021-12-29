@@ -232,7 +232,8 @@ export interface ShopInfo {
     suffixs: string[] //用于seo
   },
   canOptimizeFlag: boolean// 用于seo一键优化
-  navInfo: NavInfo | null
+  navInfo: NavInfo | null,
+  contactFields: CommonMessageSetting[]
 }
 
 export interface CustomerListItem {
@@ -558,6 +559,7 @@ export type ModulePageType =
   | 'articleListPage'
   | 'productInfoPage'
   | 'articleInfoPage'
+  | 'commonMessagePage'
   | 'aboutPage';
 
 export type ModuleComponentId =
@@ -566,7 +568,10 @@ export type ModuleComponentId =
   | 'autoConfig'
   | 'articleList'
   | 'about'
-  | 'articleRecommend';
+  | 'articleRecommend'
+  | 'messageModule'
+  | 'contact'
+  | 'message';
 
 export interface ModuleInitPage {
   position: ModulePageType;
@@ -685,5 +690,57 @@ export interface AdviceRecord {
   contact: string,
   identity: string,
 }
+
+export interface ContactStyleType {
+  styleType: string
+}
+
+export interface ParamsItem {
+  key: string,
+  value: string,
+  switch: boolean
+}
+
+export interface DetailParam {
+  value: string,
+  key: string,
+  status: boolean
+}
+export interface CommonMessageSetting {
+  title: string,
+  des: string,
+  position: string,
+  fixed: boolean
+}
+
+export interface FieldsParams {
+  fields: CommonMessageSetting[]
+}
+
+
+export interface MessageModule {
+  pageModule: ModuleComponentId,
+  position: ModulePageType,
+  styleType: ContactType
+}
+
+export type ContactType=
+ | 'B2C_NORMAL'
+ | 'B2B_NORMAL'
+ | 'HUANGJIN'
+ | 'BAOJIE'
+ | 'SHECHIPIN'
+ | 'JIAZHENG'
+ | 'WULIU'
+ | 'WEIXIU'
+
+export interface CommonFormParams {
+  button: string,
+  name: ParamsItem,
+  params: ParamsItem[],
+  tel: ParamsItem,
+  title: string
+}
+
 
 /** 店铺模块管理相关 结束 */

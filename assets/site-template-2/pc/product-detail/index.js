@@ -1,7 +1,7 @@
 import $ from "jquery";
 import './index.styl';
 import '../layout';
-import { leaveLeads } from '../components/contact-us';
+import { leaveLeads } from '../../../common/contact-form'
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { mediaShow } from '../components/product-detail/media-show'
 

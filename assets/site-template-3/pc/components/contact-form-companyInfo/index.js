@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import { eventTracker } from '../../../../common/tracker'
-
 export const viewPhone = function() {
 	$(document).on('ready',function() {
 		$(".phone1 .view-phone").on('click',() => {

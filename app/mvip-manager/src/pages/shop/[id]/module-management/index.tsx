@@ -36,6 +36,7 @@ const ModuleManagement: FC<Props> = (props) => {
   const getComponentInit = async () => {
     const res = await getModuleInitInfoApi(Number(params.id))
     setModuleOptions(res.data)
+    console.log(res.data)
   }
 
   const initPageOptions = () => {

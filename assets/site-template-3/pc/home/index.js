@@ -1,15 +1,12 @@
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { leaveLeads } from '../components/contact-us';
-import { viewPhone } from '../components/home/about-us';
 import { initSem } from '../../../common/pc/contact-form-sem';
-
+import { leaveLeads } from '../../../common/contact-form'
 import './index.styl';
 import '../layout/index';
-
+import { contactHome } from '../components/contact-home'
 leaveLeads();
-viewPhone();
-
+contactHome();
 $(document).on('ready', function() {
 
   const $bannerVideos = [...document.querySelectorAll('#banner-list .swiper-container video')]

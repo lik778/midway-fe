@@ -35,7 +35,14 @@ const BasisTab = (props: Props) => {
       label: "SEO设置",
       key: ShopBasisType.SEO,
       display: true,
-    }, {
+    },
+    {
+      link: `/shop/${params.id}/${ShopBasisType.CONSULTATION}`,
+      label: "留咨设置",
+      key: ShopBasisType.CONSULTATION,
+      display: true,
+    },
+    {
       // tip: 基础资料设置只有游龙工单申请过，加入白名单的用户才能使用
       link: `/shop/${params.id}/${ShopBasisType.INFO}`,
       label: "基础资料设置",
