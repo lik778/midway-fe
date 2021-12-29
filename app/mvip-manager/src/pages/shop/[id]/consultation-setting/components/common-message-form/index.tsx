@@ -70,7 +70,7 @@ const CommonMessageForm: FC<Iprop> = (props) => {
         title: '姓名',
         des: name.value.trim(),
         position: 'content',
-        fixed: name.switch
+        fixed: true
       },
       {
         title: '联系方式',
