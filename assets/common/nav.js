@@ -7,7 +7,7 @@ export const initNav = function ($navs) {
   // 有全等得亮全等
   // 删除 / 下全等
   // 无全等得亮开头对应列表
-  const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '').replace(/\/([\s\S]{0,})l(-?)([\s\S]{0,}).html/,'/$1$2$3')
+  const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '')
 
 
   const urls = $.map($navs, function (item) {
@@ -30,12 +30,12 @@ export const initNav = function ($navs) {
 
   let baseUrl = urls[0]
   if (href.startsWith(`${baseUrl}p`)) {
-    const index = urls.findIndex(item => item === `${baseUrl}p/`)
+    const index = urls.findIndex(item => item === `${baseUrl}pl.html`)
     $navs.eq(index).addClass('active')
     return
   }
   if (href.startsWith(`${baseUrl}n`)) {
-    const index = urls.findIndex(item => item === `${baseUrl}n/`)
+    const index = urls.findIndex(item => item === `${baseUrl}nl.html`)
     $navs.eq(index).addClass('active')
     return
   }
