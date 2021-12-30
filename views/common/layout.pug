@@ -18,13 +18,14 @@ html
     - companyName = renderData.basic.company.alias ||  renderData.basic.company.name ||''
     //-导航因为后台可设置是否显示，因此要如下处理
     - nav = renderData.navigation
-    - productListTab = nav.filter(x => x.position == "productListPage")
-    - newsLinkListTab = nav.filter(x => x.position == "articleListPage")
-    if productListTab.length >0
-      - productLink = productListTab[0].content
-    if newsLinkListTab.length >0
-      - newsLink = newsLinkListTab[0].content
-    - aboutLink =  currentPathname.indexOf(shopName)===-1?'/about': '/'+shopName+'/about/'
+    - productListTab = nav.find(x => x.position == "productListPage")
+    - newsLinkListTab = nav.find(x => x.position == "articleListPage")
+    - aboutLinkListTab = nav.find(x => x.position == "aboutPage")
+    if productListTab
+      - productLink = productListTab.content
+    if newsLinkListTab
+      - newsLink = newsLinkListTab.content
+    - aboutLink = aboutLinkListTab?aboutLinkListTab.content:currentPathname.indexOf(shopName)===-1?'/about.html': '/'+shopName+'/about.html'
     - defaultImg = "//file.baixing.net/202107/e9a1688b5c861d17484d61515c207390.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
     //-为了提供给留咨参数
