@@ -59,18 +59,18 @@ export default (props: Props) => {
     const deleteId = deleteItem?.id || 0
     const res = await deleteContentCateApi(Number(params.id), { id: deleteId, isNavigation: Boolean(deleteItem?.isNavigation) })
     if (res?.success) {
-      const deleteIndex = cateList.findIndex((x: CateItem) => x.id === deleteId)
-      cateList.splice(deleteIndex, 1)
-      updateCateList([...cateList]);
+      const newCateList = [...cateList]
+      const deleteIndex = newCateList.findIndex((x: CateItem) => x.id === deleteId)
+      newCateList.splice(deleteIndex, 1)
+      updateCateList(newCateList);
       setVisibleDeleteDialog(false);
       successMessage(res?.message);
-      location.reload()
     } else {
       errorMessage(res?.message);
     }
   }
 
-  return (
+  return (<>
     <Drawer
       title={props.title}
       closable={true}
@@ -124,32 +124,33 @@ export default (props: Props) => {
           <p>答：根据权重设置排序，<span className={styles['red']}>权重越大显示越靠前</span> ，因前端有缓存，后台设置后，需要约5分钟前台页面生效。</p>
         </div >
       </div >
-      <GroupModal
-        type={type}
-        editItem={editItem}
-        visible={groupModalVisible}
-        updateCateList={updateCateList}
-        cateList={cateList}
-        onClose={() => {
-          setGroupModalVisible(false)
-          setEditItem(null)
-        }} />
-      <MyModal
-        title="确认删除"
-        content={<>
-          {
-            deleteItem?.isNavigation && <p>该分组已设置导航，删除后，已设置的导航及“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
-              ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
-              {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗？</p>
-          }
-          {
-            !deleteItem?.isNavigation && <p>删除后，“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
-              ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
-              {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗</p>
-          }
-        </>}
-        visible={visibleDeleteDialog}
-        onOk={() => deleteGroupItem()}
-        onCancel={() => setVisibleDeleteDialog(false)} />
-    </Drawer >)
+    </Drawer>
+    <GroupModal
+      type={type}
+      editItem={editItem}
+      visible={groupModalVisible}
+      updateCateList={updateCateList}
+      cateList={cateList}
+      onClose={() => {
+        setGroupModalVisible(false)
+        setEditItem(null)
+      }} />
+    <MyModal
+      title="确认删除"
+      content={<>
+        {
+          deleteItem?.isNavigation && <p>该分组已设置导航，删除后，已设置的导航及“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
+            ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
+            {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗？</p>
+        }
+        {
+          !deleteItem?.isNavigation && <p>删除后，“{deleteItem?.name}”分类下的{numsMap.get(Number(deleteItem?.id))
+            ? `${numsMap.get(Number(deleteItem?.id))}个` : ''}
+            {isProductCate ? '服务' : '文章'}会全部删除，确认删除吗</p>
+        }
+      </>}
+      visible={visibleDeleteDialog}
+      onOk={() => deleteGroupItem()}
+      onCancel={() => setVisibleDeleteDialog(false)} />
+  </>)
 }

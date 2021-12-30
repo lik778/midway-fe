@@ -7,7 +7,6 @@ import { RouteParams } from '@/interfaces/shop';
 
 interface Props {
   type: ShopTDKType;
-  nav: any[];
   curShopInfo: ShopInfo | null,
   shopStatus: ShopStatus | null
 }
@@ -15,7 +14,7 @@ interface Props {
 
 
 const SeoTab = (props: Props) => {
-  const { type, nav, curShopInfo, shopStatus } = props
+  const { type, curShopInfo, shopStatus } = props
   const params: RouteParams = useParams();
 
   const menuList = useMemo(() => {
@@ -58,16 +57,8 @@ const SeoTab = (props: Props) => {
       }
     }
 
-    nav.forEach((n, i) => {
-      menuList = menuList.map(m => {
-        return {
-          ...m,
-          label: m.position === n.position ? n.name : m.label
-        }
-      })
-    })
     return menuList
-  }, [nav, curShopInfo, shopStatus])
+  }, [curShopInfo, shopStatus])
 
   return (
     <Menu selectedKeys={[type]} className="a-menu">

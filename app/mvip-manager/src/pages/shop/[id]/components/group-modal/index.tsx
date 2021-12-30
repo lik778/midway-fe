@@ -74,7 +74,7 @@ const NewCate = (props: Props) => {
       name: values.name,
       seoD: values.seoD || '',
       seoK: values.seoK ? values.seoK.join(',') : '',
-      seoT: values.seoT || '',
+      seoT: (values.seoT || '').replace(/｜/g, '|'),
       weight: values.weight,
       type,
     }
