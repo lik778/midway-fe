@@ -21,10 +21,12 @@ export const contentGroupForm = (isB2B: boolean, cateType: ContentCateType): For
     buttonConfig: { text: '提交', size: 'large', className: 'mvip-btn' }
   }
   if (isB2B && cateType === ContentCateType.PRODUCT) {
-    config.children[2].placeholder = '示例：产品分组名 | 后缀_后缀'
-    config.children[2].extra = '请按照格式 “产品分组名 | 后缀_后缀”填写，用英文竖线隔开，例如：活动板房 | 价格_批发_图片_货源_……'
+    config.children[2].placeholder = '示例：产品分组名|后缀_后缀'
+    config.children[2].extra = '请按照格式 “产品分组名|后缀_后缀”填写，用英文竖线隔开，例如：活动板房|价格_批发_图片_货源_……'
     config.children[3].extra = '请输入40～120字描述，建议可以在描述中多嵌入一些关键词，会更有利于您的SEO排名'
-    config.children[4].extra = '请按照格式“产品分组名+后缀”填写。例如：活动板房品牌、活动板房厂家、活动板房价格……'
+    config.children[4] = {
+      formItemWidth: 130, label: 'SEO关键词', name: 'seoK', type: FormType.Tag, required: false, maxLength: 10, placeholder: '输入标签', maxNum: 8, minNum: 3, extra: '请按照格式“产品分组名+后缀”填写，最多填写8个。例如：活动板房品牌、活动板房厂家、活动板房价格……'
+    }
   }
   return config
 }

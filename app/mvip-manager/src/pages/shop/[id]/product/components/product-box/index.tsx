@@ -32,14 +32,15 @@ const ProductBox = (props: Props) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
-  const [formConfig, setformConfig] = useState<FormConfig>(productForm(typeTxt))
+  const [formConfig, setformConfig] = useState<FormConfig>(productForm(typeTxt, isB2B))
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
     let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
     return {
       ...editData,
       media,
-      contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item))
+      contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item)),
+      seoKeyWord: editData.seoKeyWord ? [editData.seoKeyWord] : undefined
     }
   }, [editData])
 
@@ -48,7 +49,7 @@ const ProductBox = (props: Props) => {
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
   const initForm = () => {
-    const newFormConfig = productForm(typeTxt)
+    const newFormConfig = productForm(typeTxt, isB2B)
     // 初始化表单----> value
     const newArticleFormChildren = newFormConfig.children.map(item => {
       if (item.name === 'contentCateId') {
@@ -62,7 +63,7 @@ const ProductBox = (props: Props) => {
     })
     newFormConfig.customerFormItemList = [{
       key: 'params',
-      index: 5,
+      index: 6,
       node: <ProductKey key={'params'} isB2B={isB2B}></ProductKey>
     }]
     setformConfig({
@@ -80,6 +81,11 @@ const ProductBox = (props: Props) => {
     const isEdit = Boolean((editData as ProductListItem)?.id)
 
     if (!values.price) { values.price = '面议' }
+    if (values.seoKeyWord && values.seoKeyWord.length > 0) {
+      values.seoKeyWord = values.seoKeyWord[0]
+    } else {
+      values.seoKeyWord = ''
+    }
     const media = values.media
     if (media) {
       values.headImg = media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) : getImgUploadModelValue(values.media, true)

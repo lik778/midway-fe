@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const TagModule = (props: Props) => {
-  const { disabled, onChange, value } = props
+  const { disabled, onChange, maxNum, value } = props
 
   const [tags, setTags] = useState<string[]>([])
   const [inputVisible, setInputVisible] = useState(false)
@@ -43,19 +43,21 @@ export const TagModule = (props: Props) => {
   }
 
   const handleInputChange = (tag: string) => {
-    const val = tag.trim().replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '')
-    if (val.length) {
-      setInputValue(val);
-    }
+    const val = tag.trim().replace(/[^a-zA-Z0-9\u4e00-\u9fa5']/g, '')
+    setInputValue(val);
   }
 
-  const handleInputConfirm = () => {
+  const handleInputConfirm = (type: 'blur' | 'enter') => {
     // tips: 这里还要进行一下数据输入处理
+    const newTags = [...tags]
     if (inputValue && !tags.includes(inputValue)) {
-      onChange([...tags, inputValue])
-      setTags([...tags, inputValue])
+      newTags.push(inputValue)
+      onChange(newTags)
+      setTags(newTags)
     }
-    setInputVisible(false)
+    if (type === 'blur' || newTags.length >= maxNum) {
+      setInputVisible(false)
+    }
     setInputValue('')
   };
 
@@ -92,9 +94,10 @@ export const TagModule = (props: Props) => {
         <Input
           type="text"
           size="small"
+          value={inputValue}
           onChange={(e) => handleInputChange(e.target.value)}
-          onBlur={handleInputConfirm}
-          onPressEnter={handleInputConfirm}
+          onBlur={() => { handleInputConfirm('blur'); }}
+          onPressEnter={(e) => { e.preventDefault(); handleInputConfirm('enter'); }}
           className="input-tag"
           minLength={props.minLength}
           maxLength={props.maxLength}
@@ -102,7 +105,7 @@ export const TagModule = (props: Props) => {
       )}
       {!disabled && !inputVisible && tags.length < props.maxNum && (
         <Tag onClick={showInput} className="site-tag-plus">
-          <PlusOutlined /> 添加
+          <PlusOutlined style={{ color: '#000000', fontSize: '14px' }} /> 添加
         </Tag>
       )}
     </div>

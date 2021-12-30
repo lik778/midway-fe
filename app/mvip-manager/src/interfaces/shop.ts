@@ -18,6 +18,7 @@ export interface GetContentApiParams {
 
 export interface CreateProductApiParams extends CreateArticleApiParams {
   headImg?: string;
+  seoKeyWord?: string;
 }
 
 export interface ProductListItemInfoKey {
@@ -41,6 +42,7 @@ export interface ProductListItem {
   createdTime: number;
   videoUrl: string | null;
   params: ProductListItemInfoKey[];
+  seoKeyWord: string | null;
 }
 
 export interface CreateArticleApiParams {

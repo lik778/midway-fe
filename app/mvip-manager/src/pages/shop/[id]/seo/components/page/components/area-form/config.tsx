@@ -5,7 +5,7 @@ import { FormConfig } from '@/components/wildcat-form/interfaces';
 import styles from './index.less'
 
 // TDK表单
-export const tdkForm: FormConfig = {
+export const tdkForm = (AddPublic: React.ReactNode): FormConfig => ({
   name: 'tdkForm',
   children: [
     {
@@ -22,9 +22,11 @@ export const tdkForm: FormConfig = {
       extra: '示例：北京、上海等，如果您要推广全国城市，请写您主要推广的城市。'
     },
     {
-      formItemWidth: 130, label: 'SEO后缀', name: 'suffixs', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入SEO后缀', maxNum: 50, minNum: 1,
-      extra: '示例：厂家、价格、货源等。'
+      formItemWidth: 130, label: 'SEO后缀', name: 'suffixs', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入SEO后缀', maxNum: 50, minNum: 1, extra: <>
+        {AddPublic}
+        <p>'示例：厂家、价格、货源等。'</p>
+      </>
     },
   ],
   buttonConfig: { text: '保存', size: 'large', className: 'mvip-btn' }
-}
+})

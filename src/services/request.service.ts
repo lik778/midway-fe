@@ -76,7 +76,7 @@ export class RequestService {
       }).catch((err: AxiosError) => reject(err))
     })
       .catch((err) => {
-        this.errorHandle(err, 'post', url, data, headers)
+        this.errorHandle(err, 'put', url, data, headers)
       })
   }
 
