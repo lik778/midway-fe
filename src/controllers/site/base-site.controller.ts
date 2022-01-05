@@ -129,7 +129,6 @@ export class BaseSiteController {
         item.content = `${data.navigation[0].content}#contactFormBox`
       }
     })
-    console.log(JSON.stringify(data))
     return data
   }
 
