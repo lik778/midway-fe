@@ -4,11 +4,11 @@ mixin about-Us-New(type,mediaImg,videoUrl)
       .content-right-title
         .right-title-left
           img(src=company.logo || defaultLogo)
-          
-          p.left-title #{ companyName }
         .right-title-right
-          each item in type
-            p.tag= item
+          p.left-title #{ companyName }
+          .tags 
+            each item in type
+              p.tag= item
       .content-right-body(data-d=company.about)
         - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
         .body-content

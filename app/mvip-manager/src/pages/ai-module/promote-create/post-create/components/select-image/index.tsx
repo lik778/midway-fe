@@ -24,7 +24,7 @@ const SelectImage = (props: Props, parentRef: Ref<any>) => {
   const [validateStatus, setValidateStatus] = useState<'' | 'error'>('')
   const [help, setHelp] = useState<string | undefined>()
   const [minLength] = useState<number>(5)
-  const [maxLength] = useState<number>(30)
+  const [maxLength] = useState<number>(20)
   const [maxSize] = useState<number>(3)
 
   useImperativeHandle(parentRef, () => ({
