@@ -20,7 +20,7 @@
       .company-detail
         .title-1 微信号
         .content-1  #{ weChat.content || '暂未添加微信号' }
-      .company-map
+      a.company-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
         img.map-bg(src="//file.baixing.net/202112/a72fc4855df832c1ddb5f1cb4639a2e9.png", alt="logo")
         .map-mid 
           span.map-mid-content #{ company.address || '暂未添加地址' }

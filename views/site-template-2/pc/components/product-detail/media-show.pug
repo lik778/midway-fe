@@ -1,9 +1,12 @@
 mixin mediaShow()
-	- const { headImg, name, price, contentImg, videoUrl,params } = renderData.productInfo;
+	- const { headImg, name, price, contentImg, videoUrl,params, infoSeoKeyWord } = renderData.productInfo;
 	- const { contactName,phone,union400 } = renderData.basic.contact;
 	- const { address, logo, name: companyName} = renderData.basic.company
 	- const { metas } = renderData.basic.shop.about? JSON.parse(renderData.basic.shop.about):{}
 	- const defaultImg = '//file.baixing.net/202109/e9a1688b5c861d17484d61515c207390.png';
+	- const { suffixs } = renderData.basic.shop.tkdCommonParams
+	- const seoName = infoSeoKeyWord || name
+	- const proSuffixs = (suffixs.length > 0 && suffixs.join('_')) || '品牌_价格_批发_图片_行情_地址_厂家_公司_货源_参数_电话'
 	.media-show-container
 		.media-show-left
 			.left-headImg
@@ -13,11 +16,11 @@ mixin mediaShow()
 							.video-wrapper
 								video(src=videoUrl, loop, preload, controls)
 							.video-cover(id="cover")
-								img(src=headImg, alt="logo")
+								img(src=headImg, alt=alt=seoName + proSuffixs)
 					else
-						img(src=headImg, alt="logo")
+						img(src=headImg, alt=seoName + proSuffixs)
 				else
-					img(src=defaultImg, alt="logo")
+					img(src=defaultImg, alt=seoName + proSuffixs)
 			.left-contentImg
 				.swiper-container
 					.swiper-wrapper
