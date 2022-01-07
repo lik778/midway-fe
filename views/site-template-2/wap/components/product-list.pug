@@ -6,9 +6,9 @@ mixin product-list(type, productList)
 				- const isVideo = item.videoUrl
 				a.product(href=item.urlSuffix,class=item.videoUrl?'video':'')
 					.product__img
-						img(src=item.headImg || defaultImg)
+						img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 						if type === 'hot'
-							img.hot-icon(src=hotIcon)
+							img.hot-icon(src=hotIcon alt=item.infoSeoKeyWord || item.name)
 					p.only-twoline #{ item.name }
 	else
 		include ./default-content.pug

@@ -59,8 +59,7 @@ export class SiteService {
   private getDomain(domain: string): string {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1 || domain.indexOf('192.168') !== -1) {
       /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      // domain = 'zmlc2b.shop-test2.baixing.cn'
-      // domain = 'zmlc2b.shop.baixing.cn'
+      // domain = 'zb2c.shop-test2.baixing.cn'
 
       /*后端在test2分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
       domain = 'shop-test2.baixing.cn'

@@ -4,7 +4,7 @@ mixin officialInfo()
       .left 
         if isSem !== "2"
           a.logo-a(href=nav[0].content)
-            img.logo(src=company.logo || defaultLogo, alt="")
+            img.logo(src=company.logo || defaultLogo, alt=companyName)
           .line 
           .text 
             .title #{companyName}
