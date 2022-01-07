@@ -4,7 +4,7 @@
   display flex
   justify-content center
   align-items flex-start
-  height 360px
+  min-height 360px
   padding 59px 36px 51px 30px
   background url("//file.baixing.net/202108/55178a98c73c9d27db933bce8121e310.png") no-repeat center center/100%
   background-size cover
@@ -50,28 +50,29 @@
         justify-content center
         align-items center
         img
-          width 50px
+          max-width 138px
           height 46px
-          margin-right 16px
           border-radius 4px
           overflow hidden
+      .right-title-right
+        margin-left 16px
         .left-title
           // line-height 26px
           font-size 20px
           font-weight bold
-      .right-title-right
-        margin-left 16px
-        display flex
-        .tag
-          box-sizing border-box
-          padding 5px 9px
-          line-height 14px
-          text-align center
-          border 1px solid #D19960
-          border-radius 2px
-          color #D19960
-          font-size 14px
-          margin-right 12px
+          margin-bottom 10px
+        .tags 
+          display flex
+          .tag
+            box-sizing border-box
+            padding 5px 9px
+            line-height 14px
+            text-align center
+            border 1px solid #D19960
+            border-radius 2px
+            color #D19960
+            font-size 14px
+            margin-right 12px
     .content-right-body
       position relative
       width 656px
@@ -89,7 +90,7 @@
       height 40px
       display flex
       align-items center
-      margin-top 38px
+      margin-top 16px
       .bottom-left
         display flex
         justify-content center

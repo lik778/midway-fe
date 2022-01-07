@@ -55,21 +55,21 @@ export class SiteService {
     }
   }
 
-  // 测试环境需要设置domian
+  // 本地环境时需要对 domain 进行配置  
+  // 本地需要请求测试环境接口，而测试环境会校验当前的请求是否从对应的域名发出的
+  // 例如 dev环境要求 shop-dev.baixing.cn这个域名(后端未修复，暂时无法使用)
+  // 例如 test环境要求 shop-test.baixing.cn这个域名
+  // 例如 test1环境要求 shop-test1.baixing.cn这个域名
+  // 例如 test2环境要求 shop-test2.baixing.cn这个域名
+  // 还需要知道店铺的url分有三级域名与无三级域名两种 对应的domain不同
+  // 例如 'zmlc2b.shop-test2.baixing.cn'  为 zmlc2b.shop-test2.baixing.cn
+  //      'shop-test.baixing.cn/zmlc/'  为 shop-test.baixing.cn
   private getDomain(domain: string): string {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1 || domain.indexOf('192.168') !== -1) {
-      /*后端在test分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      // domain = 'zb2c.shop-test2.baixing.cn'
+      // 可以将自己常用的还有三级域名的url写在下面 注释好
 
-      /*后端在test2分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
+      // domain = 'zmlc2b.shop-test2.baixing.cn'
       domain = 'shop-test2.baixing.cn'
-
-      /*后端在dev分支，且店铺类型是是模板2，B2B模板，使用这个domain*/
-      // domain = 'shop-test.baixing.cn'
-
-      /*后端在dev分支，且店铺类型是是模板1，B2C模板，使用这个domain*/
-      // domain = 'shop.baixing.cn'
-
     }
     return domain
   }
