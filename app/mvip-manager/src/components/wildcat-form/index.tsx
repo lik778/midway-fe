@@ -1,6 +1,6 @@
-import React, { forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
-import { Button, Form, Input, Select, Checkbox, InputNumber, Switch, Row, Col } from 'antd';
-import { FormItem, OptionItem, CustomerFormItem, WildcatFormProps } from '@/components/wildcat-form/interfaces';
+import React, { FC, forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+import { Button, Form, Input, Select, Checkbox, Radio, InputNumber, Switch, Row, Col, FormItemProps } from 'antd';
+import { FormItem, CustomerFormItem, WildcatFormProps, SelectOptionItem, CheckboxOptionItem, RadioOptionItem, } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
 import ImgUpload from '@/components/img-upload';
 import { TagModule } from '@/components/wildcat-form/components/tag';
@@ -11,6 +11,7 @@ import { isEmptyObject } from '@/utils';
 import styles from './index.less'
 
 const CheckboxGroup = Checkbox.Group;
+const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
@@ -76,16 +77,11 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
     if (configItem?.onChange) { configItem.onChange(newValue, form) }
-    const values = form.getFieldsValue()
-    values[name] = newValue
-    //给表格数据加选择后的数据
-    form.setFieldsValue(values)
   }
 
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
-
 
   function isCustomerFormItem(item: FormItem | CustomerFormItem): item is CustomerFormItem {
     return Boolean((item as CustomerFormItem).node)
@@ -101,31 +97,60 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         return item.node
       }
       const patternList = item.patternList ? item.patternList : [];
-      let dom = <></>
+      // 选择什么组件
+      let componentItem = <></>
+      // 给formItem 添加额外的属性
+      let formItemProps: FormItemProps = {
+        // 用于FormItem
+        className: item.className,
+        label: item.label,
+        name: item.name,
+        required: item.required,
+        rules: [{ required: item.required }, ...patternList],
+        labelCol: item.labelCol,
+        extra: item.extra,
+      }
+      let needFormItem = true
       if (item.type === FormType.Input) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
-          <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} showCount={item.showCount} />
-        </Form.Item>
+        componentItem = <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} showCount={item.showCount} />
       } else if (item.type === FormType.InputNumber) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
-          <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
-        </Form.Item>
+        componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
       } else if (item.type === FormType.Textarea) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }, ...patternList]} labelCol={item.labelCol} extra={item.extra}>
-          <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} />
-        </Form.Item>
+        componentItem = <TextArea showCount style={{ width: item.formItemWidth }} placeholder={item.placeholder} rows={6} size='large' maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} />
       } else if (item.type === FormType.Select) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol} extra={item.extra}>
-          <Select
-            onChange={(newValue) => onChange(newValue, item.name || '')}
-            placeholder={item.placeholder} size='large'
-            style={{ width: item.formItemWidth }} disabled={item.disabled || disabled}>
-            {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-          </Select>
-        </Form.Item>
+        formItemProps.rules![0] = { required: item.required, message: `请选择${item.label}` }
+        componentItem = <Select
+          onChange={(newValue) => onChange(newValue, item.name || '')}
+          placeholder={item.placeholder} size='large'
+          style={{ width: item.formItemWidth }}
+          disabled={item.disabled || disabled}
+          getPopupContainer={triggerNode => triggerNode.parentNode}>
+          {item.options && (item.options as SelectOptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
+        </Select>
+      } else if (item.type === FormType.Switch) {
+        formItemProps.valuePropName = "checked"
+        formItemProps.rules![0] = { required: item.required, message: `请选择${item.label}` }
+        componentItem = <Switch onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
+      } else if (item.type === FormType.Checkbox) {
+        formItemProps.rules![0] = { required: item.required, message: `请选择${item.label}` }
+        componentItem = <CheckboxGroup
+          options={item.options as CheckboxOptionItem[]}
+          style={{ width: item.formItemWidth }}
+          disabled={item.disabled || disabled}
+          onChange={(newValue) => onChange(newValue, item.name || '')}></CheckboxGroup>
+      } else if (item.type === FormType.Radio) {
+        formItemProps.rules![0] = { required: item.required, message: `请选择${item.label}` }
+        componentItem = <RadioGroup
+          size="large"
+          options={item.options as RadioOptionItem[]}
+          style={{ width: item.formItemWidth }}
+          disabled={item.disabled || disabled}
+          onChange={(newValue) => onChange(newValue, item.name || '')}></RadioGroup>
       } else if (item.type === FormType.ImgUpload) {
-        dom = <Form.Item className={` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`} key={item.name}
-          label={item.label} required={item.required} labelCol={item.labelCol} extra={item.extra}>
+        // 这里的formItemProps控制的是外层的form.item
+        formItemProps.className = ` ${styles['image-upload-box']} ${item.required ? '' : item.tip ? styles['image-upload-set-p'] : ''} ${item.className}`
+        formItemProps.rules = []
+        componentItem = <>
           <div className={styles['flex-box']}>
             {
               (item.images || []).map((img) => {
@@ -157,26 +182,16 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
               }
             </>
           }
-        </Form.Item>
+        </>
       } else if (item.type === FormType.AreaSelect) {
         const value = getEditData(item.name || '');
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} required={item.required} rules={[...patternList]} labelCol={item.labelCol} extra={item.extra}>
-          <AreaSelect disabled={item.disabled || disabled} width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
-        </Form.Item>
-      } else if (item.type === FormType.GroupSelect) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol} extra={item.extra}>
-          <Select placeholder={item.placeholder} size='large' style={{ width: item.formItemWidth }} getPopupContainer={triggerNode => triggerNode.parentNode} disabled={item.disabled || disabled}>
-            {item.options && (item.options as OptionItem[]).map(option => <Option key={option.key} value={option.value}>{option.key}</Option>)}
-          </Select>
-        </Form.Item>
+        componentItem = <AreaSelect disabled={item.disabled || disabled} width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
       } else if (item.type === FormType.Tag) {
-        const value = form.getFieldsValue()[item.name || ''];
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} required={item.required} rules={[{
+        formItemProps.rules = [{
           validator: async (rule: any, value: any) => {
             const minNum = item.minNum || 0
             const maxNum = item.maxNum || 1000000
             const existValue = value && value.length > 0
-
             if (existValue) {
               if (value.length < minNum || value.length > maxNum) {
                 return Promise.reject(`${item.label}数在${minNum}到${maxNum}个之间`)
@@ -189,30 +204,31 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
               }
             }
           }
-        }, ...patternList]} labelCol={item.labelCol} extra={item.extra} >
-          <TagModule
-            disabled={item.disabled || disabled}
-            value={value || []}
-            maxLength={item.maxLength || 1}
-            minLength={item.minLength || 1}
-            maxNum={item.maxNum || 0}
-            onChange={(newValue) => onChange(newValue, item.name || '')} />
-        </Form.Item>
+        }, ...patternList]
+        componentItem = <TagModule
+          disabled={item.disabled || disabled}
+          maxLength={item.maxLength || 1}
+          minLength={item.minLength || 1}
+          maxNum={item.maxNum || 0}
+          onChange={(newValue) => onChange(newValue, item.name || '')} />
       } else if (item.type === FormType.MetaSelect) {
-        const value = getEditData(item.name || '');
-        dom = <MetasSelect disabled={item.disabled || disabled} item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} showSelectAll={item.showMetaSelectAll}></MetasSelect>
+        needFormItem = false
+        // 这里是防止初始化时重复渲染 如果通过 value初始化 会重复多次的渲染当前组件
+        const value = getEditData(item.name || '')
+        componentItem = <MetasSelect disabled={item.disabled || disabled} item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} showSelectAll={item.showMetaSelectAll}></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
-        dom = <Form.Item className={item.className} label={item.label} key={item.name} rules={[{ required: item.required }]} labelCol={item.labelCol}>
+        formItemProps.rules = []
+        componentItem = <>
           {
             item.children ? creatForm(item.children) : ''
           }
-        </Form.Item>
-      } else if (item.type === FormType.Switch) {
-        dom = <Form.Item className={item.className} label={item.label} name={item.name} key={item.name} rules={[{ required: item.required, message: '请选择该项' }, ...patternList]} labelCol={item.labelCol} valuePropName="checked">
-          <Switch onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
-        </Form.Item>
+        </>
       }
-      return <div className={styles['form-item-box']} key={item.name}>{dom}{item.slotDom}
+      return <div className={styles['form-item-box']} key={item.name}>
+        {
+          needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
+        }
+        {item.slotDom}
       </div>
     })
   }

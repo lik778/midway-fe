@@ -20,10 +20,6 @@ const NavInfoForm = (props: Props, parentRef: Ref<{ form: FormInstance | null }>
   const { upDateLoading, editData } = props
   const [formConfig, setformConfig] = useState<FormConfig>(navInfoForm())
   const data = useMemo(() => {
-    console.log({
-      qrImg: getImgUploadValueModel('IMAGE', editData?.navInfo?.qrImg || ''),
-      slogan: editData?.navInfo?.slogan || '',
-    })
     return {
       qrImg: getImgUploadValueModel('IMAGE', editData?.navInfo?.qrImg || ''),
       slogan: editData?.navInfo?.slogan || '',

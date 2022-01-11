@@ -6,7 +6,7 @@ import './index.less';
 
 interface Props {
   disabled?: boolean;
-  value: string[];
+  value?: string[];
   maxLength: number;
   minLength: number;
   maxNum: number;
