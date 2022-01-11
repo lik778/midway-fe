@@ -1,9 +1,10 @@
-import React, { useState, useEffect, FC, useMemo } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Form } from 'antd'
 import { FormItem, } from '../../interfaces/index'
 import { MetasItem, } from '@/interfaces/user'
 import MetasCascader from './components/metas-cascader'
 import MetasCheckbox from './components/metas-checkbox'
+import Metas from './components/metas'
 import { ShopMetas } from '@/interfaces/user'
 // 三级类目选择
 const MetasSelect: FC<{
@@ -39,7 +40,7 @@ const MetasSelect: FC<{
     <Form.Item style={{
       display: 'none'
     }} key='metas' name={item.name}>
-      <div></div>
+      <Metas cascaderValue={cascaderValue} checkboxValue={checkboxValue}></Metas>
     </Form.Item>
   </>
 

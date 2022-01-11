@@ -14,8 +14,14 @@ export interface OptionItem {
   key: string;
   value: any;
   disabled?: boolean;
-  children?: OptionItem[]
 }
+
+export type SelectOptionItem = { key: string, children?: OptionItem[] } & OptionItem
+
+export type CheckboxOptionItem = { label: string } & OptionItem
+
+export type RadioOptionItem = CheckboxOptionItem
+
 
 export interface FormConfig {
   name: string;
@@ -42,7 +48,7 @@ export interface FormItem {
   required: boolean; // 是否必填
   patternList?: any[]; // 正则
   placeholder?: string; // 提示
-  options?: OptionItem[];
+  options?: SelectOptionItem[] | CheckboxOptionItem[] | RadioOptionItem[];
   maxLength?: number,
   minLength?: number,
   tip?: string | ReactNode, // 文案说明,
@@ -80,8 +86,6 @@ export interface ImagesItem {
   uploadBeforeCrop?: boolean,// 上传前裁剪
   extra?: ReactNode
 }
-
-
 
 export interface WildcatFormProps {
   config: FormConfig;

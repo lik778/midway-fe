@@ -12,7 +12,7 @@ export const productForm = (type: string, isB2B: boolean): FormConfig => {
       span: 3
     },
     children: [
-      { formItemWidth: 260, label: `${type}分组`, name: 'contentCateId', type: FormType.GroupSelect, options: [], required: true, placeholder: '暂无分组', slotDom: { text: '新建分组' } },
+      { formItemWidth: 260, label: `${type}分组`, name: 'contentCateId', type: FormType.Select, options: [], required: true, placeholder: '暂无分组', slotDom: { text: '新建分组' } },
       { formItemWidth: 395, label: `${type}名称`, name: 'name', type: FormType.Input, required: true, maxLength: 50, placeholder: '请输入标题，2~50个字', minLength: 2, patternList: [{ pattern: /^[\s\S]{2,50}$/, message: '2～50个字' }], showCount: true },
       { formItemWidth: 260, label: '市场价格', name: 'price', type: FormType.Input, required: false, maxLength: 8, placeholder: '例如：面议', showCount: false },
       { formItemWidth: 130, label: '标签', name: 'tags', type: FormType.Tag, required: true, minLength: 1, maxLength: 10, placeholder: '输入标签', maxNum: 30, minNum: 1 },

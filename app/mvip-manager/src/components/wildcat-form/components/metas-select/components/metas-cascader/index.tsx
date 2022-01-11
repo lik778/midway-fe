@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC, useMemo } from 'react';
 import { Form, Cascader, } from 'antd'
 import { MetasItem } from '@/interfaces/user';
-import { FormItem } from '@/components/wildcat-form/interfaces';
+import { FormItem, SelectOptionItem } from '@/components/wildcat-form/interfaces';
 import { CascaderOptionType, CascaderValueType } from 'antd/lib/cascader'
 import { getSecondCategoryMetas, getThirdCategoryMetas } from '@/api/user'
 import { mockData, objToTargetObj } from '@/utils';
@@ -42,7 +42,7 @@ const MetasCascader: FC<Props> = (props) => {
   // 初始化选择器
   const initCascaderOptions = () => {
     if (!options) return
-    setCascaderOptions(() => options.map(item => ({
+    setCascaderOptions(() => (options as SelectOptionItem[]).map(item => ({
       ...item,
       label: item.key,
       isLeaf: false,
