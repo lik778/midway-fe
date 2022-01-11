@@ -4,39 +4,27 @@ import { join } from 'path';
 import * as util from './util';
 import config from '../config';
 export const setPugViewEngineHeplers = util.setPugViewEngineHeplers
-import scriptFallbackFunctionSouce from './simple-resource-reload'
 const isLocal = process.env.NODE_ENV === 'local'
 
 /* CDN 资源加载出错时的简单回退至加载源站，没有考虑加载顺序 */
-
-export const useScriptFallback = true
-const cdnPath = config().cdnPath
-const host = config().fuwu
-const fallbackSource = scriptFallbackFunctionSouce
-  .replace(/('|")CDN_PATH('|")/, `"${cdnPath}"`)
-const fallbackFnInject = useScriptFallback
-  ? `<script>\n${fallbackSource}\n</script>`
-  : ''
-
 export default {
   combine: function (text, options) {
     const { fileName } = options
     const handleArr = Array.isArray(fileName) ? [...fileName] : [fileName]
-    let retAssets = `${fallbackFnInject}`
+    let retAssets = ""
     if (handleArr.length === 0) return ''
     handleArr.forEach(item => {
       const name = item.split('.')[0]
       const suffix = item.split('.')[1]
       const readDir = fs.readdirSync(join(__dirname, '..', '../dist/public'));
       const cdnPath = config().cdnPath;
-
       const assetsName = isLocal ? readDir.find(x => x == item) : readDir.find(x => x.includes(name) && x.includes(`.${suffix}`) && !x.includes('.map'))
       if (assetsName) {
         if (suffix === 'css') {
-          retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" class="reload-css" onerror="simpleResourceReload('reload-css')" />`
+          retAssets += `\n<link rel="stylesheet" href="${cdnPath}/assets/${assetsName}" onerror="changeOrigin(this,'css')" />`
         }
         if (suffix === 'js') {
-          retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" class="reload-js" onerror="simpleResourceReload('reload-js')"></script>`
+          retAssets += `\n<script src="${cdnPath}/assets/${assetsName}" onerror="changeOrigin(this,'script')"></script>`
         }
       }
     })
