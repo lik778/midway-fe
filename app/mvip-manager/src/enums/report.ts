@@ -34,7 +34,8 @@ export enum LeaveMessageChannelType {
   DIANPU = 'DIANPU',
   ZHIDAO = 'ZHIDAO',
   FENGMING = 'FENGMING',
-  UNKNOWN = 'UNKNOWN'
+  UNKNOWN = 'UNKNOWN',
+  SHENGXIN = 'SHENGXIN'
 }
 
 // 留咨页面来源

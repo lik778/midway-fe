@@ -3,6 +3,15 @@ import { eventTracker } from '../../../../common/tracker';
 
 export const leaveLeads1 = function () {
   $(document).on('ready',function() {
+    //对encodeURI()编码过的 URI 进行解码。
+    function getUrlParam(name) {
+      const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      const r = window.location.search.substr(1).match(reg);
+      if(r != null){
+        return r[2]
+      } 
+      return "";
+    };
     $('#upContactFormUs').on('click', (e) => {
       e.preventDefault();
       const data = {};
@@ -10,6 +19,9 @@ export const leaveLeads1 = function () {
       let flag = false
       const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
       data.shopName = $('#shop-name').text()
+      if(getUrlParam('bannerId')) {
+        data.bannerId = getUrlParam('bannerId')
+      }
       if (window.extraContactFormData) {
         Object
             .entries(window.extraContactFormData)
