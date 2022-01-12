@@ -83,8 +83,14 @@ export default (props: Props) => {
       render: (text: string, record: any) => (
         <div>
           { record.status === AuditStatus.APPROVE && <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a>}
-          <span onClick={() => editAction(record)} className="article-action-btn">修改</span>
-          <span onClick={() => deleteAction(record.id)} className="article-action-btn">删除</span>
+          { 
+          record.status !== AuditStatus.DELETED && (
+            <>
+            <span onClick={() => editAction(record)} className="article-action-btn">修改</span>
+            <span onClick={() => deleteAction(record.id)} className="article-action-btn">删除</span>
+          </>
+            )
+          }
         </div>)
     },
   ];

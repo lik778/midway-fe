@@ -91,9 +91,15 @@ export default (props: Props) => {
       title: '操作', dataIndex: '', key: 'x',
       render: (text: string, record: any) => (
         <div>
-          <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a>
-          <span onClick={() => editAction(record)} className="action-btn">修改</span>
-          <span onClick={() => deleteAction(record.id)} className="action-btn">删除</span>
+          {
+            record.status !== AuditStatus.DELETED  && (
+              <>
+                <a className="article-action-btn" href={record.urlSuffix} target="_blank">查看</a>
+                <span onClick={() => editAction(record)} className="action-btn">修改</span>
+                <span onClick={() => deleteAction(record.id)} className="action-btn">删除</span>
+              </>
+            )
+          }
         </div>)
     },
   ];
