@@ -30,7 +30,7 @@ const ScrollBox: ForwardRefRenderFunction<unknown, Props> = (props, parentRef) =
   const handleScroll: React.UIEventHandler<HTMLDivElement> = useDebounce((e) => {
     // 未滚动到底部
     if (!ref.current) return
-    if ((ref.current.scrollHeight - ref.current.clientHeight) > ref.current.scrollTop) {
+    if ((ref.current.scrollHeight - ref.current.clientHeight - 20) > ref.current.scrollTop) {
       //未到底
     } else {
       //已到底部
@@ -38,7 +38,7 @@ const ScrollBox: ForwardRefRenderFunction<unknown, Props> = (props, parentRef) =
         handleScrollToLower && handleScrollToLower()
       }
     }
-  }, 200)
+  }, 100)
 
   return <div className={`${className || ''} ${styles['scroll-box-container']}`} onScroll={handleScroll} ref={(dom) => ref.current = dom} style={{ height }}>
     {children}
