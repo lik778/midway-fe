@@ -64,7 +64,7 @@ export const LeaveMessageSearchListConfig = ({
       {
         title: '来源',
         dataIndex: 'type',
-        width: 65,
+        width: 75,
         key: 'type',
         render: (_: any, r: Item) => LeaveMessageChannelMap[r.sourceType]
       },

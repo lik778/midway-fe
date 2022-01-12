@@ -43,5 +43,6 @@ export const LeaveMessageChannelMap = {
   [LeaveMessageChannelType.DIANPU]: '店铺',
   [LeaveMessageChannelType.ZHIDAO]: '知道',
   [LeaveMessageChannelType.FENGMING]: '凤鸣',
+  [LeaveMessageChannelType.SHENGXIN]: '省心包',
   [LeaveMessageChannelType.UNKNOWN]: '未知'
 }
