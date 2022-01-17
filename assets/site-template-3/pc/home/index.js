@@ -1,12 +1,14 @@
 import $ from 'jquery';
 import Swiper from 'swiper';
 import { initSem } from '../../../common/pc/contact-form-sem';
+import { aboutUs } from '../components/home/about-us'
 import { leaveLeads } from '../../../common/contact-form'
 import './index.styl';
 import '../layout/index';
 import { contactHome } from '../components/contact-home'
 leaveLeads();
 contactHome();
+aboutUs()
 $(document).on('ready', function() {
 
   const $bannerVideos = [...document.querySelectorAll('#banner-list .swiper-container video')]
