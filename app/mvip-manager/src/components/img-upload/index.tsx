@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal, } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface'
 import styles from './index.less';
 import { ImgUploadProps, MediaDataAlbumListItem, MediaItem, MediaType, SelectModalType } from './data';
@@ -7,6 +6,7 @@ import { SelectModalProps } from '@/components/img-upload/components/select-moda
 import ImgUploadContext from '@/components/img-upload/context'
 import Upload1 from '@/components/img-upload/components/upload1'
 import Upload2 from '@/components/img-upload/components/upload2'
+import Upload3 from '@/components/img-upload/components/upload3'
 import SelectModal from '@/components/img-upload/components/select-modal'
 import CropModal from '@/components/img-upload/components/crop-modal'
 import PreviewModal from '@/components/img-upload/components/preview-modal'
@@ -57,7 +57,7 @@ const getPreviewUrl = async (file: UploadFile): Promise<string | any> => {
 // 当前组件不要使用useContext(ImgUploadContext)
 // 因为在上面解构出来的是初始值，ImgUploadContextComponent组件实际上还没有渲染赋值，一定到ImgUploadContextComponent渲染好后再useContext(ImgUploadContext)
 const ImgUpload: FC<ImgUploadProps> = (props) => {
-  const { uploadType, unique = false, showImage = true, showVideo = false, value, maxSize = 1, uploadBtnText, maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, uploadBeforeCrop, onFileChange } = props
+  const { children, uploadType, unique = false, showImage = true, showVideo = false, value, maxSize = 1, uploadBtnText = '', maxLength, disabled = false, aspectRatio, showUploadList, cropProps, actionBtn, onChange, itemRender, onFileChange } = props
   // 下面两个通过connect传进来的，没写到ImgUploadProps里
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
@@ -101,13 +101,21 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
         })
       }
     }
-    setFileList(newFileList)
+    return newFileList
+  }
+
+  const reloadFileList =  async (fileList: UploadFile[]) => {
+    const newFileList = await createFileList(fileList)
+    if (uploadType !== 3) {
+      setFileList(newFileList)
+    }
     return newFileList
   }
 
   // 包装一下setFileList函数，需要触发onChange时调用 做一下图片处理
   const decorateSetFileList = useCallback(async (fileList: UploadFile[], oldFileList: UploadFile[]) => {
-    const newFileList = await createFileList(fileList)
+    const newFileList = await reloadFileList(fileList)
+
     // 每次更新文件列表，只要变化就触发文件更新函数
     if (onFileChange) {
       onFileChange([...newFileList])
@@ -160,10 +168,10 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
       let fileList: UploadFile[] = []
       if (Array.isArray(editData)) {
         fileList = (editData).map((item, index) => creatFileItem(item, index))
-        createFileList(fileList)
+        reloadFileList(fileList)
       } else {
         fileList = [creatFileItem(editData, 0)]
-        createFileList(fileList)
+        reloadFileList(fileList)
       }
     }
   }
@@ -286,7 +294,7 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
   // 传入url ，返回裁剪后的图的uid
   const handleCropSuccess = (uid: string, previewUrl: string) => {
     let nowFileList: UploadFile<any>[] = []
-    if (uploadBeforeCrop) {
+    if (!cropProps.notSelectCrop) {
       nowFileList = [...fileList, {
         ...cropItem!,
         uid,
@@ -342,51 +350,55 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
     showUploadList,
     actionBtn,
     itemRender,
-    uploadBeforeCrop
   }
 
   return (
     <>
-      <div className={styles['img-upload']}>
-        <ImgUploadContext.Provider value={{
-          fileList,
-          imageData,
-          videoData,
-          baixingImageData,
-          initConfig: {
-            ...initConfig
-          },
-          albumVisible,
-          selectModalType,
-          upDataLoading,
-          handleChangeAlbumVisible: setAlbumVisible,
-          handleChangeUpDataLoading: setUpDataLoading,
-          handleChangeVideoData: handleChangeVideoData,
-          handleChangeImageData: handleChangeImageData,
-          handleChangeBaixingImageData: handleChangeBaixingImageData,
-          handleReloadFileList: createFileList,
-          handleChangeFileList: decorateSetFileList,
-          handlePreview,
-          handleRemove,
-          handleCrop,
-          handleMove,
-          handleSelectCover,
-        }}>
-          {
-            uploadType === 1 && <Upload1
+      <ImgUploadContext.Provider value={{
+        fileList,
+        imageData,
+        videoData,
+        baixingImageData,
+        initConfig: {
+          ...initConfig
+        },
+        albumVisible,
+        selectModalType,
+        upDataLoading,
+        handleChangeAlbumVisible: setAlbumVisible,
+        handleChangeUpDataLoading: setUpDataLoading,
+        handleChangeVideoData: handleChangeVideoData,
+        handleChangeImageData: handleChangeImageData,
+        handleChangeBaixingImageData: handleChangeBaixingImageData,
+        handleReloadFileList: reloadFileList,
+        handleChangeFileList: decorateSetFileList,
+        handlePreview,
+        handleRemove,
+        handleCrop,
+        handleMove,
+        handleSelectCover,
+      }}>
+        {
+          uploadType === 1 && <div className={styles['img-upload']}>
+            <Upload1
               fileList={fileList}
               initConfig={{ ...initConfig }}
               handleChangeFileList={decorateSetFileList}
               handlePreview={handlePreview}
               handleRemove={handleRemove}
               handleCrop={handleCrop} ></Upload1>
-          }
-          {
-            uploadType === 2 && <Upload2></Upload2>
-          }
-          <SelectModal {...SelectModalOption}></SelectModal>
-        </ImgUploadContext.Provider>
-      </div>
+          </div>
+        }
+        {
+          uploadType === 2 && <div className={styles['img-upload']}>
+            <Upload2></Upload2>
+          </div>
+        }
+        {
+          uploadType === 3 && <Upload3>{children}</Upload3>
+        }
+        <SelectModal {...SelectModalOption}></SelectModal>
+      </ImgUploadContext.Provider>
       <PreviewModal previewVisible={previewVisible} previewMedia={previewMedia} handleCloseModal={handlePreviewCancel}></PreviewModal>
       <CropModal cropVisible={cropVisible} handleCropClose={handleCropClose} cropProps={cropProps} cropUrl={cropItem?.preview} handleCropSuccess={handleCropSuccess}></CropModal>
     </>

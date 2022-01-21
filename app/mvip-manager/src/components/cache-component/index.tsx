@@ -9,7 +9,7 @@ interface Props {
 const CacheComponent: FC<Props> = (props) => {
   const { visible, className, children } = props
   const [init, setInit] = useState<boolean>(false)
-  
+
   useEffect(() => {
     if (visible) {
       setInit(true)
@@ -30,7 +30,7 @@ const CacheComponent: FC<Props> = (props) => {
 
   return <>
     {
-      init && <div className={`${styles['cache-component-container']} ${className}`} style={{
+      init && <div className={`${styles['cache-component-container']} ${className || ""}`} style={{
         display: visible ? 'block' : 'none'
       }}>
         {

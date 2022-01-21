@@ -72,4 +72,3 @@
 | aspectRatio      | 字段名                  | number                        |        | false    |
 | showUploadList   | 排到第几位              | ExpandShowUploadListInterface |        | false    |
 | cropProps        | 表单项组件              | CropProps                     |        | true     |
-| uploadBeforeCrop | 字段名                  | boolean                       |        | false    |
