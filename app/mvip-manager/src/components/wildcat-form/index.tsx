@@ -1,4 +1,4 @@
-import React, { FC, forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+import React, { forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, Radio, InputNumber, Switch, Row, Col, FormItemProps } from 'antd';
 import { FormItem, CustomerFormItem, WildcatFormProps, SelectOptionItem, CheckboxOptionItem, RadioOptionItem, } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
@@ -7,6 +7,7 @@ import { TagModule } from '@/components/wildcat-form/components/tag';
 import AreaSelect from '@/components/wildcat-form/components/area-select';
 import InputLen from '@/components/input-len';
 import MetasSelect from './components/metas-select'
+import RichText from '@/components/rich-text';
 import { isEmptyObject } from '@/utils';
 import styles from './index.less'
 
@@ -111,8 +112,9 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         extra: item.extra,
       }
       let needFormItem = true
+      const value = getEditData(item.name || '')
       if (item.type === FormType.Input) {
-        componentItem = <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} showCount={item.showCount} />
+        componentItem = <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} showCount={item.showCount} />
       } else if (item.type === FormType.InputNumber) {
         componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
       } else if (item.type === FormType.Textarea) {
@@ -155,7 +157,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
             {
               (item.images || []).map((img) => {
                 return (<Form.Item className={styles['image-upload-list']} name={img.name} key={img.name} required={item.required} rules={img.rule ? img.rule : undefined} extra={img.extra}>
-                  <ImgUpload uploadType={img.uploadType} unique={img.unique} showImage={img.shopImage} showVideo={img.showVideo} key={img.text} uploadBtnText={img.text} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled || disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} uploadBeforeCrop={img.uploadBeforeCrop} />
+                  <ImgUpload uploadType={img.uploadType} unique={img.unique} showImage={img.shopImage} showVideo={img.showVideo} key={img.text} uploadBtnText={img.text} maxLength={img.maxLength || item.maxLength || 1} onChange={(newValue) => onChange(newValue, item.name || '')} maxSize={img.maxSize} disabled={item.disabled || disabled} aspectRatio={img.aspectRatio} showUploadList={img.showUploadList} cropProps={img.cropProps} />
                 </Form.Item>
                 )
               })
@@ -184,7 +186,6 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           }
         </>
       } else if (item.type === FormType.AreaSelect) {
-        const value = getEditData(item.name || '');
         componentItem = <AreaSelect disabled={item.disabled || disabled} width={item.formItemWidth} initialValues={value} onChange={(values: string[]) => onChange(values, item.name || '')} />
       } else if (item.type === FormType.Tag) {
         formItemProps.rules = [{
@@ -211,10 +212,11 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           minLength={item.minLength || 1}
           maxNum={item.maxNum || 0}
           onChange={(newValue) => onChange(newValue, item.name || '')} />
+      } else if (item.type === FormType.RichText) {
+        componentItem = <RichText width={item.formItemWidth} placeholder={item.placeholder} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} ></RichText>
       } else if (item.type === FormType.MetaSelect) {
         needFormItem = false
         // 这里是防止初始化时重复渲染 如果通过 value初始化 会重复多次的渲染当前组件
-        const value = getEditData(item.name || '')
         componentItem = <MetasSelect disabled={item.disabled || disabled} item={item} key='MetaSelect' initialValues={value} onChange={(values: string[], key: string) => onChange(values, key || '')} showSelectAll={item.showMetaSelectAll}></MetasSelect>
       } else if (item.type === FormType.GroupItem) {
         formItemProps.rules = []

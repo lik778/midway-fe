@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Upload1: FC<Props> = (props) => {
-  const { fileList, initConfig: { unique, maxSize, maxLength, uploadBeforeCrop, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText }, handleChangeFileList, handlePreview, handleRemove, handleCrop } = props
+  const { fileList, initConfig: { uploadType, unique, maxSize, maxLength, itemWidth, disabled, itemRender, showUploadList, actionBtn, uploadBtnText, cropProps }, handleChangeFileList, handlePreview, handleRemove, handleCrop } = props
 
   const setCropItem = async (file: RcFile,) => {
     const filrUrl = await getFileBase64(file)
@@ -37,11 +37,14 @@ const Upload1: FC<Props> = (props) => {
       errorMessage(`请上传不超过${maxSize}M的图片`);
       return false
     }
-    if (uploadBeforeCrop) {
+
+    // 只有当uploadType===1 不调用图片库的时候才需要判断上传前是否要裁剪前编辑。
+    if (uploadType === 1 && !cropProps.notSelectCrop) {
       setCropItem(file)
       return false
     }
-    return isJpgOrPng && overrun && !uploadBeforeCrop;
+
+    return true
   }
 
   const checkUrlUnique = (fileList: UploadFile<any>[], url: string) => {

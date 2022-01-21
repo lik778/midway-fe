@@ -83,7 +83,6 @@ export interface ImagesItem {
   aspectRatio?: number// 图片显示块的大小
   showUploadList?: ExpandShowUploadListInterface,
   cropProps: imageCropProps,
-  uploadBeforeCrop?: boolean,// 上传前裁剪
   extra?: ReactNode
 }
 

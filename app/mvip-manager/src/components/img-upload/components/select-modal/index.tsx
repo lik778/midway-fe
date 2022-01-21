@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState, FC } from 'react';
+import React, { useContext, useEffect, useState, FC, ReactPortal } from 'react';
+import { createPortal } from 'react-dom';
 import { UploadFile } from 'antd/lib/upload/interface';
 import AlbumModalContent from './components/content'
 import AlbumModalFooter from './components/footer'
@@ -7,9 +8,11 @@ import CacheComponent from '@/components/cache-component'
 import SelectModalContext from '@/components/img-upload/components/select-modal/context'
 import { SelectModalProps } from './data'
 import styles from './index.less'
+import usePortal from '@/hooks/portal';
 
 const SelectModal: FC<SelectModalProps> = (props) => {
   const { showVideo, maxLength, fileList, handleChangeFileList } = props
+  const target = usePortal('select-modal')
   // 第一次创建组件后缓存起来，模拟 antd modal 
   const context = useContext(ImgUploadContext)
   const { albumVisible } = context
@@ -28,7 +31,7 @@ const SelectModal: FC<SelectModalProps> = (props) => {
   }, [albumVisible])
   // 初始化弹窗 结束
 
-  return <>
+  return createPortal(<>
     <CacheComponent visible={albumVisible}>
       <SelectModalContext.Provider value={{
         showVideo,
@@ -44,7 +47,7 @@ const SelectModal: FC<SelectModalProps> = (props) => {
         </div>
       </SelectModalContext.Provider>
     </CacheComponent>
-  </>
+  </>, target)
 }
 
 export default SelectModal

@@ -1,4 +1,4 @@
-import React, { useContext, FC } from 'react'
+import React, { useContext, FC, useEffect } from 'react'
 import styles from './index.less';
 import ImgUploadContext from '@/components/img-upload/context'
 import ImgItem from '@/components/img-upload/components/img-item'

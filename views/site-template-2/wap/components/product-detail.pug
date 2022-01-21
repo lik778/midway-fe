@@ -23,10 +23,6 @@
 	.pro-bottom
 		.pro-title
 			h4 产品详情
-		if contentImg && contentImg.length > 0
-			each item in contentImg
-				.pro-pic
-					img(src=item, alt="")
-		.pro-content.
-			!{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+		.pro-content.ql-editor.
+			!{ content || '当前页面暂无内容，敬请期待...' }
 

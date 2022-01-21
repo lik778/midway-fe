@@ -5,7 +5,7 @@ showVideo?: boolean,// 是否显示视频相关 tab
 
 | 参数             | 说明                                     | 类型                                                                                                     | 默认值 | 是否必填 |
 | ---------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------ | -------- |
-| uploadType       | 1：直接上传 2：打开图库                  | 1 ,2                                                                                                     |        | true     |
+| uploadType       | 1：直接上传 2：打开图库 3：打开图库，仅无状态的选择图片使用                 | 1 ,2 , 3                                                                                                    |        | true     |
 | showImage        | 是否显示图片相关 tab                     | boolean                                                                                                  |        | true     |
 | showVideo        | 是否显示视频相关 tab                     | boolean                                                                                                  |        | false    |
 | value         | 默认值                                   | '' / MediaItem / MediaItem[]/ undefined                                                                             |        | false    |
@@ -17,6 +17,5 @@ showVideo?: boolean,// 是否显示视频相关 tab
 | showUploadList   | 按钮控制                                 | ExpandShowUploadListInterface                                                                            |        | false    |
 | cropProps        | 裁剪参数                                 | CropProps                                                                                                |        | true     |
 | actionBtn        | 自定义图片上的功能                       | ActionBtnListItem[]                                                                                      |        | false    |
-| uploadBeforeCrop | 上传前裁剪                               | boolean                                                                                                  | false  | false    |
 | itemRender       | 自定义图片样式                           | (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode |        | false    |
 | onChange         | 值变化                                   | (values: string \ string[], fileList: UploadFile[], oldFileList: UploadFile[]): void[]                   |        | false    |

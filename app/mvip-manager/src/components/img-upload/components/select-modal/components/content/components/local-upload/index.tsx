@@ -11,7 +11,7 @@ import Upload1 from '@/components/img-upload/components/upload1'
 
 const LocalUpload: FC = () => {
   const context = useContext(ImgUploadContext)
-  const { initConfig: { uploadBtnText, maxSize, aspectRatio, cropProps, itemWidth } } = context
+  const { initConfig: { uploadType, uploadBtnText, maxSize, aspectRatio, cropProps, itemWidth } } = context
 
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
@@ -43,8 +43,6 @@ const LocalUpload: FC = () => {
     return undefined
   }
 
-  // console.log('fileList:', fileList)
-
   return <Spin spinning={upDataLoading}>
     <div className={styles['tip']}>因视频转码时间较久，“本地上传”仅支持上传图片，若需使用视频，请直接在“我的视频”中调用</div>
     <div className={styles['local-upload']}>
@@ -54,7 +52,7 @@ const LocalUpload: FC = () => {
         }
         <div>
           <Upload1 fileList={fileList} initConfig={{
-            uploadType: 1,
+            uploadType,
             unique: false,
             showImage: true,
             showVideo: false,

@@ -5,6 +5,7 @@ mixin mediaShow()
 	- const { metas } = renderData.basic.shop.about? JSON.parse(renderData.basic.shop.about):{}
 	- const defaultImg = '//file.baixing.net/202109/e9a1688b5c861d17484d61515c207390.png';
 	- const { suffixs } = renderData.basic.shop.tkdCommonParams
+	- const coverHead = contentImg[0] || defaultImg
 	- const seoName = infoSeoKeyWord || name
 	- const proSuffixs = (suffixs.length > 0 && suffixs.join('_')) || '品牌_价格_批发_图片_行情_地址_厂家_公司_货源_参数_电话'
 	.media-show-container
@@ -20,7 +21,7 @@ mixin mediaShow()
 					else
 						img(src=headImg, alt=seoName + proSuffixs)
 				else
-					img(src=defaultImg, alt=seoName + proSuffixs)
+					img(src=coverHead, alt=seoName + proSuffixs)
 			.left-contentImg
 				.swiper-container
 					.swiper-wrapper

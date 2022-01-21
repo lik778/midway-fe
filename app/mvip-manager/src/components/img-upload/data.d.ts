@@ -40,12 +40,12 @@ export interface imageCropProps extends CropProps {
 }
 
 export interface ImgUploadProps {
-  uploadType: 1 | 2,//1：直接上传  2：打开图库
+  uploadType: 1 | 2 | 3,//1：直接上传  2：打开图库，可以修改删除已选择图片  3：打开图库 仅作为选择图片使用 
   unique?: boolean,// 是否禁止选择重复图片
   showImage?: boolean,// 是否显示图片相关tab
   showVideo?: boolean,// 是否显示视频相关tab
   value?:MediaItem | MediaItem[] | '';
-  uploadBtnText: string;// 上传按钮上的提示文本
+  uploadBtnText?: string;// 上传按钮上的提示文本
   maxSize?: number;// 单个图片最大尺寸
   maxLength: number;// 本次上传个数上线
   disabled?: boolean | undefined;// 是否禁用
@@ -53,9 +53,7 @@ export interface ImgUploadProps {
   showUploadList?: ExpandShowUploadListInterface// 按钮控制
   cropProps: imageCropProps,// 裁剪参数
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
-
   // 当uploadType === 1 时的可选 开始
-  uploadBeforeCrop?: boolean,// 选择时裁剪
   // 当uploadType === 1 时的可选 结束
   /**
    * onChange
@@ -83,7 +81,7 @@ export interface MediaDataAlbumListItem {
 }
 
 export interface ImgUploadContextInitConfig {
-  uploadType: 1 | 2,//1：直接上传  2：打开图库
+  uploadType: 1 | 2 | 3,//1：直接上传  2：打开图库
   unique: boolean,// 是否禁止选择重复图片
   showImage: boolean,// 是否显示图片相关tab
   showVideo: boolean,// 是否显示视频相关tab
@@ -97,7 +95,6 @@ export interface ImgUploadContextInitConfig {
   cropProps: imageCropProps,// 裁剪参数  用户可能不需要裁剪 所以添加禁止裁剪
   actionBtn?: ActionBtnListItem[] // 自定义图片上的功能
   // 当uploadType === 1 时的可选 开始
-  uploadBeforeCrop?: boolean,// 选择时裁剪
   itemRender?: (originNode: React.ReactElement, file: UploadFile, fileList?: Array<UploadFile<any>>) => React.ReactNode // 自定义图片样式
 }
 

@@ -4,6 +4,7 @@ mixin mediaShow()
 	- const { address, logo} = renderData.basic.company
 	- const { metas } = renderData.basic.shop.about? JSON.parse(renderData.basic.shop.about):{}
 	- const defaultImg = '//file.baixing.net/202109/e9a1688b5c861d17484d61515c207390.png';
+	- const coverHead = contentImg[0] || defaultImg 
 	.media-show-container
 		.media-show-left
 			.left-headImg
@@ -17,7 +18,7 @@ mixin mediaShow()
 					else
 						img(src=headImg, alt="logo")
 				else
-					img(src=defaultImg, alt="logo")
+					img(src=coverHead, alt="logo")
 			.left-contentImg
 				.swiper-container
 					.swiper-wrapper
