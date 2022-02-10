@@ -9,7 +9,6 @@ import { VerifyStatus } from '@/enums'
 import { VerifyItem } from '@/interfaces/user'
 import { AuthConfigItem, getAuthConfig } from './config'
 import './index.less'
-// import config from '@/config/env'
 interface Props {
   verifyList: VerifyItem[],
   userLoading: boolean
@@ -66,7 +65,7 @@ const AuthPage: FC<Props> = (props) => {
                   {actionButton(item)}
                 </Col>
               </Row>
-              { i === 0 && <Divider />}
+              {i === 0 && <Divider />}
             </div>
           )
         })

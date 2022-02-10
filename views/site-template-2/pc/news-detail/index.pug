@@ -13,11 +13,8 @@ block content
         .news-title
           h1.news-title__text #{ name }
           .news-title__date #{ dateFormat2(modifiedTime) }
-        if contentImg
-          .news-content__pic
-            img(src=contentImg, alt="")
-        .news-content__text.
-          !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+        .news-content__text.ql-editor.
+          !{ content || '当前页面暂无内容，敬请期待...' }
 
       .news-nav
         .news-nav__pre

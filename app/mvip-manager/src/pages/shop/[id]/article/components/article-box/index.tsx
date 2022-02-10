@@ -87,6 +87,11 @@ export default (props: Props) => {
   }, [cateList])
 
   const sumbit = async (values: any) => {
+    let contents = values.content
+    console.log(contents)
+    if(contents === '<p><br></p>') {
+      return errorMessage('请输入服务描述')
+    }
     values.name = values.name.trim()
     let resData: any;
     const isEdit = !isEmptyObject(editData);

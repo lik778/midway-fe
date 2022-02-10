@@ -4,11 +4,8 @@
     if modifiedTime
         .news-detail-time
             p #{ dateFormat2(modifiedTime) }
-    if contentImg
-        .news-detail-pic
-            img(src=contentImg, alt="")
-    .news-detail-content.
-        !{ content.replace(/\n/g, '<br/>') || '当前页面暂无内容，敬请期待...' }
+    .news-detail-content.ql-editor.
+        !{ content || '当前页面暂无内容，敬请期待...' }
     .news-nav
         if preArticle
             .news-nav__pre
