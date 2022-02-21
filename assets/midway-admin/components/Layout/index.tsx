@@ -39,6 +39,9 @@ export default withRouter((props) => {
               <Menu.Item key="verify-word">
                 <Link to="/verify-word" key="verify-word">词根审核</Link>
               </Menu.Item>
+              <Menu.Item key="verify-seo">
+                <Link to="/verify-seo" key="verify-seo">seo审核</Link>
+              </Menu.Item>
             </SubMenu>
             <SubMenu key="common-function" title="常用功能">
               <Menu.Item key="switch-shop-type">

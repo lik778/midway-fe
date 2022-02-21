@@ -1,9 +1,13 @@
 import React, { FC, useState, useMemo } from 'react';
 import { ShopInfo } from '@/interfaces/shop';
 import { optimizationMeta } from '@/api/shop';
+import { getSeoCheckInfo, seoCheckInfoType, checkInfoStatus } from '@/api/seo-setting';
 import { successMessage, errorMessage } from '@/components/message';
+import SeoOptimizeTips from '../seo-optimize-tips'
 import { Button } from 'antd';
 import styles from './index.less'
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {
   id: string,
@@ -14,6 +18,7 @@ interface Props {
 const Optimization: FC<Props> = (props) => {
   const { id, curShopInfo, onSubmitSuccess } = props
   const [upDateLoading, setUpDateLoading] = useState<boolean>(false)
+  const [seoCheckInfo, setSeoCheckInfo] = useState<seoCheckInfoType>()
 
   const sumbit = async () => {
     setUpDateLoading(true)
@@ -27,10 +32,27 @@ const Optimization: FC<Props> = (props) => {
     }
   }
 
-  return <>
-    <Button className={styles['btn']} type="primary" onClick={sumbit} disabled={(!curShopInfo?.canOptimizeFlag) || upDateLoading} loading={upDateLoading}>一键优化</Button>
-    <p className={styles['tip']}>注：1.店铺新建产品分组、产品页才可再次一键优化 2.一键优化后3天后可通过营销报表查看上词。</p>
-  </>
+  const getSeoCheckInfos = async () => {
+    setUpDateLoading(true)
+    const { data } = await getSeoCheckInfo(Number(id))
+    setUpDateLoading(false)
+    setSeoCheckInfo(data)
+  }
+
+  useEffect(() => {
+    getSeoCheckInfos()
+  }, [])
+
+  switch(seoCheckInfo?.checkInfo.status){
+      case checkInfoStatus.DEFAULT:
+          return <>检测中</>;
+    case checkInfoStatus.APPROVE:
+        return <>检测通过</>;
+    case checkInfoStatus.REJECT:
+        return <>检测未通过</>;
+    default:
+        return <SeoOptimizeTips id={id} seoCheckInfo={seoCheckInfo}/>
+  }
 }
 
 export default Optimization
