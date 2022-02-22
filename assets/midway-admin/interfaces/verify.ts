@@ -1,6 +1,6 @@
 import { AiTaskStatus } from '../enums/verify';
 
-enum SEO_STATUS {
+export enum SEO_STATUS {
     DEFAULT= 'DEFAULT',
     APPROVE= 'APPROVE',
     REJECT= 'REJECT'
@@ -32,13 +32,8 @@ export type checkListItem = {
     userId?: string
 }
 
-export interface pageData {
-    pageSize?: number,
-    result?: Array<any>
-    totalPage?: number,
-    totalRecord?: number
+export type SeoCheckParams = {
+    id: string,
+    memo?: string,
+    status: SEO_STATUS
 }
-
-export interface SeoCheckList extends pageData {
-    result?: Array<checkListItem>
-} 

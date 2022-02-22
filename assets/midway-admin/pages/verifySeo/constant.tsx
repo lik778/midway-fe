@@ -1,3 +1,10 @@
+import * as React from 'react'
+
+const STATUS_ENUM = Object.freeze({
+    'DEFAULT': {text: '待审核', className: 'await'},
+    'APPROVE': {text: '审核通过', className: 'pass'},
+    'REJECT': {text: '审核驳回', className: 'reject'}
+})
 const columns = [
     {
         title: '用户id',
@@ -21,7 +28,7 @@ const columns = [
         title: '审核状态',
         dataIndex: 'status',
         key: 'status',
-        render: (status) => status
+        render: (status) => <span className={STATUS_ENUM[status].className}>{STATUS_ENUM[status].text}</span>
     }
 ]
 export { columns }
