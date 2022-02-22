@@ -28,3 +28,4 @@ export const getSeoCheckInfo = (shopId: number) => {
 export const submitSeoCheck = (shopId: number) => {
     return getApiData<seoCheckInfoType>(ServicePath.SHOP, `midway/backend/shop/submitSeoCheck`, {}, setShopHeader(shopId)) 
 }
+

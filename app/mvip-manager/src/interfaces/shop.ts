@@ -235,7 +235,8 @@ export interface ShopInfo {
   },
   canOptimizeFlag: boolean// 用于seo一键优化
   navInfo: NavInfo | null,
-  contactFields: CommonMessageSetting[]
+  contactFields: CommonMessageSetting[],
+  canSeoFlag: boolean
 }
 
 export interface CustomerListItem {
