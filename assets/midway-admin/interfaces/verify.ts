@@ -1,5 +1,10 @@
 import { AiTaskStatus } from '../enums/verify';
 
+enum SEO_STATUS {
+    DEFAULT= 'DEFAULT',
+    APPROVE= 'APPROVE',
+    REJECT= 'REJECT'
+}
 export interface VerifyWordItem {
   usrId: number;
   shopId: number;
@@ -19,3 +24,21 @@ export interface VerifyWordParams {
   id: number;
   memo?: string;
 }
+
+export type checkListItem = {
+    id?: string,
+    shopName?: string,
+    status?: SEO_STATUS,
+    userId?: string
+}
+
+export interface pageData {
+    pageSize?: number,
+    result?: Array<any>
+    totalPage?: number,
+    totalRecord?: number
+}
+
+export interface SeoCheckList extends pageData {
+    result?: Array<checkListItem>
+} 

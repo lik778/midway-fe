@@ -10,3 +10,7 @@ export const getVerifyListApi = (params: PageParams) => {
 export const verifyWordApi = (params: VerifyWordParams) => {
   return postApi<ListRes<any[]>>('/api/midway/manager/ai/verify', params)
 }
+
+export const getSeoListApi = (params) => {
+    return postApi<any>('/api/midway/manager/seoCheck/list', params)
+}
