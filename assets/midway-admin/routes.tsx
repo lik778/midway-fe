@@ -14,7 +14,7 @@ import AdviceRecord from './pages/AdviceRecord';
 import TemplateUpload from './pages/TemplateUpload';
 import StatusChange from './pages/StatusChange';
 import BxGallery from './pages/BxGallery';
-import VerifySeo from './pages/VerifySeo';
+import VerifySeo from './pages/SeoVerify';
 
 
 export default () => {
