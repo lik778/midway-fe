@@ -305,6 +305,7 @@ export interface Quota {
   productQuota: number; // 产品quota
   maxAiArticles: number; // 最大Ai发文量
   des: string;
+  seoQuota: number; // seo时长
 }
 
 export interface Ticket {

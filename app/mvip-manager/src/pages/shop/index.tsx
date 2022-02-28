@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Popover } from 'antd';
 import { history } from 'umi';
 import { connect } from 'dva';
 import { AnyAction, Dispatch } from 'redux';
@@ -18,6 +18,7 @@ import styles from './index.less';
 import { AppSourceEnum, TicketType } from '@/enums/shop';
 import { renewShopApi } from '@/api/shop';
 import { errorMessage, successMessage } from '@/components/message';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 interface Props {
   dispatch: Dispatch<AnyAction>;
@@ -210,11 +211,14 @@ const ShopPage: FC<Props> = (props) => {
         <div className={styles["ticket-list"]} >
           {shopStatus?.userValidTickets?.map((t, index) => {
             return (
-              <div onClick={() => setTicketId(t.id)} className={`${styles['ticket-list-item']} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
-                <span>钻石店铺 {t.source === AppSourceEnum.VIP && <strong>VIP</strong>}</span>
-                <span>发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
-                <span>AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
-                <span>时长：<strong>{ticketType === TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
+              <div onClick={() => t.quota.seoQuota ? '' : setTicketId(t.id)} className={`${styles['ticket-list-item']} ${t.quota.seoQuota ? styles['ticket-list-item_diable'] : ''} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
+                <span className="item">钻石店铺时长：<strong>{ticketType === TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
+                (<span className="item">发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
+                <span className="item">AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
+                {t.quota.seoQuota ? <span className="item">SEO时长：<strong>{t.quota.seoQuota}天</strong></span> : null})
+                {t.quota.seoQuota ? <Popover content={<><p>1.当前店铺的seo云推广正在服务期，暂不支持连续使用</p><p>2.如有多个seo云推广权益的店铺额度请分别新建店铺使用</p></>} title="说明：">
+                    <InfoCircleOutlined />
+                </Popover> : null}
               </div>
             )
           })}

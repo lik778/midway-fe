@@ -34,29 +34,35 @@
 .ticket-list {
   height: 220px;
   overflow: auto;
+  .ticket-list-item_diable{
+      opacity: .6;
+      &:hover{
+        cursor: not-allowed;
+      }
+  }
   .ticket-list-item {
     border: 1px solid #ccc;
     margin-bottom: 10px;
     padding: 10px;
+    display: flex;
+    align-items: center;
     cursor: pointer;
     span {
       position: relative;
-      display: inline-block;
-      width: 23%;
       text-align: center;
-      margin-right: 5px;
+      margin: 10px;
       strong {
         font-weight: bold;
         color: #096dd9;
       }
-      &:nth-child(n + 2):before {
+      &:nth-child(n+2):not(:nth-last-child(-n+2))::after {
         content: "";
         display: inline-block;
         width: 2px;
         height: 14px;
         position: absolute;
         top: 4px;
-        left: -4px;
+        right: -10px;
         background: #096dd9;
       }
     }
