@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+import React, { Children, forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, Radio, InputNumber, Switch, Row, Col, FormItemProps } from 'antd';
 import { FormItem, CustomerFormItem, WildcatFormProps, SelectOptionItem, CheckboxOptionItem, RadioOptionItem, } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
@@ -18,7 +18,8 @@ const TextArea = Input.TextArea;
 
 const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm()
-  const { editDataSource, onInit, loading, disabled, config, pageType } = props
+  
+  const { editDataSource, onInit, loading, disabled, config, pageType, children=null } = props
 
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
@@ -71,15 +72,16 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
     if (onInit) {
       // 将form实例放出来
       onInit(form)
+      console.log(form);
+      
     }
   }, [])
-
+ 
   const onChange = (newValue: any, name: string) => {
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
     if (configItem?.onChange) { configItem.onChange(newValue, form) }
   }
-
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
@@ -87,7 +89,6 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   function isCustomerFormItem(item: FormItem | CustomerFormItem): item is CustomerFormItem {
     return Boolean((item as CustomerFormItem).node)
   }
-
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
       console.log('FormItemList', FormItemList)
     return FormItemList.map(item => {
@@ -233,8 +234,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
-        <p>为您推荐：<Button>一键填充SEO标题</Button></p>
-        {item.slotDom}
+         {React.cloneElement(children || <div></div>, {label: 'hahaha'})}
       </div>
     })
   }

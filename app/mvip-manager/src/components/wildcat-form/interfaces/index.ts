@@ -99,5 +99,6 @@ export interface WildcatFormProps {
   onClick?: any;
   loading?: boolean;
   submitBtn?: ReactNode;
-  pageType?: ShopTDKType
+  pageType?: ShopTDKType;
+  children?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
 }
