@@ -17,8 +17,8 @@ const Option = Select.Option;
 const TextArea = Input.TextArea;
 
 const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
-  const [form] = Form.useForm();
-  const { editDataSource, onInit, loading, disabled, config } = props
+  const [form] = Form.useForm()
+  const { editDataSource, onInit, loading, disabled, config, pageType } = props
 
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
@@ -89,6 +89,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   }
 
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
+      console.log('FormItemList', FormItemList)
     return FormItemList.map(item => {
       // 需要隐藏则返回空
       if (item.hidden) {
@@ -114,7 +115,9 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       let needFormItem = true
       const value = getEditData(item.name || '')
       if (item.type === FormType.Input) {
-        componentItem = <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} showCount={item.showCount} />
+        componentItem = <>
+            <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} showCount={item.showCount} />
+        </>
       } else if (item.type === FormType.InputNumber) {
         componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
       } else if (item.type === FormType.Textarea) {
@@ -230,6 +233,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
+        <p>为您推荐：<Button>一键填充SEO标题</Button></p>
         {item.slotDom}
       </div>
     })

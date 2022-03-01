@@ -56,6 +56,7 @@ const SeoForm: FC<Props> = (props) => {
     editDataSource={editData}
     config={formConfig}
     submit={sumbit}
-    loading={upDateLoading} />
+    loading={upDateLoading}
+    pageType={ShopTDKType.PRODUCT} />
 }
 export default SeoForm

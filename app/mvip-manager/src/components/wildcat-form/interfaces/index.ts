@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { ExpandShowUploadListInterface } from '@/components/img-upload/data'
 import { FormLayout } from 'antd/lib/form/Form'
 import { imageCropProps } from '@/components/img-upload/data'
+import { ShopTDKType } from '@/enums'
 export interface ButtonItem {
   text: string; // 提交页面文案
   size: any;
@@ -98,4 +99,5 @@ export interface WildcatFormProps {
   onClick?: any;
   loading?: boolean;
   submitBtn?: ReactNode;
+  pageType?: ShopTDKType
 }
