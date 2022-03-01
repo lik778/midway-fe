@@ -15,7 +15,7 @@ import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form';
 import { ShopIndustryType } from '@/enums';
 import styles from './index.less';
-import { AppSourceEnum, TicketType } from '@/enums/shop';
+import { TicketType } from '@/enums/shop';
 import { renewShopApi } from '@/api/shop';
 import { errorMessage, successMessage } from '@/components/message';
 import { InfoCircleOutlined } from '@ant-design/icons';
