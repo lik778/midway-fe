@@ -24,7 +24,6 @@ interface Props {
   dispatch: Dispatch<AnyAction>;
   shopTotal: number | undefined;
   shopList: ShopInfo[] | null;
-  curShopInfo: ShopInfo | null;
   shopStatus: ShopStatus | null;
   loadingShop: boolean,
   getShopStatus: () => Promise<any>
@@ -34,7 +33,7 @@ interface Props {
 }
 
 const ShopPage: FC<Props> = (props) => {
-  const { shopStatus, shopList, shopTotal, loadingShop, getShopStatus, getShopList, setShopList, setCurShopInfo, curShopInfo } = props
+  const { shopStatus, shopList, shopTotal, loadingShop, getShopStatus, getShopList, setShopList, setCurShopInfo } = props
 
   // 创建按钮禁用
   const [createShopDisabled, setCreateShopDisabled] = useState<boolean>(true)
@@ -240,9 +239,9 @@ const ShopPage: FC<Props> = (props) => {
 }
 
 const WrapperShopPage: any = connect((state: ConnectState) => {
-  const { shopList, shopTotal, shopStatus, curShopInfo } = state[SHOP_NAMESPACE]
+  const { shopList, shopTotal, shopStatus } = state[SHOP_NAMESPACE]
   const { loading } = state
-  return { shopList, shopTotal, shopStatus, loadingShop: loading.models.shop, curShopInfo }
+  return { shopList, shopTotal, shopStatus, loadingShop: loading.models.shop }
 }, (dispatch) => {
   return {
     ...shopMapDispatchToProps(dispatch),
