@@ -1,4 +1,4 @@
-import React, { Children, forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+import React, { forwardRef, Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 import { Button, Form, Input, Select, Checkbox, Radio, InputNumber, Switch, Row, Col, FormItemProps } from 'antd';
 import { FormItem, CustomerFormItem, WildcatFormProps, SelectOptionItem, CheckboxOptionItem, RadioOptionItem, } from '@/components/wildcat-form/interfaces';
 import { FormType } from '@/components/wildcat-form/enums';
@@ -19,7 +19,7 @@ const TextArea = Input.TextArea;
 const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm()
   
-  const { editDataSource, onInit, loading, disabled, config, pageType, children=null } = props
+  const { editDataSource, onInit, loading, disabled, config, pageType, children = () => null } = props
 
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
@@ -234,7 +234,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
-         {React.cloneElement(children || <div></div>, {label: 'hahaha'})}
+        {children(item.label)}
       </div>
     })
   }
