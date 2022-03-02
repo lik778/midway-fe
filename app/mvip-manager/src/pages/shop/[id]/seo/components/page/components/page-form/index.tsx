@@ -1,4 +1,4 @@
-import React, { useEffect, FC, useState, useMemo } from 'react';
+import React, { useEffect, FC, useState, useMemo, ReactNode } from 'react';
 import WildcatForm from '@/components/wildcat-form';
 import { ShopInfo } from '@/interfaces/shop';
 import { getMetaSaveApi } from '@/api/shop';
@@ -13,8 +13,7 @@ interface Props {
   id: string,
   curShopInfo: ShopInfo | null
   pagePosition: ShopTDKPosition
-  pageType: ShopTDKType,
-  label?: string
+  pageType: ShopTDKType
 }
 
 const SeoForm: FC<Props> = (props) => {
@@ -80,10 +79,9 @@ const SeoForm: FC<Props> = (props) => {
     loading={upDateLoading}
     pageType={ShopTDKType.PRODUCT}
     >
-      
-    <p>为您推荐：<Button onClick={((event: any)=>fillContent(event))}>一键填充{props.label}</Button></p>
-          {/* // ((item.type===0||item.type===3)&&(item.label=='SEO标题'||item.label=='SEO描述')?<p className={styles['recommended-box']} key={item.name}>为您推荐：<Button onClick={fillContent.bind(this,item.type)}>一键填充{item.label}</Button></p>:'') */}
-        
+     {
+        (lable?: string | ReactNode) => <p>为您推荐：<Button onClick={((event: any)=>fillContent(event))}>一键填充{lable}</Button></p>
+     }   
     </WildcatForm>
 }
 export default SeoForm
