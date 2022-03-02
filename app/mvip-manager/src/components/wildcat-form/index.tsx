@@ -19,7 +19,7 @@ const TextArea = Input.TextArea;
 const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm()
   
-  const { editDataSource, onInit, loading, disabled, config, pageType, children = () => null } = props
+  const { editDataSource, onInit, loading, disabled, config, pageType, children = () => '' } = props
 
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
@@ -78,6 +78,8 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   }, [])
  
   const onChange = (newValue: any, name: string) => {
+    console.log(name)
+    console.log('uuuu', newValue)
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
     if (configItem?.onChange) { configItem.onChange(newValue, form) }
@@ -234,7 +236,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
-        {children(item.label,item.type)}
+        {children(item.label,item.type,onChange)}
       </div>
     })
   }

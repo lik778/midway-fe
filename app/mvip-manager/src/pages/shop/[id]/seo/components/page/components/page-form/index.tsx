@@ -50,12 +50,14 @@ const SeoForm: FC<Props> = (props) => {
       errorMessage(res.message)
     }
   }
-  const fillContent=(event:any)=>{
-    console.log(111);
+  const fillContent=async(type:number,callback:(newValue: string, name: string) => void)=>{
+    callback('HAHAHA', 'title')
+    // const data = await getseoAutoFill()
+    
   }
   useEffect(() => {
     getMetaDetail()
-    getseoAutoFill()
+    
   }, [])
   
   const sumbit = async (values: TdkSaveMeta) => {
@@ -77,11 +79,10 @@ const SeoForm: FC<Props> = (props) => {
     submit={sumbit}
     loading={upDateLoading}
     pageType={ShopTDKType.PRODUCT}
-    fillObject={getseoAutoFill}
     >
      {
        
-        (lable?: string | ReactNode,type?:number) =>(type==3||type==0)?<p className={'recommended-box'}>为您推荐：<Button onClick={((event: any)=>fillContent(event))}>一键填充{lable}</Button></p>:''
+        (lable: string | ReactNode,type:number,callBack:(newValue: string, name: string) => void) =>(type==3||type==0)?<p className={'recommended-box'}>为您推荐：<Button onClick={(()=>fillContent(type,callBack))}>一键填充{lable}</Button></p>:''
      }   
     </WildcatForm>
 }

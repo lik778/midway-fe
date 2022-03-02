@@ -43,7 +43,7 @@ export interface CustomerFormItem {
   hidden?: boolean,// 是否隐藏
 }
 export interface FormItem {
-  label: ReactNode | string; // 页面标签
+  label: string | ReactNode; // 页面标签
   type: FormType; // 表单类型
   name: string; // 字段名
   required: boolean; // 是否必填
@@ -100,6 +100,5 @@ export interface WildcatFormProps {
   loading?: boolean;
   submitBtn?: ReactNode;
   pageType?: ShopTDKType;
-  children?(params?: string,type?:number): any;
-  fillObject?:object
+  children?(params?:  string | ReactNode,type?:FormType,callBack?:(newValue: string, name: string) => void): any;
 }
