@@ -40,9 +40,16 @@ const SeoForm: FC<Props> = (props) => {
     }
   }
   const getseoAutoFill = async () =>{
+    console.log(Number(id));
     const res = await getseoAutoFillApi(Number(id), {
       position: pagePosition!
     })
+    if (res.success) {
+      const { data } = res
+      console.log(data);
+    } else {
+      errorMessage(res.message)
+    }
   }
   const fillContent=(event:any)=>{
     console.log(111);
@@ -50,6 +57,7 @@ const SeoForm: FC<Props> = (props) => {
   }
   useEffect(() => {
     getMetaDetail()
+    getseoAutoFill()
   }, [])
 
   const sumbit = async (values: TdkSaveMeta) => {
