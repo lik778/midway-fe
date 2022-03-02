@@ -39,26 +39,25 @@ const SeoForm: FC<Props> = (props) => {
     }
   }
   const getseoAutoFill = async () =>{
-    console.log(Number(id));
     const res = await getseoAutoFillApi(Number(id), {
+      shopId:Number(id),
       position: pagePosition!
     })
     if (res.success) {
       const { data } = res
-      console.log(data);
+      return data
     } else {
       errorMessage(res.message)
     }
   }
   const fillContent=(event:any)=>{
     console.log(111);
-    
   }
   useEffect(() => {
     getMetaDetail()
     getseoAutoFill()
   }, [])
-
+  
   const sumbit = async (values: TdkSaveMeta) => {
     values.position = pagePosition
     values.title = (values.title || '').replace(/｜/g, '|')
@@ -78,9 +77,11 @@ const SeoForm: FC<Props> = (props) => {
     submit={sumbit}
     loading={upDateLoading}
     pageType={ShopTDKType.PRODUCT}
+    fillObject={getseoAutoFill}
     >
      {
-        (lable?: string | ReactNode) => <p>为您推荐：<Button onClick={((event: any)=>fillContent(event))}>一键填充{lable}</Button></p>
+       
+        (lable?: string | ReactNode,type?:number) =>(type==3||type==0)?<p className={'recommended-box'}>为您推荐：<Button onClick={((event: any)=>fillContent(event))}>一键填充{lable}</Button></p>:''
      }   
     </WildcatForm>
 }

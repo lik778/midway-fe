@@ -1,6 +1,6 @@
 import { ServicePath } from '@/enums'
 import { getApiData, postApiData, setShopHeader } from './base'
-import {TdkDetailMeta} from '@/interfaces/shop';
+import {TdkFillMeta} from '@/interfaces/shop';
 type numInfoType = {
     pass: Boolean,
     areaNum: Number,
@@ -31,7 +31,7 @@ export const submitSeoCheck = (shopId: number) => {
 }
 
 // 一键填充获取内容
-export const getseoAutoFillApi = (shopId: number,params: TdkDetailMeta) => {
+export const getseoAutoFillApi = (shopId: number,params: TdkFillMeta) => {
     return postApiData<seoCheckInfoType>(ServicePath.SHOP, `midway/backend/meta/seoAutoFill`,params, setShopHeader(shopId))
   }
 

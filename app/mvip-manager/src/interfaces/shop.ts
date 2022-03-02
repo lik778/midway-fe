@@ -168,6 +168,11 @@ export interface TdkSaveAreaSuffix {
   areas: string[],
   suffixs: string[]
 }
+export interface TdkFillMeta {
+  shopId:number;
+  position: string;
+}
+
 export interface TdkDetailMeta {
   position: string;
 }

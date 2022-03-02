@@ -100,5 +100,6 @@ export interface WildcatFormProps {
   loading?: boolean;
   submitBtn?: ReactNode;
   pageType?: ShopTDKType;
-  children?(params?: string): any
+  children?(params?: string,type?:number): any;
+  fillObject?:object
 }
