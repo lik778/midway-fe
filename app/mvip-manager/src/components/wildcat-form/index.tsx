@@ -18,7 +18,8 @@ const TextArea = Input.TextArea;
 
 const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const [form] = Form.useForm()
-  const { editDataSource, onInit, loading, disabled, config, pageType } = props
+  
+  const { editDataSource, onInit, loading, disabled, config, pageType, children = () => '' } = props
 
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
@@ -60,6 +61,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   }));
 
   useEffect(() => {
+      console.log('editDataSource', editDataSource)
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
     } if (isEmptyObject(editDataSource)) {
@@ -73,13 +75,14 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       onInit(form)
     }
   }, [])
-
+ 
   const onChange = (newValue: any, name: string) => {
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
-    if (configItem?.onChange) { configItem.onChange(newValue, form) }
+    if (configItem?.onChange) { 
+        configItem.onChange(newValue, form) 
+    }
   }
-
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
@@ -87,9 +90,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   function isCustomerFormItem(item: FormItem | CustomerFormItem): item is CustomerFormItem {
     return Boolean((item as CustomerFormItem).node)
   }
-
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
-      console.log('FormItemList', FormItemList)
     return FormItemList.map(item => {
       // 需要隐藏则返回空
       if (item.hidden) {
@@ -116,7 +117,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const value = getEditData(item.name || '')
       if (item.type === FormType.Input) {
         componentItem = <>
-            <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} showCount={item.showCount} />
+            <InputLen value={value} width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(e) => onChange(e.target.value, item.name || '')} showCount={item.showCount} />
         </>
       } else if (item.type === FormType.InputNumber) {
         componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
@@ -233,8 +234,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
-        <p>为您推荐：<Button>一键填充SEO标题</Button></p>
-        {item.slotDom}
+        {children(item.label, item.name, onChange)}
       </div>
     })
   }

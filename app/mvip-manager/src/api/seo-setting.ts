@@ -1,5 +1,6 @@
 import { ServicePath } from '@/enums'
 import { getApiData, postApiData, setShopHeader } from './base'
+import {TdkFillMeta} from '@/interfaces/shop';
 type numInfoType = {
     pass: Boolean,
     areaNum: Number,

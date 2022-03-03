@@ -2,9 +2,10 @@
 import { FormType } from '@/components/wildcat-form/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { ShopTDKType } from '@/enums'
+import { TdkDetail } from '@/interfaces/shop';
 
 // TDK表单
-export const tdkForm = (isB2B: boolean, pageType: ShopTDKType): FormConfig => {
+export const tdkForm = (isB2B: boolean, pageType: ShopTDKType, onChange?: (params: TdkDetail) => void): FormConfig => {
   const config: FormConfig = {
     name: 'tdkForm',
     children: [
@@ -29,6 +30,19 @@ export const tdkForm = (isB2B: boolean, pageType: ShopTDKType): FormConfig => {
       config.children[1].extra = '请输入40～120字描述，建议在描述中多嵌入一些关键词，会更有利于您的SEO排名。'
       config.children[2].extra = '请按照格式“产品分组名+后缀”填写，最多填写8个。例如：活动板房品牌、集装箱厂家、板房价格……'
       config.children[2].maxNum = 8
+    }
+    config.children[0].onChange = (...args) => {
+        const [newValue, form] = args
+        form.setFieldsValue({
+            title: newValue
+        })
+        onChange && onChange(form.getFieldsValue(true))
+    }
+    config.children[1].onChange = (...args) => {
+        const [newValue, form] = args
+        form.setFieldsValue({
+            description: newValue
+        })
     }
   }
   return config
