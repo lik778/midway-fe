@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
 import { productForm } from './config';
-import { Drawer } from 'antd';
-import { CateItem, RouteParams, ProductListItem } from '@/interfaces/shop';
+import { Button, Drawer } from 'antd';
+import { CateItem, RouteParams, ProductListItem, ShopInfo } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
@@ -16,6 +16,7 @@ import ProductKey from './components/product-key'
 import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
+import { CompanyInfo } from '@/interfaces/ai-module';
 interface Props {
   isB2B: boolean,
   typeTxt: string
@@ -24,10 +25,11 @@ interface Props {
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem[]): void;
+  updateEditData?: (params: ProductListItem) => void
 }
 
 const ProductBox = (props: Props) => {
-  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList } = props;
+  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -49,7 +51,7 @@ const ProductBox = (props: Props) => {
   const [placement, setPlacement] = useState<"right" | "top" | "bottom" | "left" | undefined>("right")
 
   const initForm = () => {
-    const newFormConfig = productForm(typeTxt, isB2B)
+    const newFormConfig = productForm(typeTxt, isB2B, (params) => updateEditData && updateEditData(params) )
     // 初始化表单----> value
     const newArticleFormChildren = newFormConfig.children.map(item => {
       if (item.name === 'contentCateId') {
@@ -117,9 +119,18 @@ const ProductBox = (props: Props) => {
     setModalVisible(true)
   }
 
+  const fillContent = (name: string, callback:(newValue: string, name: string) => void) => {
+    const templateList = [
+        `<p>${editData.name}是专业生产各类 ${editData.seoKeyWord}，是行内知名的${editData.seoKeyWord}公司、厂家，其生产的 ${editData.seoKeyWord}在行业内属于知名${editData.seoKeyWord}品牌，其他相关${editData.seoKeyWord}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p>`,
+        `<p>${editData.name}是专业的${editData.seoKeyWord}机构、中心、公司,${editData.seoKeyWord}是其名下的核心产品,拥有行业内先进的生产工艺,${editData.seoKeyWord}属于物美价廉的产品,全国范围内好评如潮。可以在线联系联系人获取最新的${editData.seoKeyWord}价格_图片_行情_参数_货源</p>`
+    ]
+    const template = templateList[Math.round(Math.random())]
+    callback(template, name)
+  }
+
   return (
     <Drawer
-      title={`新建${typeTxt}`}
+      title={`新建${typeTxt}123`}
       placement={placement}
       closable={true}
       onClose={() => setQuitModalVisible(true)}
@@ -134,7 +145,11 @@ const ProductBox = (props: Props) => {
         submit={sumbit}
         onClick={onModalClick}
         loading={formLoading}
-        className="product-form" />
+        className="product-form" >
+        {
+            (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => name === 'content' && <p className="recommended-box">不知道怎么写？试试 <Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
+        }    
+      </WildcatForm>
       <GroupModal
         type={ContentCateType.PRODUCT}
         editItem={null}

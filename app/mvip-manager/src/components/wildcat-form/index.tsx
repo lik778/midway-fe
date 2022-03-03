@@ -79,7 +79,8 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   const onChange = (newValue: any, name: string) => {
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
-    if (configItem?.onChange) { 
+    if (configItem?.onChange) {
+        console.log('configItem', newValue)
         configItem.onChange(newValue, form) 
     }
   }

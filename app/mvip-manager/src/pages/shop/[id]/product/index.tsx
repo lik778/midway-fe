@@ -30,6 +30,7 @@ const ShopProductPage = (props: any) => {
     return curShopInfo?.type === ProductType.B2B
   }, [curShopInfo])
 
+
   const typeTxt = useMemo(() => {
     return isB2B ? '产品' : '服务'
   }, [isB2B])
@@ -62,6 +63,12 @@ const ShopProductPage = (props: any) => {
     setProductFormVisible(true);
   }
 
+  const updateEditData = (data: ProductListItem) => {
+      const newEditData = {...editProductData, ...data}
+      console.log('newEditData', newEditData)
+      setEditProductData({...newEditData})
+  }
+
   return (
     <div>
       <BasisHeader {...props} type={ShopModuleType.PRODUCT} />
@@ -82,7 +89,7 @@ const ShopProductPage = (props: any) => {
           onChange={(page) => setPage(page)} />
         <ShopModuleGroup
           type={ContentCateType.PRODUCT}
-          title={`${typeTxt}分组`}
+          title={`${typeTxt}`}
           cateList={cateList}
           updateCateList={setCateList}
           onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
@@ -90,6 +97,7 @@ const ShopProductPage = (props: any) => {
           save={() => removeOverflow(() => setModuleGroupVisible(false))} />
         <ProductBox
           isB2B={isB2B}
+          updateEditData={updateEditData}
           typeTxt={typeTxt}
           cateList={cateList}
           editData={editProductData}

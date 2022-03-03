@@ -25,7 +25,6 @@ const SeoForm: FC<Props> = (props) => {
   const formConfig = useMemo(() => {
     return tdkForm(curShopInfo?.type === ProductType.B2B, pageType, (data: TdkDetail) => {
         const newEditData = {...editData, ...data}
-        console.log('newEditData', newEditData)
         setEditData({...newEditData})
     })
   }, [curShopInfo])
