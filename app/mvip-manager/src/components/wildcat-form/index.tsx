@@ -61,6 +61,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   }));
 
   useEffect(() => {
+      console.log('editDataSource', editDataSource)
     if (editDataSource) {
       form.setFieldsValue(editDataSource)
     } if (isEmptyObject(editDataSource)) {
@@ -72,17 +73,15 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
     if (onInit) {
       // 将form实例放出来
       onInit(form)
-      console.log(form);
-      
     }
   }, [])
  
   const onChange = (newValue: any, name: string) => {
-    console.log(name)
-    console.log('uuuu', newValue)
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
-    if (configItem?.onChange) { configItem.onChange(newValue, form) }
+    if (configItem?.onChange) { 
+        configItem.onChange(newValue, form) 
+    }
   }
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
@@ -92,7 +91,6 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
     return Boolean((item as CustomerFormItem).node)
   }
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
-      console.log('FormItemList', FormItemList)
     return FormItemList.map(item => {
       // 需要隐藏则返回空
       if (item.hidden) {
@@ -119,7 +117,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const value = getEditData(item.name || '')
       if (item.type === FormType.Input) {
         componentItem = <>
-            <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} showCount={item.showCount} />
+            <InputLen value={value} width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(e) => onChange(e.target.value, item.name || '')} showCount={item.showCount} />
         </>
       } else if (item.type === FormType.InputNumber) {
         componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
@@ -236,7 +234,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
-        {children(item.label,item.type,onChange)}
+        {children(item.label, item.name, onChange)}
       </div>
     })
   }

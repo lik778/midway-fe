@@ -6,25 +6,28 @@ import { ShopTDKPosition, ProductType, ShopTDKType } from '@/enums';
 import { TdkDetail, TdkSaveMeta } from '@/interfaces/shop';
 import { successMessage, errorMessage } from '@/components/message';
 import { tdkForm } from './config'
-import { getMetaDetailApi } from '@/api/shop';
-import { getseoAutoFillApi } from '@/api/seo-setting';
+import { getMetaDetailApi, getseoAutoFillApi } from '@/api/shop';
 import { Button} from 'antd';
+import style from './index.less';
 interface Props {
   id: string,
   curShopInfo: ShopInfo | null
   pagePosition: ShopTDKPosition
   pageType: ShopTDKType
 }
-
+const fillContentType = ['title', 'description']
+const fillContentPageType = [ShopTDKType.INDEX, ShopTDKType.PRODUCT]
 const SeoForm: FC<Props> = (props) => {
   const { id, curShopInfo, pagePosition, pageType } = props
-  useEffect(() => {
-    console.log(props)
-  }, [])
   const [editData, setEditData] = useState<TdkDetail>()
+  const [templateData, setTemplateData] = useState<TdkDetail>()
   const [upDateLoading, setUpDateLoading] = useState<boolean>(false)
   const formConfig = useMemo(() => {
-    return tdkForm(curShopInfo?.type === ProductType.B2B, pageType)
+    return tdkForm(curShopInfo?.type === ProductType.B2B, pageType, (data: TdkDetail) => {
+        const newEditData = {...editData, ...data}
+        console.log('newEditData', newEditData)
+        setEditData({...newEditData})
+    })
   }, [curShopInfo])
 
   const getMetaDetail = async () => {
@@ -38,6 +41,9 @@ const SeoForm: FC<Props> = (props) => {
       errorMessage(res.message)
     }
   }
+  useEffect(() => {
+    console.log('pageType', pageType)
+  }, [])
   const getseoAutoFill = async () =>{
     const res = await getseoAutoFillApi(Number(id), {
       shopId:Number(id),
@@ -45,19 +51,22 @@ const SeoForm: FC<Props> = (props) => {
     })
     if (res.success) {
       const { data } = res
-      return data
+      return data || editData
     } else {
       errorMessage(res.message)
     }
   }
-  const fillContent=async(type:number,callback:(newValue: string, name: string) => void)=>{
-    callback('HAHAHA', 'title')
-    // const data = await getseoAutoFill()
-    
+  const fillContent=async(name: string | null, callback:(newValue: string, name: string) => void)=>{
+    if(!templateData){
+        const data = await getseoAutoFill()
+        setTemplateData(data)
+        callback(data[name], name)
+    } else {
+        callback(templateData[name], name)
+    }
   }
   useEffect(() => {
     getMetaDetail()
-    
   }, [])
   
   const sumbit = async (values: TdkSaveMeta) => {
@@ -81,8 +90,7 @@ const SeoForm: FC<Props> = (props) => {
     pageType={ShopTDKType.PRODUCT}
     >
      {
-       
-        (lable: string | ReactNode,type:number,callBack:(newValue: string, name: string) => void) =>(type==3||type==0)?<p className={'recommended-box'}>为您推荐：<Button onClick={(()=>fillContent(type,callBack))}>一键填充{lable}</Button></p>:''
+       (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => fillContentType.includes(name) && fillContentPageType.includes(pageType) && <p className={style['recommended-box']}>为您推荐：<Button shape="round" onClick={(()=>fillContent(name,callBack))}>一键填充{lable}</Button></p>
      }   
     </WildcatForm>
 }

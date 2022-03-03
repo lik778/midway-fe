@@ -65,7 +65,8 @@ import {
   TdkSaveAreaSuffix,
   MessageModule,
   CommonMessageSetting,
-  FieldsParams
+  FieldsParams,
+  TdkFillMeta
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
@@ -160,6 +161,11 @@ export const getMetaDetailApi = (shopId: number, params: TdkDetailMeta) => {
     tkd: TdkDetail,
     navigation: TdkNav[]
   }>(ServicePath.SHOP, `midway/backend/meta/detail`, params, setShopHeader(shopId))
+}
+
+// 一键填充获取内容
+export const getseoAutoFillApi = (shopId: number,params: TdkFillMeta) => {
+    return postApiData<TdkDetail>(ServicePath.SHOP, `midway/backend/meta/seoAutoFill`,params, setShopHeader(shopId))
 }
 
 // 保存tdk信息

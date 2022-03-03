@@ -30,8 +30,3 @@ export const submitSeoCheck = (shopId: number) => {
     return getApiData<seoCheckInfoType>(ServicePath.SHOP, `midway/backend/shop/submitSeoCheck`, {}, setShopHeader(shopId)) 
 }
 
-// 一键填充获取内容
-export const getseoAutoFillApi = (shopId: number,params: TdkFillMeta) => {
-    return postApiData<seoCheckInfoType>(ServicePath.SHOP, `midway/backend/meta/seoAutoFill`,params, setShopHeader(shopId))
-  }
-
