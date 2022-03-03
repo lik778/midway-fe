@@ -42,7 +42,7 @@ const ProductBox = (props: Props) => {
       ...editData,
       media,
       contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item)),
-      seoKeyWord: editData.seoKeyWord ? [editData.seoKeyWord] : undefined
+      seoKeyWord: Array.isArray(editData.seoKeyWord) ? editData.seoKeyWord : [editData.seoKeyWord]
     }
   }, [editData])
 
@@ -92,6 +92,7 @@ const ProductBox = (props: Props) => {
     } else {
       values.seoKeyWord = ''
     }
+    console.log(values)
     const media = values.media
     if (media) {
       values.headImg = media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) : getImgUploadModelValue(values.media, true)

@@ -64,9 +64,8 @@ const ShopProductPage = (props: any) => {
   }
 
   const updateEditData = (data: ProductListItem) => {
-      const newEditData = {...editProductData, ...data}
-      console.log('newEditData', newEditData)
-      setEditProductData({...newEditData})
+      console.log('newEditData', data)
+      setEditProductData(data)
   }
 
   return (
