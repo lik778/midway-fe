@@ -25,11 +25,12 @@ interface Props {
   visible: boolean;
   onClose(): void;
   updateCateList(item: CateItem[]): void;
-  updateEditData?: (params: ProductListItem) => void
+  updateEditData?: (params: ProductListItem) => void,
+  curShopInfo?: ShopInfo | null
 }
 
 const ProductBox = (props: Props) => {
-  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData } = props;
+  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData, curShopInfo } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -92,7 +93,6 @@ const ProductBox = (props: Props) => {
     } else {
       values.seoKeyWord = ''
     }
-    console.log(values)
     const media = values.media
     if (media) {
       values.headImg = media.mediaType === 'IMAGE' ? getImgUploadModelValue(values.media) : getImgUploadModelValue(values.media, true)
@@ -122,8 +122,8 @@ const ProductBox = (props: Props) => {
 
   const fillContent = (name: string, callback:(newValue: string, name: string) => void) => {
     const templateList = [
-        `<p>${editData.name}是专业生产各类 ${editData.seoKeyWord}，是行内知名的${editData.seoKeyWord}公司、厂家，其生产的 ${editData.seoKeyWord}在行业内属于知名${editData.seoKeyWord}品牌，其他相关${editData.seoKeyWord}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p>`,
-        `<p>${editData.name}是专业的${editData.seoKeyWord}机构、中心、公司,${editData.seoKeyWord}是其名下的核心产品,拥有行业内先进的生产工艺,${editData.seoKeyWord}属于物美价廉的产品,全国范围内好评如潮。可以在线联系联系人获取最新的${editData.seoKeyWord}价格_图片_行情_参数_货源</p>`
+        `<p>${curShopInfo?.name}是专业生产各类 ${editData.seoKeyWord}，是行内知名的${editData.seoKeyWord}公司、厂家，其生产的 ${editData.seoKeyWord}在行业内属于知名${editData.seoKeyWord}品牌，其他相关${editData.seoKeyWord}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p>`,
+        `<p>${curShopInfo?.name}是专业的${editData.seoKeyWord}机构、中心、公司,${editData.seoKeyWord}是其名下的核心产品,拥有行业内先进的生产工艺,${editData.seoKeyWord}属于物美价廉的产品,全国范围内好评如潮。可以在线联系联系人获取最新的${editData.seoKeyWord}价格_图片_行情_参数_货源</p>`
     ]
     const template = templateList[Math.round(Math.random())]
     callback(template, name)

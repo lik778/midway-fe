@@ -97,6 +97,7 @@ const ShopProductPage = (props: any) => {
         <ProductBox
           isB2B={isB2B}
           updateEditData={updateEditData}
+          curShopInfo={curShopInfo}
           typeTxt={typeTxt}
           cateList={cateList}
           editData={editProductData}
