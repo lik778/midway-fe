@@ -63,11 +63,11 @@ const Optimization: FC<Props> = (props) => {
     }, [])
 
     return <>
-    { curShopInfo && curShopInfo.canSeoFlag ? <>
+    { curShopInfo && !curShopInfo.canSeoFlag ? <Redirect to="/no-auth" /> :<>
         { seoCheckInfo?.checkInfo.status ? <SeoAuditIng seoCheckInfo={seoCheckInfo}/> : <SeoOptimizeTips seoCheck={submitCheck} id={id} seoCheckInfo={seoCheckInfo}/> }
         { seoCheckInfo?.checkInfo.status && seoCheckInfo?.checkInfo.status === checkInfoStatus.APPROVE && <Button type="primary" onClick={sumbit} disabled={!curShopInfo?.canOptimizeFlag}>一键优化</Button>}
         { seoCheckInfo?.checkInfo.status && seoCheckInfo?.checkInfo.status === checkInfoStatus.REJECT && <Button type="primary" onClick={submitCheck}>立即检测</Button>}
-     </> : <Redirect to="/no-auth" />
+     </> 
     }
     </>
 }
