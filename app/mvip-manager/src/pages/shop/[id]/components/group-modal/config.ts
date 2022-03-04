@@ -10,7 +10,12 @@ export const contentGroupForm = (isB2B: boolean, cateType: ContentCateType): For
     width: 520,
     useLabelCol: { span: 4 },
     children: [
-      { formItemWidth: '100%', label: '分组名称', name: 'name', type: FormType.Input, required: true, placeholder: '请输入分组名称，2~8个字', minLength: 2, maxLength: 8, patternList: [{ pattern: /^[\s\S]{2,8}$/, message: '2～8个字' }], showCount: true },
+      { formItemWidth: '100%', label: '分组名称', name: 'name', type: FormType.Input, required: true, placeholder: '请输入分组名称，2~8个字', minLength: 2, maxLength: 8, patternList: [{ pattern: /^[\s\S]{2,8}$/, message: '2～8个字' }], showCount: true, onChange: (...args: any) => {
+          const [newValue, form] = args
+          form.setFieldsValue({
+            name: newValue
+          })
+      }},
       { formItemWidth: '100%', label: '分组权重', name: 'weight', type: FormType.InputNumber, required: true, minNum: 1, maxNum: 1000, placeholder: '请输入分组权重' },
       { formItemWidth: '100%', label: 'SEO标题', name: 'seoT', type: FormType.Input, required: false, placeholder: '请输入SEO标题，9~50个字', maxLength: 50, showCount: true, patternList: [{ pattern: /^[\s\S]{9,50}$/, message: '9～50个字' }], },
       { formItemWidth: '100%', label: 'SEO描述', name: 'seoD', type: FormType.Input, required: false, placeholder: '请输入SEO描述，40~120个字', maxLength: 120, showCount: true, patternList: [{ pattern: /^[\s\S]{40,120}$/, message: '40～120个字' }], },

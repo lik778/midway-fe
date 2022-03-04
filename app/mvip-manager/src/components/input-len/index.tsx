@@ -23,7 +23,7 @@ export default (props: inputItem) => {
   const errorClass = isError ? 'input-error' : ''
   return (
     <div className={`${styles['il-module']} ${className}`} style={{ width: width }}>
-      <Input value={value} style={{ width: width }} onChange={onChange} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
+      <Input style={{ width: width }} onChange={onChange} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
       {showCount && <span className={styles["f-num"]}>{initLength}/{maxLength}</span>}
     </div>
   );
