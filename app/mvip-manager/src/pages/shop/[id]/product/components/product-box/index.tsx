@@ -131,7 +131,7 @@ const ProductBox = (props: Props) => {
 
   return (
     <Drawer
-      title={`新建${typeTxt}123`}
+      title={`新建${typeTxt}`}
       placement={placement}
       closable={true}
       onClose={() => setQuitModalVisible(true)}
