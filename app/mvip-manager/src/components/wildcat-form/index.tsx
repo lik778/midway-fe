@@ -119,7 +119,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const value = getEditData(item.name || '')
       if (item.type === FormType.Input) {
         componentItem = <>
-            <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(e) => onChange(e.target.value, item.name || '')} showCount={item.showCount} />
+            <InputLen value={value} width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(e) => onChange(e.target.value, item.name || '')} showCount={item.showCount} />
         </>
       } else if (item.type === FormType.InputNumber) {
         componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />

@@ -2,6 +2,9 @@
 import React from 'react';
 import { Input } from 'antd';
 import styles from './index.less';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 interface inputItem {
   className?: string,
   value?: string;
@@ -18,12 +21,18 @@ interface inputItem {
   showCount?: boolean;
 }
 export default (props: inputItem) => {
-  const { value, onChange, name, maxLength, minLength, required, isError, placeholder, width, disabled, showCount, className } = props
-  const initLength = value?.length || 0
+  const { onChange, name, maxLength = 0, minLength, required, isError, placeholder, width, disabled, showCount, className } = props
+  const [initLength, setInitLength] = useState<number>(0)
+  const valueChange = (e, cb) => {
+    if(e.target){
+        setInitLength(e.target?.value.length || 0)
+    }
+    cb && cb(e)
+  }
   const errorClass = isError ? 'input-error' : ''
   return (
     <div className={`${styles['il-module']} ${className}`} style={{ width: width }}>
-      <Input style={{ width: width }} onChange={onChange} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
+      <Input style={{ width: width }} onChange={(e) => valueChange(e, onChange)} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
       {showCount && <span className={styles["f-num"]}>{initLength}/{maxLength}</span>}
     </div>
   );
