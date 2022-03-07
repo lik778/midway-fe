@@ -5,7 +5,7 @@ import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE } from '@/models/shop';
 import { ShopInfo } from '@/interfaces/shop';
 import { Modal, FormInstance, Button } from 'antd';
-import { createContentCateApi, getseoAutoFillApi, updateContentCateApi } from '@/api/shop'
+import { createContentCateApi, getSeoGroupFillApi, updateContentCateApi } from '@/api/shop'
 import { CateItem, RouteParams, CreateContentCateApiParams, CreateContentCateParams } from '@/interfaces/shop';
 import { useParams } from 'umi';
 import { ContentCateType, ProductType } from '@/enums';
@@ -22,12 +22,13 @@ interface Props {
   type: ContentCateType;
   visible: boolean;
   onClose(): void;
-  curShopInfo: ShopInfo | null
+  curShopInfo: ShopInfo | null,
+  shopId?: number
 }
 const RECOMMEND_TYPES = ['seoT', 'seoD']
 const NewCate = (props: Props) => {
   const params: RouteParams = useParams();
-  const { cateList, updateCateList, editItem, type, onClose, curShopInfo } = props;
+  const { cateList, updateCateList, editItem, type, onClose, curShopInfo, shopId = 0 } = props;
   const [config] = useState(contentGroupForm(curShopInfo?.type === ProductType.B2B, type))
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
@@ -103,12 +104,9 @@ const NewCate = (props: Props) => {
     onClose();
   }
 
-  const getseoAutoFill = async () =>{
-    
-  }
-
-  const fillContent = (name: string, cb: (params: string, name: string) => void) => {
-    
+  const fillContent = async (name: string, cb: (params: string, name: string) => void) => {
+    const { data } = await getSeoGroupFillApi(shopId, { position: "productCatePage", shopId })
+    console.log(data)
   }
 
   return <Modal

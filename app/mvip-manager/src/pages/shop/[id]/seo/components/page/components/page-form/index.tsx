@@ -40,9 +40,6 @@ const SeoForm: FC<Props> = (props) => {
       errorMessage(res.message)
     }
   }
-  useEffect(() => {
-    console.log('pageType', pageType)
-  }, [])
   const getseoAutoFill = async () =>{
     const res = await getseoAutoFillApi(Number(id), {
       shopId:Number(id),

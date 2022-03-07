@@ -130,6 +130,7 @@ export default (props: Props) => {
       editItem={editItem}
       visible={groupModalVisible}
       updateCateList={updateCateList}
+      shopId={shopId}
       cateList={cateList}
       onClose={() => {
         setGroupModalVisible(false)

@@ -118,14 +118,14 @@ const ProductBox = (props: Props) => {
   }
 
   const onModalClick = (e: any) => {
-      console.log(1)
     setModalVisible(true)
   }
 
   const fillContent = (name: string, callback:(newValue: string, name: string) => void) => {
+    const keyword = editData.seoKeyWord || ''
     const templateList = [
-        `<p>${curShopInfo?.name}是专业生产各类 ${editData.seoKeyWord}，是行内知名的${editData.seoKeyWord}公司、厂家，其生产的 ${editData.seoKeyWord}在行业内属于知名${editData.seoKeyWord}品牌，其他相关${editData.seoKeyWord}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p>`,
-        `<p>${curShopInfo?.name}是专业的${editData.seoKeyWord}机构、中心、公司,${editData.seoKeyWord}是其名下的核心产品,拥有行业内先进的生产工艺,${editData.seoKeyWord}属于物美价廉的产品,全国范围内好评如潮。可以在线联系联系人获取最新的${editData.seoKeyWord}价格_图片_行情_参数_货源</p>`
+        `<p>${curShopInfo?.name || ''}是专业生产各类 ${keyword}，是行内知名的${keyword}公司、厂家，其生产的 ${keyword}在行业内属于知名${keyword}品牌，其他相关${keyword}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p>`,
+        `<p>${curShopInfo?.name || ''}是专业的${keyword}机构、中心、公司,${keyword}是其名下的核心产品,拥有行业内先进的生产工艺,${keyword}属于物美价廉的产品,全国范围内好评如潮。可以在线联系联系人获取最新的${keyword}价格_图片_行情_参数_货源</p>`
     ]
     const template = templateList[Math.round(Math.random())]
     callback(template, name)
