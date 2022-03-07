@@ -21,6 +21,9 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   
   const { editDataSource, onInit, loading, disabled, config, pageType, children = () => '' } = props
 
+  useEffect(() => {
+      console.log('editDataSource', editDataSource)
+  }, [])
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
       return []
@@ -79,7 +82,6 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
     const configItem = config.children.find(item => item.name === name)
     //如果配置项里有onChange
     if (configItem?.onChange) {
-        console.log('configItem', newValue)
         configItem.onChange(newValue, form) 
     }
   }

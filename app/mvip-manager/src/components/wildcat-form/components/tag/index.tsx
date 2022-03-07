@@ -19,6 +19,10 @@ export const TagModule = (props: Props) => {
   const [tags, setTags] = useState<string[]>([])
   const [inputVisible, setInputVisible] = useState(false)
   const [inputValue, setInputValue] = useState('')
+  useEffect(() => {
+     console.log('value', value)
+     console.log('disabled', disabled) 
+  }, [])
 
   useEffect(() => {
     if (value) {

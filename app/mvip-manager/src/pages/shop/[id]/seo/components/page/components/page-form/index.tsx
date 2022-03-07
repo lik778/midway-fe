@@ -89,7 +89,7 @@ const SeoForm: FC<Props> = (props) => {
     pageType={ShopTDKType.PRODUCT}
     >
      {
-       (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => fillContentType.includes(name) && fillContentPageType.includes(pageType) && <p className={style['recommended-box']}>为您推荐：<Button shape="round" onClick={(()=>fillContent(name,callBack))}>一键填充{lable}</Button></p>
+       (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && fillContentType.includes(name) && fillContentPageType.includes(pageType) && <p className={style['recommended-box']}>为您推荐：<Button shape="round" onClick={(()=>fillContent(name,callBack))}>一键填充{lable}</Button></p>
      }   
     </WildcatForm>
 }

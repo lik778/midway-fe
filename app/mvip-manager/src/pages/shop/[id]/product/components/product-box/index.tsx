@@ -7,7 +7,7 @@ import { CateItem, RouteParams, ProductListItem, ShopInfo } from '@/interfaces/s
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
-import { ContentCateType } from '@/enums';
+import { ContentCateType, ProductType } from '@/enums';
 import MyModal from '@/components/modal';
 import { isEmptyObject } from '@/utils';
 import { errorMessage, successMessage } from '@/components/message';
@@ -39,11 +39,12 @@ const ProductBox = (props: Props) => {
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
     let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
+    const seoKeyWord = Array.isArray(editData.seoKeyWord) ? ( editData.seoKeyWord[0] || null) : (editData.seoKeyWord ? [editData.seoKeyWord] : null)
     return {
       ...editData,
       media,
       contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item)),
-      seoKeyWord: Array.isArray(editData.seoKeyWord) ? editData.seoKeyWord : [editData.seoKeyWord]
+      seoKeyWord
     }
   }, [editData])
 
@@ -148,7 +149,7 @@ const ProductBox = (props: Props) => {
         loading={formLoading}
         className="product-form" >
         {
-            (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => name === 'content' && <p className="recommended-box">不知道怎么写？试试 <Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
+            (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && name === 'content' && <p className="recommended-box">不知道怎么写？试试 <Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
         }    
       </WildcatForm>
       <GroupModal
