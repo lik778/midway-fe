@@ -168,11 +168,6 @@ export const getseoAutoFillApi = (shopId: number,params: TdkFillMeta) => {
     return postApiData<TdkDetail>(ServicePath.SHOP, `midway/backend/meta/seoAutoFill`,params, setShopHeader(shopId))
 }
 
-// 一键获取分组填充内容
-export const getSeoGroupFillApi = (shopId: number, params: TdkFillMeta) => {
-    return postApiData<TdkDetail>(ServicePath.SHOP, '/api/midway/backend/meta/seoAutoFill', params, setShopHeader(shopId))
-}
-
 // 保存tdk信息
 export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
   return postApiData(ServicePath.SHOP, `midway/backend/meta/save`, params, setShopHeader(shopId))

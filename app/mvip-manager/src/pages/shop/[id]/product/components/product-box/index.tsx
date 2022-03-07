@@ -36,6 +36,7 @@ const ProductBox = (props: Props) => {
   const [quitModalVisible, setQuitModalVisible] = useState(false)
   const [formLoading, setFormLoading] = useState<boolean>(false)
   const [formConfig, setformConfig] = useState<FormConfig>(productForm(typeTxt, isB2B))
+  const [editItem, setEditItem] = useState<any>(null)
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
     let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
@@ -155,7 +156,8 @@ const ProductBox = (props: Props) => {
       </WildcatForm>
       <GroupModal
         type={ContentCateType.PRODUCT}
-        editItem={null}
+        editItem={editItem}
+        updateEditItem={(params) => {setEditItem(params)}}
         visible={modalVisible}
         cateList={cateList}
         updateCateList={updateCateList}

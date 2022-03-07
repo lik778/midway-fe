@@ -7,9 +7,6 @@ import styles from './index.less'
 export const productForm = (type: string, isB2B: boolean, onChange?: (params: any) => void): FormConfig => {
     const onChangeValue = (params: any) => {
         const {newValue, form, name} = params
-        form.setFieldsValue({
-            [name]: newValue
-        })
         console.log('hhhh', form.getFieldsValue(true))
         onChange && onChange(form.getFieldsValue(true))
     }
@@ -31,12 +28,9 @@ export const productForm = (type: string, isB2B: boolean, onChange?: (params: an
         minLength: 2, 
         patternList: [{ pattern: /^[\s\S]{2,50}$/, 
         message: '2～50个字' }], 
-        showCount: true, 
-        onChange: (newValue: string, form) => {
-            onChangeValue({newValue, form, name: 'name'})
-        }  
+        showCount: true
       },
-      { onChange: (newValue: string, form) => onChangeValue({newValue, form, name: 'price'}), formItemWidth: 260, label: '市场价格', name: 'price', type: FormType.Input, required: false, maxLength: 8, placeholder: '例如：面议', showCount: false },
+      { formItemWidth: 260, label: '市场价格', name: 'price', type: FormType.Input, required: false, maxLength: 8, placeholder: '例如：面议', showCount: false },
       { formItemWidth: 130, label: '标签', name: 'tags', type: FormType.Tag, required: true, minLength: 1, maxLength: 10, placeholder: '输入标签', maxNum: 30, minNum: 1 },
       {
         formItemWidth: 150, label: '用于封面', name: 'media', type: FormType.ImgUpload, required: false, maxLength: 1, images: [{ uploadType: 2, showVideo: true, text: '上传图片/视频', name: 'media', maxSize: 3, cropProps: { aspectRatio: 300 / 200 }, aspectRatio: 300 / 200 }],

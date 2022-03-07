@@ -169,7 +169,6 @@ export interface TdkSaveAreaSuffix {
   suffixs: string[]
 }
 export interface TdkFillMeta {
-  shopId:number;
   position: string;
 }
 

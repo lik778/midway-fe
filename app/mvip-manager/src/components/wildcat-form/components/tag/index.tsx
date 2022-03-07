@@ -19,20 +19,16 @@ export const TagModule = (props: Props) => {
   const [tags, setTags] = useState<string[]>([])
   const [inputVisible, setInputVisible] = useState(false)
   const [inputValue, setInputValue] = useState('')
-  useEffect(() => {
-     console.log('value', value)
-     console.log('disabled', disabled) 
-  }, [])
 
-  useEffect(() => {
-    if (value) {
-      if (Array.isArray(value)) {
-        setTags(value)
-      } else {
-        throw new Error('入参请设置数组')
-      }
-    }
-  }, [value])
+//   useEffect(() => {
+//     if (value) {
+//       if (Array.isArray(value)) {
+//         setTags(value)
+//       } else {
+//         throw new Error('入参请设置数组')
+//       }
+//     }
+//   }, [value])
 
   const handleClose = (removedTag: any) => {
     const oldTags = tags.concat()

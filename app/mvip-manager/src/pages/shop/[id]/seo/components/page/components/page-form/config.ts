@@ -33,16 +33,7 @@ export const tdkForm = (isB2B: boolean, pageType: ShopTDKType, onChange?: (param
     }
     config.children[0].onChange = (...args) => {
         const [newValue, form] = args
-        form.setFieldsValue({
-            title: newValue
-        })
         onChange && onChange(form.getFieldsValue(true))
-    }
-    config.children[1].onChange = (...args) => {
-        const [newValue, form] = args
-        form.setFieldsValue({
-            description: newValue
-        })
     }
   }
   return config

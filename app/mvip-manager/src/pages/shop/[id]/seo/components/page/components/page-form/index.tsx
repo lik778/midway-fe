@@ -42,7 +42,6 @@ const SeoForm: FC<Props> = (props) => {
   }
   const getseoAutoFill = async () =>{
     const res = await getseoAutoFillApi(Number(id), {
-      shopId:Number(id),
       position: pagePosition!
     })
     if (res.success) {
