@@ -237,6 +237,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
         {children(item.label, item.name, onChange)}
+        {item.slotDom}
       </div>
     })
   }

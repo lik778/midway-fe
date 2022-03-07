@@ -118,6 +118,7 @@ const ProductBox = (props: Props) => {
   }
 
   const onModalClick = (e: any) => {
+      console.log(1)
     setModalVisible(true)
   }
 
