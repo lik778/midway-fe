@@ -198,9 +198,10 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           validator: async (rule: any, value: any) => {
             const minNum = item.minNum || 0
             const maxNum = item.maxNum || 1000000
-            const existValue = value && value.length > 0
+            const realValue = value ? (Array.isArray(value) ? value : [value]) : []
+            const existValue = realValue.length > 0
             if (existValue) {
-              if (value.length < minNum || value.length > maxNum) {
+              if (realValue.length < minNum || realValue.length > maxNum) {
                 return Promise.reject(`${item.label}数在${minNum}到${maxNum}个之间`)
               }
             } else {
