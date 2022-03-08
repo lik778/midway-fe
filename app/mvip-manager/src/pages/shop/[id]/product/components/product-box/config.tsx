@@ -58,7 +58,7 @@ export const productForm = (type: string, isB2B: boolean, onChange?: (params: an
   }
   // TODO;
   if (isB2B) {
-    config.children.splice(4, 0, { formItemWidth: 130, label: 'SEO关键词', name: 'seoKeyWord', type: FormType.Tag, required: false, minLength: 1, maxLength: 12, placeholder: '输入关键词', maxNum: 1, minNum: 1, extra: <p className={styles['key-tip']}>标签会用于SEO优化，请填写一个产品相关的核心词即可。</p> })
+    config.children.splice(4, 0, { formItemWidth: 130, label: 'SEO关键词', name: 'seoKeyWord', type: FormType.Tag, required: true, minLength: 1, maxLength: 12, placeholder: '输入关键词', maxNum: 1, minNum: 1, extra: <p className={styles['key-tip']}>标签会用于SEO优化，请填写一个产品相关的核心词即可。</p> })
   }
   return config
 } 
