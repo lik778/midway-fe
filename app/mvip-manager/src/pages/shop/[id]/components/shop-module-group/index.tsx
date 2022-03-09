@@ -128,9 +128,9 @@ export default (props: Props) => {
     <GroupModal
       type={type}
       editItem={editItem}
+      updateEditItem={(params) => {setEditItem(params)}}
       visible={groupModalVisible}
       updateCateList={updateCateList}
-      shopId={shopId}
       cateList={cateList}
       onClose={() => {
         setGroupModalVisible(false)
