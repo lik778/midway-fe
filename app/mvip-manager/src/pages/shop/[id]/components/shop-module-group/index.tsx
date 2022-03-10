@@ -31,15 +31,18 @@ export default (props: Props) => {
   const params: RouteParams = useParams();
   const shopId = Number(params.id);
   const isProductCate = (type === ContentCateType.PRODUCT);
+  const [isCreate, setIsCreate] = useState<boolean>(true);
 
   const createGroupItem = () => {
     setGroupModalVisible(true);
     setEditItem(null);
+    setIsCreate(true);
   }
 
   const editGroupItem = (item: any) => {
     setGroupModalVisible(true);
     setEditItem(item);
+    setIsCreate(false);
   }
 
   const createDeleteGroupItemModal = async (item: any) => {
@@ -127,6 +130,7 @@ export default (props: Props) => {
     </Drawer>
     <GroupModal
       type={type}
+      isCreate={isCreate}
       editItem={editItem}
       updateEditItem={(params) => {setEditItem(params)}}
       visible={groupModalVisible}

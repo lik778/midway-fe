@@ -20,6 +20,7 @@ interface Props {
   cateList: CateItem[]
   updateCateList: (val: CateItem[]) => void
   editItem: CateItem | null;
+  isCreate?: boolean,
   type: ContentCateType;
   visible: boolean;
   onClose(): void;
@@ -29,7 +30,7 @@ interface Props {
 const RECOMMEND_TYPES = ['seoT']
 const NewCate = (props: Props) => {
   const params: RouteParams = useParams();
-  const { cateList, updateCateList, editItem, type, onClose, curShopInfo, updateEditItem = () => {} } = props;
+  const { cateList, updateCateList, isCreate, editItem, type, onClose, curShopInfo, updateEditItem = () => {} } = props;
   const [config] = useState(contentGroupForm(curShopInfo?.type === ProductType.B2B, type, (params) => updateEditItem(params)))
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [template, setTemplate] = useState<TdkDetail>()
@@ -84,15 +85,15 @@ const NewCate = (props: Props) => {
       type,
     }
     setUpDataLoading(true)
-
-    const res = await (editItem ? updateContentCateApi : createContentCateApi)(Number(params.id), requestData)
+    console.log('isCreate', isCreate)
+    const res = await (isCreate ? createContentCateApi : updateContentCateApi)(Number(params.id), requestData)
     if (res.success) {
-      if (editItem) {
-        successMessage('修改成功')
-        groupUpdate(res.data);
-      } else {
+      if (isCreate) {
         groupCreate(res.data);
         successMessage('新建成功')
+      } else {
+        successMessage('修改成功')
+        groupUpdate(res.data);
       }
       handleClose()
     } else {

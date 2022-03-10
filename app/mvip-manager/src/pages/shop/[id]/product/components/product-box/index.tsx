@@ -156,6 +156,7 @@ const ProductBox = (props: Props) => {
       </WildcatForm>
       <GroupModal
         type={ContentCateType.PRODUCT}
+        isCreate={true}
         editItem={editItem}
         updateEditItem={(params) => {setEditItem(params)}}
         visible={modalVisible}
