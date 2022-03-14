@@ -16,7 +16,7 @@ import ProductKey from './components/product-key'
 import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
-import { CompanyInfo } from '@/interfaces/ai-module';
+import { UserEnterpriseInfo } from '@/interfaces/user';
 interface Props {
   isB2B: boolean,
   typeTxt: string
@@ -26,11 +26,12 @@ interface Props {
   onClose(): void;
   updateCateList(item: CateItem[]): void;
   updateEditData?: (params: ProductListItem) => void,
-  curShopInfo?: ShopInfo | null
+  curShopInfo?: ShopInfo | null,
+  companyInfo?: UserEnterpriseInfo
 }
 
 const ProductBox = (props: Props) => {
-  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData, curShopInfo } = props;
+  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData, curShopInfo, companyInfo } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -125,8 +126,8 @@ const ProductBox = (props: Props) => {
   const fillContent = (name: string, callback:(newValue: string, name: string) => void) => {
     const keyword = editData.seoKeyWord || ''
     const templateList = [
-        `<p>${curShopInfo?.name || ''}是专业生产各类 ${keyword}，是行内知名的${keyword}公司、厂家，其生产的 ${keyword}在行业内属于知名${keyword}品牌，其他相关${keyword}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p>`,
-        `<p>${curShopInfo?.name || ''}是专业的${keyword}机构、中心、公司,${keyword}是其名下的核心产品,拥有行业内先进的生产工艺,${keyword}属于物美价廉的产品,全国范围内好评如潮。可以在线联系联系人获取最新的${keyword}价格_图片_行情_参数_货源</p>`
+        `<p>${companyInfo?.companyAlias || companyInfo?.companyName || ''}是专业生产各类 ${keyword}，是行内知名的${keyword}公司、厂家，其生产的 ${keyword}在行业内属于知名${keyword}品牌，其他相关${keyword}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p><p>${companyInfo?.companyDescription}</p>`,
+        `<p>${companyInfo?.companyAlias || companyInfo?.companyName || ''}是专业的${keyword}机构、中心、公司,${keyword}是其名下的核心产品,拥有行业内先进的生产工艺,${keyword}属于物美价廉的产品,全国范围内好评如潮。可以在线联系${companyInfo?.contactMobile}获取最新的${keyword}价格_图片_行情_参数_货源</p>`
     ]
     const template = templateList[Math.round(Math.random())]
     callback(template, name)

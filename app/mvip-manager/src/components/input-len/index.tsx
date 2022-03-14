@@ -19,24 +19,24 @@ interface inputItem {
   showCount?: boolean;
 }
 export default (props: inputItem) => {
-  const { value, onChange, name, maxLength = 0, minLength, required, isError, placeholder, width, disabled, showCount, className } = props
+  const { value, onChange, name, maxLength, minLength, required, isError, placeholder, width, disabled, showCount, className } = props
   useEffect(() => {
     setInitLength(value?.length || 0)
     setStateValue(value || '')
   }, [value])
   const [initLength, setInitLength] = useState<number>(value?.length || 0)
   const [stateValue, setStateValue] = useState<string>(value || '')
-  const valueChange = (e, cb) => {
+  const valueChange = (e: any) => {
     if(e.target){
         setInitLength(e.target?.value.length || 0)
         setStateValue(e.target?.value)
     }
-    cb && cb(e)
+    onChange && onChange(e)
   }
   const errorClass = isError ? 'input-error' : ''
   return (
     <div className={`${styles['il-module']} ${className}`} style={{ width: width }}>
-      <Input value={stateValue} style={{ width: width }} onChange={(e) => valueChange(e, onChange)} name={name} size={'large'} maxLength={maxLength} placeholder={placeholder} minLength={minLength} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
+      <Input value={stateValue} style={{ width: width }} onChange={valueChange} name={name} size={'large'} maxLength={maxLength} minLength={minLength} placeholder={placeholder} required={required} className={`${showCount ? styles['input'] : ''} ${errorClass}`} disabled={disabled} />
       {showCount && <span className={styles["f-num"]}>{initLength}/{maxLength}</span>}
     </div>
   );

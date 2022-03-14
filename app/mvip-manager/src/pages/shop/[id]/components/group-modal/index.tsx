@@ -85,7 +85,6 @@ const NewCate = (props: Props) => {
       type,
     }
     setUpDataLoading(true)
-    console.log('isCreate', isCreate)
     const res = await (isCreate ? createContentCateApi : updateContentCateApi)(Number(params.id), requestData)
     if (res.success) {
       if (isCreate) {
@@ -109,17 +108,17 @@ const NewCate = (props: Props) => {
 
   const fillContent = async (name: string, cb: (params: string, name: string) => void) => {
     if(template && template.title){
-        cb(template?.title, name)
+        cb(`${template?.title}`, name)
     } else {
         const { data } = await getseoAutoFillApi(Number(curShopInfo?.id), { position: "productCatePage" })
         setTemplate(data)
-        cb(data?.title || '', name)
+        cb(`${data?.title}`, name)
     }
   }
 
   return <Modal
     width={580}
-    title={`${editItem ? '编辑' : '新建'}分组`}
+    title={`${isCreate ? '新建' : '编辑'}分组`}
     visible={props.visible}
     confirmLoading={upDataLoading}
     onCancel={handleClose}

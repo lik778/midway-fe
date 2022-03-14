@@ -8,7 +8,7 @@ import { Modal, Button } from 'antd';
 import { useEffect } from 'react';
 import SeoAuditIng from '../seo-audit-ing';
 import { Redirect } from 'react-router';
-const { confirm } = Modal;
+const { info } = Modal;
 
 interface Props {
   id: string,
@@ -47,15 +47,9 @@ const Optimization: FC<Props> = (props) => {
         try {
             await submitSeoCheck(Number(id))
             await getSeoCheckInfos()
-            confirm({
+              info({
                 title: '温馨提示',
-                content: '为了保证您的SEO效果，预计在24小时内完成检测，请耐心等待！',
-                onOk() {
-                  console.log('OK');
-                },
-                onCancel() {
-                  console.log('Cancel');
-                },
+                content: '为了保证您的SEO效果，预计在24小时内完成检测，请耐心等待！'
             });
         } catch (error) {
             console.log(error)
