@@ -24,7 +24,7 @@ const SeoOptimizeTips : FC<propsType> = (props: propsType) => {
         </li>
         <li className={styles['seo-optimize-item']}>
             <p><label>地域：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.areaNum}</span>个 | 建议填写 15 个</p>
-            <p><label>后缀：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.suffixNum}</span>个 | 建议填写 15 个</p>
+            <p><label>后缀：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.suffixNum}</span>个 | 建议填写 10 个</p>
         </li>
         <li className={styles['sub-title']}>
             <span>产品数量</span>
