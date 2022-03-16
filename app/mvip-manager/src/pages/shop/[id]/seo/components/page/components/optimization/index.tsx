@@ -8,6 +8,7 @@ import { Modal, Button } from 'antd';
 import { useEffect } from 'react';
 import SeoAuditIng from '../seo-audit-ing';
 import { Redirect } from 'react-router';
+import { ProductType } from '@/enums';
 const { info } = Modal;
 
 interface Props {
@@ -57,11 +58,11 @@ const Optimization: FC<Props> = (props) => {
     }, [])
 
     return <>
-    { !curShopInfo ? null : (curShopInfo && !curShopInfo.canSeoFlag) ? <Redirect to="/no-auth" /> :<>
+    { (curShopInfo && curShopInfo.canSeoFlag && curShopInfo.type === ProductType.B2B) ? <>
         { seoCheckInfo?.checkInfo.status ? <SeoAuditIng seoCheckInfo={seoCheckInfo}/> : <SeoOptimizeTips seoCheck={submitCheck} id={id} seoCheckInfo={seoCheckInfo}/> }
         { seoCheckInfo?.checkInfo.status && seoCheckInfo?.checkInfo.status === checkInfoStatus.APPROVE && <Button type="primary" onClick={sumbit} disabled={!curShopInfo?.canOptimizeFlag}>一键优化</Button>}
         { seoCheckInfo?.checkInfo.status && seoCheckInfo?.checkInfo.status === checkInfoStatus.REJECT && <Button type="primary" onClick={submitCheck}>立即检测</Button>}
-     </> 
+     </> : <Redirect to="/no-auth" />
     }
     </>
 }

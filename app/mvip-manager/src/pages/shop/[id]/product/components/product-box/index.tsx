@@ -3,7 +3,7 @@ import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
 import { productForm } from './config';
 import { Button, Drawer } from 'antd';
-import { CateItem, RouteParams, ProductListItem, ShopInfo } from '@/interfaces/shop';
+import { CateItem, RouteParams, ProductListItem, ShopInfo, ShopItemBasicInfoParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
 import { useParams } from 'umi';
@@ -125,9 +125,11 @@ const ProductBox = (props: Props) => {
 
   const fillContent = (name: string, callback:(newValue: string, name: string) => void) => {
     const keyword = editData.seoKeyWord || ''
+    const about: ShopItemBasicInfoParams = curShopInfo && JSON.parse(curShopInfo.about)
+    const mergeCompanyInfo = {...companyInfo, ...about}
     const templateList = [
-        `<p>${companyInfo?.companyAlias || companyInfo?.companyName || ''}是专业生产各类 ${keyword}，是行内知名的${keyword}公司、厂家，其生产的 ${keyword}在行业内属于知名${keyword}品牌，其他相关${keyword}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p><p>${companyInfo?.companyDescription}</p>`,
-        `<p>${companyInfo?.companyAlias || companyInfo?.companyName || ''}是专业的${keyword}机构、中心、公司,${keyword}是其名下的核心产品,拥有行业内先进的生产工艺,${keyword}属于物美价廉的产品,全国范围内好评如潮。可以在线联系${companyInfo?.contactMobile}获取最新的${keyword}价格_图片_行情_参数_货源</p>`
+        `<p>${mergeCompanyInfo?.companyAlias || mergeCompanyInfo?.companyName || ''}是专业生产各类 ${keyword}，是行内知名的${keyword}公司、厂家，其生产的 ${keyword}在行业内属于知名${keyword}品牌，其他相关${keyword}价格_图片_行情_参数_货源情况可联系厂家免费获取。</p><p>${mergeCompanyInfo?.companyDescription}</p>`,
+        `<p>${mergeCompanyInfo?.companyAlias || mergeCompanyInfo?.companyName || ''}是专业的${keyword}机构、中心、公司,${keyword}是其名下的核心产品,拥有行业内先进的生产工艺,${keyword}属于物美价廉的产品,全国范围内好评如潮。可以在线联系${mergeCompanyInfo?.contactMobile}获取最新的${keyword}价格_图片_行情_参数_货源</p>`
     ]
     const template = templateList[Math.round(Math.random())]
     callback(template, name)
