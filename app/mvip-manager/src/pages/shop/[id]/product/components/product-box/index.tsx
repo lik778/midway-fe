@@ -17,6 +17,7 @@ import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
 import { UserEnterpriseInfo } from '@/interfaces/user';
+import e from 'express';
 interface Props {
   isB2B: boolean,
   typeTxt: string

@@ -23,15 +23,15 @@ const SeoOptimizeTips : FC<propsType> = (props: propsType) => {
             <Link to={`/shop/${id}/seo/area`}>去提升</Link>
         </li>
         <li className={styles['seo-optimize-item']}>
-            <p><label>地域：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.areaNum}</span>个 | 建议填写 15 个</p>
-            <p><label>后缀：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.suffixNum}</span>个 | 建议填写 10 个</p>
+            <p><label>地域：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.areaNum}</span>个 | 至少填写 15 个</p>
+            <p><label>后缀：</label>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.suffixNum}</span>个 | 至少填写 10 个</p>
         </li>
         <li className={styles['sub-title']}>
             <span>产品数量</span>
             <Link to={`/shop/${id}/product`}>去提升</Link>
         </li>
         <li className={styles['seo-optimize-item']}>
-            <p>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.productNum}</span>个 | 建议填写15个</p>
+            <p>本店铺已填写<span className={styles['seo-optimize-item_num']}>{seoCheckInfo?.numInfo.productNum}</span>个 | 至少填写15个</p>
         </li>
     </ul>
     <Button className={styles['btn']} type="primary" onClick={seoCheck} disabled={!seoCheckInfo?.numInfo.pass} loading={upDateLoading}>立即检测</Button>
