@@ -28,6 +28,9 @@ function ContactForm(props: any) {
   // 是否修改过表单 阈值  
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
+  useEffect(() => {
+      console.log(companyInfo)
+  }, [])
   // 客户信息表单的form
   const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
   // 53客服表单的form
@@ -77,7 +80,7 @@ function ContactForm(props: any) {
     if (qqList.length > 0) {
       qqMap = qqList
     }
-    const clonedCompanyInfo = cloneDeepWith(companyInfo)
+    const clonedCompanyInfo = {...cloneDeepWith(companyInfo),...formInstance?.getFieldsValue()}
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
     info.qqMap = qqMap
     // 校验53客服
