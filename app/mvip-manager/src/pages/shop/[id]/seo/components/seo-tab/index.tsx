@@ -15,6 +15,7 @@ interface Props {
 
 const SeoTab = (props: Props) => {
   const { type, curShopInfo, shopStatus } = props
+  console.log('curShopInfo', curShopInfo)
   const params: RouteParams = useParams();
 
   const menuList = useMemo(() => {
@@ -47,7 +48,7 @@ const SeoTab = (props: Props) => {
         key: ShopTDKType.AREA,
         position: ''
       })
-      if (shopStatus && shopStatus.hasTkdOptimizeRights) {
+      if (curShopInfo && curShopInfo.canSeoFlag) {
         menuList.push({
           link: `/shop/${params.id}/${ShopBasisType.SEO}/${ShopTDKType.OPTIMIZATION}`,
           label: "SEO优化",

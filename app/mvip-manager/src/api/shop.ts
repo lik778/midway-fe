@@ -60,15 +60,16 @@ import {
   ModuleABoutABoutInfoParam,
   ModuleProductSwiperNoParam,
   AdviceRecord,
-  TdkDetail,
   TdkNav,
   TdkSaveAreaSuffix,
   MessageModule,
   CommonMessageSetting,
-  FieldsParams
+  FieldsParams,
+  TdkFillMeta
 } from '@/interfaces/shop';
 import { ServicePath } from '@/enums/index'
 import { ListRes } from '@/interfaces/base';
+import { TdkDetail } from '../interfaces/shop';
 
 // 店铺初始信息
 export const getCreateShopStatusApi = () => {
@@ -162,10 +163,16 @@ export const getMetaDetailApi = (shopId: number, params: TdkDetailMeta) => {
   }>(ServicePath.SHOP, `midway/backend/meta/detail`, params, setShopHeader(shopId))
 }
 
+// 一键填充获取内容
+export const getseoAutoFillApi = (shopId: number,params: TdkFillMeta) => {
+    return postApiData<TdkDetail>(ServicePath.SHOP, `midway/backend/meta/seoAutoFill`,params, setShopHeader(shopId))
+}
+
 // 保存tdk信息
 export const getMetaSaveApi = (shopId: number, params: TdkSaveMeta) => {
   return postApiData(ServicePath.SHOP, `midway/backend/meta/save`, params, setShopHeader(shopId))
 }
+
 
 // TODO;保存通用地域、后缀
 export const saveMateAreaSuffix = (shopId: number, params: TdkSaveAreaSuffix) => {

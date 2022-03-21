@@ -36,7 +36,7 @@ const ShopForm: FC<Props> = (props) => {
     key: '***.shop.baixing.com',
     value: DomainStatus.PREFIX
   }, {
-    key: 'shop.baixing.com/***',
+    key: 'shop.baixing.com/***（SEO推荐）',
     value: DomainStatus.SUFFIX
   }]
 

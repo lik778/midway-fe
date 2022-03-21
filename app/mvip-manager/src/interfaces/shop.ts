@@ -168,6 +168,10 @@ export interface TdkSaveAreaSuffix {
   areas: string[],
   suffixs: string[]
 }
+export interface TdkFillMeta {
+  position: string;
+}
+
 export interface TdkDetailMeta {
   position: string;
 }
@@ -235,7 +239,8 @@ export interface ShopInfo {
   },
   canOptimizeFlag: boolean// 用于seo一键优化
   navInfo: NavInfo | null,
-  contactFields: CommonMessageSetting[]
+  contactFields: CommonMessageSetting[],
+  canSeoFlag: boolean
 }
 
 export interface CustomerListItem {
@@ -304,6 +309,7 @@ export interface Quota {
   productQuota: number; // 产品quota
   maxAiArticles: number; // 最大Ai发文量
   des: string;
+  seoQuota: number; // seo时长
 }
 
 export interface Ticket {

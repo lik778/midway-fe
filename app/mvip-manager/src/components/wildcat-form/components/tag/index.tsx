@@ -25,7 +25,7 @@ export const TagModule = (props: Props) => {
       if (Array.isArray(value)) {
         setTags(value)
       } else {
-        throw new Error('入参请设置数组')
+        setTags([value])
       }
     }
   }, [value])

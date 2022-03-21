@@ -13,10 +13,11 @@ import './index.less'
 import { CateItem, RouteParams, ProductListItem } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
 import { SHOP_NAMESPACE } from '@/models/shop'
+import { USER_NAMESPACE } from '@/models/user';
 
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 const ShopProductPage = (props: any) => {
-  const { curShopInfo } = props
+  const { curShopInfo, companyInfo } = props
   const [moduleGroupVisible, setModuleGroupVisible] = useState<boolean>(false);
   const [productFormVisible, setProductFormVisible] = useState<boolean>(false);
   const [productList, setProductList] = useState<ProductListItem[]>([]);
@@ -29,6 +30,7 @@ const ShopProductPage = (props: any) => {
   const isB2B = useMemo(() => {
     return curShopInfo?.type === ProductType.B2B
   }, [curShopInfo])
+
 
   const typeTxt = useMemo(() => {
     return isB2B ? '产品' : '服务'
@@ -62,6 +64,10 @@ const ShopProductPage = (props: any) => {
     setProductFormVisible(true);
   }
 
+  const updateEditData = (data: ProductListItem) => {
+      setEditProductData(data)
+  }
+
   return (
     <div>
       <BasisHeader {...props} type={ShopModuleType.PRODUCT} />
@@ -82,7 +88,7 @@ const ShopProductPage = (props: any) => {
           onChange={(page) => setPage(page)} />
         <ShopModuleGroup
           type={ContentCateType.PRODUCT}
-          title={`${typeTxt}分组`}
+          title={`${typeTxt}`}
           cateList={cateList}
           updateCateList={setCateList}
           onClose={() => removeOverflow(() => setModuleGroupVisible(false))}
@@ -90,6 +96,9 @@ const ShopProductPage = (props: any) => {
           save={() => removeOverflow(() => setModuleGroupVisible(false))} />
         <ProductBox
           isB2B={isB2B}
+          companyInfo={companyInfo}
+          updateEditData={updateEditData}
+          curShopInfo={curShopInfo}
           typeTxt={typeTxt}
           cateList={cateList}
           editData={editProductData}
@@ -104,7 +113,8 @@ ShopProductPage.wrappers = ['@/wrappers/path-auth']
 
 const mapStateToProps = (state: any): any => {
   const { curShopInfo } = state[SHOP_NAMESPACE];
-  return { curShopInfo }
+  const { companyInfo } = state[USER_NAMESPACE];
+  return { curShopInfo, companyInfo }
 }
 
 const ShopProductPageConnect = connect(mapStateToProps)(ShopProductPage)

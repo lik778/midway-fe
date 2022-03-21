@@ -19,7 +19,7 @@ export const tdkForm = (AddPublic: React.ReactNode): FormConfig => ({
           return Promise.resolve()
         }
       }],
-      extra: '示例：北京、上海等，如果您要推广全国城市，请写您主要推广的城市。'
+      extra: '建议优先写城市，省份不要超过5个，如果是单城市用户，则可填写城市的下一级，如闵行区。'
     },
     {
       formItemWidth: 130, label: 'SEO后缀', name: 'suffixs', type: FormType.Tag, required: true, maxLength: 10, placeholder: '输入SEO后缀', maxNum: 50, minNum: 1, extra: <>

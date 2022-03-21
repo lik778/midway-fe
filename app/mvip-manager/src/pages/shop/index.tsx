@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Popover } from 'antd';
 import { history } from 'umi';
 import { connect } from 'dva';
 import { AnyAction, Dispatch } from 'redux';
@@ -15,9 +15,10 @@ import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form';
 import { ShopIndustryType } from '@/enums';
 import styles from './index.less';
-import { AppSourceEnum, TicketType } from '@/enums/shop';
+import { TicketType } from '@/enums/shop';
 import { renewShopApi } from '@/api/shop';
 import { errorMessage, successMessage } from '@/components/message';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 interface Props {
   dispatch: Dispatch<AnyAction>;
@@ -48,7 +49,7 @@ const ShopPage: FC<Props> = (props) => {
   // 店铺ticket
   const [ticketType, setTicketType] = useState<TicketType>(TicketType.CREATE)
   const [shopId, setShopId] = useState<number>(0)
-  const [ticketId, setTicketId] = useState<number>(0)
+  const [ticketId, setTicketId] = useState<number>()
   const [submitRenewLoading, setSubmitRenewLoading] = useState<boolean>(false)
   // 店铺ticket可用
   const shopTicketValid = shopStatus && shopStatus.userValidTickets && shopStatus.userValidTickets.length
@@ -68,13 +69,16 @@ const ShopPage: FC<Props> = (props) => {
     }
   }, [shopStatus])
 
-  useEffect(() => {
-    if (shopTicketValid) {
-      const defaultTicketId = shopStatus && shopStatus.userValidTickets
-        && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
-      setTicketId(defaultTicketId || 0)
-    }
-  }, [shopTicketValid])
+//   useEffect(() => {
+//     if (shopTicketValid) {
+//       let defaultTicketId = shopStatus && shopStatus.userValidTickets
+//         && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
+//       if(shopList?.find(s => s.id === shopId)?.canSeoFlag){
+//         defaultTicketId = 0 
+//       }
+//       setTicketId(defaultTicketId || 0)
+//     }
+//   }, [shopTicketValid])
 
 
   const initPage = () => {
@@ -100,9 +104,12 @@ const ShopPage: FC<Props> = (props) => {
   }
 
   const handleCreateShop = () => {
+    const defaultTicketId = shopStatus && shopStatus.userValidTickets
+            && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
     if (shopStatus?.isUserPerfect) {
       setTicketType(TicketType.CREATE)
       setModalTicketVisible(true)
+      setTicketId(defaultTicketId || 0)
     } else {
       setModalGotoVisible(true)
     }
@@ -162,9 +169,13 @@ const ShopPage: FC<Props> = (props) => {
               shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) =>
                 <ShopBox shopList={shopList} shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setShopList={setShopList} setCurShopInfo={setCurShopInfo}
                   setTicketModal={(shopId: number) => {
+                    const curShop = shopList?.find(s => s.id === shopId)
+                    const defaultTicketId = shopStatus && shopStatus.userValidTickets
+            && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
                     setTicketType(TicketType.RENEW)
                     setModalTicketVisible(true)
                     setShopId(shopId)
+                    curShop?.canSeoFlag ? setTicketId(0) : setTicketId(defaultTicketId)
                   }} getShopList={getShopList} />)}
           </div>
         </>
@@ -210,11 +221,14 @@ const ShopPage: FC<Props> = (props) => {
         <div className={styles["ticket-list"]} >
           {shopStatus?.userValidTickets?.map((t, index) => {
             return (
-              <div onClick={() => setTicketId(t.id)} className={`${styles['ticket-list-item']} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
-                <span>钻石店铺 {t.source === AppSourceEnum.VIP && <strong>VIP</strong>}</span>
-                <span>发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
-                <span>AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
-                <span>时长：<strong>{ticketType === TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
+              <div onClick={() => ticketType === TicketType.RENEW && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? '' : setTicketId(t.id)} className={`${styles['ticket-list-item']} ${ ticketType !== TicketType.CREATE && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? styles['ticket-list-item_diable'] : ''} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
+                <span className="item">钻石店铺时长：<strong>{ticketType === TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
+                (<span className="item">发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
+                <span className="item">AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
+                <span className="item">SEO时长：<strong>{t.quota.seoQuota}天</strong></span>)
+                { ticketType === TicketType.RENEW && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? <Popover content={<><p>1.当前店铺的seo云推广正在服务期，暂不支持连续使用</p><p>2.如有多个seo云推广权益的店铺额度请分别新建店铺使用</p></>} title="说明：">
+                    <InfoCircleOutlined />
+                </Popover> : null}
               </div>
             )
           })}
@@ -225,7 +239,7 @@ const ShopPage: FC<Props> = (props) => {
 }
 
 const WrapperShopPage: any = connect((state: ConnectState) => {
-  const { shopList, shopTotal, shopStatus, } = state[SHOP_NAMESPACE]
+  const { shopList, shopTotal, shopStatus } = state[SHOP_NAMESPACE]
   const { loading } = state
   return { shopList, shopTotal, shopStatus, loadingShop: loading.models.shop }
 }, (dispatch) => {

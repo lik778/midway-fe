@@ -17,8 +17,9 @@ const Option = Select.Option;
 const TextArea = Input.TextArea;
 
 const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
-  const [form] = Form.useForm();
-  const { editDataSource, onInit, loading, disabled, config } = props
+  const [form] = Form.useForm()
+  
+  const { editDataSource, onInit, loading, disabled, config, pageType, children = () => '' } = props
 
   const FormItemList = useMemo<(FormItem | CustomerFormItem)[]>(() => {
     if (!config || !config.children || config.children.length === 0) {
@@ -73,13 +74,17 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       onInit(form)
     }
   }, [])
-
+ 
   const onChange = (newValue: any, name: string) => {
     const configItem = config.children.find(item => item.name === name)
+    form.setFieldsValue({
+        [name]: newValue
+    })
     //如果配置项里有onChange
-    if (configItem?.onChange) { configItem.onChange(newValue, form) }
+    if (configItem?.onChange) {
+        configItem.onChange(newValue, form) 
+    }
   }
-
   const getEditData = (name: string) => {
     return editDataSource && editDataSource[name];
   }
@@ -87,7 +92,6 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
   function isCustomerFormItem(item: FormItem | CustomerFormItem): item is CustomerFormItem {
     return Boolean((item as CustomerFormItem).node)
   }
-
   const creatForm = (FormItemList: (CustomerFormItem | FormItem)[]) => {
     return FormItemList.map(item => {
       // 需要隐藏则返回空
@@ -114,7 +118,9 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       let needFormItem = true
       const value = getEditData(item.name || '')
       if (item.type === FormType.Input) {
-        componentItem = <InputLen width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(newValue) => onChange(newValue, item.name || '')} showCount={item.showCount} />
+        componentItem = <>
+            <InputLen value={value} width={item.formItemWidth} placeholder={item.placeholder} maxLength={item.maxLength} minLength={item.minLength} disabled={item.disabled || disabled} onChange={(e) => onChange(e.target.value, item.name || '')} showCount={item.showCount} />
+        </>
       } else if (item.type === FormType.InputNumber) {
         componentItem = <InputNumber style={{ width: item.formItemWidth }} min={item.minNum} max={item.maxNum} placeholder={item.placeholder} size='large' onChange={(newValue) => onChange(newValue, item.name || '')} disabled={item.disabled || disabled} />
       } else if (item.type === FormType.Textarea) {
@@ -192,9 +198,10 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
           validator: async (rule: any, value: any) => {
             const minNum = item.minNum || 0
             const maxNum = item.maxNum || 1000000
-            const existValue = value && value.length > 0
+            const realValue = value ? (Array.isArray(value) ? value : [value]) : []
+            const existValue = realValue.length > 0
             if (existValue) {
-              if (value.length < minNum || value.length > maxNum) {
+              if (realValue.length < minNum || realValue.length > maxNum) {
                 return Promise.reject(`${item.label}数在${minNum}到${maxNum}个之间`)
               }
             } else {
@@ -230,6 +237,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
         {
           needFormItem ? <Form.Item {...formItemProps}>{componentItem}</Form.Item> : componentItem
         }
+        {children(item.label, item.name, onChange)}
         {item.slotDom}
       </div>
     })

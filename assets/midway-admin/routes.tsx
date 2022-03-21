@@ -14,6 +14,7 @@ import AdviceRecord from './pages/AdviceRecord';
 import TemplateUpload from './pages/TemplateUpload';
 import StatusChange from './pages/StatusChange';
 import BxGallery from './pages/BxGallery';
+import VerifySeo from './pages/SeoVerify';
 
 
 export default () => {
@@ -23,6 +24,7 @@ export default () => {
         <Route path="/audit-image" component={AuditImage} key="audit-image" />
         <Route path="/audit-video" component={AuditVideo} key="audit-video" />
         <Route path="/verify-word" component={VerifyWord} key="verify-word" />
+        <Route path="/verify-seo" component={VerifySeo} key="verify-seo" />
         <Route path="/switch-shop-type" component={SwitchShopType} key="switch-shop-type" />
         <Route path="/store-whitelist" component={StoreWhitelist} key="store-whitelist" />
         <Route path="/tdk-optimization-auth" component={TdkOptimizationAuth} key="tdk-optimization-auth" />

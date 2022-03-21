@@ -1,19 +1,25 @@
-import React, { FC, useState, useMemo } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { ShopInfo } from '@/interfaces/shop';
 import { optimizationMeta } from '@/api/shop';
+import { getSeoCheckInfo, seoCheckInfoType, checkInfoStatus, submitSeoCheck } from '@/api/seo-setting';
 import { successMessage, errorMessage } from '@/components/message';
-import { Button } from 'antd';
-import styles from './index.less'
+import SeoOptimizeTips from '../seo-optimize-tips'
+import { Modal, Button } from 'antd';
+import { useEffect } from 'react';
+import SeoAuditIng from '../seo-audit-ing';
+import { Redirect } from 'react-router';
+import { ProductType } from '@/enums';
+const { info } = Modal;
 
 interface Props {
   id: string,
   curShopInfo: ShopInfo | null
   onSubmitSuccess: () => void
 }
-
 const Optimization: FC<Props> = (props) => {
   const { id, curShopInfo, onSubmitSuccess } = props
   const [upDateLoading, setUpDateLoading] = useState<boolean>(false)
+  const [seoCheckInfo, setSeoCheckInfo] = useState<seoCheckInfoType>()
 
   const sumbit = async () => {
     setUpDateLoading(true)
@@ -27,10 +33,38 @@ const Optimization: FC<Props> = (props) => {
     }
   }
 
-  return <>
-    <Button className={styles['btn']} type="primary" onClick={sumbit} disabled={(!curShopInfo?.canOptimizeFlag) || upDateLoading} loading={upDateLoading}>一键优化</Button>
-    <p className={styles['tip']}>注：1.店铺新建产品分组、产品页才可再次一键优化 2.一键优化后3天后可通过营销报表查看上词。</p>
-  </>
+  const getSeoCheckInfos = async () => {
+    setUpDateLoading(true)
+    const { data } = await getSeoCheckInfo(Number(id))
+    setUpDateLoading(false)
+    setSeoCheckInfo(data)
+  }
+
+  useEffect(() => {
+    getSeoCheckInfos()
+  }, [])
+
+    const submitCheck = useCallback(async () => {
+        try {
+            await submitSeoCheck(Number(id))
+            await getSeoCheckInfos()
+              info({
+                title: '温馨提示',
+                content: '为了保证您的SEO效果，预计在24小时内完成检测，请耐心等待！'
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+
+    return <>
+    { !curShopInfo ? null : (curShopInfo && curShopInfo.canSeoFlag && curShopInfo.type === ProductType.B2B) ? <>
+        { seoCheckInfo?.checkInfo.status ? <SeoAuditIng seoCheckInfo={seoCheckInfo}/> : <SeoOptimizeTips seoCheck={submitCheck} id={id} seoCheckInfo={seoCheckInfo}/> }
+        { seoCheckInfo?.checkInfo.status && seoCheckInfo?.checkInfo.status === checkInfoStatus.APPROVE && <Button type="primary" onClick={sumbit} disabled={!curShopInfo?.canOptimizeFlag}>一键优化</Button>}
+        { seoCheckInfo?.checkInfo.status && seoCheckInfo?.checkInfo.status === checkInfoStatus.REJECT && <Button type="primary" onClick={submitCheck}>立即检测</Button>}
+     </> : <Redirect to="/no-auth" />
+    }
+    </>
 }
 
 export default Optimization
