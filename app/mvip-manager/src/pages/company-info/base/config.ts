@@ -46,7 +46,7 @@ export const contactForm: FormConfig = {
   useLabelCol: { span: 4 },
   labelAlign: 'right',
   children: [
-    { label: '联系人1', name: 'contactName', type: FormType.Input, required: true, placeholder: '请输入联系人' },
+    { label: '联系人', name: 'contactName', type: FormType.Input, required: true, placeholder: '请输入联系人' },
     {
       label: '电话号码', name: 'contactMobile', type: FormType.Input, required: true, placeholder: '请输入电话号码',
       patternList: [{
