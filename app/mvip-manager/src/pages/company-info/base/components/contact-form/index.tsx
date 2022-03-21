@@ -77,7 +77,7 @@ function ContactForm(props: any) {
     if (qqList.length > 0) {
       qqMap = qqList
     }
-    const clonedCompanyInfo = cloneDeepWith(companyInfo)
+    const clonedCompanyInfo = {...cloneDeepWith(companyInfo),...formInstance?.getFieldsValue()}
     const info: UserEnterpriseInfo = Object.assign(clonedCompanyInfo, formData)
     info.qqMap = qqMap
     // 校验53客服
