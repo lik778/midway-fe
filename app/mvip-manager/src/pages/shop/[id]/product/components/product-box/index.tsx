@@ -41,6 +41,7 @@ const ProductBox = (props: Props) => {
   const [editItem, setEditItem] = useState<any>(null)
   const params: RouteParams = useParams();
   const initEditData = useMemo(() => {
+    console.log('editData', editData)
     let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
     const seoKeyWord = Array.isArray(editData.seoKeyWord) ? ( editData.seoKeyWord[0] || null) : (editData.seoKeyWord ? [editData.seoKeyWord] : null)
     return {
@@ -147,8 +148,7 @@ const ProductBox = (props: Props) => {
       width="700"
       destroyOnClose={true}
     >
-        <div>我没问题</div>
-      {/* <WildcatForm
+      <WildcatForm
         editDataSource={initEditData}
         config={formConfig}
         submit={sumbit}
@@ -158,7 +158,7 @@ const ProductBox = (props: Props) => {
         {
             (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && name === 'content' && <p className="recommended-box">不知道怎么写？试试 <Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
         }    
-      </WildcatForm> */}
+      </WildcatForm>
       <GroupModal
         type={ContentCateType.PRODUCT}
         isCreate={true}
