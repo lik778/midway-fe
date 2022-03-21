@@ -147,7 +147,8 @@ const ProductBox = (props: Props) => {
       width="700"
       destroyOnClose={true}
     >
-      <WildcatForm
+        <div>我没问题</div>
+      {/* <WildcatForm
         editDataSource={initEditData}
         config={formConfig}
         submit={sumbit}
@@ -157,7 +158,7 @@ const ProductBox = (props: Props) => {
         {
             (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && name === 'content' && <p className="recommended-box">不知道怎么写？试试 <Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
         }    
-      </WildcatForm>
+      </WildcatForm> */}
       <GroupModal
         type={ContentCateType.PRODUCT}
         isCreate={true}
