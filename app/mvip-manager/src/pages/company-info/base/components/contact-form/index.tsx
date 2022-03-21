@@ -28,9 +28,6 @@ function ContactForm(props: any) {
   // 是否修改过表单 阈值  
   const [hasEditForm, setHasEditForm] = React.useState<boolean>(false);
 
-  useEffect(() => {
-      console.log(companyInfo)
-  }, [])
   // 客户信息表单的form
   const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
   // 53客服表单的form
