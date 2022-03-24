@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo, useRef, ReactNode } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { SHOP_NAMESPACE } from '@/models/shop';
@@ -34,8 +34,8 @@ const NewCate = (props: Props) => {
   const [config] = useState(contentGroupForm(curShopInfo?.type === ProductType.B2B, type, (params) => updateEditItem(params)))
   const [upDataLoading, setUpDataLoading] = useState<boolean>(false)
   const [template, setTemplate] = useState<TdkDetail>()
-  const formRef = useRef<{ form: FormInstance | undefined }>({ form: undefined })
-
+  const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
+    
   const initEditData = useMemo(() => {
     if (editItem) {
       const seoK = editItem.seoK ? ( Array.isArray(editItem.seoK) ? editItem.seoK : editItem.seoK.split(',') ) : []
@@ -102,17 +102,18 @@ const NewCate = (props: Props) => {
   }
 
   const handleClose = () => {
-    formRef.current.form?.resetFields()
+    formInstance?.resetFields()
     onClose();
   }
 
   const fillContent = async (name: string, cb: (params: string, name: string) => void) => {
+    const groupName = formInstance?.getFieldValue('name')
     if(template && template.title){
-        cb(`${template?.title}`, name)
+        cb(`${groupName}|${template?.title}`, name)
     } else {
         const { data } = await getseoAutoFillApi(Number(curShopInfo?.id), { position: "productCatePage" })
         setTemplate(data)
-        cb(`${data?.title}`, name)
+        cb(`${groupName}|${data?.title}`, name)
     }
   }
 
@@ -126,11 +127,11 @@ const NewCate = (props: Props) => {
     footer={null}
   >
     <WildcatForm
-      ref={formRef}
-      editDataSource={initEditData}
+      editDataSource={{...initEditData, ...formInstance?.getFieldsValue(true)}}
       config={config}
       submit={handleSubmit}
       loading={upDataLoading}
+      onInit={(form) => setFormInstance(form)}
     >
         {
             (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && RECOMMEND_TYPES.includes(name) && <p className={styles["group-recommended-box"]}>为您推荐：<Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>

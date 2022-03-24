@@ -21,9 +21,9 @@ export const contentGroupForm = (isB2B: boolean, cateType: ContentCateType, onCh
         const [newValue, form] = args
         const seoTitle = `${form.getFieldValue('name')}|${newValue}`
         form.setFieldsValue({
-            seoT: seoTitle
+            seoT: newValue
         })
-          onChangeValue({seoTitle, form, name: 'seoT'})
+        onChangeValue({seoTitle, form, name: 'seoT'})
       }, name: 'seoT', type: FormType.Input, required: false, placeholder: '请输入SEO标题，9~50个字', maxLength: 50, showCount: true, patternList: [{ pattern: /^[\s\S]{9,50}$/, message: '9～50个字' }], },
       { formItemWidth: '100%', label: 'SEO描述', 
         onChange: (...args: any) => {}, name: 'seoD', type: FormType.Input, required: false, placeholder: '请输入SEO描述，40~120个字', maxLength: 120, showCount: true, patternList: [{ pattern: /^[\s\S]{40,120}$/, message: '40～120个字' }], },
