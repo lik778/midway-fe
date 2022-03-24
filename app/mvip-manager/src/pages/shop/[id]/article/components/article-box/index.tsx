@@ -145,6 +145,7 @@ export default (props: Props) => {
       <GroupModal
         type={ContentCateType.ARTICLE}
         editItem={null}
+        isCreate={true}
         visible={modalVisible}
         cateList={cateList}
         updateCateList={updateCateList}
