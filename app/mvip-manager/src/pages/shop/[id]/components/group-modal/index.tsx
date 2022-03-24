@@ -134,7 +134,7 @@ const NewCate = (props: Props) => {
       onInit={(form) => setFormInstance(form)}
     >
         {
-            (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && RECOMMEND_TYPES.includes(name) && <p className={styles["group-recommended-box"]}>为您推荐：<Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
+            (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && RECOMMEND_TYPES.includes(name) && type === ContentCateType.PRODUCT && <p className={styles["group-recommended-box"]}>为您推荐：<Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>
         } 
     </WildcatForm>
   </Modal>
