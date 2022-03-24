@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import WildcatForm from '@/components/wildcat-form';
 import GroupModal from '../../../components/group-modal';
 import { productForm } from './config';
-import { Button, Drawer } from 'antd';
+import { Button, Drawer, FormInstance } from 'antd';
 import { CateItem, RouteParams, ProductListItem, ShopInfo, ShopItemBasicInfoParams } from '@/interfaces/shop';
 import { FormConfig, FormItem } from '@/components/wildcat-form/interfaces';
 import { createProductApi, updateProductApi } from '@/api/shop';
@@ -17,7 +17,6 @@ import './index.less'
 import { getImgUploadModelValue, getImgUploadValueModel } from '@/components/img-upload';
 import { MediaItem } from '@/components/img-upload/data';
 import { UserEnterpriseInfo } from '@/interfaces/user';
-import e from 'express';
 interface Props {
   isB2B: boolean,
   typeTxt: string
@@ -28,11 +27,12 @@ interface Props {
   updateCateList(item: CateItem[]): void;
   updateEditData?: (params: ProductListItem) => void,
   curShopInfo?: ShopInfo | null,
-  companyInfo?: UserEnterpriseInfo
+  companyInfo?: UserEnterpriseInfo,
+  onInit?: (parmas: any) => void
 }
 
 const ProductBox = (props: Props) => {
-  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData, curShopInfo, companyInfo } = props;
+  const { isB2B, typeTxt, onClose, visible, editData, cateList, updateCateList, updateEditData, curShopInfo, companyInfo, onInit = () => {} } = props;
   // 弹窗显示隐藏
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [quitModalVisible, setQuitModalVisible] = useState(false)
@@ -40,17 +40,7 @@ const ProductBox = (props: Props) => {
   const [formConfig, setformConfig] = useState<FormConfig>(productForm(typeTxt, isB2B))
   const [editItem, setEditItem] = useState<any>(null)
   const params: RouteParams = useParams();
-  const initEditData = useMemo(() => {
-    console.log('editData', editData)
-    let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
-    const seoKeyWord = Array.isArray(editData.seoKeyWord) ? ( editData.seoKeyWord[0] || null) : (editData.seoKeyWord ? [editData.seoKeyWord] : null)
-    return {
-      ...editData,
-      media,
-      contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item)),
-      seoKeyWord
-    }
-  }, [editData])
+  const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
 
 
   // 弹窗错误显示
@@ -149,11 +139,12 @@ const ProductBox = (props: Props) => {
       destroyOnClose={true}
     >
       <WildcatForm
-        editDataSource={initEditData}
+        editDataSource={{...editData, ...formInstance?.getFieldsValue(true)}}
         config={formConfig}
         submit={sumbit}
         onClick={onModalClick}
         loading={formLoading}
+        onInit={(form) => {onInit(form);setFormInstance(form)}}
         className="product-form" >
         {
             (lable: string | ReactNode, name: string, callBack:(newValue: string, name: string) => void) => curShopInfo?.type === ProductType.B2B && name === 'content' && <p className="recommended-box">不知道怎么写？试试 <Button shape="round" onClick={(()=>fillContent(name,callBack))}>{lable}推荐</Button></p>

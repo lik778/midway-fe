@@ -14,6 +14,8 @@ import { CateItem, RouteParams, ProductListItem } from '@/interfaces/shop';
 import { errorMessage } from '@/components/message';
 import { SHOP_NAMESPACE } from '@/models/shop'
 import { USER_NAMESPACE } from '@/models/user';
+import { getImgUploadValueModel } from '@/components/img-upload';
+import { FormInstance } from 'antd';
 
 // tips: 本组件和文章组件一定要抽一个组件出来，很多内容相同
 const ShopProductPage = (props: any) => {
@@ -27,6 +29,7 @@ const ShopProductPage = (props: any) => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number | null>(null);
+  const [formInstance, setFormInstance] = useState<FormInstance<any> | null>(null);
   const isB2B = useMemo(() => {
     return curShopInfo?.type === ProductType.B2B
   }, [curShopInfo])
@@ -57,10 +60,16 @@ const ShopProductPage = (props: any) => {
   const handleClickCreateProduct = () => {
     setEditProductData({})
     setProductFormVisible(true)
+    formInstance?.resetFields()
   }
 
-  const handleClickEditProduct = (item: ProductListItem) => {
-    setEditProductData({ ...item, params: item.params || [] });
+  const handleClickEditProduct = (editData: ProductListItem) => {
+    let media = editData ? (editData.videoUrl ? getImgUploadValueModel('VIDEO', editData.videoUrl, editData.headImg) : getImgUploadValueModel('IMAGE', editData.headImg)) : undefined
+    const seoKeyWord = Array.isArray(editData.seoKeyWord) ? ( editData.seoKeyWord[0] || null) : (editData.seoKeyWord ? [editData.seoKeyWord] : null)
+    setEditProductData({  ...editData,
+        media,
+        contentImg: editData?.contentImg?.map((item: string) => getImgUploadValueModel('IMAGE', item)),
+        seoKeyWord, params: editData.params || [] });
     setProductFormVisible(true);
   }
 
@@ -104,6 +113,7 @@ const ShopProductPage = (props: any) => {
           editData={editProductData}
           updateCateList={setCateList}
           visible={productFormVisible}
+          onInit={(form) => setFormInstance(form)}
           onClose={() => removeOverflow(() => setProductFormVisible(false))} />
       </div>
     </div>)
