@@ -7,6 +7,7 @@ import styles from './index.less'
 export const productForm = (type: string, isB2B: boolean, onChange?: (params: any) => void): FormConfig => {
     const onChangeValue = (params: any) => {
         const {newValue, form, name} = params
+        console.log(form.getFieldsValue(true))
         onChange && onChange(form.getFieldsValue(true))
     }
   const config: FormConfig = {

@@ -32,9 +32,7 @@ const WildcatForm = (props: WildcatFormProps, parentRef: Ref<any>) => {
       const arr: (FormItem | CustomerFormItem)[] = []
       let i = 0
       while (true) {
-        console.log('customerFormItemList', customerFormItemList)
         const cItem = customerFormItemList.findIndex(cItem => (cItem.index - 1) === i)
-        console.log('cItem', cItem)
         if (cItem !== -1) {
           arr.push(...customerFormItemList.splice(cItem, 1))
         } else {

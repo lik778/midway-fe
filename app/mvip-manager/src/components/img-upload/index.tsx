@@ -28,7 +28,11 @@ const getUrl = (url: string) => {
 }
 
 // 将图片的信息缓存到对象中 key是 当前资源的url 如果是视频还要加上封面图url  因为url值会被getUrl修改 导致触发修改前后 key不一样 所以 找到一个baseUrl就行~
-const getSaveImageOriginUrl = (url: string) => {
+const getSaveImageOriginUrl = (urlParam: any) => {
+    let url = urlParam
+    if(typeof urlParam !== 'string'){
+        url = urlParam['url']
+    }
   // 判断url里是否有二级域名baixing.
   if (url.indexOf('.baixing.') !== -1) {
     return url
@@ -406,7 +410,8 @@ const ImgUpload: FC<ImgUploadProps> = (props) => {
 }
 
 export const getImgUploadValueModel = (mediaType: MediaType, media: string | null | undefined, coverUrl?: string): MediaItem | '' => {
-  if (media) {
+  console.log('media', media)
+    if (media) {
     return {
       url: media,
       coverUrl,
