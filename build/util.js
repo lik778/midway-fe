@@ -1,5 +1,5 @@
-const { debug } = require('console');
-const glob = require('glob');
+
+const fs = require('fs');
 const path = require('path');
 const { DEVICE_TYPE } = require('./constant');
 
@@ -13,20 +13,20 @@ const genSiteTemplateEntry = (templateNum, templatePageNames, extraPaths = []) =
   }, {})
 }
 
-const getAllSiteTemplateEntry = (templateNum, extraPaths = []) => {
+const getAllSiteTemplateEntry = (templateNum) => {
     let entryFile = {}
-    DEVICE_TYPE.map(device => {
-        const folderName = `assets/site-template-${templateNum}/${device}`
-        const files = glob.sync(`${folderName}/**/index.js`)
+    DEVICE_TYPE.forEach(device => {
+        const files = fs.readdirSync(`assets/site-template-${templateNum}/${device}`)
         if(files && files.length){
-            files.map(file => {
+            files.forEach(file => {
+                let stat = fs.lstatSync(`assets/site-template-${templateNum}/${device}/${file}`)
                 console.log('file', file)
-                let name = file.match("/(?<=" + device + "\/).*?(?=\/index.js)/")
-                entryFile[`site-template-${templateNum}-${name}-${device}`] = [path.resolve(__dirname, '..', `assets/site-template-${templateNum}/${device}/${name}/index.js`), ...extraPaths]
+                if (stat.isDirectory() === true) { 
+                    entryFile[`site-template-${templateNum}-${file}-${device}`] = path.join(__dirname, `../assets/site-template-${templateNum}/${device}/${file}/index.js`)
+                }
             })
         }
     })
-    console.log('entryFile', entryFile)
     return entryFile
 }
 

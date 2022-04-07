@@ -30,9 +30,7 @@ module.exports = {
     genSiteTemplateEntry(TB_TYPE_B2C_3, TB_PAGE_NAMES_B2C_3, [
       path.resolve(__dirname, '..', 'assets/common/index.js')
     ]),
-    getAllSiteTemplateEntry(TB_TYPE_B2C_4, [
-        path.resolve(__dirname, '..', 'assets/common/index.js')
-    ])
+    getAllSiteTemplateEntry(TB_TYPE_B2C_4)
   ),
   output: {
     path: path.resolve(__dirname, "../dist/public"),
