@@ -108,7 +108,7 @@ export class BaseSiteController {
         2: defaultAutoConfig2
       }
     } else {
-      let newAutoConfig = {
+      const newAutoConfig = {
         3: data.autoConfig[3]
       }
       if (!data.autoConfig[1] || (data.autoConfig[1].show && (!data.autoConfig[1].subModuleBos || data.autoConfig[1].subModuleBos.length === 0))) {
@@ -175,7 +175,8 @@ export class BaseSiteController {
 
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
-    const pageTemplate = SiteService.templateMapping[templateId]
+    // const pageTemplate = SiteService.templateMapping[templateId]
+    const pageTemplate = 'site-template-4'
     const templateUrl = `${pageTemplate}/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;

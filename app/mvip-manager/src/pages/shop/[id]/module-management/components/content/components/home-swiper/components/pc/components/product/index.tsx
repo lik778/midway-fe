@@ -3,7 +3,7 @@ import { useParams } from 'umi';
 import { Spin, FormInstance } from 'antd'
 import WildcatForm from '@/components/wildcat-form';
 import { cloneDeepWith } from 'lodash';
-import { swiperProductForm } from './config'
+import { swiperProductForm, valueOfSampleConstant } from './config'
 import { Detail, InitDetail } from './data'
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import { ModuleProductSwiper, ModulePageType, ModuleComponentId, } from '@/interfaces/shop'
