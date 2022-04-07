@@ -1,3 +1,4 @@
+const { debug } = require('console');
 const glob = require('glob');
 const path = require('path');
 const { DEVICE_TYPE } = require('./constant');
@@ -15,15 +16,17 @@ const genSiteTemplateEntry = (templateNum, templatePageNames, extraPaths = []) =
 const getAllSiteTemplateEntry = (templateNum, extraPaths = []) => {
     let entryFile = {}
     DEVICE_TYPE.map(device => {
-        const folderName = `../assets/site-template-${templateNum}/${device}`
+        const folderName = `assets/site-template-${templateNum}/${device}`
         const files = glob.sync(`${folderName}/**/index.js`)
         if(files && files.length){
             files.map(file => {
-                let name = file.match("/(?<=" + folderName + "\/).*?(?=\/index.js)/")
+                console.log('file', file)
+                let name = file.match("/(?<=" + device + "\/).*?(?=\/index.js)/")
                 entryFile[`site-template-${templateNum}-${name}-${device}`] = [path.resolve(__dirname, '..', `assets/site-template-${templateNum}/${device}/${name}/index.js`), ...extraPaths]
             })
         }
     })
+    console.log('entryFile', entryFile)
     return entryFile
 }
 
