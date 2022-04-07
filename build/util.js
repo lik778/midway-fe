@@ -14,8 +14,8 @@ const genSiteTemplateEntry = (templateNum, templatePageNames, extraPaths = []) =
 
 const getAllSiteTemplateEntry = (templateNum, extraPaths = []) => {
     let entryFile = {}
-    const folderName = `assets/site-template-${templateNum}/${device}`
     DEVICE_TYPE.map(device => {
+        const folderName = `assets/site-template-${templateNum}/${device}`
         const files = glob.sync(`${folderName}/**/index.js`)
         if(files && files.length){
             files.map(file => {
