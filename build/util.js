@@ -20,7 +20,6 @@ const getAllSiteTemplateEntry = (templateNum) => {
         if(files && files.length){
             files.forEach(file => {
                 let stat = fs.lstatSync(`assets/site-template-${templateNum}/${device}/${file}`)
-                console.log('file', file)
                 if (stat.isDirectory() === true) { 
                     entryFile[`site-template-${templateNum}-${file}-${device}`] = path.join(__dirname, `../assets/site-template-${templateNum}/${device}/${file}/index.js`)
                 }
