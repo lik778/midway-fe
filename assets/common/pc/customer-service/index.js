@@ -99,9 +99,19 @@ backToTop.on('click', () => {
 });
 
 const weChatCopyBtn = $('.service-modal__wechat .click-copy');
+const baxFeedbackCopyBth = $('.service-modal__bax .click-copy');
 
 weChatCopyBtn.on('click', () => {
 	$('#wechat-id-textarea').select();
+	document.execCommand('copy');
+	weChatCopyBtn.text('复制成功！');
+	setTimeout(() => {
+		weChatCopyBtn.text('复制号码');
+	}, 2000)
+})
+
+baxFeedbackCopyBth.on('click', () => {
+    $('#wechat-id-textarea').select();
 	document.execCommand('copy');
 	weChatCopyBtn.text('复制成功！');
 	setTimeout(() => {

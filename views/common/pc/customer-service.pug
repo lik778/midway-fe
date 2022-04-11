@@ -5,6 +5,16 @@
 			.service-item#kf53
 				.service-logo.kf53
 				.service-name 在线咨询
+		.service-item#bax
+			.service-logo.bax
+			.service-name.bax 百姓网平台保障
+			.service-modal 
+				.service-modal__bax 
+					.bax-title 投诉热线:
+					.bax-number 021-61300238
+					//- .bax-title 投诉反馈:
+					//- textarea#wechat-id-textarea 021-61300238
+					//- 	.click-copy 我要投诉
 		.service-item#qq
 			.service-logo.qq
 			.service-name QQ交谈
@@ -39,7 +49,7 @@
 					.service-modal__wechat
 						.mobile-title 微信号码
 						.mobile-number #{ weChat.content }
-						textarea#wechat-id-textarea #{weChat.content}
+						textarea#wechat-id-textarea #{ weChat.content }
 						.click-copy 复制号码
 			else
 				.service-modal
