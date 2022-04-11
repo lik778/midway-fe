@@ -34,6 +34,8 @@
 			&-name
 				font-size 14px
 				text-align center
+				&.bax
+					color #409EFF
 			&-logo
 				margin auto
 				width 30px
@@ -41,6 +43,8 @@
 				margin-bottom 5px
 				&.kf53
 					background url('//file.baixing.net/202111/b8072a92b3694ae147eafeae4c86b071.png') no-repeat center center/100%
+				&.bax
+					background: url('//file.baixing.net/publicity-fe/static/assets/safe-pc-feedback.png') no-repeat center/100%
 				&.qq
 					background url('//file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png') no-repeat center center/100%
 				&.mobile
@@ -85,6 +89,24 @@
 					top 50%
 					transform translateY(-50%) rotate(45deg)
 
+				&__bax
+					> div
+						white-space nowrap
+						font-size 14px
+						line-height 20px
+					.bax-number
+						color: #409EFF
+					.click-copy
+						margin-top 20px
+						color #426CE8
+						border 1px solid #426CE8
+						border-radius 15px
+						border-radius 15px
+						height 30px
+						line-height 30px
+						text-align center
+						cursor pointer	
+				
 				&__qq
 					&:not(:last-child)
 						margin-bottom 20px
