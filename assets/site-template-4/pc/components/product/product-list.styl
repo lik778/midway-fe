@@ -1,0 +1,80 @@
+.product-list
+  width 100%
+  min-height: 100px
+  padding 0 26px
+  box-sizing border-box
+  background-color #fff
+  div
+    box-sizing border-box
+  .item
+    position relative
+    display flex
+    padding 24px 0
+    justify-content flex-start
+    align-items center
+    &:hover
+      .left
+        .text-content
+          .name
+            color: $color-main;
+      .right
+        border: 1px solid $color-main;
+        color: $color-main;
+    .left
+      display flex
+      justify-content flex-start
+      align-items center
+      .img
+        width 225px
+        height 150px
+      .text-content
+        width 450px
+        height 150px
+        padding 10px 16px
+        .name
+          margin-bottom 20px
+          font-weight bold
+          font-size 18px
+          color #333
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+        .content
+          margin-bottom 45px
+          font-size 14px
+          color #999999
+          line-height 18px
+        .price
+          font-size 14px
+          line-height 14px
+          color #333333
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+    .right
+      width 160px
+      line-height 40px
+      text-align: center
+      border-radius: 2px;
+      font-size: 14px;
+      border 1px solid #CCCCCC
+      color #CCCCCC
+    &+.item
+      border-top 1px solid #eee
+
+  .no-content
+    line-height: 100px
+
+.play-icon.active
+	position: absolute;
+	top: 100px;
+	left: 110px;
+	width: 36px;
+	height: 36px;
+	background: url(//file.baixing.net/201709/1ae6e52bed21cee4b2e9f45be173d0f4.png)
+	background-size: 100%;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+
+
+

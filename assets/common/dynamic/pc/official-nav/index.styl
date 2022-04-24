@@ -1,0 +1,58 @@
+//@import "../../themes.styl"
+.official-nav-container
+  background-color bg_color(navBg)
+  box-shadow 0 4px 4px rgba(#000, 0.2)
+.official-nav-content
+  display: flex
+  align-items: center
+  width: 1200px
+  margin: 0 auto
+  *
+    box-sizing: border-box
+  .nav-item-box
+    flex: 1
+    max-width: 240px
+  .hover-box
+    width 120px
+    position relative
+    &:hover
+      .nav-item
+        color font_color(navFont)
+        font-weight bold
+        background bg_color(navItemHover)
+      .nav-dropdown
+        transform: scale(1,1) translateX(-50%)
+        opacity: 1
+    .nav-item
+      display: block
+      height: 70px
+      padding: 0 5px
+      position relative
+      text-align: center
+      line-height: 68px
+      font-size: 18px
+      color font_color(navFont)
+    .nav-dropdown
+      min-width 100%
+      opacity: 0
+      transition: all 0.3s
+      transform-origin: center top
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: scale(1,0) translateX(-50%)
+      z-index 9999
+      background-color: #fff
+      box-shadow 0 4px 4px rgba(#000, 0.2)
+      .nav-dropdown-item
+        display: block
+        line-height: 50px
+        padding: 0 10px
+        text-align center
+        background bg_color(navBg)
+        color font_color(navFont)
+        &+.nav-dropdown-item
+          border-top: 1px solid #f7f7f7
+        &:hover
+          background bg_color(navItemHover)
+

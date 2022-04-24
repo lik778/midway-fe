@@ -43,7 +43,7 @@ export class BaseSiteController {
       return '2'
     }
 
-    // 
+    //
     if (account === '0' || account === '2') {
       return '1'
     } else if (account === '1') {
@@ -238,7 +238,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
 
     const newsId = params.id
-    
+
     const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
 
@@ -396,7 +396,7 @@ export class BaseSiteController {
   }
 
 
-  // 处理搜索来的数据 
+  // 处理搜索来的数据
   private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
     data.contentList = data.searchResult.result
     data.contentType = type

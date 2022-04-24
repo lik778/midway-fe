@@ -1,0 +1,9 @@
+mixin newOfficialHeader(headerOption)
+  - const { navConfig } = headerOption||{}
+  include ../pc/official-topbar
+  +officialTopbar()
+  include ./new-official-info
+  +newOfficialInfo()
+  if isSem !== "1"
+    include ./new-official-nav
+    +newOfficialNav()

@@ -1,1 +1,11 @@
 extends ../layout
+
+block styles
+	:combine(fileName="site-template-4-home-pc.css")
+
+//-使用了统一的header和nav
+block content
+	include ../components/common/base-swiper.pug
+	+baseSwiper('28.125vw','343.125px')
+	- const { autoConfig } = renderData
+	.container

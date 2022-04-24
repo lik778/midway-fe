@@ -30,6 +30,7 @@
         "class-transformer": "^0.3.1",
         "class-validator": "^0.12.2",
         "cookie-parser": "^1.4.5",
+        "css-vars-ponyfill": "^2.4.7",
         "dayjs": "^1.9.6",
         "form-data": "^3.0.1",
         "jquery": "~2.2.0",

@@ -1,0 +1,7 @@
+- const { productCateList } = renderData
+if productCateList && productCateList.length > 0
+	.products-filter
+		p 产品分类 ：
+		.products-categories
+			each item in productCateList
+				a(href=item.urlSuffix,) #{ item.name }

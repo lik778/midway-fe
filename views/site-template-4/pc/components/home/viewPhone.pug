@@ -1,0 +1,19 @@
+.view-phone
+	.view-phone-left
+		.context
+			.tip 如果有任何问题，可以随时联系我们
+			if phone && phone.content
+				.phone-box
+					.icon
+					.contactName #{contactName.content}:
+					.phone
+						p.phoneNumber-slice.active #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) }
+						p.phoneNumber-full.none #{ phone.content }
+					.view-all-phone 查看电话
+		.title 服务热线
+	.view-phone-right
+		.linian-left
+		.linian-center
+			.center-first 我们的服务理念：
+			.center-second 以人为本，以质取胜，持续改进
+		.linian-right

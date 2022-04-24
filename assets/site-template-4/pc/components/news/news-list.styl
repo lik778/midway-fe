@@ -1,0 +1,76 @@
+.news-list
+  width 980px
+  min-height: 100px
+  box-shadow 0 4px 10px rgba(#000, 0.02)
+  background-color #fff
+  .no-content
+    padding: 0 26px
+    line-height: 100px
+  .news
+    &-item
+      padding 30px 30px 0
+      &__inner
+        display flex
+        position relative
+        font-size 14px
+        &:hover
+          .news-content__title
+            color $color-main
+          .cta-btn
+            border 1px solid $color-main
+            color $color-main
+            &::after
+              background-color $color-main
+            &::before
+              border-color $color-main
+
+      &:not(:last-child)
+        .news-item__inner
+          border-bottom 1px dashed #eee
+    &-date
+      padding 0 30px 30px 0
+      &__day
+        font-size 24px
+        color #666666
+    &-content
+      padding 0 0 30px 30px
+      box-sizing border-box
+      flex 1
+      &__title
+        font-weight bold
+      &__desc
+        margin-top 12px
+        color #666666
+        width 800px
+      &__cta
+        padding-top 30px
+        .cta-btn
+          display inline-block
+          border 1px solid #CCCCCC
+          color #CCCCCC
+          height 30px
+          padding 0 25px
+          line-height 30px
+          font-size 12px
+          cursor pointer
+          position relative
+
+          &::after
+          &::before
+            content ''
+            width 30px
+            height 1px
+            position absolute
+            right -15px
+            top calc(50% - 1px)
+            z-index 9
+            background-color #CCCCCC
+          &::before
+            height 6px
+            width 6px
+            background-color transparent
+            border 1px solid #ccc
+            border-left none
+            border-bottom none
+            transform rotate(45deg)
+            top calc(50% - 4px)

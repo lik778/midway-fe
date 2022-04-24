@@ -1,0 +1,30 @@
+mixin baseSwiper(height,minHeight)
+  - const {bannerList} = renderData.banner
+  - const hasBannerList = bannerList && bannerList.length > 0
+  #banner-list
+    .swiper-container.swiper-specil-size
+      .swiper-wrapper
+        if hasBannerList
+          each item in bannerList
+            - const isVideo = item.hrefUrl
+            .swiper-slide(style="height:"+height+";min-height:"+minHeight)
+              if isVideo
+                .video-wrapper
+                  video(src=item.hrefUrl, loop, preload, controls)
+                .video-cover
+                  img(src=item.displayImgUrl)
+              else
+                img(src=item.displayImgUrl)
+        else
+          if height === '540px'
+            .swiper-slide
+              img(src="//file.baixing.net/202103/cffd7713b3858170c2a1ae855ee26513.png")
+            .swiper-slide
+              img(src="//file.baixing.net/202103/1ae6440e16ffe7ec601da2c2468f7fba.png")
+          else 
+            .swiper-slide
+              img(src="//file.baixing.net/202108/1d6444a4f59cc5d0e47a6d2d8ce8355a.png")
+
+      .swiper-pagination 
+      .swiper-button-next
+      .swiper-button-prev

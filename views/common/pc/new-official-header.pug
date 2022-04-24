@@ -1,7 +1,0 @@
-mixin newOfficialHeader(headerOption)
-  - const { navConfig } = headerOption||{}
-  include ./official-topbar.pug
-  +officialTopbar()
-  if isSem !== "1"
-    include ./official-nav.pug
-    +officialNav()

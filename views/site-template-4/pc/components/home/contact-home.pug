@@ -1,0 +1,18 @@
+.container-contact
+  .contact-center 
+    .c-left
+      .l-title#address
+        .address-icon #{companyName}
+        .address-contect #{ companyName || '暂未添加公司名称' }
+      .l-centent
+        .l-item 公司地址：#{ company.address || '暂未添加地址' }
+        .l-item 服务热线： #{ phone.content || '暂未添加微信号' }
+        .l-item 微信号： #{ weChat.content || '暂未添加微信号' }
+      a.l-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
+        .map-detail
+          span.map-detail-content #{ company.address || '暂未添加地址' }
+        .map-icon
+    .c-rigth
+      include ../../../../common/pc/contact-form.pug
+      +ContactForm('homePage')
+  .contact-title 留下您的疑问，我们将竭诚为您服务

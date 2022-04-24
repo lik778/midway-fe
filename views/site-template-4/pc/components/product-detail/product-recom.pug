@@ -1,0 +1,10 @@
+.product-recom
+	.product-recom-title #{productRecommendName||'产品推荐'} 
+	.product-recom-list
+		if productRecommendList && productRecommendList.length >0
+			each item in productRecommendList
+				a.recommend-item(href=item.urlSuffix ,target="_blank",class=item.videoUrl?'video':'')
+					img.img(src=item.headImg || defaultImg)
+					p.only-oneline #{ item.name }
+		else
+			p.no-content 当前页面暂无内容，敬请期待...
