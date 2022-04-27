@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { SiteService } from '../services/site.service';
 import { Request, Response } from 'express';
 import { join } from 'path';
@@ -34,4 +34,9 @@ export class AppController {
     res.send(process.env.NODE_ENV + ': everything is ok!!!')
   }
 
+  @Post('api/midway/frontend/home')
+  async submitFeedback(@Body() body, @Req() req: Request, @Res() res: Response) {
+    const resData = await this.midwayApiService.submitForm(body)
+    res.json(resData)
+  }
 }

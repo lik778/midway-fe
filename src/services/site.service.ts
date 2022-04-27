@@ -106,6 +106,7 @@ export class SiteService {
     return this.requestService.post(`${this.prefixPath}/home/?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, {},
       this.setPageHeaders(shopName, device, domain));
   }
+
   //服务内容列表
   public getProductPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.prefixPath}/product/list?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
@@ -164,5 +165,14 @@ export class SiteService {
   public getPhone400Number(shopName: string, device: string, domain: string): Promise<any> {
     return this.requestService.post(`${this.prefixPath}/vm400/dynamic`, {},
       this.setPageHeaders(shopName, device, domain));
+  }
+
+  // 用户保障中心提交表单
+  public submitForm(params): Promise<any> {
+    return this.requestService.post(`${this.prefixPath}/home`, params,
+    {
+        'content-type': 'application/json',
+        'x-api-secret': apiSecret
+    });
   }
 }
