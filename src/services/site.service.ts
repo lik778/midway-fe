@@ -69,7 +69,8 @@ export class SiteService {
       // 可以将自己常用的还有三级域名的url写在下面 注释好
     //   domain = 'zb2c.shop-test2.baixing.cn'
       // domain = 'zmlc2b.shop-test2.baixing.cn'
-      domain = 'seocheck380.shop-test.baixing.cn'
+      // domain = 'seocheck380.shop-test.baixing.cn'
+      domain = 'shop-test.baixing.cn'
 
     }
     return domain

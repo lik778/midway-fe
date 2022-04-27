@@ -119,3 +119,8 @@ baxFeedbackCopyBth.on('click', () => {
 	}, 2000)
 })
 
+const entranceBtn = $('#entrance')
+entranceBtn.on('click',()=>{
+	const {position} = window.extraContactFormData
+	window.open(`https://www.baidu.com?position=${position}`);
+})
