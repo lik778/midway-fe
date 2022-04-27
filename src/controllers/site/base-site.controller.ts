@@ -108,7 +108,7 @@ export class BaseSiteController {
         2: defaultAutoConfig2
       }
     } else {
-      let newAutoConfig = {
+      const newAutoConfig = {
         3: data.autoConfig[3]
       }
       if (!data.autoConfig[1] || (data.autoConfig[1].show && (!data.autoConfig[1].subModuleBos || data.autoConfig[1].subModuleBos.length === 0))) {
@@ -451,4 +451,12 @@ export class BaseSiteController {
       title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'search', pageStartRenderTime: new Date().getTime()
     })
   }
+
+  // 用户保障中心
+  @Get('/safeguard')
+  async safeguard(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+        const templateUrl = 'common/safeguard-form'
+        return res.render(templateUrl, { title: '百姓网保障中心', renderData: { meta: {}}})  
+    }
 }
