@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { join } from 'path';
 import * as fs  from 'fs';
 import config from '../config';
+import { UserAgent } from 'src/decorator/user-agent.decorator';
 
 const staticFiles = join(__dirname , '..', '..', '/assets/static')
 const files = fs.readdirSync(staticFiles);
@@ -32,11 +33,5 @@ export class AppController {
   @Get('/midway/health')
   async managementView(@Req() req: Request, @Res() res: Response) {
     res.send(process.env.NODE_ENV + ': everything is ok!!!')
-  }
-
-  @Post('api/midway/frontend/home')
-  async submitFeedback(@Body() body, @Req() req: Request, @Res() res: Response) {
-    const resData = await this.midwayApiService.submitForm(body)
-    res.json(resData)
   }
 }

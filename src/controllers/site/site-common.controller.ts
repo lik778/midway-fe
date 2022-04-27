@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res, Body, Param } from "@nestjs/common";
+import { Controller, Post, Req, Res, Body, Param, HostParam } from "@nestjs/common";
 import { Request, Response } from 'express';
 import { SiteService } from '../../services/site.service';
 import { UserAgent } from '../../decorator/user-agent.decorator';
@@ -27,6 +27,14 @@ export class SiteCommonController {
         const domain = req.hostname
         const { shopName } = body
         const resData = await this.midwayApiService.getPhone400Number(shopName, device, domain)
+        res.json(resData)
+    }
+
+    @Post('/complaint')
+    async complaint(@Req() req: Request, @Body() body, @UserAgent('device') device, @Res() res: Response) {
+        const domain = req.hostname
+        const { shopName, ...restParams } = body
+        const resData = await this.midwayApiService.complaint(shopName, device, domain, restParams)
         res.json(resData)
     }
 }

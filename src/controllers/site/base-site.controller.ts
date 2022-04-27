@@ -457,6 +457,7 @@ export class BaseSiteController {
   async safeguard(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
     @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
         const templateUrl = 'common/safeguard-form'
-        return res.render(templateUrl, { title: '百姓网保障中心', renderData: { meta: {}}})  
+        const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+        return res.render(templateUrl, { title: '百姓网保障中心', renderData: { meta: {}, shopName}})  
     }
 }

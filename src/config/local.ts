@@ -4,7 +4,7 @@ export default {
     'midway-service': {
     //   host: 'http://172.30.2.14:30257',
       // host: 'http://172.17.1.64:8080',
-      host: 'http://192.168.30.93:8080',
+      host: 'http://192.168.30.29:8080',
       // host: 'http://192.168.3.235:8080',
       external: 'http://midway.test-cat.cloud.baixing.cn'
     },

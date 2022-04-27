@@ -168,11 +168,8 @@ export class SiteService {
   }
 
   // 用户保障中心提交表单
-  public submitForm(params): Promise<any> {
-    return this.requestService.post(`${this.prefixPath}/home`, params,
-    {
-        'content-type': 'application/json',
-        'x-api-secret': apiSecret
-    });
+  public complaint(shopName: string, device: string, domain: string, params): Promise<any> {
+    return this.requestService.post(`${this.prefixPath}/home/complaint`, params,
+    this.setPageHeaders(shopName, device, domain));
   }
 }
