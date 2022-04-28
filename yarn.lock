@@ -2439,7 +2439,7 @@
   dependencies:
     "@babel/types" "^7.9.6"
 
-"balanced-match@^1.0.0", "balanced-match@^1.0.2":
+"balanced-match@^1.0.0":
   "integrity" "sha1-6D46fj8wCzTLnYf2FfoMvzV2kO4="
   "resolved" "https://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.2.tgz?cache=0&sync_timestamp=1617714233441&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbalanced-match%2Fdownload%2Fbalanced-match-1.0.2.tgz"
   "version" "1.0.2"
@@ -3271,14 +3271,6 @@
   dependencies:
     "mdn-data" "2.0.4"
     "source-map" "^0.6.1"
-
-"css-vars-ponyfill@^2.4.7":
-  "integrity" "sha512-KhG3AbiZrUpIvAQ9Oc/iBqCitmXg6MajFqNRQd9nHvlwOo8p54HTq5DFCIaAUwMGRyttJ+mBmZCRSHJpe6J9cg=="
-  "resolved" "https://registry.npmjs.org/css-vars-ponyfill/-/css-vars-ponyfill-2.4.7.tgz"
-  "version" "2.4.7"
-  dependencies:
-    "balanced-match" "^1.0.2"
-    "get-css-data" "^2.0.2"
 
 "css-what@^3.2.1":
   "integrity" "sha1-6nAm/LAXd+295SEk4h8yfnrpUOQ="
@@ -4604,11 +4596,6 @@
   "integrity" "sha1-T5RBKoLbMvNuOwuXQfipf+sDH34="
   "resolved" "https://registry.npm.taobao.org/get-caller-file/download/get-caller-file-2.0.5.tgz"
   "version" "2.0.5"
-
-"get-css-data@^2.0.2":
-  "integrity" "sha512-HtPrzGk8aBF9rLeQNuImcXci7YVqsMEKzVflEWaCJu25ehxyDNiZRWoSxqSFUBfma8LERqKo70t/TcaGjIsM9g=="
-  "resolved" "https://registry.npmjs.org/get-css-data/-/get-css-data-2.1.0.tgz"
-  "version" "2.1.0"
 
 "get-intrinsic@^1.0.2", "get-intrinsic@^1.1.1":
   "integrity" "sha1-FfWfN2+FXERpY5SPDSTNNje0q8Y="

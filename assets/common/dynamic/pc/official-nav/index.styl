@@ -1,6 +1,5 @@
-//@import "../../themes.styl"
 .official-nav-container
-  background-color bg_color(navBg)
+  background-color var(--navBg)
   box-shadow 0 4px 4px rgba(#000, 0.2)
 .official-nav-content
   display: flex
@@ -17,9 +16,9 @@
     position relative
     &:hover
       .nav-item
-        color font_color(navFont)
+        color var(--navFont)
         font-weight bold
-        background bg_color(navItemHover)
+        background var(--navItemHover)
       .nav-dropdown
         transform: scale(1,1) translateX(-50%)
         opacity: 1
@@ -31,7 +30,7 @@
       text-align: center
       line-height: 68px
       font-size: 18px
-      color font_color(navFont)
+      color var(--navFont)
     .nav-dropdown
       min-width 100%
       opacity: 0
@@ -49,10 +48,10 @@
         line-height: 50px
         padding: 0 10px
         text-align center
-        background bg_color(navBg)
-        color font_color(navFont)
+        background var(--navBg)
+        color var(--navFont)
         &+.nav-dropdown-item
           border-top: 1px solid #f7f7f7
         &:hover
-          background bg_color(navItemHover)
+          background var(--navItemHover)
 
