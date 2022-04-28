@@ -1,0 +1,17 @@
+
+mixin nav(newsList)
+  if nav && nav.length > 0
+    .nav-container 
+      .trigger
+        img.icon(src='//file.baixing.net/202112/9cf7fd5ce50f071cf5f753db73fc0cc2.png')
+        img.icon-active(src='//file.baixing.net/202112/ee291782a8610367faba0292935e1e1b.png')
+      .nav-content
+        each item in nav
+          a.nav-item(href=item.content)
+            .nav-item-content #{ item.name }
+      .nav-all 
+        each item in nav
+          a.nav-item(href=item.content)
+            .nav-item-content #{ item.name }
+
+

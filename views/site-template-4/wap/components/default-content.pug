@@ -1,0 +1,10 @@
+mixin default-content(type)
+    - defaultProImg = "//file.baixing.net/202102/e149bf96b2f123d3a56c28b35d135a7b.png"
+    - defaultNewImg = "//file.baixing.net/202102/fd73c558ad919bd28c9ca67e4c65a0e0.png"
+    .default-box
+        if type  == "product"
+            img(src=defaultProImg, alt="icon")
+            p 这个人很懒，还没发布 ～
+        else
+            img(src=defaultNewImg, alt="icon")
+            p 这个人很懒，还没发布 ～

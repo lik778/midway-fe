@@ -1,0 +1,13 @@
+mixin news-list(newsList)
+  if newsList && newsList.length >0
+      .news-list
+          each item in newsList
+              a.item(href=item.urlSuffix)
+                  h3 #{ item.name }
+                  p #{ dateFormat2(item.modifiedTime) }
+                  .text.only-oneline #{ item.limitText }
+
+  else
+      include ./default-content.pug
+      +default-content("")
+

@@ -1,0 +1,30 @@
+@import "../layout"
+@import "../components/breadcrumbs"
+@import "../components/product-detail/media-show"
+@import "../components/sidebar/company-card"
+@import "../components/product/product-list"
+@import "../components/product-detail/product-content"
+@import "../components/contact-form-companyInfo"
+@import "../../../common/pc/pagination"
+@import "../components/sidebar/index"
+@import "../components/company-record"
+@import '../components/product-detail/setting-table';
+@import 'quill/dist/quill.snow.css'
+.container
+  width 1220px
+  margin 10px auto 0
+  .product-list
+    //justify-content space-between
+    .item-p
+      margin-bottom 20px
+      margin-right 15 !important
+      &:nth-child(4)
+          margin-right 13px !important
+      &:nth-child(5)
+          margin-right 0 !important
+  .main
+    float left
+    width 980px
+  .sidebar
+    float right
+    width 224px

@@ -1,0 +1,83 @@
+@import "../layout"
+@import "../components/breadcrumbs"
+@import "../../../common/pc/pagination"
+@import "../components/news/news-list"
+@import "../components/news-detail/swiper"
+@import "../components/sidebar/index"
+@import "../components/swiper"
+@import "../components/contact-form-companyInfo"
+@import "../components/company-record"
+@import 'quill/dist/quill.snow.css'
+.container
+    width 1220px
+    margin 10px auto 72px
+    display flex
+
+//主体区块新闻资讯样式
+.news-detail
+    max-width 960px
+    margin-bottom 30px
+
+    .news
+        &-content
+            background-color #fff
+            padding 0 30px
+            box-sizing border-box
+
+            &__pic
+                text-align center
+                margin 40px auto
+                img
+                    max-width 100%
+
+            &__text
+                height: auto
+                color #333333
+                line-height 28px
+                font-size 16px
+                padding 30px 0
+                word-break break-all
+            &__tags
+                margin-top 30px
+                span
+                    background #F2F2F2
+                    margin-right 20px
+                    font-size 14px
+                    color #666666
+                    padding 0 15px
+                    height 32px
+                    line-height 32px
+                    display inline-block
+        &-title
+            padding 30px 0
+            text-align center
+            border-bottom 2px dashed #EAEAEA
+            &__text
+                font-size 32px
+                margin-bottom 15px
+            &__date
+                color #333
+
+        &-nav
+            margin-top 10px
+            background-color #fff
+            display flex
+            justify-content space-between
+            padding 27px 30px
+
+            &__pre,
+            &__next
+                display flex
+                flex 1
+                width 450px
+                span
+                    color #EC2525
+                    margin-right 5px
+                a
+                    color #666
+                    max-width 80%
+                    display inline-block
+
+
+
+

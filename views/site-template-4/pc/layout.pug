@@ -1,0 +1,14 @@
+extends ../../common/layout
+block public-header
+
+  block header
+    include ../../common/pc/official-header.pug
+    +officialHeader()
+
+block footer
+  include ../../common/pc/official-footer.pug
+
+//-QQ联系等开发时先注释掉
+block customer-service
+  if isSem!=="1"
+    include ../../common/pc/customer-service.pug 

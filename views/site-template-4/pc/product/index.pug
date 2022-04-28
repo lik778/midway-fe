@@ -1,0 +1,29 @@
+extends ../layout
+
+block styles
+    :combine(fileName="site-template-4-product-pc.css")
+
+block content
+    include ../components/common/breadcrumbs.pug
+
+    .container
+        .main
+            include ../components/product/cateList.pug
+            - productList = renderData.productList.result
+            include ../components/product/product-list.pug
+
+            include ../../../common/pc/pagination.pug
+            - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
+            +pagination(totalPage, currentPage, `${currentPathname}`)
+
+        .sidebar
+            - const { articleList: articleList,name:articleName } = renderData.articleRecommend
+            include ../components/sidebar/cateList.pug
+            +side-cateList(articleName, articleList)
+            include ../components/sidebar/products.pug
+
+block scripts
+    :combine(fileName="site-template-4-product-pc.js")
+block append scripts
+    script.
+        window.extraContactFormData = { position: 7 };

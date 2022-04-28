@@ -1,0 +1,24 @@
+- const { productList: pr, name: sidebarItemTitle } = renderData.productRecommend
+if pr && pr.length > 0
+  .sidebar-item
+    .sidebar-item__title
+      span #{ sidebarItemTitle || '产品推荐'}
+    #product-swiper.sidebar-item__content
+      .swiper-container
+        .swiper-wrapper
+          .side-products.swiper-slide
+            each item in pr.slice(0,3)
+                a.side-product(href=item.urlSuffix)
+                  .product-img(class=item.videoUrl?'video':'')
+                    img(src= item.headImg || defaultImg, alt="productImg")
+                  .product-desc
+                    p #{ item.name }
+          if pr.length > 3
+            .side-products.swiper-slide
+              each item in pr.slice(3,6)
+                  a.side-product(href=item.urlSuffix)
+                    .product-img(class=item.videoUrl?'video':'')
+                      img(src= item.headImg || defaultImg, alt="productImg")
+                    .product-desc
+                      p #{ item.name }
+      .swiper-pagination

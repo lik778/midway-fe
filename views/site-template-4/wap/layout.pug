@@ -1,0 +1,24 @@
+extends ../../common/layout.pug
+block public-header
+  include ../../common/wap/official-header
+  //-block official-breadcrumbs
+  include ../../common/wap/official-red-breadcrumb.pug
+  - breadcrumbList = [{text:isCn?'首页':'百姓网',url:'//china.baixing.com'},{text:'热门商家',url:'//www.baixing.com/weishop/brands/fuwu/?src=navbar&src=navbar'},{text: isSem === '2'?'欢迎访问当前页面': companyName,url:'#'}]
+  +breadcrumb(breadcrumbList)
+
+  block header
+    include ./components/header
+    include ./components/swiper
+    +swiper('home')
+    include ./components/nav
+    +nav()
+
+
+block footer
+  include ../../common/wap/official-footer.pug
+  div(style="padding-bottom:75px")
+  include ../../common/wap/official-footer-contact.pug
+  +official-footer-contact()
+
+block customer-service
+    include ../../common/wap/customer-service.pug

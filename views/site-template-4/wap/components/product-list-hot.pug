@@ -1,0 +1,15 @@
+mixin product-list-hot(productList)
+  - hotIcon = "//file.baixing.net/202106/7e6d0360e8932f2e31bda4b5b1c8e5b3.png"
+  if productList && productList.length >0
+    .products
+      each item in productList
+        a.product-hot(href=item.urlSuffix,class=item.videoUrl?'video':'')
+          img.product__img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
+          p.product__name #{ item.name }
+          p.product__content.only-twoline #{ item.content }
+          .product__btn
+            img.icon(src="//file.baixing.net/202107/eed5db199486b667bf6a5c4c21480e11.png", alt="")
+            span 预约 
+  else
+    include ./default-content.pug
+    +default-content("product")

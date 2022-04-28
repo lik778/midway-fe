@@ -1,0 +1,26 @@
+extends ../layout.pug
+
+block styles
+    :combine(fileName="site-template-2-news-detail-wap.css")
+
+block header
+    include ../components/header
+    include ../components/swiper
+    +swiper('other')
+
+block content
+    include ../components/company-info.pug
+    - const cateList = renderData.articleCateList
+    include ../components/news-detail.pug
+    include ../components/product-recommend.pug
+    include ../components/contact-form.pug
+
+//-block footer
+//-    include ../components/footer.pug
+
+block scripts
+    :combine(fileName="site-template-2-news-detail-wap.js")
+block append scripts
+    script.
+        window.extraContactFormData = { position: 3, id: #{renderData.articleInfo.id} };
+        window.adId = #{renderData.articleInfo.id};

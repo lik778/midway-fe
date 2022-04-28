@@ -1,0 +1,19 @@
+extends ../layout.pug
+block styles
+    :combine(fileName="site-template-2-news-wap.css")
+
+block content
+    - const cateList = renderData.articleCateList
+    include ../components/toptab
+    - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+    include ../components/news-list
+    +news-list(articleList)
+
+    include ../../../common/wap/pagination.pug
+    +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+
+block scripts
+    :combine(fileName="site-template-2-news-wap.js")
+block append scripts
+    script.
+        window.extraContactFormData = { position: 2 };

@@ -43,7 +43,7 @@ export class BaseSiteController {
       return '2'
     }
 
-    // 
+    //
     if (account === '0' || account === '2') {
       return '1'
     } else if (account === '1') {
@@ -108,7 +108,7 @@ export class BaseSiteController {
         2: defaultAutoConfig2
       }
     } else {
-      let newAutoConfig = {
+      const newAutoConfig = {
         3: data.autoConfig[3]
       }
       if (!data.autoConfig[1] || (data.autoConfig[1].show && (!data.autoConfig[1].subModuleBos || data.autoConfig[1].subModuleBos.length === 0))) {
@@ -129,6 +129,7 @@ export class BaseSiteController {
         item.content = `${data.navigation[0].content}#contactFormBox`
       }
     })
+    data.basic.shop.templateId = '111111111111111111111111'
     return data
   }
 
@@ -176,6 +177,7 @@ export class BaseSiteController {
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
     const pageTemplate = SiteService.templateMapping[templateId]
+    // const pageTemplate = 'site-template-4'
     const templateUrl = `${pageTemplate}/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
@@ -237,7 +239,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
 
     const newsId = params.id
-    
+
     const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
 
@@ -395,7 +397,7 @@ export class BaseSiteController {
   }
 
 
-  // 处理搜索来的数据 
+  // 处理搜索来的数据
   private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
     data.contentList = data.searchResult.result
     data.contentType = type

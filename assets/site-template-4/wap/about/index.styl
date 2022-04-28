@@ -1,0 +1,62 @@
+@import "../layout"
+@import "../components/header"
+@import "../components/swiper"
+@import "../components/user-defined-module"
+@import "../components/aboutus"
+@import "../components/contact-form"
+@import "../components/footer"
+
+
+//写标题2边的红点
+.block-title
+  max-width: 80%
+  font-size 18px
+  color #333
+  font-weight 400
+  margin 26px 0
+  text-align center
+  position relative
+  span:first-child
+    &::before
+        content ""
+        transform rotate(24deg)
+        opacity 0.5
+        background #FF2D38
+        border-radius 35%
+        position absolute
+        top calc(50% - 4px)
+        left -28px
+        width 5px
+        height 8px
+    &::after
+        content ""
+        transform rotate(24deg)
+        background #ff2d38
+        border-radius 6px
+        position absolute
+        left -15px
+        top calc(50% - 8px)
+        width 6px
+        height 14px
+  span:last-child
+    &::after
+        content ""
+        transform rotate(24deg)
+        opacity 0.5
+        background #FF2D38
+        border-radius 35%
+        position absolute
+        top calc(50% - 4px)
+        right -28px
+        width 5px
+        height 8px
+    &::before
+        content ""
+        transform rotate(24deg)
+        background #ff2d38
+        border-radius 6px
+        position absolute
+        right -15px
+        top calc(50% - 8px)
+        width 6px
+        height 14px

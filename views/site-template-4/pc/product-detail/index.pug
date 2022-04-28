@@ -1,0 +1,42 @@
+extends ../layout
+
+block styles
+  :combine(fileName="site-template-4-product-detail-pc.css")
+
+//- sem下去除导航栏的手机号
+block official-info-phone
+  if isSem === '1'
+    span 
+  else 
+    include ../../../common/pc/official-info-phone.pug
+    +officialInfoPhone()
+
+block content
+  if isSem !== "1"
+    include ../components/common/breadcrumbs.pug
+  .container.clearfix
+    include ../components/product-detail/media-show.pug
+    +mediaShow()
+    - const { productList, name: productRecommendName} = renderData.productRecommend
+    include ../components/product-detail/product-recom-title.pug
+    include ../components/product/product-list.pug
+
+    .main
+      include ../components/product-detail/product-content.pug
+      include ../components/common/contact-form-companyInfo.pug
+
+    if isSem !== "1"
+      .sidebar
+        - const { productCateList, articleCateList} = renderData
+        include ../components/sidebar/cateList.pug
+        +side-cateList('产品分类', productCateList)
+        +side-cateList('文章分类', articleCateList)
+
+
+
+block scripts
+  :combine(fileName="site-template-4-product-detail-pc.js")
+block append scripts
+  script.
+    window.extraContactFormData = { position: 6, id: #{renderData.productInfo.id} };
+    window.adId = #{renderData.productInfo.id};

@@ -1,0 +1,18 @@
+.news-detail
+    - const {name, modifiedTime, contentImg, content, preArticle, nextArticle} = renderData.articleInfo
+    h3 #{ name }
+    if modifiedTime
+        .news-detail-time
+            p #{ dateFormat2(modifiedTime) }
+    .news-detail-content.ql-editor.
+        !{ content || '当前页面暂无内容，敬请期待...' }
+    .news-nav
+        if preArticle
+            .news-nav__pre
+                span 上一篇：
+                a(href= preArticle.url) #{ preArticle.name}
+        if nextArticle
+            .news-nav__next
+                span 下一篇：
+                a(href=nextArticle.url) #{ nextArticle.name }
+

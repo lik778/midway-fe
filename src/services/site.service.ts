@@ -20,7 +20,8 @@ export class SiteService {
   static templateMapping = {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
     "5fb387d2f2db3f6b8e7080e6": "site-template-2",
-    "7397650bdc5446a36d6d643e": "site-template-3"
+    "7397650bdc5446a36d6d643e": "site-template-3",
+    '111111111111111111111111': "site-template-4"
   }
   constructor(
     private readonly httpService: HttpService,
@@ -67,9 +68,9 @@ export class SiteService {
   private getDomain(domain: string): string {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1 || domain.indexOf('192.168') !== -1) {
       // 可以将自己常用的还有三级域名的url写在下面 注释好
-    //   domain = 'zb2c.shop-test2.baixing.cn'
+      domain = 'shop-test.baixing.cn'
       // domain = 'zmlc2b.shop-test2.baixing.cn'
-      domain = 'seocheck380.shop-test.baixing.cn'
+      // domain = 'seocheck380.shop-test.baixing.cn'
 
     }
     return domain

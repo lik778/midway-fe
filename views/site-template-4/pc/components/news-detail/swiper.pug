@@ -1,0 +1,17 @@
+- const {bannerList}= renderData.banner
+  #news-detail-swiper
+    .swiper-container
+      .swiper-wrapper
+        if bannerList && bannerList.length > 0
+          each item in bannerList
+            .swiper-slide
+                img(src=item.displayImgUrl)
+        else
+          .swiper-slide
+            img(src="//file.baixing.net/202108/1d6444a4f59cc5d0e47a6d2d8ce8355a.png")
+
+      <!-- Add Pagination -->
+      .swiper-pagination
+      <!-- Add Arrows -->
+      .swiper-button-next(style="right: -3%")
+      .swiper-button-prev(style="left: -3%")
