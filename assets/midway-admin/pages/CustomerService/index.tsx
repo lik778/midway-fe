@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {  Table,Button,Modal,Form,Input,Radio,Row,Col,Popover } from 'antd';
+import {  Table,Button,Modal,Form,Input,Radio,Row,Col,Popover,Image } from 'antd';
 import { useEffect, useState } from 'react'
 import { getComplaintList ,getUpdateStatus,searchByContact} from '../../api/customerService'
 import {STATUS_LIST} from './config'
@@ -9,14 +9,17 @@ export default () => {
   const [listData, setListData] = useState<any[]>([])
   const [id, setId] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [urlImg, setUrlImg] = useState("")
   const [visible, setVisible] = React.useState(false);
   const [pending,setPending] = useState(0)
   const [proportion,setProportion] = useState('0')
   const [sum,setSum] = useState('0')
+  const [noteValue,setNoteValue] = useState('')
   const getList = async () => {
     setLoading(true)
     const complaintList = {page:1,size:1000}
     const {data,code,data:{pending,sum,proportion}} = await getComplaintList(complaintList)
+  
     if (code == 200) {
       setListData(data.bos)
       setPending(pending)
@@ -71,6 +74,11 @@ export default () => {
       title: '客户姓名',
       dataIndex: 'name',
       key: '2',
+      render: (name,id) => (
+        <Popover content={name} key={id}>
+          <p className='list-name'>{name}</p>
+        </Popover>
+    ),
     },
     {
       title: '客户电话',
@@ -105,21 +113,28 @@ export default () => {
       dataIndex: 'status',
       key: '7',
       render: (status,id) => (
-        <p key={id}>{STATUS_LIST.find(o=>o.value==status).label}</p>
+          <Popover  key={id}>
+            <p className='list-width'>{STATUS_LIST.find(o=>o.value==status).label}</p>
+          </Popover>
       )
     },
     {
       title: '处理',
       dataIndex: 'status',
       key: '8',
-      render: (status,id) => (
-        <Button   type="link" size='large' onClick={() => renderUpdate(id)}  key={id} disabled={status == 1}>处理</ Button>
+      render: (status,id,note) => (
+        <Popover  key={id} content={note?note:null}>
+          <Button   type="link" size='large' onClick={() => renderUpdate(id)} disabled={status == 1}>处理</ Button>
+        </Popover>
       )
     }
   ]
   const renderUpdate = (val:any) => {
     setId(val.id)
     setValue(val.status)
+    setUrlImg(val.urlImg)
+    setNoteValue(val.note)
+    
     setVisible(true)
   }
   const onFinish = (values: any) => {
@@ -145,6 +160,9 @@ export default () => {
 
   const onChange = e => {
     setValue(e.target.value);
+  };
+  const onTextChange = e => {
+    console.log(e.target.value);
   };
   const getDataList = dataList.map((item)=>{
     return(
@@ -177,7 +195,16 @@ export default () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          
+          {
+          urlImg? <Form.Item
+          label="证据上传"
+          name="urlImg">
+            <Image
+              width={200}
+              src={urlImg}
+            />
+          </Form.Item>:""
+          }
           <Form.Item
             label="处理状态"
             name="status"
@@ -193,7 +220,7 @@ export default () => {
             name="note"
             rules={[{ required: true, message: '请输入您觉得重要的信息!' }]}
           >
-            <Input.TextArea />
+            <Input.TextArea onChange={onTextChange} value={noteValue}/>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
