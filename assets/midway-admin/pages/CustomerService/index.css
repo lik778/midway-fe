@@ -24,7 +24,7 @@
 
 }
 .percentage-item .number{
-    width: 140px;
+    min-width: 140px;
     box-sizing:content-box;
     height: 80px;
     line-height: 60px;
