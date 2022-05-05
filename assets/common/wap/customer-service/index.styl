@@ -22,13 +22,38 @@
             height: 194px
             &.bax
                 background: url('//file.baixing.net/publicity-fe/static/assets/title-icon-wap.png') no-repeat center/contain
-		&-modal
-			display none
-			position absolute
-			background-color #fff
-			right calc(100% + 20px)
-			top 50%
-			padding 27px 25px
-			transform translateY(-50%)
-			box-shadow 0 4px 10px rgba(#000, 0.05)
-			cursor initial
+.service-click
+	.service-modal
+		display block
+
+.service-modal
+	width 112px
+	display none
+	position absolute
+	background-color #fff
+	right calc(100% + 20px)
+	top 50%
+	padding 27px 25px
+	transform translateY(-50%)
+	box-shadow 0 4px 10px rgba(#000, 0.05)
+	cursor initial
+.service-modal__bax
+	.bax-number
+		color: #409EFF
+		padding 10px 0
+	.bax-btn
+		cursor pointer
+		margin-top 8px
+		display flex
+		flex-direction row
+		justify-content center
+		align-items center
+		width 82px
+		height 26px
+		background-color #5799FF
+		border-radius 2px
+		.bax-link .bax-text
+			font-family PingFangSC-Medium
+			font-size 12px
+			color #FFFFFF
+			line-height 12px
