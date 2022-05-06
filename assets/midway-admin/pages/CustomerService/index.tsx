@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {  Table,Button,Modal,Form,Input,Radio,Row,Col,Popover } from 'antd';
+import {  Table,Button,Modal,Form,Input,Radio,Row,Col,Popover,Image } from 'antd';
 import { useEffect, useState } from 'react'
 import { getComplaintList ,getUpdateStatus,searchByContact} from '../../api/customerService'
 import {STATUS_LIST} from './config'
@@ -9,10 +9,13 @@ export default () => {
   const [listData, setListData] = useState<any[]>([])
   const [id, setId] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [urlImg, setUrlImg] = useState("")
   const [visible, setVisible] = React.useState(false);
   const [pending,setPending] = useState(0)
   const [proportion,setProportion] = useState('0')
   const [sum,setSum] = useState('0')
+  const [noteValue,setNoteValue] = useState('')
+  const [form] = Form.useForm()
   const getList = async () => {
     setLoading(true)
     const complaintList = {page:1,size:1000}
@@ -38,9 +41,11 @@ export default () => {
 
   useEffect(() => {
     getList()
-  }, [])
-  
-  const [value, setValue] = React.useState(1);
+    form.setFieldsValue({
+      urlImg:urlImg,
+      note:noteValue
+    })
+  }, [noteValue,urlImg])
   const dataList = [
     {
       id:1,
@@ -71,6 +76,11 @@ export default () => {
       title: '客户姓名',
       dataIndex: 'name',
       key: '2',
+      render: (name,record) => (
+        <Popover content={name} key={record.id}>
+          <p className='list-name'>{name}</p>
+        </Popover>
+    ),
     },
     {
       title: '客户电话',
@@ -81,8 +91,8 @@ export default () => {
       title: '维权事宜',
       dataIndex: 'content',
       key: '4',
-      render: (content,id) => (
-          <Popover content={content} key={id}>
+      render: (content,record) => (
+          <Popover content={content} key={record.id}>
             <p className='list-content'>{content}</p>
           </Popover>
       ),
@@ -96,30 +106,39 @@ export default () => {
       title: '店铺链接',
       dataIndex: 'sourceUrl',
       key: '6',
-      render: (sourceUrl,id) => (
-        <a key={id} href={sourceUrl}>{sourceUrl}</a>
+      render: (sourceUrl,record) => (
+        <a key={record.id} href={sourceUrl}>{sourceUrl}</a>
       )
     },
     {
       title: '处理状态',
       dataIndex: 'status',
       key: '7',
-      render: (status,id) => (
-        <p key={id}>{STATUS_LIST.find(o=>o.value==status).label}</p>
+      render: (status,record) => (
+          <Popover  key={record.id}>
+            <p className='list-width'>{STATUS_LIST.find(o=>o.value==status).label}</p>
+          </Popover>
       )
     },
     {
       title: '处理',
-      dataIndex: 'status',
+      dataIndex: 'note',
       key: '8',
-      render: (status,id) => (
-        <Button   type="link" size='large' onClick={() => renderUpdate(id)}  key={id} disabled={status == 1}>处理</ Button>
+      render: (note,record) => (
+        <Popover  key={record.id} content={record.status==1?(note?note:'无'):null}>
+          <Button   type="link" size='large' onClick={() => renderUpdate(record)} disabled={record.status == 1}>处理</ Button>
+        </Popover>
       )
     }
   ]
   const renderUpdate = (val:any) => {
     setId(val.id)
-    setValue(val.status)
+    setUrlImg(val.urlImg)
+    setNoteValue(val.note)
+    form.setFieldsValue({
+      urlImg:urlImg,
+      note:noteValue
+    })
     setVisible(true)
   }
   const onFinish = (values: any) => {
@@ -143,8 +162,8 @@ export default () => {
     console.log('Failed:', errorInfo);
   };
 
-  const onChange = e => {
-    setValue(e.target.value);
+  const onTextChange = e => {
+    console.log(e.target.value);
   };
   const getDataList = dataList.map((item)=>{
     return(
@@ -176,14 +195,26 @@ export default () => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
+          form={form}
         >
-          
+          {
+          urlImg? <Form.Item
+          label="证据上传"
+          name="urlImg"
+          initialValue={urlImg}
+          >
+            <Image
+              width={200}
+              src={urlImg}
+            />
+          </Form.Item>:""
+          }
           <Form.Item
             label="处理状态"
             name="status"
             rules={[{ required: true, message: '请选择状态提交!' }]}
           >
-            <Radio.Group onChange={onChange} value={value}>
+            <Radio.Group>
               <Radio value={1}>已处理</Radio>
               <Radio value={0}>已知晓，稍后处理</Radio>
             </Radio.Group>
@@ -192,8 +223,9 @@ export default () => {
             label="备注"
             name="note"
             rules={[{ required: true, message: '请输入您觉得重要的信息!' }]}
+            initialValue={noteValue}
           >
-            <Input.TextArea />
+            <Input.TextArea onChange={onTextChange} value={noteValue}/>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 40px;
+    padding: 0 15px;
 }
 .data-percentage .percentage-item:not(:last-child){
     border-right: 1px solid #c5c3c3;
@@ -44,8 +44,20 @@
 .table-list{
     margin-top: 10px;
 }
+.list-width{
+    margin: 16px 0;
+    width:80px;
+}
+.list-name{
+    width:80px ;
+    margin: 16px 0;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
 .list-content{
     width: 120px;
+    margin: 16px 0;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
