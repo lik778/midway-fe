@@ -19,59 +19,13 @@ export default () => {
   const getList = async () => {
     setLoading(true)
     const complaintList = {page:1,size:1000}
-    // const {data,code,data:{pending,sum,proportion}} = await getComplaintList(complaintList)
-    // if (code == 200) {
-     const data  = {
-        pending : 5,
-        sum : 8,
-        proportion :  "62.5%" ,
-        bos : [
-         {
-            id : 1,
-            createTime :  "2022-04-18 11:56:38" ,
-            name :  "test" ,
-            content :  "8:00准时开团！蔬菜100份" ,
-            contact :  "18342210811" ,
-            shopId : 4116,
-            userId : 230275978,
-            status : 0,
-            urlImg :  "yyy" ,
-            sourceUrl :  "http://shop.baixing.cn/yyymeta/" ,
-            note : "11111111"
-         },
-     {
-            id : 2,
-            createTime :  "2022-04-18 11:56:38" ,
-            name :  "test" ,
-            content :  "8:00准时开团！蔬菜100份" ,
-            contact :  "18342210811" ,
-            shopId : 4116,
-            userId : 230275978,
-            status : 0,
-            urlImg :  "yyy" ,
-            sourceUrl :  "http://shop.baixing.cn/yyymeta/" ,
-            note : null
-         },
-         {
-            id : 3,
-            createTime :  "2022-04-18 11:56:38" ,
-            name :  "test" ,
-            content :  "8:00准时开团！蔬菜100份" ,
-            contact :  "18342210811" ,
-            shopId : 4116,
-            userId : 230275978,
-            status : 1,
-            urlImg :  "yyy" ,
-            sourceUrl :  "http://shop.baixing.cn/yyymeta/" ,
-            note : null
-         },
-       ]
-     }
+    const {data,code,data:{pending,sum,proportion}} = await getComplaintList(complaintList)
+    if (code == 200) {
       setListData(data.bos)
       setPending(pending)
       setProportion(proportion)
       setSum(sum)
-    // }
+    }
     setLoading(false)
   }
   const updateStatus = async (obj:any) => {
