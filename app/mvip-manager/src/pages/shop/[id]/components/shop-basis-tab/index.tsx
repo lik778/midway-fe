@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Menu, Tooltip } from 'antd';
+import { Button, Menu, Popover, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
@@ -89,7 +89,11 @@ const BasisTab = (props: Props) => {
   }, [])
 
   const handleClick = (e: { key: any; }) => { setCurrent(e.key) };
-
+  const themeColor = () => {
+    return <>
+        <div>主题颜色</div>
+    </>
+  }
   return (
     <div className={styles['tab-container']}>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
@@ -99,6 +103,9 @@ const BasisTab = (props: Props) => {
           </Menu.Item>
         })}
       </Menu>
+      <Popover content={themeColor} title="Title" trigger="click">
+        <Button>主题颜色</Button>
+      </Popover>
       <Tooltip color='#fff' overlayStyle={{ maxWidth: 600 }} overlayInnerStyle={{ color: '#999', padding: '10px 20px' }} title={<img style={{ width: '500px' }} src="//file.baixing.net/202112/ad8e1bd75395e197bd2d3f32cf7f386f.png" />} placement='bottomLeft'>
         <div className={styles['tip']}>
           <QuestionCircleOutlined className={styles['icon']} />使用指引
