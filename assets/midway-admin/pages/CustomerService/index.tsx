@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {  Table,Button,Modal,Form,Input,Radio,Row,Col,Popover,Image } from 'antd';
+import {  Table,Button,Modal,Form,Input,Radio,Row,Col,Popover,Image,message } from 'antd';
 import { useEffect, useState } from 'react'
 import { getComplaintList ,getUpdateStatus,searchByContact} from '../../api/customerService'
 import {STATUS_LIST} from './config'
@@ -30,11 +30,12 @@ export default () => {
   }
   const updateStatus = async (obj:any) => {
     setLoading(true)
-    const {code} = await getUpdateStatus({...obj,id})
-    if (code == 200) {
-      console.log(code);
+    const data = await getUpdateStatus({...obj,id})
+    if (data.code == 200) {
       setVisible(false)
       getList()
+    }else{
+      message.error(data.message)
     }
     setLoading(false)
   }
@@ -125,7 +126,7 @@ export default () => {
       dataIndex: 'note',
       key: '8',
       render: (note,record) => (
-        <Popover  key={record.id} content={record.status==1?(note?note:'无'):null}>
+        <Popover  key={record.id} content={record.status == 1 ?(note?note:'无'):null}>
           <Button   type="link" size='large' onClick={() => renderUpdate(record)} disabled={record.status == 1}>处理</ Button>
         </Popover>
       )
