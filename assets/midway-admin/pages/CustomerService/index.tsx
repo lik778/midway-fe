@@ -125,7 +125,7 @@ export default () => {
       dataIndex: 'note',
       key: '8',
       render: (note,record) => (
-        <Popover  key={record.id} content={record.status==1?(note?note:'无'):null}>
+        <Popover  key={record.id} content={note?note:'无'} visible={record.status ==1}>
           <Button   type="link" size='large' onClick={() => renderUpdate(record)} disabled={record.status == 1}>处理</ Button>
         </Popover>
       )
