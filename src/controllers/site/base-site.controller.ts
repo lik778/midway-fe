@@ -283,6 +283,7 @@ export class BaseSiteController {
     const currentPage = query.page || 1
 
     const id = params.id
+    const position = id ? 7 : 5
 
     const { data: originData } = await this.midwayApiService[id ? 'getProductCateData' : 'getProductPageData'](shopName, device, { cateId: id, page: currentPage, size: 5, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
@@ -307,7 +308,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get('/p-:id.html')
