@@ -116,9 +116,7 @@ export default () => {
       dataIndex: 'status',
       key: '7',
       render: (status,record) => (
-          <Popover  key={record.id}>
-            <p className='list-width'>{STATUS_LIST.find(o=>o.value==status).label}</p>
-          </Popover>
+          <p className='list-width' key={record.id}>{STATUS_LIST.find(o=>o.value==status).label}</p>
       )
     },
     {
