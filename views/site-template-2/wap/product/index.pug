@@ -18,5 +18,4 @@ block scripts
     :combine(fileName="site-template-2-product-wap.js")
 block append scripts
     script.
-        const position = '#{renderData.position}';
-        window.extraContactFormData = { position };
+        window.extraContactFormData = { position: '#{renderData.position}' };
