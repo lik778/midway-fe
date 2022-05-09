@@ -14,8 +14,9 @@ export const jumpAndClick = () => {
             const id = /(?<=-)\d{4}(?=.html)/.exec(drawer-nav-box)?/(?<=-)\d{4}(?=.html)/.exec(href)[0]:''
             if(id){
                 window.location.href = `safeguard?position=${position}&id=${id}`
+            }else{
+                window.location.href = `safeguard?position=${position}`
             }
-            window.location.href = `safeguard?position=${position}`
         })
     })
 }    
