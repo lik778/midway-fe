@@ -13,7 +13,7 @@ export const jumpAndClick = () => {
             const href = window.location.href
             const id = /(?<=-)\d.*(?=.html)/.exec(href)?/(?<=-)\d.*(?=.html)/.exec(href)[0]:''
             if(id){
-                window.location.href = `safeguard?position=${position}&id=${id}`
+                window.location.href = `safeguard?position=${position}&id=${+id}`
             }else{
                 window.location.href = `safeguard?position=${position}`
             }
