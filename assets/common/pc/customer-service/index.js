@@ -123,7 +123,7 @@ const entranceBtn = $('#entrance')
 entranceBtn.on('click',()=>{
 	const {position} = window.extraContactFormData
 	const href = window.location.href
-	const id = /(?<=-)\d{4}(?=.html)/.exec(href)?/(?<=-)\d{4}(?=.html)/.exec(href)[0]:''
+	const id = /(?<=-)\d.*(?=.html)/.exec(href)?/(?<=-)\d.*(?=.html)/.exec(href)[0]:''
 	if(id){
 		window.location.href = `safeguard?position=${position}&id=${id}`
 	}else{
