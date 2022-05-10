@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Menu, Popover, Tooltip } from 'antd';
+import {  Menu, Popover, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
@@ -9,7 +9,7 @@ import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
-import { ShopStatus } from '@/interfaces/shop';
+import e from 'express';
 interface Props {
   type: ShopBasisType;
   // curShopInfo: ShopInfo | null;
@@ -17,23 +17,37 @@ interface Props {
   // getShopStatus: () => Promise<any>
   [key: string]: any
 }
-
-const themeColors = [
+type colorEnum = 'BLUE' | 'RED' | 'GREEN' | 'GOLD' | 'DEFAULT'
+type themeColorType = {
+    key: colorEnum,
+    value: string,
+    preview: string
+}
+const themeColors: themeColorType[] = [
     {
         key: 'BLUE',
-        value: '#336FFF'
+        value: '#336FFF',
+        preview: require('@/assets/images/template-blue.png')
     },
     {
         key: 'RED',
-        value: '#D8010D'
+        value: '#D8010D',
+        preview: require('@/assets/images/template-red.png')
     },
     {
         key: 'GREEN',
-        value: '#30B015'
+        value: '#30B015',
+        preview: require('@/assets/images/template-green.png')
     },
     {
         key: 'GOLD',
-        value: '#BF8452'
+        value: '#BF8452',
+        preview: require('@/assets/images/template-gold.png')
+    },
+    {
+        key: 'DEFAULT',
+        value: '#005dc1',
+        preview: require('@/assets/images/template-default.png')
     }
 ]
 
@@ -43,6 +57,7 @@ const BasisTab = (props: Props) => {
   const params: RouteParams = useParams();
   const history = useHistory()
   const [current, setCurrent] = useState(props.type)
+  const [currentTheme, setCurrentTheme] = useState<colorEnum>()
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
@@ -113,9 +128,12 @@ const BasisTab = (props: Props) => {
     return <div className={styles['theme-color']}>
         <ul>
             {
-                themeColors.map(theme => <li style={{background: `${theme.value}`}}></li>)
+                themeColors.map(theme => <li onClick={() => setCurrentTheme(theme.key)} className={currentTheme === theme.key ? styles['active-theme'] : ''} style={{background: `${theme.value}`, listStyle: 'none'}}></li>)
             }
         </ul>
+        <div>
+            <img src={currentTheme}/>
+        </div>
     </div>
   }
   return (
