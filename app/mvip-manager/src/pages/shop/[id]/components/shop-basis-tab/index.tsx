@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {  Menu, Popover, Tooltip } from 'antd';
+import {  Button, Menu, Popover, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
@@ -9,7 +9,6 @@ import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
-import e from 'express';
 interface Props {
   type: ShopBasisType;
   // curShopInfo: ShopInfo | null;
@@ -57,7 +56,7 @@ const BasisTab = (props: Props) => {
   const params: RouteParams = useParams();
   const history = useHistory()
   const [current, setCurrent] = useState(props.type)
-  const [currentTheme, setCurrentTheme] = useState<colorEnum>()
+  const [currentTheme, setCurrentTheme] = useState<themeColorType>()
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
@@ -128,11 +127,12 @@ const BasisTab = (props: Props) => {
     return <div className={styles['theme-color']}>
         <ul>
             {
-                themeColors.map(theme => <li onClick={() => setCurrentTheme(theme.key)} className={currentTheme === theme.key ? styles['active-theme'] : ''} style={{background: `${theme.value}`, listStyle: 'none'}}></li>)
+                themeColors.map(theme => <li onClick={() => setCurrentTheme(theme)} className={currentTheme?.key === theme.key ? styles['active-theme'] : styles['theme-item'] } style={{background: `${theme.value}`}}></li>)
             }
+            <li><Button size='small' type="primary">确认</Button></li>
         </ul>
-        <div>
-            <img src={currentTheme}/>
+        <div className={styles['theme-preview']}>
+            <img src={currentTheme?.preview}/>
         </div>
     </div>
   }
