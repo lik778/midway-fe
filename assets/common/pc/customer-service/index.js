@@ -119,3 +119,16 @@ baxFeedbackCopyBth.on('click', () => {
 	}, 2000)
 })
 
+const entranceBtn = $('#entrance')
+entranceBtn.on('click',()=>{
+	const {position} = window.extraContactFormData
+	const href = window.location.href
+	const id = /(?<=-)\d.*(?=.html)/.exec(href)?/(?<=-)\d.*(?=.html)/.exec(href)[0]:''
+	if(id){
+		window.location.href = `safeguard?position=${position}&id=${+id}`
+	}else{
+		window.location.href = `safeguard?position=${position}`
+	}
+})
+
+

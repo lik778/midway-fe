@@ -7,5 +7,5 @@ import { initNavToggle } from '../components/nav'
 
 initOfficialFooterContact()
 initNav($('.nav-container .nav-content .nav-item'))
-initNav($('.nav-container .nav-all .nav-item'))
+initNav($('.nav-container .-all .nav-item'))
 initNavToggle()

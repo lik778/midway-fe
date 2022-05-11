@@ -29,15 +29,21 @@ export class ManagementService {
     const headers = {
       'x-api-hash': (cookies && cookies[COOKIE_HASH_KEY]) || '',
       'x-api-user': (cookies && cookies[COOKIE_USER_KEY]) || '',
+      //测试
+      // 'x-api-user': '230275978',
       'x-api-token': (cookies && cookies[COOKIE_TOKEN_KEY]) || '',
       'x-api-mask-user': (cookies && cookies[COOKIE_CHAOREN_USER_KEY] && cookies[COOKIE_CHAOREN_USER_KEY].replace(/u/ig, '').split('-')[0]) || '',
       'content-type': 'application/json;charset=UTF-8',
       'x-api-src': 'web',
       'x-api-secret': apiSecret,
+      //测试
+      // 'x-api-shop-id': 4123,
+      // 'x-api-shop-name': 'maibaozhi',
       ...others,
     }
     if (shopId) {
       headers['x-api-shop-id'] = Number(shopId)
+      // headers['x-api-shop-id'] = 4123
     }
     return headers;
   }

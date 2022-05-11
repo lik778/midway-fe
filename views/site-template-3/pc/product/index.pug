@@ -29,4 +29,4 @@ block scripts
     :combine(fileName="site-template-3-product-pc.js")
 block append scripts
     script.
-        window.extraContactFormData = { position: 7 };
+        window.extraContactFormData = { position: '#{renderData.position}' };
