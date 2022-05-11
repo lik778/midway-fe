@@ -68,16 +68,16 @@ export const setZhidaoMaterial = (params: ZhidaoMaterial) => {
 
 // TODO;
 /** 获取400电话号码列表 */
-export const getPhone400ListApi = () => {
-  return postApiData<string[]>(ServicePath.SHOP, '', {})
-}
+// export const getPhone400ListApi = () => {
+//   return postApiData<string[]>(ServicePath.SHOP, '', {})
+// }
 
-/** 获取400电话号码 */
-export const getPhone400Api = () => {
-  return postApiData<Phone400Detail[]>(ServicePath.SHOP, 'midway/backend/user/vm400/resource/get', {})
-}
+// /** 获取400电话号码 */
+// export const getPhone400Api = () => {
+//   return postApiData<Phone400Detail[]>(ServicePath.SHOP, 'midway/backend/user/vm400/resource/get', {})
+// }
 
-/** 设置400电话号码*/
-export const setPhone400Api = (params: Phone400Detail) => {
-  return postApiData<any>(ServicePath.SHOP, 'midway/backend/user/vm400/resource/consume', params)
-}
+// /** 设置400电话号码*/
+// export const setPhone400Api = (params: Phone400Detail) => {
+//   return postApiData<any>(ServicePath.SHOP, 'midway/backend/user/vm400/resource/consume', params)
+// }
