@@ -17,34 +17,41 @@ interface Props {
   [key: string]: any
 }
 type colorEnum = 'BLUE' | 'RED' | 'GREEN' | 'GOLD' | 'DEFAULT'
+type colorEnumValue = 1 | 2 | 3 | 4 | 5
 type themeColorType = {
     key: colorEnum,
     value: string,
-    preview: string
+    preview: string,
+    colorValue: colorEnumValue
 }
 const themeColors: themeColorType[] = [
     {
         key: 'BLUE',
+        colorValue: 2,
         value: '#336FFF',
         preview: require('@/assets/images/template-blue.png')
     },
     {
         key: 'RED',
+        colorValue: 1,
         value: '#D8010D',
         preview: require('@/assets/images/template-red.png')
     },
     {
         key: 'GREEN',
+        colorValue: 3,
         value: '#30B015',
         preview: require('@/assets/images/template-green.png')
     },
     {
         key: 'GOLD',
+        colorValue: 4,
         value: '#BF8452',
         preview: require('@/assets/images/template-gold.png')
     },
     {
         key: 'DEFAULT',
+        colorValue: 5,
         value: '#005dc1',
         preview: require('@/assets/images/template-default.png')
     }
@@ -53,10 +60,11 @@ const themeColors: themeColorType[] = [
 
 const BasisTab = (props: Props) => {
   const { shopStatus, curShopInfo, getShopStatus } = props
+  const currentThemeColor = themeColors.find(theme => theme.colorValue === curShopInfo.currentTheme)
   const params: RouteParams = useParams();
   const history = useHistory()
   const [current, setCurrent] = useState(props.type)
-  const [currentTheme, setCurrentTheme] = useState<themeColorType>()
+  const [currentTheme, setCurrentTheme] = useState<themeColorType>(currentThemeColor)
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
