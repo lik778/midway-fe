@@ -19,26 +19,25 @@ mixin officialInfoPhone()
       .official-info-phone-block
         if isSem !== "2"
           div.hot-link 24小时服务热线
-        if isSem!=="1"
           div.official-info-phone-num
             img.icon(src='//file.baixing.net/202112/6d235a24e7cbfc345d20ed3619574573.png')
             +createPhoneNum(phone.content)
-        else
-          - let union400num =  union400 && union400.length? union400[0]: ''
-          .official-info-phone-400-action
-            button.btn(data-union400num=union400num||'') 查看电话号码
-          .official-info-phone-num-box.hide
-            .official-info-phone-num
-              img.icon(src='//file.baixing.net/202112/6d235a24e7cbfc345d20ed3619574573.png')
-              +createPhoneNum(union400num)
-          .official-info-phone-num-tip.hide
-            .triangle
-              //- <!-- 底层三角形用于绘制三角形边框 -->
-              em
-              //- <!-- 上层三角形用于消除得到镂空效果 -->
-              span
-            .tip-text
-              | 电话
-              span.time-num
-                | 180s
-              | 后过期，刷新页面重新获取 
+        //- else
+        //-   - let union400num =  union400 && union400.length? union400[0]: ''
+        //-   .official-info-phone-400-action
+        //-     button.btn(data-union400num=union400num||'') 查看电话号码
+        //-   .official-info-phone-num-box.hide
+        //-     .official-info-phone-num
+        //-       img.icon(src='//file.baixing.net/202112/6d235a24e7cbfc345d20ed3619574573.png')
+        //-       +createPhoneNum(union400num)
+        //-   .official-info-phone-num-tip.hide
+        //-     .triangle
+        //-       //- <!-- 底层三角形用于绘制三角形边框 -->
+        //-       em
+        //-       //- <!-- 上层三角形用于消除得到镂空效果 -->
+        //-       span
+        //-     .tip-text
+        //-       | 电话
+        //-       span.time-num
+        //-         | 180s
+        //-       | 后过期，刷新页面重新获取 
