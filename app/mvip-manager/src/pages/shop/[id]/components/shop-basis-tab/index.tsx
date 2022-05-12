@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {  Button, Menu, Popover, Tooltip } from 'antd';
+import {  Button, Menu, Modal, Popover, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
 import { useParams } from 'umi';
 import { RouteParams, ShopInfo } from '@/interfaces/shop';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
+import { userMapDispatchToProps, userMapStateToProps } from '@/models/user';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
@@ -59,12 +60,13 @@ const themeColors: themeColorType[] = [
 
 
 const BasisTab = (props: Props) => {
-  const { shopStatus, curShopInfo, getShopStatus } = props
-  const currentThemeColor = themeColors.find(theme => theme.colorValue === curShopInfo.currentTheme)
+  const { shopStatus, curShopInfo, getShopStatus, userInfo } = props
+  const currentThemeColor = curShopInfo && curShopInfo.currentTheme && themeColors.find(theme => theme.colorValue === curShopInfo.currentTheme)
   const params: RouteParams = useParams();
   const history = useHistory()
   const [current, setCurrent] = useState(props.type)
   const [currentTheme, setCurrentTheme] = useState<themeColorType>(currentThemeColor)
+  const [isSwitchTemplate, setIsSwitchTemplate] = useState<boolean>(false)
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
@@ -144,6 +146,9 @@ const BasisTab = (props: Props) => {
         </div>
     </div>
   }
+  const switchTemlate = () => {
+
+  }
   return (
     <div className={styles['tab-container']}>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
@@ -154,25 +159,34 @@ const BasisTab = (props: Props) => {
         })}
       </Menu>
       <div className={styles['tip']}>
-        <Popover content={themeColor} title="更换主题色" trigger="click">
+        {userInfo && userInfo.isNewUser ? <Popover content={themeColor} title="更换主题色" trigger="click">
             <span className={styles['color-btn']}>主题颜色</span>
-        </Popover>
+        </Popover> : <span className={styles['color-btn']} onClick={() => setIsSwitchTemplate(true)}>更换模板</span>}
         <Tooltip color='#fff' overlayStyle={{ maxWidth: 600 }} overlayInnerStyle={{ color: '#999', padding: '10px 20px' }} title={<img style={{ width: '500px' }} src="//file.baixing.net/202112/ad8e1bd75395e197bd2d3f32cf7f386f.png" />} placement='bottomLeft'>
             <QuestionCircleOutlined className={styles['icon']} />使用指引
         </Tooltip>
       </div>
+      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={() => setIsSwitchTemplate(false)}>
+        <div className={styles['new-template']}>
+            <img src={require('@/assets/images/template-default.png')}/>
+        </div>
+      </Modal>
     </div>
   );
 }
 
 const mapStateToProps = (state: any) => {
+  const { userInfo } = userMapStateToProps(state)
   const { curShopInfo, shopStatus } = (state as ConnectState)[SHOP_NAMESPACE]
-  return { curShopInfo, shopStatus }
+  console.log(userInfo)
+  return { curShopInfo, shopStatus, userInfo }
 }
+
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     ...shopMapDispatchToProps(dispatch),
+    ...userMapDispatchToProps(dispatch)
   }
 };
 
