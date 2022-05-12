@@ -159,9 +159,4 @@ export class SiteService {
       this.setPageHeaders(shopName, device, domain));
   }
 
-  // 获取400号码
-  public getPhone400Number(shopName: string, device: string, domain: string): Promise<any> {
-    return this.requestService.post(`${this.prefixPath}/vm400/dynamic`, {},
-      this.setPageHeaders(shopName, device, domain));
-  }
 }
