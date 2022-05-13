@@ -70,7 +70,12 @@ export class SiteService {
     //   domain = 'zb2c.shop-test2.baixing.cn'
       // domain = 'zmlc2b.shop-test2.baixing.cn'
       // domain = 'seocheck380.shop-test.baixing.cn'
+<<<<<<< HEAD
       domain = 'shop-test.baixing.cn'
+=======
+      domain = 'shop.baixing.cn'
+
+>>>>>>> f4c7b3d15d7ae40c0ca9b17e11952667226a489c
     }
     return domain
   }
@@ -105,6 +110,7 @@ export class SiteService {
     return this.requestService.post(`${this.prefixPath}/home/?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, {},
       this.setPageHeaders(shopName, device, domain));
   }
+
   //服务内容列表
   public getProductPageData(shopName: string, device: string, params, domain: string): Promise<ServiceResponse<ShopComponents>> {
     return this.requestService.post(`${this.prefixPath}/product/list?semKeyWordFlag=${params.semKeyWordFlag}&cnKeyWordFlag=${params.cnKeyWordFlag}`, params,
@@ -159,4 +165,9 @@ export class SiteService {
       this.setPageHeaders(shopName, device, domain));
   }
 
+  // 用户保障中心提交表单
+  public complaint(shopName: string, device: string, domain: string, params): Promise<any> {
+    return this.requestService.post(`${this.prefixPath}/home/complaint`, params,
+    this.setPageHeaders(shopName, device, domain));
+  }
 }
