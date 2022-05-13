@@ -70,12 +70,7 @@ export class SiteService {
     //   domain = 'zb2c.shop-test2.baixing.cn'
       // domain = 'zmlc2b.shop-test2.baixing.cn'
       // domain = 'seocheck380.shop-test.baixing.cn'
-<<<<<<< HEAD
-      domain = 'shop-test.baixing.cn'
-=======
       domain = 'shop.baixing.cn'
-
->>>>>>> f4c7b3d15d7ae40c0ca9b17e11952667226a489c
     }
     return domain
   }
