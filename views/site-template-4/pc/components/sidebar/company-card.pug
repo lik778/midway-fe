@@ -1,21 +1,26 @@
 .company-card
-  .company-logo(style=`background-image: url(${company.logo})`)
-  .company-name #{ companyName }
-  .company-medals
-    .medal.shop
-      .medal-img
-      .medal-name 实力商家
-    .medal.bx
-      .medal-img
-      .medal-name 百姓认证
-  .company-certificate
-    .certificate-label 商家信用
-    .certificate-icons
-      .certificate-icon
-        img(src="//file.baixing.net/202102/1ae768b8ba9d84c0ff833af4f9ede499.png", alt="")
-      .certificate-icon
-        img(src="//file.baixing.net/202102/46ee7a8de81ad6d4daa858eed6f587c3.png", alt="")
-      .certificate-icon
-        img(src="//file.baixing.net/202102/9020e841194f73dbe2830aa3428c4f35.png", alt="")
-      .certificate-icon
-        img(src="//file.baixing.net/202102/5350beb96395416163c69494494acf3e.png", alt="")
+  .company-titles
+    .company-logo(style=`background-image: url(${company.logo})`)
+    .company-name.only-oneline #{ companyName }
+  .company-bottom
+    .company-medals
+      .medal.shop
+        img(src="//file.baixing.net/202205/a191c2abbbe6b707924db619c62506d5.png", alt="实力商家")
+      .medal.shop
+        img(src="//file.baixing.net/202205/99e7c1c3b8a7d4e81ccedf12cf32a3f3.png", alt="百姓认证")
+    .company-certificate
+      .certificate-label 商家信用
+      .certificate-icons
+        .certificate-icon
+          img(src="//file.baixing.net/202205/d5c27c56e68fe1d76a1d498e75e51938.png", alt="")
+        .certificate-icon
+          img(src="//file.baixing.net/202205/e00a7d71a49a90cb2223a059953b573c.png", alt="")
+        .certificate-icon
+          img(src="//file.baixing.net/202205/c87f4c45e777671f047457e3bf7d26a6.png", alt="")
+        .certificate-icon
+          img(src="//file.baixing.net/202205/c3307fc64786be2a19a707b145acc37c.png", alt="")
+    .company-tip
+      - const url1 = renderData.basic.shop.shopDomain
+      - const hoverColor =  contact.buttonColor
+      a#companyshop.company-shop(href=url1 style=`background: ${totalTip}` data-hover=hoverColor data-theme=totalTip)  进入店铺
+      a.company-product(href=`${url1}/pl.html`) 全部商品

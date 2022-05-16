@@ -7,17 +7,22 @@
     display: flex
     justify-content: center
     align-items: center
-    margin-bottom 20px
-    width 1190px
+    margin-bottom 30px
+    width 100%
     .user-defined-item-img
-      width: 595px
-      height: 222px
+      width: 714px
+      height: 266px
+      transition: all 1s
+      z-index: 999
+      &:hover
+        transform: scale(1.05)
     .user-defined-item-content
-      width: 595px
-      height: 222px
+      width: 475px
+      height: 266px
       padding: 48px 77px 48px 77px
       position relative
-      background-color: #fff
+      background: url('//file.baixing.net/202205/f1cb30122397a1449163788bcfdd6fd5.png') no-repeat
+      background-size: 100%
       .triangle 
         position: absolute;
         top: 50%;
@@ -39,7 +44,7 @@
       .line
         width: 30px
         height: 4px
-        margin-bottom 24px
+        margin-bottom 18px
         background: #D8D8D8;
       .desc
         overflow hidden
@@ -48,7 +53,18 @@
         -webkit-box-orient vertical
         -webkit-line-clamp 2
         word-break break-all
-        font-size: 14px;
-        color: #666666;
+        font-size: 16px;
+        color: #5D5D5D;
         line-height 26px
         letter-spacing .5px
+      .numbering
+       position absolute
+       top: 0
+       right: 29px
+       width: 65px;
+       height: 74px;
+       line-height 74px
+       text-align: center
+       border-radius: 0px 0px 4px 4px;
+       color: #fff
+       font-size: 36px

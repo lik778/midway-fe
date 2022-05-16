@@ -3,8 +3,20 @@
 @import './products.styl'
 
 .sidebar
-  margin-left 15px
   width 224px
+  .sidebar-item__title
+    box-sizing: border-box
+    height: 50px
+    line-height 50px
+    padding-left: 20px
+    text-align: left
+    width: 100%
+    background: #EAF2FF;
+    font-size 18px
+    border-radius: 4px 4px 0px 0px;
+    font-weight: bold
+    span
+      display inline-block
   &-item
     box-shadow 0 4px 10px rgba(#000, 0.02);
     padding 15px
@@ -14,13 +26,10 @@
     border-radius: 4px
     &__content
       onverflow hidden
-    &__title
-      font-size 18px
-      color #EC2525
-      border-bottom 1px solid #ddd
-      font-weight: bold
-      span
-        display inline-block
-        padding-bottom 10px
-        border-bottom 2px solid #EC2525
-        margin-bottom -1px
+    .side-news-list
+    .news
+      display: block
+      width: 100%
+      color: #666666
+      font-size: 14px
+      line-height 25px

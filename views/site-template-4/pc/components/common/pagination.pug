@@ -1,0 +1,42 @@
+mixin pagination(total, current)
+    - n = parseInt(total)
+    - p = parseInt(current)
+    - prevPage = p - 1
+    - nextPage = p + 1
+    if n > 1
+        .page-normal(data-hover=totalTip)
+            if prevPage >0
+               .page-item(data-page=1) 首页
+                //-最大展示15页，超过的话，到第9页后面...
+            if (n < 16)
+                - start = 1
+                - end = n
+            else
+                //-当前处于第9页后，会展示1，2，3页，然后...，然后展示9页
+                if (p >= 9)
+                    - for (i = 1; i <=3; i++)
+                        - pageNum = i
+                        .page-item(data-page=pageNum) #{i}
+                    .page-item ...
+                    - start = p - 3
+                else
+                    - start = 1
+
+                - end = p + 5
+                if end < 9
+                    - end = 9
+                if end > n - 4
+                    - end = n
+            - for (i = start; i <= end; i++)
+                - pageNum = i
+                if i == p
+                    .page-item(style=`background-color: ${totalTip};color: #fff` data-flag=true)= i
+                else
+                    .page-item(data-page=pageNum) #{i}
+            if end < n - 2
+                .page-item ...
+                - for (i = n - 1; i <= n; i++)
+                    - url = `${link}?page=${i}`
+                    .page-item(data-page #{i}) #{i}
+            if p < n
+                .page-item(data-page=nextPage) 下一页

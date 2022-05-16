@@ -1,0 +1,13 @@
+mixin officialNav()
+  - const { officialNav } = renderData.basic.shop.color
+  .official-nav-container(style=`background-color: ${officialNav.navBg}`)
+    .official-nav-content 
+      each item in nav
+        - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
+        .nav-item-box
+          .hover-box
+            a.nav-item(href=item.content  data-hover=officialNav.navHv  data-hoverleave=officialNav.navBg) #{ item.name }
+            if hasDropdown
+              .nav-dropdown
+                each cItem in item.contentCateBos
+                  a.nav-dropdown-item(style=`background-color:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix) #{ cItem.name }

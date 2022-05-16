@@ -5,12 +5,12 @@ mixin news-list(articleList)
       - date = dateObj.getDate()
       - year = dateObj.getFullYear()
       - month = dateObj.getMonth() + 1
-      a(class=index<2?'news-item line-bottom':'news-item' href=item.urlSuffix)
+      a(class='news-item' href=item.urlSuffix)
         .left 
-          .date #{date > 9 ? date : `0${date}`}
+          .date(style=`color: ${newsAd}`) #{date > 9 ? date : `0${date}`}
           .year-month #{year}/#{month > 9 ? month : `0${month}`}
         .right 
-          .title.only-oneline #{ item.name }
+          .title.newsTitle(data-hover=newsAd).only-oneline #{ item.name }
           .content.only-twoline #{ item.limitText }
   a.show-more-btn(href= newsLink || "#")
     apan.set-color 查看更多文章

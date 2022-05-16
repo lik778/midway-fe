@@ -4,7 +4,7 @@ import '../layout';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
 import Swiper from 'swiper';
 import { initSem } from '../../../common/pc/contact-form-sem'
-import { leaveLeads } from '../../../common/contact-form'
+import { leaveLeads } from '../components/common/contact-form'
 
 initializeSidebarProductSwiper()
 leaveLeads()

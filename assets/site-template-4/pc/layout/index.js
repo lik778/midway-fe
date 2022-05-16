@@ -1,5 +1,5 @@
-import { qqModule } from '../../../common/pc/customer-service';
-import { initHeader } from '../../../common/pc/official-header'
+import { qqModule } from '../components/common/customer-service';
+import { initHeader } from '../components/common/official/official-header'
 
 qqModule()
 initHeader()

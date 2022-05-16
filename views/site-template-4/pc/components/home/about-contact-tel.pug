@@ -1,0 +1,10 @@
+mixin aboutContactTel(url,theme,color)
+  .contact-tel(style=`background: url(${url}) no-repeat center center/100%`)
+    .tel-title
+      .title-icon
+        img(src="//file.baixing.net/202205/e885891c165f88de6e01a2c17c04ab24.png", alt="logo")
+      .titel-hot
+        img(src="//file.baixing.net/202205/39454faae23e9d40e33d326d5dedfa6f.png", alt="")
+      .titel-number #{phone.content}
+      a(href=`tel:${phone.content}`).titel-consult(style=`background-color: ${theme};color: ${color}`) 立即咨询
+    .tel-content #{companyName}

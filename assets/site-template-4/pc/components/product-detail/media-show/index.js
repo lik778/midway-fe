@@ -4,10 +4,13 @@ import { init400Btn } from '../../../../../common/pc/official-400-btn';
 import { eventTracker } from '../../../../../common/tracker';
 init400Btn();
 export const mediaShow = function() {
-  $(document).on('reday', function() {
+  $(document).on('ready', function() {
     $('.online-btn').on('click', () => {
       eventTracker('53kf-pc', 'vad-pc');
     });
+    $('.searchPhone .phoneContent').on('click',function() {
+      $(this).text($('.phoneContent').data('phone'))
+    })
   });
   var swiper = new Swiper('.swiper-container', {
     cssMode: true,

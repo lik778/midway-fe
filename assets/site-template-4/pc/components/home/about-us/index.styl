@@ -3,19 +3,34 @@
   width 1190px
   display flex
   justify-content center
-  align-items flex-start
-  min-height 360px
-  padding 59px 36px 51px 30px
-  background url("//file.baixing.net/202108/55178a98c73c9d27db933bce8121e310.png") no-repeat center center/100%
-  background-size cover
-  margin 0 0 0 -1px
+  align-items center
   .content-left
     position relative
-    width 432px
-    height 243px
+    width 637px
+    height 359px
     margin-top 0
     border-radius 7px
     overflow hidden
+    order: 0
+    transition: all 1s
+    &:hover
+      transform: scale(1.05)
+    .tags
+      position absolute
+      top: 23px
+      right: 0
+      z-index: 999
+      .tag
+        width: 120px
+        height: 40px
+        line-height 40px
+        text-align: center
+        opacity: 0.79;
+        margin-top: 6px
+        color:  #FFFFFF;
+        font-size: 14px
+        &:first-child
+          margin-top: 0
     .audio
       width 100%
       height 100%
@@ -33,13 +48,29 @@
         width 100%
         height 100%
   .content-right
-    // height 243px
-    width 656px
+    box-sizing: border-box
+    order: 1
+    width 553px
+    height: 397px
     display flex
     flex-direction column
     justify-content flex-start
-    padding 0 36px 0 0
-    margin-top -6px
+    padding 30px 24px 21px 25px
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.17);
+    border-radius: 4px;
+    background: #FFFFFF;
+    .view-detail
+      width: 145px;
+      height: 40px;
+      margin-top: 21px
+      line-height 40px
+      text-align: center
+      border-radius: 20px;
+      border: 1px solid #E7E7E7;
+      font-size: 14px;
+      color: #5D5D5D;
+      &:hover
+        background: #FFBE36
     .content-right-title
       display flex
       justify-content flex-start
@@ -50,41 +81,24 @@
         justify-content center
         align-items center
         img
-          max-width 138px
-          height 46px
-          border-radius 4px
-          overflow hidden
+          width 119px
+          height 55px
       .right-title-right
-        margin-left 16px
+        margin-left 21px
         .left-title
-          // line-height 26px
           font-size 20px
           font-weight bold
           margin-bottom 10px
-        .tags 
-          display flex
-          .tag
-            box-sizing border-box
-            padding 5px 9px
-            line-height 14px
-            text-align center
-            border 1px solid #D19960
-            border-radius 2px
-            color #D19960
-            font-size 14px
-            margin-right 12px
+          color: #212121
     .content-right-body
       position relative
-      width 656px
-      height 120px
+      color: #5D5D5D;
+      height: 217px
+      overflow hidden
       .body-content
-        height 120px
+        height: 217px
         color #666666
         line-height 24px
-        font-size 14px
-      .view-detail
-        display inline
-        color #FF4365
         font-size 14px
     .content-right-bottom
       height 40px

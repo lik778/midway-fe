@@ -1,8 +1,8 @@
 - const { productList: pr, name: sidebarItemTitle } = renderData.productRecommend
 if pr && pr.length > 0
+  .sidebar-item__title
+      span(style=`color: ${totalTip}`) #{ sidebarItemTitle || '产品推荐'}
   .sidebar-item
-    .sidebar-item__title
-      span #{ sidebarItemTitle || '产品推荐'}
     #product-swiper.sidebar-item__content
       .swiper-container
         .swiper-wrapper
@@ -21,4 +21,4 @@ if pr && pr.length > 0
                       img(src= item.headImg || defaultImg, alt="productImg")
                     .product-desc
                       p #{ item.name }
-      .swiper-pagination
+      .swiper-pagination#swiper(data-color=totalTip)

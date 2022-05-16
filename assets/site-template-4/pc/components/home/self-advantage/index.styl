@@ -1,0 +1,56 @@
+.self-advantage
+  display flex
+  justify-content center
+  flex-wrap wrap
+  width 1220px
+  margin 0 auto 70px
+  &.one-line
+    justify-content center
+  .advanItem
+    width 280px
+    height: 428px
+    display flex
+    flex-direction column
+    align-items center
+    box-sizing: border-box
+    margin-right: 23px
+    background: #fff
+    border-radius: 6px
+    border: 1px solid #E5E5E5
+    &:hover
+      color: #FFFFFF
+    &:nth-child(n+5)
+      margin-top: 8px
+    &:nth-child(n+4)
+      margin-right: 0
+    img
+      width 280px
+      height: 213px
+      border-radius 4px
+      transition: all 1s
+      &:hover
+        transform: scale(1.05)
+    .title
+      width: 100%
+      color #333333
+      font-size 24px
+      margin 23px auto 14px
+      font-weight bold
+      text-align: center
+    .tips
+      width: 20px
+      height: 4px
+      margin-bottom: 16px
+      background-color: #FCAB04
+    .content
+      color #5D5D5D
+      text-align center
+      font-size 14px
+      width 218px
+      line-height 23px
+      overflow hidden
+      text-overflow ellipsis
+      display -webkit-box
+      -webkit-box-orient vertical
+      -webkit-line-clamp 3
+      word-break break-all

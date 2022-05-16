@@ -16,5 +16,12 @@ export const contactMessage = () => {
         CompanyIcon.css('display','none')
       })
     }
-  })
+    const colors = $('.navPage').data('hover')
+    $('.navPage').on('mouseover',function() {
+      $(this).css('color',colors)
+    })
+    $('.navPage').on('mouseout',function() {
+      $(this).css('color','#fff')
+    })
+  })  
 }

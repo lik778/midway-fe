@@ -57,12 +57,11 @@ mixin mediaShow()
 								| 商家地址： 
 								span(class="span-address") #{ address }
 					.detail-contact
-						include ../../../../common/pc/official-400-btn
-						+official400Btn({backgroundColor:'#ED4646',borderColor:'#ED4646',phone:phone.content,naviconw:'20px',naviconh: '20px',naviconm: '8px',navRadius: '4px',navMarginTop: '0',BtnHeight:'40px',BtnWidth:'140px'})
 						if kf53StyleUrl && kf53StyleUrl.length > 0
-							a.online-btn(href=kf53StyleUrl)
-								img(src="//file.baixing.net/202102/9e46f359876a9b5a1f997d3ab8aae438.png", alt="icon")
+							a.online-btn(href=kf53StyleUrl style=`background: ${totalTip}`)
+								img(src="//file.baixing.net/202205/d0dc1b78ca802c777df9266aaa459346.png", alt="icon")
 								span 在线咨询
-			.media-middle-right
-				include ../common/company-record
-				+companyRecord(logo,companyName)
+						.searchPhone
+							.phoneIcon
+								img(src="//file.baixing.net/202205/d339afe814ba03bae9cc0698e511657c.png", alt="")
+							.phoneContent(data-phone=phone.content) 查看电话

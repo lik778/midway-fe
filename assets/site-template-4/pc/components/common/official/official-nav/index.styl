@@ -1,0 +1,67 @@
+.official-nav-container 
+  box-shadow 0 4px 4px rgba(#000, 0.2)
+.official-nav-content 
+  display: flex
+  align-items: center
+  width: 1200px
+  margin: 0 auto
+  * 
+    box-sizing: border-box
+  .nav-item-box
+    flex: 1
+    max-width: 240px
+  .hover-box
+    width 123px
+    position relative
+    &:hover
+      .nav-item
+        font-weight: bold
+      .nav-dropdown
+        transform: scale(1,1) translateX(-50%)
+        opacity: 1
+    .nav-item
+      display: block
+      height: 64px
+      padding: 0 5px
+      position relative
+      text-align: center
+      line-height: 64px
+      font-size: 18px
+      color #FFFFFF
+      .active-flag
+        display: none
+        width: 120px
+        height: 4px
+        position: absolute
+        top 0
+        left: 50%
+        transform: translateX(-50%)
+      &.active
+        color #ff4365
+        font-weight: bold
+        .active-flag
+          display: block
+    .nav-dropdown
+      min-width 100%
+      opacity: 0
+      transition: all 0.3s
+      transform-origin: center top
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: scale(1,0) translateX(-50%)
+      z-index 9999
+      background-color: #fff
+      box-shadow 0 4px 4px rgba(#000, 0.2)
+      .nav-dropdown-item
+        display: block
+        line-height: 50px
+        padding: 0 10px
+        text-align: center
+        color #FFFFFF
+        border-top: 1px solid #f7f7f7
+        // &+.nav-dropdown-item
+        //   border-top: 1px solid #f7f7f7
+        &:hover
+          font-weight: bold
+

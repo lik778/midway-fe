@@ -4,13 +4,31 @@ import $ from 'jquery';
 import Swiper from 'swiper';
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { aboutUs } from '../components/home/about-us'
-import { leaveLeads } from '../../../common/contact-form'
+import { leaveLeads } from '../components/common/contact-form'
 import { contactMessage } from '../components/contact-message'
+import { seflAdvantage } from '../components/home/self-advantage'
+import { productList } from '../components/home/product-list'
+import { productListNew } from '../components/home/product-list-new'
+import { newLists } from '../components/home/news-list'
+import { productCat } from '../components/home/product-catogeries'
 contactMessage()
 leaveLeads()
 aboutUs()
+seflAdvantage()
+productList()
+productListNew()
+newLists()
+productCat()
 $(document).on('ready', function () {
-	// 轮播产品
+  // 处理pagination选中后的颜色
+  let color = $('.swiper-pagination').data('color')
+  let nums = {
+    '#336FFF': 1,
+    '#D20306': 2,
+    '#30B015': 3,
+		'#BF8452': 4
+  }
+  // 轮播产品
 	new Swiper('#banner-container  .swiper-container', {
 		watchSlidesProgress: true,
 		slidesPerView: 'auto',
@@ -68,6 +86,7 @@ $(document).on('ready', function () {
 		pagination: {
 			el: '#banner-list .swiper-pagination',
 			clickable: true,
+			bulletActiveClass: `my-bullet-active-${nums[color]}`
 		},
 		navigation: {
 			nextEl: '#banner-list .swiper-button-next',

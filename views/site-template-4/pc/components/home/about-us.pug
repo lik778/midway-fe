@@ -1,4 +1,5 @@
 mixin about-Us-New(type,mediaImg,videoUrl)
+  - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
   .about-us-bgc
     .content-right
       .content-right-title
@@ -6,25 +7,15 @@ mixin about-Us-New(type,mediaImg,videoUrl)
           img(src=company.logo || defaultLogo)
         .right-title-right
           p.left-title #{ companyName }
-          .tags 
-            each item in type
-              p.tag= item
       .content-right-body(data-d=company.about)
-        - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
         .body-content
-          | !{ aboutText.length === 220?aboutText+'...':aboutText }
-          if aboutText.length === 220
-            a.view-detail(href=aboutLink) 查看详情
-      if isSem !== '1' && phone.content
-        .content-right-bottom
-          .bottom-left
-            img(src="//file.baixing.net/202108/e9cd4572f5363e55005f0e8616be31c3.png")
-            .phone
-              .service-hot 服务热线
-              p.phoneNumber-slice.active #{ phone.content.slice(0,3)+'****'+phone.content.slice(7) }
-              p.phoneNumber-full.none #{ phone.content }
-          .bottom-right 查看完整电话
+          | !{ aboutText.length === 232?aboutText+'...':aboutText }
+      if aboutText.length === 232
+       a.view-detail(href=aboutLink) 查看详情
     .content-left
+      .tags 
+        each item in type
+          p.tag(style=`background-color: ${about}`)= item
       if videoUrl
         .video-con
           .video-wrapper

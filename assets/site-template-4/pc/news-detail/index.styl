@@ -8,21 +8,69 @@
 @import "../components/contact-form-companyInfo"
 @import "../components/company-record"
 @import 'quill/dist/quill.snow.css'
+@import "../components/contact-message"
+@import "../../../common/pc/contact-form-sem"
+@import "../components/sidebar/products"
+.newsSwiper
+  overflow hidden
+  height: 363px
+.newDetails
+  width: 100%
+  background: #fff
+  #contactFormBox
+    overflow hidden
+    width: 100%
+    padding-bottom: 72px
+    margin-top: 40px
+    .block-title
+      margin-top: 54px
+      .h2
+        color: #fff
+        margin-left 15px
 .container
     width 1220px
-    margin 10px auto 72px
+    margin 0 auto
     display flex
-
+.block-title
+  margin 40 auto 41px
+  position relative
+  text-align center
+  .h2
+    display inline-block
+    margin-bottom: 16px
+    font-size 34px
+    text-align center
+    color #212121
+    font-weight bold
+  .point
+    position absolute
+    bottom: 0
+    left: 50%
+    transform: translateX(-107px)
+    width: 214px
+    height: 2px
+    margin-top: 16px
+    background-color: #EBEBEB
+    .tipMiddle
+      position absolute
+      top: 0
+      left: 50%
+      transform: translateX(-12px)
+      width 24px
+      height 3px
+      background: #336FFF
 //主体区块新闻资讯样式
 .news-detail
-    max-width 960px
-    margin-bottom 30px
-
+    width: 100%
+    margin-right: 20px
     .news
         &-content
+            width: 100%
             background-color #fff
             padding 0 30px
             box-sizing border-box
+            border-radius: 4px;
+            border: 1px solid #EFEFEF;
 
             &__pic
                 text-align center
@@ -57,26 +105,33 @@
                 margin-bottom 15px
             &__date
                 color #333
+        &-page
+          display: flex
+          justify-content: space-around
+          align-items: center
+          width: 100%
+          height: 72px
+          margin-top: 20px
+          border-radius: 4px;
+          border: 1px solid #EFEFEF;
+          &-nav
+              margin-top 10px
+              background-color #fff
+              display flex
+              justify-content space-between
+              padding 27px 30px
 
-        &-nav
-            margin-top 10px
-            background-color #fff
-            display flex
-            justify-content space-between
-            padding 27px 30px
-
-            &__pre,
-            &__next
+              &__pre,
+              &__next
                 display flex
                 flex 1
                 width 450px
                 span
-                    color #EC2525
                     margin-right 5px
                 a
-                    color #666
-                    max-width 80%
-                    display inline-block
+                  color #333333
+                  max-width 80%
+                  display inline-block
 
 
 

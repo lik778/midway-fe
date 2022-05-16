@@ -1,40 +1,84 @@
 .sidebar
-  .articles
-  .side-news-list
-    .news
-    .article
-      display block
-      margin 15px 0
-      font-size 14px
-      color #666666
-      cursor pointer
-      position relative
-      text-overflow ellipsis
-      white-space nowrap
-      overflow hidden
-      width 187px
-      box-sizing border-box
-      padding-right 15px
-      &:hover
-        &::after
-          border-color #ec2525
+ .product-contanier
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-start
+    width 100%
+    margin-bottom: 20px
+    .product-catogeries-cate
+      display flex
+      flex-direction column
+      justify-content flex-start
+      align-items center
+      width: 222px
+      background-color #fff
+      border-radius: 4px 4px 0px 0px;
+      margin-right: 0
+      border: 1px solid #efefef;
+      border-bottom: transparent;
+      a
+        box-sizing: border-box
+        position relative
+        display block
+        padding 20px 0
+        text-align left
+        font-size 16px
+        width: 175px
+        color #5D5D5D
+        vertical-align middle
+        border-bottom: 1px dotted #D4D4D4
+        &:last-child
+          border-bottom: transparent
+        &:hover
+           font-weight: bold
+        .firstIcon
+          display: none
+          position absolute
+          top: 20px
+          right: 0
+          width: 23px
+          height: 23px
+      .all-category
+        box-sizing: border-box
+        display: inline-block
+        width: 100%
+        padding 17px 20px
+        color #FFFFFF
+        font-size 18px
+        font-weight 500
+        border-radius 4px 4px 0 0
+      .border-bot
+        margin 0 auto
+        width 200px
+        height 0
+        border-top 1px dashed #DDDDDD
       &:last-child
-        margin-bottom 0
-      &::after
-        content ''
-        width 8px
-        height 8px
-        position absolute
-        border 1px solid #999
-        border-left none
-        border-bottom none
-        transform rotate(45deg)
-        top calc(50% - 5px)
-        right 3px
-    .news
-      &::after
-        content none
-.category-active
-  color #ec2525 !important
-  &::after
-    border-color #ec2525 !important 
+        width 0
+        border 0
+    .last-contacts
+      display: inline-block
+      box-sizing: border-box
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      align-items: center
+      width: 223px
+      height: 76px
+      padding: 15px 0 9px 0
+      cursor pointer
+      .last-contact-top
+        display: flex
+        justify-content: center
+        .top1
+          width: 120px
+          height: 13px
+      .last-contact-middle
+        font-weight: bold;
+        color: #FFFFFF
+        font-size: 26px;
+      .last-contact-bottom
+        font-size: 22px
+        width: 22px
+        height: 22px
+        background: url('//file.baixing.net/202205/3914beb9882f88baa6612f5999ca053a.png') no-repeat center center/100%

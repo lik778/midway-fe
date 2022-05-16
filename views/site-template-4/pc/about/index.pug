@@ -5,10 +5,16 @@ block styles
 
 //-使用了统一的header和nav
 block content
-  if isSem !== "1"
-    include ../components/common/breadcrumbs.pug
+  //- if isSem !== "1"
+  //-   include ../components/common/breadcrumbs.pug
 
   .container
+    include ../components/home/block-title.pug
+    include ../components/home/self-advantage.pug
+    - const { totalTip ,serveAd1, serveAd2 , contact} = renderData.basic.shop.color
+    - const themTipColor = `background-color: ${totalTip}`
+    - const { autoConfig } = renderData
+    - const { name: aboutUsTitle } = renderData.about||renderData.basic.aboutModule || {}
     - let {backImg} = renderData.about||renderData.basic.aboutModule || {}
     - backImg=backImg||'//file.baixing.net/202102/4d00d8e95d5a246f4e3842fcf09a2329.png'
     .banner(style="background: url("+backImg+") no-repeat top left/cover")
@@ -16,15 +22,23 @@ block content
       if !isCn && isSem !== '2'
         | #{ companyName }
     if isSem !== '2'
-      .intro
-        | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-      
-    - const userDefinedList = renderData.autoConfig
-    include ../components/common/user-defined-module-about.pug
-    +user-defined-module-about(userDefinedList)
-
-    include ../components/common/contact-form-companyInfo.pug
-
+      .container-intro
+        +bolckTitle(name || '关于我们',themTipColor)
+        .intro
+          | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+    if autoConfig[2]&&autoConfig[2].show
+      .autoConfigServer
+        +bolckTitle(autoConfig[2].mainModuleTitle||'服务资质',themTipColor)
+        -  selfAdvantage = autoConfig[2].subModuleBos
+        +self-advantage(selfAdvantage)
+    if autoConfig[1] &&autoConfig[1].show
+          include ../components/home/user-defined-module.pug
+          +user-defined-module(autoConfig[1])
+    #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
+      +bolckTitle('联系我们',themTipColor)
+      include ../components/home/contact-message.pug
+      include ../../../common/pc/contact-form-sem.pug
+      +contactFormSem('#FF2D38')
 block scripts
   :combine(fileName="site-template-4-about-pc.js")
 block append scripts

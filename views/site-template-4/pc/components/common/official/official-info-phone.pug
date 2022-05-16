@@ -1,0 +1,44 @@
+mixin createPhoneNum(phone)
+  - const { officialInfo } = renderData.basic.shop.color
+  if phone&&phone.length>0
+    - const notMobile = phone.startsWith('0') || phone.indexOf('-') !== -1
+    if notMobile
+      span.numnum(style=`color: ${officialInfo.telC}`) #{ phone }
+    else
+      span.num(style=`color: ${officialInfo.telC}`) #{phone.slice(0,3)}
+      span.line(style=`background-color: ${officialInfo.telC}`)
+      span.num(style=`color: ${officialInfo.telC}`) #{phone.slice(3,7)}
+      span.line(style=`background-color: ${officialInfo.telC}`)
+      span.num(style=`color: ${officialInfo.telC}`) #{phone.slice(7)}
+    
+mixin officialInfoPhone()
+  - const { officialInfo } = renderData.basic.shop.color
+  if phone&&phone.content
+    .official-info-phone-container
+      .official-info-phone-block
+        if isSem !== "2"
+          div.hot-link
+            img.hot-icon(src=`${officialInfo.icon}` alt="服务电话")
+            | 24小时服务热线
+        if isSem!=="1"
+          div.official-info-phone-num
+            +createPhoneNum(phone.content)
+        else
+          - let union400num =  union400 && union400.length? union400[0]: ''
+          .official-info-phone-400-action
+            button.btn(data-union400num=union400num||'') 查看电话号码
+          .official-info-phone-num-box.hide
+            .official-info-phone-num
+              +createPhoneNum(union400num)
+          .official-info-phone-num-tip.hide
+            .triangle
+              em
+              span
+            .tip-text
+              | 电话
+              span.time-num
+                | 180s
+              | 后过期，刷新页面重新获取
+      if isSem !== "2"
+        if shop.navInfo.qrImg
+         img.official-info-qa(src=shop.navInfo.qrImg, alt="")

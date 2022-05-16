@@ -12,27 +12,33 @@ block official-info-phone
     +officialInfoPhone()
 
 block content
+  - const { officialInfo, officialNav, baseSwiper, totalTip, serveAd1 ,productHv,about ,serveTel,serveAd2,productCat,newsAd,contact} = renderData.basic.shop.color
+  - const { address, logo } = renderData.basic.company
+  - const themTipColor = `background-color: ${totalTip}`
+  include ../components/home/block-title.pug
   if isSem !== "1"
     include ../components/common/breadcrumbs.pug
-  .container.clearfix
-    include ../components/product-detail/media-show.pug
-    +mediaShow()
-    - const { productList, name: productRecommendName} = renderData.productRecommend
-    include ../components/product-detail/product-recom-title.pug
-    include ../components/product/product-list.pug
+  .productDetails
+    .container.clearfix
+      include ../components/product-detail/media-show.pug
+      +mediaShow()
+      - const { productList, name: productRecommendName} = renderData.productRecommend
+      .contanierContent
+        .main
+          include ../components/product-detail/product-content.pug
 
-    .main
-      include ../components/product-detail/product-content.pug
-      include ../components/common/contact-form-companyInfo.pug
-
-    if isSem !== "1"
-      .sidebar
-        - const { productCateList, articleCateList} = renderData
-        include ../components/sidebar/cateList.pug
-        +side-cateList('产品分类', productCateList)
-        +side-cateList('文章分类', articleCateList)
-
-
+        if isSem !== "1"
+          .sidebar
+            - const { productCateList, articleCateList} = renderData
+            include ../components/sidebar/company-card.pug
+            include ../components/sidebar/cateList.pug
+            +side-cateList('文章分类', articleCateList)
+            include ../components/sidebar/products.pug
+    #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
+      +bolckTitle('联系我们',themTipColor)
+      include ../components/home/contact-message.pug
+      include ../../../common/pc/contact-form-sem.pug
+      +contactFormSem('#FF2D38')
 
 block scripts
   :combine(fileName="site-template-4-product-detail-pc.js")
