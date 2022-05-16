@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {  Button, Menu, Modal, Popover, Tooltip } from 'antd';
+import {  Alert, Button, Menu, Modal, Popover, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
@@ -194,6 +194,8 @@ const BasisTab = (props: Props) => {
         </Tooltip>
       </div>
       <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={() => {setIsSwitchTemplate(false),localStorage.setItem('hasShowChangeTemplate', '1')}}>
+        <p>点击“更换”，当前店铺的全部内容会同步到店铺新模板中。</p>
+        <Alert message="更换至新模板后，将不可恢复，新模板样式如下图所示：" type="warning" showIcon />
         <div className={styles['new-template']}>
             <img src={require('@/assets/images/template-default.png')}/>
         </div>
