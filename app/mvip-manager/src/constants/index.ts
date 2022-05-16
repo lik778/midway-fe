@@ -22,4 +22,8 @@ export const ArticleSourceText: any = {
   [ArticleSource.AI]: 'AI',
 }
 
+// B2B模板
+export const NEW_TEMPLATE_ID = 'f5760fe337070e8b9b8f3fdcd9ca1c32'
+export const OLD_TEMPLATE_ID = '5fb387d2f2db3f6b8e7080e6'
+
 

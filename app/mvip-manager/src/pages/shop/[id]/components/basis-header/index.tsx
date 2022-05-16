@@ -43,7 +43,7 @@ const BasicHeader: FC<Props> = (props) => {
           </>
         }
         {
-          Object.values(ShopBasisType).includes(type as ShopBasisType) && <ShopBasisTab type={type as ShopBasisType} />
+          Object.values(ShopBasisType).includes(type as ShopBasisType) && <ShopBasisTab {...props} type={type as ShopBasisType} />
         }
         {
           Object.values(ShopModuleType).includes(type as ShopModuleType) && <ShopModuleTab

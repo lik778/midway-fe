@@ -294,6 +294,16 @@ export const setShopBasicInfoApi = (shopId: number, params: UploadShopBasicInfoP
   return postApiData(ServicePath.SHOP, 'midway/backend/shop/setShopEnterprise', params, setShopHeader(shopId))
 }
 
+/** 更换店铺模板 */
+export const changeTemplate = (shopId: number,params: { templateId: string}) => {
+    return postApiData<any>(ServicePath.SHOP, 'midway/backend/shop/updateTemplate', params, setShopHeader(shopId))
+}
+
+/** 更换模板主题色 */
+export const changeThemeColor = (shopId: number,params: { color: 1 | 2 | 3 | 4 | 5}) => {
+    return postApiData<any>(ServicePath.SHOP, 'midway/backend/shop/themeColor', params, setShopHeader(shopId))
+}
+
 /**
  * 图片上传模态框相关接口
  */

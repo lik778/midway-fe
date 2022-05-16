@@ -5,17 +5,21 @@ import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
 import { useParams } from 'umi';
 import { RouteParams, ShopInfo } from '@/interfaces/shop';
-import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
+import { SHOP_NAMESPACE, shopMapDispatchToProps, SET_CUR_SHOP_INFO_ACTION, GET_CUR_SHOP_INFO_ACTION } from '@/models/shop';
 import { userMapDispatchToProps, userMapStateToProps } from '@/models/user';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
+import { changeTemplate, changeThemeColor } from '@/api/shop';
+import { NEW_TEMPLATE_ID } from '@/constants';
+import { successMessage } from '@/components/message';
 interface Props {
   type: ShopBasisType;
   // curShopInfo: ShopInfo | null;
   // shopStatus: ShopStatus | null
   // getShopStatus: () => Promise<any>
-  [key: string]: any
+  [key: string]: any;
+  dispatch: Dispatch;
 }
 type colorEnum = 'BLUE' | 'RED' | 'GREEN' | 'GOLD' | 'DEFAULT'
 type colorEnumValue = 1 | 2 | 3 | 4 | 5
@@ -28,14 +32,14 @@ type themeColorType = {
 const themeColors: themeColorType[] = [
     {
         key: 'BLUE',
-        colorValue: 2,
-        value: '#336FFF',
+        colorValue: 5,
+        value: '#343434',
         preview: require('@/assets/images/template-blue.png')
     },
     {
         key: 'RED',
         colorValue: 1,
-        value: '#D8010D',
+        value: '#EF1F1F',
         preview: require('@/assets/images/template-red.png')
     },
     {
@@ -52,20 +56,19 @@ const themeColors: themeColorType[] = [
     },
     {
         key: 'DEFAULT',
-        colorValue: 5,
-        value: '#005dc1',
+        colorValue: 2,
+        value: '#336FFF',
         preview: require('@/assets/images/template-default.png')
     }
 ]
 
 
 const BasisTab = (props: Props) => {
-  const { shopStatus, curShopInfo, getShopStatus, userInfo } = props
-  const currentThemeColor = curShopInfo && curShopInfo.currentTheme && themeColors.find(theme => theme.colorValue === curShopInfo.currentTheme)
+  const { shopStatus, curShopInfo, getShopStatus } = props
   const params: RouteParams = useParams();
   const history = useHistory()
   const [current, setCurrent] = useState(props.type)
-  const [currentTheme, setCurrentTheme] = useState<themeColorType>(currentThemeColor)
+  const [currentTheme, setCurrentTheme] = useState<colorEnumValue>(curShopInfo?.currentTheme)
   const [isSwitchTemplate, setIsSwitchTemplate] = useState<boolean>(false)
   const menuList = [
     {
@@ -114,7 +117,6 @@ const BasisTab = (props: Props) => {
           if (hasMultiShopRights) {
             item.display = true
           } else if (history.location.pathname.includes(ShopBasisType.INFO)) {
-            console.log(JSON.stringify(shopStatus))
             // 如果该用户不是白名单用户 还出现在info页面 则跳到首页
             history.replace('/shop')
           }
@@ -128,26 +130,51 @@ const BasisTab = (props: Props) => {
 
   useEffect(() => {
     if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
-      getShopStatus()
+        getShopStatus()
     }
-  }, [])
+    if(curShopInfo && curShopInfo.templateId !== NEW_TEMPLATE_ID && curShopInfo.type === ProductType.B2B && !localStorage.getItem('hasShowChangeTemplate')){
+        setIsSwitchTemplate(true)
+    }
+    setCurrentTheme(curShopInfo?.currentTheme)
+    console.log('curShopInfo', curShopInfo)
+  }, [curShopInfo, shopStatus ])
 
   const handleClick = (e: { key: any; }) => { setCurrent(e.key) };
   const themeColor = () => {
+      const currentThemeColor = themeColors.find(theme => theme.colorValue === currentTheme)
     return <div className={styles['theme-color']}>
         <ul>
             {
-                themeColors.map(theme => <li onClick={() => setCurrentTheme(theme)} className={currentTheme?.key === theme.key ? styles['active-theme'] : styles['theme-item'] } style={{background: `${theme.value}`}}></li>)
+                themeColors.map(theme => <li onClick={() => setCurrentTheme(theme.colorValue)} className={currentThemeColor?.key === theme.key ? styles['active-theme'] : styles['theme-item'] } style={{background: `${theme.value}`}}></li>)
             }
-            <li><Button size='small' type="primary">确认</Button></li>
+            <li><Button size='small' type="primary" onClick={switchColor}>确认</Button></li>
         </ul>
         <div className={styles['theme-preview']}>
-            <img src={currentTheme?.preview}/>
+            <img src={currentThemeColor?.preview}/>
         </div>
     </div>
   }
-  const switchTemlate = () => {
 
+  const switchColor = async () => {
+    const color = currentTheme
+    const {code, message} = await changeThemeColor(curShopInfo.id, { color })
+    if(code === 200){
+        successMessage(message || '操作成功')
+    }
+  }
+  const switchTemlate = async () => {
+    const templateId = NEW_TEMPLATE_ID
+    const {code, message} = await changeTemplate(curShopInfo.id, {templateId })
+    if(code === 200){
+        successMessage(message || '操作成功')
+        location.reload()
+    }else{
+        successMessage(message || '操作失败')
+        setIsSwitchTemplate(false)
+    }
+    if(!localStorage.getItem('hasShowChangeTemplate')){
+        localStorage.setItem('hasShowChangeTemplate', '1')
+    }
   }
   return (
     <div className={styles['tab-container']}>
@@ -159,14 +186,14 @@ const BasisTab = (props: Props) => {
         })}
       </Menu>
       <div className={styles['tip']}>
-        {userInfo && userInfo.isNewUser ? <Popover content={themeColor} title="更换主题色" trigger="click">
+        {curShopInfo && curShopInfo.type === ProductType.B2B && curShopInfo.templateId === NEW_TEMPLATE_ID ? <Popover content={themeColor} title="更换主题色" trigger="click">
             <span className={styles['color-btn']}>主题颜色</span>
-        </Popover> : <span className={styles['color-btn']} onClick={() => setIsSwitchTemplate(true)}>更换模板</span>}
+        </Popover> : curShopInfo && curShopInfo.type === ProductType.B2B && <span className={styles['color-btn']} onClick={() => setIsSwitchTemplate(true)}>更换模板</span>}
         <Tooltip color='#fff' overlayStyle={{ maxWidth: 600 }} overlayInnerStyle={{ color: '#999', padding: '10px 20px' }} title={<img style={{ width: '500px' }} src="//file.baixing.net/202112/ad8e1bd75395e197bd2d3f32cf7f386f.png" />} placement='bottomLeft'>
             <QuestionCircleOutlined className={styles['icon']} />使用指引
         </Tooltip>
       </div>
-      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={() => setIsSwitchTemplate(false)}>
+      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={() => {setIsSwitchTemplate(false),localStorage.setItem('hasShowChangeTemplate', '1')}}>
         <div className={styles['new-template']}>
             <img src={require('@/assets/images/template-default.png')}/>
         </div>
@@ -176,17 +203,14 @@ const BasisTab = (props: Props) => {
 }
 
 const mapStateToProps = (state: any) => {
-  const { userInfo } = userMapStateToProps(state)
   const { curShopInfo, shopStatus } = (state as ConnectState)[SHOP_NAMESPACE]
-  console.log(userInfo)
-  return { curShopInfo, shopStatus, userInfo }
+  return { curShopInfo, shopStatus }
 }
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    ...shopMapDispatchToProps(dispatch),
-    ...userMapDispatchToProps(dispatch)
+    ...shopMapDispatchToProps(dispatch)
   }
 };
 
