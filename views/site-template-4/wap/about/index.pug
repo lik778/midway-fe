@@ -5,7 +5,8 @@ block styles
 block content
 
 	include ../components/aboutus.pug
-	+aboutus('about')
+	- contactUsImg = renderData.basic.shop.color.wap.contactUs
+	+aboutus('about', contactUsImg)
 
 	- const userDefinedList = renderData.autoConfig
 	include ../components/user-defined-module.pug
