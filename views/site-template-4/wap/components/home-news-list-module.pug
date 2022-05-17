@@ -1,7 +1,9 @@
 mixin news-module-list(newsList,title)
+	- themeColor = renderData.basic.shop.color.productHv
 	if newsList && newsList.length >0
 		.news-list-title-box
-			.title #{title}
-			a.more(href=newsLink) 查看全部
+			div.title #{title}
+				.prefix-box(style={background: themeColor})
+				a.more(href=newsLink) 查看全部
 		include ../components/home-news-list.pug
 		+news-list(newsList)

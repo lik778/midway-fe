@@ -56,7 +56,7 @@ export class SiteService {
     }
   }
 
-  // 本地环境时需要对 domain 进行配置  
+  // 本地环境时需要对 domain 进行配置
   // 本地需要请求测试环境接口，而测试环境会校验当前的请求是否从对应的域名发出的
   // 例如 dev环境要求 shop-dev.baixing.cn这个域名(后端未修复，暂时无法使用)
   // 例如 test环境要求 shop-test.baixing.cn这个域名
@@ -68,7 +68,7 @@ export class SiteService {
   private getDomain(domain: string): string {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1 || domain.indexOf('192.168') !== -1) {
       // 可以将自己常用的还有三级域名的url写在下面 注释好
-      domain = 'shop-test.baixing.cn'
+      domain = 'shop-test1.baixing.cn'
       // domain = 'zmlc2b.shop-test2.baixing.cn'
       // domain = 'seocheck380.shop-test.baixing.cn'
 

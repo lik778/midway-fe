@@ -1,6 +1,6 @@
 extends ../layout.pug
 block styles
-    :combine(fileName="site-template-2-product-wap.css")
+    :combine(fileName="site-template-4-product-wap.css")
 
 block content
     - const cateList = renderData.productCateList
@@ -10,12 +10,12 @@ block content
     - productList = renderData.productList.result
     +product-list('', productList)
 
-    include ../../../common/wap/pagination.pug
+    include ../../../common/wap/dynamic-pagination.pug
     - const { totalPage } = renderData.productList
-    +pagination(totalPage, currentPage, `${currentPathname}`)
+    +dynamic-pagination(totalPage, currentPage, `${currentPathname}`)
 
 block scripts
-    :combine(fileName="site-template-2-product-wap.js")
+    :combine(fileName="site-template-4-product-wap.js")
 block append scripts
     script.
         window.extraContactFormData = { position: 5 };

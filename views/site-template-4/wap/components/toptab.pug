@@ -1,17 +1,21 @@
 //-这里要改成B2B模板的新样式
+- themeColor = renderData.basic.shop.color.productHv
+- SecondaryMenuBgColor = renderData.basic.shop.color.wap.SecondaryMenu
+
 .tab-header
-    .sample
-        each item,index in cateList
-            a(href=item.urlSuffix)
-                p #{item.name}
-    if cateList.length > 2
-        img(src="//file.baixing.net/202102/a3ff55e3142c133ab3d984fed7132bf7.png", alt="")
+	.sample
+		each item,index in cateList
+			a(href=item.urlSuffix)
+				p(link=item.urlSuffix, themeColor=themeColor, bgColor=SecondaryMenuBgColor) #{item.name}
+	if cateList.length > 2
+		img(src="//file.baixing.net/202205/dca6b60fc5664870200d30057d5a9407.png", alt="")
 
 .all
-    each item,index in cateList
-        a(href=item.urlSuffix)
-            p #{item.name}
-    .btn
-        button 取消
-
+	.tag-lay 当前分类
+	a#selected-tag(href="")
+		p(themeColor=themeColor, bgColor=SecondaryMenuBgColor)
+	.tag-lay.allTag 所有分类
+	each item,index in cateList
+		a(href=item.urlSuffix)
+			p #{item.name}
 .mask

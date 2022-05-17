@@ -1,0 +1,24 @@
+mixin dynamic-pagination(total, current)
+	- n = parseInt(total)
+	- p = parseInt(current)
+	- prevPage = p - 1
+	- nextPage = p + 1
+
+	if total > 1
+		div.pagination
+			if current == 1
+				.prev-page.disabled 上一页
+			else
+				.prev-page(data-page=prevPage) 上一页
+			span.select-change-container
+				span.select-page-num #{`${current}/${total}`}
+				select#pageSelect
+					- for (var i = 1; i <= total; i++)
+					if i == current
+						option(selected) #{i}
+					else
+						option(value=i) #{i}
+			if current == total
+				.next-page.disabled 下一页
+			else
+				.next-page(data-page=nextPage) 下一页
