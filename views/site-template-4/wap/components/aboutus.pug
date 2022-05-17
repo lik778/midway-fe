@@ -1,43 +1,43 @@
-mixin aboutus(pageType)
-  .aboutus
-    .aboutus-block-title 联系我们
-    .aboutus-block-content 
-      if contactName.content
-        .aboutus-item
-          img.aboutus-icon(src="//file.baixing.net/202110/a029d199d289aee6eeea5ebf1043664a.png", alt="wechat logo")
-          span.aboutus-text.only-oneline 联系人：
-            span.aboutus-info #{ contactName.content }
-      a.aboutus-item(href="tel:" + phone.content)
-        img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
-        span.aboutus-text.only-oneline 联系电话：
-          span.aboutus-info #{ phone.content }
-        span.copy-data.phone(data-value=phone.content) 点击拨打
-      if phone2.content
-        a.aboutus-item(href="tel:" + phone2.content)
-          img.aboutus-icon(src="//file.baixing.net/202105/db508392e054754f563d54b6799e8780.png", alt="phone logo")
-          span.aboutus-text.only-oneline 联系电话2：
-            span.aboutus-info #{ phone2.content }
-          span.copy-data.phone(data-value=phone2.content) 点击拨打
-      a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
-        img.aboutus-icon(src="//file.baixing.net/202105/9497fa8044660775f46a2cf210f95d89.png", alt="address logo")
-        span.aboutus-text.only-oneline 地址：
-          span.aboutus-info #{ company.address }
-        .more
-      if weChat.content
-        .aboutus-item
-          img.aboutus-icon(src="//file.baixing.net/202105/436dfb09de131dedfe9ebaaee31474a5.png", alt="wechat logo")
-          span.aboutus-text.only-oneline 微信号码：
-            span.aboutus-info #{ weChat.content }
-          span.copy-data#wechat(data-value=weChat.content) 点击复制
+mixin aboutus(pageType, contactUsImg)
+	.aboutus
+		img(src=contactUsImg).bg
+		.aboutus-block-title 联系我们
+		.aboutus-block-content
+			if contactName.content
+				.aboutus-item
+					img.aboutus-icon(src="//file.baixing.net/202205/eaa1d611a03e112d0d4ba09e273b248b.png", alt="wechat logo")
+					span.aboutus-text.only-oneline 联系人：
+						span.aboutus-info #{ contactName.content }
+			a.aboutus-item(href="tel:" + phone.content)
+				img.aboutus-icon(src="//file.baixing.net/202205/76a097fb416df8d1a0fc4240de55af5e.png", alt="phone logo")
+				span.aboutus-text.only-oneline 联系电话：
+					span.aboutus-info #{ phone.content }
+				span.copy-data.phone(data-value=phone.content) 点击拨打
+			if phone2.content
+				a.aboutus-item(href="tel:" + phone2.content)
+					img.aboutus-icon(src="//file.baixing.net/202205/76a097fb416df8d1a0fc4240de55af5e.png", alt="phone logo")
+					span.aboutus-text.only-oneline 联系电话2：
+						span.aboutus-info #{ phone2.content }
+					span.copy-data.phone(data-value=phone2.content) 点击拨打
+			a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
+				img.aboutus-icon(src="//file.baixing.net/202205/187f7843de59dd124e870669ad4feedb.png", alt="address logo")
+				span.aboutus-text.only-oneline 地址：
+					span.aboutus-info #{ company.address }
+				.more
+			if weChat.content
+				.aboutus-item
+					img.aboutus-icon(src="//file.baixing.net/202205/227676eb145ce7630eafbf7545772453.png", alt="wechat logo")
+					span.aboutus-text.only-oneline 微信号码：
+						span.aboutus-info #{ weChat.content }
+					span.copy-data#wechat(data-value=weChat.content) 点击复制
 
-
-      //-TODO：这里不知道未来还改吗？目前首页特殊要求，不加
-      if pageType != 'home'
-        .aboutus-content-box
-          if pageType === 'about'
-            if isSem !== '2'
-              p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
-          else
-            p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
-            p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
-            #aboutus-click-to-expand.click-to-expand.active 点击展开
+	//-TODO：这里不知道未来还改吗？目前首页特殊要求，不加
+	if pageType != 'home'
+		.aboutus-content-box
+			if pageType === 'about'
+				if isSem !== '2'
+					p.aboutus-content.active !{ company.about.replace(/\n/g, '<br/>') }
+			else
+				p.aboutus-content-slice.active !{ company.about.slice(0, 10).replace(/\n/g, '<br/>') }...
+				p.aboutus-content-full !{ company.about.replace(/\n/g, '<br/>') }
+				#aboutus-click-to-expand.click-to-expand.active 点击展开

@@ -56,7 +56,7 @@ export class SiteService {
     }
   }
 
-  // 本地环境时需要对 domain 进行配置  
+  // 本地环境时需要对 domain 进行配置
   // 本地需要请求测试环境接口，而测试环境会校验当前的请求是否从对应的域名发出的
   // 例如 dev环境要求 shop-dev.baixing.cn这个域名(后端未修复，暂时无法使用)
   // 例如 test环境要求 shop-test.baixing.cn这个域名

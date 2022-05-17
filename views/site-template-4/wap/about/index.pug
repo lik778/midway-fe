@@ -1,23 +1,23 @@
 extends ../layout.pug
 block styles
-    :combine(fileName="site-template-2-about-wap.css")
+	:combine(fileName="site-template-4-about-wap.css")
 
 block content
 
-    include ../components/aboutus.pug
-    +aboutus('about')
+	include ../components/aboutus.pug
+	+aboutus('about')
 
-    - const userDefinedList = renderData.autoConfig
-    include ../components/user-defined-module.pug
-    +user-defined-module('about',userDefinedList)
-    include ../components/contact-form.pug
+	- const userDefinedList = renderData.autoConfig
+	include ../components/user-defined-module.pug
+	+user-defined-module('about',userDefinedList)
+	include ../components/contact-form.pug
 
 //-block footer
 //-    include ../components/footer.pug
 
 
 block scripts
-    :combine(fileName="site-template-2-about-wap.js")
+	:combine(fileName="site-template-4-about-wap.js")
 block append scripts
-    script.
-        window.extraContactFormData = { position: 8 };
+	script.
+		window.extraContactFormData = {position: 8};

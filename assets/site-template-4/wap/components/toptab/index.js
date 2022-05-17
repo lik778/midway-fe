@@ -24,22 +24,27 @@ export const tabModule = function(){
 			html.css({'height':'auto', 'overflow': 'auto'})
 		})
 
-		//wapd端顶部的tab导航，与当前链接匹配时高亮
+		//wap端顶部的tab导航，与当前链接匹配时高亮
 		const windowPath=window.location.pathname
 		if (windowPath.indexOf('-') === -1) return
-		$(".tab-header a").each((index,tab) => {
-			const h = $(tab).attr('href')
+		$(".tab-header a > p").each((index,tab) => {
+			const h = $(tab).attr('link')
 			if(h.indexOf(windowPath) != -1){
-				$(tab).addClass('tab-active')
-				//siblings():所有同级a 元素去掉该class。
-				//$(tab).parent().siblings().find('a').removeClass('tab-active')
+				let targetEl = $(tab)
+				let themeColor = targetEl[0].attributes.themeColor.value
+				let bgColor = targetEl[0].attributes.bgColor.value
+				targetEl.addClass('active').css({"color": themeColor, background: bgColor})
 			}
 		})
 
 		$(".all a").each((index,tab) => {
 			const x = $(tab).attr('href')
 			if(x.indexOf(windowPath) != -1){
-				$(tab).addClass('tab-active')
+				let targetEl = $("a#selected-tag > p")
+				let themeColor = targetEl[0].attributes.themeColor.value
+				let bgColor = targetEl[0].attributes.bgColor.value
+				targetEl.addClass('active').css({"color": themeColor, background: bgColor})
+				targetEl.addClass('tab-active').text($(tab).text())
 			}
 		})
 	})

@@ -1,19 +1,26 @@
 extends ../layout.pug
 block styles
-    :combine(fileName="site-template-2-news-wap.css")
+	:combine(fileName="site-template-4-news-wap.css")
 
 block content
-    - const cateList = renderData.articleCateList
-    include ../components/toptab
-    - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
-    include ../components/news-list
-    +news-list(articleList)
+	- const cateList = renderData.articleCateList
+	include ../components/toptab
+	- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+	include ../components/news-list
+	+news-list(articleList)
 
-    include ../../../common/wap/pagination.pug
-    +pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+	include ../../../common/wap/dynamic-pagination.pug
+	+dynamic-pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+
+block footer
+	div(style="padding-bottom:75px")
+	- const { weixin, people } = renderData.basic.shop.color.wap
+	- const { totalTip } = renderData.basic.shop.color
+	include ../../../common/wap/dynamic-official-footer-contact.pug
+	+dynamic-official-footer-contact(totalTip,weixin,people)
 
 block scripts
-    :combine(fileName="site-template-2-news-wap.js")
+	:combine(fileName="site-template-4-news-wap.js")
 block append scripts
-    script.
-        window.extraContactFormData = { position: 2 };
+	script.
+		window.extraContactFormData = {position: 2};
