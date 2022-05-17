@@ -451,7 +451,7 @@ export class BaseSiteController {
         item.content = `${data.navigation[0].content}#contactFormBox`
       }
     })
-    data.basic.shop.templateId = '111111111111111111111111'
+    data.basic.shop.templateId = 'f5760fe337070e8b9b8f3fdcd9ca1c32'
     return data
   }
 

@@ -21,7 +21,7 @@ export class SiteService {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
     "5fb387d2f2db3f6b8e7080e6": "site-template-2",
     "7397650bdc5446a36d6d643e": "site-template-3",
-    '111111111111111111111111': "site-template-4"
+    'f5760fe337070e8b9b8f3fdcd9ca1c32': "site-template-4"
   }
   constructor(
     private readonly httpService: HttpService,

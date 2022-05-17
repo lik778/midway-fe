@@ -4,14 +4,14 @@ mixin product-list(type,productList)
 			each item in type == 'hot' ? productList.slice(0,12) : productList.slice(0,6)
 				if type == 'hot'
 					a.item-p(href=item.urlSuffix, target="_blank", class=item.videoUrl?'video':'' data-color=productHv)
-						img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
+						img.productImg(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 						p.only-oneline.
 							#{ item.name } #[span.arrow]
 						.item-hot-icon
 							img(src="//file.baixing.net/202205/9cdf690c0c4c9adc9123792ab59a56cb.png", alt="hot-logo")
 				else 
 					a.item-p(href=item.urlSuffix, target="_blank", class=item.videoUrl?'video':'' data-color=productHv)
-						img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
+						img.productImg(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 						p.only-oneline.
 							#{ item.name } #[span.arrow]
 

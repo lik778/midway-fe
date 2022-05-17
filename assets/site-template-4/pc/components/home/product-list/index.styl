@@ -2,6 +2,7 @@
   position relative
   float left
   width 383px
+  height: 380px
   margin-right 19px
   border-radius: 0px 0px 4px 4px;
   overflow hidden
@@ -10,6 +11,8 @@
   font-size: 24px;
   background-color #F6F6F6
   &:hover
+    .productImg
+      transform: scale(1.05)
     p
       color: #FFFFFF
       .arrow
@@ -22,8 +25,6 @@
     height 300px
     width 100%
     transition: all 1s
-    &:hover
-      transform: scaleX(1.08)
   &.video
     &::after
       content ''
