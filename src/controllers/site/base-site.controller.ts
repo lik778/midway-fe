@@ -353,7 +353,7 @@ export class BaseSiteController {
         productCat: { // 热门产品分类
           catTheme: '#336FFF',
           catHo: '#343434',
-          catBg: '//file.baixing.net/202204/fb63d2dc6e08e697f2169b9006eb5e58.png',
+          catBg: '//file.baixing.net/202204/c29c21254f8b758904d6e0236f91372b.png',
           catIcon: '//file.baixing.net/202204/eadcd4817ac82657b4b73fe21a8aa10e.png',
         },
         newsAd: '#336FFF', // 新闻优势

@@ -62,8 +62,15 @@ block content
           +bolckTitle(articleListName,themTipColor)
           include ../components/home/news-list.pug
           +news-list(articleList)
-
-      //- 用于导航
+      -
+        const list = {
+          HUANGJIN: '//file.baixing.net/202112/711cbb47aa2f6a1965edf77d4e365f62.png',
+          BAOJIE: '//file.baixing.net/202112/9215278b9445b590eabd956a425abb4d.png',
+          SHECHIPIN: '//file.baixing.net/202112/5140423747752ff64a6af9a61d796e89.png',
+          JIAZHENG: '//file.baixing.net/202112/122947c3fef8a002b4b4e7d741535b51.png',
+          WULIU: '//file.baixing.net/202112/87e959e25d09830be6be3c976d2d9c3f.png',
+          WEIXIU: '//file.baixing.net/202112/54876ec9655f874eced9769b1e4214ac.png'
+        }
       if styleType === 'B2B_NORMAL'
         #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
             +bolckTitle('联系我们',themTipColor)
@@ -72,10 +79,10 @@ block content
             //- 用于sem禁止外跳
             include ../../../common/pc/contact-form-sem.pug
             +contactFormSem('#FF2D38')
-      //- 行业模板
-      if styleType !== 'B2B_NORMAL'
-        include ../../../common/pc/contact-module.pug
-        +contactModule(styleType)
+      else
+        .contactTemplate4
+          include ../../../common/pc/contact-module.pug
+          +contactModule(styleType)
 block scripts
     :combine(fileName="site-template-4-home-pc.js")
 block append scripts

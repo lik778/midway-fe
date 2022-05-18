@@ -10,7 +10,6 @@ initializeSidebarProductSwiper()
 cateListActive()
 leaveLeads()
 $(document).on('ready', function () {
-  console.log($('.news-content__title').data('color'))
   let hoverList = $('.news-content__title').attr('hoverList')
   $('.news-content__title').on('mouseover',function() {
     $(this).css('color',hoverList)

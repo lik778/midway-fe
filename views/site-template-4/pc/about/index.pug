@@ -35,10 +35,12 @@ block content
           include ../components/home/user-defined-module.pug
           +user-defined-module(autoConfig[1])
     #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
-      +bolckTitle('联系我们',themTipColor)
-      include ../components/home/contact-message.pug
-      include ../../../common/pc/contact-form-sem.pug
-      +contactFormSem('#FF2D38')
+        +bolckTitle('联系我们',themTipColor)
+        //- 通用模板
+        include ../components/home/contact-message.pug
+        //- 用于sem禁止外跳
+        include ../../../common/pc/contact-form-sem.pug
+        +contactFormSem('#FF2D38')
 block scripts
   :combine(fileName="site-template-4-about-pc.js")
 block append scripts
