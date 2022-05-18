@@ -117,7 +117,7 @@ export class BaseSiteController {
         }
       }
     }
-    /**
+   /**
     [
       { // 红色版本
         officialInfo: {  // 头部-公司名称右侧
@@ -126,16 +126,16 @@ export class BaseSiteController {
         },
         officialNav: { // 导航栏
           navBg: 'linear-gradient(180deg, #515254 0%, #363537 100%)',
-          navHv: '#D8010D'
+          navHv: '#EF1F1F'
         },
-        baseSwiper: '#D20306', // swiper
-        totalTip: '#D8010D', // 每个模块标题下面的tip背景色
+        baseSwiper: '#EF1F1F', // swiper
+        totalTip: '#EF1F1F', // 每个模块标题下面的tip背景色
         serveAd1: { // 最上方服务优势
           adColor: '#323233',
-          adTip: '#D20306',
+          adTip: '#EF1F1F',
           adHv: '#323233 '
         },
-        productHv: '#D8010D', //热门产品
+        productHv: '#EF1F1F', //热门产品
         about: '#323233', // 关于我们
         serveTel: { // 24小时服务热线
           consultImg: '//file.baixing.net/202205/fb63d2dc6e08e697f2169b9006eb5e58.png',
@@ -143,21 +143,21 @@ export class BaseSiteController {
           consultBg: '#FFFFFF '
         },
         serveAd2: {  // 最下方服务优势
-          serviceThe: '#D8010D',
-          serviceNum: '#D8010D'
+          serviceThe: '#EF1F1F',
+          serviceNum: '#EF1F1F'
         },
         productCat: { // 热门产品分类
-          catTheme: '#D8010D',
-          catHo: '#D8010D',
+          catTheme: '#EF1F1F',
+          catHo: '#EF1F1F',
           catBg: '//file.baixing.net/202204/fb63d2dc6e08e697f2169b9006eb5e58.png',
           catIcon: '//file.baixing.net/202204/f890c8e2db6c9191a0b7f135be477d87.png',
         },
-        newsAd: '#D8010D', // 新闻优势
+        newsAd: '#EF1F1F', // 新闻优势
         contact: { // 联系方式
-          concatTheme: '#D8010D',
+          concatTheme: '#EF1F1F',
           concatBg: '//file.baixing.net/202204/4c54c51c97c23845ddffd180bbff42c1.png',
           buttonColor: '#E42732',
-          buttonBg: '#E42732'
+          buttonBg: '#EF1F1F'
         },
         wap: {
           contactUs: '//file.baixing.net/202205/2cd08f2e6d3465dc7ab60ebf4d0b737e.png',
@@ -234,7 +234,7 @@ export class BaseSiteController {
         totalTip: '#30B015', // 全局的主题色
         serveAd1: { // 最上方服务优势
           adColor: '#323233',
-          adTip: '#30B015',
+          adTip: '#FC8E4E',
           adHv: '#30B015'
         },
         productHv: '#30B015', //热门产品
@@ -325,7 +325,7 @@ export class BaseSiteController {
       },
       { // 黑蓝版本
         officialInfo: {  // 头部-公司名称右侧
-          icon: '//file.baixing.net/202204/3cc0a982890ee12761aa8f6e5d20e7ea.png',
+          icon: '//file.baixing.net/202204/31715156aa6c8440f1a3e27ea78a9045.png',
           telC: '#336FFF'
         },
         officialNav: { // 导航栏
@@ -351,16 +351,16 @@ export class BaseSiteController {
           serviceNum: '#343434'
         },   // 最下方服务优势
         productCat: { // 热门产品分类
-          catTheme: '#BF8452',
+          catTheme: '#336FFF',
           catHo: '#343434',
-          catBg: '//file.baixing.net/202205/ba7f44d7a193681417c6aa1fbcf2ebb0.png',
-          catIcon: '//file.baixing.net/202205/ba3911a882c97924a29a3d8797eb904a.png',
+          catBg: '//file.baixing.net/202204/fb63d2dc6e08e697f2169b9006eb5e58.png',
+          catIcon: '//file.baixing.net/202204/eadcd4817ac82657b4b73fe21a8aa10e.png',
         },
         newsAd: '#336FFF', // 新闻优势
         contact: { // 联系方式
-          concatTheme: '#BF8452',
+          concatTheme: '#336FFF',
           concatBg: '//file.baixing.net/202205/355c77262a579036146e415e9442c1ca.png',
-          buttonColor: '#D29663',
+          buttonColor: '#336FFF',
           buttonBg: '#343434'
         },
         wap: { // 
@@ -376,12 +376,12 @@ export class BaseSiteController {
         }
       }
     ]
-      */
+     */
     // '#336FFF' // 蓝色
     // '#D8010D' // 红色
     // '#30B015' // 绿色
     // '#BF8452' // 金色
-    // '#343434' // 黑蓝
+    // '#343434' // 黑蓝 完成
     // currentTheme:  '#336FFF'// currentTheme是当前店铺的主题色
 
 

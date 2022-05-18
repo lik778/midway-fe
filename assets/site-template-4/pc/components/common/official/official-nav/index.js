@@ -12,9 +12,9 @@ export const  oficialNav = function() {
     }
   })
   $('.nav-item').on('mouseover',function() {
-    $(this).css('background-color',color)
+    $(this).css('background',color)
   })
   $('.nav-item').on('mouseout',function() {
-    $(this).css('background-color',leave)
+    $(this).css('background',leave)
   })
 } 

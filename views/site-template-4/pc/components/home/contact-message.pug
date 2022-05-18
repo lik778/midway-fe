@@ -10,11 +10,11 @@
         each item  in navigation.length && navigation
           li
             a.navPage(href=item.content data-hover=contact.concatTheme) #{ item.name }
-    .left-line(style=`background-color: ${contact.concatTheme}`)
+    .left-line
     .left-address
       .company-title#companyTitle
         .company-contect #{ companyName || '暂未添加公司名称' }
-      .company-line
+      .company-line(style=`background: ${contact.concatTheme}`)
       .company-detail
         .company-tel
           img(src="//file.baixing.net/202205/34dcc4c5ec7b705213d2b12da7708ad6.png", alt="tel")

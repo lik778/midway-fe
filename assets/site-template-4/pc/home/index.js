@@ -25,8 +25,9 @@ $(document).on('ready', function () {
   let nums = {
     '#336FFF': 1,
     '#D20306': 2,
-    '#30B015': 3,
-		'#BF8452': 4
+    '#6CB436': 3,
+    '#BF8452': 4,
+    '#343434': 5
   }
   // 轮播产品
 	new Swiper('#banner-container  .swiper-container', {

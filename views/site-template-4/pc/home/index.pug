@@ -38,7 +38,7 @@ block content
           include ../components/home/about-us.pug
           +about-Us-New(tags,media,videoUrl)
         include  ../components/home/about-contact-tel.pug
-        +aboutContactTel('//file.baixing.net/202205/3fa7596d8dc95e75f768d92e1979e0a4.png',serveTel.consultBg,serveTel.consultCo)
+        +aboutContactTel(serveTel.consultImg,serveTel.consultBg,serveTel.consultCo)
 
       //-自定义模块1（即之前的企业优势模块）
       if autoConfig[1] &&autoConfig[1].show

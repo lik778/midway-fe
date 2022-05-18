@@ -1,6 +1,6 @@
 mixin officialNav()
   - const { officialNav } = renderData.basic.shop.color
-  .official-nav-container(style=`background-color: ${officialNav.navBg}`)
+  .official-nav-container(style=`background: ${officialNav.navBg}`)
     .official-nav-content 
       each item in nav
         - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
@@ -10,4 +10,4 @@ mixin officialNav()
             if hasDropdown
               .nav-dropdown
                 each cItem in item.contentCateBos
-                  a.nav-dropdown-item(style=`background-color:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix) #{ cItem.name }
+                  a.nav-dropdown-item(style=`background:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix) #{ cItem.name }
