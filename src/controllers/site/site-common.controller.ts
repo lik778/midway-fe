@@ -21,15 +21,6 @@ export class SiteCommonController {
         res.json(resData)
     }
 
-    @Post('/getPhoneNumber400')
-    public async getPhoneNumber400(@Req() req: Request, @UserAgent('device') device,
-        @Res() res: Response, @Body() body) {
-        const domain = req.hostname
-        const { shopName } = body
-        const resData = await this.midwayApiService.getPhone400Number(shopName, device, domain)
-        res.json(resData)
-    }
-
     @Post('/complaint')
     async complaint(@Req() req: Request, @Body() body, @UserAgent('device') device, @Res() res: Response) {
         const domain = req.hostname

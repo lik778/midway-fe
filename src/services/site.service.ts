@@ -71,7 +71,6 @@ export class SiteService {
       // domain = 'zmlc2b.shop-test2.baixing.cn'
       // domain = 'seocheck380.shop-test.baixing.cn'
       domain = 'shop.baixing.cn'
-
     }
     return domain
   }
@@ -158,12 +157,6 @@ export class SiteService {
   //留言资讯
   public leaveLeads(shopName: string, device: string, params: any, domain: string): Promise<any> {
     return this.requestService.post(`${this.prefixPath}/home/message`, params,
-      this.setPageHeaders(shopName, device, domain));
-  }
-
-  // 获取400号码
-  public getPhone400Number(shopName: string, device: string, domain: string): Promise<any> {
-    return this.requestService.post(`${this.prefixPath}/vm400/dynamic`, {},
       this.setPageHeaders(shopName, device, domain));
   }
 
