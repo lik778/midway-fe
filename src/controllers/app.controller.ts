@@ -1,9 +1,10 @@
-import { Controller, Get, HttpException, HttpStatus, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { SiteService } from '../services/site.service';
 import { Request, Response } from 'express';
 import { join } from 'path';
 import * as fs  from 'fs';
 import config from '../config';
+import { UserAgent } from 'src/decorator/user-agent.decorator';
 
 const staticFiles = join(__dirname , '..', '..', '/assets/static')
 const files = fs.readdirSync(staticFiles);
@@ -33,5 +34,4 @@ export class AppController {
   async managementView(@Req() req: Request, @Res() res: Response) {
     res.send(process.env.NODE_ENV + ': everything is ok!!!')
   }
-
 }

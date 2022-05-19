@@ -15,7 +15,7 @@ import TemplateUpload from './pages/TemplateUpload';
 import StatusChange from './pages/StatusChange';
 import BxGallery from './pages/BxGallery';
 import VerifySeo from './pages/SeoVerify';
-
+import CustomerService from './pages/CustomerService';
 
 export default () => {
   return (
@@ -31,6 +31,7 @@ export default () => {
         <Route path="/clean-cache" component={CleanCache} key="clean-cache" />
         <Route path="/modify-the-store" component={ModifyStore} key="modify-the-store" />
         <Route path="/advice-record" component={AdviceRecord} key="advice-record" />
+        <Route path="/customer-service" component={CustomerService} key="customer-service" />
         <Route path="/template-upload" component={TemplateUpload} key="template-upload" />
         <Route path="/status-change" component={StatusChange} key="status-change" />
         <Route path="/bx-gallery" component={BxGallery} key="bx-gallery" />

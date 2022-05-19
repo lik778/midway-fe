@@ -201,6 +201,7 @@ export class BaseSiteController {
     const currentPage = query.page || 1;
 
     const id = params.id
+    const position = id ? 4 : 2
 
     const { data: originData } = await this.midwayApiService[id ? 'getNewsCateData' : 'getNewsPageData'](shopName, device, { cateId: id, page: currentPage, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
@@ -226,7 +227,8 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'article', pageStartRenderTime: new Date().getTime() });
+
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'article', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get('/n-:id.html')
@@ -287,6 +289,7 @@ export class BaseSiteController {
     const currentPage = query.page || 1
 
     const id = params.id
+    const position = id ? 7 : 5
 
     const { data: originData } = await this.midwayApiService[id ? 'getProductCateData' : 'getProductPageData'](shopName, device, { cateId: id, page: currentPage, size: 5, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
@@ -311,7 +314,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-		return res.render(templateUrl, { title: '产品服务', renderData: { ...data, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get('/p-:id.html')
@@ -454,4 +457,13 @@ export class BaseSiteController {
       title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'search', pageStartRenderTime: new Date().getTime()
     })
   }
+
+  // 用户保障中心
+  @Get('/safeguard')
+  async safeguard(@Param() params, @HostParam('shopName') HostShopName: string, @HostParam('domain') HostDomain: string,
+    @Query() query, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
+        const templateUrl = 'common/safeguard-form'
+        const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
+        return res.render(templateUrl, { title: '百姓网保障中心', renderData: { meta: {}, shopName}})  
+    }
 }

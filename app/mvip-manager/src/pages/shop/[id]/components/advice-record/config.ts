@@ -3,7 +3,7 @@ import { FormType } from '@/components/wildcat-form/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
 import styles from './index.less'
 // 表单
-const phoneFliterRules = /(^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$)|(^((86)|(\\+86))?1[3-9][0-9]{9}$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
+const phoneFliterRules = /(^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$)|(^((86)|(\\+86))?1[3-9][0-9]{9}$)/
 export const RecordForm: FormConfig = {
   name: 'Record',
   labelAlign:"left",

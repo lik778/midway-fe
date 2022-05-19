@@ -18,6 +18,7 @@ const routerKey = {
   "/template-upload": 'template-upload',
   "/status-change": 'status-change',
   "/bx-gallery": 'bx-gallery',
+  "/customer-service":"customer-service",
 }
 export default withRouter((props) => {
   const menuKey = routerKey[props.location.pathname]
@@ -65,6 +66,9 @@ export default withRouter((props) => {
             </SubMenu>
             <Menu.Item key="advice-record">
               <Link to="/advice-record" key="advice-record">意见收集</Link>
+            </Menu.Item>
+            <Menu.Item key="customer-service">
+              <Link to="/customer-service" key="customer-service">客户权益保障管理</Link>
             </Menu.Item>
             <SubMenu key="templates-management" title="素材库管理">
               <Menu.Item key="template-upload">

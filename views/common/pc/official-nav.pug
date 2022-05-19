@@ -10,4 +10,4 @@ mixin officialNav()
             if hasDropdown
               .nav-dropdown
                 each cItem in item.contentCateBos
-                  a.nav-dropdown-item.only-oneline(href=cItem.urlSuffix) #{ cItem.name }
+                  a.nav-dropdown-item.only-oneline(href=cItem.urlSuffix data-id=cItem.id) #{ cItem.name }
