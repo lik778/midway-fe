@@ -16,7 +16,7 @@ mixin side-cateList(type,list)
         .all-category(style=`background-color: ${productCat.catTheme}`) #{type}
         each item,index in list
           if(index == 0)
-            a#cateList(href= item.urlSuffix data-hover=productCat.catTheme).
+            a.cateList(href= item.urlSuffix detailHover=productCat.catTheme).
               #{ item.name.length > 8 ? item.name.slice(0,8) + '...' : item.name} #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
       a.last-contacts(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=`tel:${phone.content}`)
         .last-contact-top

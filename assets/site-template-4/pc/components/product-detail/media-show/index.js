@@ -29,6 +29,15 @@ export const mediaShow = function() {
       prevEl: '.left-contentImg .swiper-button-prev',
     },
   });
+  
+  let color = $('.media-show-container').attr('mediaShowContainer')
+  let nums = {
+    '#336FFF': 1,
+    '#D8010D': 2,
+    '#30B015': 3,
+		'#BF8452': 4,
+    '#343434': 5
+  }
   // 缩略图
   $('.swiper-wrapper').on('click', '.swiper-slide', function(e) {
     const  $ThisImg = $(this)
@@ -47,11 +56,11 @@ export const mediaShow = function() {
     }
     // 设置高亮
  
-    $ThisImg.addClass('my-slide-active');
-    $ThisImg.siblings().removeClass('my-slide-active');
+    $ThisImg.addClass(`my-slide-active-${nums[color]}`);
+    $ThisImg.siblings().removeClass(`my-slide-active-${nums[color]}`);
   });
   // 默认选中第一项
-  $('.swiper-slide:first').addClass('my-slide-active')
+  $('.swiper-slide:first').addClass(`my-slide-active-${nums[color]}`)
     // 视频初始化
     const $productVideo = document.querySelector('.left-headImg video');
     if ($productVideo) {

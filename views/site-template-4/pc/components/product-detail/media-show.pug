@@ -8,7 +8,7 @@ mixin mediaShow()
 	- const coverHead = contentImg[0] || defaultImg
 	- const seoName = infoSeoKeyWord || name
 	- const proSuffixs = (suffixs.length > 0 && suffixs.join('_')) || '品牌_价格_批发_图片_行情_地址_厂家_公司_货源_参数_电话'
-	.media-show-container
+	.media-show-container(mediaShowContainer=totalTip)
 		.media-show-left
 			.left-headImg
 				if headImg
