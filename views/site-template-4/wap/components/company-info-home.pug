@@ -1,6 +1,8 @@
 mixin company-info-home(type)
 	- introduceBgColor = renderData.basic.shop.color.wap.introduce
 	- tagBgColor = renderData.basic.shop.color.wap.tag
+	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
 	- let defaultTags = ['百姓认证', '实力商家', '品质保障', '贴心服务']
 	.company-info
 		.info(style={background: introduceBgColor})
@@ -19,6 +21,6 @@ mixin company-info-home(type)
 			img.top-left(src="//file.baixing.net/202204/d3a54209ad7133f979bdc615bcba5e51.png", alt="")
 			img.bottom-right(src="//file.baixing.net/202204/cfc1cc382c1ae1a5e2e4036ac55a938d.png", alt="")
 			.action-btn-box
-				.action-btn.hide 展开
+				.action-btn.hide(style={color: specialIconColor || themeColor}) 展开
 
 

@@ -3,11 +3,13 @@
 - const formBtnWap = contactFields.filter(item => item.title === '表单按钮')[0].des
 - const contactTitleWap = contactFields.filter(item => item.title === '表单标题')[0].des
 - advisoryMeImg = renderData.basic.shop.color.wap.advisoryMe
-- theme = renderData.basic.shop.color.productHv
+- themeColor = renderData.basic.shop.color.productHv
+- specialIconColor = renderData.basic.shop.color.wap.specialIcon
+
 .contact-form#contactForm
 	img(src=advisoryMeImg).bg
 	h4.block-title #{ contactTitleWap || '留言咨询'}
-		.prefix-box(style={background: themeColor})
+		.prefix-box(style={background: specialIconColor || themeColor})
 	.contact-form-list
 		each item in formListWap.length  && formListWap
 			.a-content-item
@@ -17,4 +19,4 @@
 						span.labe-icon#labeIcon &nbsp;*
 				input(type="text" name="contact" data-fixed=item.fixed data-value=item.des data-key=item.title placeholder=item.des)
 		.form-item
-			button(style={background: theme})#SubmitButton.btn-animate-light #{formBtnWap || '马上提交'}
+			button(style={background: specialIconColor || themeColor})#SubmitButton.btn-animate-light #{formBtnWap || '马上提交'}

@@ -1,8 +1,9 @@
 mixin user-defined-module-item(pageType,userDefinedModule)
+	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
 	if userDefinedModule.show
 		- const userDefinedList = userDefinedModule.subModuleBos
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
-		- themeColor = renderData.basic.shop.color.productHv
 		.user-defined-module
 			div.block-title-box #{ userDefinedModule.mainModuleTitle }
 				.prefix-box(style={background: themeColor})
@@ -13,8 +14,8 @@ mixin user-defined-module-item(pageType,userDefinedModule)
 					else
 						- var number = index + 1
 					.user-defined-item
-						span.number #{ number }
-						span.title #{ item.title }
+						span.number(style={background: specialIconColor || themeColor}) #{ number }
+						span.title(style={color: specialIconColor || themeColor}) #{ item.title }
 						.content.only-fiveline #{ item.content }
 				if isOdd
 					if pageType === 'about'
