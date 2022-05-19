@@ -21,6 +21,7 @@ export interface ConfigItem {
   type: ConfigItemType,// 列表是文章还是产品
   required: boolean,// 是否必填
   maxLength: number,// 做多添加
+  extraTips?: string,
   ajaxApi: (shopId: number, params: GetContentApiParams) => Promise<ServiceResponse<{
     productList: ListRes<ProductListItem[]>,
     articleList: ListRes<ArticleListItem[]>,

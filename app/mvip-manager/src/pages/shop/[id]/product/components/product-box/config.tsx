@@ -35,13 +35,13 @@ export const productForm = (type: string, isB2B: boolean, onChange?: (params: an
       {
         formItemWidth: 150, label: '用于封面', name: 'media', type: FormType.ImgUpload, required: false, maxLength: 1, images: [{ uploadType: 2, showVideo: true, text: '上传图片/视频', name: 'media', maxSize: 3, cropProps: { aspectRatio: 300 / 200 }, aspectRatio: 300 / 200 }],
         tip: <>
-          <p className={styles['media-tip']}>图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于300*200</p>
+          <p className={styles['media-tip']}>图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于384*293</p>
           <p className={styles['media-tip']}>视频建议尺寸：16:9，大小100M以内，视频时长最短3S，最长60S</p>
         </>
       },
       {
         formItemWidth: 150, label: '用于封面轮播', name: 'contentImg', type: FormType.ImgUpload, required: false, maxLength: 5, images: [{ uploadType: 2, text: '上传图片', name: 'contentImg', maxSize: 3, cropProps: { aspectRatio: 300 / 200, autoAspectRatio: false }, aspectRatio: 300 / 200 }],
-        tip: '图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于300*200'
+        tip: '图片格式：jpg、jpeg、png，大小不超过3M，图片比例3：2，尺寸需大于384*293'
       },
       {
         label: `${type}描述`, 

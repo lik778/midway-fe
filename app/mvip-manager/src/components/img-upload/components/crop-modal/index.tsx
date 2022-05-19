@@ -15,7 +15,7 @@ const CropModal: FC<Props> = (prop) => {
   const { cropVisible, handleCropClose, cropProps, cropUrl, handleCropSuccess } = prop
   return <Modal
     width={1220}
-    title="裁剪图片"
+    title="裁剪图片（滚动鼠标可放大缩小图片，移动方框可裁剪图片最佳位置）"
     visible={cropVisible}
     footer={null}
     maskClosable={false}

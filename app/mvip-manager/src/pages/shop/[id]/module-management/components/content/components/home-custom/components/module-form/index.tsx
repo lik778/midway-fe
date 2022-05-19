@@ -171,13 +171,14 @@ const ModuleForm: FC<Props> = (props) => {
           onDel={handleDelSubform}
         />
       ))}
-      {subformVals.length < 10 && (
+      {subformVals.length < 10 && <>
         <Button
           className={`${styles['add-btn']}`}
           type="primary"
           onClick={handleAddSubform}
         >+增加子模块</Button>
-      )}
+        （最多可添加10个子模块，建议添加4个子模块页面美观度较佳）
+      </>}
       <Button
         className={`${styles['submit-btn']}`}
         loading={upDateLoading}

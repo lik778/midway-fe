@@ -19,6 +19,7 @@ export const selectItemConfig: {
     type: 'product',
     required: true,
     maxLength: 12,
+    extraTips: '建议添加6个产品页面美观度较佳',
     ajaxApi: getProductListApi as any,
     rules: [{ required: true, message: '请选择热门产品' }]
   },

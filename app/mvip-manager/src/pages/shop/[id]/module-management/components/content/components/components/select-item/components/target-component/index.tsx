@@ -24,7 +24,7 @@ const TargetComponent: FC<Props> = (props) => {
       <Button className={styles['btn']} onClick={handleClickBtn}>
         +  添加{ConfigItemTypeText[componentConfig.type]}
       </Button>
-      <div className={styles['tip']}>（最多可添加{componentConfig.maxLength}个{ConfigItemTypeText[componentConfig.type]}）</div>
+      <div className={styles['tip']}>（最多可添加{componentConfig.maxLength}个{ConfigItemTypeText[componentConfig.type]}{componentConfig.extraTips && `,${componentConfig.extraTips}`}）</div>
     </div>
     <SelectList value={value} onChange={onChange} componentConfig={componentConfig}></SelectList>
     <SelectModal value={value} onChange={onChange} modalVisible={modalVisible} componentConfig={componentConfig} setModalVisible={setModalVisible}></SelectModal>
