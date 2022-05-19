@@ -64,7 +64,9 @@ export class BaseSiteController {
   // 对数据做兼容 ， 防止报错
   private setData(data, isSem, isCn) {
    
-
+    if(!data.basic.shop.color.productDetail) {
+      data.basic.shop.color.productDetail = '#EAF2FF'
+    }
     if (!data.basic.company) {
       data.basic.company = {
         name: '',

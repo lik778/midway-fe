@@ -33,7 +33,7 @@ export const mediaShow = function() {
   let color = $('.media-show-container').attr('mediaShowContainer')
   let nums = {
     '#336FFF': 1,
-    '#D8010D': 2,
+    '#EF1F1F': 2,
     '#30B015': 3,
 		'#BF8452': 4,
     '#343434': 5

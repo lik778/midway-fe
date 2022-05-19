@@ -21,10 +21,11 @@ newLists()
 productCat()
 $(document).on('ready', function () {
   // 处理pagination选中后的颜色
-  let color = $('.swiper-pagination').data('color')
+  let color = $('.swiper-pagination').attr('homeColor')
+  console.log(color)
   let nums = {
     '#336FFF': 1,
-    '#D20306': 2,
+    '#EF1F1F': 2,
     '#6CB436': 3,
     '#BF8452': 4,
     '#343434': 5

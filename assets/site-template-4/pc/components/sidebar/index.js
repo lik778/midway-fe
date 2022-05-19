@@ -5,7 +5,7 @@ export const initializeSidebarProductSwiper = () => {
   let color = $('#swiper').data('color')
   let nums = {
     '#336FFF': 1,
-    '#D8010D': 2,
+    '#EF1F1F': 2,
     '#30B015': 3,
 		'#BF8452': 4,
     '#343434': 5

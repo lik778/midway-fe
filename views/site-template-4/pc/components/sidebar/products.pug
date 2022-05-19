@@ -1,6 +1,6 @@
 - const { productList: pr, name: sidebarItemTitle } = renderData.productRecommend
 if pr && pr.length > 0
-  .sidebar-item__title
+  .sidebar-item__title(style=`background: ${ productDetail }`)
       span(style=`color: ${totalTip}`) #{ sidebarItemTitle || '产品推荐'}
   .sidebar-item
     #product-swiper.sidebar-item__content
