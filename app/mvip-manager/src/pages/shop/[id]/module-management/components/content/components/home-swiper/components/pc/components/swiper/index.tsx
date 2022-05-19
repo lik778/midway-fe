@@ -20,7 +20,7 @@ const Swiper = (props: Props, parentRef: Ref<any>) => {
       txt={'PC端轮播图/视频'}
       type={DeviceType.PC}
       position={position}
-      aspectRatio={1920 / 540}
+      aspectRatio={1920 / 630}
       autoUpdata={false}
     />
   </div>
