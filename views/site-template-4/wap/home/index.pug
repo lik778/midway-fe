@@ -23,10 +23,11 @@ block content
 	- hotProductList = renderData.productRecommend.productList.slice(0,12)
 	- name = renderData.productRecommend.name || '热门推荐'
 	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
 
 	.block-container
 		.block-title #{ name }
-			.prefix-box(style={background: themeColor})
+			.prefix-box(style={background: specialIconColor || themeColor})
 		.block-content
 			include ../components/product-list-hot.pug
 			+product-list-hot(hotProductList)
@@ -43,7 +44,7 @@ block content
 
 	.block-container
 		.block-title 最新产品
-			.prefix-box(style={background: themeColor})
+			.prefix-box(style={background: specialIconColor || themeColor})
 		.block-content
 			include ../components/product-list-new.pug
 			- productList = renderData.productList.result.slice(0,6)

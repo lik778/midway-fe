@@ -11,7 +11,6 @@ export const initNav = function ($navs) {
 
 	let _setTargetElActive = function (index) {
 		let targetEl = $navs.eq(index)
-		console.log(targetEl[0].attributes.borderColor.value);
 
 		let themeColor = targetEl[0].attributes.themeColor.value
 		let bgColor = targetEl[0].attributes.borderColor.value

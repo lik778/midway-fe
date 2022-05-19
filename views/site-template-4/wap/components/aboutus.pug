@@ -1,4 +1,6 @@
 mixin aboutus(pageType, contactUsImg)
+	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
 	.aboutus
 		img(src=contactUsImg).bg
 		.aboutus-block-title 联系我们
@@ -12,13 +14,13 @@ mixin aboutus(pageType, contactUsImg)
 				img.aboutus-icon(src="//file.baixing.net/202205/76a097fb416df8d1a0fc4240de55af5e.png", alt="phone logo")
 				span.aboutus-text.only-oneline 联系电话：
 					span.aboutus-info #{ phone.content }
-				span.copy-data.phone(data-value=phone.content) 点击拨打
+				span.copy-data.phone(data-value=phone.content, style={color: specialIconColor || themeColor}) 点击拨打
 			if phone2.content
 				a.aboutus-item(href="tel:" + phone2.content)
 					img.aboutus-icon(src="//file.baixing.net/202205/76a097fb416df8d1a0fc4240de55af5e.png", alt="phone logo")
 					span.aboutus-text.only-oneline 联系电话2：
 						span.aboutus-info #{ phone2.content }
-					span.copy-data.phone(data-value=phone2.content) 点击拨打
+					span.copy-data.phone(data-value=phone2.content, style={color: specialIconColor || themeColor}) 点击拨打
 			a.aboutus-item.company-address(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`)
 				img.aboutus-icon(src="//file.baixing.net/202205/187f7843de59dd124e870669ad4feedb.png", alt="address logo")
 				span.aboutus-text.only-oneline 地址：
@@ -29,7 +31,7 @@ mixin aboutus(pageType, contactUsImg)
 					img.aboutus-icon(src="//file.baixing.net/202205/227676eb145ce7630eafbf7545772453.png", alt="wechat logo")
 					span.aboutus-text.only-oneline 微信号码：
 						span.aboutus-info #{ weChat.content }
-					span.copy-data#wechat(data-value=weChat.content) 点击复制
+					span.copy-data#wechat(data-value=weChat.content, style={color: specialIconColor || themeColor}) 点击复制
 
 	//-TODO：这里不知道未来还改吗？目前首页特殊要求，不加
 	if pageType != 'home'
