@@ -4,15 +4,15 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
 import { useParams } from 'umi';
-import { RouteParams, ShopInfo } from '@/interfaces/shop';
-import { SHOP_NAMESPACE, shopMapDispatchToProps, SET_CUR_SHOP_INFO_ACTION, GET_CUR_SHOP_INFO_ACTION } from '@/models/shop';
-import { userMapDispatchToProps, userMapStateToProps } from '@/models/user';
+import { RouteParams } from '@/interfaces/shop';
+import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
 import { changeTemplate, changeThemeColor } from '@/api/shop';
 import { NEW_TEMPLATE_ID } from '@/constants';
 import { successMessage } from '@/components/message';
+import { getGuideFirstClick, setGuideFirstClick } from '@/api/user';
 interface Props {
   type: ShopBasisType;
   // curShopInfo: ShopInfo | null;
@@ -70,6 +70,7 @@ const BasisTab = (props: Props) => {
   const [current, setCurrent] = useState(props.type)
   const [currentTheme, setCurrentTheme] = useState<colorEnumValue>(curShopInfo?.currentTheme)
   const [isSwitchTemplate, setIsSwitchTemplate] = useState<boolean>(false)
+  const [isGuideFirstClick, setIsGuideFirstClick] = useState<boolean>(false)
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
@@ -132,12 +133,20 @@ const BasisTab = (props: Props) => {
     if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
         getShopStatus()
     }
-    if(curShopInfo && curShopInfo.templateId !== NEW_TEMPLATE_ID && curShopInfo.type === ProductType.B2B && !localStorage.getItem('hasShowChangeTemplate')){
+    if(curShopInfo && curShopInfo.templateId !== NEW_TEMPLATE_ID && curShopInfo.type === ProductType.B2B && isGuideFirstClick){
         setIsSwitchTemplate(true)
     }
     setCurrentTheme(curShopInfo?.currentTheme)
-    console.log('curShopInfo', curShopInfo)
   }, [curShopInfo, shopStatus ])
+
+  useEffect(() => {
+    getIsGuideFirstClick()
+  }, [])
+
+  const getIsGuideFirstClick = async () => {
+    const { data } = await getGuideFirstClick()
+    setIsGuideFirstClick(data)
+  }
 
   const handleClick = (e: { key: any; }) => { setCurrent(e.key) };
   const themeColor = () => {
@@ -172,8 +181,15 @@ const BasisTab = (props: Props) => {
         successMessage(message || '操作失败')
         setIsSwitchTemplate(false)
     }
-    if(!localStorage.getItem('hasShowChangeTemplate')){
-        localStorage.setItem('hasShowChangeTemplate', '1')
+    if(isGuideFirstClick){
+        await setGuideFirstClick()
+    }
+  }
+
+  const cancel = async () => {
+    setIsSwitchTemplate(false)
+    if(isGuideFirstClick){
+        await setGuideFirstClick()
     }
   }
   return (
@@ -193,7 +209,7 @@ const BasisTab = (props: Props) => {
             <QuestionCircleOutlined className={styles['icon']} />使用指引
         </Tooltip>
       </div>
-      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={() => {setIsSwitchTemplate(false),localStorage.setItem('hasShowChangeTemplate', '1')}}>
+      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={cancel}>
         <p>点击“更换”，当前店铺的全部内容会同步到店铺新模板中。</p>
         <Alert message="更换至新模板后，将不可恢复，新模板样式如下图所示：" type="warning" showIcon />
         <div className={styles['new-template']}>

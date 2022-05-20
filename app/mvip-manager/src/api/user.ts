@@ -1,4 +1,4 @@
-import { postApiData } from './base';
+import { getApiData, postApiData } from './base';
 import {
   VerifyItem,
   UserInfo,
@@ -80,4 +80,15 @@ export const getPhone400Api = () => {
 /** 设置400电话号码*/
 export const setPhone400Api = (params: Phone400Detail) => {
   return postApiData<any>(ServicePath.SHOP, 'midway/backend/user/vm400/resource/consume', params)
+}
+
+
+/** 判断当前用户是否首次点击引导 */
+export const getGuideFirstClick = () => {
+    return getApiData<null>(ServicePath.SHOP, 'midway/backend/user/getGuideFirstClick')
+}
+
+/** 设置用户为非第一次点击引导界面  */
+export const setGuideFirstClick = () => {
+    return getApiData<null>(ServicePath.SHOP, 'midway/backend/user/setGuideFirstClick')
 }
