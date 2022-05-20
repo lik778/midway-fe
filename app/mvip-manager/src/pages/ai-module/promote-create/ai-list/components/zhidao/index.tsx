@@ -174,7 +174,7 @@ const Zhidao: FC<Props> = (props) => {
         <Button className={styles['action-btn']} onClick={() => handleClickA(`//www.baixing.com/vip/manager/service/${quotaNum.productLineId}/enterpriseQA/release`)}>手动发布</Button>
       </div>
 
-      <p className={styles['page-tip']}>当前AI文档量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</p>
+      <p className={styles['page-tip']}>AI问答量：<span className={styles["num"]}>{quotaNum.aiRemain || 0}&nbsp;</span>个（每个问答消耗&nbsp;{quotaNum.consumeCount || 0}&nbsp;个信息发布点，当前剩余信息发布点：<span className={styles["num"]}>{quotaNum.remain || 0}</span>{quotaNum.buyUrl ? <> ，<a href={quotaNum.buyUrl} target="_blank">去充值</a></> : ''}）</p>
 
       {
         dataTotal === 0 && !getDataLoading && <div className={styles["empty-info"]}>
