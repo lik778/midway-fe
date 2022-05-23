@@ -1,28 +1,76 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Menu, Tooltip } from 'antd';
+import {  Alert, Button, Menu, Modal, Popover, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Link, useHistory } from 'umi';
 import { ShopBasisType, ShopTDKType, ProductType } from '@/enums';
 import { useParams } from 'umi';
-import { RouteParams, ShopInfo } from '@/interfaces/shop';
+import { RouteParams } from '@/interfaces/shop';
 import { SHOP_NAMESPACE, shopMapDispatchToProps } from '@/models/shop';
 import { connect, Dispatch } from 'dva';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less'
-import { ShopStatus } from '@/interfaces/shop';
+import { changeTemplate, changeThemeColor } from '@/api/shop';
+import { NEW_TEMPLATE_ID } from '@/constants';
+import { successMessage } from '@/components/message';
+import { getGuideFirstClick, setGuideFirstClick } from '@/api/user';
 interface Props {
   type: ShopBasisType;
   // curShopInfo: ShopInfo | null;
   // shopStatus: ShopStatus | null
   // getShopStatus: () => Promise<any>
-  [key: string]: any
+  [key: string]: any;
+  dispatch: Dispatch;
 }
+type colorEnum = 'BLUE' | 'RED' | 'GREEN' | 'GOLD' | 'DEFAULT'
+type colorEnumValue = 1 | 2 | 3 | 4 | 5
+type themeColorType = {
+    key: colorEnum,
+    value: string,
+    preview: string,
+    colorValue: colorEnumValue
+}
+const themeColors: themeColorType[] = [
+    {
+        key: 'BLUE',
+        colorValue: 5,
+        value: '#343434',
+        preview: require('@/assets/images/template-blue.png')
+    },
+    {
+        key: 'RED',
+        colorValue: 1,
+        value: '#EF1F1F',
+        preview: require('@/assets/images/template-red.png')
+    },
+    {
+        key: 'GREEN',
+        colorValue: 3,
+        value: '#30B015',
+        preview: require('@/assets/images/template-green.png')
+    },
+    {
+        key: 'GOLD',
+        colorValue: 4,
+        value: '#BF8452',
+        preview: require('@/assets/images/template-gold.png')
+    },
+    {
+        key: 'DEFAULT',
+        colorValue: 2,
+        value: '#336FFF',
+        preview: require('@/assets/images/template-default.png')
+    }
+]
+
 
 const BasisTab = (props: Props) => {
   const { shopStatus, curShopInfo, getShopStatus } = props
   const params: RouteParams = useParams();
   const history = useHistory()
   const [current, setCurrent] = useState(props.type)
+  const [currentTheme, setCurrentTheme] = useState<colorEnumValue>(curShopInfo?.currentTheme)
+  const [isSwitchTemplate, setIsSwitchTemplate] = useState<boolean>(false)
+  const [isGuideFirstClick, setIsGuideFirstClick] = useState<boolean>(false)
   const menuList = [
     {
       link: `/shop/${params.id}/${ShopBasisType.NAV}`,
@@ -70,7 +118,6 @@ const BasisTab = (props: Props) => {
           if (hasMultiShopRights) {
             item.display = true
           } else if (history.location.pathname.includes(ShopBasisType.INFO)) {
-            console.log(JSON.stringify(shopStatus))
             // 如果该用户不是白名单用户 还出现在info页面 则跳到首页
             history.replace('/shop')
           }
@@ -84,12 +131,67 @@ const BasisTab = (props: Props) => {
 
   useEffect(() => {
     if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
-      getShopStatus()
+        getShopStatus()
     }
+    if(curShopInfo && curShopInfo.templateId !== NEW_TEMPLATE_ID && curShopInfo.type === ProductType.B2B && isGuideFirstClick){
+        setIsSwitchTemplate(true)
+    }
+    setCurrentTheme(curShopInfo?.currentTheme)
+  }, [curShopInfo, shopStatus ])
+
+  useEffect(() => {
+    getIsGuideFirstClick()
   }, [])
 
-  const handleClick = (e: { key: any; }) => { setCurrent(e.key) };
+  const getIsGuideFirstClick = async () => {
+    const { data } = await getGuideFirstClick()
+    setIsGuideFirstClick(data)
+  }
 
+  const handleClick = (e: { key: any; }) => { setCurrent(e.key) };
+  const themeColor = () => {
+      const currentThemeColor = themeColors.find(theme => theme.colorValue === currentTheme)
+    return <div className={styles['theme-color']}>
+        <ul>
+            {
+                themeColors.map(theme => <li onClick={() => setCurrentTheme(theme.colorValue)} className={currentThemeColor?.key === theme.key ? styles['active-theme'] : styles['theme-item'] } style={{background: `${theme.value}`}}></li>)
+            }
+            <li><Button size='small' type="primary" onClick={switchColor}>确认</Button></li>
+        </ul>
+        <div className={styles['theme-preview']}>
+            <img src={currentThemeColor?.preview}/>
+        </div>
+    </div>
+  }
+
+  const switchColor = async () => {
+    const color = currentTheme
+    const {code, message} = await changeThemeColor(curShopInfo.id, { color })
+    if(code === 200){
+        successMessage(message || '操作成功')
+    }
+  }
+  const switchTemlate = async () => {
+    const templateId = NEW_TEMPLATE_ID
+    const {code, message} = await changeTemplate(curShopInfo.id, {templateId })
+    if(code === 200){
+        successMessage(message || '操作成功')
+        location.reload()
+    }else{
+        successMessage(message || '操作失败')
+        setIsSwitchTemplate(false)
+    }
+    if(isGuideFirstClick){
+        await setGuideFirstClick()
+    }
+  }
+
+  const cancel = async () => {
+    setIsSwitchTemplate(false)
+    if(isGuideFirstClick){
+        await setGuideFirstClick()
+    }
+  }
   return (
     <div className={styles['tab-container']}>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" className="a-menu">
@@ -99,11 +201,21 @@ const BasisTab = (props: Props) => {
           </Menu.Item>
         })}
       </Menu>
-      <Tooltip color='#fff' overlayStyle={{ maxWidth: 600 }} overlayInnerStyle={{ color: '#999', padding: '10px 20px' }} title={<img style={{ width: '500px' }} src="//file.baixing.net/202112/ad8e1bd75395e197bd2d3f32cf7f386f.png" />} placement='bottomLeft'>
-        <div className={styles['tip']}>
-          <QuestionCircleOutlined className={styles['icon']} />使用指引
+      <div className={styles['tip']}>
+        {curShopInfo && curShopInfo.type === ProductType.B2B && curShopInfo.templateId === NEW_TEMPLATE_ID ? <Popover content={themeColor} title="更换主题色" trigger="click">
+            <span className={styles['color-btn']}>主题颜色</span>
+        </Popover> : curShopInfo && curShopInfo.type === ProductType.B2B && <span className={styles['color-btn']} onClick={() => setIsSwitchTemplate(true)}>更换模板</span>}
+        <Tooltip color='#fff' overlayStyle={{ maxWidth: 600 }} overlayInnerStyle={{ color: '#999', padding: '10px 20px' }} title={<img style={{ width: '500px' }} src="//file.baixing.net/202112/ad8e1bd75395e197bd2d3f32cf7f386f.png" />} placement='bottomLeft'>
+            <QuestionCircleOutlined className={styles['icon']} />使用指引
+        </Tooltip>
+      </div>
+      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={cancel}>
+        <p>点击“更换”，当前店铺的全部内容会同步到店铺新模板中。</p>
+        <Alert message="更换至新模板后，将不可恢复，新模板样式如下图所示：" type="warning" showIcon />
+        <div className={styles['new-template']}>
+            <img src={require('@/assets/images/template-default.png')}/>
         </div>
-      </Tooltip>
+      </Modal>
     </div>
   );
 }
@@ -113,9 +225,10 @@ const mapStateToProps = (state: any) => {
   return { curShopInfo, shopStatus }
 }
 
+
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    ...shopMapDispatchToProps(dispatch),
+    ...shopMapDispatchToProps(dispatch)
   }
 };
 
