@@ -130,21 +130,18 @@ const BasisTab = (props: Props) => {
   }, [curShopInfo, shopStatus])
 
   useEffect(() => {
+    getIsGuideFirstClick()
     if (!shopStatus || (shopStatus && Object.keys(shopStatus).length === 0)) {
         getShopStatus()
-    }
-    if(curShopInfo && curShopInfo.templateId !== NEW_TEMPLATE_ID && curShopInfo.type === ProductType.B2B && isGuideFirstClick){
-        setIsSwitchTemplate(true)
     }
     setCurrentTheme(curShopInfo?.currentTheme)
   }, [curShopInfo, shopStatus ])
 
-  useEffect(() => {
-    getIsGuideFirstClick()
-  }, [])
-
   const getIsGuideFirstClick = async () => {
     const { data } = await getGuideFirstClick()
+    if(curShopInfo && curShopInfo.templateId !== NEW_TEMPLATE_ID && curShopInfo.type === ProductType.B2B && data){
+      setIsSwitchTemplate(true)
+    }
     setIsGuideFirstClick(data)
   }
 
