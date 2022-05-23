@@ -1,0 +1,32 @@
+.product-detail
+	- const { headImg, name, price, content, contentImg, videoUrl, infoSeoKeyWord } = renderData.productInfo
+	- const { suffixs } = renderData.basic.shop.tkdCommonParams
+	- const seoName = infoSeoKeyWord || name
+	- const proSuffixs = (suffixs.length > 0 && suffixs.join('_')) || '品牌_价格_批发_图片_行情_地址_厂家_公司_货源_参数_电话'
+	- themeColor = renderData.basic.shop.color.productHv
+	.pro-top
+		if (videoUrl)
+			.video-con
+				.video-wrapper
+					video(src=videoUrl, loop, preload, controls)
+				.video-cover
+					img(src=headImg || defaultImg, alt=seoName+proSuffixs)
+		else
+			img(src=headImg || defaultImg, alt=seoName+proSuffixs)
+		.pro-meta
+			h3 #{ name }
+			p 价格：
+				span.pro-meta-price #{ price || '面议'}
+			if isSem !== "1"
+				p 商家地址：
+					span #{ renderData.basic.company.address }
+	.pro-center
+		if isSem !== "1"
+			include ./company-info.pug
+	.pro-bottom
+		.pro-title
+			.prefix-box(style={background: themeColor})
+			h4 产品详情
+		.pro-content.ql-editor.
+			!{ content || '当前页面暂无内容，敬请期待...' }
+

@@ -1,0 +1,25 @@
+mixin ContactForm(wheather,color=null,hover=null)
+  - const {contactFields}  = renderData.basic.shop
+  - const formList = contactFields.filter(item => item.position === 'content')
+  - const formBtn = contactFields.filter(item => item.title === '表单按钮')[0].des
+  - const formTitle = contactFields.filter(item => item.title === '表单标题')[0].des
+  .a-container
+    if wheather === 'homePage'
+      p.a-title #{formTitle || '留言咨询'}
+    .a-content
+      each item in formList.length <= 3 && formList
+        .a-content-item
+          .item-label
+            | #{item.title}
+            if item.fixed
+              span.labe-icon &nbsp;*
+          input(type="text" name="contact" data-fixed=`${item.fixed}` data-value=item.des data-key=item.title placeholder=item.des)
+      else 
+        each items in formList
+          .a-content-items
+            .items-label
+              | #{items.title}
+              if items.fixed
+                .label-icons &nbsp;*
+            input(type="text" name="contact" data-fixed=`${items.fixed}` data-value=items.des data-key=items.title  placeholder=items.des)
+      .a-button#SubmitButton(style=`background-color: ${color}`  hoverBg=hover ThemeCol=color) #{ formBtn || '马上提交' }

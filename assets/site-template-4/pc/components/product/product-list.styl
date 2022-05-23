@@ -1,0 +1,52 @@
+.product-list
+	width 100%
+	display flex
+	justify-content flex-start
+	flex-wrap wrap
+	.item-p
+		position relative
+		width 302px
+		height 286px
+		margin-bottom 20px
+		margin-right 17px
+		background-color #fff
+		border 1px solid #f7f7f7
+		&:nth-child(3n)
+			margin-right 0
+		img
+			height 235px
+			width 100%
+		p
+			height: 51px
+			line-height 51px
+			padding-left: 14px
+			font-size 14px
+			color #333333
+			text-align justify
+			border-radius: 0px 0px 4px 4px;
+			&:hover
+				color: #fff
+		.show-desc
+			display none
+			height 32px
+			text-align center
+			line-height 32px
+			background-color #FF2D38
+			color #fff
+			margin 22px 56px
+.no-content 
+	box-sizing: border-box
+	width 100%
+	padding: 15px;
+	background-color: #fff
+
+.play-icon.active
+	position: absolute;
+	top: 82px;
+	left: 50%;
+	width: 36px;
+	height: 36px;
+	background: url(//file.baixing.net/201709/1ae6e52bed21cee4b2e9f45be173d0f4.png)
+	background-size: 100%;
+	transform: translate(-50%, -50%);
+	cursor: pointer;

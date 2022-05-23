@@ -1,0 +1,73 @@
+extends ../layout.pug
+block styles
+	:combine(fileName="site-template-4-home-wap.css")
+
+block header
+	include ../components/header
+	include ../components/swiper
+	+swiper('home')
+
+	if isSem !== "2" && isSem !== "1"
+		- const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
+		include ../components/company-info-home
+		+company-info-home(tags)
+	if isSem !== "1"
+		include ../components/nav
+		+nav()
+
+block content
+	- const { autoConfig } = renderData
+	if autoConfig[3] && autoConfig[3].show
+		include ../components/home-big-image.pug
+		+big-image(autoConfig[3])
+	- hotProductList = renderData.productRecommend.productList.slice(0,12)
+	- name = renderData.productRecommend.name || '热门推荐'
+	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
+
+	.block-container
+		.block-title #{ name }
+			.prefix-box(style={background: specialIconColor || themeColor})
+		.block-content
+			include ../components/product-list-hot.pug
+			+product-list-hot(hotProductList)
+
+	//-自定义模块1（即之前的企业优势模块）
+	if autoConfig[1] && autoConfig[1].show
+		include ../components/user-defined-module-new.pug
+		+user-defined-module-new(autoConfig[1])
+
+	if isSem !== "1"
+		- contactUsImg = renderData.basic.shop.color.wap.contactUs
+		include ../components/aboutus.pug
+		+aboutus('home', contactUsImg)
+
+	.block-container
+		.block-title 最新产品
+			.prefix-box(style={background: specialIconColor || themeColor})
+		.block-content
+			include ../components/product-list-new.pug
+			- productList = renderData.productList.result.slice(0,6)
+			+product-list-new(productList)
+
+	include ../components/home-news-list-module.pug
+	- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+	if articleList && articleList.length > 0
+		+news-module-list(articleList,articleListName)
+
+	//- 用于导航
+	#contactFormBox
+		include ../components/contact-form.pug
+
+	//- 用于sem禁止外跳
+	include ../../../common/wap/contact-form-sem.pug
+	+contactFormSem('#FF2D38')
+
+
+
+block scripts
+	:combine(fileName="site-template-4-home-wap.js")
+block append scripts
+	script.
+		window.extraContactFormData = {position: 1};
+		window.trackSrc = 'home';

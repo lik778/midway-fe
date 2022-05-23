@@ -1,0 +1,79 @@
+.company-info
+  background-color #fff
+  .info
+    display flex
+    justify-content flex-start
+    align-items flex-start
+    padding 12px 0px 16px  15px
+    background linear-gradient(121deg, #FAEBDB 0%, #FEF8F0 100%)
+    .info-logo
+      height 50px
+      max-width: 100px
+      margin-right 10px
+      border-radius 5px
+    .info-text
+      height 50px
+      max-width calc(100% - 62px)
+      flex-grow  1
+      display: flex
+      flex-direction: column
+      justify-content space-between
+      align-items flex-start
+      .info-name
+        font-size 18px
+        font-weight: bold;
+        color: #333333;
+        line-height: 26px
+      .info-tag-list
+        display  flex
+        justify-content flex-start
+        align-items  center
+        .info-tag
+          padding 2px 4px
+          text-align center
+          font-size 10px
+          color #fff
+          border-radius: 2px;
+          background-color: #ED4646
+          &+.info-tag
+            margin-left 6px
+  .desc
+    padding 27px 22px 39px 29px
+    position relative
+    border-radius 8px
+    background-color #FFFCF8
+    font-size 12px
+    line-height 20px
+    .desc-text
+      margin-bottom 6px
+      overflow hidden
+      word-break break-all
+      color #666666
+      font-size 14px
+      &.hide
+        height 60px
+    .top-left,.bottom-right
+      width 14px
+      height 11px
+      position absolute
+    .top-left
+      top  9px
+      left 16px
+    .bottom-right
+      right 10px
+      bottom 12px
+    .action-btn-box
+      display flex
+      justify-content flex-end
+      margin-right 15px
+      .action-btn
+        box-sizing border-box
+        height 18px
+        padding 0 6px
+        line-height 16px
+        border-radius 2px
+        border 1px solid #336FFF
+        font-size 12px
+        color #336FFF
+        &.hide
+          display none

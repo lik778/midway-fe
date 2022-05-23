@@ -1,0 +1,46 @@
+.container-contact
+  .us2-left
+    .left-nav
+      ul.us2-left-ul
+        - const { navigation } = renderData
+        li
+          .navfirst  网站导航
+        li
+          .navtwo(style=`background-color: ${contact.concatTheme}`)
+        each item  in navigation.length && navigation
+          li
+            a.navPage(href=item.content data-hover=contact.concatTheme) #{ item.name }
+    .left-line
+    .left-address
+      .company-title#companyTitle
+        .company-contect #{ companyName || '暂未添加公司名称' }
+      .company-line(style=`background: ${contact.concatTheme}`)
+      .company-detail
+        .company-tel
+          img(src="//file.baixing.net/202205/34dcc4c5ec7b705213d2b12da7708ad6.png", alt="tel")
+        .company-line
+        .company-right
+          .title-1 服务热线
+          .content-1 #{  phone.content || '暂未添加热线' }
+      .company-detail 
+        .company-tel
+          img(src="//file.baixing.net/202205/77f8ec6e556890817c42fc6b2755ba86.png", alt="tel" style="width: 34px;height: 29px")
+        .company-line
+        .company-right
+          .title-1 微信号码
+          .content-1  #{ weChat.content  || '暂未添加微信号' }
+      .company-detail
+        .company-tel
+          img(src="//file.baixing.net/202205/aa04ed686405f4b363432d10b8dadd47.png", alt="tel")
+        .company-line
+        .company-right
+          .title-1 地址
+          .content-1  #{ company.address || '暂未添加地址' }
+      a.company-map(href=`http://api.map.baidu.com/geocoder?address=${company.address}&output=html`, target="__blank")
+        img.map-bg(src="//file.baixing.net/202112/a72fc4855df832c1ddb5f1cb4639a2e9.png", alt="logo")
+        .map-mid 
+          span.map-mid-content(style=`color: ${contact.concatTheme}`) #{ company.address || '暂未添加地址' }
+        img.map-icon(src="//file.baixing.net/202112/55ded83da884c8edbe0bf6fc746f460e.png", alt="logo")
+  .us2-right
+    include ./contact-form.pug
+    +ContactForm('homePage',contact.buttonBg,contact.buttonColor)

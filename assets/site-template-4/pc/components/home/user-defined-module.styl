@@ -1,0 +1,70 @@
+.user-defined-list
+  width 1220px
+  margin 0 auto
+  *
+    box-sizing: border-box
+  .user-defined-item
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-bottom 30px
+    width 100%
+    .user-defined-item-img
+      width: 714px
+      height: 266px
+      transition: all 1s
+      z-index: 999
+      &:hover
+        transform: scale(1.05)
+    .user-defined-item-content
+      width: 475px
+      height: 266px
+      padding: 48px 77px 48px 77px
+      position relative
+      background: url('//file.baixing.net/202205/f1cb30122397a1449163788bcfdd6fd5.png') no-repeat
+      background-size: 100%
+      .triangle 
+        position: absolute;
+        top: 50%;
+        transform: translateY( -50%);
+        border: 10px solid transparent;
+        &.left
+          right: -15px
+          border-left: 15px solid  #fff;
+          border-right: 0;
+        &.right
+          left: -15px
+          border-left: 0;
+          border-right: 15px solid  #fff;
+      .title
+        margin-bottom 16px
+        font-size: 20px;
+        font-weight: bold;
+        color: #333333;
+      .line
+        width: 30px
+        height: 4px
+        margin-bottom 18px
+        background: #D8D8D8;
+      .desc
+        overflow hidden
+        text-overflow ellipsis
+        display -webkit-box
+        -webkit-box-orient vertical
+        -webkit-line-clamp 2
+        word-break break-all
+        font-size: 16px;
+        color: #5D5D5D;
+        line-height 26px
+        letter-spacing .5px
+      .numbering
+       position absolute
+       top: 0
+       right: 29px
+       width: 65px;
+       height: 74px;
+       line-height 74px
+       text-align: center
+       border-radius: 0px 0px 4px 4px;
+       color: #fff
+       font-size: 36px

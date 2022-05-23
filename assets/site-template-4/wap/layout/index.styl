@@ -1,0 +1,79 @@
+@import "../../../common/wap/common"
+@import "../components/nav"
+//加主站样式
+@import "../../../common/wap/official-footer"
+@import "../../../common/wap/official-header/index.styl"
+@import "../../../common/wap/official-breadcrumb"
+@import "../../../common/wap/customer-service"
+@import "../../../common/wap/dynamic-topbar"
+@import "../../../common/wap/dynamic-official-footer-contact"
+@import "../../../common/wap/dynamic-contact-phone-btn"
+
+
+div,p,h1,h2,h3,h4,h5,h6
+  margin 0
+  padding 0
+  font-family 'PingFangSC-Regular','Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif
+  color #333
+
+body
+  max-width 750px
+  margin 0 auto
+  background-color #f2f2f2
+  position relative
+  min-height 100vh
+  //设置一个最小高度,主要使他在内容很少（或没有内容）情况下，能保持100％的高度
+a
+  text-decoration none
+
+//解决浮动问题
+.clearfix:after
+  content ""
+  display block
+  height 0
+  clear both
+  visibility hidden
+//解决IE6,7不识别伪元素
+.clearfix
+  zoom  1
+
+img
+  border 0
+
+ul,li,dl,dt,dd
+  list-style none
+  margin 0
+  padding 0
+
+input,select,checkbox
+  vertical-align middle
+
+.right-arrow
+  display inline-block
+  width 8px
+  height 8px
+  border-top 1px solid #666
+  border-right 1px solid #666
+  transform rotate(45deg)
+
+//单行超出点点隐藏
+.only-oneline
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.only-twoline
+  overflow hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-box-orient vertical
+  -webkit-line-clamp 2
+  word-break break-all
+
+.only-fiveline
+  overflow hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-box-orient vertical
+  -webkit-line-clamp 5
+  word-break break-all

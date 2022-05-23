@@ -1,0 +1,9 @@
+mixin self-advantage(configItem)
+	- const dataList = configItem.slice(0,10)
+	#self-advantage(class=dataList.length<=3?'self-advantage one-line':'self-advantage')
+		each item in dataList
+			.advanItem(data-hover=serveAd1.adHv)
+				img(src = item.urlImg )
+				.title.only-oneline(style=`color: ${serveAd1.adColor}` data-title=serveAd1.adHv) #{ item.title }
+				.tips(style=`background-color: ${serveAd1.adTip}`)
+				.content #{ item.content }

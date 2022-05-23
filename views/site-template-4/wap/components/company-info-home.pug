@@ -1,0 +1,26 @@
+mixin company-info-home(type)
+	- introduceBgColor = renderData.basic.shop.color.wap.introduce
+	- tagBgColor = renderData.basic.shop.color.wap.tag
+	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
+	- let defaultTags = ['百姓认证', '实力商家', '品质保障', '贴心服务']
+	.company-info
+		.info(style={background: introduceBgColor})
+			img.info-logo(src=company.logo, alt=companyName)
+			.info-text
+				h3.info-name #{ companyName }
+				.info-tag-list
+					if type
+						each item in type
+							p.info-tag(style={background: tagBgColor}) #{item}
+					else
+						each defTagItem in defaultTags
+							.info-tag(style={background: tagBgColor}) #{defTagItem}
+		.desc
+			p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+			img.top-left(src="//file.baixing.net/202204/d3a54209ad7133f979bdc615bcba5e51.png", alt="")
+			img.bottom-right(src="//file.baixing.net/202204/cfc1cc382c1ae1a5e2e4036ac55a938d.png", alt="")
+			.action-btn-box
+				.action-btn.hide(style={color: specialIconColor || themeColor}) 展开
+
+

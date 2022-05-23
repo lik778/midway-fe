@@ -1,0 +1,16 @@
+mixin dynamicContactPhoneBtn()
+	- contactBg = renderData.basic.shop.color.wap.contactBg
+	if phone && phone.content
+		if isSem !== "1"
+			a(href="tel:" + phone.content, style={background: contactBg})#footerPhoneBox.footer-phone-box.btn-animate
+				.icon(style=`background: url('//file.baixing.net/202205/53f97e937dce5f6497e21d9d086d79c7.png') no-repeat center/100%`)
+				p.btn-text 拨打电话
+		else
+			- let union400num =  union400 && union400.length? union400[0]: ''
+			button(style={background: contactBg})#footerPhoneBox.footer-phone-sem-box.btn-animate(data-union400num=union400num || '' )
+				.icon(style=`background: url('//file.baixing.net/202205/53f97e937dce5f6497e21d9d086d79c7.png') no-repeat center/100%`)
+				span.btn-text 拨打电话
+			a(style={background: contactBg})#footerPhoneBox.footer-phone-box.col.hide.btn-animate(href="tel:" + union400num)
+				p.phone-num #{union400num}
+				.time-tip.hide
+					| 180s后更新

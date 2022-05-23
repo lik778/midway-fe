@@ -1,0 +1,27 @@
+extends ../layout.pug
+block styles
+	:combine(fileName="site-template-4-product-detail-wap.css")
+
+block public-header
+	block header
+		include ../components/header
+
+block content
+	- const cateList = renderData.productCateList
+	include ../components/product-detail.pug
+	include ../components/product-recommend.pug
+	include ../components/contact-form.pug
+
+block footer
+	div(style="padding-bottom:75px")
+	- const { weixin, people } = renderData.basic.shop.color.wap
+	- const { totalTip } = renderData.basic.shop.color
+	include ../../../common/wap/dynamic-official-footer-contact.pug
+	+dynamic-official-footer-contact(totalTip,weixin,people)
+
+block scripts
+	:combine(fileName="site-template-4-product-detail-wap.js")
+block append scripts
+	script.
+		window.extraContactFormData = {position: 6, id: #{renderData.productInfo.id}};
+		window.adId = #{renderData.productInfo.id};

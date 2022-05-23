@@ -1,0 +1,247 @@
+@import 'swiper/dist/css/swiper.min.css'
+@import "../../../../../common/pc/official-400-btn";
+.my-slide-active-1
+  border: 1px solid #336FFF
+.my-slide-active-2
+  border: 1px solid #EF1F1F
+.my-slide-active-3
+  border: 1px solid #30B015
+.my-slide-active-4
+  border: 1px solid #BF8452
+.my-slide-active-5
+  border: 1px solid #343434
+.media-show-container
+  display: flex
+  justify-content space-between
+  padding: 10px 0 0px 0
+  margin-bottom 20px
+  .media-show-left
+    width: 370px
+    .left-headImg
+      margin-bottom: 9px
+      border-radius: 4px
+      overflow hidden
+      .video-con
+        position relative
+        height 246px
+        width 370px
+        flex-shrink 0
+        .video-wrapper
+          display flex
+          justify-content center
+          align-items center
+          width 100%
+          height 100%
+          background-color black
+          video
+            flex 1
+            width 100%
+            height 100%
+            cursor pointer
+            z-index 9
+        .video-cover
+          position absolute
+          top 0
+          left 0
+          width 100%
+          height 100%
+          z-index 9
+          cursor pointer
+          img
+            width 100%
+            height 100%
+        .video-cover::after
+          content ''
+          position absolute
+          left calc(50% - 28px)
+          top calc(50% - 28px)
+          width 55px
+          height 55px
+          background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAMAAAC4uKf/AAAAqFBMVEUAAAAAAAAAAAAAAAAAAAAAAAC/v78AAAAAAAAAAAAAAAAAAAAAAAAAAAAMDAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/v4+PhtbW01NTXu7u7n5+coKCj////JycnFxcWhoaGZmZmTk5NgYGBCQkL19fXr6+vk5OTi4uLR0dHNzc24uLipqal6enpUVFQhISHY2NjW1taKior////luF/rAAAAN3RSTlOAAAN8eGTMCls1D0tDKIJwamBXUEhGPyMeG/r4oo7v6Yr+0s+7trOckvXs5uTY1ce+qJiJ3NyvtZcixAAAAsVJREFUaN7VmolS2zAQhv/owJZs5z4JN4VytLT0yvu/WTMpIJgA0a6Omu8FvpkdWdbu/ugQsDNTlbrfU1KqXl+XlZnZDgFfmZhPBxKvIAfTuYgpK0yp8A6qNEUcmWiGEjuRw0YEy4pawRNVF0EyO5YgIMeWLSsqCSKyKlgyYRQYKCPosoUGE70gysQEAUwERWY1gtDWX9YoBKIaX1mNCNReMjFCFEZit0yUiEQpdskKjWjo4n2Z0IiIFlsySg35ldyWjRCZ0duyGtGp35I1SEDzuswqJEBZZwD9IPKPpJNNkIjJtmyBZCycjFhEfiGdzCAh5qWsUEiIKl7IKiSlei6zEkmR9plsjMSMnayQSIwsnmQ1klM/yoRCcpR4kDXIQPMgGyIDw42MfDz4RwT+N9XJ+fXy7ApczEZWwovu8WrN/vcueJRrmfdZ/LP6x9EB+zyiM4cf31aPfD0Eh/laNoUfe6sn9j9xajldywb+MscNo5aDtUxSZI4zci1lBxYkmWNJrqXFjCpzHH8GiRkMXeY4PwEBg4ohcywv4E+FkiVz3PrXsoTmyRynez/hh0afK3NcX8KLPnp8mePLD3jQgwqQOfZ9bhQFGSJzHHl84TJQ5rjykal8MoVeHNmt1wHpR5EdHXodfU2V8b9rTb2u+F8ZUKIKlS0v/S9iEyY7JfxlDP3nyf9/zqjPAv7fDLDoSLbs7AQUJPkp5zg+AI0B/ZHq3qmcR+qcI7s75D2/hSLLbg64jUWnpDQW/K6ppDSD92E9DAypzb3bXO/37DaX1MB3L3//uuiCyTDraCLr0CXnOCnroCznCDDrcDPn2DbrQDrnqD3rEiHneiTn4ifrSivnsu7/ryHTLFjbsTpOsBRvy7o/dpChTRGNmOGTtsVqIgWG2hmFCg95tTe+FhTMa3vkkBem/CgxUVoA9qNFeyOGlrPGsf8C2eyo8x7aSZcAAAAASUVORK5CYII=")
+          background-size 100%
+          cursor pointer
+        .video-img
+          position absolute
+          top 0
+          left 0
+          width 100%
+          height 100%
+          z-index 9
+          // cursor pointer
+          img
+            width 100%
+            height 100%
+        .video-cover::after
+          content: ''
+      img
+        width: 370px
+        height: 246px
+        object-fit: contain
+        border-radius 4px
+    .left-contentImg
+      position relative
+      box-sizing: border-box
+      width: 100%
+      height: 65px
+      padding: 0 34px
+      background-color: #ffffff
+      .swiper-button-prev
+        position absolute
+        left: 10px
+        top: 48px
+        width: 12px
+        height: 17px
+        cursor: pointer
+        background: url('//file.baixing.net/202109/be6a80b3ef4863dd32a6450b5a23efa5.png') no-repeat center center/100%
+      .swiper-button-next
+        position absolute
+        right: 13px
+        top: 48px
+        width: 11px
+        height: 15px
+        cursor: pointer
+        background: url('//file.baixing.net/202109/3f10676e75f1e75af1c8d285e26db3fd.png') no-repeat center center/100%
+      .swiper-container
+        width: 100%
+        height: 100%
+        .swiper-wrapper
+          width: 303px
+          margin: 0 auto
+          display: flex
+          align-items: center
+
+        .swiper-slide
+          position relative
+          width: 69px !important
+          height: 46px
+          margin-right: 7px !important
+          border-radius: 4px
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+          -webkit-justify-content: center;
+          justify-content: center;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          -webkit-align-items: center;
+          align-items: center;
+          img 
+            width: 100%
+            height: 100%
+            border-radius: 4px
+          .video-cover
+            position absolute
+            top: 0
+            left: 0
+            width 100%
+            height 100%
+            z-index 999
+            cursor pointer
+          .video-cover::after
+            content ''
+            position absolute
+            left calc(50% - 22px)
+            top calc(50% - 21px)
+            width 42px
+            height 44px
+            background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAMAAAC4uKf/AAAAqFBMVEUAAAAAAAAAAAAAAAAAAAAAAAC/v78AAAAAAAAAAAAAAAAAAAAAAAAAAAAMDAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/v4+PhtbW01NTXu7u7n5+coKCj////JycnFxcWhoaGZmZmTk5NgYGBCQkL19fXr6+vk5OTi4uLR0dHNzc24uLipqal6enpUVFQhISHY2NjW1taKior////luF/rAAAAN3RSTlOAAAN8eGTMCls1D0tDKIJwamBXUEhGPyMeG/r4oo7v6Yr+0s+7trOckvXs5uTY1ce+qJiJ3NyvtZcixAAAAsVJREFUaN7VmolS2zAQhv/owJZs5z4JN4VytLT0yvu/WTMpIJgA0a6Omu8FvpkdWdbu/ugQsDNTlbrfU1KqXl+XlZnZDgFfmZhPBxKvIAfTuYgpK0yp8A6qNEUcmWiGEjuRw0YEy4pawRNVF0EyO5YgIMeWLSsqCSKyKlgyYRQYKCPosoUGE70gysQEAUwERWY1gtDWX9YoBKIaX1mNCNReMjFCFEZit0yUiEQpdskKjWjo4n2Z0IiIFlsySg35ldyWjRCZ0duyGtGp35I1SEDzuswqJEBZZwD9IPKPpJNNkIjJtmyBZCycjFhEfiGdzCAh5qWsUEiIKl7IKiSlei6zEkmR9plsjMSMnayQSIwsnmQ1klM/yoRCcpR4kDXIQPMgGyIDw42MfDz4RwT+N9XJ+fXy7ApczEZWwovu8WrN/vcueJRrmfdZ/LP6x9EB+zyiM4cf31aPfD0Eh/laNoUfe6sn9j9xajldywb+MscNo5aDtUxSZI4zci1lBxYkmWNJrqXFjCpzHH8GiRkMXeY4PwEBg4ohcywv4E+FkiVz3PrXsoTmyRynez/hh0afK3NcX8KLPnp8mePLD3jQgwqQOfZ9bhQFGSJzHHl84TJQ5rjykal8MoVeHNmt1wHpR5EdHXodfU2V8b9rTb2u+F8ZUKIKlS0v/S9iEyY7JfxlDP3nyf9/zqjPAv7fDLDoSLbs7AQUJPkp5zg+AI0B/ZHq3qmcR+qcI7s75D2/hSLLbg64jUWnpDQW/K6ppDSD92E9DAypzb3bXO/37DaX1MB3L3//uuiCyTDraCLr0CXnOCnroCznCDDrcDPn2DbrQDrnqD3rEiHneiTn4ifrSivnsu7/ryHTLFjbsTpOsBRvy7o/dpChTRGNmOGTtsVqIgWG2hmFCg95tTe+FhTMa3vkkBem/CgxUVoA9qNFeyOGlrPGsf8C2eyo8x7aSZcAAAAASUVORK5CYII=")
+            background-size 100%
+            cursor pointer
+      .gallery-thumbs
+        .swiper-slide-thumb-active
+          border: 1px solid #ED4646
+  .media-show-middle
+    box-sizing: border-box
+    display flex
+    justify-content: space-between
+    width: 100%
+    min-height: 320px
+    margin 0 0 0 24px
+    background-color: #FFFFFF
+    .media-middle-left
+      width: 100%
+      .detail-title
+        overflow: hidden
+        word-break: break-word;
+        width: 100%
+        margin-bottom 21px
+        color: #333333
+        font-size: 18px
+        font-weight: bold
+      .product-left
+        width: 100%
+        .detail-price
+          box-sizing: border-box
+          display: flex
+          justify-content: flex-start
+          align-items: center
+          width: 100%
+          height: 50px
+          padding-left: 16px
+          border-top: 1px solid #F3B5B5
+          background-color:  #FFF7F5
+          color: #666666
+          font-size: 14px
+          .prices
+            margin-left: 24px
+            font-size: 18px
+            line-height: 20px
+            font-weight: bold
+            color: #FF6600
+        .detail-setting
+          padding: 21px 0px 0px 15px
+          margin-bottom: 25px
+          color: #666666
+          font-size: 12px
+          .contact
+            display flex
+            align-items: flex-start
+            margin-bottom: 10px
+            color: #666666
+            font-size: 14px
+            &:last-child
+              margin-bottom: 0
+            .span-address
+              display: inline-block
+              white-space: wrap
+        .detail-contact
+          display: flex
+          justify-content flex-start
+          align-items center
+          padding-left: 15px
+          .searchPhone
+            display: flex
+            justify-content: center
+            align-items: center
+            width: 140px
+            height 44px
+            border-radius: 2px;
+            border: 1px solid #FF6600;
+            cursor pointer
+            .phoneIcon
+              width: 25px
+              height: 27px
+              margin-right: 5px
+              img
+                width: 100%
+                height: 100%
+            .phoneContent
+              color: #FF6600
+              font-size: 14px
+          .online-btn
+            display: flex
+            justify-content: center
+            align-items: center
+            width: 140px
+            height: 44px
+            margin-right: 20px
+            font-size: 14px
+            color: #fff
+            border-radius: 4px
+            img 
+              width: 20px;
+              height: 19px
+              margin-right 8px

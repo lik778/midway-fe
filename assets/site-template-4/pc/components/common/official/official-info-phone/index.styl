@@ -1,0 +1,104 @@
+.official-info-phone-container
+  display flex
+  justify-content: flex-end
+  align-items center
+  .official-info-qa
+    width: 72px
+    height: 72px
+    margin-left: 26px
+    object-fit: contain
+  .official-info-phone-block
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    position relative
+    .hot-link
+      display: inline-block
+      margin-bottom: 4px
+      line-height 28px
+      color #212121
+      font-size 14px
+      .hot-icon
+        width: 20px
+        height: 20px
+        margin-right: 8px
+        vertical-align: text-bottom
+    .official-info-phone-num
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      min-width 154px
+      line-height 30px
+      font-size 22px
+      font-weight: bold
+      color #336FFF
+      cursor pointer
+      .icon
+        width: 16px
+        margin-right 6px
+      .line
+        display: inline-block;
+        width: 12px;
+        height: 3px;
+        background: #336FFF;
+        font-weight: bold
+    .official-info-phone-num-box
+      position relative
+      &.hide
+        display: none
+    .official-info-phone-num-tip 
+      box-sizing: border-box
+      width: 154px
+      padding: 0 10px
+      position absolute
+      bottom: 0
+      right 0
+      transform: translateX(0) translateY(110%)
+      line-height: 30px
+      border-radius: 4px
+      font-size: 16px
+      border 1px solid #FFACBB
+      background: rgb(255,249,250)
+      z-index 100
+      .tip-text
+        color #B9346B
+      &.hide
+        display: none
+      // .time-num 
+      //   color #f46
+      .triangle
+        width: 0;
+        height: 0;
+        position: absolute
+        top: 0;
+        left: 12px
+        em
+          position: absolute;
+          width: 0px;
+          height: 0px;
+          border: 10px dashed transparent;
+          border-bottom-color: #FFACBB; 
+          left: 10px;
+          top: -20px;
+        span
+          position: absolute; 
+          width: 0px;
+          height: 0px;
+          border: 10px dashed transparent;
+          border-bottom-color: rgb(255,249,250) ; 
+          left: 10px;
+          top: -19px;
+    .official-info-phone-400-action
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      &.hide
+        display: none
+      .btn
+        padding: 0 30px
+        line-height: 30px
+        border-radius: 15px
+        color: #fff
+        background: #f46
+        outline: none
+        border: none

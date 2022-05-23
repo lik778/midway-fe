@@ -1,0 +1,14 @@
+.search-crumbs
+	p
+		span(style=`background: ${renderData.basic.shop.color.totalTip}`)
+		| 当前位置：
+	ul
+		each item, index in renderData.bread
+			li
+				if index > 0
+					.right-arrow
+				if index != renderData.bread.length-1
+					a(href=item.urlSuffix).only-oneline  #{item.name}
+				else
+					//-最后一个面包屑不能点击
+					span(style="color: #5D5D5D").only-oneline #{ item.name }

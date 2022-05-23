@@ -43,7 +43,7 @@ export class BaseSiteController {
       return '2'
     }
 
-    // 
+    //
     if (account === '0' || account === '2') {
       return '1'
     } else if (account === '1') {
@@ -63,6 +63,10 @@ export class BaseSiteController {
 
   // 对数据做兼容 ， 防止报错
   private setData(data, isSem, isCn) {
+   
+    if(!data.basic.shop.color.productDetail) {
+      data.basic.shop.color.productDetail = '#EAF2FF'
+    }
     if (!data.basic.company) {
       data.basic.company = {
         name: '',
@@ -129,6 +133,7 @@ export class BaseSiteController {
         item.content = `${data.navigation[0].content}#contactFormBox`
       }
     })
+    // data.basic.shop.templateId = 'f5760fe337070e8b9b8f3fdcd9ca1c32'
     return data
   }
 
@@ -176,6 +181,7 @@ export class BaseSiteController {
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
     const pageTemplate = SiteService.templateMapping[templateId]
+    // const pageTemplate = 'site-template-4'
     const templateUrl = `${pageTemplate}/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;
@@ -238,7 +244,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
 
     const newsId = params.id
-    
+
     const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
 
@@ -269,7 +275,8 @@ export class BaseSiteController {
         data.articleInfo.content = this.replaceMobile(data.articleInfo.content)
       }
     }
-    return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'article', pageStartRenderTime: new Date().getTime() });
+
+		return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'article', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get(['/pl.html', '/pl-:id.html'])
@@ -354,7 +361,7 @@ export class BaseSiteController {
       }
     }
 
-    return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'product', pageStartRenderTime: new Date().getTime() });
+		return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'product', pageStartRenderTime: new Date().getTime() });
   }
 
   //关于我们
@@ -397,7 +404,7 @@ export class BaseSiteController {
   }
 
 
-  // 处理搜索来的数据 
+  // 处理搜索来的数据
   private setSearchData(data, @UserAgent('device') device, currentPage: number, type: 'product' | 'news', key: string) {
     data.contentList = data.searchResult.result
     data.contentType = type
@@ -447,7 +454,6 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
-
 
     return res.render(templateUrl, {
       title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'search', pageStartRenderTime: new Date().getTime()

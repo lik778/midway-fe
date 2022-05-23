@@ -1,0 +1,90 @@
+.news-list
+  background-color #fff
+  width 980px
+  box-shadow 0 4px 10px rgba(#000, 0.02)
+  .no-content
+    padding 15px
+  .news
+    &-item
+      margin: 0 0 23px 20px
+      padding-bottom: 24px
+      border-bottom: 1px dashed #EBEBEB
+      &__inner
+        display flex
+        align-items: flex-start
+        position relative
+        font-size 14px
+        &:hover
+          .cta-btn
+            border 1px solid #ff2d38
+            color #ff2d38
+            &::after
+              background-color #ff2d38
+            &::before
+              border-color #ff2d38
+
+      &:not(:last-child)
+        .news-item__inner
+          border-bottom 1px dashed #eee
+    &-date
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      height: 80px
+      width: 80px
+      margin-right: 14px
+      background: #F6F6F6;
+      border-radius: 0px 0px 24px 0px;
+      &__day
+        font-size 34px
+        color #666666
+        font-weight: bold
+      &__year
+        color: #86898E
+        font-size: 14px
+    &-content
+      display: flex
+      flex-direction: column
+      justify-content: flex-start
+      box-sizing border-box
+      flex: 1
+      &__title
+        margin-bottom: 11px
+        font-weight bold
+        color: #333333
+      &__desc
+        color #5D5D5D
+        width 840px
+      &__cta
+        padding-top 30px
+        .cta-btn
+          display inline-block
+          border 1px solid #CCCCCC
+          color #CCCCCC
+          height 30px
+          padding 0 25px
+          line-height 30px
+          font-size 12px
+          cursor pointer
+          position relative
+
+          &::after
+          &::before
+            content ''
+            width 30px
+            height 1px
+            position absolute
+            right -15px
+            top calc(50% - 1px)
+            z-index 9
+            background-color #CCCCCC
+          &::before
+            height 6px
+            width 6px
+            background-color transparent
+            border 1px solid #ccc
+            border-left none
+            border-bottom none
+            transform rotate(45deg)
+            top calc(50% - 4px)

@@ -3,3 +3,12 @@ mixin contactPhoneBtn()
       a(href="tel:" + phone.content)#footerPhoneBox.footer-phone-box.btn-animate
         .icon(style=`background: url('//file.baixing.net/202107/93d5a4ad367a7a9f007ed7091127bc80.png') no-repeat center/100%`)
         p.btn-text 拨打电话
+    else
+      - let union400num =  union400 && union400.length? union400[0]: ''
+      button#footerPhoneBox.footer-phone-sem-box.btn-animate(data-union400num=union400num||'' )
+        .icon(style=`background: url('//file.baixing.net/202107/93d5a4ad367a7a9f007ed7091127bc80.png') no-repeat center/100%`)
+        span.btn-text 拨打电话
+      a#footerPhoneBox.footer-phone-box.col.hide.btn-animate(href="tel:" + union400num)
+        p.phone-num #{union400num}
+        .time-tip.hide
+          | 180s后更新

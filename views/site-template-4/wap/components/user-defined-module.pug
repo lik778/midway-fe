@@ -1,0 +1,28 @@
+mixin user-defined-module-item(pageType,userDefinedModule)
+	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
+	if userDefinedModule.show
+		- const userDefinedList = userDefinedModule.subModuleBos
+		- const isOdd = userDefinedList.length%2 === 0 ? false : true
+		.user-defined-module
+			div.block-title-box #{ userDefinedModule.mainModuleTitle }
+				.prefix-box(style={background: themeColor})
+			.user-defined-list
+				each item,index in userDefinedList
+					if index < 9
+						- var number = '0' + ( index+1 )
+					else
+						- var number = index + 1
+					.user-defined-item
+						span.number(style={background: specialIconColor || themeColor}) #{ number }
+						span.title(style={color: specialIconColor || themeColor}) #{ item.title }
+						.content.only-fiveline #{ item.content }
+				if isOdd
+					if pageType === 'about'
+						.user-defined-item
+					else if pageType === 'home'
+						.user-defined-item
+							a(href=aboutLink) 查看更多详情
+mixin user-defined-module(pageType,userDefinedModuleList)
+	+user-defined-module-item(pageType,userDefinedModuleList[1])
+	+user-defined-module-item(pageType,userDefinedModuleList[2])

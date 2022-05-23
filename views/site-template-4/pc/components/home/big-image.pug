@@ -1,0 +1,4 @@
+mixin big-image(userDefinedModule)
+  if userDefinedModule && userDefinedModule.show && userDefinedModule.data
+    each item in userDefinedModule.data.pcImgList
+      img.big-image(src=item)

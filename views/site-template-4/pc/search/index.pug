@@ -1,0 +1,44 @@
+extends ../layout
+
+block styles
+  :combine(fileName="site-template-4-search-pc.css")
+
+block content
+  if isSem !== "1"
+    include ../components/common/breadcrumbs.pug
+
+  .container
+    .main
+      - var {contentType:contentType1} = renderData
+      - contentList = renderData.contentList
+      - contentKey = renderData.contentKey
+      include ../components/search/tabs.pug
+      +tabs(contentType1, contentKey, contentList.totalRecord)
+
+      if contentType1 === 'news'
+        include ../components/news/news-list.pug
+        +news-list(contentList.result)
+      else
+        //-产品列表
+        - productList = renderData.contentList.result
+        include ../components/product/product-list.pug
+
+      //-分页模块
+      include ../../../common/pc/pagination.pug
+      - var totalPage = (contentList && contentList.totalPage) || 1
+      +pagination(totalPage, currentPage, `${currentPathname}`)
+
+    if isSem !== "1"
+      .sidebar
+        //- TODO; 未确认到底用哪个字段
+        - const { articleList: articleRecommend,name } = renderData.articleRecommend
+        include ../components/sidebar/cateList.pug
+        +side-cateList(name||'新闻资讯', articleRecommend)
+        //- include ../components/sidebar/news-list.pug
+        include ../components/sidebar/products.pug
+
+block scripts
+  :combine(fileName="site-template-4-search-pc.js")
+block append scripts
+  script.
+      window.extraContactFormData = { position: 9 };

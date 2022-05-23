@@ -1,0 +1,110 @@
+.aboutus
+  //overflow hidden
+  position relative
+  margin-bottom 10px
+  padding: 0 12px
+  background-repeat no-repeat
+  background-size cover
+  background-position center
+  > img.bg
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    object-fit cover
+    z-index -1
+  .aboutus-block-title
+    position relative
+    padding: 16px 9px 12px
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border-bottom: 1px solid #EEEEEE
+    &::before
+      content ""
+      position absolute
+      top 16px
+      left 0
+      width 3px
+      height 16px
+      background white
+  .aboutus-block-content
+    padding 20px 4px
+    .aboutus-item
+      display flex
+      justify-content start
+      align-items center
+      position relative
+      & +.aboutus-item
+        margin-top 15px
+      .aboutus-icon
+        width 40px
+        height 40px
+        margin-right 12px
+      .aboutus-text
+        margin-right 20px
+        font-size 14px
+        color white
+        line-height 16px
+        max-width 260px
+        .aboutus-info
+          font-weight: bold;
+          color: white;
+      .copy-data
+        display block
+        width 72px
+        height 30px
+        font-size 12px
+        line-height 30px
+        text-align center
+        border-radius 999px
+        color #336FFF
+        background white
+      .more
+        width 9px
+        height 9px
+        position absolute
+        top 50%
+        right 17px
+        transform rotate(45deg) translateY(-80%)
+        border-top 2px solid white
+        border-right 2px solid white
+  &-content-box
+    padding 20px 16px
+    margin-top -10px
+    background white
+  &-content
+    font-size 14px
+    color #333333
+    line-height 26px
+    p.active
+        display: block
+  .click-to-expand
+    border-radius: 16px
+    height: 32px
+    line-height: 32px
+    border: 1px solid #DDDDDD
+    color: #999
+    font-size: 12px
+    display: inline-block
+    width: 122px
+    text-align: center
+    margin-top: 15px
+    position: relative
+    &::after
+      content: ''
+      width: 5px
+      height: 5px
+      border: 1px solid #999
+      border-left: none
+      border-bottom: none
+      position: absolute
+      right: 25px
+      top: calc(50% + 2px)
+      transform: translateY(-50%) rotate(-45deg)
+    &.active
+      &::after
+        top: calc(50% - 2px)
+        transform: translateY(-50%) rotate(135deg)

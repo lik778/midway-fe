@@ -1,0 +1,78 @@
+@import "../layout"
+@import "../components/breadcrumbs"
+@import "../components/product-detail/media-show"
+@import "../components/sidebar/company-card"
+@import "../components/product/product-list"
+@import "../components/product-detail/product-content"
+@import "../components/contact-form-companyInfo"
+@import "../../../common/pc/pagination"
+@import "../components/sidebar/index"
+@import "../components/company-record"
+@import '../components/product-detail/setting-table';
+@import 'quill/dist/quill.snow.css'
+@import "../components/sidebar/products"
+@import "../components/contact-message"
+@import "../../../common/pc/contact-form-sem"
+.block-title
+  margin 40 auto 41px
+  position relative
+  text-align center
+  .h2
+    display inline-block
+    margin-bottom: 16px
+    font-size 34px
+    text-align center
+    color #212121
+    font-weight bold
+  .point
+    position absolute
+    bottom: 0
+    left: 50%
+    transform: translateX(-107px)
+    width: 214px
+    height: 2px
+    margin-top: 16px
+    background-color: #EBEBEB
+    .tipMiddle
+      position absolute
+      top: 0
+      left: 50%
+      transform: translateX(-12px)
+      width 24px
+      height 3px
+      background: #336FFF
+.productDetails
+  width: 100%
+  padding-top: 10px
+  background: #fff
+  .container
+    width 1220px
+    margin 0 auto
+    .product-list
+      //justify-content space-between
+      .item-p
+        margin-bottom 20px
+        margin-right 15 !important
+        &:nth-child(4)
+            margin-right 13px !important
+        &:nth-child(5)
+            margin-right 0 !important
+    .contanierContent
+      display: flex
+      .main
+        order: 2
+        width 100%
+        margin-left: 19px
+      .sidebar
+        order: 1
+        width 224px
+  #contactFormBox
+    overflow hidden
+    width: 100%
+    padding-bottom: 72px
+    margin-top: 40px
+    .block-title
+      margin-top: 54px
+      .h2
+        color: #fff
+        margin-left 15px

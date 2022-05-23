@@ -1,0 +1,48 @@
+extends ../layout
+
+block styles
+  :combine(fileName="site-template-4-product-detail-pc.css")
+
+//- sem下去除导航栏的手机号
+block official-info-phone
+  if isSem === '1'
+    span 
+  else 
+    include ../../../common/pc/official-info-phone.pug
+    +officialInfoPhone()
+
+block content
+  - const { officialInfo, officialNav, baseSwiper, totalTip, serveAd1 ,productHv,about ,serveTel,serveAd2,productCat,newsAd,contact, productDetail} = renderData.basic.shop.color
+  - const { address, logo } = renderData.basic.company
+  - const themTipColor = `background-color: ${totalTip}`
+  include ../components/home/block-title.pug
+  if isSem !== "1"
+    include ../components/common/breadcrumbs.pug
+  .productDetails
+    .container.clearfix
+      include ../components/product-detail/media-show.pug
+      +mediaShow()
+      - const { productList, name: productRecommendName} = renderData.productRecommend
+      .contanierContent
+        .main
+          include ../components/product-detail/product-content.pug
+
+        if isSem !== "1"
+          .sidebar
+            - const { productCateList, articleCateList} = renderData
+            include ../components/sidebar/company-card.pug
+            include ../components/sidebar/cateList.pug
+            +side-cateList('文章分类', articleCateList)
+            include ../components/sidebar/products.pug
+    #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
+      +bolckTitle('联系我们',themTipColor)
+      include ../components/home/contact-message.pug
+      include ../../../common/pc/contact-form-sem.pug
+      +contactFormSem('#FF2D38')
+
+block scripts
+  :combine(fileName="site-template-4-product-detail-pc.js")
+block append scripts
+  script.
+    window.extraContactFormData = { position: 6, id: #{renderData.productInfo.id} };
+    window.adId = #{renderData.productInfo.id};

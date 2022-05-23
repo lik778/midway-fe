@@ -1,0 +1,16 @@
+mixin news-list(articleList)
+  .news-list 
+    each item,index in articleList
+      - dateObj = new Date(item.modifiedTime * 1000)
+      - date = dateObj.getDate()
+      - year = dateObj.getFullYear()
+      - month = dateObj.getMonth() + 1
+      a(class='news-item' href=item.urlSuffix)
+        .left 
+          .date(style=`color: ${newsAd}`) #{date > 9 ? date : `0${date}`}
+          .year-month #{year}/#{month > 9 ? month : `0${month}`}
+        .right 
+          .title.newsTitle(data-hover=newsAd).only-oneline #{ item.name }
+          .content.only-twoline #{ item.limitText }
+  a.show-more-btn(href= newsLink || "#")
+    apan.set-color 查看更多文章

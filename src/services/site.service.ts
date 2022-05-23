@@ -20,7 +20,8 @@ export class SiteService {
   static templateMapping = {
     "5fb387d2f2db3f6b8e7080e5": "site-template-1",
     "5fb387d2f2db3f6b8e7080e6": "site-template-2",
-    "7397650bdc5446a36d6d643e": "site-template-3"
+    "7397650bdc5446a36d6d643e": "site-template-3",
+    'f5760fe337070e8b9b8f3fdcd9ca1c32': "site-template-4"
   }
   constructor(
     private readonly httpService: HttpService,
@@ -55,7 +56,7 @@ export class SiteService {
     }
   }
 
-  // 本地环境时需要对 domain 进行配置  
+  // 本地环境时需要对 domain 进行配置
   // 本地需要请求测试环境接口，而测试环境会校验当前的请求是否从对应的域名发出的
   // 例如 dev环境要求 shop-dev.baixing.cn这个域名(后端未修复，暂时无法使用)
   // 例如 test环境要求 shop-test.baixing.cn这个域名

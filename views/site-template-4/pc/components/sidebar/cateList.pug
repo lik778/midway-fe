@@ -1,0 +1,27 @@
+//- //-侧边栏分类列表，后端已限制详情页10个，列表页不限。公共组件前端无需判断限制
+//- mixin side-cateList(type,list)
+//-   if list && list.length > 0
+//-     .side-newsList
+//-       .sidebar-item__title(style=`background: ${totalTip}`) #{ type }
+//-       .sidebar-item__content
+//-           each item in list
+//-             a.article(href=item.urlSuffix) #{ item.name }
+//-       .sidebar-item__last
+
+
+//-侧边栏分类列表,后端已限制10个，列表页全不限制
+mixin side-cateList(type,list)
+  .product-contanier
+      .product-catogeries-cate
+        .all-category(style=`background-color: ${productCat.catTheme}`) #{type}
+        each item,index in list
+          if(index == 0)
+            a.cateList(href= item.urlSuffix detailHover=productCat.catTheme).
+              #{ item.name.length > 8 ? item.name.slice(0,8) + '...' : item.name} #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
+      a.last-contacts(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=`tel:${phone.content}`)
+        .last-contact-top
+          img.top1(src="//file.baixing.net/202205/ba64a2b4ee4f230a1e96ab5c2bf6c07a.png" alt="logo")
+        .last-contact-middle #{phone.content}
+
+
+

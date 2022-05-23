@@ -1,0 +1,112 @@
+@import './common/contact-form'
+.news-detail
+    &__subtitle
+        font-size 16px
+        color #333333
+        margin 30px 30px
+        font-weight bold
+
+    &__contact-us
+        box-sizing: border-box
+        background-color #fff
+        padding 30px
+        display flex
+        border: 1px solid #eeeeee
+        border-radius: 4px
+        .contact-form
+          width 530px
+          flex 1
+          background: #FFFFFF
+          .a-container
+            justify-content: flex-start
+            padding: 15px 0 0
+            .a-content
+              flex-direction: row
+              flex-wrap: wrap
+              .a-content-items
+                flex-direction: column
+                align-items: flex-start
+                width: 45%
+                &:nth-child(2n+1)
+                  margin-right: 40px
+                .items-label
+                    margin: 0 0 8px 4px
+              .a-content-item
+                width: 45%
+                &:nth-child(2n+1)
+                  margin-right: 10%
+                .item-label
+                  margin: 0 0 8px 4px
+              .a-button
+                width: 45%
+                margin-left: 4px
+        .company
+            &-info
+                padding 15px 70px 0
+                font-size 14px
+                color #333333
+                max-width: 45%
+                .info-label
+                  font-weight 600
+        .info-item
+            margin 20px 0
+            display flex
+            span:first-child
+                color #999999
+                margin-right 15px
+                min-width 70px
+                display inline-block
+.contact-us__form
+    .form-group
+      display flex
+      padding 15px 0
+
+      &:last-child
+        padding-bottom 0
+
+      .form-item
+        flex 1
+        padding-right: 30px
+
+        &__label
+          margin-bottom 8px
+          color #333333
+          font-weight bold
+          position relative
+          display inline-block
+
+          &.required
+            &::after
+              content '*'
+              position absolute
+              color red
+              right -10px
+              top 0
+
+        input,
+        textarea
+          background #F7F7F7
+          border none
+          font-size 16px
+          color #999999
+          width 100%
+          padding 15px
+          &::-webkit-input-placeholder
+            color #BBBBBB
+          &:-ms-input-placeholder
+            color #BBBBBB
+          &:-moz-placeholder
+            color #BBBBBB
+          &:focus
+            outline: #CCCCCC solid 2px
+            border-radius: 4px
+        textarea
+          resize vertical
+
+        button
+          background #FF2D38
+          font-size 16px
+          color #FFFFFF
+          border none
+          padding 10px 50px
+          cursor pointer

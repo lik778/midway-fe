@@ -1,0 +1,40 @@
+extends ../layout.pug
+block styles
+	:combine(fileName="site-template-4-search-wap.css")
+
+block header
+	include ../components/header
+
+block content
+	//- 变量初始化
+	- const { contentList, contentType:contentType1, contentPage, contentKey } = renderData
+	- lists = contentList.result || []
+
+	include ../components/search-tabs.pug
+	+tabs(contentType1, contentKey, contentList.totalRecord)
+
+	//- 搜索列表
+	if isTabProduct
+		include ../components/product-list
+		+product-list('', lists)
+	if isTabNews
+		include ../components/news-list
+		+news-list(lists)
+
+	//- 翻页
+	include ../../../common/wap/dynamic-pagination.pug
+	- var totalPage = (contentList && contentList.totalPage) || 1
+	+dynamic-pagination(totalPage, contentPage)
+
+block footer
+	div(style="padding-bottom:75px")
+	- const { weixin, people } = renderData.basic.shop.color.wap
+	- const { totalTip } = renderData.basic.shop.color
+	include ../../../common/wap/dynamic-official-footer-contact.pug
+	+dynamic-official-footer-contact(totalTip,weixin,people)
+
+block scripts
+	:combine(fileName="site-template-4-search-wap.js")
+block append scripts
+	script.
+		window.extraContactFormData = {position: 9};

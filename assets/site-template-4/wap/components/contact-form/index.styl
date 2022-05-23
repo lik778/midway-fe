@@ -1,0 +1,76 @@
+.contact-form
+  position relative
+  > img.bg
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    object-fit cover
+    z-index -1
+  .block-title
+    position relative
+    padding 16px 9px
+    margin 0 12px
+    font bold 16px/16px PingFangSC-Medium, PingFang SC
+    color white
+    border-bottom: 1px solid white
+    .prefix-box
+      position absolute
+      top 16px
+      left 0
+      width 3px
+      height 16px
+      background #336FFF
+  .contact-form-list
+    padding 20px 15px 10px
+    .a-content-item
+      display: flex
+      flex-direction column
+      width: 100%
+      margin-bottom  20px
+      font-size 14px
+      .item-label
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        width: 23%
+        margin-bottom 12px
+        color white
+        .labe-icon
+          font-size 16px
+          color #FF4466
+      input
+        width 100%
+        border none
+        border-radius 2px
+        padding 16px 12px
+        font-size: 14px;
+        color: #999999;
+        background-color: #F7F7F7
+        -webkit-appearance: none;
+    .form-item
+      display: flex
+      justify-content: flex-start
+      align-items: flex-start
+      margin-bottom  20px
+      button
+        width 100%
+        height 50px
+        margin-top 10px
+        border none
+        text-align center
+        color #fff
+        line-height 50px
+        border-radius 25px
+        font-size 16px
+        background #336FFF
+      &.required
+        label
+          position relative
+          &::after
+            content '*'
+            position absolute
+            right -15px
+            font-size 16px
+            color #FF4466

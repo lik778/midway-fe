@@ -1,6 +1,7 @@
 // tips: 页面配置
 import { FormType } from '@/components/wildcat-form/enums';
 import { FormConfig } from '@/components/wildcat-form/interfaces';
+import { enum } from '../../../../../../../../../../../../../../../src/enums/error';
 
 // swiper 产品表单
 export const swiperProductForm: FormConfig = {
@@ -15,3 +16,15 @@ export const swiperProductForm: FormConfig = {
     }
   ],
 }
+
+
+enum SampleConstant {
+    A,
+    B,
+    C
+}
+
+export type valueOfSampleConstant = SampleConstant
+
+
+

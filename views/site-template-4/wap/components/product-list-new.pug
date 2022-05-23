@@ -1,0 +1,11 @@
+mixin product-list-new(productList)
+  - hotIcon = "//file.baixing.net/202106/7e6d0360e8932f2e31bda4b5b1c8e5b3.png"
+  if productList && productList.length >0
+    .products
+      each item in productList
+        a.product-new(href=item.urlSuffix,class=item.videoUrl?'video':'')
+          img.product__img(src=item.headImg || defaultImg)
+          p.product__name.only-oneline #{ item.name }
+  else
+    include ./default-content.pug
+    +default-content("product")

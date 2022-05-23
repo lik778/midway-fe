@@ -1,0 +1,9 @@
+mixin officialHeader(headerOption)
+  - const { navConfig } = headerOption||{}
+  include ../../../../../common/pc/official-topbar.pug
+  +officialTopbar()
+  include ./official-info.pug
+  +officialInfo()
+  if isSem !== "1"
+    include ./official-nav.pug
+    +officialNav()
