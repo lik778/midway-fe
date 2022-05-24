@@ -11,6 +11,7 @@ import { productList } from '../components/home/product-list'
 import { productListNew } from '../components/home/product-list-new'
 import { newLists } from '../components/home/news-list'
 import { productCat } from '../components/home/product-catogeries'
+import { aboutContactTel } from '../components/home/about-contact-tel'
 contactMessage()
 leaveLeads()
 aboutUs()
@@ -19,6 +20,7 @@ productList()
 productListNew()
 newLists()
 productCat()
+aboutContactTel()
 $(document).on('ready', function () {
   // 处理pagination选中后的颜色
   let color = $('.swiper-pagination').attr('homeColor')

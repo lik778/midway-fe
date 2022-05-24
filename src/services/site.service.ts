@@ -68,10 +68,10 @@ export class SiteService {
   private getDomain(domain: string): string {
     if (domain === 'localhost' || domain === 'dianpu.baixing.cn' || domain.indexOf('172.17') !== -1 || domain.indexOf('192.168') !== -1) {
       // 可以将自己常用的还有三级域名的url写在下面 注释好
-    //   domain = 'zb2c.shop-test2.baixing.cn'
+      // domain = 'zb2c.shop-test1.baixing.cn'
       // domain = 'zmlc2b.shop-test2.baixing.cn'
       // domain = 'seocheck380.shop-test.baixing.cn'
-      domain = 'shop.baixing.cn'
+      domain = 'shop-test1.baixing.cn'
     }
     return domain
   }

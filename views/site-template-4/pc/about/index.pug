@@ -34,7 +34,7 @@ block content
     if autoConfig[1] &&autoConfig[1].show
           include ../components/home/user-defined-module.pug
           +user-defined-module(autoConfig[1])
-    #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
+    #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
         +bolckTitle('联系我们',themTipColor)
         //- 通用模板
         include ../components/home/contact-message.pug

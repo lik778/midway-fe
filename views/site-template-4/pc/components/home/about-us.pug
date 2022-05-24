@@ -1,5 +1,5 @@
 mixin about-Us-New(type,mediaImg,videoUrl)
-  - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,220):'暂时还未上传公司简介哦...'
+  - aboutText = company.about?company.about.replace(/\r|\n|(<br(\s){0,}(\/)?>)/g, '').slice(0,231):'暂时还未上传公司简介哦...'
   .about-us-bgc
     .content-right
       .content-right-title
@@ -9,9 +9,9 @@ mixin about-Us-New(type,mediaImg,videoUrl)
           p.left-title #{ companyName }
       .content-right-body(data-d=company.about)
         .body-content
-          | !{ aboutText.length === 232?aboutText+'...':aboutText }
-      if aboutText.length === 232
-       a.view-detail(href=aboutLink) 查看详情
+          | !{ aboutText.length >= 229 ? aboutText+'...':aboutText }
+      //- if aboutText.length >= 231
+      a.view-detail(href=aboutLink) 查看详情
     .content-left
       .tags 
         each item in type

@@ -13,7 +13,7 @@
 mixin side-cateList(type,list)
   .product-contanier
       .product-catogeries-cate
-        .all-category(style=`background-color: ${productCat.catTheme}`) #{type}
+        .all-category(style=`background-color: ${productCat.catTheme}`) #{type || '新闻咨询'}
         each item,index in list
           if(index == 0)
             a.cateList(href= item.urlSuffix detailHover=productCat.catTheme).

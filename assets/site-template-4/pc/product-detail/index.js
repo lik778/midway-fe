@@ -6,10 +6,12 @@ import { initSem } from '../../../common/pc/contact-form-sem'
 import { mediaShow } from '../components/product-detail/media-show'
 import { initializeSidebarProductSwiper } from '../components/sidebar'
 import { cateListActive } from '../components/sidebar/cate-list'
+import { contactMessage } from '../components/contact-message'
 leaveLeads()
 mediaShow()
 initializeSidebarProductSwiper()
 cateListActive()
+contactMessage()
 $(document).on('ready', function () {
   // sem部分链接需要禁止二跳
   if (isSem === '1') {

@@ -1,20 +1,24 @@
 import $ from 'jquery'
 export const  oficialNav = function() {
-  let color = $('.nav-item').data('hover')
-  let leave = $('.nav-item').data('hoverleave')
+  let color = $('.hover-box').data('hover')
+  let leave = $('.hover-box').data('hoverleave')
   let currentUrl = window.location.href
-  let allNav = $('.nav-item')
+  let allNav = $('.hover-box')
   allNav.each(function() {
-    if($(this).prop('href') === currentUrl) {
-      $(this).css('background',color)
+    if($(this).find('.nav-item').prop('href') === currentUrl) {
+      $(this).find('.nav-item').css('background',color)
     } else {
-      $(this).css('background',leave)
+      $(this).find('.nav-item').css('background',leave)
     }
   })
-  $('.nav-item').on('mouseover',function() {
-    $(this).css('background',color)
+  $('.hover-box').on('mouseover',function() {
+    $(this).find('.nav-item').css('background',color)
   })
-  $('.nav-item').on('mouseout',function() {
-    $(this).css('background',leave)
+  $('.hover-box').on('mouseout',function() {
+    if($(this).find('.nav-item').prop('href') === currentUrl) {
+      $(this).find('.nav-item').css('background',color)
+    } else {
+      $(this).find('.nav-item').css('background',leave)
+    }
   })
-} 
+}

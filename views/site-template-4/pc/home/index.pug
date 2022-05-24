@@ -33,7 +33,7 @@ block content
       if isSem !== "2"&&isSem !== "1"
         .container-about-us
           - const { name: aboutUsTitle, tags, media, videoUrl } = renderData.about||renderData.basic.aboutModule || {}
-          +bolckTitle(name || '关于我们',themTipColor)
+          +bolckTitle(aboutUsTitle || '关于我们',themTipColor)
           include ../components/home/about-us.pug
           +about-Us-New(tags,media,videoUrl)
         include  ../components/home/about-contact-tel.pug
@@ -71,7 +71,7 @@ block content
           WEIXIU: '//file.baixing.net/202112/54876ec9655f874eced9769b1e4214ac.png'
         }
       if styleType === 'B2B_NORMAL'
-        #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100%`)
+        #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
             +bolckTitle('联系我们',themTipColor)
             //- 通用模板
             include ../components/home/contact-message.pug

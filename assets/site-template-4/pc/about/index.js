@@ -5,9 +5,11 @@ import '../layout';
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { leaveLeads } from '../../../common/contact-form'
 import { seflAdvantage } from '../components/home/self-advantage'
+import { contactMessage } from '../components/contact-message'
 //navModule()
 leaveLeads()
 seflAdvantage()
+contactMessage()
 $(document).on('ready', function () {
 
   if (isSem === '2') {

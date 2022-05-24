@@ -6,9 +6,11 @@ import { initializeSidebarProductSwiper } from '../components/sidebar';
 import { cateListActive } from '../components/sidebar/cate-list'
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { leaveLeads } from '../components/common/contact-form'
+import { contactMessage } from '../components/contact-message'
 initializeSidebarProductSwiper()
 cateListActive()
 leaveLeads()
+contactMessage()
 $(document).on('ready', function () {
   let hoverList = $('.news-content__title').attr('hoverList')
   $('.news-content__title').on('mouseover',function() {

@@ -5,8 +5,8 @@ mixin officialNav()
       each item in nav
         - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
         .nav-item-box
-          .hover-box
-            a.nav-item(href=item.content  data-hover=officialNav.navHv  data-hoverleave=officialNav.navBg) #{ item.name }
+          .hover-box(data-hover=officialNav.navHv  data-hoverleave=officialNav.navBg)
+            a.nav-item(href=item.content) #{ item.name }
             if hasDropdown
               .nav-dropdown
                 each cItem in item.contentCateBos

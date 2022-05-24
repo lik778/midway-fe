@@ -1,19 +1,33 @@
 mixin user-defined-item-content(item,color,index)
+  - 
+    const all = [
+      '//file.baixing.net/202205/a7ec9d39b8711617f4ba4f60b471709a.png',
+      '//file.baixing.net/202205/22b028db24e148e304fb4969f9ccd352.png',
+      '//file.baixing.net/202205/0c6a46fdc5693d6ab0efa89956aeecfd.png',
+      '//file.baixing.net/202205/9b709eb0caf8534d7b856b46dd8806e4.png',
+      '//file.baixing.net/202205/1aa9ab633c9e38a92f7ae28b2966b03f.png',
+      '//file.baixing.net/202205/bb372ae8b9f62851919bb48c38fff8b9.png',
+      '//file.baixing.net/202205/748843fbdef54556e22976ed51246b53.png',
+      '//file.baixing.net/202205/8881cc9bf4eda6a9f081b0d943264690.png',
+      '//file.baixing.net/202205/a339601f487f97586c701f16d0f56964.png',
+      '//file.baixing.net/202205/fae987f4b1e0b732b9bcc15cf7234b7d.png'
+    ]
   .user-defined-item-content
     .triangle
     .title(style=`color: ${color.serviceThe}`) #{ item.title }
     .line(style=`background-color: ${color.serviceThe}`)
     .desc #{ item.content }
-    h3.numbering(style=`background-color: ${color.serviceNum}`) #{index}
+    .numbering(style=`background-color: ${color.serviceNum}`)
+      img(src=all[index] alt="number")
 
 mixin user-defined-module(configItem)
-  - const defaultImg = ['//file.baixing.net/202107/00042d82d26996a834f634da24f4c4ed.png','//file.baixing.net/202107/a01c46433402abc2764a73159dbf46dc.png','//file.baixing.net/202107/b713e1c02612812f0972bcea65cb58bd.png','//file.baixing.net/202107/4c4c8531457a49f12b432243a20d6fce.png','//file.baixing.net/202107/ed8b66237a86e68c23f369854fe6fcc0.png','//file.baixing.net/202107/eabfa36d86e81cd4eb1031f3ace065a6.png','//file.baixing.net/202107/7665f5e7a4f21c9d1e864408b3ede10a.png','//file.baixing.net/202107/4a17dbc06030214723ec295899c63d65.png','//file.baixing.net/202107/eb3969456c6b4995d648a175a1a091a2.png','//file.baixing.net/202107/9250dd40e68112fbc54ebaef9c8006ff.png']
+  - const defaultImg = ['//file.baixing.net/202205/b70356ca83921e71645a44b227926422.png','//file.baixing.net/202205/d20ef91c6bb3ebd1f14a4e1e87d6a81e.png','//file.baixing.net/202205/b70356ca83921e71645a44b227926422.png','//file.baixing.net/202107/4c4c8531457a49f12b432243a20d6fce.png','//file.baixing.net/202107/ed8b66237a86e68c23f369854fe6fcc0.png','//file.baixing.net/202107/eabfa36d86e81cd4eb1031f3ace065a6.png','//file.baixing.net/202107/7665f5e7a4f21c9d1e864408b3ede10a.png','//file.baixing.net/202107/4a17dbc06030214723ec295899c63d65.png','//file.baixing.net/202107/eb3969456c6b4995d648a175a1a091a2.png','//file.baixing.net/202107/9250dd40e68112fbc54ebaef9c8006ff.png']
   .block-title
     .h2 #{ configItem.mainModuleTitle }
     .point
-      .tipMiddle
+      .tipMiddle(style=`${themTipColor}`)
   - let { subModuleBos } = configItem
-  .user-defined-list
+  .user-defined-list  
     each item, index in subModuleBos
       .user-defined-item
         if index % 2 !== 0

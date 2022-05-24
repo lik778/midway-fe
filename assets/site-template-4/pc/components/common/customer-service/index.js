@@ -119,3 +119,42 @@ baxFeedbackCopyBth.on('click', () => {
 	}, 2000)
 })
 
+
+const entranceBtn = $('#entrance')
+entranceBtn.on('click',()=>{
+	const {position} = window.extraContactFormData
+	const href = window.location.href
+	const id = /(?<=-)\d.*(?=.html)/.exec(href)?/(?<=-)\d.*(?=.html)/.exec(href)[0]:''
+	if(id){
+		window.location.href = `safeguard?position=${position}&id=${+id}`
+	}else{
+		window.location.href = `safeguard?position=${position}`
+	}
+})
+
+
+// hover 变色
+const customerHv = $('#customerHover').attr('customerHv')
+const backTopColor = $('#back-to-top').attr('backToTopColor')
+$('.back-to-top__text').on('mouseover',function() {
+  $(this).css('color',backTopColor)
+})
+$('.back-to-top__text').on('mouseout',function() {
+  $(this).css('color','#333')
+})
+
+$('#baixing').on('mouseover',function() {
+  $(this).css('color',backTopColor)
+})
+$('#baixing').on('mouseout',function() {
+  $(this).css('color','#409eff')
+})
+
+$('.customer-item-hover').on('mouseover',function() {
+  $(this).css('background-color',customerHv)
+})
+$('.customer-item-hover').on('mouseout',function() {
+  $(this).css('background-color',backTopColor)
+})
+
+

@@ -8,11 +8,13 @@ import { initSem } from '../../../common/pc/contact-form-sem'
 import { productList } from '../components/product/product-list'
 import { leaveLeads } from '../components/common/contact-form'
 import { cateListActive } from '../components/sidebar/cate-list'
+import { contactMessage } from '../components/contact-message'
 initializeSidebarProductSwiper()
 initCateList()
 productList()
 leaveLeads()
 cateListActive()
+contactMessage()
 $(document).on('ready', function () {
   // sem部分链接需要禁止二跳
   if (isSem === '1') {
