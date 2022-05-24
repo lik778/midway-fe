@@ -22,6 +22,8 @@ export const initNav = function ($navs) {
   })
 
 	const index = urls.findIndex(item => item === href)
+	console.log("__log dynamic nav index", index,href);
+
 	_setTargetElActive(index)
 
 	// const index = urls.findIndex(item => {
