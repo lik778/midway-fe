@@ -41,7 +41,7 @@ const clickAction = ((dom) => {
     const data = $(this).data('value');
     copyText(data, dom);
     dom.css("color","#008000");
-    dom.text('复制成功！');
+    dom.text('复制成功!');
     setTimeout(() => {
       dom.text('点击复制');
       dom.css("color","")
