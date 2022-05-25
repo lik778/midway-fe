@@ -7,7 +7,7 @@ export const initNav = function ($navs) {
   // 有全等得亮全等
   // 删除 / 下全等
   // 无全等得亮开头对应列表
-	const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '')
+	const href = window.location.href.replace(new RegExp("\\?[\\s\\S]{0,}"), '').replace('#contactFormBox', '')
 	let _setTargetElActive = function (index) {
 		let targetEl = $navs.eq(index)
 
