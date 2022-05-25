@@ -9,13 +9,9 @@ import { initProductListHot } from '../components/product-list-hot'
 import { initSem } from '../../../common/wap/contact-form-sem'
 
 initAboutus()
-console.log("__log initAboutus")
 leaveLeads()
-console.log("__log leaveLeads")
 initCompanyInfo()
-console.log("__log initCompanyInfo")
 initProductListHot()
-console.log("__log initProductListHot")
 
 // sem下禁止用户二跳
 $(document).on("ready", function () {
