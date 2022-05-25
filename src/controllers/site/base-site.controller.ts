@@ -103,7 +103,7 @@ export class BaseSiteController {
 
     const defaultAutoConfig2 = {
       mainModuleTitle: '服务优势', show: true,
-      subModuleBos: [{ title: '口碑载道', content: '重视信誉和口碑，客户忠实度高', urlImg: '//file.baixing.net/202110/9851dfe60a5df417b85788ba393460e7.png' }, { title: '资质正规', content: '相关资质均有工商备案，资质可查，公司正规', urlImg: '//file.baixing.net/202110/a86515893a4e2bf9d2dda1dd51d94d1a.png' }, { title: '贴心服务', content: '全方位的售前售后服务，提高客户满意度', urlImg: '//file.baixing.net/202110/43373c5e79d64d90db73dff93ac82721.png' }, { title: '售后保障', content: '完善的售后服务体系和严格的管理制度，客户至上', urlImg: '//file.baixing.net/202110/b8f7486b576631f5d13d9f3ec7f5b1b1.png' }]
+      subModuleBos: [{ title: '口碑载道', content: '重视信誉和口碑，客户忠实度高', urlImg: '//file.baixing.net/202205/34e067d381bfd84d0a51de36a5c7d70f.png' }, { title: '资质正规', content: '相关资质均有工商备案，资质可查，公司正规', urlImg: '//file.baixing.net/202205/f51be8e63b595910bc8114aa9cb9dabe.png' }, { title: '贴心服务', content: '全方位的售前售后服务，提高客户满意度', urlImg: '//file.baixing.net/202205/d30494660f7a73ef9fdad04af8101fb3.png' }, { title: '售后保障', content: '完善的售后服务体系和严格的管理制度，客户至上', urlImg: '//file.baixing.net/202205/37b59b76873248b4085d75e2ebcd4939.png' }]
     }
 
     if (!data.autoConfig) {
