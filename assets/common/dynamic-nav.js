@@ -7,9 +7,7 @@ export const initNav = function ($navs) {
   // 有全等得亮全等
   // 删除 / 下全等
   // 无全等得亮开头对应列表
-	console.log("__log dynamic-nav running");
 	const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '')
-console.log("__log href", href);
 	let _setTargetElActive = function (index) {
 		let targetEl = $navs.eq(index)
 
@@ -21,10 +19,8 @@ console.log("__log href", href);
   const urls = $.map($navs, function (item) {
     return item.getAttribute('navLink')
   })
-	console.log("__log urls", urls);
 
 	const index = urls.findIndex(item => item === href)
-	console.log("__log index + href", index, href);
 
 	_setTargetElActive(index)
 

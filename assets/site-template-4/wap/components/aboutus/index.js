@@ -38,7 +38,6 @@ const copyText = (text, dom) => {
 
 const clickAction = ((dom) => {
   dom.on('click', function () {
-		console.log("__log click copy btn");
 		const data = $(this).data('value');
     copyText(data, dom);
     dom.css("color","#008000");
@@ -51,7 +50,6 @@ const clickAction = ((dom) => {
 })
 
 export const initAboutus = function () {
-	console.log("__log init about us by dd");
   $(document).on('ready', function () {
     const expandBtn = $('#aboutus-click-to-expand');
     const expandContentSlice = $('.aboutus-content .aboutus-content-slice');
