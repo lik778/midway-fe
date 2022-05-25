@@ -10,6 +10,7 @@ const devConfig = {
   //     new UglifyJsPlugin()
   //   ],
   // }
+  devtool: 'source-map', // prod 环境暂时开启source-map,定位到线上问题
   plugins: [
     new OptimizeCSSAssetsPlugin()
   ]
