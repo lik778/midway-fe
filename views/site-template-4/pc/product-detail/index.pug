@@ -32,8 +32,9 @@ block content
             - const { productCateList, articleCateList} = renderData
             include ../components/sidebar/company-card.pug
             include ../components/sidebar/cateList.pug
-            +side-cateList('文章分类', articleCateList)
+            +side-cateList('所有产品分类', productCateList)
             include ../components/sidebar/products.pug
+            +productRecommend(2)
     #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
       +bolckTitle('联系我们',themTipColor)
       include ../components/home/contact-message.pug

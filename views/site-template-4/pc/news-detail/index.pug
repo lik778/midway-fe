@@ -39,16 +39,17 @@ block content
 
       if isSem !== "1"
         .sidebar
+          - const { articleList: articleList,name:articleName } = renderData.articleRecommend
           //- include ../components/sidebar/company-card.pug
           //- - const { address,name: companyName,logo } = renderData.basic.company;
           //- include ../components/common/company-record.pug
           //- +companyRecord(logo,companyName)
+          - const {articleCateList} = renderData
+          include ../components/sidebar/cateList.pug
+          +side-cateList('所有文章分类', articleCateList)
           include ../components/sidebar/news-list.pug
-          
-          //- - const sidecateList = renderData.articleCateList
-          //- include ../components/sidebar/cateList.pug
-          //- +side-cateList('文章分类', sidecateList)
           include ../components/sidebar/products.pug
+          +productRecommend(2)
     #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
       +bolckTitle('联系我们',themTipColor)
       include ../components/home/contact-message.pug

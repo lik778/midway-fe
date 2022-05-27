@@ -1,10 +1,11 @@
 //- 新闻资讯
 - const { articleList: articleRecommend,name } = renderData.articleRecommend
 if articleRecommend && articleRecommend.length > 0
-  .sidebar-item__title(style=`color: ${totalTip}`)
-      span #{name || '新闻资讯'}
-  .sidebar-item
-    .sidebar-item__content
-      .side-news-list
-        each item in articleRecommend.slice(0, 9)
-          a.news.only-oneline(href=item.urlSuffix) #{ item.name }
+  .sidebar-new-list-container
+    .sidebar-item__title(style=`color: ${totalTip}`)
+        span #{name || '文章推荐'}
+    .sidebar-item
+      .sidebar-item__content
+        .side-news-list
+          each item in articleRecommend
+            a.news.only-oneline(href=item.urlSuffix) #{ item.name }

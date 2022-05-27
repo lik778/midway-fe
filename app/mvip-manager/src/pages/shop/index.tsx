@@ -171,7 +171,7 @@ const ShopPage: FC<Props> = (props) => {
                   setTicketModal={(shopId: number) => {
                     const curShop = shopList?.find(s => s.id === shopId)
                     const defaultTicketId = shopStatus && shopStatus.userValidTickets
-            && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
+                && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
                     setTicketType(TicketType.RENEW)
                     setModalTicketVisible(true)
                     setShopId(shopId)

@@ -85,7 +85,7 @@ export const qqModule = function (type) {
 
 const backToTop = $('#back-to-top');
 const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
+backToTop.hide()
 $(document).scroll(() => {
 	if ($(document).scrollTop() > windowHeight) {
 		backToTop.slideDown();
