@@ -6,7 +6,7 @@ mixin user-defined-module-item(pageType,userDefinedModule)
 		- const isOdd = userDefinedList.length%2 === 0 ? false : true
 		.user-defined-module
 			div.block-title-box #{ userDefinedModule.mainModuleTitle }
-				.prefix-box(style={background: themeColor})
+				.prefix-box(style={background: specialIconColor || themeColor})
 			.user-defined-list
 				each item,index in userDefinedList
 					if index < 9

@@ -13,7 +13,7 @@ leaveLeads()
 initCompanyInfo()
 initProductListHot()
 
-// sem下禁止用户二跳 
+// sem下禁止用户二跳
 $(document).on("ready", function () {
   // sem需要禁止部分内容二跳
   // tapd:https://www.tapd.cn/20095111/prong/stories/view/1120095111001038653
@@ -28,8 +28,8 @@ $(document).on("ready", function () {
       gotoOtherPageA: $('.products a')
     })
   }
-  
-  if (isSem === '2') {
+
+	if (isSem === '2') {
     initSem({
       account: isAccount,
       sem: isSem,
