@@ -31,8 +31,8 @@ mixin user-defined-module(configItem)
     each item, index in subModuleBos
       .user-defined-item
         if index % 2 !== 0
-          .user-defined-item-img(style =`background:url(${item.urlImg ?item.urlImg: defaultImg[index]}) no-repeat center/100%`) 
+          .user-defined-item-img(style =`background:url(${item.urlImg ?item.urlImg: defaultImg[index]}) no-repeat center/100% 100%`) 
           +user-defined-item-content(item,serveAd2,index)
         else 
           +user-defined-item-content(item,serveAd2,index)
-          .user-defined-item-img(style =`background:url(${item.urlImg ?item.urlImg: defaultImg[index]}) no-repeat center/100%`) 
+          .user-defined-item-img(style =`background:url(${item.urlImg ?item.urlImg: defaultImg[index]}) no-repeat center/100% 100%`) 
