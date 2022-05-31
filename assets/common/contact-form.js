@@ -18,7 +18,7 @@ export const leaveLeads = () => {
       const content = []
       let flag = false
       const bannerId = getUrlParam('bannerId')
-			const phoneFliterRules = new RegExp("^(0[0-9]{2,3}\\-{0,1})?([2-9][0-9]{6,7})+(\\-[0-9]{1,4})?$)|(^((\\(\\d{3}\\))|(\\d{3}\\-{0,1}))?(1[0-9]\\d{9})$)|(^(400)-{0,1}(\\d{3})-{0,1}(\\d{4})(.)(\\d{1,4})$)|(^(400)-{0,1}(\\d{3})-{0,1}(\\d{4}$))")
+      const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
       data.shopName = $('#shop-name').text()
       if(bannerId) {
         data.bannerId = bannerId
