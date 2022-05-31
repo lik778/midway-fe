@@ -6,8 +6,8 @@ mixin officialNav()
         - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
         .nav-item-box
           .hover-box(data-hover=officialNav.navHv  data-hoverleave=officialNav.navBg)
-            a.nav-item(href=item.content.replace('http://shop-test1.baixing.cn/kb2b/','http://localhost:7001/kb2b/')) #{ item.name }
+            a.nav-item(href=item.content) #{ item.name }
             if hasDropdown
               .nav-dropdown
                 each cItem in item.contentCateBos
-                  a.nav-dropdown-item(style=`background:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix.replace('http://shop-test1.baixing.cn/kb2b/','http://localhost:7001/kb2b/')) #{ cItem.name }
+                  a.nav-dropdown-item(style=`background:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix) #{ cItem.name }
