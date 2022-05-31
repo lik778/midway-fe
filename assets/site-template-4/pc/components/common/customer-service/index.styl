@@ -1,28 +1,29 @@
+#bax
+	width: 70px
+	height: 78px
 .customer-service
 	position fixed
 	right 10px
 	bottom 50px
 	z-index 999
-
+	width: 70px
 	.customer-service__group
 		background-color #fff
 		box-shadow 0 4px 10px rgba(#000, 0.05)
 
 		.service
 			&-item
-				padding 15px 10px
+				display: flex
+				flex-direction: column
+				justify-content: center
+				align-items: center
+				box-sizing: border-box
+				height: 75px
 				cursor pointer
 				position relative
-
-				&:not(:last-child)::after
-					content ''
-					position absolute
-					width 70%
-					height 2px
-					background-color #F5F5F5
-					left 50%
-					bottom 0
-					transform translateX(-50%)
+				border-bottom: 4px solid #f1f2f6
+				&:last-child
+					border-bottom: none
 				&::before // 过来过渡hover时候中间有个空隙
 					content ''
 					position absolute
@@ -31,13 +32,15 @@
 					left -50px
 					bottom 0
 					display none
+				.baixing-baozhang
+					width: 19px !important
+					height: 22px !important
+				.bax
+					color #409EFF
 			&-name
 				font-size 14px
 				text-align center
-				&.bax
-					color #409EFF
 			&-logo
-				margin auto
 				width 30px
 				height 30px
 				margin-bottom 5px
@@ -46,7 +49,7 @@
 				&.bax
 					background: url('//file.baixing.net/publicity-fe/static/assets/safe-pc-feedback.png') no-repeat center/100%
 				&.qq
-					background url('//file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png') no-repeat center center/100% 100%
 				&.mobile
 					background url('//file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png') no-repeat center center/100%
 				&.wechat
@@ -57,12 +60,10 @@
 					display block
 				.service-modal
 					display block
-				.service-name
-					color #FF2D38
 				.kf53
 					background url('//file.baixing.net/202111/6bb9caf88a177d963031d2e087fbb27f.png') no-repeat center center/100%
 				.qq
-					background url('//file.baixing.net/202102/b35eae79d56d8081f3c029e3e06c5040.png') no-repeat center center/100%
+					background url('//file.baixing.net/202102/b35eae79d56d8081f3c029e3e06c5040.png') no-repeat center center/100% 100%
 				.mobile
 					background url('//file.baixing.net/202102/274fb15f6bf4bf0cb1567d1fead4be0b.png') no-repeat center center/100%
 				.wechat
@@ -194,7 +195,8 @@
 						cursor pointer
 
 	#back-to-top
-		margin-top 15px
+		margin-top 4px
+		margin-bottom: 30px
 		background-color #fff
 		box-shadow 0 4px 10px rgba(#000, 0.05)
 		padding 20px 0
@@ -214,8 +216,6 @@
 			.back-to-top
 				&__icon
 					background url('//file.baixing.net/202205/84b00d3745455524132fe174595f54a1.png') no-repeat center center/100% 100%
-				&__text
-					color #FF444D
 
 #wechat-id-textarea
 	position absolute

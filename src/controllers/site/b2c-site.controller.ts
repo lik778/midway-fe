@@ -6,12 +6,13 @@ import { DomainTypeEnum } from '../../enums';
 import { TrackerService } from '../../services/tracker.service';
 import { UserGuard } from 'src/util/httpInterceptors';
 
+
 //继承自base-site.controller,用于b2c路由
-@Controller({ host: config().hostType.base, path: '/:shopName' })
+@Controller({ host: config().hostType.prefix })
 @UseGuards(UserGuard)
-export class B2cSiteController extends BaseSiteController{
+export class B2cSiteController extends BaseSiteController {
   constructor(protected readonly midwayApiService: SiteService,
-              protected readonly trackerService: TrackerService) {
-    super(midwayApiService, trackerService, DomainTypeEnum.B2C)
+             protected readonly trackerService: TrackerService) {
+   super(midwayApiService, trackerService, DomainTypeEnum.B2C)
   }
 }

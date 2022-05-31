@@ -4,7 +4,6 @@ import { Request, Response } from 'express';
 import { join } from 'path';
 import * as fs  from 'fs';
 import config from '../config';
-import { UserAgent } from 'src/decorator/user-agent.decorator';
 
 const staticFiles = join(__dirname , '..', '..', '/assets/static')
 const files = fs.readdirSync(staticFiles);

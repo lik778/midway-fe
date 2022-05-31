@@ -2,8 +2,8 @@
 - const { articleList: articleRecommend,name } = renderData.articleRecommend
 if articleRecommend && articleRecommend.length > 0
   .sidebar-new-list-container
-    .sidebar-item__title(style=`color: ${totalTip}`)
-        span #{name || '文章推荐'}
+    .sidebar-item__title(style=`background: ${ productDetail }`)
+        span(style=`color: ${totalTip}`) #{name || '文章推荐'}
     .sidebar-item
       .sidebar-item__content
         .side-news-list
