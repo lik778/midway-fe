@@ -3,13 +3,14 @@
     .left-nav
       ul.us2-left-ul
         - const { navigation } = renderData
-        li
+        li.specail-li
           .navfirst  网站导航
         li
           .navtwo(style=`background-color: ${contact.concatTheme}`)
-        each item  in navigation.length && navigation
-          li
-            a.navPage(href=item.content data-hover=contact.concatTheme) #{ item.name }
+        ul.us2-left-item
+          each item  in navigation.length && navigation
+            li
+              a.navPage(href=item.content data-hover=contact.concatTheme) #{ item.name }
     .left-line
     .left-address
       .company-title#companyTitle

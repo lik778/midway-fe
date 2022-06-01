@@ -24,7 +24,6 @@ aboutContactTel()
 $(document).on('ready', function () {
   // 处理pagination选中后的颜色
   let color = $('.swiper-pagination').attr('homeColor')
-  console.log(color)
   let nums = {
     '#336FFF': 1,
     '#EF1F1F': 2,

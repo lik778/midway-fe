@@ -20,6 +20,8 @@
         flex-direction: column
         margin: 0
         padding: 0
+        .specail-li
+          margin-bottom: 0
         li
           display: flex
           justify-content: flex-start
@@ -28,7 +30,11 @@
           font-size: 18px
           width: 160px
           .navfirst
+            margin-bottom: 18px
+            font-size: 22px
+            font-weight: 600
             color: #fff
+          
           .navtwo
             width: 32px;
             height: 3px;
@@ -37,10 +43,17 @@
             text-decoration: none
             cursor pointer
             color: #fff
-          &:nth-child(1)
-            margin-bottom: 18px
-            font-size: 22px
-            font-weight: 600
+        .us2-left-item
+          scrollbar-width: none; /* 火狐浏览器 */
+          -ms-overflow-style: none; /* IE浏览器 */
+          overflow-x: hidden
+          overflow-y: scroll
+          height: 361px
+          &::-webkit-scrollbar
+            display: none
+          li
+            &:last-child
+              margin-bottom: 0
     .left-line
       width: 1px;
       height: 434px

@@ -2,6 +2,7 @@ import $ from "jquery";
 import './index.styl';
 import '../layout';
 import { initializeSidebarProductSwiper } from '../components/sidebar';
+import { cateListActive  } from '../components/sidebar/cate-list'
 import Swiper from 'swiper';
 import { initSem } from '../../../common/pc/contact-form-sem'
 import { leaveLeads } from '../components/common/contact-form'
@@ -9,6 +10,7 @@ import { contactMessage } from '../components/contact-message'
 contactMessage()
 initializeSidebarProductSwiper()
 leaveLeads()
+cateListActive()
 $(document).on('ready', function () {
   new Swiper('#news-detail-swiper .swiper-container', {
     //spaceBetween: 30,
