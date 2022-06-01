@@ -71,5 +71,13 @@ export const mediaShow = function() {
         evt.stopPropagation();
       });
     }
-
+    // 在线咨询效果
+    let defaultColor = $('#k53Hover').attr('defaultColor')
+    let HoverColor = $('#k53Hover').attr('HoverColor')
+    $('#k53Hover').on('mouseover',function() {
+      $(this).css('background-color',HoverColor)
+    })
+    $('#k53Hover').on('mouseout',function() {
+      $(this).css('background-color',defaultColor)
+    })
 };
