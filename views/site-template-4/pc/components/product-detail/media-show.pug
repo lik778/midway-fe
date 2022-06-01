@@ -57,10 +57,10 @@ mixin mediaShow()
 								| 商家地址： 
 								span(class="span-address") #{ address }
 					.detail-contact
-						//- if kf53StyleUrl && kf53StyleUrl.length > 0
-						a#k53Hover.online-btn(href=kf53StyleUrl style=`background: ${totalTip}` defaultColor=contact.buttonBg HoverColor=contact.buttonColor)
-							img(src="//file.baixing.net/202205/d0dc1b78ca802c777df9266aaa459346.png", alt="icon")
-							span 在线咨询
+						if kf53StyleUrl && kf53StyleUrl.length > 0
+							a#k53Hover.online-btn(href=kf53StyleUrl style=`background: ${totalTip}` defaultColor=contact.buttonBg HoverColor=contact.buttonColor)
+								img(src="//file.baixing.net/202205/d0dc1b78ca802c777df9266aaa459346.png", alt="icon")
+								span 在线咨询
 						.searchPhone
 							.phoneIcon
 								img(src="//file.baixing.net/202205/d339afe814ba03bae9cc0698e511657c.png", alt="")
