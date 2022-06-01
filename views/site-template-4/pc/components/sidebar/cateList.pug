@@ -18,7 +18,7 @@ mixin side-cateList(type,list)
           each item,index in list
             a.cateList(href= item.urlSuffix detailHover=productCat.catTheme).
               #{ item.name.length > 8 ? item.name.slice(0,8) + '...' : item.name} #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
-            if index < 9
+            if index < list.length - 1
               .border-bot
       a.last-contacts(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=`tel:${phone.content}`)
         .last-contact-top

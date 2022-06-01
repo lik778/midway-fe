@@ -9,6 +9,7 @@ import { ProductType, IndursyModule } from '@/enums';
 import { ShopInfo, ModulePageType, ModuleComponentId, ContactStyleType, ContactType } from '@/interfaces/shop'
 import { SetMessageModule, getModuleInfoApi } from '@/api/shop'
 import { useDebounce } from '@/hooks/debounce';
+import { idTemplate4 } from '@/utils'
 import styles from './index.less'
 import { Option1, Option2, Urls, InduryItem } from './config'
 
@@ -49,6 +50,7 @@ const HomeMessage: FC<Iprop> = (props) => {
   }
 
   useEffect(() => {
+    console.log(curShopInfo,12)
     getContact()
   }, [curShopInfo])
 
@@ -77,7 +79,7 @@ const HomeMessage: FC<Iprop> = (props) => {
       </div>
       <div className={styles['img-module']}>
         <p className={styles['img-title']}><span className={styles['tip-i']}>*</span>&nbsp;整体样式查看：</p>
-        <img src={Urls[selectItem]} alt="logo" />
+        <img src={ idTemplate4(curShopInfo?.templateId) && selectItem === 'B2B_NORMAL' ?  Urls['NEW_B2B_NORMAL'] : Urls[selectItem]} alt="logo" />
       </div>
       <div className={styles['save-btn']}>
         <Row>

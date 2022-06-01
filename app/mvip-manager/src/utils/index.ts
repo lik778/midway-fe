@@ -330,3 +330,9 @@ export const setReferrer = () => {
 export const getReferrer = () => {
   return sessionStorage.getItem('prevHref') || ''
 }
+
+// 判断是不是新模板
+
+export const idTemplate4 = (id: string | undefined) => {
+  return id === 'f5760fe337070e8b9b8f3fdcd9ca1c32'
+}

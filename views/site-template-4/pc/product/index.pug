@@ -20,10 +20,10 @@ block content
               +pagination(totalPage, currentPage, `${currentPathname}`)
 
           .sidebar
-              - const { articleList: articleList,name:articleName } = renderData.articleRecommend
+              - const { productCateList, articleCateList} = renderData
               include ../components/sidebar/cateList.pug
-              +side-cateList(articleName, articleList)
-              //- include ../components/sidebar/news-list.pug
+              +side-cateList('所有产品分类', productCateList)
+              include ../components/sidebar/news-list.pug
               include ../components/sidebar/products.pug
               +productRecommend(3)
       #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)

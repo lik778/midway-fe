@@ -20,6 +20,7 @@ export const Option2 = [
 ]
 
 export const Urls = {
+  NEW_B2B_NORMAL: '//file.baixing.net/202206/2378ce9ff51d87e8af82ff40dacbcd70.png',
   B2B_NORMAL: '//file.baixing.net/202112/acba715f151e69452a25646919c14eb1.png',
   B2C_NORMAL: '//file.baixing.net/202112/6d0a7d65703f90b56191e33957498616.png',
   HUANGJIN: '//file.baixing.net/202112/9de39e011848f0ed5179ca862f04523b.png',

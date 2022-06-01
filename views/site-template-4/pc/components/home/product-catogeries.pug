@@ -7,7 +7,7 @@
 				each item,index in p.slice(0,8)
 					a.item-category(href= item.urlSuffix data-category=productCat.catTheme).
 						#{ item.name } #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
-					if index  < 7
+					if index  < p.length - 1
 						.border-bot
 		a.last-contact(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=productLink)
 			.last-contact-top
