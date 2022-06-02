@@ -26,7 +26,7 @@ export const tabModule = function(){
 
 		//wap端顶部的tab导航，与当前链接匹配时高亮
 		const windowPath=window.location.pathname
-		if (windowPath.indexOf('-') === -1) return
+		// if (windowPath.indexOf('-') === -1) return
 		$(".tab-header a > p").each((index,tab) => {
 			const h = $(tab).attr('link')
 			if(h.indexOf(windowPath) != -1){
