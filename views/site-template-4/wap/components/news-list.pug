@@ -4,10 +4,9 @@ mixin news-list(newsList)
 			each item in newsList
 				a.item(href=item.urlSuffix)
 					h3 #{ item.name }
-					.text.only-oneline #{ item.limitText }
+					.text.one-line #{ item.limitText }
 					p #{ dateFormat2(item.modifiedTime) }
 
 	else
 		include ./default-content.pug
 		+default-content("")
-
