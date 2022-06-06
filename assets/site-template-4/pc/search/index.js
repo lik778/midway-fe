@@ -19,7 +19,6 @@ $(document).on('ready', function () {
       gotoOtherPageA: $('#layout-content .container a,.official-nav-container a')
     })
   }
-
   if (isSem === '2') {
     initSem({
       account: isAccount,

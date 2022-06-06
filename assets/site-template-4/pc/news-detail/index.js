@@ -56,4 +56,7 @@ $(document).on('ready', function () {
       gotoOtherPageA: $('a')
     })
   }
+  // hover效果
+  const totalTip = $('.news-page').attr('totalTip')
+  
 })
