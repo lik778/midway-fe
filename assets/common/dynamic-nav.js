@@ -11,9 +11,11 @@ export const initNav = function ($navs) {
 	let _setTargetElActive = function (index) {
 		let targetEl = $navs.eq(index)
 
-		let themeColor = targetEl[0].attributes.themeColor.value
-		let bgColor = targetEl[0].attributes.borderColor.value
-		targetEl.addClass('active').css({"color": themeColor, "border-bottom-color": bgColor})
+		if (targetEl[0] != null) {
+			let themeColor = targetEl[0].attributes.themeColor.value
+			let bgColor = targetEl[0].attributes.borderColor.value
+			targetEl.addClass('active').css({"color": themeColor, "border-bottom-color": bgColor})
+		}
 	}
 
   const urls = $.map($navs, function (item) {

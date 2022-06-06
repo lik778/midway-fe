@@ -14,10 +14,10 @@ mixin dynamic-pagination(total, current)
 				span.select-page-num #{`${current}/${total}`}
 				select#pageSelect
 					- for (var i = 1; i <= total; i++)
-					if i == current
-						option(selected) #{i}
-					else
-						option(value=i) #{i}
+						if i == current
+							option(selected) #{i}
+						else
+							option(value=i) #{i}
 			if current == total
 				.next-page.disabled 下一页
 			else
