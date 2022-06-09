@@ -8,4 +8,4 @@ if articleRecommend && articleRecommend.length > 0
       .sidebar-item__content
         .side-news-list
           each item in articleRecommend
-            a.news.only-oneline(href=item.urlSuffix) #{ item.name }
+            a.news.only-oneline(href=item.urlSuffix newsHoverTheme=totalTip) #{ item.name }

@@ -21,5 +21,18 @@ export const aboutUs = function () {
         flag = true
       }
     })
+    const hoverTheme = $('#serachDetail').attr('hoverTheme')
+    $('#serachDetail').on('mouseover',function() {
+      $(this).css({
+        'background-color': hoverTheme,
+        'color': '#fff'
+      })
+    })
+    $('#serachDetail').on('mouseout',function() {
+      $(this).css({
+        'background-color': '#fff',
+        'color': '#333'
+      })
+    })
 })
 }

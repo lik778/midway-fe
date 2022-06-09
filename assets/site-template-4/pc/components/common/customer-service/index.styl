@@ -7,10 +7,10 @@
 	bottom 50px
 	z-index 999
 	width: 70px
+	.group_bottom
+		background: #fff
 	.customer-service__group
-		background-color #fff
 		box-shadow 0 4px 10px rgba(#000, 0.05)
-
 		.service
 			&-item
 				display: flex
@@ -21,7 +21,7 @@
 				height: 75px
 				cursor pointer
 				position relative
-				border-bottom: 4px solid #f1f2f6
+				margin-bottom: 4px
 				&:last-child
 					border-bottom: none
 				&::before // 过来过渡hover时候中间有个空隙
@@ -195,19 +195,23 @@
 						cursor pointer
 
 	#back-to-top
+		display: flex
+		flex-direction: column
+		justify-content: center
+		align-items: center
+		height: 75px
 		margin-top 4px
 		margin-bottom: 30px
 		background-color #fff
 		box-shadow 0 4px 10px rgba(#000, 0.05)
-		padding 20px 0
 		cursor pointer
 		text-align center
 
 		.back-to-top
 			&__icon
-				margin 0 auto 15px
 				width 20px
 				height 22px
+				margin-bottom: 5px
 				background url('//file.baixing.net/202205/84b00d3745455524132fe174595f54a1.png') no-repeat center center/100% 100% 
 			&__text
 				font-size 12px

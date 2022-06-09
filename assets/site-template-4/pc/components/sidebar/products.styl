@@ -37,12 +37,18 @@
       border 1px solid transparent
       margin-top 10px
       &:hover
-        border-color #f7f7f7
+        .product-img
+          img
+            transform: scale(1.05)
       .product-img
         position relative
+        overflow hidden
+        width: 100%
+        height: 128px
         img
           width 100%
-          height 128px
+          height 100%
+          transition: all 1s
         &.video
           &::after
             content ''

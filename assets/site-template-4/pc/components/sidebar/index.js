@@ -3,6 +3,7 @@ import $ from 'jquery'
 export const initializeSidebarProductSwiper = () => {
   // 推荐产品轮播
   let color = $('#swiper').data('color')
+  let hoverTheme = $('.side-news-list .news').attr('newsHoverTheme')
   let nums = {
     '#336FFF': 1,
     '#EF1F1F': 2,
@@ -22,5 +23,16 @@ export const initializeSidebarProductSwiper = () => {
       bulletActiveClass: `my-bullet-active-${nums[color]}`
     },
   });
+  $('.news').each(function() {
+    $(this).on('mouseover',function() {
+      $(this).css({
+        'color': hoverTheme,
+        'font-weight': 'bold'
+      })
+    })
+    $(this).on('mouseout',function() {
+      $(this).css('color','#666')
+    })
+  })
 }
 

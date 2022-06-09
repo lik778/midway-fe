@@ -4,7 +4,12 @@ if productList && productList.length >0
 			- const isVideo = item.videoUrl
 			a.item-p(href=item.urlSuffix target="_blank")
 				.play-icon(class=isVideo?'active':'')
-				img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
+				if isVideo
+					video
+						source(src=isVideo loop preload controls)
+				else
+					.em
+						img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 				p.productListP.only-oneline(data-hover=totalTip) #{ item.name }
 else
 	p.no-content 当前页面暂无内容，敬请期待...
