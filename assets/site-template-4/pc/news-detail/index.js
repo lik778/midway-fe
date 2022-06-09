@@ -58,5 +58,12 @@ $(document).on('ready', function () {
   }
   // hover效果
   const totalTip = $('.news-page').attr('totalTip')
-  
+  $('.acticle-news').each(function() {
+    $(this).on('mouseover',function() {
+      $(this).css('color',totalTip)
+    })
+    $(this).on('mouseout',function() {
+      $(this).css('color','#333333')
+    })
+  })
 })

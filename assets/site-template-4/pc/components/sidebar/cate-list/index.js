@@ -13,6 +13,15 @@ export const cateListActive = function () {
               'fontWeight': 'bold'
             })
             $(this).find('.firstIcon').css('display','block')
+            if($(this).position().top >= 341) {
+              $(this).parent().animate({
+                scrollTop: '341px'
+              }, 'slow')
+            } else if($(this).position().top >= 290) {
+              $(this).parent().animate({
+                scrollTop: '300px'
+              }, 'slow')
+            }
           } else {
             $(this).on('mouseover',function() {
               $(this).css('color',hover)

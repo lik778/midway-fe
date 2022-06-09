@@ -25,14 +25,14 @@ block content
             .news-nav__pre
               span(style=`color: ${totalTip}`) 上一篇：
               if preArticle
-                a(href= preArticle.url style="color: #333333" ).only-oneline #{ preArticle.name}
+                a.acticle-news(href= preArticle.url style="color: #333333" ).only-oneline #{ preArticle.name}
               else
                 .without(style="color: #333333") 无
 
           .news-nav__next
             span(style=`color: ${totalTip}`) 下一篇：
             if nextArticle
-              a(href=nextArticle.url style="color: #333333").only-oneline #{ nextArticle.name }
+              a.acticle-news(href=nextArticle.url style="color: #333333").only-oneline #{ nextArticle.name }
             else
               .without(style="color: #333333") 无
 
