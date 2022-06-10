@@ -6,10 +6,10 @@ mixin officialNav()
         - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
         .nav-item-box
           .hover-box(data-hover=officialNav.navHv  data-hoverleave=officialNav.navBg)
-            a.nav-item(href=item.content.replace('shop-test.baixing.cn','localhost:7001')) #{ item.name }
+            a.nav-item(href=item.content) #{ item.name }
             if hasDropdown
               .nav-dropdown(down="1")
                 each cItem, index in item.contentCateBos
                   if index !== 0
                     .nav-line
-                  a.nav-dropdown-item(style=`background:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix.replace('shop-test.baixing.cn','localhost:7001')) #{ cItem.name }
+                  a.nav-dropdown-item(style=`background:  ${officialNav.navHv}`).only-oneline(href=cItem.urlSuffix) #{ cItem.name }
