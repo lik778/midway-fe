@@ -6,9 +6,6 @@ export const  oficialNav = function() {
   let allNav = $('.hover-box')
   let currentUrl = window.location.href
   let flag = false
-  // function idDetails(target) {
-  //   return (/pl-|p-/i.test(currentUrl) && /pl./i.test(target)) || (/nl-|n-/i.test(currentUrl) && /nl./i.test(target))
-  // }
   $('.hover-box').on('mouseover',function() {
     $(this).find('.nav-item').css('background',color)
   })

@@ -34,5 +34,25 @@ export const initializeSidebarProductSwiper = () => {
       $(this).css('color','#666')
     })
   })
+  $('.side-product').each(function() {
+    let hoverTheme = $(this).find('.product-desc').attr('hoverProductDesc')
+    $(this).on('mouseover',function() {
+      $(this).find('.product-desc').css({
+        'background-color': hoverTheme,
+        'color': '#fff'
+      })
+      $(this).find('.product-desc p').css({
+        'color': '#fff'
+      })
+    })
+    $(this).on('mouseout',function() {
+      $(this).find('.product-desc').css({
+        'background-color':'#f7f7f7',
+      })
+      $(this).find('.product-desc p').css({
+        'color': '#5d5d5d'
+      })
+    })
+  })
 }
 

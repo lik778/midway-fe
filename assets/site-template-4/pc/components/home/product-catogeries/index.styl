@@ -52,12 +52,17 @@
   .item-category-container
     // scrollbar-width: none; /* 火狐浏览器 */
     // -ms-overflow-style: none; /* IE浏览器 */
-    overflow-y: scroll
-    overflow-x: auto
+    overflow-y: auto
+    overflow-x:  hidden
     width: 100%
     max-height: 414px
-    // &::-webkit-scrollbar
-    //   display: none /* chrome safar */
+    // scrollbar-face-color: 
+    &::-webkit-scrollbar
+      background-color: #fff;
+    &::-webkit-scrollbar-thumb
+      background-color: #E6E6E6
+      border-radius: 9px;
+      border: 3px solid transparent;
   .all-category
     box-sizing: border-box
     width: 250px

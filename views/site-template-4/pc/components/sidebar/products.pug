@@ -12,7 +12,7 @@ mixin productRecommend(num)
                     a.side-product(href=item.urlSuffix)
                       .product-img(class=item.videoUrl?'video':'')
                         img(src= item.headImg || defaultImg, alt="productImg")
-                      .product-desc
+                      .product-desc(hoverProductDesc=productCat.catHo)
                         p #{ item.name }
             if num === 2
               if pr.length > 2
@@ -21,7 +21,7 @@ mixin productRecommend(num)
                       a.side-product(href=item.urlSuffix)
                         .product-img(class=item.videoUrl?'video':'')
                           img(src= item.headImg || defaultImg, alt="productImg")
-                        .product-desc
+                        .product-desc(hoverProductDesc=productCat.catHo)
                           p #{ item.name }
               if pr.length > 4
                 .side-products.swiper-slide
@@ -29,7 +29,7 @@ mixin productRecommend(num)
                       a.side-product(href=item.urlSuffix)
                         .product-img(class=item.videoUrl?'video':'')
                           img(src= item.headImg || defaultImg, alt="productImg")
-                        .product-desc
+                        .product-desc(hoverProductDesc=productCat.catHo)
                           p #{ item.name }
             else
               if pr.length > 3
@@ -38,6 +38,6 @@ mixin productRecommend(num)
                       a.side-product(href=item.urlSuffix)
                         .product-img(class=item.videoUrl?'video':'')
                           img(src= item.headImg || defaultImg, alt="productImg")
-                        .product-desc
+                        .product-desc(hoverProductDesc=productCat.catHo)
                           p #{ item.name }
         .swiper-pagination#swiper(data-color=totalTip)
