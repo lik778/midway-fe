@@ -206,11 +206,38 @@ const BasisTab = (props: Props) => {
             <QuestionCircleOutlined className={styles['icon']} />使用指引
         </Tooltip>
       </div>
-      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={cancel}>
-        <p>点击“更换”，当前店铺的全部内容会同步到店铺新模板中。</p>
-        <Alert message="更换至新模板后，将不可恢复，新模板样式如下图所示：" type="warning" showIcon />
-        <div className={styles['new-template']}>
-            <img src={require('@/assets/images/template-default.png')}/>
+      <Modal width="50%" title="更换新模板" visible={isSwitchTemplate} onOk={switchTemlate} onCancel={cancel} bodyStyle={{ padding: '0 24px' }}>
+        {/* <p>点击“更换”，当前店铺的全部内容会同步到店铺新模板中。</p>
+        <Alert message="更换至新模板后，将不可恢复，新模板样式如下图所示：" type="warning" showIcon /> */}
+        <div className={styles["container-modal"]}>
+              <div className={styles["modal-left"]}>
+                <p>点击“更换”，当前店铺的全部内容会同步到店铺新模板中。</p>
+                <p style={{ color: '#F1492C', margin: '14px 0' }}>注：更换至新模板后，将不可恢复。</p>
+                <div className={styles["left-tip"]}>
+                    <img className={styles['tip-home']} src="//file.baixing.net/202206/813c90ec42df1ca27613d0231b52958d.png" alt="logo" />
+                    <p className={styles['tip-top']}>更换新模板后，您将获得以下权益：</p>
+                    <ul>
+                      <li>
+                        <img className={styles['tip-icon']} src="//file.baixing.net/202206/424a5e2805b8196d076a7ba9d78622f6.png"></img>
+                        店铺样式更高端，更大气
+                      </li>
+                      <li>
+                        <img className={styles['tip-icon']} src="//file.baixing.net/202206/424a5e2805b8196d076a7ba9d78622f6.png"></img>
+                        提供多种店铺主题色选择，更加贴合企业形象
+                      </li>
+                      <li>
+                        <img className={styles['tip-icon']} src="//file.baixing.net/202206/424a5e2805b8196d076a7ba9d78622f6.png"></img>
+                        定制专属企业电话通栏
+                      </li>
+                    </ul>
+                </div>
+              </div>
+              <div className={styles["modal-right"]}>
+              <p>新模板如下图所示（鼠标滚动可查看完整样式）：</p>
+              <div className={styles['new-template']}>
+                <img src={require('@/assets/images/template-default.png')}/>
+              </div>
+              </div>
         </div>
       </Modal>
     </div>
