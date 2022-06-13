@@ -9,6 +9,7 @@ export const initNav = function ($navs) {
   // 无全等得亮开头对应列表
 	const href = window.location.href.replace(/\?[\s\S]{0,}/, '').replace('#contactFormBox', '')
 	let _setTargetElActive = function (index) {
+		if (index === -1) return false
 		let targetEl = $navs.eq(index)
 
 		if (targetEl[0] != null) {
