@@ -1,5 +1,6 @@
 mixin news-list(newsList)
 	- themeColor = renderData.basic.shop.color.productHv
+	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
 	- SecondaryMenuBgColor = renderData.basic.shop.color.wap.SecondaryMenu
 	.news-list
 		if newsList && newsList.length > 0
@@ -9,8 +10,8 @@ mixin news-list(newsList)
 					- date = dateObj.getDate()
 					- year = dateObj.getFullYear()
 					- month = dateObj.getMonth() + 1
-					.left(style={color: themeColor, background: SecondaryMenuBgColor})
-						.day #{date > 9 ? date : `0${date}`}
+					.left(style={background: SecondaryMenuBgColor})
+						.day(style={color: specialIconColor || themeColor}) #{date > 9 ? date : `0${date}`}
 						.year-month #{year}/#{month > 9 ? month : `0${month}`}
 					.right
 						h3.title.one-line #{ item.name }
