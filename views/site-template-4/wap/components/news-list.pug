@@ -7,6 +7,7 @@ mixin news-list(newsList)
 					.text.one-line #{ item.limitText }
 					p #{ dateFormat2(item.modifiedTime) }
 
+
 	else
 		include ./default-content.pug
 		+default-content("")
