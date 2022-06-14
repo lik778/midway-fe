@@ -10,7 +10,7 @@ mixin officialNav()
           .hover-box(data-hover=officialNav.navHv dataBread=dataBread data-hoverleave=officialNav.navBg)
             a.nav-item(href=item.content) #{ item.name }
             if hasDropdown
-              .nav-dropdown(down="1")
+              .nav-dropdown(down="1" style=`background:  ${officialNav.navHv}`)
                 each cItem, index in item.contentCateBos
                   if index !== 0
                     .nav-line
