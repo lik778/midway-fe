@@ -146,13 +146,6 @@ $('.back-to-top__text').on('mouseout',function() {
   $(this).css('color','#333')
 })
 
-$('#baixing').on('mouseover',function() {
-  $(this).css('color',backTopColor)
-})
-$('#baixing').on('mouseout',function() {
-  $(this).css('color','#409eff')
-})
-
 $('.customer-item-hover').on('mouseover',function() {
   $(this).css('background-color',customerHv)
 })

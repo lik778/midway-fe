@@ -1,11 +1,13 @@
 mixin officialNav()
   - const { officialNav } = renderData.basic.shop.color
+  - const bread = renderData.bread.filter(item => (item.urlSuffix.includes('pl-') || item.urlSuffix.includes('nl-')))
+  - const dataBread = bread.length > 0 ? bread[0].urlSuffix : ''
   .official-nav-container(style=`background: ${officialNav.navBg}`)
     .official-nav-content 
       each item in nav
         - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
         .nav-item-box
-          .hover-box(data-hover=officialNav.navHv  data-hoverleave=officialNav.navBg)
+          .hover-box(data-hover=officialNav.navHv dataBread=dataBread data-hoverleave=officialNav.navBg)
             a.nav-item(href=item.content) #{ item.name }
             if hasDropdown
               .nav-dropdown(down="1")
