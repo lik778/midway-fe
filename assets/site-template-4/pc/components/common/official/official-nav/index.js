@@ -4,7 +4,7 @@ export const oficialNav = function () {
   let color = $('.hover-box').data('hover');
   let leave = $('.hover-box').data('hoverleave');
   let allNav = $('.hover-box');
-  let currentUrl = window.location.href;
+  let currentUrl = window.location.origin + window.location.pathname;
   let flag = false;
   $('.hover-box').on('mouseover', function () {
     $(this)

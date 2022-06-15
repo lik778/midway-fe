@@ -30,7 +30,7 @@ mixin pagination(total, current)
             - for (i = start; i <= end; i++)
                 - pageNum = i
                 if i == p
-                    .page-item(style=`background-color: ${totalTip};color: #fff` data-flag=true)= i
+                    .page-item(style=`background-color: ${totalTip};color: #fff;border: none` data-flag=true)= i
                 else
                     .page-item(data-page=pageNum) #{i}
             if end < n - 2
