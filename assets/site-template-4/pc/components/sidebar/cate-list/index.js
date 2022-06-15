@@ -3,7 +3,7 @@ import $ from 'jquery'
 export const cateListActive = function () {
     $(document).on('ready',function () {
       const hover = $('.cateList').attr('detailHover')
-      const curLocation = location.href
+      const curLocation = window.location.origin + window.location.pathname
 
       $('.cateList').each(function() {
         const curAttr = $(this).prop('href')
