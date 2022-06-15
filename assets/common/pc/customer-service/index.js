@@ -63,7 +63,7 @@ export const qqModule = function (type) {
 				eventTracker("kf53-pc", "float-pc", "hover")
 			}
 		})
-
+		
 		//点击53客服event打点
 		$("#kf53").on('click', () => {
 			if (type === 'sem') {
@@ -123,10 +123,7 @@ const entranceBtn = $('#entrance')
 entranceBtn.on('click',()=>{
 	const {position} = window.extraContactFormData
 	const href = window.location.href
-	let id = "";
-	if (href.includes(".html")) {
-		id = href.split("/").pop().replace(/[^0-9]/ig, "")
-	}
+	const id = new RegExp("(?<=-)\\d.*(?=.html)").exec(href) ? new RegExp("(?<=-)\\d.*(?=.html)").exec(href)[0] : ''
 	if(id){
 		window.location.href = `safeguard?position=${position}&id=${+id}`
 	}else{
