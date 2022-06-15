@@ -24,7 +24,7 @@ mixin officialInfoPhone()
           div.official-info-phone-num
             +createPhoneNum(phone.content)
         else
-          - let union400num =  union400 && union400.length? union400[0]: ''
+          - let union400num =  phone.content
           .official-info-phone-400-action
             button.btn(data-union400num=union400num||'') 查看电话号码
           .official-info-phone-num-box.hide
