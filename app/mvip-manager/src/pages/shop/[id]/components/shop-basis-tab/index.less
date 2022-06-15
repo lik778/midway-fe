@@ -15,6 +15,7 @@
       margin-right: 10px;
       cursor: pointer;
   }
+
 }
 .theme-color{
     width: 400px;
@@ -82,12 +83,74 @@
     }
 }
 .new-template{
-    width: 80%;
+    width: 100%;
     overflow-y: scroll;
     height: 400px;
     margin: 0 auto;
-    margin-top: 16px;
+    padding: 8px;
+    margin-top: 17px;
+    border: 1px solid #F2F2F2;
+    border-radius: 4px;
     img{
         width: 100%;
     }
+}
+.container-modal {
+  width: 100%;
+  display: flex;
+  .modal-left {
+    padding: 23px 23px 0 0;
+    flex: 1;
+    border-right: 1px solid #F2F2F2;
+    .left-tip {
+      position: relative;
+      box-sizing: border-box;
+      width: 366px;
+      padding: 24px 16px;
+      background: url('//file.baixing.net/202206/3b1487a2f44ad3498d8a3938116e662f.png') no-repeat center center/100% 100%;
+      .tip-top {
+        font-size: 14px;
+        color: #753A11;
+      }
+      .tip-home {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        top: 19px;
+        right: 14px;
+      }
+      ul {
+        li {
+          display: flex;
+          align-items: center;
+          color: #B8753E;
+          &:not(:last-child) {
+            margin-bottom: 16px;
+          }
+          .tip-icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 10px;
+            vertical-align: middle;
+          }
+        }
+      }
+     
+    }
+  }
+  .modal-right {
+    text-align: center;
+    padding: 23px;
+    flex: 1;
+  }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

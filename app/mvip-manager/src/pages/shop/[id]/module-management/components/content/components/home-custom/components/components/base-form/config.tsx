@@ -7,8 +7,8 @@ import styles from './index.less'
 import pageStyles from '../../../index.less'
 
 const moduleImage = {
-  "1": "//file.baixing.net/202112/fbbe21318b09cc7c46a499e24984b62d.png",
-  "2": "//file.baixing.net/202112/c5dccf6da0521a1ecd0070787b17c1df.png",
+  "1": "//file.baixing.net/202206/4a3e07deddeadcfd6da0d4e098d88168.png",
+  "2": "//file.baixing.net/202206/58f634861c19881ee56bd17f27030467.png",
   "3": "//file.baixing.net/202112/e9ffc34fe43ae027a91d409c939aa3c7.png",
 }
 

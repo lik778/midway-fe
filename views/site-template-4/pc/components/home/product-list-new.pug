@@ -4,11 +4,13 @@ mixin product-list(type,productList)
 			each item in type == 'hot' ? productList.slice(0,12) : productList.slice(0,6)
 				if type == 'hot'
 					a.item-p-new(href=item.urlSuffix ,target="_blank",class=item.videoUrl?'video':'' data-color=productCat.catHo)
-						img(src=item.headImg || defaultImg)
+						.em
+							img(src=item.headImg || defaultImg)
 						p.only-oneline #{ item.name }
 				else 
 					a.item-p-new.margin-rg(href=item.urlSuffix, target="_blank",class=item.videoUrl?'video':'' data-color=productCat.catHo)
-						img(src=item.headImg || defaultImg)
+						.em
+							img(src=item.headImg || defaultImg)
 						p.only-oneline #{ item.name }
 
 

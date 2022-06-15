@@ -6,9 +6,11 @@ const initPagination = () => {
     var vars = query.split("&").filter(item => item && item.indexOf('page') === -1);
     $('.page-item').on('click', function () {
       var page = $(this).data('page')
-      vars.push(`page=${page}`)
-      var query = vars.join('&')
-      window.location.href = `${window.location.pathname.split('?')[0]}?${query}`
+      if(page) {
+        vars.push(`page=${page}`)
+        var query = vars.join('&')
+        window.location.href = `${window.location.pathname.split('?')[0]}?${query}`
+      }
     })
     $('.page-item').on('mouseover',function() {
       if(!$(this).data('flag')) {

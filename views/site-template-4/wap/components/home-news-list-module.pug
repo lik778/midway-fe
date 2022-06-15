@@ -3,7 +3,7 @@ mixin news-module-list(newsList,title)
 	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
 	if newsList && newsList.length >0
 		.news-list-title-box
-			div.title #{title}
+			.block-title 最新产品
 				.prefix-box(style={background: specialIconColor || themeColor})
 				a.more(href=newsLink) 查看全部
 		include ../components/home-news-list.pug

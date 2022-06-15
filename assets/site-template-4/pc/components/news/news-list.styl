@@ -1,7 +1,6 @@
 .news-list
   background-color #fff
   width 980px
-  box-shadow 0 4px 10px rgba(#000, 0.02)
   .no-content
     padding 15px
   .news
@@ -23,16 +22,15 @@
             &::before
               border-color #ff2d38
 
-      &:not(:last-child)
-        .news-item__inner
-          border-bottom 1px dashed #eee
     &-date
+      box-sizing: border-box
       display: flex
       flex-direction: column
-      justify-content: center
+      justify-content: flex-start
       align-items: center
       height: 80px
       width: 80px
+      padding-top: 3px
       margin-right: 14px
       background: #F6F6F6;
       border-radius: 0px 0px 24px 0px;

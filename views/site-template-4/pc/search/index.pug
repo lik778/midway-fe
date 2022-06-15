@@ -4,6 +4,7 @@ block styles
   :combine(fileName="site-template-4-search-pc.css")
 
 block content
+  - const { officialInfo, officialNav, baseSwiper, totalTip, serveAd1 ,productHv,about ,serveTel,serveAd2,productCat,newsAd,contact, productDetail} = renderData.basic.shop.color
   if isSem !== "1"
     include ../components/common/breadcrumbs.pug
 
@@ -30,13 +31,9 @@ block content
 
     if isSem !== "1"
       .sidebar
-        //- TODO; 未确认到底用哪个字段
-        - const { articleList: articleRecommend,name } = renderData.articleRecommend
-        include ../components/sidebar/cateList.pug
-        +side-cateList(name||'新闻资讯', articleRecommend)
-        //- include ../components/sidebar/news-list.pug
+        include ../components/sidebar/news-list.pug
         include ../components/sidebar/products.pug
-
+        +productRecommend(3)
 block scripts
   :combine(fileName="site-template-4-search-pc.js")
 block append scripts

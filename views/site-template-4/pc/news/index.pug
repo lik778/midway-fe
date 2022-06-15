@@ -7,27 +7,28 @@ block content
   - const themTipColor = `background-color: ${totalTip}`
   include ../components/home/block-title.pug
   include ../components/common/breadcrumbs.pug
-  .container-news
-    .container
-      .main 
-        - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
-        include ../components/news/news-list.pug
-        +news-list(articleList)
+  .container-content
+    .container-news
+      .container
+        .main 
+          - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+          include ../components/news/news-list.pug
+          +news-list(articleList)
 
-        include ../components/common/pagination.pug
-        +pagination(totalPage, currentPage, `${currentPathname}`)
+          include ../components/common/pagination.pug
+          +pagination(totalPage, currentPage, `${currentPathname}`)
 
-      .sidebar
-        - const sidecateList = renderData.articleCateList
-        include ../components/sidebar/cateList.pug
-        +side-cateList('所有新闻分类', sidecateList)
-        include ../components/sidebar/products.pug
-        +productRecommend(3)
-  #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
-    +bolckTitle('联系我们',themTipColor)
-    include ../components/home/contact-message.pug
-    include ../../../common/pc/contact-form-sem.pug
-    +contactFormSem('#FF2D38')
+        .sidebar
+          - const sidecateList = renderData.articleCateList
+          include ../components/sidebar/cateList.pug
+          +side-cateList('所有新闻分类', sidecateList)
+          include ../components/sidebar/products.pug
+          +productRecommend(3)
+    #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
+      +bolckTitle('联系我们',themTipColor)
+      include ../components/home/contact-message.pug
+      include ../../../common/pc/contact-form-sem.pug
+      +contactFormSem('#FF2D38')
 block scripts
   :combine(fileName="site-template-4-news-pc.js")
 block append scripts

@@ -1,3 +1,17 @@
+@keyframes mymove {
+  0% {
+    transform: translateX(0)
+  }
+  25% {
+    transform: translateX(8px)
+  }
+  75% {
+    transform: translateX(-8px)
+  }
+  100% {
+    transform: translateX(0)
+  }
+}
 .product-contanier
   display: flex
   flex-direction: column
@@ -35,8 +49,24 @@
       right: 24px
       width: 23px
       height: 23px
+  .item-category-container
+    // scrollbar-width: none; /* 火狐浏览器 */
+    // -ms-overflow-style: none; /* IE浏览器 */
+    overflow-y: auto
+    overflow-x:  hidden
+    width: 100%
+    max-height: 414px
+    // scrollbar-face-color: 
+    &::-webkit-scrollbar
+      background-color: #fff;
+      width: 11px
+    &::-webkit-scrollbar-thumb
+      background-color: #E6E6E6
+      border-radius: 10px;
+      // border: 3px solid transparent;
   .all-category
-    width: 201px
+    box-sizing: border-box
+    width: 250px
     padding 27px 25px
     color #FFFFFF
     font-size 18px
@@ -47,9 +77,6 @@
     width 200px
     height 0
     border-top 1px dashed #DDDDDD
-  &:last-child
-    width 0
-    border 0
 .last-contact
   display: inline-block
   box-sizing: border-box
@@ -75,6 +102,7 @@
     width: 22px
     height: 22px
     background: url('//file.baixing.net/202205/3914beb9882f88baa6612f5999ca053a.png') no-repeat center center/100%
-
+    &:hover
+      animation: mymove 1s ease-out
 
 

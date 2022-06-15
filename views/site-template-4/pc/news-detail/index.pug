@@ -20,30 +20,25 @@ block content
             .news-title__date #{ dateFormat2(modifiedTime) }
           .news-content__text.ql-editor.
             !{ content || '当前页面暂无内容，敬请期待...' }
-        .news-page
+        .news-page(totalTip=totalTip)
           .news-nav
             .news-nav__pre
               span(style=`color: ${totalTip}`) 上一篇：
               if preArticle
-                a(href= preArticle.url style="color: #333333").only-oneline #{ preArticle.name}
+                a.acticle-news(href= preArticle.url style="color: #333333" ).only-oneline #{ preArticle.name}
               else
-                a(style="color: #333333") 无
+                .without(style="color: #333333") 无
 
           .news-nav__next
             span(style=`color: ${totalTip}`) 下一篇：
             if nextArticle
-              a(href=nextArticle.url style="color: #333333").only-oneline #{ nextArticle.name }
+              a.acticle-news(href=nextArticle.url style="color: #333333").only-oneline #{ nextArticle.name }
             else
-              a(style="color: #333333") 无
+              .without(style="color: #333333") 无
 
 
       if isSem !== "1"
         .sidebar
-          - const { articleList: articleList,name:articleName } = renderData.articleRecommend
-          //- include ../components/sidebar/company-card.pug
-          //- - const { address,name: companyName,logo } = renderData.basic.company;
-          //- include ../components/common/company-record.pug
-          //- +companyRecord(logo,companyName)
           - const {articleCateList} = renderData
           include ../components/sidebar/cateList.pug
           +side-cateList('所有文章分类', articleCateList)

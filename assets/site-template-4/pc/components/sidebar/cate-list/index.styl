@@ -27,7 +27,7 @@
         width: 175px
         color #5D5D5D
         vertical-align middle
-        border-bottom: 1px dotted #D4D4D4
+        // border-bottom: 1px dotted #D4D4D4
         &:last-child
           border-bottom: transparent
         &:hover
@@ -39,6 +39,31 @@
           right: 0
           width: 23px
           height: 23px
+      .all-cateList-container
+        position relative
+        box-sizing: border-box
+        // scrollbar-width: none; /* 火狐浏览器 */
+        // -ms-overflow-style: none; /* IE浏览器 */
+        width: 100%
+        max-height: 341px
+        overflow-x: hidden
+        overflow-y: auto
+        // &::-webkit-scrollbar
+        //   display: none
+        &::-webkit-scrollbar
+          width: 11px
+          background-color: #fff;
+        &::-webkit-scrollbar-thumb
+          background-color: #E6E6E6
+          border-radius: 10px;
+          // border: 3px solid transparent;
+        .border-bot
+          margin 0 auto
+          width 175px
+          height 0
+          border-top 1px dashed #D4D4D4
+        .cateList
+          margin-left: 24px
       .all-category
         box-sizing: border-box
         display: inline-block
@@ -48,11 +73,6 @@
         font-size 18px
         font-weight 500
         border-radius 4px 4px 0 0
-      .border-bot
-        margin 0 auto
-        width 200px
-        height 0
-        border-top 1px dashed #DDDDDD
       &:last-child
         width 0
         border 0
@@ -76,7 +96,7 @@
       .last-contact-middle
         font-weight: bold;
         color: #FFFFFF
-        font-size: 26px;
+        font-size: 22px;
       .last-contact-bottom
         font-size: 22px
         width: 22px

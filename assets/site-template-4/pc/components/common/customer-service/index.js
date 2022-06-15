@@ -124,7 +124,10 @@ const entranceBtn = $('#entrance')
 entranceBtn.on('click',()=>{
 	const {position} = window.extraContactFormData
 	const href = window.location.href
-	const id = new RegExp("(?<=-)\\d.*(?=.html)").exec(href) ? new RegExp("(?<=-)\\d.*(?=.html)").exec(href)[0] : ''
+	let id = "";
+	if (href.includes(".html")) {
+		id = href.split("/").pop().replace(/[^0-9]/ig, "")
+	}
 	if(id){
 		window.location.href = `safeguard?position=${position}&id=${+id}`
 	}else{
@@ -141,13 +144,6 @@ $('.back-to-top__text').on('mouseover',function() {
 })
 $('.back-to-top__text').on('mouseout',function() {
   $(this).css('color','#333')
-})
-
-$('#baixing').on('mouseover',function() {
-  $(this).css('color',backTopColor)
-})
-$('#baixing').on('mouseout',function() {
-  $(this).css('color','#409eff')
 })
 
 $('.customer-item-hover').on('mouseover',function() {

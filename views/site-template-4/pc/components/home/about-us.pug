@@ -11,7 +11,7 @@ mixin about-Us-New(type,mediaImg,videoUrl)
         .body-content
           | !{ aboutText.length >= 229 ? aboutText+'...':aboutText }
       //- if aboutText.length >= 231
-      a.view-detail(href=aboutLink) 查看详情
+      a.view-detail#serachDetail(href=aboutLink hoverTheme=totalTip) 查看详情
     .content-left
       .tags 
         each item in type

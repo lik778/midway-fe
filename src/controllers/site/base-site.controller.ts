@@ -153,13 +153,13 @@ export class BaseSiteController {
     // 当参数里添加sem 则说明要切换为sem页
     let shopName = ''
     const domain = req.hostname
-    if (this.domainType === DomainTypeEnum.B2C) {
+    if (this.domainType === DomainTypeEnum.B2B) { // 本地开发，b2b和b2c都进如这个路由
       shopName = this.midwayApiService.getShopName(params.shopName)
       if (!/\/$/.test(req.path)) {
         res.redirect(`/${shopName}/`)
         return
       }
-    } else if (this.domainType === DomainTypeEnum.B2B) {
+    } else if (this.domainType === DomainTypeEnum.B2C) {
       shopName = HostShopName
     }
     const userInfo = await this.getUserInfo(req, domain)
@@ -181,7 +181,6 @@ export class BaseSiteController {
     //按约定，根据后端返回的模板id来选择跳转到哪个前端模板
     const { templateId } = data.basic.shop
     const pageTemplate = SiteService.templateMapping[templateId]
-    // const pageTemplate = 'site-template-4'
     const templateUrl = `${pageTemplate}/${device}/home/index`
     const { kf53 } = data.basic.contact;
     const currentPathname = req.originalUrl;

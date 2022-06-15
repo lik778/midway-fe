@@ -17,7 +17,7 @@
       .nav-item
         font-weight: bold
       .nav-dropdown
-        transform: scale(1,1) translateX(-50%)
+        transform: scale(1,1)  
         opacity: 1
     .nav-item
       display: block
@@ -48,10 +48,9 @@
       transform-origin: center top
       position: absolute
       top: 100%
-      left: 50%
-      transform: scale(1,0) translateX(-50%)
+      left: 0
+      transform: scale(1,0) 
       z-index 9999
-      background-color: #fff
       box-shadow 0 4px 4px rgba(#000, 0.2)
       .nav-dropdown-item
         display: block
@@ -60,9 +59,13 @@
         padding: 0 10px
         text-align: center
         color #FFFFFF
-        border-top: 1px solid #f7f7f7
-        // &+.nav-dropdown-item
+        // &:not(:first-child)
         //   border-top: 1px solid #f7f7f7
         &:hover
           font-weight: bold
+      .nav-line 
+        width: 100%
+        height: 1px
+        background-color: #fff
+        opacity 0.3
 

@@ -12,5 +12,5 @@ mixin news-list(articleList)
         .right 
           .title.newsTitle(data-hover=newsAd).only-oneline #{ item.name }
           .content.only-twoline #{ item.limitText }
-  a.show-more-btn(href= newsLink || "#")
+  a.show-more-btn#showMoreBtn(href= newsLink || "#")
     apan.set-color 查看更多文章

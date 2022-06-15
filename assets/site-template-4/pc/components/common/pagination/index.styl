@@ -1,19 +1,34 @@
 .page-normal
-	text-align center
+	padding-left: 20px
+	text-align left
 	margin-top 39px
 	.page-item
-		display: inline
+		display: inline-block
 		color #333
 		cursor pointer
-	.page-item,
-	.page-current
+	.page-item
 		border 1px solid#E5E5E5
-		padding 5px 11px
+		width: 40px
+		height: 40px
+		line-height 40px
+		text-align: center
 		text-decoration none
-		margin-left 6px
-
+		border-radius: 2px;
+		&:not(:first-child)
+			margin-left 8px
+		&:hover
+			border: none
+	.first-pages
+		width: 52px
+		height: 40px
+		line-height 40px
+		text-align: center
+	.last-pages
+		width: 72px
+		height: 40px
+		line-height: 40px
+		text-align: center
 //未选中的分页页码样式，和鼠标滑过样式如下
 .page-normal
-	.page-current,
 	.page-item:hover
 		color #FFF

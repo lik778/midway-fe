@@ -17,12 +17,12 @@ block content
 
               include ../components/common/pagination.pug
               - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
-              +pagination(totalPage, currentPage, `${currentPathname}`)
+              +pagination(totalPage, currentPage,)
 
           .sidebar
-              //- - const { articleList: articleList,name:articleName } = renderData.articleRecommend
-              //- include ../components/sidebar/cateList.pug
-              //- +side-cateList(articleName, articleList)
+              - const { productCateList, articleCateList} = renderData
+              include ../components/sidebar/cateList.pug
+              +side-cateList('所有产品分类', productCateList)
               include ../components/sidebar/news-list.pug
               include ../components/sidebar/products.pug
               +productRecommend(3)
