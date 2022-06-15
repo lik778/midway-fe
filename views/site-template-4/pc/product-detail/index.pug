@@ -4,15 +4,15 @@ block styles
   :combine(fileName="site-template-4-product-detail-pc.css")
 
 //- sem下去除导航栏的手机号
-block official-info-phone
-  if isSem === '1'
-    span 
-  else 
-    include ../../../common/pc/official-info-phone.pug
-    +officialInfoPhone()
+//- block official-info-phone
+//-   if isSem === '1'
+//-     span 
+//-   else 
+//-     include ../../../common/pc/official-info-phone.pug
+//-     +officialInfoPhone()
 
 block content
-  - const { officialInfo, officialNav, baseSwiper, totalTip, serveAd1 ,productHv,about ,serveTel,serveAd2,productCat,newsAd,contact, productDetail} = renderData.basic.shop.color
+  - const { officialInfo, officialNav, baseSwiper, totalTip, serveAd1 ,productHv,about ,serveTel,serveAd2,productCat,newsAd,contact, productDetail, productDeail} = renderData.basic.shop.color
   - const { address, logo } = renderData.basic.company
   - const themTipColor = `background-color: ${totalTip}`
   include ../components/home/block-title.pug
