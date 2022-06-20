@@ -12,7 +12,7 @@ mixin user-defined-item-content(item,color,index)
       '//file.baixing.net/202205/a339601f487f97586c701f16d0f56964.png',
       '//file.baixing.net/202205/fae987f4b1e0b732b9bcc15cf7234b7d.png'
     ]
-  .user-defined-item-content
+  .user-defined-item-content(style=`background: ${(index % 2 !==0) ? "url('//file.baixing.net/202206/26b6bfd4beb1135914e78f9508e15f4e.png')" : "url('//file.baixing.net/202206/16ad612cac117bf513f1265da58b154e.png')"}`)
     .triangle
     .title(style=`color: ${color.serviceThe}`) #{ item.title }
     .line(style=`background-color: ${color.serviceThe}`)
@@ -31,7 +31,7 @@ mixin user-defined-module(configItem)
     each item, index in subModuleBos
       .user-defined-item
         if index % 2 !== 0
-          .user-defined-item-img 
+          .user-defined-item-img
             img(src=item.urlImg ?item.urlImg: defaultImg[index])
           +user-defined-item-content(item,serveAd2,index)
         else 
