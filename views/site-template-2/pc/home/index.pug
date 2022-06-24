@@ -5,6 +5,7 @@ block styles
 
 //-使用了统一的header和nav
 block content
+    - console.log(renderData)
     include ../components/home/swiper.pug
     - const { autoConfig } = renderData
     - const { styleType } = renderData.contact
