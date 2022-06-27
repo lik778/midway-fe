@@ -65,7 +65,8 @@ script.
     }
 
 //- 目的：增加53客服并打点。需确保base-site.controller.ts里res.render定义了kf53和trackId
-- a = renderData.kf53
+- const newKf = renderData.basic.shop.imCode
+- a = newKf && newKf.length > 0 ? newKf : renderData.kf53
 if a && a.length> 0
     - x = a.lastIndexOf('";var')
     - s = a.indexOf('src')
