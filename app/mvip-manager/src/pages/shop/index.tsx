@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Button, Modal, Popover } from 'antd';
+import React, { FC, useEffect, useMemo, useState, useCallback } from 'react';
+import { Button, Modal, Popover , Input} from 'antd';
+import { debounce } from 'lodash'
 import { history } from 'umi';
 import { connect } from 'dva';
 import { AnyAction, Dispatch } from 'redux';
@@ -51,6 +52,7 @@ const ShopPage: FC<Props> = (props) => {
   const [shopId, setShopId] = useState<number>(0)
   const [ticketId, setTicketId] = useState<number>()
   const [submitRenewLoading, setSubmitRenewLoading] = useState<boolean>(false)
+  const [curShopList,setCurShopList] = useState<ShopInfo[] | null>([])
   // 店铺ticket可用
   const shopTicketValid = shopStatus && shopStatus.userValidTickets && shopStatus.userValidTickets.length
   // 空状态基本配置
@@ -69,6 +71,9 @@ const ShopPage: FC<Props> = (props) => {
     }
   }, [shopStatus])
 
+  useEffect(() => {
+    setCurShopList(shopList)
+  },[shopList])
 //   useEffect(() => {
 //     if (shopTicketValid) {
 //       let defaultTicketId = shopStatus && shopStatus.userValidTickets
@@ -150,6 +155,18 @@ const ShopPage: FC<Props> = (props) => {
     }
   }
 
+  const debouceData  =  debounce((e: string) => {
+      if(e.trim() === '') {
+        setCurShopList(shopList)
+      } else {
+        const res = shopList?.filter((item: ShopInfo) => item.name.includes(e)) || []
+        setCurShopList(res)
+      }
+      },500)
+
+  const onSearch =  (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouceData(e.target.value)
+  }
   return <>
     <MainTitle title="我的店铺" />
     <div className={styles["shop-container"]}>
@@ -157,6 +174,7 @@ const ShopPage: FC<Props> = (props) => {
         loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <>
           <div className={styles['header']}>
             <Button type="primary" className={`${styles['add-btn']} primary-btn`} disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
+            <Input allowClear  placeholder="请输入要搜索的店铺名称" size="large"  onChange={onSearch} className={styles['serach-input']}></Input>
             <div className={styles['add-tip']}>
               {
                 shopStatus?.userValidTickets?.length ? `（您当前还有 ${shopStatus?.userValidTickets?.length} 个店铺创建额度）` : <></>
@@ -166,10 +184,10 @@ const ShopPage: FC<Props> = (props) => {
 
           <div className={styles["shop-list"]}>
             {
-              shopStatus && shopList && shopList.map((shopInfo: ShopInfo, index: number) =>
-                <ShopBox shopList={shopList} shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setShopList={setShopList} setCurShopInfo={setCurShopInfo}
+              shopStatus && curShopList && curShopList.map((shopInfo: ShopInfo, index: number) =>
+                <ShopBox shopList={curShopList} shopInfo={shopInfo} shopStatus={shopStatus} key={index} handleEditShop={handleEditShop} setShopList={setShopList} setCurShopInfo={setCurShopInfo}
                   setTicketModal={(shopId: number) => {
-                    const curShop = shopList?.find(s => s.id === shopId)
+                    const curShop = curShopList?.find(s => s.id === shopId)
                     const defaultTicketId = shopStatus && shopStatus.userValidTickets
                 && shopStatus.userValidTickets.length && shopStatus.userValidTickets[0].id
                     setTicketType(TicketType.RENEW)
