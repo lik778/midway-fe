@@ -159,7 +159,7 @@ const ShopPage: FC<Props> = (props) => {
       if(e.trim() === '') {
         setCurShopList(shopList)
       } else {
-        const res = shopList?.filter((item: ShopInfo) => item.name === e) || []
+        const res = shopList?.filter((item: ShopInfo) => item.name.includes(e)) || []
         setCurShopList(res)
       }
       },500)
