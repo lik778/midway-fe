@@ -155,7 +155,7 @@ const ShopPage: FC<Props> = (props) => {
     }
   }
 
-  const debouceData  =  useCallback(debounce((e: string) => {
+  const debouceData  =  debounce((e: string) => {
       if(e.trim() === '') {
         setCurShopList(shopList)
       } else {
@@ -163,7 +163,6 @@ const ShopPage: FC<Props> = (props) => {
         setCurShopList(res)
       }
       },500)
-    ,[])
 
   const onSearch =  (e: React.ChangeEvent<HTMLInputElement>) => {
     debouceData(e.target.value)
@@ -175,7 +174,7 @@ const ShopPage: FC<Props> = (props) => {
         loadingShop ? <Loading /> : shopTotal && shopTotal > 0 ? <>
           <div className={styles['header']}>
             <Button type="primary" className={`${styles['add-btn']} primary-btn`} disabled={createShopDisabled} onClick={handleCreateShop}>+新建店铺</Button>
-            <Input allowClear  placeholder="请输入要搜索的店铺名称" size="large"  onChange={(e) => onSearch(e)} className={styles['serach-input']}></Input>
+            <Input allowClear  placeholder="请输入要搜索的店铺名称" size="large"  onChange={onSearch} className={styles['serach-input']}></Input>
             <div className={styles['add-tip']}>
               {
                 shopStatus?.userValidTickets?.length ? `（您当前还有 ${shopStatus?.userValidTickets?.length} 个店铺创建额度）` : <></>
@@ -260,7 +259,6 @@ const ShopPage: FC<Props> = (props) => {
 const WrapperShopPage: any = connect((state: ConnectState) => {
   const { shopList, shopTotal, shopStatus } = state[SHOP_NAMESPACE]
   const { loading } = state
-  console.log(shopList)
   return { shopList, shopTotal, shopStatus, loadingShop: loading.models.shop }
 }, (dispatch) => {
   return {
