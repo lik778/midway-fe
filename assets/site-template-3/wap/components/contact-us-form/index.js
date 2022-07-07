@@ -22,6 +22,9 @@ export const leaveLeads1 = function () {
       if(getUrlParam('bannerId')) {
         data.bannerId = getUrlParam('bannerId')
       }
+      if(getUrlParam('profile')) {
+        data.profile = getUrlParam('profile').split('_')[0]
+      }
       if (window.extraContactFormData) {
         Object
             .entries(window.extraContactFormData)

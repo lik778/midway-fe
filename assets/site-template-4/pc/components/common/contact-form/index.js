@@ -21,15 +21,18 @@ export const leaveLeads = () => {
     })
     $('#SubmitButton').on('click', (e) => {
       e.preventDefault();
-      const labeIcon = $('#labeIcon')
       const data = {};
       const content = []
       let flag = false
       const bannerId = getUrlParam('bannerId')
+      const profile = getUrlParam('profile')
       const phoneFliterRules = /(^(0[0-9]{2,3}\-{0,1})?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-{0,1}))?(1[0-9]\d{9})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4})(.)(\d{1,4})$)|(^(400)-{0,1}(\d{3})-{0,1}(\d{4}$))/
       data.shopName = $('#shop-name').text()
       if(bannerId) {
         data.bannerId = bannerId
+      }
+      if(profile) {
+        data.profile = profile.split('_')[0]
       }
       if (window.extraContactFormData) {
         Object

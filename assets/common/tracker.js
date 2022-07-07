@@ -36,6 +36,7 @@ export const getBaxSemEventField = () => {
   opts.keyword = keyword || oKeyword || ''
   opts.groupId = groupId
   opts.bannerId = query.bannerId || ''
+  opts.profile = query.profile.split('_')[0]
   return opts
 }
 
