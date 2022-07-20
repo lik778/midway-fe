@@ -5,7 +5,7 @@
 	else
 		- wechatIcon = '//file.baixing.net/202105/ab94f0b173db8fcf4dfeee3cb8bc5919.png'
 		- wechatColor = '#AAAAAA'
-	if kf53StyleUrl && kf53StyleUrl.length > 0
+	if newkf53StyleUrl && newkf53StyleUrl.length > 0
 		- kf53Icon = '//file.baixing.net/202105/23e59b666fcc06d1f2e127b887d1cd8a.png'
 		- kf53Color = '#FF4466'
 	else
@@ -15,7 +15,7 @@
 	.wechat-box( data-value = weChat.content, style=`border-color:${wechatColor}` )
 		.wechat-icon(style=`background: url(${wechatIcon}) no-repeat center/100%`)
 		p(style=`color:${wechatColor}`) 加微信
-	a(href=kf53StyleUrl, style=`border-color:${kf53Color}`).online-box
+	a(href=newkf53StyleUrl, style=`border-color:${kf53Color}`).online-box
 		.online-icon(style=`background: url(${kf53Icon}) no-repeat center/100%`)
 		p(style=`color:${kf53Color}`) 在线咨询
 	a(href="tel:" + phone.content).phone-box

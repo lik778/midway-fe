@@ -57,8 +57,8 @@ mixin mediaShow()
 								| 商家地址： 
 								span(class="span-address") #{ address }
 					.detail-contact
-						if kf53StyleUrl && kf53StyleUrl.length > 0
-							a#k53Hover.online-btn(href=kf53StyleUrl style=`background: ${totalTip}` defaultColor=totalTip HoverColor=contact.buttonColor)
+						if newkf53StyleUrl && newkf53StyleUrl.length > 0
+							a#k53Hover.online-btn(href=newkf53StyleUrl style=`background: ${totalTip}` defaultColor=totalTip HoverColor=contact.buttonColor)
 								img(src="//file.baixing.net/202205/d0dc1b78ca802c777df9266aaa459346.png", alt="icon")
 								span 在线咨询
 						.searchPhone

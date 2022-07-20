@@ -4,8 +4,8 @@ mixin dynamic-official-footer-contact(theme, image1, image2)
       .wechat-box(data-value = weChat.content)
         img.icon(src=image1)
         p.text 微信
-    if kf53StyleUrl && kf53StyleUrl.length > 0
-      a.online-box(href=kf53StyleUrl)
+    if newkf53StyleUrl && newkf53StyleUrl.length > 0
+      a.online-box(href=newkf53StyleUrl)
         img.icon(src=image2)
         p.text 咨询
     include ./dynamic-contact-phone-btn.pug

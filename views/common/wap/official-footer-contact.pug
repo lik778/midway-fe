@@ -4,8 +4,8 @@ mixin official-footer-contact()
       .wechat-box(data-value = weChat.content)
         img.icon(src=`//file.baixing.net/202107/f70c14412d26538b6da9c751b2fb7bb5.png`)
         p.text 微信
-    if kf53StyleUrl && kf53StyleUrl.length > 0
-      a.online-box(href=kf53StyleUrl)
+    if newkf53StyleUrl && newkf53StyleUrl.length > 0
+      a.online-box(href=newkf53StyleUrl)
         img.icon(src=`//file.baixing.net/202107/81d88888d0b0361f28ffa55364b31bd1.png`)
         p.text 咨询
     include ./contact-phone-btn.pug

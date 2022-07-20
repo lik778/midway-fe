@@ -36,6 +36,9 @@ html
     - productListTab = nav.find(x => x.position == "productListPage")
     - newsLinkListTab = nav.find(x => x.position == "articleListPage")
     - aboutLinkListTab = nav.find(x => x.position == "aboutPage")
+    - kfCode53 = renderData.basic.shop.imCode
+    if kfCode53 && kfCode53.length > 0
+      - newkf53StyleUrl = kfCode53.slice(kfCode53.indexOf('https'), kfCode53.indexOf('";var'))
     if productListTab
       - productLink = productListTab.content
     if newsLinkListTab
