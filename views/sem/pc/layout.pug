@@ -16,7 +16,7 @@ html
     - const { uid, currentPathname, shopId, shopName, userInfo } = renderData
     - kfCode53 = renderData.basic.shop.imCode
     if kfCode53 && kfCode53.length > 0
-      - newkf53StyleUrl = kfCode53.slice(kfCode53.indexOf('https'), kfCode53.indexOf('";var'))
+      - newkf53StyleUrl = kfCode53.slice(kfCode53.indexOf('https'), kfCode53.indexOf('";var')).replace('/code/code/','/code/client/')
     - defaultImg = "//file.baixing.net/202107/e9a1688b5c861d17484d61515c207390.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
     block header
