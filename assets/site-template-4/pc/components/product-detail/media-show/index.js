@@ -12,7 +12,7 @@ export const mediaShow = function() {
       $(this).text($('.phoneContent').data('phone'))
     })
   });
-  var swiper = new Swiper('.swiper-container', {
+   new Swiper('.swiper-container', {
     cssMode: true,
     mousewheel: true,
     keyboard: true,
@@ -50,12 +50,16 @@ export const mediaShow = function() {
       $('.left-headImg .video-wrapper').css('display','block')
       $('#cover').removeClass('video-img').addClass('video-cover')
     }else {
-      //  隐藏视频和按钮，替换成图片
-      $('.left-headImg .video-wrapper').css('display','none')
-      $('#cover').removeClass('video-cover').addClass('video-img')
+      //  隐藏视频和按钮前，先暂停视频，替换成图片
+      const  $productVideos = $('.left-headImg video')
+      if($productVideos) {
+        $productVideos.pause()
+        $('.left-headImg .video-cover').css('display','block')
+        $('.left-headImg img').attr('src',$Imgsrc)
+        $('.left-headImg .video-wrapper').css('display','none')
+      }
     }
     // 设置高亮
- 
     $ThisImg.addClass(`my-slide-active-${nums[color]}`);
     $ThisImg.siblings().removeClass(`my-slide-active-${nums[color]}`);
   });
@@ -67,7 +71,7 @@ export const mediaShow = function() {
       const $cover = document.querySelector('.left-headImg .video-cover');
       $cover.addEventListener('click', evt => {
         $productVideo.play();
-        $cover.remove();
+        $cover.style.display = 'none'
         evt.stopPropagation();
       });
     }
