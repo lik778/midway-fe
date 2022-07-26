@@ -48,15 +48,15 @@ export const mediaShow = function() {
       const $Videosrc =  $ThisImg.data('video')
       $('.left-headImg video').attr('src',$Videosrc)
       $('.left-headImg .video-wrapper').css('display','block')
-      $('#cover').removeClass('video-img').addClass('video-cover')
+      $('#cover').removeClass('video-img hide-video-after').addClass('video-cover')
     }else {
       //  隐藏视频和按钮前，先暂停视频，替换成图片
-      const  $productVideos = $('.left-headImg video')
-      if($productVideos) {
-        $productVideos.pause()
-        $('.left-headImg .video-cover').css('display','block')
-        $('.left-headImg img').attr('src',$Imgsrc)
+      const $productVideo = document.querySelector('.left-headImg video');
+      if($productVideo) {
+        $productVideo.pause()
+        $('.left-headImg .video-cover').css('display','block').addClass('hide-video-after')
         $('.left-headImg .video-wrapper').css('display','none')
+        $('.left-headImg img').attr('src',$Imgsrc)
       }
     }
     // 设置高亮
