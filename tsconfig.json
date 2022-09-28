@@ -12,5 +12,6 @@
     "baseUrl": "./",
     "jsx": "react"
   },
-  "exclude": ["app"]
+  "exclude": ["app"],
+  "include": ["src/**/*", ".eslintrc.js"]
 }
