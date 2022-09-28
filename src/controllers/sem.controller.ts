@@ -61,14 +61,14 @@ export class SemController {
 
   @Get('/sem/:uid')
   public async home(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
-    let uid = params.uid
+    const uid = params.uid
     return this.getHome(req, res, device, uid)
   }
 
   @Get('/sem/:uid/:singleDomain')
   public async home1(@Param() params, @Req() req: Request, @Res() res: Response, @UserAgent('device') device) {
-    let uid = params.uid
-    let singleDomain = params.singleDomain
+    const uid = params.uid
+    const singleDomain = params.singleDomain
     return this.getHome(req, res, device, uid, singleDomain)
   }
 }
