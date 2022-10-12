@@ -9,8 +9,9 @@ block header
 
 	if isSem !== "2" && isSem !== "1"
 		- const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
-		include ../components/company-info-home
-		+company-info-home(tags)
+		if isBaiduPin !== 'baidu_pinzhuan'
+			include ../components/company-info-home
+			+company-info-home(tags)
 	if isSem !== "1"
 		include ../components/nav
 		+nav()
@@ -37,7 +38,7 @@ block content
 		include ../components/user-defined-module-new.pug
 		+user-defined-module-new(autoConfig[1])
 
-	if isSem !== "1"
+	if isSem !== "1" && isBaiduPin !== 'baidu_pinzhuan'
 		- contactUsImg = renderData.basic.shop.color.wap.contactUs
 		include ../components/aboutus.pug
 		+aboutus('home', contactUsImg)

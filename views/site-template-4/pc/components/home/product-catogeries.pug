@@ -9,11 +9,12 @@
 						#{ item.name } #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
 					if index  < p.length - 1
 						.border-bot
-		a.last-contact(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=productLink)
-			.last-contact-top
-				img.top1(src="//file.baixing.net/202205/ba64a2b4ee4f230a1e96ab5c2bf6c07a.png" alt="logo")
-			.last-contact-middle #{phone.content}
-			.last-contact-bottom
+		if isBaiduPin !== 'baidu_pinzhuan'
+			a.last-contact(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=productLink)
+				.last-contact-top
+					img.top1(src="//file.baixing.net/202205/ba64a2b4ee4f230a1e96ab5c2bf6c07a.png" alt="logo")
+				.last-contact-middle #{phone.content}
+				.last-contact-bottom
 
 
 

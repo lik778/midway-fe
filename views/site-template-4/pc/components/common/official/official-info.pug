@@ -1,18 +1,18 @@
 mixin officialInfo()
-  - console.log(isSem)
-  .official-info-container 
-    .official-info-content(class=isSem==="2"?"sem-2":"")
-      .left
-        if isSem !== "2"
-          a.logo-a(href=nav[0].content)
-            img.logo(src=company.logo || defaultLogo, alt=companyName)
-          .line
-          .text
-            .title #{companyName}
-            if shop.navInfo.slogan
-              .subtitle #{shop.navInfo.slogan} 
-      .right
-        if isSem !== "2"
-          block official-info-phone
-            include ./official-info-phone.pug
-            +officialInfoPhone()
+  if isBaiduPin !== 'baidu_pinzhuan'
+    .official-info-container 
+      .official-info-content(class=isSem==="2"?"sem-2":"")
+        .left
+          if isSem !== "2"
+            a.logo-a(href=nav[0].content)
+              img.logo(src=company.logo || defaultLogo, alt=companyName)
+            .line
+            .text
+              .title #{companyName}
+              if shop.navInfo.slogan
+                .subtitle #{shop.navInfo.slogan} 
+        .right
+          if isSem !== "2"
+            block official-info-phone
+              include ./official-info-phone.pug
+              +officialInfoPhone()

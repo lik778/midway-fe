@@ -2,8 +2,9 @@ mixin officialHeader(headerOption)
   - const { navConfig } = headerOption||{}
   include ./official-topbar.pug
   +officialTopbar()
-  include ./official-info.pug
-  +officialInfo()
+  if isBaiduPin !== 'baidu_pinzhuan'
+    include ./official-info.pug
+    +officialInfo()
   if isSem !== "1"
     include ./official-nav.pug
     +officialNav()

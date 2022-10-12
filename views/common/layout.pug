@@ -8,6 +8,14 @@ html
     meta(name='format-detection' content="telephone=no")
     meta(name='description' content=renderData.meta.description || "")
     link(rel='shortcut icon' type='image/x-icon' href='//s.baixing.net/favicon.ico')
+    style.
+      .maskLayer {
+        z-index: 9999;
+        position: fixed;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+      }
     script.
       function changeOrigin(target, type) {
         let element
@@ -26,7 +34,6 @@ html
     block styles
   body
     //-初始化公共数据
-    - console.log(isBaiduPin,'12')
     - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
     - const { company, person, copyRight ,shop} = renderData.basic
     - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo } = renderData
@@ -47,6 +54,9 @@ html
     - aboutLink = aboutLinkListTab?aboutLinkListTab.content:currentPathname.indexOf(shopName)===-1?'/about.html': '/'+shopName+'/about.html'
     - defaultImg = "//file.baixing.net/202107/e9a1688b5c861d17484d61515c207390.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
+    //- 百度品专项目专用——为pc/wap添加一个全局的遮罩层，点击遮罩层跳转到不含有query { special: 'baidu_pinzhuan' } 的页面
+    if isBaiduPin === 'baidu_pinzhuan'
+      .maskLayer
     //-为了提供给留咨参数
     if shopName
         p#shop-name(style="display:none") #{shopName}
@@ -99,8 +109,14 @@ html
       window.contentType ='#{contentType}' ;
       window.trackSrc = '#{pageType}';
       window.pageStartRenderTime = '#{pageStartRenderTime}'
+      //- 百度品专跳转专用
+      let maskLayer = document.querySelector('.maskLayer')
+      maskLayer.onclick = function() {
+        location.href = location.href.replace('special=baidu_pinzhuan','')
+      }
     include ../vendor/baidutongji.pug
     //-TODO:开发阶段先注释掉
-    include ../vendor/53kf.pug
+    if isBaiduPin !== 'baidu_pinzhuan'
+      include ../vendor/53kf.pug
   :combine(fileName=["tb-vendors.js", "tb-commons.js"])
   block scripts

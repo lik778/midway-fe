@@ -5,7 +5,6 @@ block styles
 
 //-使用了统一的header和nav
 block content
-    - console.log(renderData)
     include ../components/home/swiper.pug
     - const { autoConfig } = renderData
     - const { styleType } = renderData.contact
@@ -41,7 +40,7 @@ block content
             include ../components/home/product-list.pug
             +product-list('hot', hotProductList)
 
-        if isSem !== "2"&&isSem !== "1"
+        if isSem !== "2"&&isSem !== "1"&&isBaiduPin !== 'baidu_pinzhuan'
             - const { name: aboutUsTitle, tags, media, videoUrl } = renderData.about||renderData.basic.aboutModule || {}
             .block-title
                 //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")

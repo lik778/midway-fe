@@ -150,8 +150,7 @@ export class BaseSiteController {
     const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     const isCn = this.checkCn(HostDomain)
     const isAccount = query.account
-    const isSpecial = query.specail || 'not_baidu_pinzhuan'
-    console.log(query)
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
     // 当参数里添加sem 则说明要切换为sem页
     let shopName = ''
     const domain = req.hostname
@@ -200,6 +199,7 @@ export class BaseSiteController {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
 
     const currentPage = query.page || 1;
 
@@ -231,7 +231,7 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
 
-    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'article', pageStartRenderTime: new Date().getTime() });
+    return res.render(templateUrl, { title: '新闻资讯', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isBaiduPin: isSpecial ,isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'article', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get('/n-:id.html')
@@ -243,7 +243,7 @@ export class BaseSiteController {
     const domain = req.hostname
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
-
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
     const newsId = params.id
 
     const { data: originData } = await this.midwayApiService.getNewsDetailData(shopName, device, { id: newsId, ...this.createParams(isSem, isCn) }, domain);
@@ -277,7 +277,7 @@ export class BaseSiteController {
       }
     }
 
-		return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'article', pageStartRenderTime: new Date().getTime() });
+		return res.render(templateUrl, { title: '资讯详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isBaiduPin: isSpecial ,isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'article', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get(['/pl.html', '/pl-:id.html'])
@@ -290,7 +290,7 @@ export class BaseSiteController {
     const shopName = this.midwayApiService.getShopName(params.shopName || HostShopName)
     const userInfo = await this.getUserInfo(req, domain)
     const currentPage = query.page || 1
-
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
     const id = params.id
     const position = id ? 7 : 5
 
@@ -317,7 +317,7 @@ export class BaseSiteController {
     const { kf53 } = data.basic.contact;
     const trackId = this.trackerService.getTrackId(req, res)
 
-    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
+    return res.render(templateUrl, { title: '产品服务', renderData: { ...data, position, shopName, domainType: this.domainType, currentPage, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isBaiduPin: isSpecial, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'product', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get('/p-:id.html')
@@ -332,7 +332,7 @@ export class BaseSiteController {
     const productId = params.id
     const { data: originData } = await this.midwayApiService.getProductDetailData(shopName, device, { id: productId, ...this.createParams(isSem, isCn) }, domain);
     const data = this.setData(originData, isSem, isCn)
-
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -362,7 +362,7 @@ export class BaseSiteController {
       }
     }
 
-		return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'product', pageStartRenderTime: new Date().getTime() });
+		return res.render(templateUrl, { title: '产品详情', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isDetail: true, isBaiduPin: isSpecial, isSem, isCn, isAccount, pageTemplate, pageType: 'viewad', contentType: 'product', pageStartRenderTime: new Date().getTime() });
   }
 
   //关于我们
@@ -377,7 +377,7 @@ export class BaseSiteController {
     const userInfo = await this.getUserInfo(req, domain)
     const { data: originData } = await this.midwayApiService.getAboutPageData(shopName, device, this.createParams(isSem, isCn), domain);
     const data = this.setData(originData, isSem, isCn)
-
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
     // 打点
     const shopId = data.basic.shop.id
     this.trackerService.point(req, res, {
@@ -401,7 +401,7 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
 
-    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isSem, isCn, isAccount, pageTemplate, pageType: 'about', contentType: '', pageStartRenderTime: new Date().getTime() });
+    return res.render(templateUrl, { title: '关于我们', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53,  shopId, trackId, userInfo }, isBaiduPin: isSpecial, isSem, isCn, isAccount, pageTemplate, pageType: 'about', contentType: '', pageStartRenderTime: new Date().getTime() });
   }
 
 
@@ -427,6 +427,7 @@ export class BaseSiteController {
     const currentPage = query.page || 1
     const searchKey = query.key || ''
     const searchType = query.type || 'product'
+    const isSpecial = query.special || 'not_baidu_pinzhuan'
     const { data: originData } = await this.midwayApiService.getSearchPageData(shopName, device, {
       keyword: searchKey, page: currentPage, type: SearchTypeEnum[searchType as keyof SearchTypeEnum],
       ...this.createParams(isSem, isCn)
@@ -457,7 +458,7 @@ export class BaseSiteController {
     const trackId = this.trackerService.getTrackId(req, res)
 
     return res.render(templateUrl, {
-      title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'search', pageStartRenderTime: new Date().getTime()
+      title: '搜索', renderData: { ...data, searchKey, shopName, kf53, shopId, trackId, userInfo, domainType: this.domainType, currentPage, currentPathname }, isSem, isBaiduPin: isSpecial, isCn, isAccount, pageTemplate, pageType: 'listing', contentType: 'search', pageStartRenderTime: new Date().getTime()
     })
   }
 
