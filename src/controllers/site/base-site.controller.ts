@@ -150,6 +150,8 @@ export class BaseSiteController {
     const isSem = this.checkSem(query.sem, query.bannerId, query.account)
     const isCn = this.checkCn(HostDomain)
     const isAccount = query.account
+    const isSpecial = query.specail || 'not_baidu_pinzhuan'
+    console.log(query)
     // 当参数里添加sem 则说明要切换为sem页
     let shopName = ''
     const domain = req.hostname
@@ -186,7 +188,7 @@ export class BaseSiteController {
     const currentPathname = req.originalUrl;
     const trackId = this.trackerService.getTrackId(req, res)
     this.checkCn(HostDomain)
-    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isSem, isCn, isAccount, pageTemplate, pageType: 'home', contentType: '', pageStartRenderTime: new Date().getTime() });
+    return res.render(templateUrl, { title: '首页', renderData: { ...data, shopName, domainType: this.domainType, currentPathname, kf53, shopId, trackId, userInfo }, isHome: true, isBaiduPin: isSpecial ,isSem, isCn, isAccount, pageTemplate, pageType: 'home', contentType: '', pageStartRenderTime: new Date().getTime() });
   }
 
   @Get(['/nl.html', '/nl-:id.html'])
