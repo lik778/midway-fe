@@ -118,7 +118,7 @@ html
         let exitPinZhuanuRL2  = locationUrl.includes('&special=baidu_pinzhuan') // 中间和尾部
         let url = ''
         if(exitPinZhuanUrl1) {
-          url =  locationUrl.replace('?special=baidu_pinzhuan&','')
+          url =  locationUrl.replace('?special=baidu_pinzhuan&','?')
         } else if(exitPinZhuanuRL2) {
           url =  locationUrl.replace('&special=baidu_pinzhuan','')
         } else {
