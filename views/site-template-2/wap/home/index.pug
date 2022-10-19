@@ -33,7 +33,7 @@ block content
     include ../components/user-defined-module-new.pug
     +user-defined-module-new(autoConfig[1])
 
-  if isSem !== "1"
+  if isSem !== "1" && isBaiduPin !== 'baidu_pinzhuan'
     include ../components/aboutus.pug
     +aboutus('home')
 

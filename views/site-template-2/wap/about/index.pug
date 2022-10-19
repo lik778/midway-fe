@@ -3,9 +3,9 @@ block styles
     :combine(fileName="site-template-2-about-wap.css")
 
 block content
-
-    include ../components/aboutus.pug
-    +aboutus('about')
+    if isBaiduPin !== 'baidu_pinzhuan'
+      include ../components/aboutus.pug
+      +aboutus('about')
 
     - const userDefinedList = renderData.autoConfig
     include ../components/user-defined-module.pug
