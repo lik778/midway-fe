@@ -1,7 +1,8 @@
 mixin aboutus(pageType, contactUsImg)
 	- themeColor = renderData.basic.shop.color.productHv
 	- specialIconColor = renderData.basic.shop.color.wap.specialIcon
-	if isBaiduPin !== 'baidu_pinzhuan'
+	if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+	else
 		.aboutus(style="")
 			img(src=contactUsImg).bg
 			.aboutus-block-title 联系我们

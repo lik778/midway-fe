@@ -12,7 +12,8 @@
             li
               a.navPage(href=item.content data-hover=contact.concatTheme) #{ item.name }
     .left-line
-    if isBaiduPin !== 'baidu_pinzhuan'
+    if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+    else
       .left-address
         .company-title#companyTitle
           .company-contect #{ companyName || '暂未添加公司名称' }

@@ -30,14 +30,16 @@ block content
             include ../components/home/product-list.pug
             +product-list('hot', hotProductList)
 
-      if isSem !== "2"&&isSem !== "1"&&isBaiduPin==='not_baidu_pinzhuan'
-        .container-about-us
-          - const { name: aboutUsTitle, tags, media, videoUrl } = renderData.about||renderData.basic.aboutModule || {}
-          +bolckTitle(aboutUsTitle || '关于我们',themTipColor)
-          include ../components/home/about-us.pug
-          +about-Us-New(tags,media,videoUrl)
-        include  ../components/home/about-contact-tel.pug
-        +aboutContactTel(serveTel.consultImg,serveTel.consultBg,serveTel.consultCo)
+      if isSem !== "2"&&isSem !== "1"
+        if isBaiduPin==='baidu_pinzhuan' && hasYbsTicket
+        else
+          .container-about-us
+            - const { name: aboutUsTitle, tags, media, videoUrl } = renderData.about||renderData.basic.aboutModule || {}
+            +bolckTitle(aboutUsTitle || '关于我们',themTipColor)
+            include ../components/home/about-us.pug
+            +about-Us-New(tags,media,videoUrl)
+          include  ../components/home/about-contact-tel.pug
+          +aboutContactTel(serveTel.consultImg,serveTel.consultBg,serveTel.consultCo)
 
       //-自定义模块1（即之前的企业优势模块）
       if autoConfig[1] &&autoConfig[1].show

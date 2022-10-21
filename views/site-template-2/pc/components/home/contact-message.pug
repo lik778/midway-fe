@@ -7,7 +7,7 @@
           li
             a#navPage(href=item.content) #{ item.name }
     .left-line 
-    .left-address(style=`visibility:${isBaiduPin !== 'baidu_pinzhuan' ? 'visible' : 'hidden'}`)
+    .left-address(style=`visibility:${isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket ? 'hidden' : 'visible'}`)
       .company-title#companyTitle
         .company-icon #{ companyName }
         .company-contect #{ companyName || '暂未添加公司名称' }

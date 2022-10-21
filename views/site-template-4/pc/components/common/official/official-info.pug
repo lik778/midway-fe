@@ -1,6 +1,7 @@
 mixin officialInfo()
-  if isBaiduPin !== 'baidu_pinzhuan'
-    .official-info-container 
+  if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+  else
+    .official-info-container
       .official-info-content(class=isSem==="2"?"sem-2":"")
         .left
           if isSem !== "2"
