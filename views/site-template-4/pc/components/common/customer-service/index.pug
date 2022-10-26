@@ -3,68 +3,70 @@
 - const { contact } = renderData.basic.shop.color
 - 
 	const customerService =  baseSwiper === '#343434' ? baseSwiper : totalTip
-.customer-service
-	#customerHover.customer-service__group(customerHv=contact.buttonColor)
-		if renderData.kf53
-			.service-item.customer-item-hover#kf53(style=`background-color: ${customerService || '#fff'}`)
-				.service-logo.kf53(style="background-image: url('//file.baixing.net/202205/87103c3a2225e9129139bfa7afc4208f.png')")
-				.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) 在线咨询
-		.service-item.customer-item-hover#qq(style=`background-color: ${customerService || '#fff'}`)
-			.service-logo.qq(style=`background-image: url(${customerService ? '//file.baixing.net/202205/a2075fd6a3ea9d4eee6e24e74eb97a31.png' : '//file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png'})`)
-			.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) QQ交谈
-			.service-modal
-				if qq && qq.length>0
-					each item in qq
+if isBaiduPin==='baidu_pinzhuan' && pinZhuan
+else
+	.customer-service
+		#customerHover.customer-service__group(customerHv=contact.buttonColor)
+			if renderData.kf53
+				.service-item.customer-item-hover#kf53(style=`background-color: ${customerService || '#fff'}`)
+					.service-logo.kf53(style="background-image: url('//file.baixing.net/202205/87103c3a2225e9129139bfa7afc4208f.png')")
+					.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) 在线咨询
+			.service-item.customer-item-hover#qq(style=`background-color: ${customerService || '#fff'}`)
+				.service-logo.qq(style=`background-image: url(${customerService ? '//file.baixing.net/202205/a2075fd6a3ea9d4eee6e24e74eb97a31.png' : '//file.baixing.net/202102/18462324f0fffdb03b4f3a82da6b4be6.png'})`)
+				.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) QQ交谈
+				.service-modal
+					if qq && qq.length>0
+						each item in qq
+							.service-modal__qq
+								.qq-name(style=`color: ${customerService};`) #{item.name}
+								.qq-link
+									a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
+										img(src="//file.baixing.net/202102/bce82c406d3f290168828ffeb88d063a.png", alt="qq icon")
+										span 联系客服
+					else
 						.service-modal__qq
-							.qq-name(style=`color: ${customerService};`) #{item.name}
-							.qq-link
-								a(href="http://wpa.qq.com/msgrd?v=3&uin="+item.content+"&site=qq&menu=yes" target="_blank")
-									img(src="//file.baixing.net/202102/bce82c406d3f290168828ffeb88d063a.png", alt="qq icon")
-									span 联系客服
+							.qq-name 暂未添加QQ
+			.service-item.customer-item-hover#mobile(style=`background-color: ${customerService || '#fff'}`)
+				.service-logo.mobile(style=`background-image: url(${customerService ? '//file.baixing.net/202205/efe2c710de4579e8774b5c3030e922be.png' : '//file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png'})`)
+				.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) 联系电话
+				.service-modal
+					.service-modal__mobile
+						.mobile-title 咨询电话
+						.mobile-number(style=`color: ${customerService};`) #{ phone.content }
+						if phone2.content
+							.mobile-number(style=`color: ${customerService};`) #{ phone2.content }
+						.mobile-info-people 联系人：#{ contactName.content }
+						.mobile-info-time 工作时间：7*24
+			.service-item.customer-item-hover#wechat(style=`background-color: ${customerService || '#fff'}`)
+				.service-logo.wechat(style=`background-image: url(${customerService ? '//file.baixing.net/202205/fb0d0aac79ee6033846cfe0de5c0533f.png' : '//file.baixing.net/202102/a278452bf26c6a6b4b870c69d2bcd615.png'})`)
+				.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) 联系微信
+				if weChat.content
+					.service-modal
+						.service-modal__wechat
+							.mobile-title 微信号码
+							.mobile-number(style=`color: ${customerService};`) #{ weChat.content }
+							textarea#wechat-id-textarea #{ weChat.content }
+							.click-copy 复制号码
 				else
-					.service-modal__qq
-						.qq-name 暂未添加QQ
-		.service-item.customer-item-hover#mobile(style=`background-color: ${customerService || '#fff'}`)
-			.service-logo.mobile(style=`background-image: url(${customerService ? '//file.baixing.net/202205/efe2c710de4579e8774b5c3030e922be.png' : '//file.baixing.net/202102/2a1a28b5fb72e227b0178c341341addd.png'})`)
-			.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) 联系电话
-			.service-modal
-				.service-modal__mobile
-					.mobile-title 咨询电话
-					.mobile-number(style=`color: ${customerService};`) #{ phone.content }
-					if phone2.content
-						.mobile-number(style=`color: ${customerService};`) #{ phone2.content }
-					.mobile-info-people 联系人：#{ contactName.content }
-					.mobile-info-time 工作时间：7*24
-		.service-item.customer-item-hover#wechat(style=`background-color: ${customerService || '#fff'}`)
-			.service-logo.wechat(style=`background-image: url(${customerService ? '//file.baixing.net/202205/fb0d0aac79ee6033846cfe0de5c0533f.png' : '//file.baixing.net/202102/a278452bf26c6a6b4b870c69d2bcd615.png'})`)
-			.service-name(style=`color: ${customerService ? '#fff' : '#333'}`) 联系微信
-			if weChat.content
-				.service-modal
-					.service-modal__wechat
-						.mobile-title 微信号码
-						.mobile-number(style=`color: ${customerService};`) #{ weChat.content }
-						textarea#wechat-id-textarea #{ weChat.content }
-						.click-copy 复制号码
-			else
-				.service-modal
-					.service-modal__wechat
-						.mobile-title 暂未添加微信号
+					.service-modal
+						.service-modal__wechat
+							.mobile-title 暂未添加微信号
 
-		#back-to-top(backToTopColor=customerService)
-			.back-to-top__icon
-			.back-to-top__text 返回顶部
+			#back-to-top(backToTopColor=customerService)
+				.back-to-top__icon
+				.back-to-top__text 返回顶部
 
-	.customer-service__group.group_bottom
-		.service-item#bax
-				.service-logo.bax.baixing-baozhang
-				#baixing.service-name.bax 百姓网  <br/>平台保障 
-				.service-modal 
-					.service-modal__bax 
-						.bax-title 投诉热线:
-						.bax-number 021-61300238
-					.service-modal__bax 
-						.bax-title 投诉反馈:
-						.bax-btn#entrance
-							.bax-link
-								.bax-text 我要投诉
+		.customer-service__group.group_bottom
+			.service-item#bax
+					.service-logo.bax.baixing-baozhang
+					#baixing.service-name.bax 百姓网  <br/>平台保障 
+					.service-modal 
+						.service-modal__bax 
+							.bax-title 投诉热线:
+							.bax-number 021-61300238
+						.service-modal__bax 
+							.bax-title 投诉反馈:
+							.bax-btn#entrance
+								.bax-link
+									.bax-text 我要投诉
 

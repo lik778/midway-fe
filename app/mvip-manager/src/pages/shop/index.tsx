@@ -239,6 +239,7 @@ const ShopPage: FC<Props> = (props) => {
       {shopTicketValid ?
         <div className={styles["ticket-list"]} >
           {shopStatus?.userValidTickets?.map((t, index) => {
+            console.log(t)
             return (
               <div onClick={() => ticketType === TicketType.RENEW && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? '' : setTicketId(t.id)} className={`${styles['ticket-list-item']} ${ ticketType !== TicketType.CREATE && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? styles['ticket-list-item_diable'] : ''} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
               {

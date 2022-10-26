@@ -1,23 +1,25 @@
 mixin company-info-home(type)
-  .company-info
-    .info
-      img.info-logo(src=company.logo, alt=companyName)
-      .info-text
-        h3.info-name #{ companyName }
-        .info-tag-list
-          if type
-            each item in type
-              p.info-tag= item
-          else 
-            .info-tag 百姓认证
-            .info-tag 实力商家
-            .info-tag 品质保障
-            .info-tag 贴心服务
-    .desc
-      p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-      img.top-left(src="//file.baixing.net/202112/3537fa0f6f2b15f369d9e7e412b682fb.png", alt="")
-      img.bottom-right(src="//file.baixing.net/202112/65370697e2e5d901e52168a255786f7a.png", alt="")
-      .action-btn-box
-        .action-btn.hide 展开
+  if isBaiduPin === "baidu_pinzhuan" && pinZhuan
+  else
+    .company-info
+      .info
+        img.info-logo(src=company.logo, alt=companyName)
+        .info-text
+          h3.info-name #{ companyName }
+          .info-tag-list
+            if type
+              each item in type
+                p.info-tag= item
+            else 
+              .info-tag 百姓认证
+              .info-tag 实力商家
+              .info-tag 品质保障
+              .info-tag 贴心服务
+      .desc
+        p.desc-text !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+        img.top-left(src="//file.baixing.net/202112/3537fa0f6f2b15f369d9e7e412b682fb.png", alt="")
+        img.bottom-right(src="//file.baixing.net/202112/65370697e2e5d901e52168a255786f7a.png", alt="")
+        .action-btn-box
+          .action-btn.hide 展开
 
 

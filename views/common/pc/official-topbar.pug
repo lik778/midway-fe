@@ -1,6 +1,8 @@
 mixin officialTopbar()
 	- const shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
 	.official-topbar-container
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+			.maskLayer-htdh
 		.topbar
 			.left
 				a.left(href="https://www.baixing.com" target="_blank")

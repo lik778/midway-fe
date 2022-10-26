@@ -1,11 +1,13 @@
 - const {bannerProduct} = renderData.banner
 if bannerProduct
-  .banner-content
+  .banner-content.maskLayer-relative
     - const {banner:bannerData} = renderData
     - bg = bannerData.backGroundImg || (bannerData.bannerList&&bannerData.bannerList[0]&&renderData.banner.bannerList[0].displayImgUrl)|| "//file.baixing.net/202103/a6354faab0bc153c2cfe6e30c64c6463.png"
     .bg-blur(style="background: url("+bg+") no-repeat center center/100% 100%")
     - const {productList}= renderData.banner
-    #banner-container 
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+      .maskLayer-htek#maskLayer2
+    #banner-container
       .swiper-container
         .swiper-wrapper
           if productList && productList.length > 0
@@ -33,7 +35,9 @@ if bannerProduct
       .swiper-button-prev
 else
   - const {bannerList}=  renderData.banner
-  #banner-list
+  #banner-list.maskLayer-relative
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+      .maskLayer-htek#maskLayer2
     .swiper-container.swiper-specil-size
       .swiper-wrapper
         if bannerList && bannerList.length > 0

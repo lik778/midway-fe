@@ -6,10 +6,12 @@ block header
     include ../components/header
 
 block content
-    - const cateList = renderData.productCateList
-    include ../components/product-detail.pug
-    include ../components/product-recommend.pug
-    include ../components/contact-form.pug
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+    else
+        - const cateList = renderData.productCateList
+        include ../components/product-detail.pug
+        include ../components/product-recommend.pug
+        include ../components/contact-form.pug
 
 block scripts
     :combine(fileName="site-template-2-product-detail-wap.js")

@@ -8,8 +8,6 @@ block header
   +swiper('home')
 
   if (isSem !== "2" && isSem !== "1")
-    if isBaiduPin === "baidu_pinzhuan" && pinZhuan
-    else
       - const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
       include ../components/company-info-home
       +company-info-home(tags)
@@ -36,10 +34,8 @@ block content
     +user-defined-module-new(autoConfig[1])
 
   if isSem !== "1"
-    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
-    else
-      include ../components/aboutus.pug
-      +aboutus('home')
+    include ../components/aboutus.pug
+    +aboutus('home')
 
   .block-container 
     .block-title 最新产品

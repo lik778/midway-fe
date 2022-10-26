@@ -18,10 +18,12 @@ block content
       //-自定义模块2（即之前的自身优势模块）
       if autoConfig[2]&&autoConfig[2].show
           .autoConfigServer
-            include ../components/home/self-advantage.pug
-            +bolckTitle(autoConfig[2].mainModuleTitle||'服务资质',themTipColor)
-            - selfAdvantage = autoConfig[2].subModuleBos
-            +self-advantage(selfAdvantage)
+            if isBaiduPin==='baidu_pinzhuan' && pinZhuan
+            else
+              include ../components/home/self-advantage.pug
+              +bolckTitle(autoConfig[2].mainModuleTitle||'服务资质',themTipColor)
+              - selfAdvantage = autoConfig[2].subModuleBos
+              +self-advantage(selfAdvantage)
 
       - const { productList: hotProductList, name } = renderData.productRecommend
       if hotProductList && hotProductList.length>0
@@ -40,11 +42,13 @@ block content
             +about-Us-New(tags,media,videoUrl)
           include  ../components/home/about-contact-tel.pug
           +aboutContactTel(serveTel.consultImg,serveTel.consultBg,serveTel.consultCo)
-
-      //-自定义模块1（即之前的企业优势模块）
-      if autoConfig[1] &&autoConfig[1].show
-          include ../components/home/user-defined-module.pug
-          +user-defined-module(autoConfig[1]) 
+      
+      if isBaiduPin==='baidu_pinzhuan' && pinZhuan
+      else
+        //-自定义模块1（即之前的企业优势模块）
+        if autoConfig[1] &&autoConfig[1].show
+            include ../components/home/user-defined-module.pug
+            +user-defined-module(autoConfig[1]) 
 
       //- 变量名 "productLists" 会报一个编译时错误，很奇怪
       //- 暂时先换个名字
@@ -52,38 +56,41 @@ block content
       if shopProductLists && shopProductLists.length>0
         .shop-product-list
           +bolckTitle('产品分类',themTipColor)
-          .product-catogeries-list
+          .product-catogeries-list.maskLayer-relative
+            if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+              .maskLayer-htek#maskLayer4
             include ../components/home/product-catogeries.pug 
             include ../components/home/product-list-new.pug
             +product-list('nothot', shopProductLists)
-
-      - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
-      include ../components/news/news-list.pug
-      if articleList && articleList.length >0
-          +bolckTitle(articleListName,themTipColor)
-          include ../components/home/news-list.pug
-          +news-list(articleList)
-      -
-        const list = {
-          HUANGJIN: '//file.baixing.net/202112/711cbb47aa2f6a1965edf77d4e365f62.png',
-          BAOJIE: '//file.baixing.net/202112/9215278b9445b590eabd956a425abb4d.png',
-          SHECHIPIN: '//file.baixing.net/202112/5140423747752ff64a6af9a61d796e89.png',
-          JIAZHENG: '//file.baixing.net/202112/122947c3fef8a002b4b4e7d741535b51.png',
-          WULIU: '//file.baixing.net/202112/87e959e25d09830be6be3c976d2d9c3f.png',
-          WEIXIU: '//file.baixing.net/202112/54876ec9655f874eced9769b1e4214ac.png'
-        }
-      if styleType === 'B2B_NORMAL'
-        #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
-            +bolckTitle('联系我们',themTipColor)
-            //- 通用模板
-            include ../components/home/contact-message.pug
-            //- 用于sem禁止外跳
-            include ../../../common/pc/contact-form-sem.pug
-            +contactFormSem('#FF2D38')
+      if isBaiduPin==='baidu_pinzhuan' && pinZhuan
       else
-        .contactTemplate4
-          include ../../../common/pc/contact-module.pug
-          +contactModule(styleType)
+        - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+        include ../components/news/news-list.pug
+        if articleList && articleList.length >0
+            +bolckTitle(articleListName,themTipColor)
+            include ../components/home/news-list.pug
+            +news-list(articleList)
+        -
+          const list = {
+            HUANGJIN: '//file.baixing.net/202112/711cbb47aa2f6a1965edf77d4e365f62.png',
+            BAOJIE: '//file.baixing.net/202112/9215278b9445b590eabd956a425abb4d.png',
+            SHECHIPIN: '//file.baixing.net/202112/5140423747752ff64a6af9a61d796e89.png',
+            JIAZHENG: '//file.baixing.net/202112/122947c3fef8a002b4b4e7d741535b51.png',
+            WULIU: '//file.baixing.net/202112/87e959e25d09830be6be3c976d2d9c3f.png',
+            WEIXIU: '//file.baixing.net/202112/54876ec9655f874eced9769b1e4214ac.png'
+          }
+        if styleType === 'B2B_NORMAL'
+          #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
+              +bolckTitle('联系我们',themTipColor)
+              //- 通用模板
+              include ../components/home/contact-message.pug
+              //- 用于sem禁止外跳
+              include ../../../common/pc/contact-form-sem.pug
+              +contactFormSem('#FF2D38')
+        else
+          .contactTemplate4
+            include ../../../common/pc/contact-module.pug
+            +contactModule(styleType)
 block scripts
     :combine(fileName="site-template-4-home-pc.js")
 block append scripts

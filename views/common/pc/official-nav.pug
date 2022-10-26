@@ -1,9 +1,11 @@
 mixin officialNav()
-  .official-nav-container 
-    .official-nav-content 
+  .official-nav-container
+    .official-nav-content
       each item in nav
         - const hasDropdown = item.contentCateBos && item.contentCateBos.length > 0
-        .nav-item-box
+        .nav-item-box.maskLayer-relative
+          if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+            .maskLayer-htek
           .hover-box
             a.nav-item(href=item.content) #{ item.name }
               img.active-flag(src="//file.baixing.net/202112/dbdd02fc3b149fac9faf3c9af09b46df.png", alt="")

@@ -1,5 +1,7 @@
 mixin product-list(type,productList)
-	.product-list.clearfix
+	.product-list.clearfix.maskLayer-relative
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+			.maskLayer-htek#maskLayer3
 		if productList && productList.length > 0
 			each item in type == 'hot' ? productList.slice(0,12) : productList.slice(0,6)
 				if type == 'hot'

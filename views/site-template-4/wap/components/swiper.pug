@@ -1,7 +1,9 @@
 mixin swiper(type)
   - const {bannerList} = renderData.banner
   //- 首页
-  .swiper-container(style= type === 'home'?"height: 100vw":"height: 152px")
+  .maskLayer-relative.swiper-container(style= type === 'home'?"height: 100vw":"height: 152px")
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+      .maskLayer-htek#maskLayer2
     .swiper-wrapper
       if bannerList && bannerList.length > 0
         each item in bannerList

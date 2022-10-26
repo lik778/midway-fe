@@ -1,6 +1,8 @@
 - themeColor = renderData.basic.shop.color.productHv
 - headerBg = renderData.basic.shop.color.wap.headerBg
-header.bx-header-red
+header.bx-header-red.maskLayer-relative
+	if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+		.maskLayer-htdh
 	nav.cm-nav-bar(style={background: headerBg || themeColor})
 		.cm-nav-bar-left
 			a.bx-nav-logo(href="//www.baixing.com/m/")

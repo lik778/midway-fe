@@ -16,7 +16,9 @@ block content
             - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
             +pagination(totalPage, currentPage, `${currentPathname}`)
 
-        .sidebar
+        .sidebar.maskLayer-relative
+            if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+                .maskLayer-htek
             - const { articleList: articleList,name:articleName } = renderData.articleRecommend
             include ../components/sidebar/cateList.pug
             +side-cateList(articleName, articleList)

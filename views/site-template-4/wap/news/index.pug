@@ -5,12 +5,14 @@ block styles
 block content
 	- const cateList = renderData.articleCateList
 	include ../components/toptab
-	- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
-	include ../components/news-list
-	+news-list(articleList)
+	if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+	else
+		- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+		include ../components/news-list
+		+news-list(articleList)
 
-	include ../../../common/wap/dynamic-pagination.pug
-	+dynamic-pagination(totalPage, renderData.currentPage, `${currentPathname}`)
+		include ../../../common/wap/dynamic-pagination.pug
+		+dynamic-pagination(totalPage, renderData.currentPage, `${currentPathname}`)
 
 block footer
 	div(style="padding-bottom:75px")

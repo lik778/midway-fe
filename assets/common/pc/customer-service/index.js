@@ -87,6 +87,7 @@ const backToTop = $('#back-to-top');
 const windowHeight = window.innerHeight || document.documentElement.clientHeight;
 
 $(document).scroll(() => {
+	// @ts-ignore
 	if ($(document).scrollTop() > windowHeight) {
 		backToTop.slideDown();
 	} else {

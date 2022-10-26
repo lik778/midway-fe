@@ -1,5 +1,7 @@
 mixin news-list (articleList)
-  .news-list
+  .news-list.maskLayer-relative
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+      .maskLayer-htek
     if articleList && articleList.length > 0
       each item in articleList
         .news-item

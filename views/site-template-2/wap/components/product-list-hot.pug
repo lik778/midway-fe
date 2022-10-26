@@ -3,7 +3,9 @@ mixin product-list-hot(productList)
   if productList && productList.length >0
     .products
       each item in productList
-        a.product-hot(href=item.urlSuffix,class=item.videoUrl?'video':'')
+        a.product-hot.maskLayer-relative(href=item.urlSuffix,class=item.videoUrl?'video':'')
+          if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+            .maskLayer-htek
           img.product__img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
           p.product__name #{ item.name }
           p.product__content.only-twoline #{ item.content }

@@ -13,19 +13,21 @@ block content
         +big-image(autoConfig[3])
     .container
         //-自定义模块2（即之前的自身优势模块）
-        if autoConfig[2]&&autoConfig[2].show
-            include ../components/home/self-advantage.pug
-            .block-title
-                //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
-                .point 
-                    .littlePoint 
-                    .largePoint
-                .h2 #{autoConfig[2].mainModuleTitle||'服务资质'}
-                .point 
-                    .largePoint
-                    .littlePoint
-            - selfAdvantage = autoConfig[2].subModuleBos
-            +self-advantage(selfAdvantage)
+        if isBaiduPin==='baidu_pinzhuan' && pinZhuan
+        else
+          if autoConfig[2]&&autoConfig[2].show
+                include ../components/home/self-advantage.pug
+                .block-title
+                    //- img(src="//file.baixing.net/202102/4f9c3d49ee8febc8c9a4ae028adf0edf.png", alt="关于我们")
+                    .point 
+                        .littlePoint 
+                        .largePoint
+                    .h2 #{autoConfig[2].mainModuleTitle||'服务资质'}
+                    .point 
+                        .largePoint
+                        .littlePoint
+                - selfAdvantage = autoConfig[2].subModuleBos
+                +self-advantage(selfAdvantage)
 
         - const { productList: hotProductList, name } = renderData.productRecommend
         if hotProductList && hotProductList.length>0
@@ -55,11 +57,12 @@ block content
                         .littlePoint
                 include ../components/home/about-us.pug
                 +about-Us-New(tags,media,videoUrl)
-
-        //-自定义模块1（即之前的企业优势模块）
-        if autoConfig[1] &&autoConfig[1].show
-            include ../components/home/user-defined-module.pug
-            +user-defined-module(autoConfig[1]) 
+        if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+        else
+          //-自定义模块1（即之前的企业优势模块）
+          if autoConfig[1] &&autoConfig[1].show
+              include ../components/home/user-defined-module.pug
+              +user-defined-module(autoConfig[1]) 
 
         //- 变量名 "productLists" 会报一个编译时错误，很奇怪
         //- 暂时先换个名字
@@ -73,45 +76,50 @@ block content
                 .point
                     .largePoint
                     .littlePoint
-            .product-catogeries-list
+            .product-catogeries-list.maskLayer-relative
+              if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+                .maskLayer-htek#maskLayer4
               include ../components/home/product-catogeries.pug 
               include ../components/home/product-list-new.pug
               +product-list('nothot', shopProductLists)
-
-        - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
-        include ../components/news/news-list.pug
-        if articleList && articleList.length >0
-            .block-title
-                .point 
-                    .littlePoint
-                    .largePoint
-                .h2 #{articleListName}
-                .point
-                    .largePoint
-                    .littlePoint
-            include ../components/home/news-list.pug
-            +news-list(articleList)
-
-        //- 用于导航
-        if styleType === 'B2B_NORMAL'
-          #contactFormBox
+        if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+        else
+          - const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+          include ../components/news/news-list.pug
+          if articleList && articleList.length >0
               .block-title
-                  .point
+                  .point 
                       .littlePoint
                       .largePoint
-                  .h2 联系我们
+                  .h2 #{articleListName}
                   .point
                       .largePoint
                       .littlePoint
-              //- 通用模板
-              include ../components/home/contact-message.pug
-              //- 用于sem禁止外跳
-              include ../../../common/pc/contact-form-sem.pug
-              +contactFormSem('#FF2D38')
-    //- 行业模板
-    if styleType !== 'B2B_NORMAL'
-      include ../../../common/pc/contact-module.pug
-      +contactModule(styleType)
+              include ../components/home/news-list.pug
+              +news-list(articleList)
+
+          //- 用于导航
+          if styleType === 'B2B_NORMAL'
+            #contactFormBox
+                .block-title
+                    .point
+                        .littlePoint
+                        .largePoint
+                    .h2 联系我们
+                    .point
+                        .largePoint
+                        .littlePoint
+                //- 通用模板
+                include ../components/home/contact-message.pug
+                //- 用于sem禁止外跳
+                include ../../../common/pc/contact-form-sem.pug
+                +contactFormSem('#FF2D38')
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+    else
+      //- 行业模板
+      if styleType !== 'B2B_NORMAL'
+        include ../../../common/pc/contact-module.pug
+        +contactModule(styleType)
 block scripts
     :combine(fileName="site-template-2-home-pc.js")
 block append scripts

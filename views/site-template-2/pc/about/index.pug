@@ -15,15 +15,17 @@ block content
       //- cn域名下about取消公司名称显示
       if !isCn && isSem !== '2'
         | #{ companyName }
-    if isSem !== '2'
-      .intro
-        | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
-      
-    - const userDefinedList = renderData.autoConfig
-    include ../components/common/user-defined-module-about.pug
-    +user-defined-module-about(userDefinedList)
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+    else
+      if isSem !== '2'
+        .intro
+          | !{ company.about.replace(/\n/g, '<br/>') || '暂时还未上传公司简介哦...' }
+        
+      - const userDefinedList = renderData.autoConfig
+      include ../components/common/user-defined-module-about.pug
+      +user-defined-module-about(userDefinedList)
 
-    include ../components/common/contact-form-companyInfo.pug
+      include ../components/common/contact-form-companyInfo.pug
 
 block scripts
   :combine(fileName="site-template-2-about-pc.js")
