@@ -2,7 +2,7 @@ mixin officialHeader(headerOption)
   - const { navConfig } = headerOption||{}
   include ./official-topbar.pug
   +officialTopbar()
-  if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+  if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
   else
     include ./official-info.pug
     +officialInfo()

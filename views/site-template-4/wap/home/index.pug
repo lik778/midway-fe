@@ -9,7 +9,7 @@ block header
 
 	if isSem !== "2" && isSem !== "1"
 		- const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
-		if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
 		else
 			include ../components/company-info-home
 			+company-info-home(tags)
@@ -40,7 +40,7 @@ block content
 		+user-defined-module-new(autoConfig[1])
 
 	if isSem !== "1" 
-		if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
 		else
 			- contactUsImg = renderData.basic.shop.color.wap.contactUs
 			include ../components/aboutus.pug

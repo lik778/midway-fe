@@ -34,7 +34,7 @@ html
     block styles
   body
     //-初始化公共数据
-    - const { hasYbsTicket } = renderData.basic.shop
+    - const { pinZhuan } = renderData.basic.shop
     - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
     - const { company, person, copyRight ,shop} = renderData.basic
     - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo } = renderData
@@ -56,7 +56,7 @@ html
     - defaultImg = "//file.baixing.net/202107/e9a1688b5c861d17484d61515c207390.png"
     - defaultLogo = "//file.baixing.net/201709/4916aa54f4b4c69b4c01591fe6a87046.png"
     //- 百度品专项目专用——为pc/wap添加一个全局的遮罩层，点击遮罩层跳转到不含有query { special: 'baidu_pinzhuan' } 的页面
-    if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
       .maskLayer
     //-为了提供给留咨参数
     if shopName
@@ -127,7 +127,7 @@ html
       })
     include ../vendor/baidutongji.pug
     //-TODO:开发阶段先注释掉
-    if isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
     else
       include ../vendor/53kf.pug
   :combine(fileName=["tb-vendors.js", "tb-commons.js"])

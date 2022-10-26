@@ -3,7 +3,7 @@ block styles
     :combine(fileName="site-template-2-about-wap.css")
 
 block content
-    if isBaiduPin !== 'baidu_pinzhuan' && !hasYbsTicket
+    if isBaiduPin !== 'baidu_pinzhuan' && !pinZhuan
       include ../components/aboutus.pug
       +aboutus('about')
 

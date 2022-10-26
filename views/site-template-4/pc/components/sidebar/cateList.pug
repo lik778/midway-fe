@@ -20,7 +20,7 @@ mixin side-cateList(type,list)
               #{ item.name.length > 8 ? item.name.slice(0,8) + '...' : item.name} #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
             if index < list.length - 1
               .border-bot
-      a.last-contacts(style=`background: url(${productCat.catBg}) no-repeat center center/100%;display: ${(isBaiduPin === 'baidu_pinzhuan' && hasYbsTicket) && 'none'}` href=`tel:${phone.content}`)
+      a.last-contacts(style=`background: url(${productCat.catBg}) no-repeat center center/100%;display: ${(isBaiduPin === 'baidu_pinzhuan' && pinZhuan) && 'none'}` href=`tel:${phone.content}`)
         .last-contact-top
           img.top1(src="//file.baixing.net/202205/ba64a2b4ee4f230a1e96ab5c2bf6c07a.png" alt="logo")
         .last-contact-middle #{phone.content}

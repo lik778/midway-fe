@@ -31,7 +31,7 @@ block content
             +product-list('hot', hotProductList)
 
       if isSem !== "2"&&isSem !== "1"
-        if isBaiduPin==='baidu_pinzhuan' && hasYbsTicket
+        if isBaiduPin==='baidu_pinzhuan' && pinZhuan
         else
           .container-about-us
             - const { name: aboutUsTitle, tags, media, videoUrl } = renderData.about||renderData.basic.aboutModule || {}

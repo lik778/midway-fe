@@ -15,6 +15,7 @@ import EmptyStatus from './components/empty-status';
 import { notEmptyObject } from '@/utils';
 import ShopInfoForm from './components/form';
 import { ShopIndustryType } from '@/enums';
+import { AppSourceEnum } from '@/enums/shop'
 import styles from './index.less';
 import { TicketType } from '@/enums/shop';
 import { renewShopApi } from '@/api/shop';
@@ -240,13 +241,20 @@ const ShopPage: FC<Props> = (props) => {
           {shopStatus?.userValidTickets?.map((t, index) => {
             return (
               <div onClick={() => ticketType === TicketType.RENEW && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? '' : setTicketId(t.id)} className={`${styles['ticket-list-item']} ${ ticketType !== TicketType.CREATE && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? styles['ticket-list-item_diable'] : ''} ${ticketId === t.id ? styles['active-item'] : ''}`} key={index} data-id={t.id}>
+              {
+                (t.source === AppSourceEnum.YBS) && <p className={styles['ticket-list-pinzhuan']}>
+                百度品专专享
+              </p>
+              }
+              <div className={styles['ticket-list-line']}>
                 <span className="item">钻石店铺时长：<strong>{ticketType === TicketType.CREATE ? t.createDays : t.renewDays}</strong>天</span>
-                (<span className="item">发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
-                <span className="item">AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
-                <span className="item">SEO时长：<strong>{t.quota.seoQuota}天</strong></span>)
-                { ticketType === TicketType.RENEW && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? <Popover content={<><p>1.当前店铺的seo云推广正在服务期，暂不支持连续使用</p><p>2.如有多个seo云推广权益的店铺额度请分别新建店铺使用</p></>} title="说明：">
-                    <InfoCircleOutlined />
-                </Popover> : null}
+                  (<span className="item">发文数量：<strong>{t.quota.postQuota}</strong>篇</span>
+                  <span className="item">AI发文数：<strong>{t.quota.maxAiArticles}</strong></span>
+                  <span className="item">SEO时长：<strong>{t.quota.seoQuota}天</strong></span>)
+                  { ticketType === TicketType.RENEW && shopList?.find(s => s.id === shopId)?.canSeoFlag && t.quota.seoQuota ? <Popover content={<><p>1.当前店铺的seo云推广正在服务期，暂不支持连续使用</p><p>2.如有多个seo云推广权益的店铺额度请分别新建店铺使用</p></>} title="说明：">
+                      <InfoCircleOutlined />
+                  </Popover> : null}
+              </div>
               </div>
             )
           })}
