@@ -3,12 +3,16 @@ mixin product-list(type,productList)
 		if productList && productList.length >0
 			each item in type == 'hot' ? productList.slice(0,12) : productList.slice(0,6)
 				if type == 'hot'
-					a.item-p-new(href=item.urlSuffix ,target="_blank",class=item.videoUrl?'video':'' data-color=productCat.catHo)
+					a.item-p-new.maskLayer-relative(href=item.urlSuffix ,target="_blank",class=item.videoUrl?'video':'' data-color=productCat.catHo)
+						if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+							.maskLayer-htek
 						.em
 							img(src=item.headImg || defaultImg)
 						p.only-oneline #{ item.name }
 				else 
-					a.item-p-new.margin-rg(href=item.urlSuffix, target="_blank",class=item.videoUrl?'video':'' data-color=productCat.catHo)
+					a.maskLayer-relative.item-p-new.margin-rg(href=item.urlSuffix, target="_blank",class=item.videoUrl?'video':'' data-color=productCat.catHo)
+						if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+							.maskLayer-htek
 						.em
 							img(src=item.headImg || defaultImg)
 						p.only-oneline #{ item.name }

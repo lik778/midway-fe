@@ -56,9 +56,7 @@ block content
       if shopProductLists && shopProductLists.length>0
         .shop-product-list
           +bolckTitle('产品分类',themTipColor)
-          .product-catogeries-list.maskLayer-relative
-            if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
-              .maskLayer-htek#maskLayer4
+          .product-catogeries-list
             include ../components/home/product-catogeries.pug 
             include ../components/home/product-list-new.pug
             +product-list('nothot', shopProductLists)
