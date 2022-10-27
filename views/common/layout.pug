@@ -67,7 +67,7 @@ html
     //- 每个页面的header有公共的也有页面特有的，所以在页面具体的地方再插入一个 block header修改
     block public-header
 
-    #layout-content(pinZhuan=)
+    #layout-content(pinZhuan=pinZhuan ? 1 : 0)
       block content
 
     block footer
