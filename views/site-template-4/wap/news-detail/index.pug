@@ -12,11 +12,13 @@ block public-header
 
 
 block content
-	include ../components/company-info.pug
-	- const cateList = renderData.articleCateList
-	include ../components/news-detail.pug
-	include ../components/product-recommend.pug
-	include ../components/contact-form.pug
+	if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+	esle
+		include ../components/company-info.pug
+		- const cateList = renderData.articleCateList
+		include ../components/news-detail.pug
+		include ../components/product-recommend.pug
+		include ../components/contact-form.pug
 
 block footer
 	div(style="padding-bottom:75px")

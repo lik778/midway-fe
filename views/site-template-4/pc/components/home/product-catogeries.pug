@@ -1,7 +1,9 @@
 //-侧边栏分类列表,后端已限制10个，列表页全不限制
 - p = renderData.productCateList
 	.product-contanier
-		.product-catogeries
+		.product-catogeries.maskLayer-relative
+			if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+				.maskLayer-htek
 			.all-category(style=`background-color: ${productCat.catTheme}`) 所有产品分类
 			.item-category-container
 				each item,index in p.slice(0,8)
@@ -9,7 +11,8 @@
 						#{ item.name } #[span.firstIcon(style=`background: url(${productCat.catIcon}) no-repeat center center/100%`)]
 					if index  < p.length - 1
 						.border-bot
-		if isBaiduPin !== 'baidu_pinzhuan'
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+		else
 			a.last-contact(style=`background: url(${productCat.catBg}) no-repeat center center/100%` href=productLink)
 				.last-contact-top
 					img.top1(src="//file.baixing.net/202205/ba64a2b4ee4f230a1e96ab5c2bf6c07a.png" alt="logo")

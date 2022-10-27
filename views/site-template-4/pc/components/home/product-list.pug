@@ -1,9 +1,11 @@
 mixin product-list(type,productList)
-	.product-list.clearfix
+	.product-list.clearfix.maskLayer-relative
 		if productList && productList.length > 0
 			each item in type == 'hot' ? productList.slice(0,12) : productList.slice(0,6)
 				if type == 'hot'
-					a.item-p(href=item.urlSuffix, target="_blank", class=item.videoUrl?'video':'' data-color=productHv)
+					a.item-p.maskLayer-relative(href=item.urlSuffix, target="_blank", class=item.videoUrl?'video':'' data-color=productHv)
+						if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+							.maskLayer-htek
 						.em
 							img.productImg(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 						p.only-oneline.
@@ -11,7 +13,9 @@ mixin product-list(type,productList)
 						.item-hot-icon
 							img(src="//file.baixing.net/202205/9cdf690c0c4c9adc9123792ab59a56cb.png", alt="hot-logo")
 				else 
-					a.item-p(href=item.urlSuffix, target="_blank", class=item.videoUrl?'video':'' data-color=productHv)
+					a.item-p.maskLayer-relativ(href=item.urlSuffix, target="_blank", class=item.videoUrl?'video':'' data-color=productHv)
+						if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+							.maskLayer-htek
 						.em
 							img.productImg(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 						p.only-oneline.

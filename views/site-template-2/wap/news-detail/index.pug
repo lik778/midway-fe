@@ -9,11 +9,13 @@ block header
     +swiper('other')
 
 block content
-    include ../components/company-info.pug
-    - const cateList = renderData.articleCateList
-    include ../components/news-detail.pug
-    include ../components/product-recommend.pug
-    include ../components/contact-form.pug
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+    else
+        include ../components/company-info.pug
+        - const cateList = renderData.articleCateList
+        include ../components/news-detail.pug
+        include ../components/product-recommend.pug
+        include ../components/contact-form.pug
 
 //-block footer
 //-    include ../components/footer.pug

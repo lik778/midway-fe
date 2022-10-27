@@ -19,18 +19,22 @@ block content
               - var totalPage = (renderData.productList && renderData.productList.totalPage) || 1
               +pagination(totalPage, currentPage,)
 
-          .sidebar
+          .sidebar.maskLayer-relative
+              if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+                .maskLayer-htek
               - const { productCateList, articleCateList} = renderData
               include ../components/sidebar/cateList.pug
               +side-cateList('所有产品分类', productCateList)
               include ../components/sidebar/news-list.pug
               include ../components/sidebar/products.pug
               +productRecommend(3)
-      #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
-        +bolckTitle('联系我们',themTipColor)
-        include ../components/home/contact-message.pug
-        include ../../../common/pc/contact-form-sem.pug
-        +contactFormSem('#FF2D38')
+      if isBaiduPin==='baidu_pinzhuan' && pinZhuan
+      else
+        #contactFormBox(style=`background: url(${contact.concatBg}) no-repeat center center/100% 100%`)
+          +bolckTitle('联系我们',themTipColor)
+          include ../components/home/contact-message.pug
+          include ../../../common/pc/contact-form-sem.pug
+          +contactFormSem('#FF2D38')
 block scripts
     :combine(fileName="site-template-4-product-pc.js")
 block append scripts

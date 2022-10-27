@@ -26,7 +26,8 @@ export enum AppSourceEnum {
   VIP = 1,
   YHT = 2, // 易慧推
   FM = 3,
-  BW = 4
+  BW = 4,
+  YBS = 'YBS'
 }
 
 export enum TicketType {

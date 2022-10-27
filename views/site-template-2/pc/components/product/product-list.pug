@@ -2,7 +2,9 @@ if productList && productList.length >0
 	.product-list
 		each item in productList
 			- const isVideo = item.videoUrl
-			a.item-p(href=item.urlSuffix target="_blank")
+			a.item-p.maskLayer-relative(href=item.urlSuffix target="_blank")
+				if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+					.maskLayer-htek
 				.play-icon(class=isVideo?'active':'')
 				img(src=item.headImg || defaultImg alt=item.infoSeoKeyWord || item.name)
 				p.only-twoline #{ item.name }

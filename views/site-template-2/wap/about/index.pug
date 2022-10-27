@@ -3,14 +3,15 @@ block styles
     :combine(fileName="site-template-2-about-wap.css")
 
 block content
-    if isBaiduPin !== 'baidu_pinzhuan'
+    if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+    else
       include ../components/aboutus.pug
       +aboutus('about')
 
-    - const userDefinedList = renderData.autoConfig
-    include ../components/user-defined-module.pug
-    +user-defined-module('about',userDefinedList)
-    include ../components/contact-form.pug
+      - const userDefinedList = renderData.autoConfig
+      include ../components/user-defined-module.pug
+      +user-defined-module('about',userDefinedList)
+      include ../components/contact-form.pug
 
 //-block footer
 //-    include ../components/footer.pug

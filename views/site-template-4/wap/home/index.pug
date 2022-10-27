@@ -9,7 +9,8 @@ block header
 
 	if isSem !== "2" && isSem !== "1"
 		- const {tags} = renderData.about ||renderData.basic.aboutModule  || {}
-		if isBaiduPin !== 'baidu_pinzhuan'
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+		else
 			include ../components/company-info-home
 			+company-info-home(tags)
 	if isSem !== "1"
@@ -32,16 +33,19 @@ block content
 		.block-content
 			include ../components/product-list-hot.pug
 			+product-list-hot(hotProductList)
+	if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+	else
+		//-自定义模块1（即之前的企业优势模块）
+		if autoConfig[1] && autoConfig[1].show
+			include ../components/user-defined-module-new.pug
+			+user-defined-module-new(autoConfig[1])
 
-	//-自定义模块1（即之前的企业优势模块）
-	if autoConfig[1] && autoConfig[1].show
-		include ../components/user-defined-module-new.pug
-		+user-defined-module-new(autoConfig[1])
-
-	if isSem !== "1" && isBaiduPin !== 'baidu_pinzhuan'
-		- contactUsImg = renderData.basic.shop.color.wap.contactUs
-		include ../components/aboutus.pug
-		+aboutus('home', contactUsImg)
+	if isSem !== "1" 
+		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+		else
+			- contactUsImg = renderData.basic.shop.color.wap.contactUs
+			include ../components/aboutus.pug
+			+aboutus('home', contactUsImg)
 
 	.block-container
 		.block-title 最新产品
@@ -50,15 +54,16 @@ block content
 			include ../components/product-list-new.pug
 			- productList = renderData.productList.result.slice(0,6)
 			+product-list-new(productList)
+	if isBaiduPin==='baidu_pinzhuan' && pinZhuan
+	else
+		include ../components/home-news-list-module.pug
+		- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
+		if articleList && articleList.length > 0
+			+news-module-list(articleList,articleListName)
 
-	include ../components/home-news-list-module.pug
-	- const { name:articleListName,articleList:{result:articleList,totalPage} } = renderData.articleList
-	if articleList && articleList.length > 0
-		+news-module-list(articleList,articleListName)
-
-	//- 用于导航
-	#contactFormBox
-		include ../components/contact-form.pug
+		//- 用于导航
+		#contactFormBox
+			include ../components/contact-form.pug
 
 	//- 用于sem禁止外跳
 	include ../../../common/wap/contact-form-sem.pug
