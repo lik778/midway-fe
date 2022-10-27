@@ -37,8 +37,7 @@ html
     block styles
   body
     //-初始化公共数据
-    //- - const { pinZhuan } = renderData.basic.shop
-    - const pinZhuan = true
+    - const { pinZhuan } = renderData.basic.shop
     - const { qq, phone, phone2, weChat, contactName, kf53StyleUrl, union400 } = renderData.basic.contact
     - const { company, person, copyRight ,shop} = renderData.basic
     - const { currentPage, currentPathname, categoryId, domainType, shopId, shopName, userInfo } = renderData
@@ -68,7 +67,7 @@ html
     //- 每个页面的header有公共的也有页面特有的，所以在页面具体的地方再插入一个 block header修改
     block public-header
 
-    #layout-content
+    #layout-content(pinZhuan=)
       block content
 
     block footer
