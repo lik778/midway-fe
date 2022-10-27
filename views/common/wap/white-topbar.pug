@@ -9,7 +9,9 @@ header.bx-header-white.maskLayer-relative
         else 
           img.cm-icon.bx-logo(src="//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
 
-    .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line
+    .cm-nav-bar-right.cm-btn-wrapper.cm-btn-line.maskLayer-relative
+      if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+        .maskLayer-htdh
       //- //由于度娘要把搜索图标放右边，所以把搜索DOM挪下来了，回车搜索
       .bx-nav-search
         - shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
