@@ -1,8 +1,6 @@
 - themeColor = renderData.basic.shop.color.productHv
 - headerBg = renderData.basic.shop.color.wap.headerBg
-header.bx-header-red.maskLayer-relative
-	if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
-		.maskLayer-htdh
+header.bx-header-red
 	nav.cm-nav-bar(style={background: headerBg || themeColor})
 		.cm-nav-bar-left
 			a.bx-nav-logo(href= isCn ? "http://www.home.baixing.cn" : "//www.baixing.com")
@@ -10,13 +8,17 @@ header.bx-header-red.maskLayer-relative
 					img.cn-icon.bx-logo(src="//file.baixing.net/202107/0604b7871a5be0f563e05d6f21cd69eb.png", alt="")
 				else
 					img.cm-icon.bx-logo(src="//file.baixing.net/201708/e6bf9e4ef487b6bca17677f734e5507c.png", alt="")
-		.bx-nav-search
+		.bx-nav-search.maskLayer-relative
+			if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+				.maskLayer-htdh
 			- shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
 			form.search-form(action="javascript:return true")
 				input.search-query(type="search" name="query" placeholder="搜索", data-shopdomain=shopDomain.toString() required)
 				#searchClear.clear
 				img#SearchBtn.baicon(src="//file.baixing.net/202105/cf8a2b43ecc8313690de53d51f7a4a3e.png", alt=""  data-shopdomain=shopDomain.toString())
 
-		.cm-nav-bar-right.cm-btn-wrapper.cm-btn-line
+		.cm-nav-bar-right.cm-btn-wrapper.cm-btn-line.maskLayer-relative
+			if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+				.maskLayer-htdh
 			a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/fabu/fuwu#nav") 发布
 			a.bx-nav-btn(rel="nofollow" href="//www.baixing.com/m/wo/") 我的

@@ -1,8 +1,6 @@
 mixin officialTopbar()
 	- const shopDomain = renderData.basic&&renderData.basic.shop?renderData.basic.shop.shopDomain:''
 	.official-topbar-container
-		if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
-			.maskLayer-htdh
 		.topbar
 			.left
 				a.left(href=isCn ? "http://www.home.baixing.cn" : "https://www.baixing.com" target="_blank")
@@ -10,7 +8,9 @@ mixin officialTopbar()
 						img.cn(src="//file.baixing.net/202112/346ca3c2b6f1cf1a419278eaab47482e.png", alt="logo")
 					else 
 						img.com(src="//file.baixing.net/202105/3252caa19b257e704b3e63ce31c5216f.png", alt="logo")
-			.right 
+			.right.maskLayer-relative
+				if isBaiduPin === 'baidu_pinzhuan' && pinZhuan
+					.maskLayer-htdh
 				.search 
 					input#inputValue.input(onfocus="this.select();return false;" placeholder="请输入关键词查询" data-category="root" value="" x-webkit-speech="" name="query" autocomplete="off" required)
 					#searchClear.clear
