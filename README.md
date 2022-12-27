@@ -79,7 +79,7 @@ mvip-manager 与模板页的打包产物会放到 nest 的打包产物的 public
 
 #### 依赖安装问题
 
-- 多半是网络不行。使用公司的网，或用自己的 vpn（全局模式）。
+- 
 
 #### 【views 模板层启动】
 
@@ -95,13 +95,6 @@ mvip-manager 与模板页的打包产物会放到 nest 的打包产物的 public
 #### 确定调用哪个环境的接口
 - 查看 src/config 下的文件
 - local.ts 用于配置本地的开发配置
-```javascript
-'midway-service': {
-  host: 'http://172.30.2.14:31257',// dev环境 ，如果连后端本地服务也要选这个
-  host: 'http://172.30.2.14:30257',// test环境
-  host: 'http://172.30.2.14:30260',// test1环境
-  host: 'http://172.30.2.14:30263',// test2环境
-},
 ```
 #### 确认 domain 值
 
@@ -110,60 +103,10 @@ mvip-manager 与模板页的打包产物会放到 nest 的打包产物的 public
 - 详见 src/services/site.service.ts 文件`getDomain`函数
 
 
-#### 线下开发确认是否已模拟 cookies
-
-无法打开后台管理页面或打开后跳转百姓网主站。
-
-- 前往线下百姓网，登录线下账号（如需超人权限，线下可找后端询问，线上前往游龙申请，[线上超人申请参考文档](https://baixing.yuque.com/gyehgs/rxumnv/royfq2)）。
-- 打开控制台->Application ，复制调试账户 cookies 里的 3 个字段\_\_c、\_\_u、\_\_t 。
-  ![获取\_\_c、\_\_u、\_\_t ](https://file.baixing.net/202201/6ef420379b41130d281a125177701e90.png)
-- 找一个店铺网页（例如：http://172.17.15.38:7001/zmlc/），打开本地环境的控制台，cookies 里设置\_\_c、\_\_u、\_\_t 个字段。
-- 再打开后台管理页面
-
-#### 【测试账号】
-
-- 注册百姓网线下账号（短信注册，短信输入百姓网新三板号码 836012），通过[购买线下 vip](http://www.qatest3.baixing.cn/p/mock/index.php)。将自己的账号转为付费账号。（开始建议让测试帮忙，后面自己弄。）
-  18516566605/baixing123
-
-### 开发后
-
-#### 【测试环境】
-
-代码提交到 fenlei 对应分支后，走[提测平台](https://test-platform.baixing.cn/)。  
-dev 分支测试环境：`http://shop-dev.baixing.cn/management/shop`（暂停使用等待后端修复 domain 为 shop-dev.baixing.cn）
-test 分支测试环境：http://shop-test.baixing.cn/management/shop
-test1 分支测试环境：http://shop-test1.baixing.cn/management/shop
-test2 分支测试环境：http://shop-test2.baixing.cn/management/shop
-
 ## 【后端接口】
 
 在不同环境下的端口地址请看`./src/config`下配置。
 
-下面是接口文档
-midway-service: http://172.30.2.14:30257/doc.html#/home  
-zhidao-service：http://172.30.2.14:31252/doc.html#/home  
-post-tool-service：http://172.30.2.14:31204/doc.html#/home
-
-全局参数设置里添加（下方`X-Api-Hash`、`X-Api-Token`、`X-Api-User`可替换为开发者的）  
-X-Api-Domain : agui.shop.baixing.cn（此处 domain 参考`site.service.ts`文件）  
-X-Api-Device : pc  
-X-Api-Shop-Name : agui  
-X-Api-Hash : d2131474e6758d58b0cb1a8123f9253ae157fb56  
-content-type : application/json;charset=UTF-8  
-X-Api-User : 226337262  
-X-Api-Token : ut60616cfbacfd27.86398476  
-X-Api-Src : web  
-X-Api-Shop-Id : 366
-
-## 【Mock 数据】
-
-- 需要有某种店铺的类型及数量：后端打 api/midway/internal/ticket/yht/buy 接口
-- 需要有店铺 Ai 权限：买套餐或请求后端协助
-- 需要有问答 Ai 权限：haojing 仓库 BusinessRule.php 文件 23 行注释掉，可以买家电维修带问答 Ai 的套餐
-
-## 【数据表】
-
-- chaoge 里 inno-my(店铺）inno-zd(问答)
 
 ## 新模板添加须知
 
@@ -186,10 +129,6 @@ X-Api-Shop-Id : 366
 - 在`build/constant.js`添加新模板的内容，序号则和文件夹里的`n`保持一致，`TB_PAGE_NAMES_${B2X}_n`则是这个模板所有页面文件夹的名称（作为 wabpack 打包入口）
 - 在`webpack.base.config.js`的 entry 入口里添加`genSiteTemplateEntry(TB_TYPE_${B2X}_n, TB_PAGE_NAMES_${B2X}_n)`
 - 需要打点的页面方法可以参考`assets/common/pc/customer-service/index/js`
-
-## CI 相关说明
-
-CI 文件以及说明文档见 `.gitlab.yml`
 
 
 ## 业务代码开发注意点
